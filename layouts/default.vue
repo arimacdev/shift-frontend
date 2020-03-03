@@ -4,25 +4,26 @@
       v-model="drawer"
       app
     >
-    <v-list-item two-line :class="miniVariant && 'px-0'">
-        <v-avatar color="indigo">
-          <v-icon dark>mdi-account-circle</v-icon>
-        </v-avatar>
-        <v-list-item-content>
-          <v-list-item-title class="title">
-            Arimac
-          </v-list-item-title>
-          <v-list-item-subtitle>
-            Ruchini Sujanthi
-          </v-list-item-subtitle>
-        </v-list-item-content>
-    </v-list-item>
-  
+    <v-list-item-group v-model="item" color="primary">
+      <v-list-item two-line :class="miniVariant && 'px-0'">
+          <v-avatar color="indigo">
+            <v-icon dark>mdi-account-circle</v-icon>
+          </v-avatar>
+          <v-list-item-content>
+            <v-list-item-title class="title">
+              Arimac
+            </v-list-item-title>
+            <v-list-item-subtitle>
+              Ruchini Sujanthi
+            </v-list-item-subtitle>
+          </v-list-item-content>
+      </v-list-item>
+    </v-list-item-group>
     <v-divider></v-divider>
-      <v-list>
+      <v-list rounded>
         <v-list-tile
           router
-          :to="item.to"
+          :to="item.route"
           :key="i"
           v-for="(item, i) in items"
           exact
@@ -98,12 +99,12 @@
       return {
         drawer: true,
         items: [
-          { title: 'Summary', icon: 'mdi-book-open' },
-          { title: 'Projects', icon: 'mdi-laptop-mac' },
-          { title: 'Tasks', icon: 'mdi-calendar-text' },
-          { title: 'Attendance', icon: 'mdi-calendar-check' },
-          { title: 'Inventory', icon: 'mdi-cart' },
-          { title: 'Admin', icon: 'mdi-account-circle' }
+          { title: 'Summary', icon: 'mdi-book-open', route: '../pages/summary' },
+          { title: 'Projects', icon: 'mdi-laptop-mac', route: '../pages/projects' },
+          { title: 'Tasks', icon: 'mdi-calendar-text', route: '../pages/tasks' },
+          { title: 'Attendance', icon: 'mdi-calendar-check', route: '../pages/attendance' },
+          { title: 'Inventory', icon: 'mdi-cart', route: '/pages/inventory' },
+          { title: 'Admin', icon: 'mdi-account-circle', route: '/pages/admin' }
         ],
         color: 'primary',
         colors: [
