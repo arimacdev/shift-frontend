@@ -2,34 +2,26 @@
     <div class="body-tabs">   
         <!-- tabs body -->
               <div>
-             
              <v-card class="tabs">
-   <v-tabs>
-      <v-tab>
-        Tasks
-      </v-tab>
-      <v-tab>
-        Board
-      </v-tab>
-      <v-tab>
-        Projects
-      </v-tab>
-      <v-tab>
-        Projects
-      </v-tab>
-      <v-tab>
-        Projects
-      </v-tab>
+      <v-tabs>
+          <v-tab>
+            Tasks
+          </v-tab>
+          <v-tab>
+            Board
+          </v-tab>
+          <v-tab>
+            Projects
+          </v-tab>
+          <v-tab>
+            Projects
+          </v-tab>
+          <v-tab>
+            Projects
+          </v-tab>
 
       <v-tab-item>
-        <v-card flat>
-          <v-card-text>
-            
-             <h1> {{ name }} </h1>
-              <p> Sed aliquam ultrices mauris. Donec posuere vulputate arcu. Morbi ac felis. Etiam feugiat lorem non metus. Sed a libero.
-            </p>
-          </v-card-text>
-        </v-card>
+        <tasks />
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
@@ -78,9 +70,14 @@
 </template>
 
 <script>
+import Tasks from '~/components/tabsView/tasks'
+
   export default {
      props: ['name'],
-    
+    name: 'tabViews',
+    components: {
+      'tasks' : Tasks,
+    },
   }
 </script>
 
