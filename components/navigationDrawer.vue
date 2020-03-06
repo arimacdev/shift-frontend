@@ -26,6 +26,8 @@
 
       <v-list>
         <v-list-item
+          router
+          :to="item.route"
           v-for="item in items"
           :key="item.title"
           link
@@ -44,15 +46,14 @@
 </template>
 
 <script>
-import Projects from '../pages/projects'
   export default {
     data () {
       return {
         drawer: true,
         items: [
-          { title: 'Summary', icon: 'mdi-chart-line', to:'/pages/projects'},
-          { title: 'Projects', icon: 'mdi-folder-outline'},
-          { title: 'Tasks', icon: 'mdi-calendar-blank-multiple' },
+          { title: 'Summary', icon: 'mdi-chart-line', route: ''},
+          { title: 'Projects', icon: 'mdi-folder-outline', route: '../mainPages/projects'},
+          { title: 'Tasks', icon: 'mdi-calendar-blank-multiple', route: '../mainPages/tasks' },
           { title: 'Attendence', icon: 'mdi-account-multiple-outline' },
           { title: 'Inventory', icon: 'mdi-comment-outline' },
           { title: 'Admin', icon: 'mdi-account-circle-outline' },
