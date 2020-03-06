@@ -4,45 +4,73 @@
               <div>
              
              <v-card class="tabs">
-    <v-tabs
-      v-model="tab"
-      icons-and-text
-    >
-      <v-tabs-slider></v-tabs-slider>
-
-      <v-tab href="#tab-1">
+   <v-tabs>
+      <v-tab>
         Tasks
       </v-tab>
-
-      <v-tab href="#tab-2">
+      <v-tab>
         Board
       </v-tab>
-
-      <v-tab href="#tab-3">
-        People
+      <v-tab>
+        Projects
       </v-tab>
-
-    <v-tab href="#tab-4">
+      <v-tab>
+        Projects
+      </v-tab>
+      <v-tab>
         Projects
       </v-tab>
 
-    <v-tab href="#tab-5">
-        Files
-      </v-tab>
-    </v-tabs>
-
-    <v-tabs-items v-model="tab">
-      <v-tab-item
-        v-for="i in 5"
-        :key="i"
-        :value="'tab-' + i"
-      >
-      <v-divider ></v-divider>
+      <v-tab-item>
         <v-card flat>
-          <v-card-text>{{ text }}</v-card-text>
+          <v-card-text>
+            
+             <h1> {{ name }} </h1>
+              <p> Sed aliquam ultrices mauris. Donec posuere vulputate arcu. Morbi ac felis. Etiam feugiat lorem non metus. Sed a libero.
+            </p>
+          </v-card-text>
         </v-card>
       </v-tab-item>
-    </v-tabs-items>
+      <v-tab-item>
+        <v-card flat>
+          <v-card-text>
+            <p>
+              Morbi nec metus. Suspendisse faucibus, nunc et pellentesque egestas, lacus ante convallis tellus, vitae iaculis lacus elit id tortor. Sed mollis, eros et ultrices tempus, mauris ipsum aliquam libero, non adipiscing dolor urna a orci. Curabitur ligula sapien, tincidunt non, euismod vitae, posuere imperdiet, leo. Nunc sed turpis.
+            </p>
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item>
+        <v-card flat>
+          <v-card-text>
+            <p>
+              Fusce a quam. Phasellus nec sem in justo pellentesque facilisis. Nam eget dui. Proin viverra, ligula sit amet ultrices semper, ligula arcu tristique sapien, a accumsan nisi mauris ac eros. In dui magna, posuere eget, vestibulum et, tempor auctor, justo.
+            </p>
+
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item>
+        <v-card flat>
+          <v-card-text>
+            <p>
+              Fusce a quam. Phasellus nec sem in justo pellentesque facilisis. Nam eget dui. Proin viverra, ligula sit amet ultrices semper, ligula arcu tristique sapien, a accumsan nisi mauris ac eros. In dui magna, posuere eget, vestibulum et, tempor auctor, justo.
+            </p>
+
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item>
+        <v-card flat>
+          <v-card-text>
+            <p>
+              Fusce a quam. Phasellus nec sem in justo pellentesque facilisis. Nam eget dui. Proin viverra, ligula sit amet ultrices semper, ligula arcu tristique sapien, a accumsan nisi mauris ac eros. In dui magna, posuere eget, vestibulum et, tempor auctor, justo.
+            </p>
+
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+    </v-tabs>
   </v-card>
   </div>
        
@@ -50,16 +78,10 @@
 </template>
 
 <script>
-export default {
-    data () {
-      return {
-
-        tab: null,
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-     
-      }
-    },
-}
+  export default {
+     props: ['name'],
+    
+  }
 </script>
 
 <style scoped>
