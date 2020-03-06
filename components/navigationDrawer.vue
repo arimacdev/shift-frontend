@@ -1,0 +1,90 @@
+<template>
+    <v-navigation-drawer
+    color="indigo darken-4"
+    dark
+      v-model="drawer"
+      :mini-variant.sync="mini"
+      :clipped="clipped"
+      expand-on-hover
+      app
+      class="nav"
+    >
+      <v-list-item class="px-2 background">
+        <v-list-item-avatar>
+          <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
+        </v-list-item-avatar>
+
+        <v-list-item-title>
+          <div id="name-div">
+            <p id="company-name">ARIMAC</p>
+            <p id="name">John Donny</p>
+          </div>
+        </v-list-item-title>
+      </v-list-item>
+
+      <v-divider></v-divider>
+
+      <v-list>
+        <v-list-item
+          v-for="item in items"
+          :key="item.title"
+          link
+          
+        >
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+</template>
+
+<script>
+import Projects from '../pages/projects'
+  export default {
+    data () {
+      return {
+        drawer: true,
+        items: [
+          { title: 'Summary', icon: 'mdi-chart-line', to:'/pages/projects'},
+          { title: 'Projects', icon: 'mdi-folder-outline'},
+          { title: 'Tasks', icon: 'mdi-calendar-blank-multiple' },
+          { title: 'Attendence', icon: 'mdi-account-multiple-outline' },
+          { title: 'Inventory', icon: 'mdi-comment-outline' },
+          { title: 'Admin', icon: 'mdi-account-circle-outline' },
+        ],
+        mini: true,
+      
+      }
+    },
+  }
+</script>
+<style scoped>
+.background{
+  height: 100px;
+}
+#company-name{
+  margin-bottom: -2px;
+  font-weight: 900;
+}
+#name{
+  font-size: 15px;
+
+}
+#name-div{
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.nav{
+  width: 100px;
+  padding: 0px !important
+}
+
+</style>
+
+
