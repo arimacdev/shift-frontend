@@ -44,6 +44,7 @@
 .projects{
   margin-top: 10px;
   height: 80vh;
+  background-color: #EDF0F5;
 }
 .titles{
   padding-top: 20px;
@@ -51,6 +52,7 @@
 }
 .search-bar{
   height: 10px;
+  background-color: #EDF0F5 !important;
 }
 .tabs{
   padding-left: 10px;
@@ -83,5 +85,3 @@
   justify-content: center;
   align-items: center;
 }
-
-

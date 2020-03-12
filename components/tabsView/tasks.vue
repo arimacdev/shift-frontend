@@ -4,7 +4,7 @@
              
 <div class="heading">
         <div class="allTasks tasksButtons">
-                <v-list-item @click="" 
+                <v-list-item v-on:click="component='all-tasks'" 
                 dark >
                     <v-list-item-action>
                         <v-icon size="20" color="">mdi-calendar-blank-multiple</v-icon>
@@ -16,7 +16,7 @@
         </div>
 
         <div class="myTasks tasksButtons">
-            <v-list-item @click="" 
+            <v-list-item v-on:click="component='my-tasks'" 
                 dark >
                     <v-list-item-action>
                         <v-icon size="20" color="">mdi-calendar-blank-multiple</v-icon>
@@ -28,7 +28,7 @@
         </div>
 
         <div class="createTask tasksButtons">
-                <v-list-item @click="" 
+                <v-list-item v-on:click="component='add-task'" 
                 dark >
                     <v-list-item-action>
                         <v-icon size="20" color="">mdi-calendar-blank-multiple</v-icon>
@@ -39,24 +39,44 @@
                         <v-icon>mdi-plus-circle</v-icon>
                     </v-list-item>
         </div>
-
-    
 </div>   
+
+       <!-- <all-tasks :projects=projects /> -->
+            <keep-alive>
+                 <component v-bind:is="component" :projects=projects></component>
+            </keep-alive>
+        
           </v-card-text>
         </v-card>
 </template>
 
 <script>
 import axios from 'axios'
+import AllTasks from '~/components/projects/allTasks'
+import MyTasks from '~/components/projects/myTasks'
+import AddTask from '~/components/projects/addTask'
 
 export default {
-    props: ['name'],
-    
+    props: ['name', 'projects'],
+    name: 'tasks',
+     components: {
+      'all-tasks' : AllTasks,
+      'my-tasks' : MyTasks,
+      'add-task' : AddTask
+    },
+     data() {
+      return {
+        component:'all-tasks',
+      }
+     }
   }
  
 </script>
 
 <style scoped>
-
+.taskContent{
+    width: 100%;
+    margin-top: 60px;
+}
 
 </style>

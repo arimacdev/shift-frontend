@@ -41,7 +41,7 @@
         <search-bar  />
     
 
-<div class="grey lighten-4 projects overflow-y-auto">
+<div class="projects overflow-y-auto">
 <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Ongoing</v-toolbar-title>
 
           <div v-for="(project, index) in projects"
@@ -60,7 +60,7 @@
 </div>  
       </div>
             <keep-alive>
-            <component v-bind:is="component" :projects=projects></component>
+            <component v-bind:is="component" :name=name :projects=projects></component>
             </keep-alive>
     </div> 
 
