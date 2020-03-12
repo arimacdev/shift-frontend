@@ -1,6 +1,39 @@
 <template>
 <div class="top-nav">
-<top-nav :name="name" />
+<!-- <top-nav :name="name"/> -->
+
+ <v-toolbar app
+      color="indigo darken-4"
+      dark fixed 
+      :clipped-left="clipped"
+      class="tool-bar"
+    >
+<div class="title-div">
+  <div class="name-div">
+   
+        <v-list-item>
+
+           <v-list-item-content>
+            <v-list-item-title class="font-weight-medium">Projects</v-list-item-title>
+          </v-list-item-content>
+
+         <v-list-item-icon>
+            <nuxt-link :to="'../'"> <v-icon>mdi-plus-circle</v-icon></nuxt-link>
+          </v-list-item-icon>
+<v-divider
+      class="mx-4"
+      inset
+      vertical
+    ></v-divider>
+      </v-list-item>
+
+      
+  </div>
+  <div class="content-div">
+    <v-list-item-title class="font-weight-bold">{{ name }}</v-list-item-title>
+  </div>
+</div>
+    </v-toolbar>
    
     <div class="body-div">
       <div class="project-list">
@@ -26,6 +59,7 @@
           </div>
 </div>  
       </div>
+    
           <tab-views :name="name"  />
     </div> 
 </div>
@@ -41,7 +75,7 @@ import TopNav from '~/components/projects/topNav'
 import SearchBar from '~/components/tools/searchBar'
 
 export default {
-
+ props: ['name'],
   data: function(){
       return{
         name: ''
@@ -56,7 +90,8 @@ export default {
     },
 
     async asyncData({ $axios }) {
-    const { data: games } = await $axios.$get('lgo/game')
+    const { data: games } = await $axios.$get('https://api.staging.imigames.io/api/v1/lgo/game')
+    // console.log(games)
     return { 
       games: games
      }
@@ -129,4 +164,31 @@ export default {
   padding-left: 10px;
   box-shadow: none !important
 }
+.tool-bar{
+  position: fixed;
+  width: 100%;
+  z-index: 100;
+}
+.top-nav{
+  margin-top: -12px;
+  margin-left: -12px;
+  margin-right: -12px;
+}
+.title-div{
+  width: 100%;
+  height: 100%;
+}
+.name-div{
+  width: 20%;
+  float: left;
+}
+.content-div{
+  width: 80%;
+  height: 100%;
+  float: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 </style>
