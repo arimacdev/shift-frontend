@@ -40,24 +40,7 @@
                     </v-list-item>
         </div>
 </div>   
-            <div class="showTasks">
-                <p>{{ name }} </p>
-                <div v-for="(game, index) in games"
-                :key="index">
-            <v-list-item @click="" >
-              <v-list-item-action>
-                <v-icon size="20" color="deep-orange lighten-1">mdi-folder-outline</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title class="body-2">{{ game.name }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-             <v-divider class="mx-4"></v-divider>
-       
-          </div>
-
       
-            </div>
           </v-card-text>
         </v-card>
         

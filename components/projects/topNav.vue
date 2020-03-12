@@ -15,7 +15,7 @@
           </v-list-item-content>
 
          <v-list-item-icon>
-            <nuxt-link :to="'../'"> <v-icon>mdi-plus-circle</v-icon></nuxt-link>
+           <button v-on:click="component='create-project'"><v-icon @click="selectProject('Create New Project')">mdi-plus-circle</v-icon></button>
           </v-list-item-icon>
 <v-divider
       class="mx-4"

@@ -18,7 +18,7 @@
           </v-list-item-content>
 
          <v-list-item-icon>
-            <botton v-on:click=""><v-icon>mdi-plus-circle</v-icon></botton>
+           <button v-on:click="component='create-project'"><v-icon @click="selectProject('Create New Project')">mdi-plus-circle</v-icon></button>
           </v-list-item-icon>
 <v-divider
       class="mx-4"
@@ -59,8 +59,9 @@
           </div>
 </div>  
       </div>
-    
-          <tab-views :name="name"  />
+            <keep-alive>
+            <component v-bind:is="component"></component>
+            </keep-alive>
     </div> 
 </div>
 </template>
@@ -73,7 +74,7 @@ import TabViews from '~/components/projects/tabViews'
 import ProjectList from '~/components/projects/projectList'
 import TopNav from '~/components/projects/topNav'
 import SearchBar from '~/components/tools/searchBar'
-import TopNav from '~/components/projects/topNav'
+import CreateProject from '~/components/projects/createProject'
 
 export default {
  props: ['name'],
@@ -87,7 +88,13 @@ export default {
       'tab-views' : TabViews,
       'search-bar' : SearchBar,
       'project-list' : ProjectList,
-      'top-nav' : TopNav
+      'top-nav' : TopNav,
+      'create-project' : CreateProject
+    },
+    data() {
+      return {
+        component:'tab-views'
+      }
     },
 
     async asyncData({ $axios }) {
