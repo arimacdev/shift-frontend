@@ -1,7 +1,8 @@
 <template>
      <v-toolbar app
       color="indigo darken-4"
-      dark fixed app :clipped-left="clipped"
+      dark fixed 
+      :clipped-left="clipped"
       class="tool-bar"
     >
 <div class="title-div">
@@ -14,7 +15,7 @@
           </v-list-item-content>
 
          <v-list-item-icon>
-            <v-icon>mdi-plus-circle</v-icon>
+            <nuxt-link :to="'../'"> <v-icon>mdi-plus-circle</v-icon></nuxt-link>
           </v-list-item-icon>
 <v-divider
       class="mx-4"

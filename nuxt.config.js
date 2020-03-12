@@ -45,7 +45,7 @@ export default {
   ],
 
   axios: {
-    baseURL: 'https://api.staging.imigames.io/api/v1'
+    // baseURL: 'https://api.staging.imigames.io/api/v1'
   },
   /*
   ** vuetify module configuration

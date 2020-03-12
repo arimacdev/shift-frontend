@@ -18,7 +18,7 @@
           </v-list-item-content>
 
          <v-list-item-icon>
-            <nuxt-link :to="'../'"> <v-icon>mdi-plus-circle</v-icon></nuxt-link>
+            <botton v-on:click=""><v-icon>mdi-plus-circle</v-icon></botton>
           </v-list-item-icon>
 <v-divider
       class="mx-4"
@@ -73,6 +73,7 @@ import TabViews from '~/components/projects/tabViews'
 import ProjectList from '~/components/projects/projectList'
 import TopNav from '~/components/projects/topNav'
 import SearchBar from '~/components/tools/searchBar'
+import TopNav from '~/components/projects/topNav'
 
 export default {
  props: ['name'],

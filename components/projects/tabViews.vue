@@ -11,17 +11,17 @@
             Board
           </v-tab>
           <v-tab>
-            Projects
+            People
           </v-tab>
           <v-tab>
             Projects
           </v-tab>
           <v-tab>
-            Projects
+            Files
           </v-tab>
 
       <v-tab-item>
-        <tasks />
+        <tasks  :name="name" />
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
