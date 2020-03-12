@@ -1,6 +1,6 @@
 <template>
      <v-toolbar app
-      color="indigo darken-4"
+      color=""
       dark fixed 
       :clipped-left="clipped"
       class="tool-bar"
@@ -45,6 +45,7 @@ export default {
   position: fixed;
   width: 100%;
   z-index: 100;
+  background-color: #080848 !important;
 }
 .top-nav{
   margin-top: -12px;

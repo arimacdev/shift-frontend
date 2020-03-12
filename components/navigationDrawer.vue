@@ -1,6 +1,6 @@
 <template>
     <v-navigation-drawer
-    color="indigo darken-4"
+    color=""
     dark
       v-model="drawer"
       :mini-variant.sync="mini"

@@ -17,5 +17,6 @@
   
   .nav{
     width: 100px;
-    padding: 0px !important
+    background-color: #080848 !important;
+    padding: 0px !important;
   }

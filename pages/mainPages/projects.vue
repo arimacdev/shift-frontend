@@ -3,7 +3,7 @@
 <!-- <top-nav :name="name"/> -->
 
  <v-toolbar app
-      color="indigo darken-4"
+      color=""
       dark fixed 
       :clipped-left="clipped"
       class="tool-bar"

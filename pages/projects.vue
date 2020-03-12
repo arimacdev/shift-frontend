@@ -1,7 +1,7 @@
 <template>
 <div class="top-nav">
    <v-toolbar app
-      color="indigo darken-4"
+      color=""
       dark fixed app :clipped-left="clipped"
       class="tool-bar"
     >

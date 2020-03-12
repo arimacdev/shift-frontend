@@ -1,7 +1,7 @@
 <template>
 <div class="formDiv">
     <p class="createprojectTitle"> You're about to start a new project </p>
-    <form id="createProjectFormData">
+    <form>
       <v-container class="">
     <v-row
       class="mb-6"
