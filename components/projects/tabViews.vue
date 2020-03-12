@@ -21,7 +21,7 @@
           </v-tab>
 
       <v-tab-item>
-        <tasks  :name="name" />
+        <tasks  :name="name" :projects="projects" />
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
@@ -73,7 +73,7 @@
 import Tasks from '~/components/tabsView/tasks'
 
   export default {
-     props: ['name'],
+     props: ['name','projects'],
     name: 'tabViews',
     components: {
       'tasks' : Tasks,

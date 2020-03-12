@@ -65,26 +65,7 @@
   }
 </script>
 <style scoped>
-.background{
-  height: 100px;
-}
-#company-name{
-  margin-bottom: -2px;
-  font-weight: 900;
-}
-#name{
-  font-size: 15px;
 
-}
-#name-div{
-  margin-top: 20px;
-  margin-left: 20px;
-}
-
-.nav{
-  width: 100px;
-  padding: 0px !important
-}
 
 </style>
 

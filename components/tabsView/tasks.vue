@@ -39,11 +39,11 @@
                         <v-icon>mdi-plus-circle</v-icon>
                     </v-list-item>
         </div>
+
+    
 </div>   
-      
           </v-card-text>
         </v-card>
-        
 </template>
 
 <script>
@@ -57,32 +57,6 @@ export default {
 </script>
 
 <style scoped>
-.heading{
-    /* width: 100%; */
-}
-.tasksButtons{
-    border-radius: 5px;
-    float: left;
-    margin-right: 5px;
-}
-.buttonText{
-    margin-left: -20px;
-}
-.createTask{
-    background-color: #0BAFFF;
-    width: 30%;
-}
-.myTasks{
-    background-color: #2EC973;
-    width: 25%;
-}
-.allTasks{
-    background-color: #0C0C5A;
-    width: 25%;
-}
-.showTasks{
-    width: 100%;
-    margin-top: 70px;
-}
+
 
 </style>

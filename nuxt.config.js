@@ -25,6 +25,7 @@ export default {
   ** Global CSS
   */
   css: [
+    "@/assets/style.css"
   ],
   /*
   ** Plugins to load before mounting the App
@@ -45,7 +46,7 @@ export default {
   ],
 
   axios: {
-    // baseURL: 'https://api.staging.imigames.io/api/v1'
+    baseURL: 'http://pmtool.devops.arimac.xyz/api/pm-service'
   },
   /*
   ** vuetify module configuration
