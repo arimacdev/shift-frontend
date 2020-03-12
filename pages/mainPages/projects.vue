@@ -44,14 +44,14 @@
 <div class="grey lighten-4 projects overflow-y-auto">
 <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Ongoing</v-toolbar-title>
 
-          <div v-for="(game, index) in games"
+          <div v-for="(project, index) in projects"
         :key="index">
-            <v-list-item @click="selectProject(game.name)" >
+            <v-list-item @click="selectProject(project.projectName)" >
               <v-list-item-action>
                 <v-icon size="20" color="deep-orange lighten-1">mdi-folder-outline</v-icon>
               </v-list-item-action>
               <v-list-item-content>
-                <v-list-item-title class="body-2">{{ game.name }}</v-list-item-title>
+                <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
              <v-divider class="mx-4"></v-divider>
@@ -98,10 +98,10 @@ export default {
     },
 
     async asyncData({ $axios }) {
-    const { data: games } = await $axios.$get('https://api.staging.imigames.io/api/v1/lgo/game')
-    // console.log(games)
+    const { data: projects } = await $axios.$get('http://pmtool.devops.arimac.xyz/api/pm-service/projects?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff')
+    console.log(projects)
     return { 
-      games: games
+      projects: projects
      }
   },
 

@@ -1,93 +1,147 @@
 <template>
 <div class="formDiv">
     <p class="createprojectTitle"> You're about to start a new project </p>
-  <ValidationObserver ref="observer" v-slot="{ validate, reset }">
     <form>
-      <ValidationProvider v-slot="{ errors }" name="Name" rules="required|max:10">
-        <v-text-field
-          v-model="name"
-          :counter="10"
-          :error-messages="errors"
-          label="Name"
-          required
-        ></v-text-field>
-      </ValidationProvider>
-      <ValidationProvider v-slot="{ errors }" name="email" rules="required|email">
-        <v-text-field
-          v-model="email"
-          :error-messages="errors"
-          label="E-mail"
-          required
-        ></v-text-field>
-      </ValidationProvider>
-      <ValidationProvider v-slot="{ errors }" name="select" rules="required">
-        <v-select
-          v-model="select"
-          :items="items"
-          :error-messages="errors"
-          label="Select"
-          data-vv-name="select"
-          required
-        ></v-select>
-      </ValidationProvider>
-      <ValidationProvider v-slot="{ errors }" name="select" rules="required">
-        <v-select
-          v-model="select"
-          :items="items"
-          :error-messages="errors"
-          label="Select"
-          data-vv-name="select"
-          required
-        ></v-select>
-      </ValidationProvider>
-      <!-- <ValidationProvider v-slot="{ errors, valid }" rules="required" name="checkbox">
-        <v-checkbox
-          v-model="checkbox"
-          :error-messages="errors"
-          value="1"
-          label="Option"
-          type="checkbox"
-          required
-        ></v-checkbox>
-      </ValidationProvider> -->
+      <v-container class="">
+    <v-row
+      class="mb-6"
+      no-gutters
+    >
+      <v-col
+        sm="5"
+        md="6"
+        class="textGrids"
+      >
+            <v-text-field
+              v-model="name"
+              :error-messages="errors"
+              label="Project name"
+              required
+              class="formItems"
+              filled
+              flat
+            ></v-text-field>
+      </v-col>
 
-      <v-btn class="mr-4" @click="submit">submit</v-btn>
+      <v-col
+       sm="5"
+        md="6"
+        class="textGrids"
+      >
+              <v-select
+                v-model="client"
+                :items="items"
+                :error-messages="errors"
+                label="Client"
+                data-vv-name="select"
+                required
+                class="formItems custom"
+              filled
+              flat
+              ></v-select>
+      </v-col>
+    </v-row>
+    <v-row
+      class="mb-6"
+      no-gutters
+    >
+      <v-col
+      sm="5"
+        md="6"
+        class="textGrids"
+      >
+            <v-text-field
+              v-model="startDate"
+              :error-messages="errors"
+              label="Project start date"
+              required
+              class="formItems"
+              type="date"
+              filled
+              flat
+              append-icon="mdi-calendar-blank-outline"
+            ></v-text-field>
+      </v-col>
+
+      <v-col
+        sm="5"
+        md="6"
+        class="textGrids"
+      >
+        
+            <v-text-field
+              v-model="endDate"
+              :error-messages="errors"
+              label="Project end date"
+              required
+              class="formItems"
+              type="date"
+              filled
+              flat
+              append-icon="mdi-calendar-blank-outline"
+              color="indigo darken-4"
+            ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row
+      class="mb-6"
+      no-gutters
+    >
+      <v-col
+       sm="5"
+        md="6"
+        class="textGrids"
+      >
+       
+            <v-text-field
+              v-model="timeline"
+              :error-messages="errors"
+              label="Estimated project timeline"
+              required
+              class="formItems"
+              filled
+              flat
+            ></v-text-field>
+      </v-col>
+
+      <v-col
+      sm="5"
+        md="6"
+        class="textGrids"
+      >
+        
+      </v-col>
+    </v-row>
+  </v-container>
+  
+       <div class="createTask tasksButtons">
+                <v-list-item @click="" 
+                dark >
+                    <v-list-item-action>
+                        <v-icon size="20" color="">mdi-calendar-blank-multiple</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content class="buttonText">
+                        <v-list-item-title class="bodyWiew">Add task</v-list-item-title>
+                    </v-list-item-content>
+                        <v-icon>mdi-plus-circle</v-icon>
+                    </v-list-item>
+        </div>
       <!-- <v-btn @click="clear">clear</v-btn> -->
+      <!-- <v-btn class="mr-4" @click="">submit</v-btn> -->
     </form>
-  </ValidationObserver>
+
 </div>
 </template>
 
 <script>
-  import { required, email, max } from 'vee-validate/dist/rules'
-  import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
-
-  setInteractionMode('eager')
-
-  extend('required', {
-    ...required,
-    message: '{_field_} can not be empty',
-  })
-
-  extend('max', {
-    ...max,
-    message: '{_field_} may not be greater than {length} characters',
-  })
-
-  extend('email', {
-    ...email,
-    message: 'Email must be valid',
-  })
+ 
 
   export default {
+     
     components: {
-      ValidationProvider,
-      ValidationObserver,
     },
     data: () => ({
       name: '',
-      email: '',
-      select: null,
       items: [
         'Item 1',
         'Item 2',
@@ -121,5 +175,21 @@
     font-style: normal;
     font-weight: 450;
     font-size: 20px;
+}
+.textGrids{
+  padding: 10px;
+  /* background-color: #f5f5f5; */
+}
+.formItems{
+}
+.createTask{
+    background-color: #0BAFFF;
+    width: 30%;
+}
+.tasksButtons{
+    border-radius: 5px;
+    float: left;
+    margin-right: 5px;
+    float: right;
 }
 </style>
