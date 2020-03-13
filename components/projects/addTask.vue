@@ -156,7 +156,7 @@ import axios from 'axios'
           taskAssignee: "assignee01",
           taskDueDate: this.dueDate,
           taskRemindOnDate: this.reminder,
-          taskNotes: this.notes
+          notes: this.notes
         })
         console.log(response2);
       }
