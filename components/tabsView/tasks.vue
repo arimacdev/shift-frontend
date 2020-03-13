@@ -43,7 +43,7 @@
 
        <!-- <all-tasks :projects=projects /> -->
             <keep-alive>
-                 <component v-bind:is="component" :projects=projects></component>
+                 <component v-bind:is="component" :projectId=projectId></component>
             </keep-alive>
         
           </v-card-text>
@@ -57,7 +57,7 @@ import MyTasks from '~/components/projects/myTasks'
 import AddTask from '~/components/projects/addTask'
 
 export default {
-    props: ['name', 'projects'],
+    props: ['name', 'projectId'],
     name: 'tasks',
      components: {
       'all-tasks' : AllTasks,

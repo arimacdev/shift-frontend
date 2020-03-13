@@ -11,12 +11,13 @@
         md="6"
         class="textGrids"
       >
+  
             <v-text-field
               v-model="name"
               :error-messages="errors"
               label="Task name"
               required
-              class="formItems"
+              class="task_new"
               filled
               flat
             ></v-text-field>
@@ -34,7 +35,7 @@
                 label="Assignee"
                 data-vv-name="select"
                 required
-                class="formItems custom"
+                class="custom"
               filled
               flat
               ></v-select>
@@ -133,7 +134,7 @@
         class="textGrids"
       >
       <v-textarea
-              v-model="note"
+              v-model="notes"
               :error-messages="errors"
               label="Notes"
               required
@@ -166,7 +167,7 @@
  
 import axios from 'axios'
   export default {
-     
+      props: ['projectId'],
     components: {
     },
     data: () => ({
@@ -178,10 +179,12 @@ import axios from 'axios'
         'QA',
       ],
       status: [
-        'Ongoing',
-        'Done',
-        'Testing',
-        'QA',
+        'pending',
+        'implementing',
+        'readyToDeploy',
+        'reOpened',
+        'deployed',
+        'closed'
       ],
       checkbox: null,
     }),
@@ -195,9 +198,9 @@ import axios from 'axios'
       
         let response2 = await this.$axios.$post('/projects/d06aceeb-a8f3-4305-87e4-76f849b4fedd/tasks', {
           taskName: this.name,
-          projectId: 'd06aceeb-a8f3-4305-87e4-76f849b4fedd',
-          taskInitiator: this.status,
-          taskAssignee: this.assignee,
+          projectId: projectId,
+          taskInitiator: "138bbb3d-02ed-4d72-9a03-7e8cdfe89eff",
+          taskAssignee: "assignee01",
           taskDueDate: this.dueDate,
           taskRemindOnDate: this.reminder,
           notes: this.notes,
@@ -234,5 +237,16 @@ import axios from 'axios'
     border-color: inherit;
     border-style: none !important;
     border-width: thin 0 0 0;
+}
+
+.task_new {
+position: absolute;
+width: 100%;
+height: 57px;
+
+background: #EDF0F5;
+border: 1px solid #E5E9EF;
+box-sizing: border-box;
+border-radius: 5px;
 }
 </style>

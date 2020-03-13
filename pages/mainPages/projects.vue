@@ -46,7 +46,7 @@
 
           <div v-for="(project, index) in projects"
         :key="index"  v-on:click="component='tab-views'">
-            <v-list-item @click="selectProject(project.projectName)" >
+            <v-list-item @click="selectProject(project.projectName, project.projectId)" >
               <v-list-item-action>
                 <v-icon size="20" color="deep-orange lighten-1">mdi-folder-outline</v-icon>
               </v-list-item-action>
@@ -60,7 +60,7 @@
 </div>  
       </div>
             <keep-alive>
-            <component v-bind:is="component" :name=name :projects=projects :users=users></component>
+            <component v-bind:is="component" :name=name :projectId=projectId :users=users></component>
             </keep-alive>
     </div> 
 
@@ -110,8 +110,9 @@ export default {
   },
   
     methods: {
-       selectProject(project){
+       selectProject(project, projectId){
      this.name=project;
+     this.projectId = projectId;
     }
     },
   }
