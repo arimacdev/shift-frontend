@@ -117,6 +117,7 @@
               class="formItems"
               prepend-inner-icon="mdi-cloud-upload-outline"
               prepend-icon=""
+              multiple
               filled
               flat
             ></v-file-input>
@@ -147,7 +148,7 @@
   </v-container>
   
        <div class="addTask addTasksButtons">
-                <v-list-item @click="postData()" 
+                <v-list-item @click="addTask()" 
                 dark >
                     
                     <v-list-item-content class="buttonText">
@@ -190,9 +191,9 @@ import axios from 'axios'
         this.$refs.observer.validate()
       },
 
-      async postData(){
+      async addTask(){
       
-        let response = await this.$axios.$post('/projects/d06aceeb-a8f3-4305-87e4-76f849b4fedd/tasks', {
+        let response2 = await this.$axios.$post('/projects/d06aceeb-a8f3-4305-87e4-76f849b4fedd/tasks', {
           taskName: this.name,
           projectId: 'd06aceeb-a8f3-4305-87e4-76f849b4fedd',
           taskInitiator: this.status,
@@ -201,7 +202,7 @@ import axios from 'axios'
           taskRemindOnDate: this.reminder,
           notes: this.notes,
         })
-        console.log(response.message);
+        console.log(response2);
       }
     },
   }
@@ -212,7 +213,7 @@ import axios from 'axios'
 }
 .textGrids{
   padding: 10px;
-  margin-bottom: -30px;
+  margin-bottom: -55px;
   /* background-color: #f5f5f5; */
 }
 .formItems{
@@ -220,6 +221,7 @@ import axios from 'axios'
 .addTask{
     background-color: #2EC973;
     width: 20%;
+    margin-bottom: -20px;
 }
 .addTasksButtons{
     border-radius: 5px;

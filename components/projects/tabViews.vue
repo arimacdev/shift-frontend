@@ -19,30 +19,26 @@
           <v-tab>
             Files
           </v-tab>
-
+          
       <v-tab-item>
-        <tasks  :name="name" :projects=projects />
+        <v-divider class="mx-4"></v-divider>
+            <tasks  :name="name" :projects=projects />
+
       </v-tab-item>
       <v-tab-item>
+        <v-divider class="mx-4"></v-divider>
         <v-card flat>
-          <v-card-text>
-            <p>
-              Morbi nec metus. Suspendisse faucibus, nunc et pellentesque egestas, lacus ante convallis tellus, vitae iaculis lacus elit id tortor. Sed mollis, eros et ultrices tempus, mauris ipsum aliquam libero, non adipiscing dolor urna a orci. Curabitur ligula sapien, tincidunt non, euismod vitae, posuere imperdiet, leo. Nunc sed turpis.
-            </p>
-          </v-card-text>
+         
         </v-card>
       </v-tab-item>
       <v-tab-item>
+        <v-divider class="mx-4"></v-divider>
         <v-card flat>
-          <v-card-text>
-            <p>
-              Fusce a quam. Phasellus nec sem in justo pellentesque facilisis. Nam eget dui. Proin viverra, ligula sit amet ultrices semper, ligula arcu tristique sapien, a accumsan nisi mauris ac eros. In dui magna, posuere eget, vestibulum et, tempor auctor, justo.
-            </p>
-
-          </v-card-text>
+          <people :users=users />
         </v-card>
       </v-tab-item>
       <v-tab-item>
+        <v-divider class="mx-4"></v-divider>
         <v-card flat>
           <v-card-text>
             <p>
@@ -53,6 +49,7 @@
         </v-card>
       </v-tab-item>
       <v-tab-item>
+        <v-divider class="mx-4"></v-divider>
         <v-card flat>
           <v-card-text>
             <p>
@@ -66,17 +63,31 @@
   </v-card>
   </div>
        
+
       </div>
 </template>
 
 <script>
 import Tasks from '~/components/tabsView/tasks'
+import TaskDrawer from '~/components/projects/taskDrawer'
+import People from '~/components/people/people'
 
   export default {
-     props: ['name', 'projects'],
+     data () {
+      return {
+        drawer: null,
+        items: [
+          { title: 'Home', icon: 'dashboard' },
+          { title: 'About', icon: 'question_answer' },
+        ],
+      }
+    },
+     props: ['name', 'projects', 'users'],
     name: 'tabViews',
     components: {
       'tasks' : Tasks,
+      'task-drawer' : TaskDrawer,
+      'people' : People
     },
   }
 </script>
@@ -84,6 +95,10 @@ import Tasks from '~/components/tabsView/tasks'
 <style scoped>
 .tabs{
   padding-left: 10px;
-  box-shadow: none !important
+  box-shadow: none !important;
 }
+.wrapper{
+  width: 100%;
+}
+
 </style>

@@ -38,7 +38,7 @@
     <div class="body-div">
       <div class="project-list">
 
-        <search-bar  />
+        <search-bar :projects=projects />
     
 
 <div class="projects overflow-y-auto">
@@ -60,7 +60,7 @@
 </div>  
       </div>
             <keep-alive>
-            <component v-bind:is="component" :name=name :projects=projects></component>
+            <component v-bind:is="component" :name=name :projects=projects :users=users></component>
             </keep-alive>
     </div> 
 
@@ -100,13 +100,15 @@ export default {
 
     async asyncData({ $axios }) {
     const { data: projects } = await $axios.$get('/projects?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff')
+    const { data: users } = await $axios.$get('/users')
     console.log(projects)
+    console.log(users)
     return { 
-      projects: projects
+      projects: projects,
+      users:users
      }
   },
-
-   
+  
     methods: {
        selectProject(project){
      this.name=project;
