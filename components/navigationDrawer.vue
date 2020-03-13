@@ -31,14 +31,14 @@
           v-for="item in items"
           :key="item.title"
           link
-          
+          active-class="active"
         >
           <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon class="navButtons">{{ item.icon }}</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+            <v-list-item-title  class="navText">{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -54,8 +54,8 @@
           { title: 'Summary', icon: 'mdi-chart-line', route: ''},
           { title: 'Projects', icon: 'mdi-folder-outline', route: '../mainPages/projects'},
           { title: 'Tasks', icon: 'mdi-calendar-blank-multiple', route: '../mainPages/tasks' },
-          { title: 'Attendence', icon: 'mdi-account-multiple-outline' },
           { title: 'Inventory', icon: 'mdi-comment-outline' },
+          { title: 'Users', icon: 'mdi-account-multiple-outline' },
           { title: 'Admin', icon: 'mdi-account-circle-outline' },
         ],
         mini: true,
@@ -65,8 +65,15 @@
   }
 </script>
 <style scoped>
-
-
+.navButtons{
+  color: #4D4F85;
+}
+.navText{
+  /* color: #4D4F85; */
+}
+.navText:visited{
+  color: rgb(231, 231, 240);
+}
 </style>
 
 

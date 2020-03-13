@@ -3,3 +3,42 @@
 @import "./css/tasks.css";
 
 @import "./css/base/typo.css";
+
+
+/* --------- add project ---------- */
+
+.formDiv{
+    /* width: 75vw; */
+    margin-left: 22%;
+    padding: 10px;
+}
+.addProjectTitle{
+font-style: normal;
+font-weight: 450;
+font-size: 20px;
+/* or 200% */
+
+color: #576377;
+}
+.formElements{
+    width: 98%;
+    margin-right: 10px;
+    padding: 15px;
+    border-radius: 5px;
+    background: #EDF0F5;
+    border-style: none;
+    margin-bottom: -30px;
+    margin-top: -50px;
+}
+.formRow{
+}
+.buttonGrid{
+}
+.submitButton{
+    background-color: #0BAFFF;
+    width: 50%;
+    border-radius: 5px;
+    float: left;
+    margin-right: 5px;
+    float: right;
+}

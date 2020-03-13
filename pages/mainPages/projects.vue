@@ -18,7 +18,7 @@
           </v-list-item-content>
 
          <v-list-item-icon>
-           <button v-on:click="component='create-project'"><v-icon @click="selectProject('Create New Project')">mdi-plus-circle</v-icon></button>
+           <button v-on:click="component='add-project'"><v-icon @click="selectProject('Create New Project')">mdi-plus-circle</v-icon></button>
           </v-list-item-icon>
 <v-divider
       class="mx-4"
@@ -42,7 +42,7 @@
     
 
 <div class="projects overflow-y-auto">
-<v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Ongoing</v-toolbar-title>
+<v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Presales</v-toolbar-title>
 
           <div v-for="(project, index) in projects"
         :key="index"  v-on:click="component='tab-views'">
@@ -75,22 +75,24 @@ import TabViews from '~/components/projects/tabViews'
 import ProjectList from '~/components/projects/projectList'
 import TopNav from '~/components/projects/topNav'
 import SearchBar from '~/components/tools/searchBar'
-import CreateProject from '~/components/projects/createProject'
+import AddProject from '~/components/projects/addProject'
 
 export default {
- props: ['name'],
-  data: function(){
-      return{
-        name: ''
-      };
-  },
+ 
+  // data: function(){
+  //     return{
+       
+  //     };
+      
+  // },
+  // props: ['name'],
    name: 'projects',
     components: {
       'tab-views' : TabViews,
       'search-bar' : SearchBar,
       'project-list' : ProjectList,
       'top-nav' : TopNav,
-      'create-project' : CreateProject
+      'add-project' : AddProject
     },
     data() {
       return {
@@ -105,10 +107,11 @@ export default {
     console.log(users)
     return { 
       projects: projects,
-      users:users
+      users:users,
+       name: projects[0].projectName
      }
   },
-  
+
     methods: {
        selectProject(project){
      this.name=project;
