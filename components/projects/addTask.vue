@@ -1,154 +1,107 @@
 <template>
-<div class="taskContent">
-    <form>
-      <v-container class="">
-    <v-row
-      class="mb-6"
-      no-gutters
-    >
-      <v-col
-        sm="5"
-        md="6"
-        class="textGrids"
-      >
-  
-            <v-text-field
-              v-model="name"
-              :error-messages="errors"
-              label="Task name"
-              required
-              class="task_new"
-              filled
-              flat
-            ></v-text-field>
-      </v-col>
+    <div class="taskFormDiv">
+        <form>
+        
+        <v-row
+            class="mb-12 formRow" 
+            no-gutters
+            >
+                <v-col
+                sm="6"
+                md="6"
+                
+            >
+        <input v-model="taskName" placeholder="Task name" class="formElements">
+            </v-col>
+             <v-col
+                sm="6"
+                md="6"
+                
+            >
+            <select v-model="assignee" class="formElements">
+                <option>Hiru TV</option>
+                <option>B</option>
+                <option>C</option>
+            </select>
+            </v-col>
+        </v-row>
 
-      <v-col
-       sm="5"
-        md="6"
-        class="textGrids"
-      >
-              <v-select
-                v-model="assignee"
-                :items="assignee"
-                :error-messages="errors"
-                label="Assignee"
-                data-vv-name="select"
-                required
-                class="custom"
-              filled
-              flat
-              ></v-select>
-      </v-col>
-    </v-row>
-    <v-row
-      class="mb-6"
-      no-gutters
-    >
-      <v-col
-      sm="5"
-        md="6"
-        class="textGrids"
-      >
-             <v-select
-                v-model="status"
-                :items="status"
-                :error-messages="errors"
-                label="Task Status"
-                data-vv-name="select"
-                required
-                class="formItems custom"
-              filled
-              flat
-              ></v-select>
-      </v-col>
+        
+        <v-row
+            class="mb-12 formRow"
+            no-gutters
+            >
+                <v-col
+                sm="6"
+                md="6"
+                
+            >
+            <select v-model="status" class="formElements">
+                <option>Pending</option>
+                <option>Implementing</option>
+                <option>QA</option>
+                <option>Ready to Deploy</option>
+                <option>Re Open</option>
+                <option>Deployed</option>
+                <option>Close</option>
+            </select>
+            </v-col>
+             <v-col
+                sm="6"
+                md="6"
+                
+            >
+            <input type="date" v-model="dueDate" placeholder="Due date" class="formElements">
+            </v-col>
+        </v-row>
 
-      <v-col
-        sm="5"
-        md="6"
-        class="textGrids"
-      >
-        <v-text-field
-              v-model="dueDate"
-              :error-messages="errors"
-              label="Due Date"
-              required
-              class="formItems"
-              type="date"
-              filled
-              flat
-              append-icon="mdi-calendar-blank-outline"
-            ></v-text-field>
-           
-      </v-col>
-    </v-row>
-    <v-row
-      class="mb-6"
-      no-gutters
-    >
-      <v-col
-       sm="5"
-        md="6"
-        class="textGrids"
-      >
-        <v-text-field
-              v-model="reminder"
-              :error-messages="errors"
-              label="Reminder"
-              required
-              class="formItems"
-              type="date"
-              filled
-              flat
-              append-icon="mdi-calendar-blank-outline"
-            ></v-text-field>
-           
-      </v-col>
 
-      <v-col
-      sm="5"
-        md="6"
-        class="textGrids"
+        <v-row
+            class="mb-12 formRow"
+            no-gutters
+            >
+                <v-col
+                sm="6"
+                md="6"
+                
+            >
+        <input type="date" v-model="reminder" placeholder="Reminder" class="formElements">
+            </v-col>
+             <v-col
+                sm="6"
+                md="6"
+                
+            >
+            <input type="file" id="files" ref="files" multiple v-on:change="handleFileUploads()" class="formElements fileUpload"/>
+            </v-col>
+        </v-row>
+        <v-row
+            class="mb-12 formRow"
+            no-gutters
+            >
+            <v-col
+            sm="12"
+            md="12"
+            class=""
       >
-         <v-file-input
-              v-model="files"
-              :error-messages="errors"
-              label="Drop files to attach, or browse"
-              required
-              class="formItems"
-              prepend-inner-icon="mdi-cloud-upload-outline"
-              prepend-icon=""
-              multiple
-              filled
-              flat
-            ></v-file-input>
+       <textarea v-model="notes" placeholder="Note" class="formElements textArea"></textarea>
       </v-col>
-    </v-row>
-    <v-row
-      class="mb-12"
-      no-gutters
-    >
-    <v-col
-      sm="5"
-        md="12"
-        class="textGrids"
+        </v-row>
+        <v-row
+            class="mb-12 formRow"
+            no-gutters
+            >
+            <v-col
+            sm="12"
+            md="6"
+            class=""
+      ></v-col>
+            <v-col
+            sm="12"
+            md="6"
+            class="buttonGrid"
       >
-      <v-textarea
-              v-model="notes"
-              :error-messages="errors"
-              label="Notes"
-              required
-              class="formItems"
-              filled
-              auto-grow
-              flat
-            ></v-textarea>
-      </v-col>
-    
-    </v-row>
-  </v-container>
-  
-       <div class="addTask addTasksButtons">
+                <div class="addTaskButton">
                 <v-list-item @click="addTask()" 
                 dark >
                     
@@ -157,11 +110,11 @@
                     </v-list-item-content>
                     </v-list-item>
         </div>
-    </form>
-
-</div>
+            </v-col>
+        </v-row>
+        </form>
+    </div>
 </template>
-
 
 <script>
  
@@ -194,59 +147,19 @@ import axios from 'axios'
         this.$refs.observer.validate()
       },
 
-      async addTask(){
+     async addTask(){
       
         let response2 = await this.$axios.$post('/projects/d06aceeb-a8f3-4305-87e4-76f849b4fedd/tasks', {
-          taskName: this.name,
-          projectId: projectId,
+          taskName: this.taskName,
+          projectId: 'd06aceeb-a8f3-4305-87e4-76f849b4fedd',
           taskInitiator: "138bbb3d-02ed-4d72-9a03-7e8cdfe89eff",
           taskAssignee: "assignee01",
           taskDueDate: this.dueDate,
           taskRemindOnDate: this.reminder,
-          notes: this.notes,
+          taskNotes: this.notes
         })
         console.log(response2);
       }
     },
   }
 </script>
-<style scoped>
-.taskContent{
-    margin-left: -20px;
-}
-.textGrids{
-  padding: 10px;
-  margin-bottom: -55px;
-  /* background-color: #f5f5f5; */
-}
-.formItems{
-}
-.addTask{
-    background-color: #2EC973;
-    width: 20%;
-    margin-bottom: -20px;
-}
-.addTasksButtons{
-    border-radius: 5px;
-    float: left;
-    margin-right: 5px;
-    float: right;
-    text-align: center;
-}
-.v-input__slot:before {
-    border-color: inherit;
-    border-style: none !important;
-    border-width: thin 0 0 0;
-}
-
-.task_new {
-position: absolute;
-width: 100%;
-height: 57px;
-
-background: #EDF0F5;
-border: 1px solid #E5E9EF;
-box-sizing: border-box;
-border-radius: 5px;
-}
-</style>

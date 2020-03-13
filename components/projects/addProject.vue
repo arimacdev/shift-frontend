@@ -125,10 +125,10 @@ export default {
           projectEndDate: this.endDate,
         })
         console.log(response.message);
-        this.name = ''
-        this.email = ''
-        this.select = null
-        this.checkbox = null
+        this.projectName = ''
+        this.client = ''
+        this.startDate = ''
+        this.endDate = ''
       }
     }
 }
