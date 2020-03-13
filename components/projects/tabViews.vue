@@ -22,7 +22,7 @@
           
       <v-tab-item>
         <v-divider class="mx-4"></v-divider>
-            <tasks  :name="name" :projects=projects />
+            <tasks  :name="name" :projectId=projectId />
 
       </v-tab-item>
       <v-tab-item>
@@ -82,7 +82,7 @@ import People from '~/components/people/people'
         ],
       }
     },
-     props: ['name', 'projects', 'users'],
+     props: ['name', 'projectId', 'users'],
     name: 'tabViews',
     components: {
       'tasks' : Tasks,

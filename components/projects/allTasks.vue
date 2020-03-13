@@ -2,6 +2,7 @@
      <div class="taskContent">
 
        <div class="allTasksDropDown">
+              {{projectId}}
               <!-- <v-select
                 v-model="client"
                 :items="items"
@@ -42,7 +43,7 @@
 <script>
 
   export default {
-     props: ['projects'],
+     props: ['projectId'],
     name: 'allTasks',
     components: {
       
