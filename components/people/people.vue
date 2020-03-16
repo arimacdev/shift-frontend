@@ -20,7 +20,7 @@
         <div class="peopleListWrapper">
            <div v-for="(user, index) in users"
         :key="index"  v-on:click="component='tab-views'" class="peopleList">
-            <v-list-item @click="" >
+            <v-list-item  >
               <v-list-item-avatar>
           <v-img src="https://randomuser.me/api/portraits/men/30.jpg"></v-img>
         </v-list-item-avatar>
