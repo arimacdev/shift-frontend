@@ -41,7 +41,7 @@
         <search-bar :projects=projects />
     
 
-<div class="projects overflow-y-auto">
+<div class="listView overflow-y-auto">
 <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Presales</v-toolbar-title>
 
           <div v-for="(project, index) in projects"
@@ -90,7 +90,7 @@ export default {
     },
 
     async asyncData({ $axios }) {
-    const { data: projects } = await $axios.$get('/projects?userId=u10')
+    const { data: projects } = await $axios.$get('/projects?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff')
     const { data: users } = await $axios.$get('/users')
     console.log(projects)
     console.log(users)

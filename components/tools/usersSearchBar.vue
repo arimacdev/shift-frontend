@@ -19,7 +19,7 @@
 <script>
 
 export default {
-   props: ["projects"],
+   props: ["users"],
     data () {
       return {
         loading: false,
@@ -39,12 +39,12 @@ export default {
     },
     methods: {
       querySelections (v) {
-        let projectSearchList = this.projects;
+        let projectSearchList = this.users;
         for (let index = 0; index < projectSearchList.length; ++index) {
-            let project = projectSearchList[index];
-            this.states.push(project.projectName);
+            let user = projectSearchList[index];
+            this.states.push(user.firstName + " " + user.lastName);
         }
-        console.log("projectsList", this.projects, "nameList", this.states)
+        console.log("usersList", this.users, "nameList", this.states)
         this.loading = true
         // Simulated ajax query
         setTimeout(() => {

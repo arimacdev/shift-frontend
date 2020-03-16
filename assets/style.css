@@ -4,7 +4,13 @@
 
 @import "./css/base/typo.css";
 
+/* -------------- common --------------- */
 
+.listView{
+    margin-top: 10px;
+    height: 80vh;
+    background-color: #EDF0F5;
+  }
 /* --------- add project ---------- */
 
 .formDiv{
@@ -14,11 +20,12 @@
 }
 .addProjectTitle{
 font-style: normal;
-font-weight: 450;
+font-weight: 400;
 font-size: 20px;
 /* or 200% */
 
 color: #576377;
+margin-bottom: -5px !important;
 }
 .formElements{
     width: 98%;
@@ -66,3 +73,32 @@ color: #576377;
     float: right;
     text-align: center;
 }
+
+/* ------------ Users --------- */
+
+.users-list{
+    width: 25%;
+   float: left;
+   /* padding-left: 12px; */
+   padding-top: 10px;
+ }
+ 
+ .users{
+   margin-top: 10px;
+   height: 80vh;
+   background-color: #EDF0F5;
+   bottom: 0;
+ }
+ .iconBckCircle{
+     background-color: #ffff;
+     height: 25px;
+     width: 25px;
+     border-radius: 50%;
+     text-align: center;
+ }
+ .usersForms{
+     padding-left: 5% !important;
+ }
+ .addUserSubmit{
+     width: 60% !important;
+ }
