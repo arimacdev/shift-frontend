@@ -42,7 +42,7 @@
 </div>   
 
             <keep-alive>
-                 <component v-bind:is="component" :projectId=projectId :tasks=tasks></component>
+                 <component v-bind:is="component" :projectId=projectId :Alltasks="Alltasks" :MyTasks="MyTasks"></component>
             </keep-alive>
         
           </v-card-text>
@@ -56,7 +56,7 @@ import MyTasks from '~/components/tasks/myTasks'
 import AddTask from '~/components/tasks/addTask'
 
 export default {
-    props: ['name', 'projectId', 'tasks'],
+    props: ['name', 'projectId', 'Alltasks', 'MyTasks'],
     data() {
         console.log("+++++++++++++++++", tasks)
         return {

@@ -2,21 +2,9 @@
      <div class="taskContent">
 
        <div class="allTasksDropDown">
-              <!-- {{projectId}} -->
-              <!-- <v-select
-                v-model="client"
-                :items="items"
-                :error-messages="errors"
-                label="Client"
-                data-vv-name="select"
-                required
-                class=""
-              filled
-              flat
-              ></v-select> -->
        </div>
        <div >
-        <div v-for="(task, index) in tasks"
+        <div v-for="(task, index) in Alltasks"
         :key="index" class="taskList">
             <v-list-item >
               <v-list-item-action>
@@ -43,8 +31,8 @@
 <script>
 
   export default {
-    props: ['projectId', 'tasks'],
-    name: 'allTasks',
+    props: ['projectId', 'Alltasks'],
+    // name: 'allTasks',
     data() {
       return {
         projects: ["pr1"]
