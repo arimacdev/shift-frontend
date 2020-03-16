@@ -9,7 +9,7 @@
       app
       class="nav"
     >
-      <v-list-item class="px-2 background">
+      <v-list-item class="px-2 background" :to="'../mainPages/profile'">
         <v-list-item-avatar>
           <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
         </v-list-item-avatar>
