@@ -2,7 +2,7 @@
      <div class="taskContent">
 
        <div class="allTasksDropDown">
-              {{projectId}}
+              <!-- {{projectId}} -->
               <!-- <v-select
                 v-model="client"
                 :items="items"
