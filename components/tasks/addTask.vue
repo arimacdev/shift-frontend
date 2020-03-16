@@ -11,47 +11,43 @@
                 md="6"
                 
             >
-        <input v-model="taskName" placeholder="Task name" class="formElements">
+        <input v-model="task.taskName" placeholder="Task name" class="formElements">
             </v-col>
              <v-col
                 sm="6"
-                md="6"
-                
+                md="6"                
             >
-            <select v-model="assignee" class="formElements">
-                <option>Hiru TV</option>
-                <option>B</option>
-                <option>C</option>
+            <select v-model="task.taskAssignee" class="formElements">
+              <option v-for="(projectUser, index) in projectUsers" :key="index" :value="projectUser.userId">
+                {{projectUser.firstName}} {{projectUser.lastName}}
+              </option>
             </select>
+            
             </v-col>
-        </v-row>
-
-        
-        <v-row
-            class="mb-12 formRow"
-            no-gutters
-            >
+        </v-row>        
+        <v-row class="mb-12 formRow" no-gutters >
                 <v-col
                 sm="6"
                 md="6"
                 
             >
-            <select v-model="status" class="formElements">
-                <option>Pending</option>
-                <option>Implementing</option>
-                <option>QA</option>
-                <option>Ready to Deploy</option>
-                <option>Re Open</option>
-                <option>Deployed</option>
-                <option>Close</option>
+            <select v-model="task.taskStatus" class="formElements">
+                <option key="pending" value="pending">Pending</option>
+                <option key="implementing" value="implementing">Implementing</option>
+                <option key="qa" value="qa">QA</option>
+                <option key="readyToDeploy" value="readyToDeploy">Ready to Deploy</option>
+                <option key="reOpened" value="reOpened">Re-Opened</option>
+                <option key="deployed" value="deployed">Deployed</option>
+                <option key="closed" value="closed">Closed</option>
             </select>
+            
             </v-col>
              <v-col
                 sm="6"
                 md="6"
                 
             >
-            <input type="date" v-model="dueDate" placeholder="Due date" class="formElements">
+            <input placeholder="Due date" type="date" v-model="task.taskDueDate" class="formElements">
             </v-col>
         </v-row>
 
@@ -65,7 +61,7 @@
                 md="6"
                 
             >
-        <input type="date" v-model="reminder" placeholder="Reminder" class="formElements">
+        <input type="date" v-model="task.taskRemindOnDate" placeholder="Reminder" class="formElements">
             </v-col>
              <v-col
                 sm="6"
@@ -84,7 +80,7 @@
             md="12"
             class=""
       >
-       <textarea v-model="notes" placeholder="Note" class="formElements textArea"></textarea>
+       <textarea v-model="task.taskNotes" placeholder="Note" class="formElements textArea"></textarea>
       </v-col>
         </v-row>
         <v-row
@@ -120,45 +116,44 @@
  
 import axios from 'axios'
   export default {
-      props: ['projectId'],
+      props: ['projectId', 'projectUsers'],
     components: {
     },
-    data: () => ({
-      name: '',
-      assignee: [
-        'Client',
-        'Owner',
-        'Developer',
-        'QA',
-      ],
-      status: [
-        'pending',
-        'implementing',
-        'readyToDeploy',
-        'reOpened',
-        'deployed',
-        'closed'
-      ],
-      checkbox: null,
-    }),
 
+    data() {
+      return {
+         task: {
+            taskName: '',
+            taskAssignee: '',
+            taskStatus: '',
+            taskDueDate:'',
+            taskRemindOnDate:'',
+            taskNotes: ''
+      }
+      }
+    },
     methods: {
       submit () {
         this.$refs.observer.validate()
       },
 
-     async addTask(){
-      
-        let response2 = await this.$axios.$post('/projects/d06aceeb-a8f3-4305-87e4-76f849b4fedd/tasks', {
-          taskName: this.taskName,
-          projectId: 'd06aceeb-a8f3-4305-87e4-76f849b4fedd',
-          taskInitiator: "138bbb3d-02ed-4d72-9a03-7e8cdfe89eff",
-          taskAssignee: "assignee01",
-          taskDueDate: this.dueDate,
-          taskRemindOnDate: this.reminder,
-          notes: this.notes
+     async addTask(){     
+       console.log("task-->", this.task) 
+       let response;
+       try{
+          response = await this.$axios.$post(`/projects/${this.projectId}/tasks`, {
+          taskName: this.task.taskName,
+          projectId: this.projectId,
+          taskInitiator: 'u10',
+          taskAssignee: this.task.taskAssignee,
+          taskDueDate: this.task.taskDueDate,
+          taskRemindOnDate: this.task.taskRemindOnDate,
+          notes: this.task.taskNotes
         })
-        console.log(response2);
+       } catch(e){
+          console.log("Error adding a Task", e);
+       }       
+        console.log(response);
       }
     },
   }

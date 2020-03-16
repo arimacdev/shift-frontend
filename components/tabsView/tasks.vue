@@ -1,10 +1,9 @@
 <template>
      <v-card flat>
           <v-card-text>
-             
 <div class="heading">
         <div class="allTasks tasksButtons">
-                <v-list-item v-on:click="component='all-tasks'" 
+                <v-list-item v-on:click="setTaskTab('all-tasks')" 
                 dark >
                     <v-list-item-action>
                         <v-icon size="20" color="">mdi-calendar-blank-multiple</v-icon>
@@ -16,7 +15,7 @@
         </div>
 
         <div class="myTasks tasksButtons">
-            <v-list-item v-on:click="component='my-tasks'" 
+            <v-list-item v-on:click="setTaskTab('my-tasks')" 
                 dark >
                     <v-list-item-action>
                         <v-icon size="20" color="">mdi-calendar-blank-multiple</v-icon>
@@ -28,7 +27,7 @@
         </div>
 
         <div class="createTask tasksButtons">
-                <v-list-item v-on:click="component='add-task'" 
+                <v-list-item v-on:click="setTaskTab('add-task')" 
                 dark >
                     <v-list-item-action>
                         <v-icon size="20" color="">mdi-calendar-blank-multiple</v-icon>
@@ -42,7 +41,7 @@
 </div>   
 
             <keep-alive>
-                 <component v-bind:is="component" :projectId=projectId :Alltasks="Alltasks" :MyTasks="MyTasks"></component>
+                 <component v-bind:is="component" :projectId=projectId :Alltasks="Alltasks" :MyTasks="MyTasks" :projectUsers="projectUsers"></component>
             </keep-alive>
         
           </v-card-text>
@@ -50,7 +49,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import AllTasks from '~/components/tasks/allTasks'
 import MyTasks from '~/components/tasks/myTasks'
 import AddTask from '~/components/tasks/addTask'
@@ -58,7 +56,6 @@ import AddTask from '~/components/tasks/addTask'
 export default {
     props: ['name', 'projectId', 'Alltasks', 'MyTasks'],
     data() {
-        console.log("+++++++++++++++++", tasks)
         return {
             key: value
         }
@@ -72,8 +69,24 @@ export default {
      data() {
       return {
         component:'all-tasks',
+        projectUsers: []
       }
-     }
+     },
+     methods: {
+         setTaskTab(tabType) {
+             this.component = tabType;
+             if(tabType === 'add-task'){
+                this.$axios.get (`users/project/${this.projectId}`)
+                .then (response => {
+                console.log("project users", response.data)
+                this.projectUsers = response.data.data;
+                })
+                .catch (e => {
+                console.log("error", e)
+                })
+             }
+         }
+     },
   }
  
 </script>
