@@ -19,7 +19,7 @@
 <script>
 
 export default {
-   
+   props: ["projects"],
     data () {
       return {
         loading: false,
@@ -44,6 +44,12 @@ export default {
     },
     methods: {
       querySelections (v) {
+        let projectSearchList = this.projects;
+        for (let index = 0; index < projectSearchList.length; ++index) {
+            let project = projectSearchList[index];
+            this.states.push(project.projectName);
+        }
+        console.log("projectsList", this.projects, "nameList", this.states)
         this.loading = true
         // Simulated ajax query
         setTimeout(() => {

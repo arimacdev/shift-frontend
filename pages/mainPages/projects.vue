@@ -70,28 +70,17 @@
 <script>
 import Logo from '~/components/Logo.vue'
 import VuetifyLogo from '~/components/VuetifyLogo.vue'
-import axios from 'axios'
 import TabViews from '~/components/projects/tabViews'
-import ProjectList from '~/components/projects/projectList'
-import TopNav from '~/components/projects/topNav'
 import SearchBar from '~/components/tools/searchBar'
 import AddProject from '~/components/projects/addProject'
 
 export default {
- 
-  // data: function(){
-  //     return{
-       
-  //     };
-      
-  // },
+   // },
   // props: ['name'],
-   name: 'projects',
+  //  name: 'projects',
     components: {
       'tab-views' : TabViews,
       'search-bar' : SearchBar,
-      'project-list' : ProjectList,
-      'top-nav' : TopNav,
       'add-project' : AddProject
     },
     data() {
@@ -101,7 +90,7 @@ export default {
     },
 
     async asyncData({ $axios }) {
-    const { data: projects } = await $axios.$get('/projects?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff')
+    const { data: projects } = await $axios.$get('/projects?userId=u10')
     const { data: users } = await $axios.$get('/users')
     console.log(projects)
     console.log(users)
