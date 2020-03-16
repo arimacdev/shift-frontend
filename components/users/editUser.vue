@@ -121,9 +121,9 @@ export default {
      async postData(){
       
         let response = await this.$axios.$put('/users/d69cacb2-74fd-41c8-9d54-7db746d1a033', {
-          firstName: this.firstName,
-          lastName: this.lastName,
-          email: this.email,
+          firstName: this.userData.firstName,
+          lastName: this.userData.lastName,
+          email: this.userData.email,
         })
         console.log(response.message);
         this.projectName = ''
