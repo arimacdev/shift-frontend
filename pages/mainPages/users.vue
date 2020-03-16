@@ -37,29 +37,31 @@
 
 <div class="listView overflow-y-auto">
 
-          <div v-for="(user, index) in users"
-        :key="index"  v-on:click="component=''">
-            <v-list-item @click="" >
+           <div v-for="(user, index) in users"
+        :key="index" >
+            <v-list-item @click="selectProject(user)" >
                <v-list-item-avatar>
           <v-img src="https://randomuser.me/api/portraits/men/30.jpg"></v-img>
         </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title class="body-2">{{ user.firstName }} {{ user.lastName}}</v-list-item-title>
+              <v-list-item-content >
+                <v-list-item-title @click="selectProject(user)"  v-on:click="component='view-user'" class="body-2">{{ user.firstName }} {{ user.lastName}}</v-list-item-title>
               </v-list-item-content>
-              <v-list-item-action>
-               <div class="iconBckCircle"> <v-icon size="17" color="#0BAFFF">mdi-pencil-outline</v-icon></div>
+              <v-list-item-action @click="selectProject(user)"  v-on:click="component='edit-user'">
+               <div class="iconBackCircle"> <v-icon size="17" color="#0BAFFF">mdi-pencil-outline</v-icon></div>
               </v-list-item-action>
-              <v-list-item-action>
-               <div class="iconBckCircle"> <v-icon size="17" color="#FF6161">mdi-block-helper</v-icon></div>
+              <v-list-item-action >
+               <div class="iconBackCircle"> <v-icon size="17" color="#FF6161">mdi-block-helper</v-icon></div>
               </v-list-item-action>
             </v-list-item>
              <v-divider class="mx-4"></v-divider>
        
-          </div>
+          </div> 
+
+         
 </div>  
       </div>
-            <keep-alive>
-            <component v-bind:is="component" :users=users></component>
+             <keep-alive>
+            <component v-bind:is="component" :name=name :projectId=projectId :userData=userData></component>
             </keep-alive>
     </div> 
 
@@ -69,15 +71,18 @@
 <script>
 import Logo from '~/components/Logo.vue'
 import VuetifyLogo from '~/components/VuetifyLogo.vue'
-import TabViews from '~/components/projects/tabViews'
 import usersSearchBar from '~/components/tools/usersSearchBar'
 import AddUser from '~/components/users/addUser'
+import ViewUser from '~/components/users/viewUser'
+import EditUser from '~/components/users/editUser'
+import axios from 'axios'
 
 export default {
     components: {
-      'tab-views' : TabViews,
       'search-bar' : usersSearchBar,
-      'add-user' : AddUser
+      'add-user' : AddUser,
+      'view-user' : ViewUser,
+      'edit-user' : EditUser
     },
     data() {
       return {
@@ -85,15 +90,23 @@ export default {
       }
     },
 
-    async asyncData({ $axios }) {
+      async asyncData({ $axios }) {
+    const { data: projects } = await $axios.$get('/projects?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff')
     const { data: users } = await $axios.$get('/users')
+    console.log(projects)
     console.log(users)
     return { 
+      projects: projects,
       users:users,
+       name: users[0].userId
      }
   },
 
     methods: {
+       selectProject(userData){
+     this.name=userData;
+     this.userData = userData;
+    }
     },
   }
 </script>
