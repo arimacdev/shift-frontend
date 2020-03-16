@@ -16,9 +16,9 @@
               ></v-select> -->
        </div>
        <div >
-        <div v-for="(project, index) in projects"
+        <div v-for="(task, index) in tasks"
         :key="index" class="taskList">
-            <v-list-item @click="" >
+            <v-list-item >
               <v-list-item-action>
               <div class="round">
                 <input type="checkbox" name="a2" value="1" id="checkbox" />
@@ -26,7 +26,7 @@
             </div>
               </v-list-item-action>
               <v-list-item-content>
-                <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
+                <v-list-item-title class="body-2">{{ task.taskName}}</v-list-item-title>
               </v-list-item-content>
               <v-list-item-content class="updatedDate">
                 <v-list-item-title class="body-2">Yesterday</v-list-item-title>
@@ -43,8 +43,13 @@
 <script>
 
   export default {
-     props: ['projectId'],
+    props: ['projectId', 'tasks'],
     name: 'allTasks',
+    data() {
+      return {
+        projects: ["pr1"]
+      }
+    },
     components: {
       
     },

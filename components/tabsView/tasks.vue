@@ -41,9 +41,8 @@
         </div>
 </div>   
 
-       <!-- <all-tasks :projects=projects /> -->
             <keep-alive>
-                 <component v-bind:is="component" :projectId=projectId></component>
+                 <component v-bind:is="component" :projectId=projectId :tasks=tasks></component>
             </keep-alive>
         
           </v-card-text>
@@ -52,12 +51,18 @@
 
 <script>
 import axios from 'axios'
-import AllTasks from '~/components/projects/allTasks'
-import MyTasks from '~/components/projects/myTasks'
-import AddTask from '~/components/projects/addTask'
+import AllTasks from '~/components/tasks/allTasks'
+import MyTasks from '~/components/tasks/myTasks'
+import AddTask from '~/components/tasks/addTask'
 
 export default {
-    props: ['name', 'projectId'],
+    props: ['name', 'projectId', 'tasks'],
+    data() {
+        console.log("+++++++++++++++++", tasks)
+        return {
+            key: value
+        }
+    },
     name: 'tasks',
      components: {
       'all-tasks' : AllTasks,
