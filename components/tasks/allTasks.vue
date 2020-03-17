@@ -1,6 +1,7 @@
 <template>
      <div class="taskContent">
-
+       <h1>Hi</h1>
+        <TaskSidebar />
        <div class="allTasksDropDown">
        </div>
        <div >
