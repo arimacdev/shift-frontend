@@ -64,7 +64,7 @@
        }
        let response;
        try{
-          response = await this.$axios.$put(`/projects/${this.projectId}/users/u10`, {
+          response = await this.$axios.$put(`/projects/${this.projectId}/users/138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`, {
           assignerId: 'u1',
           assigneeJobRole: this.jobRole,
           assigneeProjectRole: roleIdValue
