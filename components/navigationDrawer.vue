@@ -4,7 +4,7 @@
     dark
       v-model="drawer"
       :mini-variant.sync="mini"
-      :clipped="clipped"
+      
       expand-on-hover
       app
       class="nav"
