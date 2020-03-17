@@ -30,8 +30,8 @@
        this.dialog = false
        let response;
        try{
-          response = await this.$axios.$post(`/projects/${this.projectId}/users/u10/block`, {
-          executorId: 'u10',
+          response = await this.$axios.$post(`/projects/${this.projectId}/users/138bbb3d-02ed-4d72-9a03-7e8cdfe89eff/block`, {
+          executorId: '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff',
           blockedUserId: this.blockedUserId,
           blockedStatus: true
         })

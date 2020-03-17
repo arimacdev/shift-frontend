@@ -186,3 +186,112 @@ margin-top: -60px;
     height: 180px;
     border: 5px solid #FFFFFF;
 }
+
+/* ------------ project tab ------------ */
+
+.projectTabContent{
+    width: 101%;
+    height: 100%;
+    margin-left: -10px;
+    padding: 20px;
+}
+.detailSection{
+    padding: 10px !important;
+   background-color: #E5E5E5;;
+}
+.tab-projectName{
+    font-style: normal;
+    font-size: 25px !important;
+    color: #080848;
+    font-weight: 500;
+}
+.tab-clientName{
+    color: #576377;
+    font-size: 15px;
+    font-weight: 400;
+    
+}
+.tab-status{
+    background-color: #0BAFFF;
+    color: #FFFFFF;
+    margin-left: 60px;
+    width: 170px;
+    text-align: center;
+    border-radius: 5px;
+}
+.tab-health{
+    background-color: #2EC973;
+    color: #FFFFFF;
+    margin-left: 10px;
+    width: 110px;
+    text-align: center;
+    border-radius: 5px;
+}
+.detailTitle{
+    color: #576377;
+    font-size: 14px;
+    font-weight: 500;
+    margin-left: -10px;
+}
+.detailContent{
+    color: #0BAFFF;
+    font-size: 14px;
+    margin-left: 30px;
+}
+.detailList{
+    margin-left: -60px;
+}
+.detailContainer{
+}
+.projectBox{
+    text-align: center;
+    padding: 10px !important;
+    margin: 10px;
+    width: 20%;
+    height: 150px;
+    border-radius: 12px;
+    color: #FFFFFF;
+    margin-top: -30px;
+}
+.due{
+    background-color: #FFB129;
+}
+.overDue{
+    background-color: #E65C62;
+}
+.left{
+    background-color: #704CF1;
+}
+.assign{
+    background-color: #67D2E0;
+}
+.completed{
+    background-color: #6FCD17;
+}
+.projectBoxNumber{
+    font-size: 40px;
+    font-weight: 900;
+    margin-bottom: -10px !important;
+}
+.tab-icon{
+    width: 100%;
+    text-align: right;
+}
+.iconDiv{
+    float: right;
+}
+.aaaaa{
+    background-color: #FFFFFF;
+    border-radius: 50%;
+    padding: 5px;
+}
+.projectDrawer{
+    margin-top: 40px !important;
+    margin-left: 15px !important;
+    margin-right: 15px !important;
+}
+.deleteProjectButton{
+    background-color: #FF6161 !important;
+    width: 200px;
+    margin-top: 100px;
+}

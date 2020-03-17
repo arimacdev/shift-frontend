@@ -40,12 +40,7 @@
       <v-tab-item>
         <v-divider class="mx-4"></v-divider>
         <v-card flat>
-          <v-card-text>
-            <p>
-              Fusce a quam. Phasellus nec sem in justo pellentesque facilisis. Nam eget dui. Proin viverra, ligula sit amet ultrices semper, ligula arcu tristique sapien, a accumsan nisi mauris ac eros. In dui magna, posuere eget, vestibulum et, tempor auctor, justo.
-            </p>
-
-          </v-card-text>
+          <project-tab :project="project"/>
         </v-card>
       </v-tab-item>
       <v-tab-item>
@@ -71,6 +66,7 @@
 import Tasks from '~/components/tabsView/tasks'
 import TaskDrawer from '~/components/projects/taskDrawer'
 import People from '~/components/people/people'
+import ProjectTab from '~/components/projects/projectTab'
 
   export default {
      data () {
@@ -82,12 +78,13 @@ import People from '~/components/people/people'
         ],
       }
     },
-     props: ['name', 'projectId', 'users', 'Alltasks', 'MyTasks'],
+     props: ['name', 'projectId', 'project', 'users', 'Alltasks', 'MyTasks'],
     name: 'tabViews',
     components: {
       'tasks' : Tasks,
       'task-drawer' : TaskDrawer,
-      'people' : People
+      'people' : People,
+      'project-tab' : ProjectTab
     },
   }
 </script>

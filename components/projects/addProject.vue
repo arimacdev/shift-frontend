@@ -29,11 +29,7 @@
                 md="6"
                 
             >
-            <select v-model="client" class="formElements">
-                <option>Client</option>
-                <option>B</option>
-                <option>C</option>
-            </select>
+            <input v-model="client" placeholder="client" class="formElements">
             </v-col>
         </v-row>
 
@@ -116,14 +112,18 @@ import axios from 'axios'
 export default {
     methods: {
      async postData(){
-      
-        let response = await this.$axios.$post('/projects', {
+      let response;
+       try{
+        response = await this.$axios.$post('/projects', {
           projectOwner: '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff',
           projectName: this.projectName,
           clientId: this.client,
           projectStartDate: this.startDate,
           projectEndDate: this.endDate,
         })
+       }  catch(e){
+          console.log("Error creating project", e);
+       }   
         console.log(response.message);
         this.projectName = ''
         this.client = ''
