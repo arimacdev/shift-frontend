@@ -274,11 +274,15 @@ margin-top: -60px;
     margin-bottom: -10px !important;
 }
 .tab-icon{
-    width: 100%;
     text-align: right;
+    z-index: 10;
+    position: absolute;
+    right: 0;
 }
 .iconDiv{
     float: right;
+    right: 0px;
+    left: 100px !important;
 }
 .aaaaa{
     background-color: #FFFFFF;
