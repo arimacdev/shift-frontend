@@ -59,7 +59,7 @@
 </div>  
       </div>
             <keep-alive>
-            <component v-bind:is="component" :name=name :projectId=this.project.projectId :users=users :Alltasks=Alltasks :MyTasks=MyTasks></component>
+            <component v-bind:is="component" :name=name :projectId=this.project.projectId :project=project :users=users :Alltasks=Alltasks :MyTasks=MyTasks></component>
             </keep-alive>
     </div> 
 
@@ -89,7 +89,7 @@ export default {
     },
 
     async asyncData({ $axios }) {
-    const { data: projects } = await $axios.$get('/projects?userId=u10')
+    const { data: projects } = await $axios.$get('/projects?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff')
     const { data: users } = await $axios.$get('/users')
     // const { data: tasks } = await $axios.$get(`/projects/${p1}/tasks?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`)
 
