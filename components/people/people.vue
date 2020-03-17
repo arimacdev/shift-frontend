@@ -28,9 +28,10 @@
                 <v-list-item-title class="body-2">
                     <h4>{{assignee.projectRoleName}}</h4>
                     {{ assignee.assigneeFirstName }} {{assignee.assigneeLastName}}
-                    {{ assignee.tasksCompleted + "/" + assignee.totalTasks + "Tasks completed"}}
+                    {{ assignee.tasksCompleted + "/" + assignee.totalTasks + " Tasks completed"}}
                      <v-btn small color="primary">Edit</v-btn>
-                     <v-btn small color="error">Delete</v-btn>
+                     <v-btn small color="error"><deleteProjectUser :blockedUserId="assignee.assigneeId" :projectId="projectId" /></v-btn>
+                     
                     </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
@@ -43,9 +44,12 @@
 </template>
 
 <script>
-
+import deleteProjectUser from '@/components/people/deleteProjectUser.vue';
 export default {
     props: ['projectId'],
+    components: {
+        deleteProjectUser,
+    },
     data() {
         return {
             userList: []
