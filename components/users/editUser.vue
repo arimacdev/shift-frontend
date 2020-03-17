@@ -120,12 +120,17 @@ export default {
         
     methods: {
      async postData(){
-        let response = await this.$axios.$put(`/users/${this.userData.userId}`, {
+          let response;
+       try{
+        response = await this.$axios.$put(`/users/${this.userData.userId}`, {
           firstName: this.userData.firstName,
           lastName: this.userData.lastName,
           email: this.userData.email,
         })
-     
+      }
+       catch(e){
+          console.log("Error edit user", e);
+       } 
         
 
         console.log(response.message);
