@@ -4,7 +4,9 @@
         <div class="userImage profileUserImage">
           <v-img class="profileImage" src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
         </div>
+        
         <div class="profileUserName">{{ user.firstName }} {{ user.lastName }} </div>
+        
         <div class="submitButton profileButton">
                 <v-list-item @click="postData()" 
                 dark >
@@ -31,14 +33,14 @@
                 md="6"
                 
             >
-        <input v-model="firstName"  placeholder="First Name" class="formElements">
+        <input v-model="firstName" disabled placeholder="First Name" class="formElements">
             </v-col>
              <v-col
                 sm="6"
                 md="6"
                 
             >
-            <input v-model="lastName"  placeholder="Last Name" class="formElements">
+            <input v-model="lastName" disabled placeholder="Last Name" class="formElements">
             </v-col>
         </v-row>
 
@@ -52,14 +54,14 @@
                 md="6"
                 
             >
-        <input  v-model="userName"  placeholder="Email" class="formElements">
+        <input  v-model="userName" disabled placeholder="Email" class="formElements">
             </v-col>
              <v-col
                 sm="6"
                 md="6"
                 
             >
-           <input type="email" v-model="email"  placeholder="Email" class="formElements">
+           <input type="email" v-model="email" disabled placeholder="Email" class="formElements">
             </v-col>
         </v-row>
 
@@ -72,14 +74,14 @@
                 md="6"
                 
             >
-        <input type="password"  v-model="password"  placeholder="************" class="formElements">
+        <input type="password"  v-model="password" disabled placeholder="************" class="formElements">
             </v-col>
              <v-col
                 sm="6"
                 md="6"
                 
             >
-           <input type="password" v-model="confirmPassword"  placeholder="************" class="formElements">
+           <input type="password" v-model="confirmPassword" disabled placeholder="************" class="formElements">
             </v-col>
         </v-row>
 
@@ -91,38 +93,32 @@
 </template>
 
 <script>
-import EditProfile from '~/components/profile/editProfile'
-import axios from 'axios'
 
 export default {
     props: ['user'],
-     components: {
-      'edit-profile' : EditProfile
-    },
     data: function(){
     return{
         userName: this.user.userName,
         firstName: this.user.firstName,
         lastName: this.user.lastName,
-        email: this.user.email,
-        userId: this.user.userId
+        email: this.user.email
     }
     },
-     methods: {
+    methods: {
      async postData(){
-
-         let response;
-       try{
-           response = await this.$axios.$put(`/users/138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`, {
-          firstName: this.firstName,
-          lastName: this.lastName,
-          email: this.email,
+        let response = await this.$axios.$put(`/users/${this.userData.userId}`, {
+          firstName: this.userData.firstName,
+          lastName: this.userData.lastName,
+          email: this.userData.email,
         })
-       }
-       catch(e){
-          console.log("Error edit user", e);
-       } 
+     
+        
+
         console.log(response.message);
+        this.projectName = ''
+        this.client = ''
+        this.startDate = ''
+        this.endDate = ''
       }
     }
   }

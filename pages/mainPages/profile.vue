@@ -57,10 +57,9 @@ export default {
 
       async asyncData({ $axios }) {
     const { data: user } = await $axios.$get('/users/138bbb3d-02ed-4d72-9a03-7e8cdfe89eff')
-    console.log("user data")
+    console.log(user)
     return { 
-      user:user,
-       name: user.userId
+      user:user
      }
   },
 

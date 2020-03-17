@@ -17,7 +17,7 @@
         <v-list-item-title>
           <div id="name-div">
             <p id="company-name">ARIMAC</p>
-            <p id="name">Indika Wijesooriya</p>
+            <p id="name">Naveenn Perera</p>
           </div>
         </v-list-item-title>
       </v-list-item>
@@ -59,7 +59,6 @@
           { title: 'Admin', icon: 'mdi-account-circle-outline' },
         ],
         mini: true,
-      
       }
     },
   }

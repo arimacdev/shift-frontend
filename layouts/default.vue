@@ -1,7 +1,7 @@
 
 <template>
   <v-app>
-    <navigation-drawer />
+    <navigation-drawer :user=user />
     <v-content>
       <v-container fluid>
         <nuxt />
@@ -16,6 +16,6 @@ import NavigationDrawer from '~/components/navigationDrawer'
 export default {
   components: {
     NavigationDrawer
-  }
+  },
 }
 </script>
