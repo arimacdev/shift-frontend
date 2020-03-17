@@ -2,7 +2,7 @@
     <div>
         <div class="peopleWrapper">
             <div class="titleDiv">
-            <p class="catTitle">Admins</p>
+            <p class="catTitle" @click="fetchUsers">Admins</p>
             </div>
             <div class="addPeopleButton addPeople">
                 <v-list-item v-on:click="component='add-task'" 
@@ -18,7 +18,7 @@
         </div>
         </div>
         <div class="peopleListWrapper">
-           <div v-for="(user, index) in userList"
+           <div v-for="(assignee, index) in userList"
         :key="index"  v-on:click="component='tab-views'" class="peopleList">
             <v-list-item  >
               <v-list-item-avatar>
@@ -26,8 +26,9 @@
         </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title class="body-2">
-                    {{ user.firstName }} {{user.lastName}}
-                    {{"09/10 Tasks completed"}}
+                    <h4>{{assignee.projectRoleName}}</h4>
+                    {{ assignee.assigneeFirstName }} {{assignee.assigneeLastName}}
+                    {{ assignee.tasksCompleted + "/" + assignee.totalTasks + "Tasks completed"}}
                      <v-btn small color="primary">Edit</v-btn>
                      <v-btn small color="error">Delete</v-btn>
                     </v-list-item-title>
@@ -44,15 +45,17 @@
 <script>
 
 export default {
+    props: ['projectId'],
     data() {
         return {
             userList: []
         }
     },
     created(){
-        this.$axios.get (`/users`)
+        console.log("projectId", this.projectId)
+        this.$axios.get (`/projects/${this.projectId}/tasks/u10/completion/details`)
                 .then (response => {
-                console.log("users List", response.data)
+                console.log("project users List", response.data)
                 this.userList = response.data.data;
                 })
                 .catch (e => {
@@ -61,9 +64,9 @@ export default {
     },
     methods: {
          fetchUsers() {
+             console.log("projectId", this.projectId)
         }
     },
-// props: ['users'],
    
 }
 </script>

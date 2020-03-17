@@ -74,6 +74,7 @@ export default {
      },
      methods: {
          setTaskTab(tabType) {
+             console.log("projectId", this.projectId)
              this.component = tabType;
              if(tabType === 'add-task'){
                 this.$axios.get (`users/project/${this.projectId}`)
