@@ -91,7 +91,7 @@ export default {
     async asyncData({ $axios }) {
     const { data: projects } = await $axios.$get('/projects?userId=u10')
     const { data: users } = await $axios.$get('/users')
-    // const { data: tasks } = await $axios.$get(`/projects/${p1}/tasks?userId=u10`)
+    // const { data: tasks } = await $axios.$get(`/projects/${p1}/tasks?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`)
 
     console.log("projects list", projects)
     console.log("users list", users)
@@ -109,7 +109,7 @@ export default {
     selectProject(project){
      this.project = project;
        
-      this.$axios.get (`projects/${this.project.projectId}/tasks?userId=u10`)
+      this.$axios.get (`projects/${this.project.projectId}/tasks?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`)
       .then (response => {
        console.log("data", response.data.data)
        this.Alltasks = response.data.data;
@@ -118,7 +118,7 @@ export default {
        console.log("error", e)
       })
 
-      this.$axios.get (`projects/${this.project.projectId}/tasks/user?userId=u10`)
+      this.$axios.get (`projects/${this.project.projectId}/tasks/user?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`)
       .then (response => {
        console.log("data", response.data)
        this.MyTasks = response.data.data;

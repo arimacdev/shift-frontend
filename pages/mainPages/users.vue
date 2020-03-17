@@ -9,14 +9,16 @@
       class="tool-bar"
     >
 <div class="title-div">
-   
+    <div class="name-div">
         <v-list-item>
 
            <v-list-item-content>
             <v-list-item-title class="font-weight-medium">Users</v-list-item-title>
           </v-list-item-content>
 
-        
+          <v-list-item-icon>
+           <button v-on:click="component='add-user'"><v-icon>mdi-plus-circle</v-icon></button>
+          </v-list-item-icon>
 <v-divider
       class="mx-4"
       inset
@@ -24,7 +26,7 @@
     ></v-divider>
       </v-list-item>
 
-      
+    </div> 
   </div>
   
     </v-toolbar>
@@ -39,14 +41,14 @@
 
            <div v-for="(user, index) in users"
         :key="index" >
-            <v-list-item @click="selectProject(user)" >
+            <v-list-item @click="selectUser(user)" >
                <v-list-item-avatar>
           <v-img src="https://randomuser.me/api/portraits/men/30.jpg"></v-img>
         </v-list-item-avatar>
               <v-list-item-content >
-                <v-list-item-title @click="selectProject(user)"  v-on:click="component='view-user'" class="body-2">{{ user.firstName }} {{ user.lastName}}</v-list-item-title>
+                <v-list-item-title @click="selectUser(user)"  v-on:click="component='view-user'" class="body-2">{{ user.firstName }} {{ user.lastName}}</v-list-item-title>
               </v-list-item-content>
-              <v-list-item-action @click="selectProject(user)"  v-on:click="component='edit-user'">
+              <v-list-item-action @click="selectUser(user)"  v-on:click="component='edit-user'">
                <div class="iconBackCircle"> <v-icon size="17" color="#0BAFFF">mdi-pencil-outline</v-icon></div>
               </v-list-item-action>
               <v-list-item-action >
@@ -103,7 +105,7 @@ export default {
   },
 
     methods: {
-       selectProject(userData){
+       selectUser(userData){
      this.name=userData;
      this.userData = userData;
     }

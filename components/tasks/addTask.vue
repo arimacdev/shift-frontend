@@ -144,7 +144,7 @@ import axios from 'axios'
           response = await this.$axios.$post(`/projects/${this.projectId}/tasks`, {
           taskName: this.task.taskName,
           projectId: this.projectId,
-          taskInitiator: 'u10',
+          taskInitiator: '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff',
           taskAssignee: this.task.taskAssignee,
           taskDueDate: this.task.taskDueDate,
           taskRemindOnDate: this.task.taskRemindOnDate,

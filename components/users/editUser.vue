@@ -117,14 +117,22 @@ export default {
     userId: this.userData
   }
         },
+        
     methods: {
      async postData(){
-      
-        let response = await this.$axios.$put('/users/d69cacb2-74fd-41c8-9d54-7db746d1a033', {
+          let response;
+       try{
+        response = await this.$axios.$put(`/users/${this.userData.userId}`, {
           firstName: this.userData.firstName,
           lastName: this.userData.lastName,
           email: this.userData.email,
         })
+      }
+       catch(e){
+          console.log("Error edit user", e);
+       } 
+        
+
         console.log(response.message);
         this.projectName = ''
         this.client = ''
