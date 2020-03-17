@@ -29,7 +29,7 @@
                     <h4>{{assignee.projectRoleName}}</h4>
                     {{ assignee.assigneeFirstName }} {{assignee.assigneeLastName}}
                     {{ assignee.tasksCompleted + "/" + assignee.totalTasks + " Tasks completed"}}
-                     <v-btn small color="primary">Edit</v-btn>
+                     <v-btn small color="primary"><editProjectUser /></v-btn>
                      <v-btn small color="error"><deleteProjectUser :blockedUserId="assignee.assigneeId" :projectId="projectId" /></v-btn>
                      
                     </v-list-item-title>
@@ -45,10 +45,12 @@
 
 <script>
 import deleteProjectUser from '@/components/people/deleteProjectUser.vue';
+import editProjectUser from '@/components/people/editProjectUser.vue'
 export default {
     props: ['projectId'],
     components: {
         deleteProjectUser,
+        editProjectUser
     },
     data() {
         return {

@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="290">
       <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">Delete User</v-btn>
+        <v-btn color="primary" dark v-on="on">Edit User</v-btn>
       </template>
       <v-card>
         <v-card-title class="headline">Block User</v-card-title>
