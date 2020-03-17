@@ -26,10 +26,10 @@
         </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title class="body-2">
-                    <h4>{{assignee.projectRoleName}}</h4>
+                    <h4>{{assignee.projectJobRoleName}}</h4>
                     {{ assignee.assigneeFirstName }} {{assignee.assigneeLastName}}
                     {{ assignee.tasksCompleted + "/" + assignee.totalTasks + " Tasks completed"}}
-                     <v-btn small color="primary"><editProjectUser /></v-btn>
+                     <v-btn small color="primary"><editProjectUser :editUser="assignee" :projectId="projectId" /></v-btn>
                      <v-btn small color="error"><deleteProjectUser :blockedUserId="assignee.assigneeId" :projectId="projectId" /></v-btn>
                      
                     </v-list-item-title>

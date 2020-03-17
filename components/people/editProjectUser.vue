@@ -1,16 +1,31 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="dialog" persistent max-width="290">
+    <v-dialog v-model="dialog" persistent max-width="350">
       <template v-slot:activator="{ on }">
         <v-btn color="primary" dark v-on="on">Edit User</v-btn>
       </template>
       <v-card>
-        <v-card-title class="headline">Block User</v-card-title>
-        <v-card-text>You are about to permanantly block  from the project. <span>If you are not sure, you can close this popup</span></v-card-text>
+        <v-card-title class="headline">Update the Role and Admin for</v-card-title>
+        <v-card-text>
+             <span>{{editUser.assigneeFirstName}} {{editUser.assigneeLastName}}</span>
+             <span><h3>Role</h3></span>
+             <span>
+                 <input type="text" v-model="jobRole">
+             </span>
+             <span>
+                <v-checkbox
+                v-model="adminStatus"
+                hide-details
+                class="shrink mr-2 mt-0"                
+                label="Admin">
+                </v-checkbox>
+             </span>
+             </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn class="blockUser" text @click="changeHandler">Delete</v-btn>
+          <v-btn class="editUser" text @click="changeHandler">Edit</v-btn>
           <v-btn class="cancelUser" text @click="dialog = false">Cancel</v-btn>
+
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -19,36 +34,68 @@
 
 <script>
   export default {
-    props: ['blockedUserId', 'projectId'],
+    props: ['editUser', 'projectId'],
     data () {
       return {
         dialog: false,
+        isAdmin: false,
+        jobRole: this.editUser.projectJobRoleName,
       }
     },
-    methods: {
+    created(){
+        this.$axios.get (`users/project/${this.projectId}`)
+            .then (response => {
+            console.log("project users", response.data)
+            this.projectUsers = response.data.data;
+            })
+            .catch (e => {
+            console.log("error", e)
+        })
+    },
+    methods: {  
        async changeHandler() {
+           console.log(this.isAdmin, this.jobRole)
        this.dialog = false
+       let roleIdValue;
+       if(this.isAdmin){
+           roleIdValue = 2;
+       } else {
+           roleIdValue = 3;
+       }
        let response;
        try{
-          response = await this.$axios.$post(`/projects/${this.projectId}/users/u10/block`, {
-          executorId: 'u10',
-          blockedUserId: this.blockedUserId,
-          blockedStatus: true
+          response = await this.$axios.$put(`/projects/${this.projectId}/users/u10`, {
+          assignerId: 'u1',
+          assigneeJobRole: this.jobRole,
+          assigneeProjectRole: roleIdValue
         })
        } catch(e){
           console.log("Error blocking user", e);
        }       
         console.log(response);      
-        },
-        
+        },       
+    },
+    computed: {
+        adminStatus: {
+            get(){
+                if( (this.editUser.projectRoleId === "1") || (this.editUser.projectRoleId === "2" )){
+                return true;
+            } else {
+                this.isAdmin = false;
+                return false;
+            }
+        }, set() {
+             this.isAdmin = !this.isAdmin
+        }            
+        }
     },
   }
 </script>
 
 <style scoped>
-.blockUser{
+.editUser{
+background: #2EC973;
 position: absolute;
-background: #FF6161;
 border-radius: 5px;
 font-style: normal;
 font-weight: bold;
@@ -57,8 +104,8 @@ line-height: 40px;
 color: #FFFFFF;
 }
 .cancelUser{
+background: #FF6161;
 margin-left: 20px;
-background: #2EC973;
 border-radius: 5px;
 font-style: normal;
 font-weight: bold;
