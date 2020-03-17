@@ -18,6 +18,7 @@
                 md="6"                
             >
             <select v-model="task.taskAssignee" class="formElements">
+              <option disabled value="" >Assignee</option>
               <option v-for="(projectUser, index) in projectUsers" :key="index" :value="projectUser.userId">
                 {{projectUser.firstName}} {{projectUser.lastName}}
               </option>
@@ -32,7 +33,8 @@
                 
             >
             <select v-model="task.taskStatus" class="formElements">
-                <option key="pending" value="pending">Pending</option>
+              <option disabled value="" >Task status</option>
+                <option key="pending" value="pending" >Pending</option>
                 <option key="implementing" value="implementing">Implementing</option>
                 <option key="qa" value="qa">QA</option>
                 <option key="readyToDeploy" value="readyToDeploy">Ready to Deploy</option>
@@ -47,7 +49,7 @@
                 md="6"
                 
             >
-            <input placeholder="Due date" type="date" v-model="task.taskDueDate" class="formElements">
+            <input placeholder="Due date" onfocusin="(this.type='date')" onfocusout="(this.type='text')" type="text" v-model="task.taskDueDate" class="formElements">
             </v-col>
         </v-row>
 
@@ -61,7 +63,7 @@
                 md="6"
                 
             >
-        <input type="date" v-model="task.taskRemindOnDate" placeholder="Reminder" class="formElements">
+        <input type="text" onfocusin="(this.type='date')" onfocusout="(this.type='text')" v-model="task.taskRemindOnDate" placeholder="Reminder" class="formElements">
             </v-col>
              <v-col
                 sm="6"

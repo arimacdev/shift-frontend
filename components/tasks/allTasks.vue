@@ -9,7 +9,7 @@
             <v-list-item >
               <v-list-item-action>
               <div class="round">
-                <input type="checkbox" name="a2" value="1" id="checkbox" />
+                <input type="checkbox" disabled name="a2" value="1" id="checkbox" />
                 <label for="checkbox"></label>
             </div>
               </v-list-item-action>
