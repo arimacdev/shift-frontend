@@ -51,9 +51,9 @@
               <v-list-item-action @click="selectUser(user)"  v-on:click="component='edit-user'">
                <div class="iconBackCircle"> <v-icon size="17" color="#0BAFFF">mdi-pencil-outline</v-icon></div>
               </v-list-item-action>
-              <v-list-item-action >
+              <!-- <v-list-item-action >
                <div class="iconBackCircle"> <v-icon size="17" color="#FF6161">mdi-block-helper</v-icon></div>
-              </v-list-item-action>
+              </v-list-item-action> -->
             </v-list-item>
              <v-divider class="mx-4"></v-divider>
        

@@ -106,7 +106,7 @@
         </v-row>
 
         <div class="submitButton deleteProjectButton">
-                <v-list-item @click="deleteData()" 
+                <v-list-item @click="" 
                 dark >
                     <v-list-item-action>
                         <v-icon size="20" color="">mdi-trash-can-outline</v-icon>
@@ -245,21 +245,7 @@ export default {
       }
     },
     methods: {
-     async deleteData(){
-      let response;
-       try{
-        response = await this.$axios.$delete(`/projects/${this.project.projectId}`, {
-            
-                headers: {
-                    'userId': '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff',
-                }
-        })
-       }  catch(e){
-          console.log("Error creating project", e);
-       }   
-        console.log(response.message);
-       
-      }
+     
     }
 }
 </script>
