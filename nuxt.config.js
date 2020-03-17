@@ -44,9 +44,14 @@ export default {
   modules: [
     '@nuxtjs/axios'
   ],
-
+/*
+  ** Base URL
+  ** http://pmtool.devops.arimac.xyz/api/pm-service
+  ** UserId - Admin
+  ** 138bbb3d-02ed-4d72-9a03-7e8cdfe89eff
+  */
   axios: {
-    baseURL: 'http://localhost:8080/api/pm-service'
+    baseURL: 'http://pmtool.devops.arimac.xyz/api/pm-service'
   },
   /*
   ** vuetify module configuration

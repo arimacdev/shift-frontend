@@ -59,7 +59,7 @@
 </div>  
       </div>
             <keep-alive>
-            <component v-bind:is="component" :name=name :projectId=this.project.projectId :users=users :Alltasks=Alltasks :MyTasks=MyTasks></component>
+            <component v-bind:is="component" :name=name :projectId=this.project.projectId :project=project :users=users :Alltasks=Alltasks :MyTasks=MyTasks></component>
             </keep-alive>
     </div> 
 

@@ -31,7 +31,7 @@
        let response;
        try{
           response = await this.$axios.$post(`/projects/${this.projectId}/users/138bbb3d-02ed-4d72-9a03-7e8cdfe89eff/block`, {
-          executorId: 'u1',
+          executorId: '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff',
           blockedUserId: this.blockedUserId,
           blockedStatus: true
         })
