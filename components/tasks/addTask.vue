@@ -122,6 +122,7 @@ import axios from 'axios'
 
     data() {
       return {
+         files: '',
          task: {
             taskName: '',
             taskAssignee: '',
@@ -135,6 +136,9 @@ import axios from 'axios'
     methods: {
       submit () {
         this.$refs.observer.validate()
+      },
+      handleFileUploads(e){
+           this.file = this.$refs.files.files[0];
       },
 
      async addTask(){     
@@ -153,7 +157,30 @@ import axios from 'axios'
        } catch(e){
           console.log("Error adding a Task", e);
        }       
-        console.log(response);
+        console.log("Task adding successful", response);
+        let taskId= response.data.taskId;
+
+        let formData = new FormData();
+        formData.append('files', this.file);
+        formData.append('type', 'profileImage')
+
+        this.$axios.$post(`/projects/${this.projectId}/tasks/${taskId}/upload`,
+            formData,
+            {
+              headers: {
+                  'Content-Type': 'multipart/form-data',
+                  'user': '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff'
+              }
+            }
+          ).then(function(res){
+            console.log('File upload successful', res.data);
+          })
+          .catch(function(){
+            console.log('File Upload Failed');
+          });
+
+
+
       }
     },
   }

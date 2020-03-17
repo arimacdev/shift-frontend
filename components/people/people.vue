@@ -59,7 +59,7 @@ export default {
     },
     created(){
         console.log("projectId", this.projectId)
-        this.$axios.get (`/projects/${this.projectId}/tasks/u10/completion/details`)
+        this.$axios.get (`/projects/${this.projectId}/tasks/138bbb3d-02ed-4d72-9a03-7e8cdfe89eff/completion/details`)
                 .then (response => {
                 console.log("project users List", response.data)
                 this.userList = response.data.data;
