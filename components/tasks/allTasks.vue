@@ -29,10 +29,13 @@
 </template>
 
 <script>
-
+ import TaskSidebar from '@/components/tasks/taskSideBar.vue';
   export default {
     props: ['projectId', 'Alltasks'],
     // name: 'allTasks',
+    components: {
+      TaskSidebar,
+    },
     data() {
       return {
         projects: ["pr1"]
