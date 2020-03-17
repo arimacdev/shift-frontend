@@ -106,7 +106,7 @@
         </v-row>
 
         <div class="submitButton deleteProjectButton">
-                <v-list-item @click="deleteData()" 
+                <v-list-item @click="" 
                 dark >
                     <v-list-item-action>
                         <v-icon size="20" color="">mdi-trash-can-outline</v-icon>

@@ -71,7 +71,7 @@
                 md="6"
                 
             >
-             <input type="confirmPassword" v-model="confirmPassword" placeholder="Confirm Password" class="formElements">
+             <input type="password" v-model="confirmPassword" placeholder="Confirm Password" class="formElements">
             </v-col>
         </v-row>
         <v-row

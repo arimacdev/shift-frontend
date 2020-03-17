@@ -43,7 +43,7 @@
                 md="6"
                 
             >
-        <input type="date" v-model="startDate" placeholder="Project start date" class="formElements">
+        <input type="date" v-model="startDate" onfocus="(this.type='date')" placeholder="Project start date" class="formElements">
             </v-col>
              <v-col
                 sm="6"
