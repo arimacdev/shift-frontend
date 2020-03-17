@@ -18,14 +18,19 @@
         </div>
         </div>
         <div class="peopleListWrapper">
-           <div v-for="(user, index) in users"
+           <div v-for="(user, index) in userList"
         :key="index"  v-on:click="component='tab-views'" class="peopleList">
             <v-list-item  >
               <v-list-item-avatar>
           <v-img src="https://randomuser.me/api/portraits/men/30.jpg"></v-img>
         </v-list-item-avatar>
               <v-list-item-content>
-                <v-list-item-title class="body-2">{{ user.firstName }}</v-list-item-title>
+                <v-list-item-title class="body-2">
+                    {{ user.firstName }} {{user.lastName}}
+                    {{"09/10 Tasks completed"}}
+                     <v-btn small color="primary">Edit</v-btn>
+                     <v-btn small color="error">Delete</v-btn>
+                    </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
        
@@ -38,11 +43,27 @@
 
 <script>
 
-import axios from 'axios'
-
-
 export default {
-props: ['users'],
+    data() {
+        return {
+            userList: []
+        }
+    },
+    created(){
+        this.$axios.get (`/users`)
+                .then (response => {
+                console.log("users List", response.data)
+                this.userList = response.data.data;
+                })
+                .catch (e => {
+                console.log("error", e)
+                })
+    },
+    methods: {
+         fetchUsers() {
+        }
+    },
+// props: ['users'],
    
 }
 </script>
