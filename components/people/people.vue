@@ -2,7 +2,7 @@
     <div>
         <div class="peopleWrapper">
             <div class="titleDiv">
-            <p class="catTitle">Admins</p>
+            <p class="catTitle" @click="fetchUsers">Admins</p>
             </div>
             <div class="addPeopleButton addPeople">
                 <v-list-item v-on:click="component='add-task'" 
@@ -18,14 +18,21 @@
         </div>
         </div>
         <div class="peopleListWrapper">
-           <div v-for="(user, index) in users"
+           <div v-for="(assignee, index) in userList"
         :key="index"  v-on:click="component='tab-views'" class="peopleList">
             <v-list-item  >
               <v-list-item-avatar>
           <v-img src="https://randomuser.me/api/portraits/men/30.jpg"></v-img>
         </v-list-item-avatar>
               <v-list-item-content>
-                <v-list-item-title class="body-2">{{ user.firstName }}</v-list-item-title>
+                <v-list-item-title class="body-2">
+                    <h4>{{assignee.projectRoleName}}</h4>
+                    {{ assignee.assigneeFirstName }} {{assignee.assigneeLastName}}
+                    {{ assignee.tasksCompleted + "/" + assignee.totalTasks + " Tasks completed"}}
+                     <v-btn small color="primary"><editProjectUser /></v-btn>
+                     <v-btn small color="error"><deleteProjectUser :blockedUserId="assignee.assigneeId" :projectId="projectId" /></v-btn>
+                     
+                    </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
        
@@ -37,12 +44,35 @@
 </template>
 
 <script>
-
-import axios from 'axios'
-
-
+import deleteProjectUser from '@/components/people/deleteProjectUser.vue';
+import editProjectUser from '@/components/people/editProjectUser.vue'
 export default {
-props: ['users'],
+    props: ['projectId'],
+    components: {
+        deleteProjectUser,
+        editProjectUser
+    },
+    data() {
+        return {
+            userList: []
+        }
+    },
+    created(){
+        console.log("projectId", this.projectId)
+        this.$axios.get (`/projects/${this.projectId}/tasks/u10/completion/details`)
+                .then (response => {
+                console.log("project users List", response.data)
+                this.userList = response.data.data;
+                })
+                .catch (e => {
+                console.log("error", e)
+                })
+    },
+    methods: {
+         fetchUsers() {
+             console.log("projectId", this.projectId)
+        }
+    },
    
 }
 </script>

@@ -89,7 +89,7 @@ export default {
     },
 
     async asyncData({ $axios }) {
-    const { data: projects } = await $axios.$get('/projects?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff')
+    const { data: projects } = await $axios.$get('/projects?userId=u10')
     const { data: users } = await $axios.$get('/users')
     // const { data: tasks } = await $axios.$get(`/projects/${p1}/tasks?userId=u10`)
 
