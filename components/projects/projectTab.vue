@@ -50,7 +50,7 @@
                 md="12"
                 
             >
-        <input v-model="updateProject.projectName" placeholder="Project name" class="formElements">
+        <input v-model="projectName" placeholder="Project name" class="formElements">
             </v-col>
         </v-row>
 
@@ -63,7 +63,7 @@
                 md="12"
                 
             >
-       <input v-model="updateProject.clientId" placeholder="client" class="formElements">
+       <input v-model="clientId" placeholder="client" class="formElements">
             </v-col>
         </v-row>
         <v-row
@@ -75,20 +75,7 @@
                 md="12"
                 
             >
-       <input t v-model="updateProject.projectStatus" placeholder="Project status" class="formElements">
-            </v-col>
-        </v-row>
-
-        <v-row
-            class="mb-12 formRow projectDrawer" 
-            no-gutters
-            >
-                <v-col
-                sm="12"
-                md="12"
-                
-            >
-       <input type="text" onfocusin="(this.type='date')" onfocusout="(this.type='text')" v-model="updateProject.projectStartDate" placeholder="Project start date" class="formElements">
+       <input t v-model="projectStatus" placeholder="Project status" class="formElements">
             </v-col>
         </v-row>
 
@@ -101,13 +88,26 @@
                 md="12"
                 
             >
-       <input type="text" onfocusin="(this.type='date')" onfocusout="(this.type='text')" v-model="updateProject.projectEndDate" placeholder="Project end date" class="formElements">
+       <input type="text" onfocusin="(this.type='date')" onfocusout="(this.type='text')" v-model="projectStartDate" placeholder="Project start date" class="formElements">
+            </v-col>
+        </v-row>
+
+        <v-row
+            class="mb-12 formRow projectDrawer" 
+            no-gutters
+            >
+                <v-col
+                sm="12"
+                md="12"
+                
+            >
+       <input type="text" onfocusin="(this.type='date')" onfocusout="(this.type='text')" v-model="projectEndDate" placeholder="Project end date" class="formElements">
             </v-col>
         </v-row>
 
        
           <div class="submitButton addProjectButton">
-                <v-list-item @click="" 
+                <v-list-item @click="editProject()" 
                 dark >
                     <v-list-item-action>
                         <v-icon size="20" color="">mdi-plus-circle</v-icon>
@@ -257,22 +257,66 @@ export default {
     data () {
       return {
         updateProject: {
-          "projectName": this.project.projectName,
-          "clientId": this.project.clientId,
-          "projectStartDate": this.project.projectStartDate,
-          "projectEndDate": this.project.projectEndDate,
-          "projectStatus": this.project.projectStatus
+          "projectName": "",
+          "clientId": "",
+          "projectStartDate": "",
+          "projectEndDate": "",
+          "projectStatus": ""
         },
         drawer: null,
-        startDate: '',
-        endDate: '',
+        prName: "project",
         items: [
           
         ],
       }
+    }, computed: {
+        projectName: {
+            get(){
+                return this.project.projectName
+            },
+          set(value) {
+            this.updateProject.projectName =  value;
+          }            
+        },
+         clientId: {
+            get(){
+                return this.project.clientId
+            },
+          set(value) {
+            this.updateProject.clientId =  value;
+          }            
+        },
+         projectStartDate: {
+            get(){
+                return this.project.projectStartDate
+            },
+          set(value) {
+            this.updateProject.projectStartDate =  value;
+          }            
+        },
+         projectEndDate: {
+            get(){
+                return this.project.projectEndDate
+            },
+          set(value) {
+            this.updateProject.projectEndDate =  value;
+          }            
+        },
+         projectStatus: {
+            get(){
+                return this.project.projectStatus
+            },
+          set(value) {
+            this.updateProject.projectStatus =  value;
+          }            
+        },
     },
-
     methods: {
+      updateField(){
+        let projectName = this.project.projectName;
+        this.updateProject.projectName =  projectName;
+        return "123";
+      },
       async editProject(){
         console.log("update Project", this.updateProject);
         let response;
