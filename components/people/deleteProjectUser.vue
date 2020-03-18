@@ -4,14 +4,17 @@
       <template v-slot:activator="{ on }">
         <div class="iconBackCircle"> <v-icon v-on="on" size="17" color="#FF6161">mdi-trash-can-outline</v-icon></div>
       </template>
-      <v-card>
-        <v-card-title class="headline">Block User</v-card-title>
+      <v-card >
+        <div class="deletePopupContent">
+        <v-icon class="deletePopup" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
+        <v-card-text class="deletePopupTitle">Block User</v-card-text>
         <v-card-text>You are about to permanantly block  from the project. <span>If you are not sure, you can close this popup</span></v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn class="blockUser" text @click="changeHandler">Block</v-btn>
-          <v-btn class="cancelUser" text @click="dialog = false">Cancel</v-btn>
-        </v-card-actions>
+      
+          
+          <v-btn class="deleteButton" text @click="changeHandler">Block</v-btn>
+          <v-btn class="editButton" text @click="dialog = false">Cancel</v-btn>
+      
+        </div>
       </v-card>
     </v-dialog>
   </v-row>

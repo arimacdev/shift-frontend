@@ -5,28 +5,29 @@
         <div class="iconBackCircle"> <v-icon v-on="on" size="17" color="#0BAFFF">mdi-pencil-outline</v-icon></div>
       </template>
       <v-card>
-        <v-card-title class="headline">Update the Role and Admin for</v-card-title>
-        <v-card-text>
+        <v-card-title class="popup-title">Update the Role and Admin for</v-card-title>
+        <v-card-text class="popup-name">
              {{editUser.assigneeFirstName}} {{editUser.assigneeLastName}}
-             <span><h3>Role</h3></span>
-             <span>
-                 <input type="text" v-model="jobRole">
-             </span>
-             <span>
+         </v-card-text>
+             <v-card-text class="popup-roleTitle">Role</v-card-text>
+        <v-card-actions class="roleField">
+             <input v-model="jobRole" placeholder="Project role" class="formElements">
+        </v-card-actions>
+             
+             <v-card-actions class="roleField">
+             
                 <v-checkbox
                 v-model="adminStatus"
                 hide-details
                 class="shrink mr-2 mt-0"                
                 label="Admin">
                 </v-checkbox>
-             </span>
-             </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn class="editUser" text @click="changeHandler">Edit</v-btn>
-          <v-btn class="cancelUser" text @click="dialog = false">Cancel</v-btn>
+             </v-card-actions>
+            
 
-        </v-card-actions>
+          <v-btn class="deleteButton" text @click="dialog = false">Cancel</v-btn>
+          <v-btn class="editButton" text @click="changeHandler">Save</v-btn>
+
       </v-card>
     </v-dialog>
   </v-row>
