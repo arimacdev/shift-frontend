@@ -134,7 +134,7 @@
       >
          <v-list-item>
              <div class="detailTitle">Project start date : </div>
-             <div class="detailContent">{{ project.projectStartDate }}</div>
+             <div class="detailContent">{{this.getProjectDates(project.projectStartDate, "startDate")}}</div>
           </v-list-item>
       </v-col>
 
@@ -145,7 +145,7 @@
       >
       <v-list-item class="detailList">
             <div class="detailTitle">Project end date : </div>
-             <div class="detailContent">{{ project.projectEndDate }}</div>
+             <div class="detailContent">{{ this.getProjectDates(project.projectEndDate, "endDate")}}</div>
       </v-list-item>
              </v-col>
 
@@ -156,7 +156,7 @@
       >
          <v-list-item>
              <div class="detailTitle">Estimated project timeline : </div>
-             <div class="detailContent">2 weeks</div>
+             <div class="detailContent">{{ this.getProjectTimeLine()}}</div>
           </v-list-item>
       </v-col>
 
@@ -167,7 +167,7 @@
       >
       <v-list-item class="detailList">
             <div class="detailTitle">Actual time for now : </div>
-             <div class="detailContent">1 week 2 days</div>
+             <div class="detailContent">{{ this.getProjectTimeForNow()}}</div>
       </v-list-item>
              </v-col>
             
@@ -238,6 +238,8 @@ export default {
     data () {
       return {
         drawer: null,
+        startDate: '',
+        endDate: '',
         items: [
           { title: 'Home', icon: 'dashboard' },
           { title: 'About', icon: 'question_answer' },
@@ -260,6 +262,59 @@ export default {
           console.log("Error creating project", e);
        }   
        
+      }
+    },
+    methods: {
+      getProjectDates(date, type) {
+          console.log(date);  
+         let stringDate = new Date(date);
+         console.log(stringDate);
+         let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
+         console.log(formateedDate);
+         if(type === "startDate"){
+            this.startDate = formateedDate;
+         } else {
+           this.endDate = formateedDate;
+         }
+         return formateedDate;
+      },
+      getProjectTimeLine(){
+          let startDate = new Date(this.startDate);
+          let endDate = new Date(this.endDate);
+          let days = parseInt((endDate - startDate) / (1000 * 60 * 60 * 24), 10); 
+          let months;
+          let weeks;
+           if(days > 30){
+             months = Math.floor(days/30)
+             days = days % 30;
+             return months + " month(s) " + days + " days"
+           } else if(days>7 && days<30){
+              weeks = Math.floor(days / 7);
+              days = days % 7
+              return weeks + " week(s) " + days + " days"
+           } else{
+             return days + " day(s)"
+           }
+      },
+      getProjectTimeForNow(){
+          let now = new Date();
+          console.log("today", now)
+          let startDate = new Date(this.startDate);
+          console.log("startDate", this.startDate)
+          let days = parseInt((now - startDate) / (1000 * 60 * 60 * 24), 10); 
+           let months;
+          let weeks;
+           if(days > 30){
+             months = Math.floor(days/30)
+             days = days % 30;
+             return months + " month(s) " + days + " days"
+           } else if(days>7 && days<30){
+              weeks = Math.floor(days / 7);
+              days = days % 7
+              return weeks + " week(s) " + days + " days"
+           } else{
+             return days + " day(s)"
+           }
       }
     }
 }
