@@ -43,7 +43,7 @@
                 md="6"
                 
             >
-        <input v-model="userName" placeholder="User Name" class="formElements">
+        <input v-model="userName" disabled placeholder="User Name" class="formElements">
             </v-col>
              <v-col
                 sm="6"
@@ -71,7 +71,7 @@
                 md="6"
                 
             >
-             <input type="confirmPassword" v-model="confirmPassword" placeholder="Confirm Password" class="formElements">
+             <input type="password" v-model="confirmPassword" placeholder="Confirm Password" class="formElements">
             </v-col>
         </v-row>
         <v-row
