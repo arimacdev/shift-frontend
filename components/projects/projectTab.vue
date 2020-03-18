@@ -28,7 +28,7 @@
 
           </v-list-item>
 
-          <!-- ------------------------------- -->
+          <!-- -------------- start side bar ----------------- -->
 
 <v-navigation-drawer
       v-model="drawer"
@@ -88,7 +88,7 @@
                 md="12"
                 
             >
-       <input type="date" v-model="startDate" placeholder="Project start date" class="formElements">
+       <input type="text" onfocusin="(this.type='date')" onfocusout="(this.type='text')" v-model="startDate" placeholder="Project start date" class="formElements">
             </v-col>
         </v-row>
 
@@ -101,12 +101,12 @@
                 md="12"
                 
             >
-       <input type="date" v-model="endDate" placeholder="Project end date" class="formElements">
+       <input type="text" onfocusin="(this.type='date')" onfocusout="(this.type='text')" v-model="endDate" placeholder="Project end date" class="formElements">
             </v-col>
         </v-row>
 
         <div class="submitButton deleteProjectButton">
-                <v-list-item @click="" 
+                <v-list-item @click="deleteData()" 
                 dark >
                     <v-list-item-action>
                         <v-icon size="20" color="">mdi-trash-can-outline</v-icon>
@@ -121,7 +121,7 @@
     </v-navigation-drawer>
 
 
-          <!-- ------------------------------------ -->
+          <!-- --------------- end side bar --------------------- -->
 
           <v-row
             class="mb-12"
@@ -239,8 +239,7 @@ export default {
       return {
         drawer: null,
         items: [
-          { title: 'Home', icon: 'dashboard' },
-          { title: 'About', icon: 'question_answer' },
+          
         ],
       }
     },

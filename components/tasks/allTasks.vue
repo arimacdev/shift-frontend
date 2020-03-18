@@ -5,8 +5,8 @@
        </div>
        <div >
         <div v-for="(task, index) in Alltasks"
-        :key="index" class="taskList">
-            <v-list-item >
+        :key="index" class="taskList" >
+            <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)">
               <v-list-item-action>
               <div class="round">
                 <input type="checkbox" disabled name="a2" value="1" id="checkbox" />
@@ -25,22 +25,34 @@
             </v-list-item>
         </div>
        </div>
+         
     </div>
 </template>
 
 <script>
+import TaskSideBar from '~/components/tasks/taskSideBar'
 
   export default {
     props: ['projectId', 'Alltasks'],
     // name: 'allTasks',
     data() {
       return {
-        projects: ["pr1"]
+        projects: ["pr1"],
+        drawer: null,
+        items: [
+          
+        ],
+        task: ""
       }
     },
     components: {
-      
+      'task-side-bar' : TaskSideBar,
     },
+     methods: {
+    selectTask(task){
+     this.task = task;
+    }
+     }
   }
 </script>
 

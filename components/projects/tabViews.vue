@@ -73,8 +73,7 @@ import ProjectTab from '~/components/projects/projectTab'
       return {
         drawer: null,
         items: [
-          { title: 'Home', icon: 'dashboard' },
-          { title: 'About', icon: 'question_answer' },
+          
         ],
       }
     },

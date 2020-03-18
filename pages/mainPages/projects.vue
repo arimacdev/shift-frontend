@@ -41,7 +41,7 @@
     
 
 <div class="listView overflow-y-auto">
-<v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Presales</v-toolbar-title>
+<v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Pre sales</v-toolbar-title>
 
           <div v-for="(project, index) in projects"
         :key="index"  v-on:click="component='tab-views'">
