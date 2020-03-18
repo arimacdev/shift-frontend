@@ -105,19 +105,21 @@
             </v-col>
         </v-row>
 
-         <div class="submitButton deleteProjectButton">
-                <v-list-item @click="editProject()" 
+       
+          <div class="submitButton addProjectButton">
+                <v-list-item @click="" 
                 dark >
                     <v-list-item-action>
-                        <v-icon size="20" color="">mdi-trash-can-outline</v-icon>
+                        <v-icon size="20" color="">mdi-plus-circle</v-icon>
                     </v-list-item-action>
                     <v-list-item-content class="buttonText">
-                        <v-list-item-title class="bodyWiew">Edit the project</v-list-item-title>
+                        <v-list-item-title class="bodyWiew">Edit project</v-list-item-title>
                     </v-list-item-content>
                     </v-list-item>
                 </div>
-
-        <div class="submitButton deleteProjectButton">
+       
+         
+            <div class="submitButton deleteProjectButton">
                 <v-list-item @click="deleteData()" 
                 dark >
                     <v-list-item-action>
@@ -128,6 +130,11 @@
                     </v-list-item-content>
                     </v-list-item>
                 </div>
+       
+
+         
+
+        
         
         </form>
     </v-navigation-drawer>

@@ -33,10 +33,11 @@
       temporary
       right=""
       height="100vh"
-      width="350px"
+      width="400px"
       class=""
+      color="#E5E5E5"
     >
-    <task-side-bar :task=task />
+    <task-side-bar :task=task :assignee="assignee" />
     
     </v-navigation-drawer>
 
@@ -50,7 +51,6 @@ import TaskSideBar from '~/components/tasks/taskSideBar'
 
   export default {
     props: ['projectId', 'Alltasks'],
-    // name: 'allTasks',
     data() {
       return {
         projects: ["pr1"],
@@ -58,7 +58,8 @@ import TaskSideBar from '~/components/tasks/taskSideBar'
         items: [
           
         ],
-        task: ""
+        task: {},
+        assignee: {}
       }
     },
     components: {
@@ -67,14 +68,19 @@ import TaskSideBar from '~/components/tasks/taskSideBar'
      methods: {
     selectTask(task){
      this.task = task;
+      this.$axios.get (`/users/${this.task.taskAssignee}`)
+      .then (response => {
+       console.log("data", response.data.data)
+       this.assignee = response.data.data;
+      })
+      .catch (e => {
+       console.log("error", e)
+      })
+     
     },
-      getProjectDates(date) {
-          console.log(date);  
-         let stringDate = new Date(date);
-         console.log(stringDate);
-         let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
-         return formateedDate;
-      },
+    
+      
+    
      }
   }
 </script>

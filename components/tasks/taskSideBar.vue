@@ -1,13 +1,149 @@
 <template>
+ <div>
   <div class="taskTitleDiv">
       <div class="taskName-sideBar">
 
-        <div class="round">
+        <v-list-item>
+        <v-list-item-icon>
+             <div class="round">
                 <input type="checkbox" disabled name="a2" value="1" id="checkbox" />
                 <label for="checkbox"></label>
             </div>
-        {{ this.task.taskName }}
+          </v-list-item-icon>
+           <v-list-item-content class="">
+            <v-list-item-title class="taskTitle">{{ this.task.taskName }}</v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-content >
+            <v-icon size="20" color="#FFFFFF" class="editIcon">mdi-pencil-circle</v-icon>
+          </v-list-item-content>
+
+
+           <v-list-item-content class="dropDownList">
+             <select v-model="task.taskStatus" class=" selectUserDropDown">
+              <option disabled value="" >Task status</option>
+                <option key="pending" value="pending" >Pending</option>
+                <option key="implementing" value="implementing">Implementing</option>
+                <option key="qa" value="qa">QA</option>
+                <option key="readyToDeploy" value="readyToDeploy">Ready to Deploy</option>
+                <option key="reOpened" value="reOpened">Re-Opened</option>
+                <option key="deployed" value="deployed">Deployed</option>
+                <option key="closed" value="closed">Closed</option>
+            </select>
+             </v-list-item-content>
+
+         
+      </v-list-item>
+
+      
+       
       </div>
+
+    </div>
+
+    <div class="sideBarContent">
+      
+    <v-list flat>
+      <v-list-item-group class="tabListItems">
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon size="30" color="#02C1D4" >mdi-account-arrow-left-outline</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title class="tabListItemsText">{{ this.assignee.firstName }} {{ this.assignee.lastName }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+
+<v-divider></v-divider>
+
+ 
+      <v-list-group
+        v-for="item in items"
+        :key="item.title"
+        v-model="item.active"
+        :prepend-icon="item.action"
+        no-action
+        class="tabListItems"
+      >
+        <template v-slot:activator>
+          <v-list-item-icon>
+            <v-icon size="30" color="#2EC973" >mdi-package-variant-closed</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title class="tabListItemsText">Sub task</v-list-item-title>
+          </v-list-item-content>
+        </template>
+
+        <v-list-item
+          v-for="subItem in item.items"
+          :key="subItem.title"
+          @click=""
+          dense
+          
+        >
+          <v-list-item-content>
+            <v-list-item-title class="subItem" v-text="subItem.title"></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-group>
+
+   <v-divider></v-divider>
+
+      <v-list-item-group class="tabListItems">
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon size="30" color="#0BAFFF" >mdi-calendar-blank-outline</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title class="tabListItemsText">Set due</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+
+<v-divider></v-divider>
+
+ <v-list-item-group class="tabListItems">
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon size="30" color="#FFC213" >mdi-clock-outline</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title class="tabListItemsText">Remind on</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+
+<v-divider></v-divider>
+
+<v-list-item-group class="tabListItems">
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon size="30" color="#FF6767" >mdi-file-document-edit-outline</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title class="tabListItemsText">Notes</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+
+<v-divider></v-divider>
+
+<v-list-item-group class="tabListItems">
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon size="30" color="#FFAE4F" >mdi-paperclip</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title class="tabListItemsText">Files</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+
+<v-divider></v-divider>
+
+    </v-list>
+    </div>
+   
 
     </div>
 </template>
@@ -15,11 +151,21 @@
 <script>
 
   export default {
-      props: ['task'],
+    
+
+      props: ['task', 'assignee'],
     data() {
       return {
         drawer: null,
         items: [
+        
+          {
+            items: [
+              { title: 'Task 1' },
+              { title: 'Task 2' },
+              { title: 'Task 3' },
+            ],
+          },
           
         ],
       }
