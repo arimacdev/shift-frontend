@@ -17,7 +17,7 @@
       inset
       vertical
     ></v-divider>
-          <div class="tab-clientName">{{ project.client }} </div>
+          <div class="tab-clientName">{{ project.clientId }} </div>
 
           <div class="tab-status">{{ project.projectStatus }}</div>
           <div class="tab-health">Healthy</div>
@@ -50,7 +50,7 @@
                 md="12"
                 
             >
-        <input v-model="projectName" placeholder="Project name" class="formElements">
+        <input v-model="updateProject.projectName" placeholder="Project name" class="formElements">
             </v-col>
         </v-row>
 
@@ -63,7 +63,7 @@
                 md="12"
                 
             >
-       <input v-model="client" placeholder="client" class="formElements">
+       <input v-model="updateProject.clientId" placeholder="client" class="formElements">
             </v-col>
         </v-row>
         <v-row
@@ -75,7 +75,7 @@
                 md="12"
                 
             >
-       <input t v-model="status" placeholder="Project status" class="formElements">
+       <input t v-model="updateProject.projectStatus" placeholder="Project status" class="formElements">
             </v-col>
         </v-row>
 
@@ -88,7 +88,7 @@
                 md="12"
                 
             >
-       <input type="text" onfocusin="(this.type='date')" onfocusout="(this.type='text')" v-model="startDate" placeholder="Project start date" class="formElements">
+       <input type="text" onfocusin="(this.type='date')" onfocusout="(this.type='text')" v-model="updateProject.projectStartDate" placeholder="Project start date" class="formElements">
             </v-col>
         </v-row>
 
@@ -101,9 +101,21 @@
                 md="12"
                 
             >
-       <input type="text" onfocusin="(this.type='date')" onfocusout="(this.type='text')" v-model="endDate" placeholder="Project end date" class="formElements">
+       <input type="text" onfocusin="(this.type='date')" onfocusout="(this.type='text')" v-model="updateProject.projectEndDate" placeholder="Project end date" class="formElements">
             </v-col>
         </v-row>
+
+         <div class="submitButton deleteProjectButton">
+                <v-list-item @click="editProject()" 
+                dark >
+                    <v-list-item-action>
+                        <v-icon size="20" color="">mdi-trash-can-outline</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content class="buttonText">
+                        <v-list-item-title class="bodyWiew">Edit the project</v-list-item-title>
+                    </v-list-item-content>
+                    </v-list-item>
+                </div>
 
         <div class="submitButton deleteProjectButton">
                 <v-list-item @click="deleteData()" 
@@ -237,6 +249,13 @@ export default {
     props: ['project', 'taskCompletion'],
     data () {
       return {
+        updateProject: {
+          "projectName": this.project.projectName,
+          "clientId": this.project.clientId,
+          "projectStartDate": this.project.projectStartDate,
+          "projectEndDate": this.project.projectEndDate,
+          "projectStatus": this.project.projectStatus
+        },
         drawer: null,
         startDate: '',
         endDate: '',
@@ -245,25 +264,41 @@ export default {
         ],
       }
     },
-    methods: {
-     async deleteData(){
-       console.log(this.project.projectId);
-      let response;
-       try{
-        response = await this.$axios.$delete(`/projects/${this.project.projectId}`, {    
-                data: {},
-                headers: {
-                    'user': '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff',
-                }
-        })
-        console.log(response.data);
-       }  catch(e){
-          console.log("Error creating project", e);
-       }   
+    // methods: {
+    //  async deleteData(){
+    //    console.log(this.project.projectId);
+    //   let response;
+    //    try{
+    //     response = await this.$axios.$delete(`/projects/${this.project.projectId}`, {    
+    //             data: {},
+    //             headers: {
+    //                 'user': '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff',
+    //             }
+    //     })
+    //     console.log(response.data);
+    //    }  catch(e){
+    //       console.log("Error creating project", e);
+    //    }   
        
-      }
-    },
+    //   }
+    // },
     methods: {
+      async editProject(){
+        console.log("update Project", this.updateProject);
+        let response;
+       try{
+          response = await this.$axios.$put(`/projects/${this.project.projectId}`, {
+          modifierId: "138bbb3d-02ed-4d72-9a03-7e8cdfe89eff",
+          projectName: this.updateProject.projectName,
+          clientId: this.updateProject.clientId,
+          projectStartDate: this.updateProject.projectStartDate,
+          projectEndDate: this.updateProject.projectEndDate,
+          projectStatus: this.updateProject.projectStatus
+        })
+       } catch(e){
+          console.log("Error updating a project", e);
+       }
+      },
       getProjectDates(date, type) {
           console.log(date);  
          let stringDate = new Date(date);
