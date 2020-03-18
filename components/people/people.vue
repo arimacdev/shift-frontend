@@ -16,12 +16,12 @@
                         <v-icon>mdi-plus-circle</v-icon>
                     </v-list-item>
         </div> -->
-        <addProjectUser :editUser="assignee" :projectId="projectId" :users="users"/>
+        <!-- <addProjectUser :editUser="assignee" :projectId="projectId" :users="users"/> -->
         </div>
         
 
         <div class="peopleList">
-        <div v-for="(assignee, index) in userList"
+        <div v-for="(assignee, index) in people"
         :key="index" class="taskList peopleListItems" >
             <v-list-item class="peopleContainer">
               <v-list-item-avatar>
@@ -54,7 +54,7 @@ import deleteProjectUser from '@/components/people/deleteProjectUser.vue'
 import editProjectUser from '@/components/people/editProjectUser.vue'
 import addProjectUser from '@/components/people/addProjectUser.vue'
 export default {
-    props: ['projectId', 'users'],
+    props: ['projectId', 'users', 'people'],
     components: {
         deleteProjectUser,
         editProjectUser,
@@ -62,20 +62,20 @@ export default {
     },
     data() {
         return {
-            userList: []
+            userList: this.people
         }
     },
-    created(){
-        console.log("projectId", this.projectId)
-        this.$axios.get (`/projects/${this.projectId}/tasks/138bbb3d-02ed-4d72-9a03-7e8cdfe89eff/completion/details`)
-                .then (response => {
-                console.log("project users List", response.data)
-                this.userList = response.data.data;
-                })
-                .catch (e => {
-                console.log("error", e)
-                })
-    },
+    // created(){
+    //     console.log("projectId", this.projectId)
+    //     this.$axios.get (`/projects/${this.projectId}/tasks/138bbb3d-02ed-4d72-9a03-7e8cdfe89eff/completion/details`)
+    //             .then (response => {
+    //             console.log("project users List", response.data)
+    //             this.userList = response.data.data;
+    //             })
+    //             .catch (e => {
+    //             console.log("error", e)
+    //             })
+    // },
     methods: {
          fetchUsers() {
              console.log("projectId", this.projectId)

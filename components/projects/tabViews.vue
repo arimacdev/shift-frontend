@@ -34,7 +34,7 @@
       <v-tab-item>
         <v-divider class="mx-4"></v-divider>
         <v-card flat>
-          <people :projectId="projectId" :users="users"/>
+          <people :projectId="projectId" :people="people"/>
         </v-card>
       </v-tab-item>
       <v-tab-item>
@@ -77,7 +77,7 @@ import ProjectTab from '~/components/projects/projectTab'
         ],
       }
     },
-     props: ['name', 'projectId', 'project', 'users', 'Alltasks', 'MyTasks', 'taskCompletion'],
+     props: ['name', 'projectId', 'project', 'users', 'Alltasks', 'MyTasks', 'taskCompletion', 'people'],
     name: 'tabViews',
     components: {
       'tasks' : Tasks,

@@ -264,6 +264,7 @@ export default {
         ],
       }
     },
+
     methods: {
       async editProject(){
         console.log("update Project", this.updateProject);
