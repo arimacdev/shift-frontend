@@ -34,8 +34,8 @@
       right=""
       height="100vh"
       width="400px"
-      class=""
       color="#E5E5E5"
+      class="sideNav"
     >
     <task-side-bar :task=task :assignee="assignee" />
     
