@@ -17,7 +17,7 @@
                 <v-list-item-title class="body-2">{{ task.taskName}}</v-list-item-title>
               </v-list-item-content>
               <v-list-item-content class="updatedDate">
-                <v-list-item-title class="body-2">Yesterday</v-list-item-title>
+                <v-list-item-title class="body-2">{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
               </v-list-item-content>
                <v-list-item-avatar>
           <v-img src="https://randomuser.me/api/portraits/men/89.jpg"></v-img>
@@ -67,7 +67,14 @@ import TaskSideBar from '~/components/tasks/taskSideBar'
      methods: {
     selectTask(task){
      this.task = task;
-    }
+    },
+      getProjectDates(date) {
+          console.log(date);  
+         let stringDate = new Date(date);
+         console.log(stringDate);
+         let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
+         return formateedDate;
+      },
      }
   }
 </script>
