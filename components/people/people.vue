@@ -17,7 +17,7 @@
                     </v-list-item>
         </div>
         </div>
-        <div class="peopleListWrapper">
+        <!-- <div class="peopleListWrapper">
            <div v-for="(assignee, index) in userList"
         :key="index"  v-on:click="component='tab-views'" class="peopleList">
             <v-list-item  >
@@ -25,20 +25,47 @@
           <v-img src="https://randomuser.me/api/portraits/men/30.jpg"></v-img>
         </v-list-item-avatar>
               <v-list-item-content>
-                <v-list-item-title class="body-2">
+                <v-list-item-title class="">
                     <h4>{{assignee.projectJobRoleName}}</h4>
+                    </v-list-item-title>
                     {{ assignee.assigneeFirstName }} {{assignee.assigneeLastName}}
                     {{ assignee.tasksCompleted + "/" + assignee.totalTasks + " Tasks completed"}}
                      <v-btn small color="primary"><editProjectUser :editUser="assignee" :projectId="projectId" /></v-btn>
                      <v-btn small color="error"><deleteProjectUser :blockedUserId="assignee.assigneeId" :projectId="projectId" /></v-btn>
                      
-                    </v-list-item-title>
+                    
               </v-list-item-content>
             </v-list-item>
        
           </div>
 
+        </div> -->
+
+        <div class="peopleList">
+        <div v-for="(assignee, index) in userList"
+        :key="index" class="taskList peopleListItems" >
+            <v-list-item class="peopleContainer">
+              <v-list-item-avatar>
+          <v-img src="https://randomuser.me/api/portraits/men/89.jpg"></v-img>
+        </v-list-item-avatar>
+              <v-list-item-content>
+                 <v-list-item-title class="projectRole"> {{assignee.projectJobRoleName}} </v-list-item-title >
+                <v-list-item-title class="peopleName">{{ assignee.assigneeFirstName }} {{assignee.assigneeLastName}}</v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-content class="projectProgressSection">
+                <v-list-item-title class="completedStatus">{{ assignee.tasksCompleted + "/" + assignee.totalTasks + " Tasks completed"}}</v-list-item-title>
+                <v-list-item-title class="projectProgress"> <div class="progressBar"></div> </v-list-item-title >
+              </v-list-item-content>
+             <v-list-item-action >
+               <editProjectUser :editUser="assignee" :projectId="projectId" />
+              </v-list-item-action>
+              <v-list-item-action >
+               <deleteProjectUser :blockedUserId="assignee.assigneeId" :projectId="projectId" />
+              </v-list-item-action>
+               
+            </v-list-item>
         </div>
+       </div>
     </div>
 
 </template>

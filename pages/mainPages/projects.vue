@@ -101,7 +101,7 @@ export default {
       projects: projects,
       users:users,
       // tasks: tasks,
-       name: projects[0].projectName
+      //  project: ""
      }
   },
 

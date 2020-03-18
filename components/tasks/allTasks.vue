@@ -25,7 +25,23 @@
             </v-list-item>
         </div>
        </div>
-         
+         <!-- -------------- start side bar ----------------- -->
+
+<v-navigation-drawer
+      v-model="drawer"
+      absolute
+      temporary
+      right=""
+      height="100vh"
+      width="350px"
+      class=""
+    >
+
+    <task-side-bar :task=task />
+    </v-navigation-drawer>
+
+
+          <!-- --------------- end side bar --------------------- -->
     </div>
 </template>
 

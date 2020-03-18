@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="290">
       <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">Delete User</v-btn>
+        <div class="iconBackCircle"> <v-icon v-on="on" size="17" color="#FF6161">mdi-trash-can-outline</v-icon></div>
       </template>
       <v-card>
         <v-card-title class="headline">Block User</v-card-title>

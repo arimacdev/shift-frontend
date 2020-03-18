@@ -310,3 +310,43 @@ margin-top: -60px;
     font-size: 14px;
     height: 100%;
 }
+
+
+/* ----------------- people tab ------------- */
+
+.peopleList{
+    margin-top: 50px !important;
+
+}
+.peopleListItems{
+}
+.peopleContainer{
+    margin-top: 20px;
+    height: 70px;
+}
+.projectRole{
+    color: #080848;
+    font-weight: 500;
+    font-size: 14px;
+}
+.peopleName{
+    color: #B9B9B9;
+    font-size: 13px;
+}
+.completedStatus{
+    color: #7A8B9F;
+    font-size: 14px !important;
+    font-weight: 500;
+}
+.progressBar{
+    width: 350px;
+    height: 11px;
+    background-color: #2EC973;
+    border-radius: 13px;
+}
+.projectProgress{
+    padding-right: 10px;
+}
+.projectProgressSection{
+    margin-left: -40%;
+}
