@@ -2,16 +2,19 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="290">
       <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">Delete User</v-btn>
+        <div class="iconBackCircle"> <v-icon v-on="on" size="17" color="#FF6161">mdi-trash-can-outline</v-icon></div>
       </template>
-      <v-card>
-        <v-card-title class="headline">Block User</v-card-title>
+      <v-card >
+        <div class="deletePopupContent">
+        <v-icon class="deletePopup" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
+        <v-card-text class="deletePopupTitle">Block User</v-card-text>
         <v-card-text>You are about to permanantly block  from the project. <span>If you are not sure, you can close this popup</span></v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn class="blockUser" text @click="changeHandler">Block</v-btn>
-          <v-btn class="cancelUser" text @click="dialog = false">Cancel</v-btn>
-        </v-card-actions>
+      
+          
+          <v-btn class="deleteButtonSpec" text @click="changeHandler">Block</v-btn>
+          <v-btn class="editButton" text @click="dialog = false">Cancel</v-btn>
+      
+        </div>
       </v-card>
     </v-dialog>
   </v-row>

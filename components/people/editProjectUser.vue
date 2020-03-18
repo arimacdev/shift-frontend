@@ -2,31 +2,32 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="350">
       <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">Edit User</v-btn>
+        <div class="iconBackCircle"> <v-icon v-on="on" size="17" color="#0BAFFF">mdi-pencil-outline</v-icon></div>
       </template>
       <v-card>
-        <v-card-title class="headline">Update the Role and Admin for</v-card-title>
-        <v-card-text>
-             <span>{{editUser.assigneeFirstName}} {{editUser.assigneeLastName}}</span>
-             <span><h3>Role</h3></span>
-             <span>
-                 <input type="text" v-model="jobRole">
-             </span>
-             <span>
+        <v-card-title class="popup-title">Update the Role and Admin for</v-card-title>
+        <v-card-text class="popup-name">
+             {{editUser.assigneeFirstName}} {{editUser.assigneeLastName}}
+         </v-card-text>
+             <v-card-text class="popup-roleTitle">Role</v-card-text>
+        <v-card-actions class="roleField">
+             <input v-model="jobRole" placeholder="Project role" class="formElements">
+        </v-card-actions>
+             
+             <v-card-actions class="roleField">
+             
                 <v-checkbox
                 v-model="adminStatus"
                 hide-details
                 class="shrink mr-2 mt-0"                
                 label="Admin">
                 </v-checkbox>
-             </span>
-             </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn class="editUser" text @click="changeHandler">Edit</v-btn>
-          <v-btn class="cancelUser" text @click="dialog = false">Cancel</v-btn>
+             </v-card-actions>
+            
 
-        </v-card-actions>
+          <v-btn class="deleteButton" text @click="dialog = false">Cancel</v-btn>
+          <v-btn class="editButton" text @click="changeHandler">Save</v-btn>
+
       </v-card>
     </v-dialog>
   </v-row>
@@ -64,8 +65,8 @@
        }
        let response;
        try{
-          response = await this.$axios.$put(`/projects/${this.projectId}/users/138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`, {
-          assignerId: 'u1',
+          response = await this.$axios.$put(`/projects/${this.projectId}/users/${this.editUser.userId}`, {
+          assignerId: '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff',
           assigneeJobRole: this.jobRole,
           assigneeProjectRole: roleIdValue
         })

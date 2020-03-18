@@ -310,3 +310,102 @@ margin-top: -60px;
     font-size: 14px;
     height: 100%;
 }
+
+
+/* ----------------- people tab ------------- */
+
+.peopleList{
+    margin-top: 50px !important;
+
+}
+.peopleListItems{
+}
+.peopleContainer{
+    margin-top: 20px;
+    height: 70px;
+}
+.projectRole{
+    color: #080848;
+    font-weight: 500;
+    font-size: 14px;
+}
+.peopleName{
+    color: #B9B9B9;
+    font-size: 13px;
+}
+.completedStatus{
+    color: #7A8B9F;
+    font-size: 14px !important;
+    font-weight: 500;
+}
+.progressBar{
+    width: 350px;
+    height: 11px;
+    background-color: #2EC973;
+    border-radius: 13px;
+}
+.projectProgress{
+    padding-right: 10px;
+}
+.projectProgressSection{
+    margin-left: -40%;
+}
+
+/* --------------- popup -------------- */
+
+.popup-title{
+    color: #080848;
+    font-size: 11px;
+    font-weight: bold;
+}
+.popup-name{
+    color: #7A8B9F;
+    font-weight: 450;
+    font-size: 9px;
+}
+.popup-roleTitle{
+    font-weight: bold !important;
+    font-size: 12px;
+    color: #080848;
+}
+.roleField{
+    margin: 18px !important;
+}
+.popupButtonContainer{
+    margin: 20px !important;
+}
+.editButton{
+    width: 100px;
+    height: 50px;
+    background-color: #2EC973 !important;
+    margin-left: 30px;
+    margin-bottom: 30px;
+}
+.deleteButton{
+    width: 100px;
+    height: 50px;
+    margin-left: 30px;
+    margin-bottom: 30px;
+    background-color: #FF6161 !important;
+}
+.deleteButtonSpec{
+    width: 100px;
+    height: 50px;
+    background-color: #FF6161 !important;
+    margin-bottom: 30px;
+}
+.deletePopupContent{
+    text-align: center;
+}
+.deletePopup{
+    margin-top: 40px;
+}
+.deletePopupTitle{
+    color: #040428;
+    font-weight: bold;
+font-size: 19px;
+}
+.deletePopupTitle{
+    font-weight: bold !important;
+font-size: 19px !important;
+}
