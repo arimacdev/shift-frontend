@@ -1,6 +1,6 @@
 variables:
   DOCKER_DRIVER: overlay
-  CONTAINER_IMAGE: asia.gcr.io/arimac-staging/asia.gcr.io/arimac-staging/pmtool-backend
+  CONTAINER_IMAGE: asia.gcr.io/arimac-staging/asia.gcr.io/arimac-staging/pmtool-frontend
 
 stages:
   - package
