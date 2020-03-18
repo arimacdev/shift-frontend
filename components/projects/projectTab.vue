@@ -299,6 +299,21 @@ export default {
           console.log("Error updating a project", e);
        }
       },
+        async deleteData(){
+       console.log(this.project.projectId);
+      let response;
+       try{
+        response = await this.$axios.$delete(`/projects/${this.project.projectId}`, {    
+                data: {},
+                headers: {
+                    'user': '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff',
+                }
+        })
+        console.log(response.data);
+       }  catch(e){
+          console.log("Error creating project", e);
+       }          
+      },
       getProjectDates(date, type) {
           console.log(date);  
          let stringDate = new Date(date);
