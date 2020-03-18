@@ -316,6 +316,7 @@ margin-top: -60px;
 
 .peopleList{
     margin-top: 50px !important;
+    margin-right: 10px;
 
 }
 .peopleListItems{
@@ -408,4 +409,21 @@ font-size: 19px;
 .deletePopupTitle{
     font-weight: bold !important;
 font-size: 19px !important;
+}
+
+/* -------------- add people to project ------------- */
+
+.addPeople{
+    background-color: #0BAFFF;
+    border-radius: 5px;
+    position: absolute;
+    right: 50px;
+}
+
+.addUserField{
+    margin-top: 60px !important;
+}
+.popupFormElement{
+    margin-top: 20px;
+    margin-left: 10px !important;
 }
