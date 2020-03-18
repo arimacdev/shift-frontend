@@ -16,7 +16,7 @@
                         <v-icon>mdi-plus-circle</v-icon>
                     </v-list-item>
         </div> -->
-        <addProjectUser :editUser="assignee" :projectId="projectId"/>
+        <addProjectUser :editUser="assignee" :projectId="projectId" :users="users"/>
         </div>
         
 
@@ -54,7 +54,7 @@ import deleteProjectUser from '@/components/people/deleteProjectUser.vue'
 import editProjectUser from '@/components/people/editProjectUser.vue'
 import addProjectUser from '@/components/people/addProjectUser.vue'
 export default {
-    props: ['projectId'],
+    props: ['projectId', 'users'],
     components: {
         deleteProjectUser,
         editProjectUser,

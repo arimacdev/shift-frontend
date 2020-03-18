@@ -85,7 +85,8 @@ export default {
         project: {},
         Alltasks: [],
         MyTasks: [],
-        taskCompletion: {}
+        taskCompletion: {},
+        users: []
       }
     },
 
@@ -136,6 +137,15 @@ export default {
       .then (response => {
        console.log("task completion list", response.data)
        this.taskCompletion = response.data.data;
+      })
+      .catch (e => {
+       console.log("error", e)
+      })
+
+        this.$axios.get (`users`)
+      .then (response => {
+       console.log("users data", response.data.data)
+       this.users = response.data.data;
       })
       .catch (e => {
        console.log("error", e)

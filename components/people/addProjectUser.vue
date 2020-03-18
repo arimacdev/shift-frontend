@@ -18,32 +18,23 @@
         </template>
       <v-card>
           <v-card-actions class="">
-            <select v-model="newUser" class="formElements popupFormElement">
-              <option disabled value="" >Task status</option>
-                <option key="pending" value="pending" >Pending</option>
-                <option key="implementing" value="implementing">Implementing</option>
-                <option key="qa" value="qa">QA</option>
-                <option key="readyToDeploy" value="readyToDeploy">Ready to Deploy</option>
-                <option key="reOpened" value="reOpened">Re-Opened</option>
-                <option key="deployed" value="deployed">Deployed</option>
-                <option key="closed" value="closed">Closed</option>
+
+            <select v-model="addUser.assigneeId" class="formElements">
+              <option disabled value="" >Assignee</option>
+              <option v-for="(user, index) in users" :key="index" :value="user.userId">
+                {{user.firstName}} {{user.lastName}}
+              </option>
             </select>
 
-             <!-- <select v-model="task.taskAssignee" class="formElements">
-              <option disabled value="" >Assignee</option>
-              <option v-for="(projectUser, index) in projectUsers" :key="index" :value="projectUser.userId">
-                {{projectUser.firstName}} {{projectUser.lastName}}
-              </option>
-            </select> -->
-</v-card-actions>
-<v-card-actions class="">
-             <input v-model="jobRole" placeholder="Role" class="formElements popupFormElement">
-</v-card-actions>
+          </v-card-actions>
+          <v-card-actions class="">
+             <input v-model="addUser.assigneeJobRole" placeholder="Role" class="formElements popupFormElement">
+            </v-card-actions>
              
              <v-card-actions class="roleField">
              
                 <v-checkbox
-                v-model="adminStatus"
+                v-model="selected"
                 hide-details
                 class="shrink mr-2 mt-0"                
                 label="Admin">
@@ -58,3 +49,50 @@
     </v-dialog>
   </v-row>
 </template>
+
+<script>
+  export default {
+    props: ['users', 'projectId'],
+    data() {
+      return {
+        addUser: {
+          "assignerId": "138bbb3d-02ed-4d72-9a03-7e8cdfe89eff",
+          "assigneeId": "",
+          "assigneeJobRole": "",
+          "assigneeProjectRole": 3 
+        },
+        isShow: false,
+        selected: false,
+        dialog: false
+      }
+    },
+    methods: {
+      async changeHandler() {
+        console.log("add user",this.addUser);
+        let assigneeProjectRoleId = this.adminStatus;
+        console.log(assigneeProjectRoleId);
+        let response;
+          try{
+          response = await this.$axios.$post(`/projects/${this.projectId}/users`, 
+          this.addUser
+        )
+       } catch(e){
+          console.log("Error adding a Task", e);
+       }   
+      }
+    },
+     computed: {
+        adminStatus: function() {
+              if(this.selected){
+                return 2;
+              } else {
+                return 3;
+              }
+        }
+    },
+  }
+</script>
+
+<style scoped>
+
+</style>
