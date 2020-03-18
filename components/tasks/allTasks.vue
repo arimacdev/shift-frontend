@@ -36,8 +36,8 @@
       width="350px"
       class=""
     >
-
     <task-side-bar :task=task />
+    
     </v-navigation-drawer>
 
 

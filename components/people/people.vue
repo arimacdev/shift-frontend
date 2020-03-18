@@ -4,7 +4,7 @@
             <div class="titleDiv">
             <p class="catTitle" @click="fetchUsers">Admins</p>
             </div>
-            <div class="addPeopleButton addPeople">
+            <!-- <div class="addPeopleButton addPeople">
                 <v-list-item v-on:click="component='add-task'" 
                 dark >
                     <v-list-item-action>
@@ -15,31 +15,10 @@
                     </v-list-item-content>
                         <v-icon>mdi-plus-circle</v-icon>
                     </v-list-item>
-        </div>
-        </div>
-        <!-- <div class="peopleListWrapper">
-           <div v-for="(assignee, index) in userList"
-        :key="index"  v-on:click="component='tab-views'" class="peopleList">
-            <v-list-item  >
-              <v-list-item-avatar>
-          <v-img src="https://randomuser.me/api/portraits/men/30.jpg"></v-img>
-        </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title class="">
-                    <h4>{{assignee.projectJobRoleName}}</h4>
-                    </v-list-item-title>
-                    {{ assignee.assigneeFirstName }} {{assignee.assigneeLastName}}
-                    {{ assignee.tasksCompleted + "/" + assignee.totalTasks + " Tasks completed"}}
-                     <v-btn small color="primary"><editProjectUser :editUser="assignee" :projectId="projectId" /></v-btn>
-                     <v-btn small color="error"><deleteProjectUser :blockedUserId="assignee.assigneeId" :projectId="projectId" /></v-btn>
-                     
-                    
-              </v-list-item-content>
-            </v-list-item>
-       
-          </div>
-
         </div> -->
+        <addProjectUser :editUser="assignee" :projectId="projectId"/>
+        </div>
+        
 
         <div class="peopleList">
         <div v-for="(assignee, index) in userList"
@@ -71,13 +50,15 @@
 </template>
 
 <script>
-import deleteProjectUser from '@/components/people/deleteProjectUser.vue';
+import deleteProjectUser from '@/components/people/deleteProjectUser.vue'
 import editProjectUser from '@/components/people/editProjectUser.vue'
+import addProjectUser from '@/components/people/addProjectUser.vue'
 export default {
     props: ['projectId'],
     components: {
         deleteProjectUser,
-        editProjectUser
+        editProjectUser,
+        addProjectUser
     },
     data() {
         return {
