@@ -377,15 +377,21 @@ margin-top: -60px;
 .editButton{
     width: 100px;
     height: 50px;
-    background-color: #FF6161 !important;
+    background-color: #2EC973 !important;
     margin-left: 30px;
     margin-bottom: 30px;
 }
 .deleteButton{
     width: 100px;
     height: 50px;
-    background-color: #2EC973 !important;
     margin-left: 30px;
+    margin-bottom: 30px;
+    background-color: #FF6161 !important;
+}
+.deleteButtonSpec{
+    width: 100px;
+    height: 50px;
+    background-color: #FF6161 !important;
     margin-bottom: 30px;
 }
 .deletePopupContent{
@@ -398,4 +404,8 @@ margin-top: -60px;
     color: #040428;
     font-weight: bold;
 font-size: 19px;
+}
+.deletePopupTitle{
+    font-weight: bold !important;
+font-size: 19px !important;
 }
