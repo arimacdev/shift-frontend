@@ -42,6 +42,106 @@
 
     <div class="sideBarContent">
       
+    <v-list flat>
+      <v-list-item-group class="tabListItems">
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon size="30" color="#02C1D4" >mdi-account-arrow-left-outline</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title class="tabListItemsText">{{ this.assignee.firstName }} {{ this.assignee.lastName }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+
+<v-divider></v-divider>
+
+ 
+      <v-list-group
+        v-for="item in items"
+        :key="item.title"
+        v-model="item.active"
+        :prepend-icon="item.action"
+        no-action
+        class="tabListItems"
+      >
+        <template v-slot:activator>
+          <v-list-item-icon>
+            <v-icon size="30" color="#2EC973" >mdi-package-variant-closed</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title class="tabListItemsText">Sub task</v-list-item-title>
+          </v-list-item-content>
+        </template>
+
+        <v-list-item
+          v-for="subItem in item.items"
+          :key="subItem.title"
+          @click=""
+          dense
+          
+        >
+          <v-list-item-content>
+            <v-list-item-title class="subItem" v-text="subItem.title"></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-group>
+
+   <v-divider></v-divider>
+
+      <v-list-item-group class="tabListItems">
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon size="30" color="#0BAFFF" >mdi-calendar-blank-outline</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title class="tabListItemsText">Set due</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+
+<v-divider></v-divider>
+
+ <v-list-item-group class="tabListItems">
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon size="30" color="#FFC213" >mdi-clock-outline</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title class="tabListItemsText">Remind on</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+
+<v-divider></v-divider>
+
+<v-list-item-group class="tabListItems">
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon size="30" color="#FF6767" >mdi-file-document-edit-outline</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title class="tabListItemsText">Notes</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+
+<v-divider></v-divider>
+
+<v-list-item-group class="tabListItems">
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon size="30" color="#FFAE4F" >mdi-paperclip</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title class="tabListItemsText">Files</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+
+<v-divider></v-divider>
+
+    </v-list>
     </div>
    
 
@@ -51,22 +151,21 @@
 <script>
 
   export default {
-    async asyncData({ $axios }) {
-    const { data: users } = await $axios.$get(`/users/${this.task.taskAssignee}`)
     
-    console.log("users list", users)
-    
-    return { 
-      projects: projects,
-      users:users,
-     }
-  },
 
       props: ['task', 'assignee'],
     data() {
       return {
         drawer: null,
         items: [
+        
+          {
+            items: [
+              { title: 'Task 1' },
+              { title: 'Task 2' },
+              { title: 'Task 3' },
+            ],
+          },
           
         ],
       }

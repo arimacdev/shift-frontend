@@ -457,3 +457,23 @@ font-size: 19px !important;
     margin-top: 20px;
     margin-left: 10px !important;
 }
+
+/* -------------- tab content -------------- */
+
+.tabListItems{
+    margin-left: 0px;
+}
+.tabListItemsText{
+    font-weight: 500;
+    font-size: 16px;
+}
+.tabListItemsSubTask{
+    color: #576377 !important;
+}
+
+.smallCheck{
+    margin-right: -20px !important;
+}
+.subItem{
+    font-size: 12px !important;
+}

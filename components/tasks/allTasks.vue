@@ -35,6 +35,7 @@
       height="100vh"
       width="400px"
       class=""
+      color="#E5E5E5"
     >
     <task-side-bar :task=task :assignee="assignee" />
     
@@ -57,7 +58,8 @@ import TaskSideBar from '~/components/tasks/taskSideBar'
         items: [
           
         ],
-        task: {}
+        task: {},
+        assignee: {}
       }
     },
     components: {
