@@ -184,7 +184,7 @@
         
         class="projectBox due"
       >
-      <p class="projectBoxNumber">10</p>
+      <p class="projectBoxNumber">{{taskCompletion.tasksDueToday}}</p>
       <p class="projectBoxtext">Due today</p>
       <v-icon size="30" color="white">mdi-calendar-blank</v-icon>
              </v-col>
@@ -192,8 +192,8 @@
        
         class="projectBox overDue"
       >
-        <p class="projectBoxNumber">12</p>
-      <p class="projectBoxtext">Due today</p>
+        <p class="projectBoxNumber">{{taskCompletion.tasksOverDue}}</p>
+      <p class="projectBoxtext">Overdue</p>
       <v-icon size="30" color="white">mdi-alert-octagon-outline</v-icon>
       </v-col>
 
@@ -201,8 +201,8 @@
         
         class="projectBox left"
       >
-      <p class="projectBoxNumber">236</p>
-      <p class="projectBoxtext">Due today</p>
+      <p class="projectBoxNumber">{{taskCompletion.tasksLeft}}</p>
+      <p class="projectBoxtext">Left</p>
       <v-icon size="30" color="white">mdi-clock-outline</v-icon>
              </v-col>
 
@@ -210,8 +210,8 @@
         
         class="projectBox assign"
       >
-         <p class="projectBoxNumber">12</p>
-      <p class="projectBoxtext">Due today</p>
+         <p class="projectBoxNumber">{{taskCompletion.tasksAssigned}}</p>
+      <p class="projectBoxtext">Assigned to you</p>
       <v-icon size="30" color="white">mdi-account-outline</v-icon>
       </v-col>
 
@@ -219,8 +219,8 @@
         
         class="projectBox completed"
       >
-      <p class="projectBoxNumber">100</p>
-      <p class="projectBoxtext">Due today</p>
+      <p class="projectBoxNumber">{{taskCompletion.tasksCompleted}}</p>
+      <p class="projectBoxtext">Completed</p>
       <v-icon size="30" color="white">mdi-check-circle-outline</v-icon>
              </v-col>
             
@@ -234,7 +234,7 @@
 </template>
 <script>
 export default {
-    props: ['project'],
+    props: ['project', 'taskCompletion'],
     data () {
       return {
         drawer: null,
