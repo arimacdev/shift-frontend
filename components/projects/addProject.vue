@@ -29,7 +29,7 @@
                 md="6"
                 
             >
-            <input v-model="client" placeholder="client" class="formElements">
+            <input v-model="client" placeholder="Client" class="formElements">
             </v-col>
         </v-row>
 
@@ -43,14 +43,14 @@
                 md="6"
                 
             >
-        <input type="date" v-model="startDate" onfocus="(this.type='date')" placeholder="Project start date" class="formElements">
+        <input type="text" v-model="startDate" onfocusin="(this.type='date')" onfocusout="(this.type='text')" placeholder="Project start date" class="formElements">
             </v-col>
              <v-col
                 sm="6"
                 md="6"
                 
             >
-            <input type="date" v-model="endDate" placeholder="Project end date" class="formElements">
+            <input type="text" onfocusin="(this.type='date')" onfocusout="(this.type='text')" v-model="endDate" placeholder="Project end date" class="formElements">
             </v-col>
         </v-row>
 
