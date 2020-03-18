@@ -16,10 +16,10 @@
                     </v-list-item>
         </div>
         </template>
-      <v-card>
-          <v-card-actions class="">
+      <v-card class="addUserPopup">
+          <v-card-actions >
 
-            <select v-model="addUser.assigneeId" class="formElements">
+            <select v-model="addUser.assigneeId" class="formElements popupFormElement">
               <option disabled value="" >Assignee</option>
               <option v-for="(user, index) in users" :key="index" :value="user.userId">
                 {{user.firstName}} {{user.lastName}}

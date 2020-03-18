@@ -16,7 +16,7 @@
                         <v-icon>mdi-plus-circle</v-icon>
                     </v-list-item>
         </div> -->
-        <!-- <addProjectUser :editUser="assignee" :projectId="projectId" :users="users"/> -->
+        <addProjectUser :editUser="assignee" :projectId="projectId" :users="users"/>
         </div>
         
 

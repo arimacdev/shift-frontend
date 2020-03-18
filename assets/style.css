@@ -441,6 +441,9 @@ font-size: 19px;
 font-size: 19px !important;
 }
 
+.addUserPopup{
+    padding-top: -50px !important;
+}
 /* -------------- add people to project ------------- */
 
 .addPeople{
