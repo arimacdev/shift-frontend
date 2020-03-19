@@ -33,7 +33,26 @@
               </v-list-item-content>
               <v-list-item-content class="projectProgressSection">
                 <v-list-item-title class="completedStatus">{{ assignee.tasksCompleted + "/" + assignee.totalTasks + " Tasks completed"}}</v-list-item-title>
-                <v-list-item-title class="projectProgress"> <div class="progressBar"></div> </v-list-item-title >
+                <v-list-item-title class="projectProgress"> 
+                    <!-- <div class="progressBar"></div> -->
+                    <div class="progressLine"> 
+
+                    <v-progress-linear
+                        v-model="skill"
+                        color="#2EC973"
+                        height="13"
+                        rounded
+                        reactive
+                        >
+                        <template v-slot="{ value }">
+                            <!-- <span class="presentageValue">{{ Math.ceil(value) }}%</span> -->
+                            <span class="presentageValue">{{ Math.ceil(value) }}%</span>
+                        </template>
+                        </v-progress-linear>
+
+                        </div>
+
+                    </v-list-item-title >
               </v-list-item-content>
              <v-list-item-action >
                <editProjectUser :editUser="assignee" :projectId="projectId" />
@@ -62,7 +81,8 @@ export default {
     },
     data() {
         return {
-            userList: this.people
+            userList: this.people,
+            skill: 30,
         }
     },
     // created(){
