@@ -133,11 +133,11 @@ export default {
        } 
         
 
-        console.log(response.message);
         this.projectName = ''
         this.client = ''
         this.startDate = ''
         this.endDate = ''
+        this.userName = ''
       }
     }
 }
