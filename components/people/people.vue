@@ -73,7 +73,7 @@ import deleteProjectUser from '@/components/people/deleteProjectUser.vue'
 import editProjectUser from '@/components/people/editProjectUser.vue'
 import addProjectUser from '@/components/people/addProjectUser.vue'
 export default {
-    props: ['projectId', 'users', 'people'],
+    props: ['projectId',  'people', 'users'],
     components: {
         deleteProjectUser,
         editProjectUser,
@@ -81,7 +81,7 @@ export default {
     },
     data() {
         return {
-            userList: this.people,
+            // userList: this.people,
             skill: 30,
         }
     },

@@ -34,7 +34,7 @@
       <v-tab-item>
         <v-divider class="mx-4"></v-divider>
         <v-card flat>
-          <people :projectId="projectId" :people="people"/>
+          <people :projectId="projectId" :people="people" :users="users"/>
         </v-card>
       </v-tab-item>
       <v-tab-item>

@@ -70,7 +70,7 @@
                 md="6"
                 
             >
-            <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='text')" placeholder="Drop files to attach, or browse" id="files" ref="files" multiple v-on:change="handleFileUploads()" class="formElements fileUpload"/>
+            <input type="file" placeholder="Drop files to attach, or browse" id="file" ref="file" v-on:change="handleFileUploads()" class="formElements fileUpload"/>
             </v-col>
         </v-row>
         <v-row
@@ -124,7 +124,7 @@ import axios from 'axios'
 
     data() {
       return {
-         files: '',
+         file: '',
          task: {
             taskName: '',
             taskAssignee: '',
@@ -140,7 +140,7 @@ import axios from 'axios'
         this.$refs.observer.validate()
       },
       handleFileUploads(e){
-           this.file = this.$refs.files.files[0];
+         this.file = this.$refs.file.files[0];
       },
 
      async addTask(){     

@@ -65,7 +65,8 @@
        }
        let response;
        try{
-          response = await this.$axios.$put(`/projects/${this.projectId}/users/${this.editUser.userId}`, {
+         console.log("edituser",this.editUser)
+          response = await this.$axios.$put(`/projects/${this.projectId}/users/${this.editUser.assigneeId}`, {
           assignerId: '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff',
           assigneeJobRole: this.jobRole,
           assigneeProjectRole: roleIdValue
