@@ -98,7 +98,7 @@
             <v-icon size="30" color="#0BAFFF" >mdi-calendar-blank-outline</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-          <v-list-item-title class="tabListItemsText">Due date</v-list-item-title>
+          <v-list-item-title class="tabListItemsText sideBarDateText">Due date</v-list-item-title>
            </v-list-item-content>
           <v-list-item-content>
             <input class="sideBarDate " placeholder="Due date" onfocusin="(this.type='date')" onfocusout="(this.type='text')" type="text" v-model="task.taskDueDateAt">
@@ -114,7 +114,7 @@
             <v-icon size="30" color="#FFC213" >mdi-clock-outline</v-icon>
           </v-list-item-icon>
            <v-list-item-content>
-          <v-list-item-title class="tabListItemsText">Remind on</v-list-item-title>
+          <v-list-item-title class="tabListItemsText sideBarDateText">Remind on</v-list-item-title>
            </v-list-item-content>
           <v-list-item-content>
              <input class="sideBarDate " placeholder="Due date" onfocusin="(this.type='date')" onfocusout="(this.type='text')" type="text" v-model="task.taskReminderAt">

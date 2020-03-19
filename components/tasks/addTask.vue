@@ -1,6 +1,6 @@
 <template>
     <div class="taskFormDiv">
-        <form  @submit.prevent="handleSubmit">
+        <form>
         
         <v-row
             class="mb-12 formRow" 
@@ -11,10 +11,7 @@
                 md="6"
                 
             >
-        <input v-model.trim="$v.taskName.$model"  placeholder="Task name" class="formElements">
-         <div v-if="$v.taskName.$error && !$v.taskName.required" class="errorText"> Task name is required</div>
-       <div v-if="$v.taskName.$error && !$v.taskName.maxLength" class="errorText"> Cannot use more than 50 characters</div>
-        
+        <input v-model="task.taskName" placeholder="Task name" class="formElements">
             </v-col>
              <v-col
                 sm="6"
@@ -102,7 +99,7 @@
             md="6"
             class="buttonGrid"
       >
-                <button class="addTaskButton">
+                <div class="addTaskButton">
                 <v-list-item @click="addTask()" 
                 dark >
                     
@@ -110,7 +107,7 @@
                         <v-list-item-title class="bodyWiew">Submit</v-list-item-title>
                     </v-list-item-content>
                     </v-list-item>
-        </button>
+        </div>
             </v-col>
         </v-row>
         </form>
@@ -120,8 +117,6 @@
 <script>
  
 import axios from 'axios'
-import { numeric, required, between, minLength, maxLength } from 'vuelidate/lib/validators'
-
   export default {
       props: ['projectId', 'projectUsers'],
     components: {
@@ -137,34 +132,15 @@ import { numeric, required, between, minLength, maxLength } from 'vuelidate/lib/
             taskDueDate:'',
             taskRemindOnDate:'',
             taskNotes: ''
-      },
-            taskName: '',
-            taskAssignee: '',
-            taskStatus: '',
-            taskDueDate: '',
-            taskRemindOnDate: '',
-            taskNotes: ''
       }
-    },validations: {
-            taskName: {
-            required,
-            maxLength: maxLength(50)
-            },
-        },
+      }
+    },
     methods: {
       submit () {
         this.$refs.observer.validate()
       },
       handleFileUploads(e){
          this.file = this.$refs.file.files[0];
-      },
-      handleSubmit(e) {
-                this.submitted = true;
-                // stop here if form is invalid
-                this.$v.$touch();
-                if (this.$v.$invalid) {
-                    return;
-                }
       },
 
      async addTask(){     
@@ -180,10 +156,8 @@ import { numeric, required, between, minLength, maxLength } from 'vuelidate/lib/
           taskRemindOnDate: this.task.taskRemindOnDate,
           notes: this.task.taskNotes
         })
-        alert("Task added successfully!")
        } catch(e){
           console.log("Error adding a Task", e);
-          alert("Error creating task!")
        }       
         console.log("Task adding successful", response);
         let taskId= response.data.taskId;
