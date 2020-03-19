@@ -32,7 +32,7 @@
       absolute
       temporary
       right=""
-      height="100vh"
+      height="85vh"
       width="400px"
       class=""
       color="#E5E5E5"
