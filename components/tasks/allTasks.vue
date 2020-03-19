@@ -37,7 +37,7 @@
       class=""
       color="#E5E5E5"
     >
-    <task-side-bar :task=task :assignee="assignee" :projectId="projectId" :subTasks="subTasks"/>
+    <task-side-bar :task=task :assignee="assignee" :projectId="projectId" :subTasks="subTasks" :taskFiles="taskFiles"/>
     
     </v-navigation-drawer>
 
@@ -60,6 +60,7 @@ import TaskSideBar from '~/components/tasks/taskSideBar'
         ],
         task: {},
         subTasks: [],
+        taskFiles: [],
         assignee: {}
       }
     },
@@ -79,7 +80,16 @@ import TaskSideBar from '~/components/tasks/taskSideBar'
        try {
             subTaskResponse = await this.$axios.$get(`/projects/${this.projectId}/tasks/${task.taskId}/subtask?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`) 
             console.log("subtasks--->", subTaskResponse.data)     ;
-            this.subTasks = subTaskResponse.data;   
+            this.subTasks = subTaskResponse.data;  
+      //get files related to task
+      try {
+      taskFiles = await this.$axios.$get(`/projects/${this.projectId}/tasks/${task.taskId}/files`) 
+      console.log("files--->", taskFiles.data)     ;
+      this.taskFiles = taskFiles.data;   
+       } catch (error) {
+          console.log("Error fetching data", error);
+       }         
+            
        } catch (error) {
           console.log("Error fetching data", error);
        }       

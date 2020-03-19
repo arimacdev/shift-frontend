@@ -167,7 +167,7 @@
 <script>
 
   export default {
-    props: ['task', 'assignee', 'projectId', 'subTasks'],
+    props: ['task', 'assignee', 'projectId', 'subTasks', 'taskFiles'],
     data() {
       return {
         drawer: null,
