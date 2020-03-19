@@ -344,6 +344,11 @@ font-size: 14px;
     margin-left: -60px !important;
 }
 
+.sideBarDate{
+    background: #E5E5E5 !important;
+    outline: none;
+
+}
 
 /* ----------------- people tab ------------- */
 
