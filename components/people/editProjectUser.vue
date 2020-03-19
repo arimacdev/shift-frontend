@@ -26,7 +26,7 @@
             
 
           <v-btn class="deleteButton" text @click="dialog = false">Cancel</v-btn>
-          <v-btn class="editButton" text @click="changeHandler">Save</v-btn>
+          <v-btn class="editButtonSpec" text @click="changeHandler">Save</v-btn>
 
       </v-card>
     </v-dialog>

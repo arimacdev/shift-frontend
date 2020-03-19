@@ -11,8 +11,8 @@
         <v-card-text>You are about to permanantly block  from the project. <span>If you are not sure, you can close this popup</span></v-card-text>
       
           
-          <v-btn class="deleteButtonSpec" text @click="changeHandler">Block</v-btn>
           <v-btn class="editButton" text @click="dialog = false">Cancel</v-btn>
+          <v-btn class="deleteButtonSpec" text @click="changeHandler">Block</v-btn>
       
         </div>
       </v-card>

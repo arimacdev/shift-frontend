@@ -409,8 +409,14 @@ font-size: 14px;
     width: 100px;
     height: 50px;
     background-color: #2EC973 !important;
-    margin-left: 30px;
     margin-bottom: 30px;
+}
+.editButtonSpec{
+    width: 100px;
+    height: 50px;
+    background-color: #2EC973 !important;
+    margin-bottom: 30px;
+    margin-left: 30px;
 }
 .deleteButton{
     width: 100px;
@@ -422,6 +428,7 @@ font-size: 14px;
 .deleteButtonSpec{
     width: 100px;
     height: 50px;
+    margin-left: 30px;
     background-color: #FF6161 !important;
     margin-bottom: 30px;
 }
@@ -452,6 +459,9 @@ font-size: 19px !important;
     position: absolute;
     right: 50px;
 }
+.addPeopleButton{
+    width: 200px;
+}
 
 .addUserField{
     margin-top: 60px !important;
@@ -479,4 +489,12 @@ font-size: 19px !important;
 }
 .subItem{
     font-size: 12px !important;
+}
+.progressLine{
+    width: 350px;
+    background-color: #FF6161;
+    border-radius: 13px;
+}
+.presentageValue{
+    font-size: 12px;
 }
