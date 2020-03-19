@@ -300,7 +300,7 @@ margin-top: -60px;
 .deleteProjectButton{
     background-color: #FF6161 !important;
     width: 250px;
-    margin-top: 100px;
+    margin-top: 70px;
     position: absolute;
     right: 30px;
 }
@@ -308,7 +308,6 @@ margin-top: -60px;
     position: absolute;
     right: 30px;
     width: 250px;
-    bottom: 200px !important;
 }
 .taskTitleDiv{
     width: 100%;

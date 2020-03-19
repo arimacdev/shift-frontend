@@ -24,6 +24,8 @@
             >
         <input v-model.trim="$v.projectName.$model" placeholder="Project name" class="formElements">
        <div v-if="$v.projectName.$error && !$v.projectName.required" class="errorText"> Project name is required</div>
+       <div v-if="$v.projectName.$error && !$v.projectName.maxLength" class="errorText"> Cannot use more than 50 characters</div>
+           
             </v-col>
              <v-col
                 sm="6"
@@ -68,7 +70,7 @@
                 md="6"
                 
             >
-        <input v-model="startDate" disabled placeholder="Estimated project timeline" class="formElements">
+        <input v-model="projectTimeLine" disabled placeholder="Estimated project timeline" class="formElements">
             </v-col>
              <v-col
                 sm="6"
@@ -112,7 +114,7 @@
 
 <script>
 import axios from 'axios'
-import { numeric, required, between, minLength } from 'vuelidate/lib/validators'
+import { numeric, required, between, minLength, maxLength } from 'vuelidate/lib/validators'
 
 export default {
     
@@ -127,6 +129,11 @@ export default {
           projectStartDate: this.startDate,
           projectEndDate: this.endDate,
         })
+            this.projectName = ''
+            this.client = ''
+            this.startDate = ''
+            this.endDate = ''
+            this.projectOwner = ''
           alert("Project created successfully!")
        }  catch(e){
           console.log("Error creating project", e);
@@ -141,7 +148,6 @@ export default {
                 if (this.$v.$invalid) {
                     return;
                 }
-      
       }
     },
     data() {
@@ -156,6 +162,7 @@ export default {
         validations: {
             projectName: {
             required,
+            maxLength: maxLength(50)
             },
             client: {
             required,
@@ -166,6 +173,34 @@ export default {
             endDate: {
             required,
             },
-        }
+        },
+        computed: {
+            projectTimeLine : {
+               get(){
+            if(this.startDate === '' || this.endDate === ''){
+                return ""
+            }
+            let startDate = new Date(this.startDate);
+            let endDate = new Date(this.endDate);
+            let days = parseInt((endDate - startDate) / (1000 * 60 * 60 * 24), 10); 
+            let months;
+            let weeks;
+           if(days > 30){
+             months = Math.floor(days/30)
+             days = days % 30;
+             return months + " month(s) " + days + " days"
+           } else if(days>7 && days<30){
+              weeks = Math.floor(days / 7);
+              days = days % 7
+              return weeks + " week(s) " + days + " days"
+           } else{
+             return days + " day(s)"
+           }
+            },
+               set(){
+
+               }
+            }
+        },
 }
 </script>

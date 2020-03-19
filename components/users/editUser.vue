@@ -1,6 +1,6 @@
 <template>
     <div class="formDiv usersForms">
-        <form>
+        <form @submit.prevent="handleSubmit">
         <v-row
             class="mb-12 formRow"
             no-gutters
@@ -64,15 +64,19 @@
                 md="6"
                 
             >
-         <input type="password" v-model="password" placeholder="Password" class="formElements">
+        <input type="password" v-model.trim="$v.password.$model" placeholder="Password" class="formElements">
+         <div v-if="$v.password.$error && !$v.password.required" class="errorText"> Password is required</div>
+        <div v-if="$v.password.$error && !$v.password.minLength" class="errorText"> Password must be at least 6 characters</div>
+           
             </v-col>
              <v-col
                 sm="6"
                 md="6"
                 
             >
-             <input type="password" v-model="confirmPassword" placeholder="Confirm Password" class="formElements">
-            </v-col>
+             <input type="password" v-model.trim="$v.confirmPassword.$model" placeholder="Confirm Password" class="formElements">
+        <div v-if="$v.confirmPassword.$error && !$v.confirmPassword.sameAs" class="errorText"> Passwords must be identical</div>
+       </v-col>
         </v-row>
         <v-row
             class="mb-12 formRow"
@@ -88,7 +92,7 @@
             md="6"
             class="buttonGrid"
       >
-                <div class="submitButton editUserSubmit">
+                <button class="submitButton editUserSubmit">
                 <v-list-item @click="postData()" 
                 dark >
                     <v-list-item-action>
@@ -99,7 +103,7 @@
                     </v-list-item-content>
                         <v-icon>mdi-plus-circle</v-icon>
                     </v-list-item>
-                </div>
+                </button>
             </v-col>
         </v-row>
         </form>
@@ -108,6 +112,7 @@
 
 <script>
 import axios from 'axios'
+import { required, minLength, maxLength, email, sameAs} from 'vuelidate/lib/validators'
 
 export default {
          props: ['userData'],
@@ -127,18 +132,41 @@ export default {
           lastName: this.userData.lastName,
           email: this.userData.email,
         })
+
+        this.firstName = ''
+        this.lastName = ''
+        this.email = ''
+        alert("User updated successfully!")
       }
        catch(e){
           console.log("Error edit user", e);
+          alert("Error updating user!")
        } 
-        
-
-        console.log(response.message);
-        this.projectName = ''
-        this.client = ''
-        this.startDate = ''
-        this.endDate = ''
+      },
+      handleSubmit(e) {
+                this.submitted = true;
+                // stop here if form is invalid
+                this.$v.$touch();
+                if (this.$v.$invalid) {
+                    return;
+                }
+      
       }
+    },
+    data(){
+        return{
+             password: '',
+            confirmPassword: ''
+        }
+    },
+    validations: {
+        password: {
+            required,
+            minLength: minLength(6)
+        },
+        confirmPassword: {
+            sameAsPassword: sameAs('password')
+        }
     }
 }
 </script>
