@@ -4,18 +4,7 @@
             <div class="titleDiv">
             <p class="catTitle" @click="fetchUsers">Admins</p>
             </div>
-            <!-- <div class="addPeopleButton addPeople">
-                <v-list-item v-on:click="component='add-task'" 
-                dark >
-                    <v-list-item-action>
-                        <v-icon size="20" color="">mdi-calendar-blank-multiple</v-icon>
-                    </v-list-item-action>
-                    <v-list-item-content class="buttonText">
-                        <v-list-item-title class="bodyWiew">Add new</v-list-item-title>
-                    </v-list-item-content>
-                        <v-icon>mdi-plus-circle</v-icon>
-                    </v-list-item>
-        </div> -->
+        
         <addProjectUser :editUser="assignee" :projectId="projectId" :users="users"/>
         </div>
         
@@ -45,7 +34,6 @@
                         reactive
                         >
                         <template v-slot="{ value }">
-                            <!-- <span class="presentageValue">{{ Math.ceil(value) }}%</span> -->
                             <span class="presentageValue">{{ Math.ceil(value) }}%</span>
                         </template>
                         </v-progress-linear>
@@ -83,6 +71,7 @@ export default {
         return {
             // userList: this.people,
             skill: 30,
+            progress: this.progress
         }
     },
     // created(){
@@ -99,7 +88,7 @@ export default {
     methods: {
          fetchUsers() {
              console.log("projectId", this.projectId)
-        }
+        },
     },
    
 }
