@@ -343,6 +343,9 @@ font-size: 14px;
 .editIcon{
     margin-left: -60px !important;
 }
+.subTaskAdd{
+    color: #0BAFFF !important;
+}
 
 
 /* ----------------- people tab ------------- */

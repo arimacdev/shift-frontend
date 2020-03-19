@@ -83,6 +83,16 @@
                     <v-list-item-content>
                       <v-list-item-title class="subTaskListName">{{ subtask.subtaskName}}</v-list-item-title>
                     </v-list-item-content>
+                    
+                </v-list-item>
+
+                <v-list-item >
+                      <v-list-item-icon>
+            <v-icon color="#0BAFFF">mdi-plus-circle</v-icon>
+          </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-title class="subTaskListName subTaskAdd">Add sub task</v-list-item-title>
+                    </v-list-item-content>
                 </v-list-item>
               </div>
             </v-list-item-title>
