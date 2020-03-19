@@ -161,7 +161,7 @@
 <script>
 
   export default {
-    props: ['task', 'assignee', 'projectId'],
+    props: ['task', 'assignee', 'projectId', 'subtasks'],
     data() {
       return {
         drawer: null,
@@ -175,6 +175,11 @@
           taskRemindOnDate: "",
           taskDueDate: ""
         },
+        subTask: {
+          taskId : this.task.taskId,
+          subtaskName: "",
+          subTaskCreator: ""
+        },
         items: [        
           {
             items: [
@@ -182,31 +187,34 @@
               { title: 'Task 2' },
               { title: 'Task 3' },
             ],
-           
           },
           
         ],
-         notes: [
-              { title: 'Task 1' },
-            ],
       }
     },
     methods: {
+      async addSubTask(){
+        console.log("add subTask",this.addUser);
+        let assigneeProjectRoleId = this.adminStatus;
+        console.log(assigneeProjectRoleId);
+        let response;
+          try{
+          response = await this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask`, 
+          // this.addUser
+        )
+       } catch(e){
+          console.log("Error adding a subTask", e);
+       }  
+      },
       name() {
          this.setDue = this.task.taskDueDateAt;
         return this.task.taskDueDateAt
       },
       async updateTaskNote(){
         console.log("updatedTaskValue ->",this.updatedTask.taskNotes)
-        console.log("enter is pressed");
         let response;
         try{
           response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
-          // modifierId: "138bbb3d-02ed-4d72-9a03-7e8cdfe89eff",
-          // projectName: this.updateProject.projectName,
-          // clientId: this.updateProject.clientId,
-          // projectStartDate: this.updateProject.projectStartDate,
-          // projectEndDate: this.updateProject.projectEndDate,
           "taskNotes": this.updatedTask.taskNotes
         },
           {
@@ -217,9 +225,28 @@
         )
         console.log("edit task response", response);
        } catch(e){
-          console.log("Error updating a project", e);
+          console.log("Error updating a note", e);
+       }
+      },
+      async updateStatus(){
+        console.log("onchange updated status ->", this.updatedTask.taskStatus)
+         let response;
+        try{
+          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
+          "taskStatus": this.updatedTask.taskStatus
+        },
+          {
+              headers: {
+                  'user': '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff'
+              }
+            }
+        )
+        console.log("update task status response", response);
+       } catch(e){
+          console.log("Error updating a status", e);
        }
       }
+
     },
     components: {
      
@@ -234,6 +261,42 @@
             this.updatedTask.taskNotes =  value;
           }            
         },
+        taskStatus: {
+        get(){
+              return this.task.taskStatus
+            },
+        set(value) {
+          console.log("updated task statutus ->", value)
+            this.updatedTask.taskStatus =  value;
+          }            
+        },
+          taskStatus: {
+        get(){
+              return this.task.taskStatus
+            },
+        set(value) {
+          console.log("updated task statutus ->", value)
+            this.updatedTask.taskStatus =  value;
+          }            
+        },
+          taskDue: {
+        get(){
+              return this.task.taskDueDateAt
+            },
+        set(value) {
+          console.log("updated task due ->", value)
+            this.updatedTask.taskDueDateAt =  value;
+          }            
+        },
+          taskRemindOn: {
+        get(){
+              return this.task.taskReminderAt
+            },
+        set(value) {
+          console.log("updated task reminder ->", value)
+            this.updatedTask.taskReminderAt =  value;
+          }            
+        }
     },
   }
 </script>
