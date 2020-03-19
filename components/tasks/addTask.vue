@@ -99,7 +99,7 @@
             md="6"
             class="buttonGrid"
       >
-                <div class="addTaskButton">
+                <button class="addTaskButton">
                 <v-list-item @click="addTask()" 
                 dark >
                     
@@ -107,7 +107,7 @@
                         <v-list-item-title class="bodyWiew">Submit</v-list-item-title>
                     </v-list-item-content>
                     </v-list-item>
-        </div>
+        </button>
             </v-col>
         </v-row>
         </form>
@@ -117,6 +117,8 @@
 <script>
  
 import axios from 'axios'
+import { numeric, required, between, minLength } from 'vuelidate/lib/validators'
+
   export default {
       props: ['projectId', 'projectUsers'],
     components: {
@@ -132,9 +134,17 @@ import axios from 'axios'
             taskDueDate:'',
             taskRemindOnDate:'',
             taskNotes: ''
+      },
+            taskName: '',
+            taskAssignee: '',
+            taskStatus: '',
+            taskDueDate: '',
+            taskRemindOnDate: '',
+            taskNotes: ''
       }
-      }
-    },
+    },validations: {
+            
+        },
     methods: {
       submit () {
         this.$refs.observer.validate()
@@ -156,8 +166,10 @@ import axios from 'axios'
           taskRemindOnDate: this.task.taskRemindOnDate,
           notes: this.task.taskNotes
         })
+        alert("Task added successfully!")
        } catch(e){
           console.log("Error adding a Task", e);
+          alert("Error creating task!")
        }       
         console.log("Task adding successful", response);
         let taskId= response.data.taskId;

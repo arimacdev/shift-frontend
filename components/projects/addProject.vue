@@ -68,7 +68,7 @@
                 md="6"
                 
             >
-        <input v-model="startDate" disabled placeholder="Estimated project timeline" class="formElements">
+        <input v-model="timeline" disabled placeholder="Estimated project timeline" class="formElements">
             </v-col>
              <v-col
                 sm="6"
