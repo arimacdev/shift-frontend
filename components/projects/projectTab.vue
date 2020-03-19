@@ -106,7 +106,7 @@
         </v-row>
 
        
-          <div class="submitButton ">
+          <div class="submitButton addProjectButton">
                 <v-list-item @click="editProject()" 
                 dark >
                     <v-list-item-action>
