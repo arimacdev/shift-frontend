@@ -29,7 +29,7 @@
           </v-list-item>
 
           <!-- -------------- start side bar ----------------- -->
-
+<div class="overflow-y-auto">
 <v-navigation-drawer
       v-model="drawer"
       absolute
@@ -106,7 +106,7 @@
         </v-row>
 
        
-          <div class="submitButton addProjectButton">
+          <div class="submitButton ">
                 <v-list-item @click="editProject()" 
                 dark >
                     <v-list-item-action>
@@ -139,7 +139,7 @@
         </form>
     </v-navigation-drawer>
 
-
+</div>
           <!-- --------------- end side bar --------------------- -->
 
           <v-row

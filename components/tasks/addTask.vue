@@ -70,7 +70,7 @@
                 md="6"
                 
             >
-            <input type="file" placeholder="Drop files to attach, or browse" id="file" ref="file" v-on:change="handleFileUploads()" class="formElements fileUpload"/>
+            <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Drop files to attach, or browse" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload"/>
             </v-col>
         </v-row>
         <v-row
