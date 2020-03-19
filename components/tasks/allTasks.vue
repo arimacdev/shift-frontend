@@ -82,16 +82,17 @@ import TaskSideBar from '~/components/tasks/taskSideBar'
             console.log("subtasks--->", subTaskResponse.data)     ;
             this.subTasks = subTaskResponse.data;  
       //get files related to task
+      let taskFilesResponse;
       try {
-      taskFiles = await this.$axios.$get(`/projects/${this.projectId}/tasks/${task.taskId}/files`,
+      taskFilesResponse = await this.$axios.$get(`/projects/${this.projectId}/tasks/${task.taskId}/files`,
       {
         headers: {
           user: "138bbb3d-02ed-4d72-9a03-7e8cdfe89eff",
        }
       }
       ) 
-      console.log("files--->", taskFiles.data)     ;
-      this.taskFiles = taskFiles.data;   
+      console.log("files--->", taskFilesResponse.data)     ;
+      this.taskFiles = taskFilesResponse.data;   
        } catch (error) {
           console.log("Error fetching data", error);
        }         
