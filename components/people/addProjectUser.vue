@@ -69,6 +69,7 @@
     methods: {
       async changeHandler() {
         console.log("add user",this.addUser);
+        this.dialog = false;
         let assigneeProjectRoleId = this.adminStatus;
         console.log(assigneeProjectRoleId);
         let response;
