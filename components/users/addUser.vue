@@ -1,6 +1,6 @@
 <template>
     <div class="formDiv usersForms">
-        <form>
+        <form @submit.prevent="handleSubmit">
         <v-row
             class="mb-12 formRow"
             no-gutters
@@ -22,7 +22,8 @@
                 md="6"
                 
             >
-        <input v-model="firstName" placeholder="First Name" class="formElements">
+        <input v-model.trim="$v.firstName.$model" placeholder="First Name" class="formElements">
+        <div v-if="$v.firstName.$error && !$v.firstName.required" class="errorText"> First name is required</div>
             </v-col>
              <v-col
                 sm="6"
@@ -88,7 +89,7 @@
             md="6"
             class="buttonGrid"
       >
-                <div class="submitButton addUserSubmit">
+                <button class="submitButton addUserSubmit">
                 <v-list-item @click="postData()" 
                 dark >
                     <v-list-item-action>
@@ -99,7 +100,7 @@
                     </v-list-item-content>
                         <v-icon>mdi-plus-circle</v-icon>
                     </v-list-item>
-                </div>
+                </button>
             </v-col>
         </v-row>
         </form>
@@ -108,24 +109,52 @@
 
 <script>
 import axios from 'axios'
+import { numeric, required, between, minLength } from 'vuelidate/lib/validators'
 
 export default {
     methods: {
      async postData(){
-      
-        let response = await this.$axios.$post('/users', {
+      let response;
+       try{
+          response = await this.$axios.$post('/users', {
           userName: this.userName,
           firstName: this.firstName,
           lastName: this.lastName,
           email: this.email,
           password: this.password,
         })
-        console.log(response.message);
-        this.projectName = ''
-        this.client = ''
-        this.startDate = ''
-        this.endDate = ''
+       alert("User created successfully!")
+       }  catch(e){
+          console.log("Error creating user", e);
+          alert("Error creating user!")
+       }   
+      },
+      handleSubmit(e) {
+                this.submitted = true;
+                // stop here if form is invalid
+                this.$v.$touch();
+                if (this.$v.$invalid) {
+                    return;
+                }
+      
       }
+      
+    },
+    data(){
+        return{
+            userName: '',
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+        }
+    },
+    validations: {
+        firstName: {
+            required,
+        }
     }
+    
 }
 </script>

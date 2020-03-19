@@ -43,7 +43,7 @@
                 md="6"
                 
             >
-        <input v-model="userName" disabled placeholder="User Name" class="formElements">
+        <input v-model="userData.userName" disabled placeholder="User Name" class="formElements">
             </v-col>
              <v-col
                 sm="6"
@@ -133,11 +133,11 @@ export default {
        } 
         
 
-        console.log(response.message);
         this.projectName = ''
         this.client = ''
         this.startDate = ''
         this.endDate = ''
+        this.userName = ''
       }
     }
 }
