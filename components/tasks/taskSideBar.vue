@@ -19,8 +19,7 @@
 
 
            <v-list-item-content class="dropDownList">
-             <select v-model="task.taskStatus" class=" selectUserDropDown">
-              <option disabled value="" >Task status</option>
+             <select v-model="taskStatus" class="selectUserDropDown" @change="updateStatus">
                 <option key="pending" value="pending" >Pending</option>
                 <option key="implementing" value="implementing">Implementing</option>
                 <option key="qa" value="qa">QA</option>
@@ -63,7 +62,7 @@
             <v-icon size="30" color="#2EC973" >mdi-package-variant-closed</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title class="tabListItemsText">Sub tasks</v-list-item-title>
+            <v-list-item-title class="tabListItemsText">Sub Tasks</v-list-item-title>
           </v-list-item-content>
         </template>
 
@@ -72,10 +71,17 @@
             <v-list-item-title class="subItem noteSubItem">
               <!-- ========= Add sub tasks here ========= -->
               <div class="subTasksList">
-                <v-list-item class="subTaskListItems">
-                      <input type="checkbox" name="a2" value="1" class="checkbox" />
+                <v-list-item class="subTaskListItems"  v-for="(subtask,index) in subTasks" :key="index">
+                      <!-- <input type="checkbox" name="a2" value="1" class="checkbox"/> -->
+                        <v-checkbox
+                          v-model="subtask.subtaskStatus"
+                          hide-details
+                          class="shrink mr-2 mt-0"   
+                          @change="subTaskUpdate(subtask)"           
+                          >
+                          </v-checkbox>
                     <v-list-item-content>
-                      <v-list-item-title class="subTaskListName">{{ task.taskName}}</v-list-item-title>
+                      <v-list-item-title class="subTaskListName">{{ subtask.subtaskName}}</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
               </div>
@@ -129,7 +135,7 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="subItem noteSubItem" >
-              <textarea v-model="taskNotes" placeholder="Note" class="noteTextArea"></textarea>
+              <textarea v-model="taskNotes" @keyup.enter="updateTaskNote" placeholder="Note" class="noteTextArea"></textarea>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -161,10 +167,11 @@
 <script>
 
   export default {
-    props: ['task', 'assignee', 'projectId', 'subtasks'],
+    props: ['task', 'assignee', 'projectId', 'subTasks'],
     data() {
       return {
         drawer: null,
+        selected : true,
         // notes: this.task.taskNote,
         setDue: this.task.taskDueDateAt,
         updatedTask: {
@@ -245,13 +252,43 @@
        } catch(e){
           console.log("Error updating a status", e);
        }
+      },
+         async subTaskUpdate(editsubtask){
+          console.log("onchange subtask updated ->", editsubtask);
+         let response;
+        try{
+          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask/${editsubtask.subtaskId}`, {
+          "subTaskEditor": "138bbb3d-02ed-4d72-9a03-7e8cdfe89eff" ,
+          "subtaskName": editsubtask.subtaskName,
+          "subtaskStatus": editsubtask.subtaskStatus
+        },
+          {
+              headers: {
+                  'user': '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff'
+              }
+            }
+        )
+        console.log("update sub task status response", response);
+       } catch(e){
+          console.log("Error updating a status", e);
+       }
       }
+      
 
     },
     components: {
      
     },
     computed: {
+        //  statusUpdate: {
+        // get(){
+        //       return true
+        //     },
+        // set(value) {
+        //   // console.log("updated task value ->", value)
+        //   //   this.updatedTask.taskNotes =  value;
+        //   }            
+        // },
         taskNotes: {
         get(){
               return this.task.taskNote

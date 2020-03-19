@@ -37,7 +37,7 @@
       class=""
       color="#E5E5E5"
     >
-    <task-side-bar :task=task :assignee="assignee" :projectId="projectId"/>
+    <task-side-bar :task=task :assignee="assignee" :projectId="projectId" :subTasks="subTasks"/>
     
     </v-navigation-drawer>
 
@@ -59,6 +59,7 @@ import TaskSideBar from '~/components/tasks/taskSideBar'
           
         ],
         task: {},
+        subTasks: [],
         assignee: {}
       }
     },
@@ -66,18 +67,26 @@ import TaskSideBar from '~/components/tasks/taskSideBar'
       'task-side-bar' : TaskSideBar,
     },
      methods: {
-    selectTask(task){
+        async selectTask(task){
      this.task = task;
      console.log("selectedTask", task);
       this.$axios.get (`/users/${this.task.taskAssignee}`)
-      .then (response => {
-       console.log("data", response.data.data)
+      .then (async response => {
+       console.log("fetched task -->", response.data.data)
        this.assignee = response.data.data;
+       //if task fetch is successful,
+       let subTaskResponse;
+       try {
+            subTaskResponse = await this.$axios.$get(`/projects/${this.projectId}/tasks/${task.taskId}/subtask?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`) 
+            console.log("subtasks--->", subTaskResponse.data)     ;
+            this.subTasks = subTaskResponse.data;   
+       } catch (error) {
+          console.log("Error fetching data", error);
+       }       
       })
       .catch (e => {
        console.log("error", e)
-      })
-     
+      })     
     }, 
     getProjectDates(date) {
           console.log(date);
