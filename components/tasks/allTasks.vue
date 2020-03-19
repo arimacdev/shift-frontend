@@ -37,7 +37,7 @@
       class=""
       color="#E5E5E5"
     >
-    <task-side-bar :task=task :assignee="assignee" />
+    <task-side-bar :task=task :assignee="assignee" :projectId="projectId"/>
     
     </v-navigation-drawer>
 
@@ -68,6 +68,7 @@ import TaskSideBar from '~/components/tasks/taskSideBar'
      methods: {
     selectTask(task){
      this.task = task;
+     console.log("selectedTask", task);
       this.$axios.get (`/users/${this.task.taskAssignee}`)
       .then (response => {
        console.log("data", response.data.data)

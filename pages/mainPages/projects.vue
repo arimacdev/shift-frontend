@@ -114,7 +114,7 @@ export default {
        
       this.$axios.get (`projects/${this.project.projectId}/tasks?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`)
       .then (response => {
-       console.log("data", response.data.data)
+       console.log("all tasks data", response.data.data)
        this.Alltasks = response.data.data;
       })
       .catch (e => {

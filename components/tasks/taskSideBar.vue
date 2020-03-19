@@ -49,7 +49,7 @@
             <v-icon size="30" color="#02C1D4" >mdi-account-arrow-left-outline</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title class="tabListItemsText">{{ this.assignee.firstName }} {{ this.assignee.lastName }}</v-list-item-title>
+            <v-list-item-title class="tabListItemsText">{{ assignee.firstName }} {{assignee.lastName }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -95,7 +95,7 @@
             <v-icon size="30" color="#0BAFFF" >mdi-calendar-blank-outline</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title class="tabListItemsText">Set due</v-list-item-title>
+            <v-list-item-title class="tabListItemsText">Set due {{task.taskDueDateAt}}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -108,7 +108,7 @@
             <v-icon size="30" color="#FFC213" >mdi-clock-outline</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title class="tabListItemsText">Remind on</v-list-item-title>
+            <v-list-item-title class="tabListItemsText">Remind on {{task.taskReminderAt}}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -121,7 +121,17 @@
             <v-icon size="30" color="#FF6767" >mdi-file-document-edit-outline</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title class="tabListItemsText">Notes</v-list-item-title>
+            <v-list-item-title class="tabListItemsText">Notes 
+              <v-text-field
+              v-model="taskNotes"
+              @keyup.enter="updateTaskNote"
+              required
+              class="task_new"
+              filled
+              flat
+            ></v-text-field>              
+                <!-- {{task.taskNote}}    -->
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -151,14 +161,21 @@
 <script>
 
   export default {
-    
-
-      props: ['task', 'assignee'],
+    props: ['task', 'assignee', 'projectId'],
     data() {
       return {
         drawer: null,
-        items: [
-        
+        // notes: this.task.taskNote,
+        setDue: this.task.taskDueDateAt,
+        updatedTask: {
+          taskName: "",
+          taskAssignee: "",
+          taskNotes: "",
+          taskStatus: "",
+          taskRemindOnDate: "",
+          taskDueDate: ""
+        },
+        items: [        
           {
             items: [
               { title: 'Task 1' },
@@ -170,8 +187,49 @@
         ],
       }
     },
+    methods: {
+      name() {
+         this.setDue = this.task.taskDueDateAt;
+        return this.task.taskDueDateAt
+      },
+      async updateTaskNote(){
+        console.log("updatedTaskValue ->",this.updatedTask.taskNotes)
+        console.log("enter is pressed");
+        let response;
+        try{
+          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
+          // modifierId: "138bbb3d-02ed-4d72-9a03-7e8cdfe89eff",
+          // projectName: this.updateProject.projectName,
+          // clientId: this.updateProject.clientId,
+          // projectStartDate: this.updateProject.projectStartDate,
+          // projectEndDate: this.updateProject.projectEndDate,
+          "taskNotes": this.updatedTask.taskNotes
+        },
+          {
+              headers: {
+                  'user': '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff'
+              }
+            }
+        )
+        console.log("edit task response", response);
+       } catch(e){
+          console.log("Error updating a project", e);
+       }
+      }
+    },
     components: {
      
+    },
+    computed: {
+        taskNotes: {
+        get(){
+              return this.task.taskNote
+            },
+        set(value) {
+          console.log("updated task value ->", value)
+            this.updatedTask.taskNotes =  value;
+          }            
+        },
     },
   }
 </script>
