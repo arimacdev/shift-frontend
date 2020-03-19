@@ -1,6 +1,6 @@
 <template>
     <div class="formDiv">
-        <form>
+        <form @submit.prevent="handleSubmit">
         <v-row
             class="mb-12 formRow"
             no-gutters
@@ -22,14 +22,16 @@
                 md="6"
                 
             >
-        <input v-model="projectName" placeholder="Project name" class="formElements">
+        <input v-model.trim="$v.projectName.$model" placeholder="Project name" class="formElements">
+       <div v-if="$v.projectName.$error && !$v.projectName.required" class="errorText"> Project name is required</div>
             </v-col>
              <v-col
                 sm="6"
                 md="6"
                 
             >
-            <input v-model="client" placeholder="Client" class="formElements">
+            <input v-model.trim="$v.client.$model" placeholder="Client" class="formElements">
+            <div v-if="$v.client.$error && !$v.client.required" class="errorText"> Client is required</div>
             </v-col>
         </v-row>
 
@@ -43,14 +45,16 @@
                 md="6"
                 
             >
-        <input type="text" v-model="startDate" onfocusin="(this.type='date')" onfocusout="(this.type='text')" placeholder="Project start date" class="formElements">
+        <input type="text" v-model.trim="$v.startDate.$model" onfocusin="(this.type='date')" onfocusout="(this.type='text')" placeholder="Project start date" class="formElements">
+            <div v-if="$v.startDate.$error && !$v.startDate.required" class="errorText"> Start date is required</div>
             </v-col>
              <v-col
                 sm="6"
                 md="6"
                 
             >
-            <input type="text" onfocusin="(this.type='date')" onfocusout="(this.type='text')" v-model="endDate" placeholder="Project end date" class="formElements">
+            <input type="text" v-model.trim="$v.endDate.$model" onfocusin="(this.type='date')" onfocusout="(this.type='text')" placeholder="Project end date" class="formElements">
+             <div v-if="$v.endDate.$error && !$v.endDate.required" class="errorText"> End date is required</div>
             </v-col>
         </v-row>
 
@@ -64,7 +68,7 @@
                 md="6"
                 
             >
-        <input v-model="timeline" placeholder="Estimated project timeline" class="formElements">
+        <input v-model="startDate" disabled placeholder="Estimated project timeline" class="formElements">
             </v-col>
              <v-col
                 sm="6"
@@ -88,8 +92,8 @@
             md="6"
             class="buttonGrid"
       >
-                <div class="submitButton">
-                <v-list-item @click="postData()" 
+                <button class="submitButton">
+                <v-list-item  @click="postData()" 
                 dark >
                     <v-list-item-action>
                         <v-icon size="20" color="">mdi-folder-outline</v-icon>
@@ -99,7 +103,7 @@
                     </v-list-item-content>
                         <v-icon>mdi-plus-circle</v-icon>
                     </v-list-item>
-                </div>
+                </button>
             </v-col>
         </v-row>
         </form>
@@ -108,8 +112,10 @@
 
 <script>
 import axios from 'axios'
+import { numeric, required, between, minLength } from 'vuelidate/lib/validators'
 
 export default {
+    
     methods: {
      async postData(){
       let response;
@@ -121,15 +127,45 @@ export default {
           projectStartDate: this.startDate,
           projectEndDate: this.endDate,
         })
+          alert("Project created successfully!")
        }  catch(e){
           console.log("Error creating project", e);
+          alert("Error creating project!")
        }   
-        console.log(response.message);
-        this.projectName = ''
-        this.client = ''
-        this.startDate = ''
-        this.endDate = ''
+      },
+
+      handleSubmit(e) {
+                this.submitted = true;
+                // stop here if form is invalid
+                this.$v.$touch();
+                if (this.$v.$invalid) {
+                    return;
+                }
+      
       }
-    }
+    },
+    data() {
+        return {
+            projectName: '',
+            client: '',
+            startDate: '',
+            endDate: '',
+            projectOwner: '',
+        }
+        },
+        validations: {
+            projectName: {
+            required,
+            },
+            client: {
+            required,
+            },
+            startDate: {
+            required,
+            },
+            endDate: {
+            required,
+            },
+        }
 }
 </script>

@@ -11,6 +11,10 @@
     height: 80vh;
     background-color: #EDF0F5;
   }
+
+.projectTabSideBar{
+    height: 100vh;
+}
 /* --------- add project ---------- */
 
 .formDiv{
@@ -497,4 +501,15 @@ font-size: 19px !important;
 }
 .presentageValue{
     font-size: 12px;
+}
+
+
+/* ---------------- validation --------------- */
+
+.errorText{
+    color: red;
+    font-size: 12px;
+    margin-top: 15px;
+    margin-left: 10px;
+    margin-bottom: -20px;
 }
