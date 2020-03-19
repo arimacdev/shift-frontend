@@ -137,6 +137,11 @@ export default {
           email: this.email,
           password: this.password,
         })
+        this.firstName = ''
+        this.lastName = ''
+        this.password = ''
+        this.email = ''
+        this.userName = ''
        alert("User created successfully!")
        }  catch(e){
           console.log("Error creating user", e);

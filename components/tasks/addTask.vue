@@ -1,6 +1,6 @@
 <template>
     <div class="taskFormDiv">
-        <form>
+        <form  @submit.prevent="handleSubmit">
         
         <v-row
             class="mb-12 formRow" 
@@ -11,7 +11,10 @@
                 md="6"
                 
             >
-        <input v-model="task.taskName" placeholder="Task name" class="formElements">
+        <input v-model.trim="$v.taskName.$model"  placeholder="Task name" class="formElements">
+         <div v-if="$v.taskName.$error && !$v.taskName.required" class="errorText"> Task name is required</div>
+       <div v-if="$v.taskName.$error && !$v.taskName.maxLength" class="errorText"> Cannot use more than 50 characters</div>
+        
             </v-col>
              <v-col
                 sm="6"
@@ -117,7 +120,7 @@
 <script>
  
 import axios from 'axios'
-import { numeric, required, between, minLength } from 'vuelidate/lib/validators'
+import { numeric, required, between, minLength, maxLength } from 'vuelidate/lib/validators'
 
   export default {
       props: ['projectId', 'projectUsers'],
@@ -143,7 +146,10 @@ import { numeric, required, between, minLength } from 'vuelidate/lib/validators'
             taskNotes: ''
       }
     },validations: {
-            
+            taskName: {
+            required,
+            maxLength: maxLength(50)
+            },
         },
     methods: {
       submit () {
@@ -151,6 +157,14 @@ import { numeric, required, between, minLength } from 'vuelidate/lib/validators'
       },
       handleFileUploads(e){
          this.file = this.$refs.file.files[0];
+      },
+      handleSubmit(e) {
+                this.submitted = true;
+                // stop here if form is invalid
+                this.$v.$touch();
+                if (this.$v.$invalid) {
+                    return;
+                }
       },
 
      async addTask(){     
