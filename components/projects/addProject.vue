@@ -68,7 +68,7 @@
                 md="6"
                 
             >
-        <input v-model="timeline" disabled placeholder="Estimated project timeline" class="formElements">
+        <input v-model="projectTimeLine" disabled placeholder="Estimated project timeline" class="formElements">
             </v-col>
              <v-col
                 sm="6"
@@ -166,6 +166,34 @@ export default {
             endDate: {
             required,
             },
-        }
+        },
+        computed: {
+            projectTimeLine : {
+               get(){
+            if(this.startDate === '' || this.endDate === ''){
+                return ""
+            }
+            let startDate = new Date(this.startDate);
+            let endDate = new Date(this.endDate);
+            let days = parseInt((endDate - startDate) / (1000 * 60 * 60 * 24), 10); 
+            let months;
+            let weeks;
+           if(days > 30){
+             months = Math.floor(days/30)
+             days = days % 30;
+             return months + " month(s) " + days + " days"
+           } else if(days>7 && days<30){
+              weeks = Math.floor(days / 7);
+              days = days % 7
+              return weeks + " week(s) " + days + " days"
+           } else{
+             return days + " day(s)"
+           }
+            },
+               set(){
+
+               }
+            }
+        },
 }
 </script>
