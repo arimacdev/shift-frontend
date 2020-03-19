@@ -40,7 +40,7 @@
 
     </div>
 
-    <div class="sideBarContent">
+    <div class="sideBarContent overflow-y-auto">
       
     <v-list flat>
       <v-list-item-group class="tabListItems">
@@ -57,32 +57,29 @@
 <v-divider></v-divider>
 
  
-      <v-list-group
-        v-for="item in items"
-        :key="item.title"
-        v-model="item.active"
-        :prepend-icon="item.action"
-        no-action
-        class="tabListItems"
-      >
+      <v-list-group >
         <template v-slot:activator>
           <v-list-item-icon>
             <v-icon size="30" color="#2EC973" >mdi-package-variant-closed</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title class="tabListItemsText">Sub task</v-list-item-title>
+            <v-list-item-title class="tabListItemsText">Sub tasks</v-list-item-title>
           </v-list-item-content>
         </template>
 
-        <v-list-item
-          v-for="subItem in item.items"
-          :key="subItem.title"
-          @click=""
-          dense
-          
-        >
+        <v-list-item >
           <v-list-item-content>
-            <v-list-item-title class="subItem" v-text="subItem.title"></v-list-item-title>
+            <v-list-item-title class="subItem noteSubItem">
+              <!-- ========= Add sub tasks here ========= -->
+              <div class="subTasksList">
+                <v-list-item class="subTaskListItems">
+                      <input type="checkbox" name="a2" value="1" class="checkbox" />
+                    <v-list-item-content>
+                      <v-list-item-title class="subTaskListName">{{ task.taskName}}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+              </div>
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list-group>
@@ -113,28 +110,31 @@
         </v-list-item>
       </v-list-item-group>
 
+
+
+      <!-- -------- note start -------------- -->
+
 <v-divider></v-divider>
 
-<v-list-item-group class="tabListItems">
-        <v-list-item>
+  <v-list-group >
+        <template v-slot:activator>
           <v-list-item-icon>
             <v-icon size="30" color="#FF6767" >mdi-file-document-edit-outline</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title class="tabListItemsText">Notes 
-              <v-text-field
-              v-model="taskNotes"
-              @keyup.enter="updateTaskNote"
-              required
-              class="task_new"
-              filled
-              flat
-            ></v-text-field>              
-                <!-- {{task.taskNote}}    -->
+            <v-list-item-title class="tabListItemsText">Notes</v-list-item-title>
+          </v-list-item-content>
+        </template>
+
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="subItem noteSubItem" >
+              <textarea v-model="taskNotes" placeholder="Note" class="noteTextArea"></textarea>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-      </v-list-item-group>
+      </v-list-group>
+      <!-- ----------- end ------------ -->
 
 <v-divider></v-divider>
 
@@ -182,9 +182,13 @@
               { title: 'Task 2' },
               { title: 'Task 3' },
             ],
+           
           },
           
         ],
+         notes: [
+              { title: 'Task 1' },
+            ],
       }
     },
     methods: {
