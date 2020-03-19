@@ -41,7 +41,8 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+     '@nuxtjs/auth'
   ],
 /*
   ** Base URL
@@ -57,6 +58,41 @@ export default {
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module
   */
+ auth: {
+  strategies: {
+    local: false,
+    keycloak: {
+      _scheme: 'oauth2',
+      authorization_endpoint: 'http://pmtool.devops.arimac.xyz/auth/realms/pm-tool/protocol/openid-connect/auth',
+      userinfo_endpoint: 'http://pmtool.devops.arimac.xyz/auth/realms/pm-tool/protocol/openid-connect/userinfo',
+      access_token_endpoint: 'http://pmtool.devops.arimac.xyz/auth/realms/pm-tool/protocol/openid-connect/token',
+      scope: ['openid', 'roles'],
+      grant_type: 'authorization_code',
+      response_type: 'code',
+      token_type: 'Bearer',
+      client_id: 'pmtool-frontend',
+      token_key: 'access_token'
+    }
+  },
+  redirect: {
+    login: '/login',
+    home: '/mainPages/projects',
+    callback: '/'
+  },
+  localStorage: false
+},
+
+router: {
+  middleware: ['auth']
+},
+
+
+constants: {
+  hostUrl: 'http://pmtool.devops.arimac.xyz',
+  appUrl: 'http://pmtool.devops.arimac.xyz',
+  realm: 'pm-tool'
+},
+
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
