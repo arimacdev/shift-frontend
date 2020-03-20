@@ -185,8 +185,13 @@
             <v-list-item-title class="tabListItemsText">Files</v-list-item-title>
           </v-list-item-content>
         </template>
-                        <v-list-item class="subTaskListItems"  v-for="(taskFile,index) in taskFiles" :key="index">
-                   <a :href="taskFile.taskFileUrl">{{ taskFile.taskFileName }}</a>
+        <v-list-item class="subTaskListItems"  v-for="(taskFile,index) in taskFiles" :key="index">
+          <div class="listAttachment">
+            <a style="text-decoration: none;" :href="taskFile.taskFileUrl">
+            <v-icon size="30" color="#0BAFFF">mdi-image-outline</v-icon>
+           <span class="attachmentName"> {{ taskFile.taskFileName }} </span>
+            </a>
+          </div>
         </v-list-item>
       </v-list-group>
 
