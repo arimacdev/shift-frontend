@@ -15,6 +15,44 @@
 .projectTabSideBar{
     height: 100vh;
 }
+
+
+
+
+/* ------------------- login -------------------- */
+
+
+.loginContainer{
+    width: 100vw;
+    height: 100vh;
+    text-align: center;
+    padding-top: 20%;
+
+}
+
+.loginContent{
+    text-align: center;
+}
+
+.loginTitle{
+    font-size: 20px !important;
+    font-weight: 600;
+}
+.loginText{
+    font-size: 14px !important;
+    font-weight: 400;
+}
+
+.loginButton{
+    background-color: #0BAFFF !important;
+    margin-top: 40px;
+    width: 250px;
+    height: 40px;
+    border-radius: 5px;
+    color: #FFFFFF;
+}
+
+
 /* --------- add project ---------- */
 
 .formDiv{

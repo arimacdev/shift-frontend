@@ -47,12 +47,13 @@ export default {
 /*
   ** Base URL
   ** http://pmtool.devops.arimac.xyz/api/pm-service
+  ** http://localhost:8080/api/pm-service
   ** UserId - Admin
   ** 138bbb3d-02ed-4d72-9a03-7e8cdfe89eff
   */
   axios: {
       
-    baseURL: 'http://pmtool.devops.arimac.xyz/api/pm-service'
+    baseURL: 'ttp://pmtool.devops.arimac.xyz/api/pm-service'
   },
   /*
   ** vuetify module configuration
