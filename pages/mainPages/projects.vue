@@ -86,17 +86,32 @@ export default {
         Alltasks: [],
         MyTasks: [],
         taskCompletion: {},
-        users: []
+        users: [],
+        access:  this.$store.state,
+        userId: this.$store.state.auth.user.sub
+       
       }
     },
+    // asyncData({ app }) 
+    // { app.$auth.getToken('facebook') },
 
-    async asyncData({ $axios }) {
+    async asyncData({ $axios, app, store }) { 
     const { data: projects } = await $axios.$get('/projects?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff')
     const { data: users } = await $axios.$get('/users')
     // const { data: tasks } = await $axios.$get(`/projects/${p1}/tasks?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`)
+      let token = app.$auth.getToken('keycloak')
+      // this.access = token;
+    // console.log("------------->", token)
+    // store.commit('project/increment');
+    // console.log("state------->", store.state)
+    // console.log("state------->", store.state.project.all)
+    // console.log("auth------->", store.state.auth)
+    // console.log("auth------->", store.state.auth.user.sub)
 
-    console.log("projects list", projects)
-    console.log("users list", users)
+
+
+    // console.log("projects list", projects)
+    // console.log("users list", users)
     // console.log("tasks list", tasks)
     
     return { 
@@ -104,17 +119,24 @@ export default {
       users:users,
       // tasks: tasks,
        project: projects[0],
-       people : []
+       people : [],
+       token : token,
+       
      }
   },
 
     methods: {
     selectProject(project){
      this.project = project;
+
+     console.log("SLEELCTED________=====>", this.userId)
+     console.log("SLEELCTED MUTATION", this.$store.state.project.all)
+     
        
       this.$axios.get (`projects/${this.project.projectId}/tasks?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`)
       .then (response => {
-       console.log("all tasks data", response.data.data)
+      //   console.log("------->", this.token )
+      //  console.log("all tasks data ---->", response.data.data)
        this.Alltasks = response.data.data;
       })
       .catch (e => {
@@ -123,7 +145,7 @@ export default {
 
       this.$axios.get (`projects/${this.project.projectId}/tasks/user?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`)
       .then (response => {
-       console.log("data", response.data)
+      //  console.log("data", response.data)
        this.MyTasks = response.data.data;
       })
       .catch (e => {
@@ -136,7 +158,7 @@ export default {
        }
       })
       .then (response => {
-       console.log("task completion list", response.data)
+      //  console.log("task completion list", response.data)
        this.taskCompletion = response.data.data;
       })
       .catch (e => {
@@ -145,7 +167,7 @@ export default {
 
         this.$axios.get (`users`)
       .then (response => {
-       console.log("users data", response.data.data)
+      //  console.log("users data", response.data.data)
        this.users = response.data.data;
       })
       .catch (e => {
@@ -154,7 +176,7 @@ export default {
 
       this.$axios.get (`projects/${this.project.projectId}/tasks/138bbb3d-02ed-4d72-9a03-7e8cdfe89eff/completion/details`)
       .then (response => {
-       console.log("tasks users data -->", response.data.data)
+      //  console.log("tasks users data -->", response.data.data)
        this.people = response.data.data;
       })
       .catch (e => {

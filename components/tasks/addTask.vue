@@ -140,7 +140,7 @@ import axios from 'axios'
         this.$refs.observer.validate()
       },
       handleFileUploads(e){
-         this.file = this.$refs.file.files[0];
+         this.file = this.$refs.files.files[0];
       },
 
      async addTask(){     

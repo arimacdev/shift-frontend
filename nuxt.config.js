@@ -52,7 +52,7 @@ export default {
   */
   axios: {
       
-    baseURL: 'http://pmtool.devops.arimac.xyz/api/pm-service'
+    baseURL: 'http://localhost:8080/api/pm-service'
   },
   /*
   ** vuetify module configuration
@@ -66,7 +66,7 @@ export default {
       authorization_endpoint: 'http://pmtool.devops.arimac.xyz/auth/realms/pm-tool/protocol/openid-connect/auth',
       userinfo_endpoint: 'http://pmtool.devops.arimac.xyz/auth/realms/pm-tool/protocol/openid-connect/userinfo',
       access_token_endpoint: 'http://pmtool.devops.arimac.xyz/auth/realms/pm-tool/protocol/openid-connect/token',
-      scope: ['openid', 'roles'],
+      scope: ['openid', 'roles', 'profile'],
       grant_type: 'authorization_code',
       response_type: 'code',
       token_type: 'Bearer',
@@ -83,7 +83,7 @@ export default {
 },
 
 router: {
-  middleware: ['auth']
+  middleware: ['auth', 'testmd']
 },
 
 
