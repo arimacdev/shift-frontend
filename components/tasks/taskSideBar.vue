@@ -195,6 +195,9 @@
             <v-list-item-title class="tabListItemsText">Files</v-list-item-title>
           </v-list-item-content>
         </template>
+        <div class="attchmentContainer fileAttachSideBar">
+        <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Add a new file" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload"/>
+        </div>
         <div class="attchmentContainer">
         <v-list-item class="subTaskListItems"  v-for="(taskFile,index) in taskFiles" :key="index">
           <div class="listAttachment">
