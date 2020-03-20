@@ -61,7 +61,8 @@ import TaskSideBar from '~/components/tasks/taskSideBar'
         task: {},
         subTasks: [],
         taskFiles: [],
-        assignee: {}
+        assignee: {},
+        userId: this.$store.state.user.userId
       }
     },
     components: {
@@ -78,7 +79,7 @@ import TaskSideBar from '~/components/tasks/taskSideBar'
        //if task fetch is successful,
        let subTaskResponse;
        try {
-            subTaskResponse = await this.$axios.$get(`/projects/${this.projectId}/tasks/${task.taskId}/subtask?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`) 
+            subTaskResponse = await this.$axios.$get(`/projects/${this.projectId}/tasks/${task.taskId}/subtask?userId=${this.userId}`) 
             console.log("subtasks--->", subTaskResponse.data)     ;
             this.subTasks = subTaskResponse.data;  
       //get files related to task
@@ -87,7 +88,7 @@ import TaskSideBar from '~/components/tasks/taskSideBar'
       taskFilesResponse = await this.$axios.$get(`/projects/${this.projectId}/tasks/${task.taskId}/files`,
       {
         headers: {
-          user: "138bbb3d-02ed-4d72-9a03-7e8cdfe89eff",
+          user: this.userId,
        }
       }
       ) 

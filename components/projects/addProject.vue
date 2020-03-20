@@ -123,7 +123,7 @@ export default {
       let response;
        try{
         response = await this.$axios.$post('/projects', {
-          projectOwner: '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff',
+          projectOwner: this.userId,
           projectName: this.projectName,
           clientId: this.client,
           projectStartDate: this.startDate,
@@ -152,6 +152,7 @@ export default {
     },
     data() {
         return {
+            userId: this.$store.state.user.userId,
             projectName: '',
             client: '',
             startDate: '',

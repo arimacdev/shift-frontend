@@ -212,6 +212,7 @@
     props: ['task', 'assignee', 'projectId', 'subTasks', 'taskFiles'],
     data() {
       return {
+        userId: this.$store.state.user.userId,
         drawer: null,
         selected : true,
         showNewSubTask: false,
@@ -261,7 +262,7 @@
           {
             taskId: this.task.taskId,
             subtaskName: this.newSubTask.subtaskName,
-            subTaskCreator: "138bbb3d-02ed-4d72-9a03-7e8cdfe89eff"
+            subTaskCreator: this.userId
           }
         )
         this.newSubTask.subtaskName = '';
@@ -286,7 +287,7 @@
         },
           {
               headers: {
-                  'user': '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff'
+                  'user': this.userId
               }
             }
         )
@@ -304,7 +305,7 @@
         },
           {
               headers: {
-                  'user': '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff'
+                  'user': this.userId
               }
             }
         )
@@ -335,7 +336,7 @@
         },
           {
               headers: {
-                  'user': '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff'
+                  'user': this.userId
               }
             }
         )
@@ -349,13 +350,13 @@
          let response;
         try{
           response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask/${editsubtask.subtaskId}`, {
-          "subTaskEditor": "138bbb3d-02ed-4d72-9a03-7e8cdfe89eff" ,
+          "subTaskEditor": this.userId ,
           "subtaskName": editsubtask.subtaskName,
           "subtaskStatus": editsubtask.subtaskStatus
         },
           {
               headers: {
-                  'user': '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff'
+                  'user': this.userId
               }
             }
         )
@@ -372,7 +373,7 @@
           response = await this.$axios.$delete(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask/${subtask.subtaskId}`,
           {
              headers: {
-                  'user': '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff'
+                  'user': this.userId
               }
           }
         );

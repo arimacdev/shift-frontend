@@ -38,6 +38,7 @@
     props: ['editUser', 'projectId'],
     data () {
       return {
+        userId: this.$store.state.user.userId,
         dialog: false,
         isAdmin: false,
         jobRole: this.editUser.projectJobRoleName,
@@ -67,7 +68,7 @@
        try{
          console.log("edituser",this.editUser)
           response = await this.$axios.$put(`/projects/${this.projectId}/users/${this.editUser.assigneeId}`, {
-          assignerId: '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff',
+          assignerId: this.userId,
           assigneeJobRole: this.jobRole,
           assigneeProjectRole: roleIdValue
         })

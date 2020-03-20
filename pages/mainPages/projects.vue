@@ -94,7 +94,8 @@ export default {
     },
 
     async asyncData({ $axios, app, store }) { 
-    const { data: projects } = await $axios.$get('/projects?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff')
+    let userId = store.state.user.userId;
+    const { data: projects } = await $axios.$get(`/projects?userId=${userId}`)
     const { data: users } = await $axios.$get('/users')
     // const { data: tasks } = await $axios.$get(`/projects/${p1}/tasks?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`)
     // console.log("projects list", projects)
@@ -115,8 +116,8 @@ export default {
 
      console.log("userId", this.userId)
      console.log("access_token", this.access_token)     
-       
-      this.$axios.get (`projects/${this.project.projectId}/tasks?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`)
+       //Get all projects for now
+      this.$axios.get (`projects/${this.project.projectId}/tasks?userId=${this.userId}`)
       .then (response => {
        this.Alltasks = response.data.data;
       })
@@ -124,7 +125,7 @@ export default {
        console.log("error", e)
       })
 
-      this.$axios.get (`projects/${this.project.projectId}/tasks/user?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`)
+      this.$axios.get (`projects/${this.project.projectId}/tasks/user?userId=${this.userId}`)
       .then (response => {
       //  console.log("data", response.data)
        this.MyTasks = response.data.data;
@@ -135,7 +136,7 @@ export default {
 
       this.$axios.get(`projects/${this.project.projectId}/tasks/completion`, {
          headers: {
-          user: "138bbb3d-02ed-4d72-9a03-7e8cdfe89eff",
+          user: this.userId,
        }
       })
       .then (response => {
@@ -155,7 +156,7 @@ export default {
        console.log("error", e)
       })
 
-      this.$axios.get (`projects/${this.project.projectId}/tasks/138bbb3d-02ed-4d72-9a03-7e8cdfe89eff/completion/details`)
+      this.$axios.get (`projects/${this.project.projectId}/tasks/${this.userId}/completion/details`)
       .then (response => {
       //  console.log("tasks users data -->", response.data.data)
        this.people = response.data.data;

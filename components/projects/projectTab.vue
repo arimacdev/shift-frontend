@@ -256,6 +256,7 @@ export default {
     props: ['project', 'taskCompletion'],
     data () {
       return {
+        userId: this.$store.state.user.userId,
         updateProject: {
           "projectName": "",
           "clientId": "",
@@ -322,7 +323,7 @@ export default {
         let response;
        try{
           response = await this.$axios.$put(`/projects/${this.project.projectId}`, {
-          modifierId: "138bbb3d-02ed-4d72-9a03-7e8cdfe89eff",
+          modifierId: this.userId,
           projectName: this.updateProject.projectName,
           clientId: this.updateProject.clientId,
           projectStartDate: this.updateProject.projectStartDate,
@@ -340,7 +341,7 @@ export default {
         response = await this.$axios.$delete(`/projects/${this.project.projectId}`, {    
                 data: {},
                 headers: {
-                    'user': '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff',
+                    'user': this.userId,
                 }
         })
         console.log(response.data);

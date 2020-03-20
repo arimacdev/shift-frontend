@@ -51,12 +51,14 @@ export default {
     },
     data() {
       return {
+        userId: this.$store.state.user.userId,
         component:'profile-content',
       }
     },
 
-      async asyncData({ $axios }) {
-    const { data: user } = await $axios.$get('/users/138bbb3d-02ed-4d72-9a03-7e8cdfe89eff')
+    async asyncData({ $axios }) {
+    let userId = this.store.state.user.userId;
+    const { data: user } = await $axios.$get(`/users/${userId}`)
     console.log(user)
     return { 
       user:user

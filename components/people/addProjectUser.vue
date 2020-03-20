@@ -55,8 +55,9 @@
     props: ['users', 'projectId'],
     data() {
       return {
+        userId: this.$store.state.user.userId,
         addUser: {
-          "assignerId": "138bbb3d-02ed-4d72-9a03-7e8cdfe89eff",
+          "assignerId": this.$store.state.user.userId,
           "assigneeId": "",
           "assigneeJobRole": "",
           "assigneeProjectRole": 3 

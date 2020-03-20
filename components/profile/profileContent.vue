@@ -125,6 +125,7 @@ export default {
     },
     data: function(){
     return{
+        userId: this.$store.state.user.userId,
         userName: this.user.userName,
         firstName: this.user.firstName,
         lastName: this.user.lastName,
@@ -153,7 +154,7 @@ export default {
 
          let response;
        try{
-           response = await this.$axios.$put(`/users/138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`, {
+           response = await this.$axios.$put(`/users/${this.userId}`, {
           firstName: this.firstName,
           lastName: this.lastName,
           email: this.email,

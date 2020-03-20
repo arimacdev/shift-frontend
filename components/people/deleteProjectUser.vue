@@ -25,6 +25,7 @@
     props: ['blockedUserId', 'projectId'],
     data () {
       return {
+        userId: this.$store.state.user.userId,
         dialog: false,
       }
     },
@@ -33,8 +34,8 @@
        this.dialog = false
        let response;
        try{
-          response = await this.$axios.$post(`/projects/${this.projectId}/users/138bbb3d-02ed-4d72-9a03-7e8cdfe89eff/block`, {
-          executorId: '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff',
+          response = await this.$axios.$post(`/projects/${this.projectId}/users/${this.userId}/block`, {
+          executorId: this.userId,
           blockedUserId: this.blockedUserId,
           blockedStatus: true
         })

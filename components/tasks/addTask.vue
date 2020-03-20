@@ -124,6 +124,7 @@ import axios from 'axios'
 
     data() {
       return {
+         userId: this.$store.state.user.userId,
          file: '',
          task: {
             taskName: '',
@@ -150,7 +151,7 @@ import axios from 'axios'
           response = await this.$axios.$post(`/projects/${this.projectId}/tasks`, {
           taskName: this.task.taskName,
           projectId: this.projectId,
-          taskInitiator: '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff',
+          taskInitiator: this.userId,
           taskAssignee: this.task.taskAssignee,
           taskDueDate: this.task.taskDueDate,
           taskRemindOnDate: this.task.taskRemindOnDate,
@@ -171,7 +172,7 @@ import axios from 'axios'
             {
               headers: {
                   'Content-Type': 'multipart/form-data',
-                  'user': '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff'
+                  'user': this.userId
               }
             }
           ).then(function(res){

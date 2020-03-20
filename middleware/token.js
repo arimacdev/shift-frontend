@@ -6,6 +6,7 @@ export default async function ({ store, error , app}) {
     store.commit('user/setAccessToken', token);
     token = token.slice(8, token.length).trimLeft();
     const decodedJwt = jwt.decode(token); 
-    store.commit('user/setUserId', decodedJwt);
+    console.log("decodedJWT",decodedJwt);
+    store.commit('user/setUserId', decodedJwt.userId);
   }
    

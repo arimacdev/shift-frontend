@@ -88,12 +88,14 @@ export default {
     },
     data() {
       return {
+        userId: this.$store.state.user.userId,
         component:'add-user',
       }
     },
 
-      async asyncData({ $axios }) {
-    const { data: projects } = await $axios.$get('/projects?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff')
+    async asyncData({ $axios, store }) {
+    let userId = store.state.user.userId;
+    const { data: projects } = await $axios.$get(`/projects?userId=${userId}`)
     const { data: users } = await $axios.$get('/users')
     console.log(projects)
     console.log(users)
