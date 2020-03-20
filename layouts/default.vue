@@ -1,7 +1,7 @@
 
 <template>
   <v-app>
-    <navigation-drawer :user=user />
+    <!-- <navigation-drawer :user=user /> -->
     <v-content>
       <v-container fluid>
         <nuxt />

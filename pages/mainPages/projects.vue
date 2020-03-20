@@ -1,5 +1,6 @@
 <template>
 <div class="top-nav">
+<navigation-drawer :user=user />
 
  <v-toolbar app
       color=""
@@ -67,6 +68,7 @@
 </template>
 
 <script>
+import NavigationDrawer from '~/components/navigationDrawer'
 import Logo from '~/components/Logo.vue'
 import VuetifyLogo from '~/components/VuetifyLogo.vue'
 import TabViews from '~/components/projects/tabViews'
@@ -75,6 +77,7 @@ import AddProject from '~/components/projects/addProject'
 
 export default {
     components: {
+      NavigationDrawer,
       'tab-views' : TabViews,
       'search-bar' : SearchBar,
       'add-project' : AddProject

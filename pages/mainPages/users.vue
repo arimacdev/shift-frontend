@@ -1,6 +1,6 @@
 <template>
 <div class="top-nav">
-<!-- <top-nav :name="name"/> -->
+<navigation-drawer :user=user />
 
  <v-toolbar app
       color=""
@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import NavigationDrawer from '~/components/navigationDrawer'
 import Logo from '~/components/Logo.vue'
 import VuetifyLogo from '~/components/VuetifyLogo.vue'
 import usersSearchBar from '~/components/tools/usersSearchBar'
@@ -81,6 +82,7 @@ import axios from 'axios'
 
 export default {
     components: {
+      NavigationDrawer,
       'search-bar' : usersSearchBar,
       'add-user' : AddUser,
       'view-user' : ViewUser,

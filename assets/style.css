@@ -16,17 +16,40 @@
     height: 100vh;
 }
 
-/* ------------- profile picture ----------- */
 
-.profilePictureUpload{
-    margin-top: 20px !important;
-    height: 20px !important;
-    width: 200px !important;
-    margin-left: -20px !important;
+
+
+/* ------------------- login -------------------- */
+
+
+.loginContainer{
+    width: 100vw;
+    height: 100vh;
+    text-align: center;
+    padding-top: 20%;
+
 }
-.pictureUploadButton{
-    margin-left: 40px;
-    margin-top: -10px;
+
+.loginContent{
+    text-align: center;
+}
+
+.loginTitle{
+    font-size: 20px !important;
+    font-weight: 600;
+}
+.loginText{
+    font-size: 14px !important;
+    font-weight: 400;
+}
+
+.loginButton{
+    background-color: #0BAFFF !important;
+    margin-top: 40px;
+    width: 250px;
+    height: 40px;
+    border-radius: 5px;
+    color: #FFFFFF;
 }
 
 

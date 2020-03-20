@@ -51,12 +51,12 @@
       return {
         drawer: true,
         items: [
-          { title: 'Summary', icon: 'mdi-chart-line', route: ''},
+          { title: 'Summary', icon: 'mdi-chart-line', route: '../mainPages/summary'},
           { title: 'Projects', icon: 'mdi-folder-outline', route: '../mainPages/projects'},
           { title: 'Tasks', icon: 'mdi-calendar-blank-multiple', route: '../mainPages/tasks' },
-          { title: 'Inventory', icon: 'mdi-comment-outline'},
+          { title: 'Inventory', icon: 'mdi-comment-outline', route: '../mainPages/inventory'},
           { title: 'Users', icon: 'mdi-account-multiple-outline', route: '../mainPages/users'  },
-          { title: 'Admin', icon: 'mdi-account-circle-outline' },
+          { title: 'Admin', icon: 'mdi-account-circle-outline', route: '../mainPages/admin' },
         ],
         mini: true,
       }
