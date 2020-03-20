@@ -81,13 +81,29 @@
                           >
                           </v-checkbox>
                     <v-list-item-content>
-                      <v-list-item-title class="subTaskListName">{{ subtask.subtaskName}}</v-list-item-title>
+                      <v-list-item-title class="subTaskListName">
+                        <input placeholder="Add New" v-model="subtask.subtaskName" type="text" @keyup.enter="addSubTask"/>
+                        <!-- {{ subtask.subtaskName}} -->
+                        </v-list-item-title>
                     </v-list-item-content>
-                    
+                </v-list-item>
+                <v-list-item v-if="showNewSubTask" class="subTaskListItems">
+                       <v-checkbox
+                          v-model="newSubTask.subtaskStatus"
+                          hide-details
+                          class="shrink mr-2 mt-0"           
+                          >
+                       </v-checkbox>
+                       <v-list-item-content>
+                         <v-list-item-title class="subTaskListName">
+                        <input v-model="newSubTask.subtaskName" type="text"  @keyup.enter="addSubTask"/>   
+                           </v-list-item-title>
+                       </v-list-item-content>
+                <!-- </div> -->
                 </v-list-item>
 
                 <v-list-item >
-                      <v-list-item-icon>
+                      <v-list-item-icon @click="showNewSubTaskField">
             <v-icon color="#0BAFFF">mdi-plus-circle</v-icon>
           </v-list-item-icon>
                     <v-list-item-content>
@@ -160,27 +176,20 @@
 
 <v-divider></v-divider>
 
-            <!-- <v-list-item class="subTaskListItems"  v-for="(subtask,index) in subTasks" :key="index">                       
-                    <v-list-item-content>
-                      <v-list-item-title class="subTaskListName">{{ subtask.subtaskName}}</v-list-item-title>
-                    </v-list-item-content>                    
-                </v-list-item> -->
-<template v-slot:activator>
-<v-list-item-group class="tabListItems">
-        <v-list-item>
+  <v-list-group >
+        <template v-slot:activator>
           <v-list-item-icon>
-            <v-icon size="30" color="#FFAE4F" >mdi-paperclip</v-icon>
+            <v-icon size="30" color="#FF6767">mdi-paperclip</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title class="tabListItemsText">Files</v-list-item-title>
           </v-list-item-content>
-        </v-list-item>
-                 <v-list-item class="subTaskListItems"  v-for="(taskFile,index) in taskFiles" :key="index">
+        </template>
+                        <v-list-item class="subTaskListItems"  v-for="(taskFile,index) in taskFiles" :key="index">
                    <a :href="taskFile.taskFileUrl">{{ taskFile.taskFileName }}</a>
-
-                  <!-- {{taskFile.taskFileName}} -->
         </v-list-item>
-      </v-list-item-group>
+      </v-list-group>
+
 
 <v-divider></v-divider>
 
@@ -199,6 +208,7 @@
       return {
         drawer: null,
         selected : true,
+        showNewSubTask: false,
         setDue: this.task.taskDueDateAt,
         updatedTask: {
           taskName: "",
@@ -207,6 +217,11 @@
           taskStatus: "",
           taskRemindOnDate: "",
           taskDueDate: ""
+        },
+        newSubTask: {
+          taskId: "",
+          subtaskName : "",
+          subtaskStatus: false,
         },
         subTask: {
           taskId : this.task.taskId,
@@ -226,15 +241,25 @@
       }
     },
     methods: {
+      showNewSubTaskField: function(){
+        this.showNewSubTask =true;
+      },
       async addSubTask(){
-        console.log("add subTask",this.addUser);
-        let assigneeProjectRoleId = this.adminStatus;
-        console.log(assigneeProjectRoleId);
+        console.log("add subTask", this.task.taskId,this.newSubTask.subtaskName);
         let response;
           try{
           response = await this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask`, 
-          // this.addUser
+          {
+            taskId: this.task.taskId,
+            subtaskName: this.newSubTask.subtaskName,
+            subTaskCreator: "138bbb3d-02ed-4d72-9a03-7e8cdfe89eff"
+          }
         )
+        this.newSubTask.subtaskName = '';
+        this.showNewSubTask = false;
+        this.subTasks.push(response.data)
+        console.log(response);
+
        } catch(e){
           console.log("Error adding a subTask", e);
        }  
@@ -349,6 +374,15 @@
         set(value) {
           console.log("updated task reminder ->", value)
             this.updatedTask.taskReminderAt =  value;
+          }            
+        },
+         subTaskDescription: {
+        get(){
+              return this.subTask.subtaskName
+            },
+        set(value) {
+          console.log("updated subtask description ->", value)
+            this.subTask.subtaskName =  value;
           }            
         }
     },
