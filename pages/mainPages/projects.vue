@@ -87,41 +87,25 @@ export default {
         MyTasks: [],
         taskCompletion: {},
         users: [],
-        access:  this.$store.state,
-        userId: this.$store.state.auth.user.sub
+        access_token: this.$store.state.user.access_token,
+        userId: this.$store.state.user.userId
        
       }
     },
-    // asyncData({ app }) 
-    // { app.$auth.getToken('facebook') },
 
     async asyncData({ $axios, app, store }) { 
     const { data: projects } = await $axios.$get('/projects?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff')
     const { data: users } = await $axios.$get('/users')
     // const { data: tasks } = await $axios.$get(`/projects/${p1}/tasks?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`)
-      let token = app.$auth.getToken('keycloak')
-      // this.access = token;
-    // console.log("------------->", token)
-    // store.commit('project/increment');
-    // console.log("state------->", store.state)
-    // console.log("state------->", store.state.project.all)
-    // console.log("auth------->", store.state.auth)
-    // console.log("auth------->", store.state.auth.user.sub)
-
-
-
     // console.log("projects list", projects)
     // console.log("users list", users)
-    // console.log("tasks list", tasks)
-    
+    // console.log("tasks list", tasks)    
     return { 
       projects: projects,
       users:users,
       // tasks: tasks,
        project: projects[0],
-       people : [],
-       token : token,
-       
+       people : []       
      }
   },
 
@@ -129,14 +113,11 @@ export default {
     selectProject(project){
      this.project = project;
 
-     console.log("SLEELCTED________=====>", this.userId)
-     console.log("SLEELCTED MUTATION", this.$store.state.project.all)
-     
+     console.log("userId", this.userId)
+     console.log("access_token", this.access_token)     
        
       this.$axios.get (`projects/${this.project.projectId}/tasks?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`)
       .then (response => {
-      //   console.log("------->", this.token )
-      //  console.log("all tasks data ---->", response.data.data)
        this.Alltasks = response.data.data;
       })
       .catch (e => {
