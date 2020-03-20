@@ -47,15 +47,16 @@
           <v-list-item-icon>
             <v-icon size="30" color="#02C1D4" >mdi-account-arrow-left-outline</v-icon>
           </v-list-item-icon>
+          <!-- <button @click="showUsers">show</button> -->
           <v-list-item-content>
             <!-- <v-list-item-title class="tabListItemsText">{{ assignee.firstName }} {{assignee.lastName }}</v-list-item-title> -->
             <!-- <select  class="userSelectDropdown tabListItemsText">
                 <option key="pending" value="pending" >Pending</option>
-            </select > -->
-             <select class="userSelectDropdown tabListItemsText" >
-              <option disabled value="" >{{ assignee.firstName }} {{assignee.lastName }}</option>
-              <option v-for="(projectUser, index) in projectUsers" :key="index" :value="projectUser.userId">
-                <!-- ------ add project user list here ------- -->
+            </select > -->            
+              <select class="userSelectDropdown tabListItemsText" v-model="task.taskAssignee">
+              <option class="tabListItemsText" selected="selected"> {{ assignee.firstName }} {{assignee.lastName }} </option>
+              <option class="tabListItemsText" v-for="(projectUser, index) in projectUsers" :key="index">
+                {{projectUser.firstName}} {{projectUser.lastName}}
               </option>
             </select>
           </v-list-item-content>
@@ -223,7 +224,7 @@
 <script>
 
   export default {
-    props: ['task', 'assignee', 'projectId', 'subTasks', 'taskFiles'],
+    props: ['task', 'assignee', 'projectId', 'subTasks', 'taskFiles', 'projectUsers'],
     data() {
       return {
         userId: this.$store.state.user.userId,
@@ -264,6 +265,10 @@
     methods: {
       showNewSubTaskField: function(){
         this.showNewSubTask =true;
+      },
+      showUsers(){
+        console.log(this.taskFiles)
+        console.log(this.projectUsers)
       },
       changeDue(){
         console.log("change me")

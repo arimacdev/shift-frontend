@@ -40,9 +40,9 @@
         </div>
 </div>   
 
-            <keep-alive>
+            <!-- <keep-alive> -->
                  <component v-bind:is="component" :projectId=projectId :Alltasks="Alltasks" :MyTasks="MyTasks" :projectUsers="projectUsers"></component>
-            </keep-alive>
+            <!-- </keep-alive> -->
         
           </v-card-text>
         </v-card>
