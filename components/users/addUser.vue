@@ -142,7 +142,8 @@ export default {
         this.password = ''
         this.email = ''
         this.userName = ''
-       alert("User created successfully!")
+    //    alert("User created successfully!")
+    location.reload();
        }  catch(e){
           console.log("Error creating user", e);
           alert("Error creating user!")

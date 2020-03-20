@@ -3,6 +3,27 @@
         <div class="blackBar profileBlackBar"></div>
         <div class="userImage profileUserImage">
           <v-img class="profileImage" src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
+          
+          <div class="profilePictureUpload">
+              <form>
+              <template>
+                <v-file-input prepend-icon="mdi-camera" chips label="Upload profile picture"></v-file-input>
+              </template>
+              <div class="pictureUploadButton">
+              <v-btn
+                :loading="loading"
+                :disabled="loading"
+                color="#0BAFFF"
+                class="ma-2 white--text"
+                @click="loader = 'loading3'"
+                x-small
+                >
+                Upload
+                <v-icon right dark>mdi-upload</v-icon>
+                </v-btn>
+              </div>
+              </form>
+           </div>
         </div>
         <div class="profileUserName">{{ user.firstName }} {{ user.lastName }} </div>
         <div class="submitButton profileButton">
@@ -20,8 +41,11 @@
         <div class="userDetails ">
             <p class="userName"></p>
         </div>
+        
          <div class="usersForms userDetailsForm profileForm">
+             
         <form>
+            
         <v-row
             class="mb-12 formRow" 
             no-gutters
@@ -108,6 +132,22 @@ export default {
         userId: this.user.userId
     }
     },
+    data () {
+      return {
+        loader: null,
+        loading: false,
+      }
+    },
+    watch: {
+      loader () {
+        const l = this.loader
+        this[l] = !this[l]
+
+        setTimeout(() => (this[l] = false), 3000)
+
+        this.loader = null
+      },
+    },
      methods: {
      async postData(){
 
@@ -129,3 +169,5 @@ export default {
   
  
 </script>
+
+
