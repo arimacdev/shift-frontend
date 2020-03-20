@@ -76,7 +76,7 @@
                 md="6"
                 
             >
-        <input  v-model="userName" disabled  placeholder="Email" class="formElements">
+        <input  v-model="userName" disabled  placeholder="Username" class="formElements">
             </v-col>
              <v-col
                 sm="6"

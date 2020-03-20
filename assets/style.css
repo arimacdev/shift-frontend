@@ -368,6 +368,11 @@ font-size: 14px;
 
 }
 
+.userSelectDropdown{
+    height: 30px;
+    font-size: 30px;
+}
+
 
 
 /* ----------------- people tab ------------- */
@@ -577,6 +582,9 @@ color: #576377;
     color: #576377;
     font-weight: 450;
     margin-left: 20px;
+}
+.attchmentContainer{
+    padding-bottom: 30px;
 }
 /* ---------------- validation --------------- */
 
