@@ -86,6 +86,7 @@
                         <!-- {{ subtask.subtaskName}} -->
                         </v-list-item-title>
                     </v-list-item-content>
+                    <v-icon color="#0BAFFF" @click="deleteSubTask(subtask,index)">mdi-plus-circle</v-icon>
                 </v-list-item>
                 <v-list-item v-if="showNewSubTask" class="subTaskListItems">
                        <v-checkbox
@@ -357,8 +358,28 @@
        } catch(e){
           console.log("Error updating a status", e);
        }
+      },
+
+      async deleteSubTask(subtask,index){
+        console.log("deletesubtask ->", subtask);
+        let response;
+        try{
+          response = await this.$axios.$delete(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask/${subtask.subtaskId}`,
+          {
+             headers: {
+                  'user': '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff'
+              }
+          }
+        );
+        this.subTasks.splice(index, 1);
+        console.log("delete sub task", response);
+       } catch(e){
+          console.log("Error updating a status", e);
+       }
       }
-      
+
+
+           
 
     },
     components: {
