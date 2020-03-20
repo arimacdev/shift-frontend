@@ -52,7 +52,7 @@ export default {
   */
   axios: {
       
-    baseURL: 'http://pmtool.devops.arimac.xyz/api/pm-service/api/pm-service'
+    baseURL: 'http://pmtool.devops.arimac.xyz/api/pm-service'
   },
   /*
   ** vuetify module configuration

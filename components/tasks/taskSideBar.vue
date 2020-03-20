@@ -160,6 +160,12 @@
 
 <v-divider></v-divider>
 
+            <!-- <v-list-item class="subTaskListItems"  v-for="(subtask,index) in subTasks" :key="index">                       
+                    <v-list-item-content>
+                      <v-list-item-title class="subTaskListName">{{ subtask.subtaskName}}</v-list-item-title>
+                    </v-list-item-content>                    
+                </v-list-item> -->
+<template v-slot:activator>
 <v-list-item-group class="tabListItems">
         <v-list-item>
           <v-list-item-icon>
@@ -168,6 +174,11 @@
           <v-list-item-content>
             <v-list-item-title class="tabListItemsText">Files</v-list-item-title>
           </v-list-item-content>
+        </v-list-item>
+                 <v-list-item class="subTaskListItems"  v-for="(taskFile,index) in taskFiles" :key="index">
+                   <a :href="taskFile.taskFileUrl">{{ taskFile.taskFileName }}</a>
+
+                  <!-- {{taskFile.taskFileName}} -->
         </v-list-item>
       </v-list-item-group>
 
@@ -188,7 +199,6 @@
       return {
         drawer: null,
         selected : true,
-        // notes: this.task.taskNote,
         setDue: this.task.taskDueDateAt,
         updatedTask: {
           taskName: "",
@@ -296,15 +306,6 @@
      
     },
     computed: {
-        //  statusUpdate: {
-        // get(){
-        //       return true
-        //     },
-        // set(value) {
-        //   // console.log("updated task value ->", value)
-        //   //   this.updatedTask.taskNotes =  value;
-        //   }            
-        // },
         taskNotes: {
         get(){
               return this.task.taskNote
