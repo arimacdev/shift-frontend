@@ -127,7 +127,7 @@
           <v-list-item-title class="tabListItemsText">Due date</v-list-item-title>
            </v-list-item-content>
           <v-list-item-content>
-            <input class="sideBarDate " placeholder="Due date" onfocusin="(this.type='date')" onfocusout="(this.type='text')" type="text" v-model="task.taskDueDateAt">
+            <input class="sideBarDate " placeholder="Due date" onfocusin="(this.type='date')" onfocusout="(this.type='text')" type="text" v-model="taskDue" @change="updateTaskDates('dueDate')">
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -143,7 +143,7 @@
           <v-list-item-title class="tabListItemsText">Remind on</v-list-item-title>
            </v-list-item-content>
           <v-list-item-content>
-             <input class="sideBarDate " placeholder="Due date" onfocusin="(this.type='date')" onfocusout="(this.type='text')" type="text" v-model="task.taskReminderAt">
+             <input class="sideBarDate " placeholder="Due date" onfocusin="(this.type='date')" onfocusout="(this.type='text')" type="text" v-model="taskRemindOn" @change="updateTaskDates('remindOn')">
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -244,6 +244,9 @@
       showNewSubTaskField: function(){
         this.showNewSubTask =true;
       },
+      changeDue(){
+        console.log("change me")
+      },
       async addSubTask(){
         console.log("add subTask", this.task.taskId,this.newSubTask.subtaskName);
         let response;
@@ -292,6 +295,37 @@
         try{
           response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
           "taskStatus": this.updatedTask.taskStatus
+        },
+          {
+              headers: {
+                  'user': '138bbb3d-02ed-4d72-9a03-7e8cdfe89eff'
+              }
+            }
+        )
+        console.log("update task status response", response);
+       } catch(e){
+          console.log("Error updating a status", e);
+       }
+      },
+        async updateTaskDates(type){
+          let dueDate;
+          let remindDate;
+          if(type === "dueDate"){
+            dueDate = this.updatedTask.taskDueDateAt;
+            remindDate = this.task.taskReminderAt;
+          } else {
+            dueDate = this.task.taskDueDateAt;
+            remindDate = this.updatedTask.taskRemindOnDate
+          }
+        // console.log("onchange update task dates -> remind->", this.updatedTask.taskRemindOnDate)
+        // console.log("onchange update task dates -> due->", this.updatedTask.taskDueDate)
+        console.log("dueDate",dueDate);
+        console.log("remindDate",remindDate);
+         let response;
+        try{
+          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
+          "taskDueDate": dueDate,
+          "taskRemindOnDate" : remindDate
         },
           {
               headers: {
@@ -360,20 +394,35 @@
         },
           taskDue: {
         get(){
-              return this.task.taskDueDateAt
+            // let stringDate = new Date(this.task.taskDueDateAt);
+          let stringDate  = this.task.taskDueDateAt + " ";
+            // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
+              // let due = this.task.taskDueDateAt;              
+              // return due.slice(0,10)
+              // let newDate = stringDate.toString();
+              stringDate = stringDate.toString();
+              stringDate = stringDate.slice(0,10);           
+              return stringDate;
+              // return newDate;
             },
         set(value) {
-          console.log("updated task due ->", value)
+            console.log("updated task due ->", value)
             this.updatedTask.taskDueDateAt =  value;
           }            
         },
           taskRemindOn: {
         get(){
-              return this.task.taskReminderAt
-            },
+          let stringDate  = this.task.taskReminderAt + "";
+          // console.log("---->",stringDate);
+          // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
+          // console.log("f---->",formateedDate)
+              stringDate = stringDate.toString();
+              stringDate = stringDate.slice(0,10);           
+              return stringDate;
+          },
         set(value) {
           console.log("updated task reminder ->", value)
-            this.updatedTask.taskReminderAt =  value;
+            this.updatedTask.taskRemindOnDate =  value;
           }            
         },
          subTaskDescription: {
