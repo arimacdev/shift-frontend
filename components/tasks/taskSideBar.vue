@@ -48,7 +48,16 @@
             <v-icon size="30" color="#02C1D4" >mdi-account-arrow-left-outline</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title class="tabListItemsText">{{ assignee.firstName }} {{assignee.lastName }}</v-list-item-title>
+            <!-- <v-list-item-title class="tabListItemsText">{{ assignee.firstName }} {{assignee.lastName }}</v-list-item-title> -->
+            <!-- <select  class="userSelectDropdown tabListItemsText">
+                <option key="pending" value="pending" >Pending</option>
+            </select > -->
+             <select class="userSelectDropdown tabListItemsText" >
+              <option disabled value="" >{{ assignee.firstName }} {{assignee.lastName }}</option>
+              <option v-for="(projectUser, index) in projectUsers" :key="index" :value="projectUser.userId">
+                <!-- ------ add project user list here ------- -->
+              </option>
+            </select>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -82,11 +91,11 @@
                           </v-checkbox>
                     <v-list-item-content>
                       <v-list-item-title class="subTaskListName">
-                        <input placeholder="Add New" v-model="subtask.subtaskName" type="text" @keyup.enter="addSubTask"/>
+                        <input v-model="subtask.subtaskName" type="text" @keyup.enter="addSubTask"/>
                         <!-- {{ subtask.subtaskName}} -->
                         </v-list-item-title>
                     </v-list-item-content>
-                    <v-icon color="#0BAFFF" @click="deleteSubTask(subtask,index)">mdi-plus-circle</v-icon>
+                    <v-icon color="#FF6161" @click="deleteSubTask(subtask,index)">mdi-trash-can-outline</v-icon>
                 </v-list-item>
                 <v-list-item v-if="showNewSubTask" class="subTaskListItems">
                        <v-checkbox
@@ -97,14 +106,14 @@
                        </v-checkbox>
                        <v-list-item-content>
                          <v-list-item-title class="subTaskListName">
-                        <input v-model="newSubTask.subtaskName" type="text"  @keyup.enter="addSubTask"/>   
+                        <input  placeholder="Add new" v-model="newSubTask.subtaskName" type="text"  @keyup.enter="addSubTask"/>   
                            </v-list-item-title>
                        </v-list-item-content>
                 <!-- </div> -->
                 </v-list-item>
 
-                <v-list-item >
-                      <v-list-item-icon @click="showNewSubTaskField">
+                <v-list-item @click="showNewSubTaskField">
+                      <v-list-item-icon >
             <v-icon color="#0BAFFF">mdi-plus-circle</v-icon>
           </v-list-item-icon>
                     <v-list-item-content>
@@ -186,6 +195,10 @@
             <v-list-item-title class="tabListItemsText">Files</v-list-item-title>
           </v-list-item-content>
         </template>
+        <div class="attchmentContainer fileAttachSideBar">
+        <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Add a new file" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload"/>
+        </div>
+        <div class="attchmentContainer">
         <v-list-item class="subTaskListItems"  v-for="(taskFile,index) in taskFiles" :key="index">
           <div class="listAttachment">
             <a style="text-decoration: none;" :href="taskFile.taskFileUrl">
@@ -194,6 +207,7 @@
             </a>
           </div>
         </v-list-item>
+        </div>
       </v-list-group>
 
 

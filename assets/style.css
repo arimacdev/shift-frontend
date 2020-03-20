@@ -72,9 +72,10 @@ margin-bottom: -5px !important;
     width: 90%;
     margin-top: 10%;
 }
-.fileUpload{
-    /* display: none; */
-}
+.fileUpload::-webkit-file-upload-button {
+    color: red;
+    border-radius: 5px;
+  }
 .textArea{
     height: 187px;
     width: 99%;
@@ -368,6 +369,11 @@ font-size: 14px;
 
 }
 
+.userSelectDropdown{
+    height: 30px;
+    font-size: 30px;
+}
+
 
 
 /* ----------------- people tab ------------- */
@@ -577,6 +583,16 @@ color: #576377;
     color: #576377;
     font-weight: 450;
     margin-left: 20px;
+}
+.attchmentContainer{
+    padding-bottom: 30px;
+}
+
+.fileAttachSideBar{
+    margin-left: 75px;
+    margin-right: 10px;
+    margin-top: 10px;
+
 }
 /* ---------------- validation --------------- */
 
