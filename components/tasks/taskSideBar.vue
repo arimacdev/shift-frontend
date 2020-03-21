@@ -230,6 +230,7 @@
         showNewSubTask: false,
         setDue: this.task.taskDueDateAt,
         editTask: true,
+        file:'',
         updatedTask: {
           taskName: "",
           taskAssignee: "",
@@ -442,10 +443,31 @@
        } catch(e){
           console.log("Error updating a status", e);
        }
-      }
+      },
+       handleFileUploads(e){
+         this.file = this.$refs.files.files[0];
+         let formData = new FormData();
+        formData.append('files', this.file);
+        formData.append('type', 'profileImage')
 
-
-           
+        this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
+            formData,
+            {
+              headers: {
+                  'Content-Type': 'multipart/form-data',
+                  'user': this.userId
+              }
+            }
+          ).then(function(res){
+            this.taskFiles.push(res.data);
+            this.file = '';
+            console.log('File upload successful', res.data);
+          })
+          .catch(function(){
+            console.log('File Upload Failed');
+          });
+      },
+   
 
     },
     components: {
