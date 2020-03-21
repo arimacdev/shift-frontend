@@ -1,7 +1,7 @@
 variables:
   DOCKER_DRIVER: overlay
   CONTAINER_IMAGE: asia.gcr.io/arimac-staging/pmtool-frontend
-
+  CONTAINER_RELEASE_IMAGE: asia.gcr.io/arimac-staging/pmtool-frontend-release
 stages:
   - package
 
@@ -28,9 +28,9 @@ docker-build-release:
   script:
   - echo "$GCP_CI_KEY" > key.json
   - docker login -u _json_key --password-stdin https://asia.gcr.io < key.json
-  - docker build -t $CONTAINER_IMAGE:release --build-arg BASE_URL=$BASE_URL_RELEASE --build-arg KEYCLOAK_REALM=$KC_REALM_ENV --build-arg KEYCLOAK_CLIENT_ID=$KC_CLIENTID_ENV .
-  - docker tag $CONTAINER_IMAGE:release $CONTAINER_IMAGE:r${CI_PIPELINE_IID}
-  - docker push $CONTAINER_IMAGE:release
-  - docker push $CONTAINER_IMAGE:r${CI_PIPELINE_IID}
+  - docker build -t $CONTAINER_RELEASE_IMAGE:latest --build-arg BASE_URL=$BASE_URL_RELEASE --build-arg KEYCLOAK_REALM=$KC_REALM_ENV --build-arg KEYCLOAK_CLIENT_ID=$KC_CLIENTID_ENV .
+  - docker tag $CONTAINER_RELEASE_IMAGE:latest $CONTAINER_RELEASE_IMAGE:v${CI_PIPELINE_IID}
+  - docker push $CONTAINER_RELEASE_IMAGE:latest
+  - docker push $CONTAINER_RELEASE_IMAGE:v${CI_PIPELINE_IID}
   only:
   - release
