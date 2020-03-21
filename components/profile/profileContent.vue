@@ -2,12 +2,13 @@
     <div class="profileDetailsCover">
         <div class="blackBar profileBlackBar"></div>
         <div class="userImage profileUserImage">
-          <v-img class="profileImage" src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
+          <v-img class="profileImage" :src="user.profileImage"></v-img>
           
           <div class="profilePictureUpload">
               <form>
               <template>
-                <v-file-input ref="files" v-on:change="handleFileUploads()"  prepend-icon="mdi-camera" chips label="Upload profile picture"></v-file-input>
+                <!-- <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Drop files to attach, or browse" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload"/> -->
+                <v-file-input id="files" ref="files" v-on:change="handleFileUploads()"  prepend-icon="mdi-camera" chips label="Upload profile picture"></v-file-input>
               </template>
               <div class="pictureUploadButton">
               <v-btn
@@ -192,7 +193,7 @@ export default {
       },
        submit () {
          try{
-              let formData = new FormData();
+        let formData = new FormData();
         formData.append('files', this.file);
         formData.append('type', 'profileImage')
 
