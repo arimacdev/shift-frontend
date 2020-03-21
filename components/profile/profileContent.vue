@@ -114,9 +114,6 @@
         <div v-if="$v.confirmPassword.$error && !$v.confirmPassword.sameAs" class="errorText"> Passwords must be identical</div>
        </v-col>
         </v-row>
-
-        
-        
     </div>
         </form>
     </div>
@@ -148,7 +145,9 @@ export default {
           password: '',
             confirmPassword: '',
             file: '',
-        userId: this.$store.state.user.userId
+        userId: this.$store.state.user.userId,
+        dismissSecs: 5,
+        dismissCountDown: 0
       }
     },
     watch: {
@@ -173,7 +172,7 @@ export default {
           password: this.user.password,
 
         })
-         location.reload();
+        //  location.reload();
         console.log(response.message);
        }
        catch(e){
@@ -181,6 +180,7 @@ export default {
           // alert("Error updating user!")
        }
       },
+       
        handleSubmit(e) {
                 this.submitted = true;
                 // stop here if form is invalid
