@@ -37,7 +37,7 @@
       class=""
       color="#E5E5E5"
     >
-    <task-side-bar :task=task :assignee="assignee" :projectId="projectId" :subTasks="subTasks" :taskFiles="taskFiles" :projectUsers="projectUsers"/>
+    <task-side-bar :task=task :assignee="assignee" :projectId="projectId" :subTasks="subTasks" :taskFiles="taskFiles" :projectUsers="projectUsers" :people="people"/>
     
     </v-navigation-drawer>
 
@@ -50,7 +50,7 @@
 import TaskSideBar from '~/components/tasks/taskSideBar'
 
   export default {
-    props: ['projectId', 'Alltasks', 'projectUsers'],
+    props: ['projectId', 'Alltasks', 'projectUsers', 'people'],
     data() {
       return {
         projects: ["pr1"],

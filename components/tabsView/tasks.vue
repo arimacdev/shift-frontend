@@ -41,7 +41,7 @@
 </div>   
 
             <!-- <keep-alive> -->
-                 <component v-bind:is="component" :projectId=projectId :Alltasks="Alltasks" :MyTasks="MyTasks" :projectUsers="projectUsers"></component>
+                 <component v-bind:is="component" :projectId=projectId :Alltasks="Alltasks" :MyTasks="MyTasks" :projectUsers="projectUsers" :people="people"></component>
             <!-- </keep-alive> -->
         
           </v-card-text>
@@ -54,7 +54,7 @@ import MyTasks from '~/components/tasks/myTasks'
 import AddTask from '~/components/tasks/addTask'
 
 export default {
-    props: ['name', 'projectId', 'Alltasks', 'MyTasks'],
+    props: ['name', 'projectId', 'Alltasks', 'MyTasks', 'people'],
     data() {
         return {
             key: value
@@ -76,16 +76,16 @@ export default {
          setTaskTab(tabType) {
              console.log("projectId", this.projectId)
              this.component = tabType;
-             if(tabType === 'add-task'){
+            //  if(tabType === 'add-task'){
                 this.$axios.get (`users/project/${this.projectId}`)
                 .then (response => {
-                console.log("project users", response.data)
+                console.log("project users", response.data.data)
                 this.projectUsers = response.data.data;
                 })
                 .catch (e => {
                 console.log("error", e)
                 })
-             }
+            //  }
          }
      },
   }

@@ -22,7 +22,7 @@
           
       <v-tab-item>
         <v-divider class="mx-4"></v-divider>
-            <tasks :Alltasks="Alltasks" :MyTasks="MyTasks" :projectId="projectId"/>
+            <tasks :Alltasks="Alltasks" :MyTasks="MyTasks" :projectId="projectId" :people="people"/>
 
       </v-tab-item>
       <v-tab-item>

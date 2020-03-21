@@ -17,7 +17,7 @@
                 sm="6"
                 md="6"                
             >
-            <select v-model="task.taskAssignee" class="formElements">
+            <select v-model="task.taskAssignee" class="formElements" >
               <option disabled value="" >Assignee</option>
               <option v-for="(projectUser, index) in projectUsers" :key="index" :value="projectUser.userId">
                 {{projectUser.firstName}} {{projectUser.lastName}}

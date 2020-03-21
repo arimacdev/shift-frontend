@@ -11,10 +11,11 @@
             </div>
           </v-list-item-icon>
            <v-list-item-content class="">
+             <input type="text" v-model="updatedName"  :disabled="editTask" @keyup.enter="saveEditTaskName"/>
             <v-list-item-title class="taskTitle">{{ this.task.taskName }}</v-list-item-title>
           </v-list-item-content>
           <v-list-item-content >
-            <v-icon size="20" color="#FFFFFF" class="editIcon">mdi-pencil-circle</v-icon>
+            <v-icon size="20" color="#FFFFFF" class="editIcon" @click="EditTaskName">mdi-pencil-circle</v-icon>
           </v-list-item-content>
 
 
@@ -47,16 +48,12 @@
           <v-list-item-icon>
             <v-icon size="30" color="#02C1D4" >mdi-account-arrow-left-outline</v-icon>
           </v-list-item-icon>
-          <!-- <button @click="showUsers">show</button> -->
-          <v-list-item-content>
-            <!-- <v-list-item-title class="tabListItemsText">{{ assignee.firstName }} {{assignee.lastName }}</v-list-item-title> -->
-            <!-- <select  class="userSelectDropdown tabListItemsText">
-                <option key="pending" value="pending" >Pending</option>
-            </select > -->            
-              <select class="userSelectDropdown tabListItemsText" v-model="task.taskAssignee">
-              <option class="tabListItemsText" selected="selected"> {{ assignee.firstName }} {{assignee.lastName }} </option>
-              <option class="tabListItemsText" v-for="(projectUser, index) in projectUsers" :key="index">
-                {{projectUser.firstName}} {{projectUser.lastName}}
+          <!-- <button @click="showUsers">CLICK </button> -->
+          <v-list-item-content>        
+              <select class="userSelectDropdown tabListItemsText" v-model="taskAssignee" @change="changeAssignee">
+              <!-- <option class="tabListItemsText" selected="selected"> {{ assignee.firstName }} {{assignee.lastName }} </option> -->
+              <option class="tabListItemsText" v-for="(projectUser, index) in people" :key="index" :selected="projectUser.assigneeId === assignee.userId" :value="projectUser.assigneeId" >
+                {{projectUser.assigneeFirstName}} {{projectUser.assigneeLastName}}
               </option>
             </select>
           </v-list-item-content>
@@ -224,7 +221,7 @@
 <script>
 
   export default {
-    props: ['task', 'assignee', 'projectId', 'subTasks', 'taskFiles', 'projectUsers'],
+    props: ['task', 'assignee', 'projectId', 'subTasks', 'taskFiles', 'projectUsers', 'people'],
     data() {
       return {
         userId: this.$store.state.user.userId,
@@ -232,6 +229,7 @@
         selected : true,
         showNewSubTask: false,
         setDue: this.task.taskDueDateAt,
+        editTask: true,
         updatedTask: {
           taskName: "",
           taskAssignee: "",
@@ -266,12 +264,37 @@
       showNewSubTaskField: function(){
         this.showNewSubTask =true;
       },
+      EditTaskName(){
+        this.editTask = false;
+      },
       showUsers(){
-        console.log(this.taskFiles)
-        console.log(this.projectUsers)
+        console.log(this.assignee);
+        // console.log(this.taskFiles)
+        // console.log(this.people)
       },
       changeDue(){
         console.log("change me")
+      },
+      async changeAssignee(){
+        console.log("assignee changed");
+
+         console.log("onchange updated assignee ->", this.updatedTask.taskAssignee)
+         let response;
+        try{
+          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
+          "taskAssignee": this.updatedTask.taskAssignee
+        },
+          {
+              headers: {
+                  'user': this.userId
+              }
+            }
+        )
+        console.log("update task status response", response);
+       } catch(e){
+          console.log("Error updating a status", e);
+       }
+        
       },
       async addSubTask(){
         console.log("add subTask", this.task.taskId,this.newSubTask.subtaskName);
@@ -303,6 +326,24 @@
         try{
           response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
           "taskNotes": this.updatedTask.taskNotes
+        },
+          {
+              headers: {
+                  'user': this.userId
+              }
+            }
+        )
+        console.log("edit task response", response);
+       } catch(e){
+          console.log("Error updating a note", e);
+       }
+      },
+      async saveEditTaskName(){
+      console.log("updatedTaskName ->",this.updatedTask.taskName)
+        let response;
+        try{
+          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
+          "taskName": this.updatedTask.taskName
         },
           {
               headers: {
@@ -411,6 +452,16 @@
      
     },
     computed: {
+        updatedName: {
+        get(){
+              return this.task.taskName
+            },
+        set(value) {
+          console.log("updated task name ->", value)
+            this.updatedTask.taskName =  value;
+          }            
+        },
+
         taskNotes: {
         get(){
               return this.task.taskNote
@@ -420,6 +471,17 @@
             this.updatedTask.taskNotes =  value;
           }            
         },
+
+         taskAssignee: {
+        get(){
+              return this.assignee.firstName
+            },
+        set(value) {
+          console.log("updated task assignee ->", value)
+            this.updatedTask.taskAssignee =  value;
+          }            
+        },
+
         taskStatus: {
         get(){
               return this.task.taskStatus
@@ -429,15 +491,15 @@
             this.updatedTask.taskStatus =  value;
           }            
         },
-          taskStatus: {
-        get(){
-              return this.task.taskStatus
-            },
-        set(value) {
-          console.log("updated task statutus ->", value)
-            this.updatedTask.taskStatus =  value;
-          }            
-        },
+        //   taskStatus: {
+        // get(){
+        //       return this.task.taskStatus
+        //     },
+        // set(value) {
+        //   console.log("updated task statutus ->", value)
+        //     this.updatedTask.taskStatus =  value;
+        //   }            
+        // },
           taskDue: {
         get(){
             // let stringDate = new Date(this.task.taskDueDateAt);

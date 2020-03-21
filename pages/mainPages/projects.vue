@@ -161,7 +161,7 @@ export default {
 
       this.$axios.get (`projects/${this.project.projectId}/tasks/${this.userId}/completion/details`)
       .then (response => {
-      //  console.log("tasks users data -->", response.data.data)
+       console.log("tasks users data -->", response.data.data)
        this.people = response.data.data;
       })
       .catch (e => {
