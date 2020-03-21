@@ -51,9 +51,8 @@ export default {
   ** UserId - Admin
   ** 138bbb3d-02ed-4d72-9a03-7e8cdfe89eff
   */
-  axios: {
-      
-    baseURL: 'http://pmtool.devops.arimac.xyz/api/pm-service'
+  axios: {      
+    baseURL: `${process.env.BASE_URL}/api/pm-service`
   },
   /*
   ** vuetify module configuration
@@ -64,14 +63,14 @@ export default {
     local: false,
     keycloak: {
       _scheme: 'oauth2',
-      authorization_endpoint: 'http://pmtool.devops.arimac.xyz/auth/realms/pm-tool/protocol/openid-connect/auth',
-      userinfo_endpoint: 'http://pmtool.devops.arimac.xyz/auth/realms/pm-tool/protocol/openid-connect/userinfo',
-      access_token_endpoint: 'http://pmtool.devops.arimac.xyz/auth/realms/pm-tool/protocol/openid-connect/token',
+      authorization_endpoint: `${process.env.BASE_URL}/auth/realms/pm-tool/protocol/openid-connect/auth`,
+      userinfo_endpoint: `${process.env.BASE_URL}/auth/realms/pm-tool/protocol/openid-connect/userinfo`,
+      access_token_endpoint: `${process.env.BASE_URL}/auth/realms/pm-tool/protocol/openid-connect/token`,
       scope: ['openid', 'roles', 'profile'],
       grant_type: 'authorization_code',
       response_type: 'code',
       token_type: 'Bearer',
-      client_id: 'pmtool-frontend',
+      client_id: `${process.env.KEYCLOAK_CLIENT_ID}`,
       token_key: 'access_token'
     }
   },
@@ -89,9 +88,9 @@ router: {
 
 
 constants: {
-  hostUrl: 'http://pmtool.devops.arimac.xyz',
-  appUrl: 'http://pmtool.devops.arimac.xyz',
-  realm: 'pm-tool'
+  hostUrl: `${process.env.BASE_URL}`,
+  appUrl: `${process.env.BASE_URL}`,
+  realm: `${process.env.KEYCLOAK_REALM}`
 },
 
   vuetify: {
