@@ -33,8 +33,9 @@
                         rounded
                         reactive
                         >
-                        <template v-slot="{ value }">
-                            <span class="presentageValue">{{ Math.ceil(value) }}%</span>
+                        <!-- <template v-slot="{ value }"> -->
+                            <template>
+                            <!-- <span class="presentageValue">{{ Math.ceil(value) }}%</span> -->
                         </template>
                         </v-progress-linear>
 
@@ -70,7 +71,7 @@ export default {
     data() {
         return {
             // userList: this.people,
-            skill: 30,
+            skill: 0,
             progress: this.progress
         }
     },

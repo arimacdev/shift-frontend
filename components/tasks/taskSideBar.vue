@@ -44,22 +44,34 @@
       
     <v-list flat>
       <v-list-item-group class="tabListItems">
-        <v-list-item>
+
+<!-- ---------------------------- -->
+
+ <v-list-group >
+        <template v-slot:activator>
           <v-list-item-icon>
-            <v-icon size="30" color="#02C1D4" >mdi-account-arrow-left-outline</v-icon>
+            <v-icon size="30" color="#FF6767" >mdi-account-arrow-left-outline</v-icon>
           </v-list-item-icon>
-          <!-- <button @click="showUsers">CLICK </button> -->
-          <v-list-item-content>        
-              <select class="userSelectDropdown tabListItemsText" v-model="taskAssignee" @change="changeAssignee">
-              <!-- <option class="tabListItemsText" selected="selected"> {{ assignee.firstName }} {{assignee.lastName }} </option> -->
+          <v-list-item-content>
+            <v-list-item-title class="tabListItemsText">{{ assignee.firstName }} {{assignee.lastName }}</v-list-item-title>
+          </v-list-item-content>
+        </template>
+
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="" >
+              <select class="userSelectDropdown tabListItemsText userAddSelect" v-model="taskAssignee" @change="changeAssignee">
               <option class="tabListItemsText" v-for="(projectUser, index) in people" :key="index" :selected="projectUser.assigneeId === assignee.userId" :value="projectUser.assigneeId" >
                 {{projectUser.assigneeFirstName}} {{projectUser.assigneeLastName}}
               </option>
             </select>
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-      </v-list-item-group>
+      </v-list-group>
 
+
+      </v-list-item-group>
 <v-divider></v-divider>
 
  

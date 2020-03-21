@@ -3,7 +3,7 @@
 
        <div class="allTasksDropDown">
        </div>
-       <div >
+       <div class="">
         <div v-for="(task, index) in Alltasks"
         :key="index" class="taskList" >
             <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)">
