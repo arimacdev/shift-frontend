@@ -92,8 +92,8 @@
             md="6"
             class="buttonGrid"
       >
-                <button class="submitButton editUserSubmit">
-                <v-list-item @click="postData()" 
+                <button class="submitButton editUserSubmit" @click="postData()" >
+                <v-list-item 
                 dark >
                     <v-list-item-action>
                         <v-icon size="20" color="">mdi-account-outline</v-icon>
@@ -132,11 +132,8 @@ export default {
           lastName: this.userData.lastName,
           email: this.userData.email,
         })
+        location.reload();
 
-        this.firstName = ''
-        this.lastName = ''
-        this.email = ''
-        alert("User updated successfully!")
       }
        catch(e){
           console.log("Error edit user", e);

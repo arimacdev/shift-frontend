@@ -134,7 +134,8 @@ export default {
             this.startDate = ''
             this.endDate = ''
             this.projectOwner = ''
-          alert("Project created successfully!")
+        //   alert("Project created successfully!")
+        location.reload();
        }  catch(e){
           console.log("Error creating project", e);
           alert("Error creating project!")

@@ -1,6 +1,6 @@
 <template>
 <div class="top-nav">
-<!-- <top-nav :name="name"/> -->
+<navigation-drawer :user=user />
 
  <v-toolbar app
       color=""
@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import NavigationDrawer from '~/components/navigationDrawer'
 import Logo from '~/components/Logo.vue'
 import VuetifyLogo from '~/components/VuetifyLogo.vue'
 import ProfileContent from '~/components/profile/profileContent'
@@ -47,17 +48,17 @@ import axios from 'axios'
 
 export default {
     components: {
+      NavigationDrawer,
       'profile-content' : ProfileContent
     },
     data() {
       return {
-        userId: this.$store.state.user.userId,
         component:'profile-content',
       }
     },
 
-    async asyncData({ $axios }) {
-    let userId = this.store.state.user.userId;
+      async asyncData({ $axios, store }) {
+      let userId = store.state.user.userId;
     const { data: user } = await $axios.$get(`/users/${userId}`)
     console.log(user)
     return { 

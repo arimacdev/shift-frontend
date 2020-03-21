@@ -7,7 +7,7 @@
           <div class="profilePictureUpload">
               <form>
               <template>
-                <v-file-input prepend-icon="mdi-camera" chips label="Upload profile picture"></v-file-input>
+                <v-file-input ref="files" v-on:change="handleFileUploads()"  prepend-icon="mdi-camera" chips label="Upload profile picture"></v-file-input>
               </template>
               <div class="pictureUploadButton">
               <v-btn
@@ -15,7 +15,7 @@
                 :disabled="loading"
                 color="#0BAFFF"
                 class="ma-2 white--text"
-                @click="loader = 'loading3'"
+                @click="submit()"
                 x-small
                 >
                 Upload
@@ -25,8 +25,9 @@
               </form>
            </div>
         </div>
+        <form @submit.prevent="handleSubmit">
         <div class="profileUserName">{{ user.firstName }} {{ user.lastName }} </div>
-        <div class="submitButton profileButton">
+        <button class="submitButton profileButton">
                 <v-list-item @click="postData()" 
                 dark >
                     <v-list-item-action>
@@ -37,14 +38,15 @@
                     </v-list-item-content>
                         <div class="iconBackCircle"> <v-icon size="17" color="#0BAFFF">mdi-pencil-outline</v-icon></div>
                     </v-list-item>
-                </div>
+                </button>
         <div class="userDetails ">
             <p class="userName"></p>
         </div>
         
          <div class="usersForms userDetailsForm profileForm">
              
-        <form>
+        
+            
             
         <v-row
             class="mb-12 formRow" 
@@ -55,14 +57,14 @@
                 md="6"
                 
             >
-        <input v-model="firstName"  placeholder="First Name" class="formElements">
+        <input v-model="user.firstName"  placeholder="First Name" class="formElements">
             </v-col>
              <v-col
                 sm="6"
                 md="6"
                 
             >
-            <input v-model="lastName"  placeholder="Last Name" class="formElements">
+            <input v-model="user.lastName"  placeholder="Last Name" class="formElements">
             </v-col>
         </v-row>
 
@@ -76,14 +78,14 @@
                 md="6"
                 
             >
-        <input  v-model="userName" disabled  placeholder="Username" class="formElements">
+        <input  v-model="user.userName" disabled  placeholder="Username" class="formElements">
             </v-col>
              <v-col
                 sm="6"
                 md="6"
                 
             >
-           <input type="email" v-model="email"  placeholder="Email" class="formElements">
+           <input type="email" v-model="user.email"  placeholder="Email" class="formElements">
             </v-col>
         </v-row>
 
@@ -96,27 +98,32 @@
                 md="6"
                 
             >
-        <input type="password"  v-model="password"  placeholder="************" class="formElements">
+        <!-- <input type="password"  v-model="password"  placeholder="************" class="formElements"> -->
+
+        <input type="password" v-model.trim="$v.password.$model" placeholder="New password (Change if needed) " class="formElements">
+         <div v-if="$v.password.$error && !$v.password.required" class="errorText"> Password is required</div>
+        <div v-if="$v.password.$error && !$v.password.minLength" class="errorText"> Password must be at least 6 characters</div>
+          
             </v-col>
              <v-col
                 sm="6"
                 md="6"
                 
             >
-           <input type="password" v-model="confirmPassword"  placeholder="************" class="formElements">
-            </v-col>
+           <input type="password" v-model.trim="$v.confirmPassword.$model" placeholder="Confirm Password" class="formElements">
+        <div v-if="$v.confirmPassword.$error && !$v.confirmPassword.sameAs" class="errorText"> Passwords must be identical</div>
+       </v-col>
         </v-row>
-
-        
+    </div>
         </form>
     </div>
-        
-    </div>
+    
 </template>
 
 <script>
 import EditProfile from '~/components/profile/editProfile'
 import axios from 'axios'
+import { required, minLength, sameAs} from 'vuelidate/lib/validators'
 
 export default {
     props: ['user'],
@@ -125,18 +132,22 @@ export default {
     },
     data: function(){
     return{
-        userId: this.$store.state.user.userId,
         userName: this.user.userName,
         firstName: this.user.firstName,
         lastName: this.user.lastName,
         email: this.user.email,
-        userId: this.user.userId
     }
     },
     data () {
       return {
         loader: null,
         loading: false,
+          password: '',
+            confirmPassword: '',
+            file: '',
+        userId: this.$store.state.user.userId,
+        dismissSecs: 5,
+        dismissCountDown: 0
       }
     },
     watch: {
@@ -155,16 +166,74 @@ export default {
          let response;
        try{
            response = await this.$axios.$put(`/users/${this.userId}`, {
-          firstName: this.firstName,
-          lastName: this.lastName,
-          email: this.email,
+          firstName: this.user.firstName,
+          lastName: this.user.lastName,
+          email: this.user.email,
+          password: this.user.password,
+
         })
+        //  location.reload();
+        console.log(response.message);
        }
        catch(e){
           console.log("Error edit user", e);
-       } 
-        console.log(response.message);
-      }
+          // alert("Error updating user!")
+       }
+      },
+       
+       handleSubmit(e) {
+                this.submitted = true;
+                // stop here if form is invalid
+                this.$v.$touch();
+                if (this.$v.$invalid) {
+                    return;
+                }
+      
+      },
+       submit () {
+         try{
+              let formData = new FormData();
+        formData.append('files', this.file);
+        formData.append('type', 'profileImage')
+
+        this.$axios.$post(`/user/profile/upload`,
+            formData,
+            {
+              headers: {
+                  'Content-Type': 'multipart/form-data',
+                  'user': this.userId
+              }
+            }
+          ).then(function(res){
+            console.log('File upload successful', res.data);
+          })
+          .catch(function(){
+            console.log('File Upload Failed');
+          });
+         } catch (e){
+           console.log(e)
+         }
+        // this.$refs.observer.validate()
+         
+      },
+      handleFileUploads(e){
+        try{
+            console.log(this.$refs.files.files)
+         this.file = this.$refs.files.files[0];
+        } catch(e){
+            console.log(e)
+        }
+        
+      },
+    },
+     validations: {
+        password: {
+            required,
+            minLength: minLength(6)
+        },
+        confirmPassword: {
+            sameAsPassword: sameAs('password')
+        }
     }
   }
   

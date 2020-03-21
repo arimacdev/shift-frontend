@@ -157,6 +157,7 @@ import axios from 'axios'
           taskRemindOnDate: this.task.taskRemindOnDate,
           notes: this.task.taskNotes
         })
+        location.reload();
        } catch(e){
           console.log("Error adding a Task", e);
        }       
