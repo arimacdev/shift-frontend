@@ -6,6 +6,10 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
+ARG BASE_URL
+ARG KEYCLOAK_REALM 
+ARG KEYCLOAK_CLIENT_ID
+
 COPY . /app
 RUN npm run build
 
