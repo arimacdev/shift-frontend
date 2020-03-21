@@ -11,8 +11,8 @@
             </div>
           </v-list-item-icon>
            <v-list-item-content class="">
-             <input type="text" v-model="updatedName"  :disabled="editTask" @keyup.enter="saveEditTaskName"/>
-            <v-list-item-title class="taskTitle">{{ this.task.taskName }}</v-list-item-title>
+             <input type="text" class="taskTitle" v-model="updatedName"  :disabled="editTask" @keyup.enter="saveEditTaskName"/>
+            <!-- <v-list-item-title class="taskTitle">{{ this.task.taskName }}</v-list-item-title> -->
           </v-list-item-content>
           <v-list-item-content >
             <v-icon size="20" color="#FFFFFF" class="editIcon" @click="EditTaskName">mdi-pencil-circle</v-icon>
