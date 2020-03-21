@@ -17,7 +17,7 @@
         <v-list-item-title>
           <div id="name-div">
             <p id="company-name">ARIMAC</p>
-            <p id="name">Naveenn Perera</p>
+            <p id="name">Naveen Perera</p>
           </div>
         </v-list-item-title>
       </v-list-item>
@@ -46,6 +46,7 @@
 </template>
 
 <script>
+props: ['user']
   export default {
     data () {
       return {
@@ -59,8 +60,16 @@
           { title: 'Admin', icon: 'mdi-account-circle-outline', route: '../mainPages/admin' },
         ],
         mini: true,
+        user: ''
+
       }
     },
+    methods: {
+      test(){
+        console.log(this.user)
+      }
+    }
+
   }
 </script>
 <style scoped>

@@ -1,6 +1,6 @@
 <template>
 <div class="top-nav">
-<navigation-drawer :user=user />
+<navigation-drawer :user=user :currentUser="currentUser" />
 
  <v-toolbar app
       color=""
@@ -90,6 +90,8 @@ export default {
         MyTasks: [],
         taskCompletion: {},
         users: [],
+        currentUser: ,
+
         access_token: this.$store.state.user.access_token,
         userId: this.$store.state.user.userId
        
@@ -100,10 +102,12 @@ export default {
     let userId = store.state.user.userId;
     const { data: projects } = await $axios.$get(`/projects?userId=${userId}`)
     const { data: users } = await $axios.$get('/users')
+    const { data: currentUser } = await $axios.$get(`/users/${userId}`)
     // const { data: tasks } = await $axios.$get(`/projects/${p1}/tasks?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`)
     // console.log("projects list", projects)
     // console.log("users list", users)
     // console.log("tasks list", tasks)    
+    // console.log("Current user", currentUser) 
     return { 
       projects: projects,
       users:users,
@@ -127,6 +131,15 @@ export default {
       .catch (e => {
        console.log("error", e)
       })
+
+      // this.$axios.get (`/users/${this.userId}`)
+      // .then (response => {
+      //  this.currentUser = response.data.data;
+      //  console.log(this.currentUser)
+      // })
+      // .catch (e => {
+      //  console.log("error", e)
+      // })
 
       this.$axios.get (`projects/${this.project.projectId}/tasks/user?userId=${this.userId}`)
       .then (response => {
