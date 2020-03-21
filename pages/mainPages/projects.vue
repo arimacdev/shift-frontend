@@ -90,7 +90,6 @@ export default {
         MyTasks: [],
         taskCompletion: {},
         users: [],
-        currentUser: ,
 
         access_token: this.$store.state.user.access_token,
         userId: this.$store.state.user.userId

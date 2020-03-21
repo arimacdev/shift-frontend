@@ -76,7 +76,7 @@ export default {
     }
   },
   redirect: {
-    login: '/login',
+    login: '/',
     home: '/mainPages/projects',
     callback: '/'
   },
