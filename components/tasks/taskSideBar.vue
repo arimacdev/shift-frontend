@@ -237,7 +237,8 @@
           <div class="listAttachment">
             <a style="text-decoration: none;" :href="taskFile.taskFileUrl">
             <v-icon size="30" color="#0BAFFF">mdi-image-outline</v-icon>
-           <span class="attachmentName"> {{ taskFile.taskFileName }} </span>
+           <div class="attachmentName"> 
+             <span>{{ taskFile.taskFileName }}</span> </div>
             </a>
           </div>
         </v-list-item>
