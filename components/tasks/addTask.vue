@@ -105,12 +105,12 @@
             md="6"
             class="buttonGrid"
       >
-                <button class="addTaskButton" @click="addTask"  >
+                <button :class="addTaskStyling" @click="addTask" :disabled="checkValidation" >
                 <v-list-item 
                 dark >
                     
                     <v-list-item-content class="buttonText">
-                        <v-list-item-title class="bodyWiew">Submit</v-list-item-title>
+                        <v-list-item-title class="bodyWiew" >Submit</v-list-item-title>
                     </v-list-item-content>
                     </v-list-item>
         </button>
@@ -155,7 +155,7 @@ import axios from 'axios'
          component: '',
           taskAssignee: '',
           taskStatus: 'pending',
-          taskName: null,
+          taskName: '',
           data: ''
       }
     },
@@ -195,7 +195,7 @@ import axios from 'axios'
           taskNotes: this.taskNotes
         })
          this.component = 'success-popup'
-        // window.setTimeout(location.reload(), 8000)
+        window.setTimeout(location.reload(), 8000)
         console.log("Task adding successful", response);
 
          let taskId= response.data.taskId;
@@ -222,13 +222,31 @@ import axios from 'axios'
        } catch(e){
           console.log("Error adding a Task", e);
           // alert("Error adding a task")
-       }       
-        
-        
-           
-
-
-      }
+       }      
+      },
     },
+    computed: {  
+        checkValidation: {
+            get(){
+              if(this.taskName === ''){
+                return true
+              } else{
+                return false
+              }
+           },
+          set(value) {
+            this.taskName = value;
+          }            
+        },
+         addTaskStyling: {
+            get(){
+              if(this.taskName === ''){
+                return 'addTaskButtonFail'
+              } else{
+                return 'addTaskButtonSuccess'
+              }
+           }            
+        }    
+    }
   }
 </script>
