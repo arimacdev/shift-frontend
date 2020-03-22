@@ -652,3 +652,23 @@ color: #576377;
 .taskListViewContent{
     height: 80vh;
 }
+
+/* --------------- popup ---------------- */
+
+
+.popupDiv{
+    width: 300px;
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+}
+.popupContent{
+    height: 70px;
+    padding-top: 5px !important;
+}
+.popupTitle{
+    font-weight: 600;
+}
+popupSubitle{
+    color: #B9B9B9;
+}
