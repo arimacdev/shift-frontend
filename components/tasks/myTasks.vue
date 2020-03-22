@@ -3,7 +3,7 @@
 
        <div class="allTasksDropDown">
        </div>
-       <div >
+       <div class="taskListViewContent overflow-y-auto">
         <div v-for="(task, index) in MyTasks"
         :key="index" class="taskList" >
             <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)">

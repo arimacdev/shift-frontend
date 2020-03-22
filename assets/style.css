@@ -648,3 +648,7 @@ color: #576377;
     margin-left: 10px;
     margin-bottom: -20px;
 }
+
+.taskListViewContent{
+    height: 80vh;
+}
