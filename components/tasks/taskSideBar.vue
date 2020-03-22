@@ -43,10 +43,10 @@
     <div class="sideBarContent overflow-y-auto">
       
     <v-list flat>
-      <v-list-item-group class="tabListItems">
 
 <!-- ---------------------------- -->
 
+      <!-- <v-list-item-group class="tabListItems">
  <v-list-group >
         <template v-slot:activator>
           <v-list-item-icon>
@@ -60,7 +60,8 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="" >
-              <select class="userSelectDropdown tabListItemsText userAddSelect" v-model="taskAssignee" @change="changeAssignee">
+              <select v-model="taskAssignee" class="userSelectDropdown tabListItemsText userAddSelect" @change="changeAssignee">
+                <option value="" disabled >{{ assignee.firstName }} {{assignee.lastName }} </option>
               <option class="tabListItemsText" v-for="(projectUser, index) in people" :key="index" :selected="projectUser.assigneeId === assignee.userId" :value="projectUser.assigneeId" >
                 {{projectUser.assigneeFirstName}} {{projectUser.assigneeLastName}}
               </option>
@@ -71,7 +72,30 @@
       </v-list-group>
 
 
+      </v-list-item-group> -->
+
+
+
+
+      <!-- ---------------------- -->
+
+      <v-list-item-group class="tabListItems">
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon size="30" color="#0BAFFF" >mdi-account-arrow-left-outline</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+           <select  v-model="taskAssignee" class="tabListItemsText" @change="changeAssignee">
+                <option value="" disabled>{{ assignee.firstName }} {{assignee.lastName }}</option>
+              <option class="tabListItemsText" v-for="(projectUser, index) in people" :key="index" :selected="projectUser.assigneeId === assignee.userId" :value="projectUser.assigneeId" >
+                {{projectUser.assigneeFirstName}} {{projectUser.assigneeLastName}}
+              </option>
+            </select>
+           </v-list-item-content>
+        </v-list-item>
       </v-list-item-group>
+
+      <!-- ----------------------- -->
 <v-divider></v-divider>
 
  
@@ -508,7 +532,8 @@
 
          taskAssignee: {
         get(){
-              return this.assignee.firstName
+              // return this.assignee.firstName
+              return ''
             },
         set(value) {
           console.log("updated task assignee ->", value)
