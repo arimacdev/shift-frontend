@@ -330,6 +330,7 @@ export default {
           projectEndDate: this.updateProject.projectEndDate,
           projectStatus: this.updateProject.projectStatus
         })
+        location.reload();
        } catch(e){
           console.log("Error updating a project", e);
        }
@@ -344,6 +345,7 @@ export default {
                     'user': this.userId,
                 }
         })
+        location.reload();
         console.log(response.data);
        }  catch(e){
           console.log("Error creating project", e);
