@@ -13,7 +13,7 @@
             >
         <!-- <input v-model="taskName" placeholder="Task name" class="formElements"> -->
           <input v-model.trim="$v.taskName.$model" placeholder="Task name" class="formElements">
-       <div v-if="$v.taskName.$error && !$v.taskName.required" class="errorText"> Project name is required</div>
+       <div v-if="$v.taskName.$error && !$v.taskName.required" class="errorText"> Task name is required</div>
        <div v-if="$v.taskName.$error && !$v.taskName.maxLength" class="errorText"> Cannot use more than 50 characters</div>
       
 
