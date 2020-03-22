@@ -102,7 +102,7 @@
         <!-- <input type="password"  v-model="password"  placeholder="************" class="formElements"> -->
 
         <input type="password" v-model.trim="$v.password.$model" placeholder="New password (Change if needed) " class="formElements">
-         <div v-if="$v.password.$error && !$v.password.required" class="errorText"> Password is required</div>
+         <!-- <div v-if="$v.password.$error && !$v.password.required" class="errorText"> Password is required</div> -->
         <div v-if="$v.password.$error && !$v.password.minLength" class="errorText"> Password must be at least 6 characters</div>
           
             </v-col>
@@ -117,6 +117,12 @@
         </v-row>
     </div>
         </form>
+
+         <keep-alive>
+            <component v-bind:is="component"></component>
+            </keep-alive>
+        <!-- <success-popup /> -->
+    
     </div>
     
 </template>
@@ -127,10 +133,16 @@ import EditProfile from '~/components/profile/editProfile'
 import axios from 'axios'
 import { required, minLength, sameAs} from 'vuelidate/lib/validators'
 
+import SuccessPopup from '~/components/popups/successPopup'
+import ErrorPopup from '~/components/popups/errorPopup'
+
+
 export default {
     props: ['user'],
      components: {
-      'edit-profile' : EditProfile
+      'edit-profile' : EditProfile,
+       'success-popup' : SuccessPopup,
+      'error-popup': ErrorPopup
     },
     data: function(){
     return{
@@ -149,7 +161,8 @@ export default {
             file: '',
         userId: this.$store.state.user.userId,
         dismissSecs: 5,
-        dismissCountDown: 0
+        dismissCountDown: 0,
+         component: ''
       }
     },
     watch: {
@@ -175,10 +188,13 @@ export default {
 
         })
         //  location.reload();
+         this.component = 'success-popup'
+        window.setTimeout(location.reload(), 8000)
         console.log(response.message);
        }
        catch(e){
           console.log("Error edit user", e);
+           this.component = 'error-popup'
           // alert("Error updating user!")
        }
       },

@@ -131,14 +131,11 @@
                     </v-list-item>
                 </div>
        
-
-         
-
-        
         
         </form>
-    </v-navigation-drawer>
 
+         
+    </v-navigation-drawer>
 </div>
           <!-- --------------- end side bar --------------------- -->
 
@@ -245,15 +242,26 @@
             
             </v-row>
 
-
+  <!-- <keep-alive>
+            <component v-bind:is="component"></component>
+            </keep-alive> 
+        <success-popup />-->
 
   </v-container>
+  
     </div>
     
 </template>
 <script>
+import SuccessPopup from '~/components/popups/successPopup'
+import ErrorPopup from '~/components/popups/errorPopup'
+
 export default {
     props: ['project', 'taskCompletion'],
+    components: {
+      'success-popup' : SuccessPopup,
+      'error-popup': ErrorPopup
+    },
     data () {
       return {
         userId: this.$store.state.user.userId,
@@ -269,6 +277,7 @@ export default {
         items: [
           
         ],
+         component: ''
       }
     }, computed: {
         projectName: {

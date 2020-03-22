@@ -65,7 +65,7 @@
                 
             >
         <input type="password" v-model.trim="$v.password.$model" placeholder="Password" class="formElements">
-         <div v-if="$v.password.$error && !$v.password.required" class="errorText"> Password is required</div>
+         <!-- <div v-if="$v.password.$error && !$v.password.required" class="errorText"> Password is required</div> -->
         <div v-if="$v.password.$error && !$v.password.minLength" class="errorText"> Password must be at least 6 characters</div>
            
             </v-col>
@@ -107,6 +107,10 @@
             </v-col>
         </v-row>
         </form>
+        <keep-alive>
+            <component v-bind:is="component"></component>
+            </keep-alive>
+        <!-- <success-popup /> -->
     </div>
 </template>
 
@@ -114,9 +118,17 @@
 import axios from 'axios'
 import { required, minLength, maxLength, email, sameAs} from 'vuelidate/lib/validators'
 
+import SuccessPopup from '~/components/popups/successPopup'
+import ErrorPopup from '~/components/popups/errorPopup'
+
 export default {
          props: ['userData'],
         name: 'editUser',
+          components: {
+      'success-popup' : SuccessPopup,
+      'error-popup': ErrorPopup
+    },
+    
         data: function () {
   return {
     userId: this.userData
@@ -132,12 +144,14 @@ export default {
           lastName: this.userData.lastName,
           email: this.userData.email,
         })
-        location.reload();
+         this.component = 'success-popup'
+        window.setTimeout(location.reload(), 8000)
 
       }
        catch(e){
           console.log("Error edit user", e);
-          alert("Error updating user!")
+           this.component = 'error-popup'
+        //   alert("Error updating user!")
        } 
       },
       handleSubmit(e) {
@@ -153,7 +167,8 @@ export default {
     data(){
         return{
              password: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            component: ''
         }
     },
     validations: {
