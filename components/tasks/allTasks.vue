@@ -20,7 +20,9 @@
                 <v-list-item-title class="body-2">{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
               </v-list-item-content>
                <v-list-item-avatar>
-          <v-img src="https://randomuser.me/api/portraits/men/89.jpg"></v-img>
+          <v-img v-if="task.taskAssigneeProfileImage != null" :src="task.taskAssigneeProfileImage"></v-img>
+          <v-img v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
+
         </v-list-item-avatar>
             </v-list-item>
         </div>
@@ -107,7 +109,9 @@ import TaskSideBar from '~/components/tasks/taskSideBar'
       })     
     }, 
     getProjectDates(date) {
-          let stringDate  =  date + "";
+      if(date === null)
+          return "Add Due Date";
+        let stringDate  =  date + "";
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0,10);           
         return stringDate;
