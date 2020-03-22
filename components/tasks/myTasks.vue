@@ -107,11 +107,10 @@ import TaskSideBar from '~/components/tasks/taskSideBar'
       })     
     }, 
     getProjectDates(date) {
-          console.log(date);
-         let stringDate = new Date(date);
-         console.log(stringDate);
-         let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
-         return formateedDate;
+        let stringDate  =  date + "";
+        stringDate = stringDate.toString();
+        stringDate = stringDate.slice(0,10);           
+        return stringDate;
       },
       
     
