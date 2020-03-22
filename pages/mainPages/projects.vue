@@ -17,8 +17,11 @@
             <v-list-item-title class="font-weight-medium">Projects</v-list-item-title>
           </v-list-item-content>
 
-         <v-list-item-icon>
+         <v-list-item-icon v-if="user_org_role === 'SUPER_ADMIN'">
            <button v-on:click="component='add-project'"><v-icon @click="selectProject('Create New Project')">mdi-plus-circle</v-icon></button>
+          </v-list-item-icon>
+          <v-list-item-icon v-else>
+           <!-- <button v-on:click="component='add-project'"><v-icon @click="selectProject('Create New Project')">mdi-plus-circle</v-icon></button> -->
           </v-list-item-icon>
   <v-divider
       class="mx-4"
@@ -68,13 +71,13 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import NavigationDrawer from '~/components/navigationDrawer'
 import Logo from '~/components/Logo.vue'
 import VuetifyLogo from '~/components/VuetifyLogo.vue'
 import TabViews from '~/components/projects/tabViews'
 import SearchBar from '~/components/tools/searchBar'
 import AddProject from '~/components/projects/addProject'
-
 export default {
     components: {
       NavigationDrawer,
@@ -90,7 +93,7 @@ export default {
         MyTasks: [],
         taskCompletion: {},
         users: [],
-
+        user_org_role : this.$store.state.user.organizationalRole,
         access_token: this.$store.state.user.access_token,
         userId: this.$store.state.user.userId
        
@@ -179,9 +182,10 @@ export default {
       .catch (e => {
        console.log("error", e)
       })
-
-
-      }
+      },
+      computed: mapState({
+        organizationalRole: state => state.user.organizationalRole
+      })
     }
   }
 </script>

@@ -26,11 +26,29 @@
 
       <v-divider></v-divider>
 
-      <v-list>
+      <v-list v-if="organizationalRole === 'SUPER_ADMIN'">
         <v-list-item
           router
           :to="item.route"
-          v-for="item in items"
+          v-for="item in adminItems"
+          :key="item.title"
+          link
+          active-class="active"
+        >
+          <v-list-item-icon>
+            <v-icon class="navButtons">{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title  class="navText">{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+      <v-list v-else>
+        <v-list-item
+          router
+          :to="item.route"
+          v-for="item in userItems"
           :key="item.title"
           link
           active-class="active"
@@ -54,7 +72,7 @@
       return {
         // profilePic: this.userProfile.profileImage,
         drawer: true,
-        items: [
+        adminItems: [
           { title: 'Summary', icon: 'mdi-chart-line', route: '../mainPages/summary'},
           { title: 'Projects', icon: 'mdi-folder-outline', route: '../mainPages/projects'},
           { title: 'Tasks', icon: 'mdi-calendar-blank-multiple', route: '../mainPages/tasks' },
@@ -62,12 +80,19 @@
           { title: 'Users', icon: 'mdi-account-multiple-outline', route: '../mainPages/users'  },
           { title: 'Admin', icon: 'mdi-account-circle-outline', route: '../mainPages/admin' },
         ],
-        mini: true
+        mini: true,
+        userItems: [
+          { title: 'Summary', icon: 'mdi-chart-line', route: '../mainPages/summary'},
+          { title: 'Projects', icon: 'mdi-folder-outline', route: '../mainPages/projects'},
+          { title: 'Tasks', icon: 'mdi-calendar-blank-multiple', route: '../mainPages/tasks' },
+          { title: 'Inventory', icon: 'mdi-comment-outline', route: '../mainPages/inventory'},
+        ],
       }
     },
     computed: {
       ...mapState({
-          userProfile: state => state.userProfile.userProfile
+          userProfile: state => state.userProfile.userProfile,
+          organizationalRole: state => state.user.organizationalRole
       }),
       profileImage(){
         console.log("profile image", this.profilePic)
