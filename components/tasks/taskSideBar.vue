@@ -43,10 +43,10 @@
     <div class="sideBarContent overflow-y-auto">
       
     <v-list flat>
-      <v-list-item-group class="tabListItems">
 
 <!-- ---------------------------- -->
 
+      <!-- <v-list-item-group class="tabListItems">
  <v-list-group >
         <template v-slot:activator>
           <v-list-item-icon>
@@ -60,7 +60,8 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="" >
-              <select class="userSelectDropdown tabListItemsText userAddSelect" v-model="taskAssignee" @change="changeAssignee">
+              <select v-model="taskAssignee" class="userSelectDropdown tabListItemsText userAddSelect" @change="changeAssignee">
+                <option value="" disabled >{{ assignee.firstName }} {{assignee.lastName }} </option>
               <option class="tabListItemsText" v-for="(projectUser, index) in people" :key="index" :selected="projectUser.assigneeId === assignee.userId" :value="projectUser.assigneeId" >
                 {{projectUser.assigneeFirstName}} {{projectUser.assigneeLastName}}
               </option>
@@ -71,7 +72,30 @@
       </v-list-group>
 
 
+      </v-list-item-group> -->
+
+
+
+
+      <!-- ---------------------- -->
+
+      <v-list-item-group class="tabListItems">
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon size="30" color="#0BAFFF" >mdi-account-arrow-left-outline</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+           <select  v-model="taskAssignee" class="tabListItemsText" @change="changeAssignee">
+                <option value="" disabled>{{ assignee.firstName }} {{assignee.lastName }}</option>
+              <option class="tabListItemsText" v-for="(projectUser, index) in people" :key="index" :selected="projectUser.assigneeId === assignee.userId" :value="projectUser.assigneeId" >
+                {{projectUser.assigneeFirstName}} {{projectUser.assigneeLastName}}
+              </option>
+            </select>
+           </v-list-item-content>
+        </v-list-item>
       </v-list-item-group>
+
+      <!-- ----------------------- -->
 <v-divider></v-divider>
 
  
@@ -213,7 +237,8 @@
           <div class="listAttachment">
             <a style="text-decoration: none;" :href="taskFile.taskFileUrl">
             <v-icon size="30" color="#0BAFFF">mdi-image-outline</v-icon>
-           <span class="attachmentName"> {{ taskFile.taskFileName }} </span>
+           <div class="attachmentName"> 
+             <span>{{ taskFile.taskFileName }}</span> </div>
             </a>
           </div>
         </v-list-item>
@@ -508,7 +533,8 @@
 
          taskAssignee: {
         get(){
-              return this.assignee.firstName
+              // return this.assignee.firstName
+              return ''
             },
         set(value) {
           console.log("updated task assignee ->", value)
@@ -525,23 +551,14 @@
             this.updatedTask.taskStatus =  value;
           }            
         },
-        //   taskStatus: {
-        // get(){
-        //       return this.task.taskStatus
-        //     },
-        // set(value) {
-        //   console.log("updated task statutus ->", value)
-        //     this.updatedTask.taskStatus =  value;
-        //   }            
-        // },
+
           taskDue: {
         get(){
             // let stringDate = new Date(this.task.taskDueDateAt);
+          if(this.task.taskDueDateAt === null)
+          return "Add Due Date";
           let stringDate  = this.task.taskDueDateAt + " ";
             // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
-              // let due = this.task.taskDueDateAt;              
-              // return due.slice(0,10)
-              // let newDate = stringDate.toString();
               stringDate = stringDate.toString();
               stringDate = stringDate.slice(0,10);           
               return stringDate;
@@ -554,13 +571,14 @@
         },
           taskRemindOn: {
         get(){
+          if(this.task.taskReminderAt === null)
+          return "Add Reminer Date";
           let stringDate  = this.task.taskReminderAt + "";
-          // console.log("---->",stringDate);
           // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
           // console.log("f---->",formateedDate)
-              stringDate = stringDate.toString();
-              stringDate = stringDate.slice(0,10);           
-              return stringDate;
+          stringDate = stringDate.toString();
+          stringDate = stringDate.slice(0,10);           
+          return stringDate;
           },
         set(value) {
           console.log("updated task reminder ->", value)

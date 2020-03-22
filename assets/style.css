@@ -617,7 +617,8 @@ color: #576377;
 .listAttachment{
     background-color: #FFFFFF;
     width: 100%;
-    height: 50px;
+    min-height: 60px;
+    max-height: auto !important;
     margin-bottom: ;
     padding-left: 20px;
     margin-left: 60px;
@@ -627,7 +628,11 @@ color: #576377;
 .attachmentName{
     color: #576377;
     font-weight: 450;
-    margin-left: 20px;
+    margin-left: 50px;
+    height: 30px;
+    width: 200px;
+    margin-top: -28px;
+    /* white-space:nowrap; */
 }
 .attchmentContainer{
     padding-bottom: 30px;
@@ -647,4 +652,28 @@ color: #576377;
     margin-top: 15px;
     margin-left: 10px;
     margin-bottom: -20px;
+}
+
+.taskListViewContent{
+    height: 80vh;
+}
+
+/* --------------- popup ---------------- */
+
+
+.popupDiv{
+    width: 300px;
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+}
+.popupContent{
+    height: 70px;
+    padding-top: 5px !important;
+}
+.popupTitle{
+    font-weight: 600;
+}
+popupSubitle{
+    color: #B9B9B9;
 }

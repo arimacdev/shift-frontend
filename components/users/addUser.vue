@@ -118,14 +118,26 @@
             </v-col>
         </v-row>
         </form>
+         <keep-alive>
+            <component v-bind:is="component"></component>
+            </keep-alive>
+            <!-- <success-popup /> -->
     </div>
+    
 </template>
 
 <script>
 import axios from 'axios'
 import { numeric, required, between, minLength, maxLength, email, sameAs } from 'vuelidate/lib/validators'
 
+import SuccessPopup from '~/components/popups/successPopup'
+import ErrorPopup from '~/components/popups/errorPopup'
+
 export default {
+     components: {
+      'success-popup' : SuccessPopup,
+      'error-popup': ErrorPopup
+    },
     methods: {
      async postData(){
       let response;
@@ -137,16 +149,13 @@ export default {
           email: this.email,
           password: this.password,
         })
-        this.firstName = ''
-        this.lastName = ''
-        this.password = ''
-        this.email = ''
-        this.userName = ''
     //    alert("User created successfully!")
-    location.reload();
+    this.component = 'success-popup'
+        window.setTimeout(location.reload(), 8000)
        }  catch(e){
           console.log("Error creating user", e);
-          alert("Error creating user!")
+           this.component = 'error-popup'
+        //   alert("Error creating user!")
        }   
       },
       handleSubmit(e) {
@@ -168,6 +177,7 @@ export default {
             email: '',
             password: '',
             confirmPassword: '',
+            component: ''
         }
     },
     validations: {

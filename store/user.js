@@ -1,6 +1,7 @@
 export const state = () => ({
     access_token : '',
-    userId: ''
+    userId: '',
+    organizationalRole: ''
 })
 
 export const mutations = {
@@ -9,5 +10,8 @@ export const mutations = {
     },
     setUserId(state, value){
         state.userId = value
+    },
+    setOrganizationalRole(state, value){
+        state.organizationalRole = value;
     }
   }

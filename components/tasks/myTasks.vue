@@ -3,7 +3,7 @@
 
        <div class="allTasksDropDown">
        </div>
-       <div >
+       <div class="taskListViewContent overflow-y-auto">
         <div v-for="(task, index) in MyTasks"
         :key="index" class="taskList" >
             <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)">
@@ -107,11 +107,12 @@ import TaskSideBar from '~/components/tasks/taskSideBar'
       })     
     }, 
     getProjectDates(date) {
-          console.log(date);
-         let stringDate = new Date(date);
-         console.log(stringDate);
-         let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
-         return formateedDate;
+       if(date === null)
+          return "Add Due Date";
+        let stringDate  =  date + "";
+        stringDate = stringDate.toString();
+        stringDate = stringDate.slice(0,10);           
+        return stringDate;
       },
       
     

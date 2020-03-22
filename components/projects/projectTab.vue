@@ -75,7 +75,16 @@
                 md="12"
                 
             >
-       <input t v-model="projectStatus" placeholder="Project status" class="formElements">
+       <!-- <input t v-model="projectStatus" placeholder="Project status" class="formElements"> -->
+
+       <select v-model="projectStatus" class="formElements">
+              <option value="" disabled>{{ this.projectStatus }}</option>
+                <option key="presales" value="presales" >Presales</option>
+                <option key="ongoing" value="ongoing">Ongoing</option>
+                <option key="support" value="support">Support</option>
+                <option key="finished" value="finished">Finish</option>
+            </select>
+       
             </v-col>
         </v-row>
 
@@ -131,14 +140,11 @@
                     </v-list-item>
                 </div>
        
-
-         
-
-        
         
         </form>
-    </v-navigation-drawer>
 
+         
+    </v-navigation-drawer>
 </div>
           <!-- --------------- end side bar --------------------- -->
 
@@ -245,15 +251,26 @@
             
             </v-row>
 
-
+  <!-- <keep-alive>
+            <component v-bind:is="component"></component>
+            </keep-alive> 
+        <success-popup />-->
 
   </v-container>
+  
     </div>
     
 </template>
 <script>
+import SuccessPopup from '~/components/popups/successPopup'
+import ErrorPopup from '~/components/popups/errorPopup'
+
 export default {
     props: ['project', 'taskCompletion'],
+    components: {
+      'success-popup' : SuccessPopup,
+      'error-popup': ErrorPopup
+    },
     data () {
       return {
         userId: this.$store.state.user.userId,
@@ -269,6 +286,7 @@ export default {
         items: [
           
         ],
+         component: ''
       }
     }, computed: {
         projectName: {
@@ -330,6 +348,7 @@ export default {
           projectEndDate: this.updateProject.projectEndDate,
           projectStatus: this.updateProject.projectStatus
         })
+        location.reload();
        } catch(e){
           console.log("Error updating a project", e);
        }
@@ -344,6 +363,7 @@ export default {
                     'user': this.userId,
                 }
         })
+        location.reload();
         console.log(response.data);
        }  catch(e){
           console.log("Error creating project", e);

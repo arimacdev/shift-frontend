@@ -111,17 +111,27 @@
             </v-col>
         </v-row>
         </form>
+         <keep-alive>
+            <component v-bind:is="component"></component>
+            </keep-alive>
+        <!-- <success-popup /> -->
     </div>
+    
 </template>
 
 <script>
+
+import SuccessPopup from '~/components/popups/successPopup'
+import ErrorPopup from '~/components/popups/errorPopup'
  
 import axios from 'axios'
   export default {
       props: ['projectId', 'projectUsers'],
-    components: {
+       components: {
+      'success-popup' : SuccessPopup,
+      'error-popup': ErrorPopup
     },
-
+    
     data() {
       return {
          userId: this.$store.state.user.userId,
@@ -132,8 +142,9 @@ import axios from 'axios'
             taskStatus: '',
             taskDueDate:'',
             taskRemindOnDate:'',
-            taskNotes: ''
-      }
+            taskNotes: '',
+      },
+         component: ''
       }
     },
     methods: {
@@ -157,9 +168,11 @@ import axios from 'axios'
           taskRemindOnDate: this.task.taskRemindOnDate,
           notes: this.task.taskNotes
         })
-        location.reload();
+        this.component = 'success-popup'
+        window.setTimeout(location.reload(), 8000)
        } catch(e){
           console.log("Error adding a Task", e);
+          alert("Error adding a task")
        }       
         console.log("Task adding successful", response);
         let taskId= response.data.taskId;

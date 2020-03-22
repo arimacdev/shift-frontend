@@ -78,8 +78,9 @@
           response = await this.$axios.$post(`/projects/${this.projectId}/users`, 
           this.addUser
         )
+        location.reload();
        } catch(e){
-          console.log("Error adding a Task", e);
+          console.log("Error adding a User", e);
        }   
       }
     },

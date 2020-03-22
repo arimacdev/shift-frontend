@@ -17,5 +17,8 @@ export default {
   components: {
     NavigationDrawer
   },
+  created () {
+     this.$store.dispatch('userProfile/fetchProfilePicture')
+     }
 }
 </script>

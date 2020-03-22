@@ -109,6 +109,10 @@
             </v-col>
         </v-row>
         </form>
+         <keep-alive>
+            <component v-bind:is="component"></component>
+            </keep-alive>
+        <!-- <success-popup /> -->
     </div>
 </template>
 
@@ -116,7 +120,15 @@
 import axios from 'axios'
 import { numeric, required, between, minLength, maxLength } from 'vuelidate/lib/validators'
 
+import SuccessPopup from '~/components/popups/successPopup'
+import ErrorPopup from '~/components/popups/errorPopup'
+
 export default {
+
+    components: {
+      'success-popup' : SuccessPopup,
+      'error-popup': ErrorPopup
+    },
     
     methods: {
      async postData(){
@@ -129,16 +141,12 @@ export default {
           projectStartDate: this.startDate,
           projectEndDate: this.endDate,
         })
-            this.projectName = ''
-            this.client = ''
-            this.startDate = ''
-            this.endDate = ''
-            this.projectOwner = ''
-        //   alert("Project created successfully!")
-        location.reload();
+
+        this.component = 'success-popup'
+        window.setTimeout(location.reload(), 8000)
        }  catch(e){
           console.log("Error creating project", e);
-          alert("Error creating project!")
+          this.component = 'error-popup'
        }   
       },
 
@@ -159,6 +167,7 @@ export default {
             startDate: '',
             endDate: '',
             projectOwner: '',
+            component: ''
         }
         },
         validations: {
