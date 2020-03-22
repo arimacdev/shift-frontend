@@ -11,7 +11,9 @@
     >
       <v-list-item class="px-2 background" :to="'../mainPages/profile'">
         <v-list-item-avatar>
-          <v-img :src="userProfile.profileImage"></v-img>
+          <v-img v-if="userProfile.profileImage != null" :src="userProfile.profileImage"></v-img>
+          <v-img v-else src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
+
         </v-list-item-avatar>
 
         <v-list-item-title>
@@ -50,6 +52,7 @@
   export default {
     data () {
       return {
+        // profilePic: this.userProfile.profileImage,
         drawer: true,
         items: [
           { title: 'Summary', icon: 'mdi-chart-line', route: '../mainPages/summary'},
@@ -59,18 +62,18 @@
           { title: 'Users', icon: 'mdi-account-multiple-outline', route: '../mainPages/users'  },
           { title: 'Admin', icon: 'mdi-account-circle-outline', route: '../mainPages/admin' },
         ],
-        mini: true,
-        user: ''
-
+        mini: true
       }
     },
-    computed: mapState({
-        userProfile: state => state.userProfile.userProfile
+    computed: {
+      ...mapState({
+          userProfile: state => state.userProfile.userProfile
       }),
-
-    created () {
-      // ;
+      profileImage(){
+        console.log("profile image", this.profilePic)
+      }
     },
+
     methods: {
       
     }
