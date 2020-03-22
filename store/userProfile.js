@@ -14,8 +14,8 @@ import axios from 'axios';
     fetchProfilePicture({commit, rootState}){
         const userId = rootState.user.userId;
         console.log("Call user profile", rootState.user.userId);
-        axios
-        .get(`https://project.arimaclanka.com/api/pm-service/users/${userId}`)
+        this.$axios
+        .get(`users/${userId}`)
         .then(res => {
             console.log("state data --->", res.data.data);
             commit('SET_PROFILE_PICTURE', res.data.data);
