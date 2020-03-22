@@ -11,13 +11,13 @@
     >
       <v-list-item class="px-2 background" :to="'../mainPages/profile'">
         <v-list-item-avatar>
-          <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
+          <v-img :src="userProfile.profileImage"></v-img>
         </v-list-item-avatar>
 
         <v-list-item-title>
           <div id="name-div">
             <p id="company-name">ARIMAC</p>
-            <p id="name">Naveen Perera</p>
+            <p id="name">{{userProfile.firstName}} {{userProfile.lastName}}</p>
           </div>
         </v-list-item-title>
       </v-list-item>
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-props: ['user']
+  import { mapState } from 'vuex';
   export default {
     data () {
       return {
@@ -64,10 +64,15 @@ props: ['user']
 
       }
     },
+    computed: mapState({
+        userProfile: state => state.userProfile.userProfile
+      }),
+
+    created () {
+      // ;
+    },
     methods: {
-      test(){
-        console.log(this.user)
-      }
+      
     }
 
   }
