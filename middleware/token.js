@@ -11,7 +11,7 @@ export default async function ({ store, error , app}) {
       console.log("Bearer token present")
       store.commit('user/setUserId', decodedJwt.userId);
       const organizationRole = decodedJwt.realm_access.roles;      
-      if(organizationRole.indexOf("ADMIN") > -1){
+      if(organizationRole.indexOf("SUPER_ADMIN") > -1){
         console.log("user role --->", "SUPER_ADMIN");
         store.commit('user/setOrganizationalRole', "SUPER_ADMIN")
       } else {
