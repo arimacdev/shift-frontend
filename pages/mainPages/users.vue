@@ -42,8 +42,9 @@
            <div v-for="(user, index) in users"
         :key="index" >
             <v-list-item @click="selectUser(user)" >
-               <v-list-item-avatar>
-          <v-img src="https://randomuser.me/api/portraits/men/30.jpg"></v-img>
+               <v-list-item-avatar> 
+                 <v-img v-if="user.profileImage != null" :src="user.profileImage"></v-img>
+            <v-img v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img> 
         </v-list-item-avatar>
               <v-list-item-content >
                 <v-list-item-title @click="selectUser(user)"  v-on:click="component='view-user'" class="body-2">{{ user.firstName }} {{ user.lastName}}</v-list-item-title>

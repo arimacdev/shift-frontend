@@ -2,7 +2,10 @@
     <div class="userDetailsCover">
         <div class="blackBar"></div>
         <div class="userImage">
-          <v-img class="image" src="https://randomuser.me/api/portraits/men/22.jpg"></v-img>
+          <!-- <v-img class="image" src="https://randomuser.me/api/portraits/men/22.jpg"></v-img> -->
+          
+           <v-img class="image" v-if="userData.profileImage != null" :src="userData.profileImage"></v-img>
+            <v-img class="image" v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img> 
         </div>
         <div class="userDetails">
             <p class="userName">{{userData.firstName}} {{userData.lastName}}</p>
