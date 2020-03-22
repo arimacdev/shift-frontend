@@ -75,7 +75,16 @@
                 md="12"
                 
             >
-       <input t v-model="projectStatus" placeholder="Project status" class="formElements">
+       <!-- <input t v-model="projectStatus" placeholder="Project status" class="formElements"> -->
+
+       <select v-model="projectStatus" class="formElements">
+              <option value="" disabled>{{ this.projectStatus }}</option>
+                <option key="presales" value="presales" >Presales</option>
+                <option key="ongoing" value="ongoing">Ongoing</option>
+                <option key="support" value="support">Support</option>
+                <option key="finished" value="finished">Finish</option>
+            </select>
+       
             </v-col>
         </v-row>
 
@@ -339,7 +348,7 @@ export default {
           projectEndDate: this.updateProject.projectEndDate,
           projectStatus: this.updateProject.projectStatus
         })
-        location.reload();
+        // location.reload();
        } catch(e){
           console.log("Error updating a project", e);
        }
