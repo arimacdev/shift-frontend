@@ -107,7 +107,9 @@ import TaskSideBar from '~/components/tasks/taskSideBar'
       })     
     }, 
     getProjectDates(date) {
-          let stringDate  =  date + "";
+      if(date === null)
+          return "Add Due Date";
+        let stringDate  =  date + "";
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0,10);           
         return stringDate;

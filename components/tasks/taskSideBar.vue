@@ -551,23 +551,14 @@
             this.updatedTask.taskStatus =  value;
           }            
         },
-        //   taskStatus: {
-        // get(){
-        //       return this.task.taskStatus
-        //     },
-        // set(value) {
-        //   console.log("updated task statutus ->", value)
-        //     this.updatedTask.taskStatus =  value;
-        //   }            
-        // },
+
           taskDue: {
         get(){
             // let stringDate = new Date(this.task.taskDueDateAt);
+          if(this.task.taskDueDateAt === null)
+          return "Add Due Date";
           let stringDate  = this.task.taskDueDateAt + " ";
             // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
-              // let due = this.task.taskDueDateAt;              
-              // return due.slice(0,10)
-              // let newDate = stringDate.toString();
               stringDate = stringDate.toString();
               stringDate = stringDate.slice(0,10);           
               return stringDate;
@@ -580,13 +571,14 @@
         },
           taskRemindOn: {
         get(){
+          if(this.task.taskReminderAt === null)
+          return "Add Reminer Date";
           let stringDate  = this.task.taskReminderAt + "";
-          // console.log("---->",stringDate);
           // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
           // console.log("f---->",formateedDate)
-              stringDate = stringDate.toString();
-              stringDate = stringDate.slice(0,10);           
-              return stringDate;
+          stringDate = stringDate.toString();
+          stringDate = stringDate.slice(0,10);           
+          return stringDate;
           },
         set(value) {
           console.log("updated task reminder ->", value)
