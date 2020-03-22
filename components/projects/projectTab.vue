@@ -348,7 +348,7 @@ export default {
           projectEndDate: this.updateProject.projectEndDate,
           projectStatus: this.updateProject.projectStatus
         })
-        // location.reload();
+        location.reload();
        } catch(e){
           console.log("Error updating a project", e);
        }
