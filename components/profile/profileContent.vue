@@ -7,7 +7,7 @@
           <div class="profilePictureUpload">
               <form>
               <template>
-                <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Upload profile picture" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload"/>
+                <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Select profile picture" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload"/>
                 <!-- <v-file-input id="files" ref="files" v-on:change="handleFileUploads()"  prepend-icon="mdi-camera" chips label="Upload profile picture"></v-file-input> -->
               </template>
               <div class="pictureUploadButton">
@@ -121,6 +121,7 @@
     
 </template>
 
+
 <script>
 import EditProfile from '~/components/profile/editProfile'
 import axios from 'axios'
@@ -207,6 +208,7 @@ export default {
             }
           ).then(function(res){
             console.log('File upload successful', res.data);
+          location.reload();
           })
           .catch(function(){
             console.log('File Upload Failed');
