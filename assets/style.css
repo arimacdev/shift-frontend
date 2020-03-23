@@ -128,8 +128,19 @@ margin-bottom: -5px !important;
     vertical-align: top !;
 }
 
-.addTaskButton{
+.addTaskButtonSuccess{
     background-color: #2EC973;
+    width: 50%;
+    margin-bottom: -20px;
+    border-radius: 5px;
+    float: left;
+    margin-right: 5px;
+    float: right;
+    text-align: center;
+}
+
+.addTaskButtonFail{
+    background-color: rgb(240, 8, 8);
     width: 50%;
     margin-bottom: -20px;
     border-radius: 5px;

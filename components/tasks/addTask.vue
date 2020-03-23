@@ -1,6 +1,6 @@
 <template>
     <div class="taskFormDiv">
-        <form>
+        <form @submit.prevent="handleSubmit"> 
         
         <v-row
             class="mb-12 formRow" 
@@ -11,13 +11,19 @@
                 md="6"
                 
             >
-        <input v-model="task.taskName" placeholder="Task name" class="formElements">
+        <!-- <input v-model="taskName" placeholder="Task name" class="formElements"> -->
+          <input v-model.trim="$v.taskName.$model" placeholder="Task name" class="formElements">
+       <div v-if="$v.taskName.$error && !$v.taskName.required" class="errorText"> Task name is required</div>
+       <div v-if="$v.taskName.$error && !$v.taskName.maxLength" class="errorText"> Cannot use more than 50 characters</div>
+      
+
+
             </v-col>
              <v-col
                 sm="6"
                 md="6"                
             >
-            <select v-model="task.taskAssignee" class="formElements" >
+            <select v-model="taskAssignee" class="formElements" >
               <option disabled value="" >Assignee</option>
               <option v-for="(projectUser, index) in projectUsers" :key="index" :value="projectUser.userId">
                 {{projectUser.firstName}} {{projectUser.lastName}}
@@ -32,8 +38,8 @@
                 md="6"
                 
             >
-            <select v-model="task.taskStatus" class="formElements">
-              <option disabled value="" >Task status</option>
+            <select v-model="taskStatus" class="formElements">
+              <option disabled value="pending" >Task status</option>
                 <option key="pending" value="pending" >Pending</option>
                 <option key="implementing" value="implementing">Implementing</option>
                 <option key="qa" value="qa">QA</option>
@@ -49,7 +55,7 @@
                 md="6"
                 
             >
-            <input placeholder="Due date" onfocusin="(this.type='date')" onfocusout="(this.type='text')" type="text" v-model="task.taskDueDate" class="formElements">
+            <input  v-model="taskDueDate" placeholder="Due date" onfocusin="(this.type='date')" onfocusout="(this.type='text')" type="text" class="formElements">
             </v-col>
         </v-row>
 
@@ -63,7 +69,7 @@
                 md="6"
                 
             >
-        <input type="text" onfocusin="(this.type='date')" onfocusout="(this.type='text')" v-model="task.taskRemindOnDate" placeholder="Reminder" class="formElements">
+        <input v-model="taskRemindOnDate"  type="text" onfocusin="(this.type='date')" onfocusout="(this.type='text')" placeholder="Reminder" class="formElements">
             </v-col>
              <v-col
                 sm="6"
@@ -82,7 +88,7 @@
             md="12"
             class=""
       >
-       <textarea v-model="task.taskNotes" placeholder="Note" class="formElements textArea"></textarea>
+       <textarea v-model="taskNotes" placeholder="Note" class="formElements textArea"></textarea>
       </v-col>
         </v-row>
         <v-row
@@ -99,15 +105,15 @@
             md="6"
             class="buttonGrid"
       >
-                <div class="addTaskButton">
-                <v-list-item @click="addTask()" 
+                <button :class="addTaskStyling" @click="addTask" :disabled="checkValidation" >
+                <v-list-item 
                 dark >
                     
                     <v-list-item-content class="buttonText">
-                        <v-list-item-title class="bodyWiew">Submit</v-list-item-title>
+                        <v-list-item-title class="bodyWiew" >Submit</v-list-item-title>
                     </v-list-item-content>
                     </v-list-item>
-        </div>
+        </button>
             </v-col>
         </v-row>
         </form>
@@ -121,6 +127,7 @@
 
 <script>
 
+import { required, maxLength } from 'vuelidate/lib/validators'
 import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
  
@@ -131,6 +138,7 @@ import axios from 'axios'
       'success-popup' : SuccessPopup,
       'error-popup': ErrorPopup
     },
+    
     
     data() {
       return {
@@ -144,9 +152,19 @@ import axios from 'axios'
             taskRemindOnDate:'',
             taskNotes: '',
       },
-         component: ''
+         component: '',
+          taskAssignee: '',
+          taskStatus: 'pending',
+          taskName: '',
+          data: ''
       }
     },
+    validations: {
+            taskName: {
+            required,
+            maxLength: maxLength(50)
+            },
+        },
     methods: {
       submit () {
         this.$refs.observer.validate()
@@ -155,27 +173,32 @@ import axios from 'axios'
          this.file = this.$refs.files.files[0];
       },
 
+      handleSubmit(e) {
+                this.submitted = true;
+                // stop here if form is invalid
+                this.$v.$touch();
+                if (this.$v.$invalid) {
+                    return;
+                }
+      },
      async addTask(){     
-       console.log("task-->", this.task) 
        let response;
        try{
-          response = await this.$axios.$post(`/projects/${this.projectId}/tasks`, {
-          taskName: this.task.taskName,
+            response = await this.$axios.$post(`/projects/${this.projectId}/tasks`, {
+          taskName: this.taskName,
           projectId: this.projectId,
           taskInitiator: this.userId,
-          taskAssignee: this.task.taskAssignee,
-          taskDueDate: this.task.taskDueDate,
-          taskRemindOnDate: this.task.taskRemindOnDate,
-          notes: this.task.taskNotes
+          taskAssignee: this.taskAssignee,
+          taskDueDate: this.taskDueDate,
+          taskRemindOnDate: this.taskRemindOnDate,
+          taskStatus: this.taskStatus,
+          taskNotes: this.taskNotes
         })
-        this.component = 'success-popup'
+         this.component = 'success-popup'
         window.setTimeout(location.reload(), 8000)
-       } catch(e){
-          console.log("Error adding a Task", e);
-          alert("Error adding a task")
-       }       
         console.log("Task adding successful", response);
-        let taskId= response.data.taskId;
+
+         let taskId= response.data.taskId;
 
         let formData = new FormData();
         formData.append('files', this.file);
@@ -186,7 +209,7 @@ import axios from 'axios'
             {
               headers: {
                   'Content-Type': 'multipart/form-data',
-                  'user': this.userId
+                  'user': this.userIdz
               }
             }
           ).then(function(res){
@@ -195,10 +218,35 @@ import axios from 'axios'
           .catch(function(){
             console.log('File Upload Failed');
           });
-
-
-
-      }
+      
+       } catch(e){
+          console.log("Error adding a Task", e);
+          // alert("Error adding a task")
+       }      
+      },
     },
+    computed: {  
+        checkValidation: {
+            get(){
+              if(this.taskName === ''){
+                return true
+              } else{
+                return false
+              }
+           },
+          set(value) {
+            this.taskName = value;
+          }            
+        },
+         addTaskStyling: {
+            get(){
+              if(this.taskName === ''){
+                return 'addTaskButtonFail'
+              } else{
+                return 'addTaskButtonSuccess'
+              }
+           }            
+        }    
+    }
   }
 </script>
