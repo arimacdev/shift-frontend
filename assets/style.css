@@ -411,6 +411,7 @@ font-size: 14px;
 }
 .dropDownList{
     margin-left: -50px;
+    z-index: 100;
 
 }
 .editIcon{
@@ -423,7 +424,6 @@ font-size: 14px;
 .sideBarDate{
     background: #E5E5E5 !important;
     outline: none;
-    margin-left: 30px;
     color: red;
     font-weight: 500;
     font-size: 14px;
@@ -443,7 +443,9 @@ font-size: 14px;
     height: 30px;
     font-size: 30px;
 }
-
+.editIconZ{
+    z-index: -100;
+}
 
 
 /* ----------------- people tab ------------- */
