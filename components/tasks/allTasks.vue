@@ -73,7 +73,7 @@ import { mapState } from 'vuex';;
      methods: {
        listenToChange(){
          console.log("listened to changes ------->");
-          this.$store.dispatch('task/fetchEvents', this.projectId)
+          this.$store.dispatch('task/fetchTasks', this.projectId)
        },
         async selectTask(task){
      this.task = task;

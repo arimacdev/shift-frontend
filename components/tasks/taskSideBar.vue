@@ -371,11 +371,11 @@
               }
             }
         )
+        this.$emit('listenChange');
         console.log("edit task response", response);
        } catch(e){
           console.log("Error updating a note", e);
-       }
-       this.$emit('listenChange');
+       }       
       },
       async saveEditTaskName(){
       console.log("updatedTaskName ->",this.updatedTask.taskName)
@@ -390,6 +390,7 @@
               }
             }
         )
+        this.$emit('listenChange');
         console.log("edit task response", response);
        
        } catch(e){
@@ -409,6 +410,7 @@
               }
             }
         )
+        this.$emit('listenChange');
         console.log("update task status response", response);
        } catch(e){
           console.log("Error updating a status", e);
@@ -440,7 +442,8 @@
               }
             }
         )
-        console.log("update task status response", response);
+        this.$emit('listenChange');
+        console.log("update task dates response", response);
        } catch(e){
           console.log("Error updating a status", e);
        }
