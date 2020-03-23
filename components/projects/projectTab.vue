@@ -97,7 +97,7 @@
                 md="12"
                 
             >
-       <input type="text" onfocusin="(this.type='date')" onfocusout="(this.type='text')" v-model="projectStartDate" placeholder="Project start date" class="formElements">
+       <input type="text" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='text')" v-model="projectStartDate" placeholder="Project start date" class="formElements">
             </v-col>
         </v-row>
 
@@ -110,7 +110,7 @@
                 md="12"
                 
             >
-       <input type="text" onfocusin="(this.type='date')" onfocusout="(this.type='text')" v-model="projectEndDate" placeholder="Project end date" class="formElements">
+       <input type="text" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='text')" v-model="projectEndDate" placeholder="Project end date" class="formElements">
             </v-col>
         </v-row>
 
