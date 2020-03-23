@@ -164,8 +164,8 @@ export default {
             userId: this.$store.state.user.userId,
             projectName: '',
             client: '',
-            startDate: '',
-            endDate: '',
+            startDate: new Date().toISOString().split('T')[0],
+            endDate: new Date(new Date().getTime() + (24 * 60 * 60 * 1000)).toISOString().split('T')[0],
             projectOwner: '',
             component: ''
         }
