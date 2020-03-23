@@ -411,6 +411,7 @@ font-size: 14px;
 }
 .dropDownList{
     margin-left: -50px;
+
 }
 .editIcon{
     margin-left: -60px !important;
@@ -422,7 +423,20 @@ font-size: 14px;
 .sideBarDate{
     background: #E5E5E5 !important;
     outline: none;
+    margin-left: 30px;
+    color: red;
+    font-weight: 500;
+    font-size: 14px;
+    /* background: violet; */
 
+}
+.tabListItemsText{
+    font-weight: 500;
+    font-size: 16px;
+}
+.datesTitle{
+    margin-top: 15px;
+    width: 90px;
 }
 
 .userSelectDropdown{
@@ -566,10 +580,8 @@ font-size: 19px !important;
 .tabListItems{
     margin-left: 0px;
 }
-.tabListItemsText{
-    font-weight: 500;
-    font-size: 16px;
-}
+
+
 .tabListItemsSubTask{
     color: #576377 !important;
 }
