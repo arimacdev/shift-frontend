@@ -4,7 +4,7 @@
        <div class="allTasksDropDown">
        </div>
        <div class="taskListViewContent overflow-y-auto">
-        <div v-for="(task, index) in Alltasks"
+        <div v-for="(task, index) in projectAllTasks"
         :key="index" class="taskList" >
             <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)">
               <v-list-item-action>
@@ -39,7 +39,7 @@
       class=""
       color="#E5E5E5"
     >
-    <task-side-bar :task=task :assignee="assignee" :projectId="projectId" :subTasks="subTasks" :taskFiles="taskFiles" :projectUsers="projectUsers" :people="people"/>
+    <task-side-bar :task=task :assignee="assignee" :projectId="projectId" :subTasks="subTasks" :taskFiles="taskFiles" :projectUsers="projectUsers" :people="people" @listenChange="listenToChange"/>
     
     </v-navigation-drawer>
 
@@ -50,9 +50,9 @@
 
 <script>
 import TaskSideBar from '~/components/tasks/taskSideBar'
-
+import { mapState } from 'vuex';;
   export default {
-    props: ['projectId', 'Alltasks', 'projectUsers', 'people'],
+    props: ['projectId',  'projectUsers', 'people'],
     data() {
       return {
         projects: ["pr1"],
@@ -71,6 +71,10 @@ import TaskSideBar from '~/components/tasks/taskSideBar'
       'task-side-bar' : TaskSideBar,
     },
      methods: {
+       listenToChange(){
+         console.log("listened to changes ------->");
+          this.$store.dispatch('task/fetchEvents', this.projectId)
+       },
         async selectTask(task){
      this.task = task;
      console.log("selectedTask", task);
@@ -115,10 +119,13 @@ import TaskSideBar from '~/components/tasks/taskSideBar'
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0,10);           
         return stringDate;
-      },
-      
-    
-     }
+      }
+     },
+         computed: {
+      ...mapState({
+          projectAllTasks: state => state.task.allTasks,
+      })
+    }
   }
 </script>
 

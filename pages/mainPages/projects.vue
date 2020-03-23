@@ -123,16 +123,17 @@ export default {
     selectProject(project){
      this.project = project;
 
-     console.log("userId", this.userId)
-     console.log("access_token", this.access_token)     
-       //Get all projects for now
-      this.$axios.get (`projects/${this.project.projectId}/tasks?userId=${this.userId}`)
-      .then (response => {
-       this.Alltasks = response.data.data;
-      })
-      .catch (e => {
-       console.log("error", e)
-      })
+    this.$store.dispatch('task/fetchTasks', this.project.projectId)
+    //  console.log("userId", this.userId)
+    //  console.log("access_token", this.access_token)     
+    //    //Get all projects for now
+    //   this.$axios.get (`projects/${this.project.projectId}/tasks?userId=${this.userId}`)
+    //   .then (response => {
+    //    this.Alltasks = response.data.data;
+    //   })
+    //   .catch (e => {
+    //    console.log("error", e)
+    //   })
 
       // this.$axios.get (`/users/${this.userId}`)
       // .then (response => {

@@ -375,6 +375,7 @@
        } catch(e){
           console.log("Error updating a note", e);
        }
+       this.$emit('listenChange');
       },
       async saveEditTaskName(){
       console.log("updatedTaskName ->",this.updatedTask.taskName)
