@@ -44,16 +44,16 @@
         jobRole: this.editUser.projectJobRoleName,
       }
     },
-    created(){
-        this.$axios.get (`users/project/${this.projectId}`)
-            .then (response => {
-            console.log("project users", response.data)
-            this.projectUsers = response.data.data;
-            })
-            .catch (e => {
-            console.log("error", e)
-        })
-    },
+    // created(){
+    //     this.$axios.get (`users/project/${this.projectId}`)
+    //         .then (response => {
+    //         console.log("project users", response.data)
+    //         this.projectUsers = response.data.data;
+    //         })
+    //         .catch (e => {
+    //         console.log("error", e)
+    //     })
+    // },
     methods: {  
        async changeHandler() {
            console.log(this.isAdmin, this.jobRole)
