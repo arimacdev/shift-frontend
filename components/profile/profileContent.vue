@@ -197,7 +197,26 @@ export default {
               'content-type': 'application/x-www-form-urlencoded'
             }
           }).then (response => {
-          console.log("Success slack userId -->", response.data.authed_user.id)
+          const slackId = response.data.authed_user.id;
+          console.log("Success slack userId -->", slackId)
+                  // try{
+              this.$axios.$put(`/users/${this.projectId}/slack`, 
+                  {
+                    slackAssignerId: this.userId,
+                    slackAssigneeId: this.user.userId,
+                    assigneeSlackId: slackId
+                  },
+                   {
+                 headers: {
+                  'user': this.userId
+              }
+            }
+                ).then(resp =>{
+
+                 })
+                 .catch (e => {
+                 console.log("Error saving slack Id in database",e);
+                  })
           })
           .catch (e => {
           console.log("error from slack", e,response.data)
@@ -229,6 +248,23 @@ export default {
     console.log("error from slack", e,response.data)
     })
        },
+
+    async saveSlackId(slackId){
+        console.log("Save Slack Id", );
+      //   let response;
+      //     try{
+      //     response = await this.axios.post(`/users/${this.projectId}/slack`, 
+      //     {
+      //       slackAssignerId: this.userId,
+      //       slackAssigneeId: this.user.userId,
+      //       assigneeSlackId: slackId
+      //     }
+      //   )
+      //  } catch(e){
+      //    console.log("Error saving slack Id in database");
+      //  }
+          
+    },
 
      async postData(){
 
