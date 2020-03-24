@@ -714,20 +714,23 @@ popupSubitle{
 .dateTimePicker{
 }
 .errorDiv{
-    margin-top: -10px;
+    margin-top: -1px;
 }
 .pickerDiv{
     margin-top: -15px;
-    background-color: #EDF0F5 !important;
-
-    padding-left: 15px !important;
     border-radius: 5px;
     height: 55px;
-    /* background: #EDF0F5; */
 }
 
 .pickerContainer{
     width: 98%;
     margin-right: 10px;
     margin-bottom: -10px;
+}
+
+.dateTimePickerInternal{
+    outline: none !important;
+    background: red;
+    background-color: #EDF0F5 !important;
+    
 }
