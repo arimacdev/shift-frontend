@@ -169,7 +169,7 @@ export default {
           projectOwner: this.userId,
           projectName: this.projectName,
           clientId: this.client,
-          projectStartDate: this.startDate.toISOString(),
+          projectStartDate: new Date(this.startDate),
           projectEndDate: new Date(this.endDate),
         })
         // console.log("adadasdas ----> " + new Date(this.startDate).toTimeString())
