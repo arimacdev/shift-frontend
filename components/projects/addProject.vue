@@ -94,6 +94,8 @@
             md="6"
             class="buttonGrid"
       >
+
+      
                 <button class="submitButton">
                 <v-list-item  @click="postData()" 
                 dark >
@@ -108,10 +110,11 @@
                 </button>
             </v-col>
         </v-row>
+
         </form>
-         <keep-alive>
-            <component v-bind:is="component"></component>
-            </keep-alive>
+         <div @click="close">
+            <component v-bind:is="component" ></component>
+         </div>
         <!-- <success-popup /> -->
     </div>
 </template>
@@ -119,9 +122,11 @@
 <script>
 import axios from 'axios'
 import { numeric, required, between, minLength, maxLength } from 'vuelidate/lib/validators'
-
 import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
+
+
+
 
 export default {
 
@@ -143,11 +148,14 @@ export default {
         })
 
         this.component = 'success-popup'
-        window.setTimeout(location.reload(), 8000)
+        // window.setTimeout(location.reload(), 8000)
        }  catch(e){
           console.log("Error creating project", e);
           this.component = 'error-popup'
        }   
+      },
+      close(){
+          this.component = ''
       },
 
       handleSubmit(e) {

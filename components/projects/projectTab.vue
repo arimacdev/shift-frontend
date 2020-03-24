@@ -126,7 +126,7 @@
                     </v-list-item-content>
                     </v-list-item>
                 </div>
-       
+      
          
             <div class="submitButton deleteProjectButton">
                 <v-list-item @click="deleteData()" 
@@ -142,10 +142,11 @@
        
         
         </form>
-
          
     </v-navigation-drawer>
 </div>
+
+
           <!-- --------------- end side bar --------------------- -->
 
           <v-row
@@ -198,6 +199,8 @@
             
             </v-row>
       </v-col>
+
+    
     </v-row>
 
 
@@ -251,15 +254,15 @@
             
             </v-row>
 
-  <!-- <keep-alive>
-            <component v-bind:is="component"></component>
-            </keep-alive> 
-        <success-popup />-->
-
   </v-container>
+     <div @click="close" class="popupBox">
+            <component v-bind:is="component" ></component>
+         </div> 
+         <!-- <div class="popupBox">
+        <success-popup />
+         </div> -->
   
     </div>
-    
 </template>
 <script>
 import SuccessPopup from '~/components/popups/successPopup'
@@ -348,11 +351,17 @@ export default {
           projectEndDate: this.updateProject.projectEndDate,
           projectStatus: this.updateProject.projectStatus
         })
-        location.reload();
+        // location.reload();
+        this.component = 'success-popup'
        } catch(e){
+
+         this.component = 'error-popup'
           console.log("Error updating a project", e);
        }
       },
+      close(){
+                this.component = ''
+            },
         async deleteData(){
        console.log(this.project.projectId);
       let response;
@@ -363,10 +372,12 @@ export default {
                     'user': this.userId,
                 }
         })
-        location.reload();
+        // location.reload();
+        this.component = 'success-popup'
         console.log(response.data);
        }  catch(e){
-          console.log("Error creating project", e);
+         this.component = 'error-popup'
+          console.log("Error deleting project", e);
        }          
       },
       getProjectDates(date, type) {

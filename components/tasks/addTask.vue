@@ -117,9 +117,9 @@
             </v-col>
         </v-row>
         </form>
-         <keep-alive>
-            <component v-bind:is="component"></component>
-            </keep-alive>
+         <div @click="close">
+            <component v-bind:is="component" ></component>
+         </div>
         <!-- <success-popup /> -->
     </div>
     
@@ -172,6 +172,9 @@ import axios from 'axios'
       handleFileUploads(e){
          this.file = this.$refs.files.files[0];
       },
+      close(){
+                this.component = ''
+            },
 
       handleSubmit(e) {
                 this.submitted = true;
@@ -195,7 +198,7 @@ import axios from 'axios'
           taskNotes: this.taskNotes
         })
          this.component = 'success-popup'
-        window.setTimeout(location.reload(), 8000)
+        // window.setTimeout(location.reload(), 8000)
         console.log("Task adding successful", response);
 
          let taskId= response.data.taskId;
@@ -220,6 +223,7 @@ import axios from 'axios'
           });
       
        } catch(e){
+         this.component = 'error-popup'
           console.log("Error adding a Task", e);
           // alert("Error adding a task")
        }      

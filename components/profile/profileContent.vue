@@ -118,9 +118,9 @@
     </div>
         </form>
 
-         <keep-alive>
-            <component v-bind:is="component"></component>
-            </keep-alive>
+        <div @click="close">
+            <component v-bind:is="component" ></component>
+         </div>
         <!-- <success-popup /> -->
     
     </div>
@@ -189,7 +189,7 @@ export default {
         })
         //  location.reload();
          this.component = 'success-popup'
-        window.setTimeout(location.reload(), 8000)
+        // window.setTimeout(location.reload(), 8000)
         console.log(response.message);
        }
        catch(e){
@@ -208,6 +208,9 @@ export default {
                 }
       
       },
+      close(){
+                this.component = ''
+            },
        submit () {
          try{
         let formData = new FormData();

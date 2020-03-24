@@ -107,9 +107,9 @@
             </v-col>
         </v-row>
         </form>
-        <keep-alive>
-            <component v-bind:is="component"></component>
-            </keep-alive>
+         <div @click="close">
+            <component v-bind:is="component" ></component>
+         </div>
         <!-- <success-popup /> -->
     </div>
 </template>
@@ -145,7 +145,7 @@ export default {
           email: this.userData.email,
         })
          this.component = 'success-popup'
-        window.setTimeout(location.reload(), 8000)
+        // window.setTimeout(location.reload(), 8000)
 
       }
        catch(e){
@@ -162,7 +162,10 @@ export default {
                     return;
                 }
       
-      }
+      },
+      close(){
+                this.component = ''
+            },
     },
     data(){
         return{

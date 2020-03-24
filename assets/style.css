@@ -422,7 +422,7 @@ font-size: 14px;
 }
 
 .sideBarDate{
-    background: #E5E5E5 !important;
+    background: #FFFFFF !important;
     outline: none;
     color: red;
     font-weight: 500;
@@ -557,6 +557,15 @@ font-size: 19px !important;
 .addUserPopup{
     padding-top: -50px !important;
 }
+
+.popupBox{
+    z-index: 100;
+    position: absolute;
+    right: 50px;
+    bottom: -60px;
+}
+
+
 /* -------------- add people to project ------------- */
 
 .addPeople{
