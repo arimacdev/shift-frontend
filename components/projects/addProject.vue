@@ -48,9 +48,9 @@
                 class=""
                 
             >
-        <!-- <input type="text" v-model.trim="$v.startDate.$model" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Project start date" class="formElements">
-            <div v-if="$v.startDate.$error && !$v.startDate.required" class="errorText"> Start date is required</div> -->
-           <div class="pickerContainer pickerDiv">
+        <input type="text" v-model.trim="$v.startDate.$model" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Project start date" class="formElements">
+            <div v-if="$v.startDate.$error && !$v.startDate.required" class="errorText"> Start date is required</div>
+           <!-- <div class="pickerContainer pickerDiv">
             <v-datetime-picker v-model.trim="$v.startDate.$model" class="dateTimePicker" label="Project start date & time">
                   <template slot="dateIcon">
                     <v-icon>fas fa-calendar</v-icon>
@@ -61,7 +61,7 @@
                 </v-datetime-picker>
             <div v-if="$v.startDate.$error && !$v.startDate.required" class="errorText errorDiv"> End date is required</div>
           
-           </div>
+           </div> -->
            
             </v-col>
              <v-col
@@ -69,9 +69,9 @@
                 md="6"
                 class=""
             >
-            <!-- <input type="text" v-model.trim="$v.endDate.$model" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Project end date" class="formElements">
-             <div v-if="$v.endDate.$error && !$v.endDate.required" class="errorText"> End date is required</div> -->
-           <div class="pickerContainer pickerDiv">
+            <input type="text" v-model.trim="$v.endDate.$model" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Project end date" class="formElements">
+             <div v-if="$v.endDate.$error && !$v.endDate.required" class="errorText"> End date is required</div>
+           <!-- <div class="pickerContainer pickerDiv">
           <v-datetime-picker v-model.trim="$v.endDate.$model" class="dateTimePicker" label="Project end date & time">
                   <template slot="dateIcon">
                     <v-icon>fas fa-calendar</v-icon>
@@ -82,7 +82,7 @@
                 </v-datetime-picker>
             <div v-if="$v.endDate.$error && !$v.endDate.required" class="errorText errorDiv"> End date is required</div>
           
-           </div>
+           </div> -->
           
             </v-col>
         </v-row>
@@ -152,12 +152,12 @@ import { numeric, required, between, minLength, maxLength } from 'vuelidate/lib/
 import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
 
-import Vue from 'vue'
-import DatetimePicker from 'vuetify-datetime-picker'
+// import Vue from 'vue'
+// import DatetimePicker from 'vuetify-datetime-picker'
 // (Optional) import 'vuetify-datetime-picker/src/stylus/main.styl'
 
-Vue.use(DatetimePicker)
-import '@fortawesome/fontawesome-free/css/all.css'
+// Vue.use(DatetimePicker)
+// import '@fortawesome/fontawesome-free/css/all.css'
 
 
 
