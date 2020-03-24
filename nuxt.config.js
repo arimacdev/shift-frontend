@@ -30,7 +30,10 @@ export default {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: ['~/plugins/vuelidate.js'],
+ plugins: [
+  '~/plugins/vuelidate.js',
+  '~/plugins/datepicker.js'
+],
   /*
   ** Nuxt.js dev-modules
   */
