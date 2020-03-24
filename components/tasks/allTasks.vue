@@ -73,9 +73,9 @@ import { mapState } from 'vuex';;
      methods: {
        listenToChange(){
          console.log("listened to changes ------->");
-          this.$store.dispatch('task/fetchTasks', this.projectId)
+          this.$store.dispatch('task/fetchTasksAllTasks', this.projectId)
        },
-        async selectTask(task){
+    async selectTask(task){
      this.task = task;
      console.log("selectedTask", task);
       this.$axios.get (`/users/${this.task.taskAssignee}`)

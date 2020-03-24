@@ -123,7 +123,9 @@ export default {
     selectProject(project){
      this.project = project;
 
-    this.$store.dispatch('task/fetchTasks', this.project.projectId)
+    this.$store.dispatch('task/fetchTasksAllTasks', this.project.projectId)
+    this.$store.dispatch('task/fetchTasksMyTasks', this.project.projectId)
+
     //  console.log("userId", this.userId)
     //  console.log("access_token", this.access_token)     
     //    //Get all projects for now
@@ -144,14 +146,14 @@ export default {
       //  console.log("error", e)
       // })
 
-      this.$axios.get (`projects/${this.project.projectId}/tasks/user?userId=${this.userId}`)
-      .then (response => {
-      //  console.log("data", response.data)
-       this.MyTasks = response.data.data;
-      })
-      .catch (e => {
-       console.log("error", e)
-      })
+      // this.$axios.get (`projects/${this.project.projectId}/tasks/user?userId=${this.userId}`)
+      // .then (response => {
+      // //  console.log("data", response.data)
+      //  this.MyTasks = response.data.data;
+      // })
+      // .catch (e => {
+      //  console.log("error", e)
+      // })
 
       this.$axios.get(`projects/${this.project.projectId}/tasks/completion`, {
          headers: {
