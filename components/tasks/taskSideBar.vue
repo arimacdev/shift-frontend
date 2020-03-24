@@ -167,11 +167,11 @@
           <v-list-item-icon>
             <v-icon size="30" color="#0BAFFF" >mdi-calendar-blank-outline</v-icon>
           </v-list-item-icon>
+          <!-- <v-list-item-content class="dueTitle"> -->
+          <p class="tabListItemsText datesTitle">Due date</p>
+           <!-- </v-list-item-content> -->
           <v-list-item-content>
-          <v-list-item-title class="tabListItemsText">Due date</v-list-item-title>
-           </v-list-item-content>
-          <v-list-item-content>
-            <input class="sideBarDate " placeholder="Due date" onfocusin="(this.type='date')" onfocusout="(this.type='text')" type="text" v-model="taskDue" @change="updateTaskDates('dueDate')">
+            <input class="sideBarDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='text')" type="text" v-model="taskDue" @change="updateTaskDates('dueDate')">
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -183,11 +183,11 @@
           <v-list-item-icon>
             <v-icon size="30" color="#FFC213" >mdi-clock-outline</v-icon>
           </v-list-item-icon>
-           <v-list-item-content>
-          <v-list-item-title class="tabListItemsText">Remind on</v-list-item-title>
-           </v-list-item-content>
+           <!-- <v-list-item-content> -->
+          <p class="tabListItemsText datesTitle">Remind on</p>
+           <!-- </v-list-item-content> -->
           <v-list-item-content>
-             <input class="sideBarDate " placeholder="Due date" onfocusin="(this.type='date')" onfocusout="(this.type='text')" type="text" v-model="taskRemindOn" @change="updateTaskDates('remindOn')">
+             <input class="sideBarDate " placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='text')" type="text" v-model="taskRemindOn" @change="updateTaskDates('remindOn')">
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -305,11 +305,6 @@
       EditTaskName(){
         this.editTask = false;
       },
-      showUsers(){
-        console.log(this.assignee);
-        // console.log(this.taskFiles)
-        // console.log(this.people)
-      },
       changeDue(){
         console.log("change me")
       },
@@ -328,6 +323,7 @@
               }
             }
         )
+        this.$emit('listenChange');
         console.log("update task status response", response);
        } catch(e){
           console.log("Error updating a status", e);
@@ -371,10 +367,11 @@
               }
             }
         )
+        this.$emit('listenChange');
         console.log("edit task response", response);
        } catch(e){
           console.log("Error updating a note", e);
-       }
+       }       
       },
       async saveEditTaskName(){
       console.log("updatedTaskName ->",this.updatedTask.taskName)
@@ -389,7 +386,9 @@
               }
             }
         )
+        this.$emit('listenChange');
         console.log("edit task response", response);
+       
        } catch(e){
           console.log("Error updating a note", e);
        }
@@ -407,6 +406,7 @@
               }
             }
         )
+        this.$emit('listenChange');
         console.log("update task status response", response);
        } catch(e){
           console.log("Error updating a status", e);
@@ -438,7 +438,8 @@
               }
             }
         )
-        console.log("update task status response", response);
+        this.$emit('listenChange');
+        console.log("update task dates response", response);
        } catch(e){
           console.log("Error updating a status", e);
        }
@@ -560,7 +561,7 @@
           let stringDate  = this.task.taskDueDateAt + " ";
             // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
               stringDate = stringDate.toString();
-              stringDate = stringDate.slice(0,10);           
+              stringDate = stringDate.slice(0,16);           
               return stringDate;
               // return newDate;
             },
@@ -572,12 +573,12 @@
           taskRemindOn: {
         get(){
           if(this.task.taskReminderAt === null)
-          return "Add Reminer Date";
+          return "Add Reminder Date";
           let stringDate  = this.task.taskReminderAt + "";
           // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
           // console.log("f---->",formateedDate)
           stringDate = stringDate.toString();
-          stringDate = stringDate.slice(0,10);           
+          stringDate = stringDate.slice(0,16);           
           return stringDate;
           },
         set(value) {
