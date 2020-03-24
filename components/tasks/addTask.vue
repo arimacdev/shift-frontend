@@ -55,7 +55,7 @@
                 md="6"
                 
             >
-            <input  v-model="taskDueDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='text')" type="text" class="formElements">
+            <input  v-model="taskDueDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" class="formElements">
             </v-col>
         </v-row>
 
@@ -69,7 +69,7 @@
                 md="6"
                 
             >
-        <input v-model="taskRemindOnDate"  type="text" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='text')" placeholder="Reminder" class="formElements">
+        <input v-model="taskRemindOnDate"  type="text" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Reminder" class="formElements">
             </v-col>
              <v-col
                 sm="6"
