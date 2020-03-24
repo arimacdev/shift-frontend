@@ -171,7 +171,7 @@
           <p class="tabListItemsText datesTitle">Due date</p>
            <!-- </v-list-item-content> -->
           <v-list-item-content>
-            <input class="sideBarDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='text')" type="text" v-model="taskDue" @change="updateTaskDates('dueDate')">
+            <input class="sideBarDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" v-model="taskDue" @change="updateTaskDates('dueDate')">
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -187,7 +187,7 @@
           <p class="tabListItemsText datesTitle">Remind on</p>
            <!-- </v-list-item-content> -->
           <v-list-item-content>
-             <input class="sideBarDate " placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='text')" type="text" v-model="taskRemindOn" @change="updateTaskDates('remindOn')">
+             <input class="sideBarDate " placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" v-model="taskRemindOn" @change="updateTaskDates('remindOn')">
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>

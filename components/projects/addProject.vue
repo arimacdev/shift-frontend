@@ -47,7 +47,7 @@
                 md="6"
                 
             >
-        <input type="text" v-model.trim="$v.startDate.$model" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='text')" placeholder="Project start date" class="formElements">
+        <input type="text" v-model.trim="$v.startDate.$model" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Project start date" class="formElements">
             <div v-if="$v.startDate.$error && !$v.startDate.required" class="errorText"> Start date is required</div>
             </v-col>
              <v-col
@@ -55,7 +55,7 @@
                 md="6"
                 
             >
-            <input type="text" v-model.trim="$v.endDate.$model" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='text')" placeholder="Project end date" class="formElements">
+            <input type="text" v-model.trim="$v.endDate.$model" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Project end date" class="formElements">
              <div v-if="$v.endDate.$error && !$v.endDate.required" class="errorText"> End date is required</div>
             </v-col>
         </v-row>
