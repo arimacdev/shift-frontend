@@ -372,7 +372,7 @@ export default {
                     'user': this.userId,
                 }
         })
-        // location.reload();
+        location.reload();
         this.component = 'success-popup'
         console.log(response.data);
        }  catch(e){
