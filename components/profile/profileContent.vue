@@ -117,6 +117,11 @@
         </v-row>
     </div>
         </form>
+          <div>
+      <a href="https://slack.com/oauth/v2/authorize?scope=incoming-webhook,chat:write&client_id=345426929140.1020110511447&redirect_uri=http://localhost:3000/mainPages/profile">
+      <img alt="Join Slack Notifications" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" />
+      </a>
+    </div>
 
         <div @click="close">
             <component v-bind:is="component" ></component>
@@ -131,8 +136,8 @@
 <script>
 import EditProfile from '~/components/profile/editProfile'
 import axios from 'axios'
+import qs from 'qs';
 import { required, minLength, sameAs} from 'vuelidate/lib/validators'
-
 import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
 
@@ -175,7 +180,56 @@ export default {
         this.loader = null
       },
     },
+
+    created(){
+      const authCode = this.$route.query.code;
+      if(authCode !== undefined){
+            console.log("auth code present");
+            axios({
+            method: 'post',
+            url: 'https://slack.com/api/oauth.v2.access',
+            data: qs.stringify({
+              client_id: '345426929140.1020110511447',
+              client_secret: 'fd851b7af77e525c1700879de9b328ab',
+              code: authCode
+            }),
+            headers: {
+              'content-type': 'application/x-www-form-urlencoded'
+            }
+          }).then (response => {
+          console.log("Success slack userId -->", response.data.authed_user.id)
+          })
+          .catch (e => {
+          console.log("error from slack", e,response.data)
+          })
+      } else {
+        console.log("No authorization token present");
+      }
+    },
+    
      methods: {
+       slackAuth(){
+         const authCode = this.$route.query.code;
+         console.log("auth code", this.$route.query.code);
+         axios({
+      method: 'post',
+      url: 'https://slack.com/api/oauth.v2.access',
+      data: qs.stringify({
+        client_id: '345426929140.1020110511447',
+        client_secret: 'fd851b7af77e525c1700879de9b328ab',
+        code: authCode
+      }),
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded'
+      }
+    }).then (response => {
+    console.log("Success slack", response.data.authed_user.id)
+    })
+    .catch (e => {
+    console.log("error from slack", e,response.data)
+    })
+       },
+
      async postData(){
 
          let response;

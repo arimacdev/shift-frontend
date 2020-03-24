@@ -17,6 +17,7 @@
     "jsonwebtoken": "^8.5.1",
     "npm": "^6.14.3",
     "nuxt": "^2.0.0",
+    "qs": "^6.9.2",
     "vee-validate": "^3.2.5",
     "vue-router": "^3.1.6",
     "vuelidate": "^0.7.5",
