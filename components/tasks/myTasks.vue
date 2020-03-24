@@ -1,10 +1,9 @@
 <template>
      <div class="taskContent">
-
        <div class="allTasksDropDown">
        </div>
        <div class="taskListViewContent overflow-y-auto">
-        <div v-for="(task, index) in MyTasks"
+        <div v-for="(task, index) in projectMyTask"
         :key="index" class="taskList" >
             <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)">
               <v-list-item-action>
@@ -20,7 +19,7 @@
                 <v-list-item-title class="body-2">{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
               </v-list-item-content>
                <v-list-item-avatar>
-           <v-img v-if="task.taskAssigneeProfileImage != null" :src="task.taskAssigneeProfileImage"></v-img>
+          <v-img v-if="task.taskAssigneeProfileImage != null" :src="task.taskAssigneeProfileImage"></v-img>
           <v-img v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
 
         </v-list-item-avatar>
@@ -39,7 +38,7 @@
       class=""
       color="#E5E5E5"
     >
-    <task-side-bar :task=task :assignee="assignee" :projectId="projectId" :subTasks="subTasks" :taskFiles="taskFiles" :projectUsers="projectUsers" :people="people"/>
+    <task-side-bar :task=task :assignee="assignee" :projectId="projectId" :subTasks="subTasks" :taskFiles="taskFiles" :projectUsers="projectUsers" :people="people" @listenChange="listenToChange"/>
     
     </v-navigation-drawer>
 
@@ -50,9 +49,9 @@
 
 <script>
 import TaskSideBar from '~/components/tasks/taskSideBar'
-
+import { mapState } from 'vuex';;
   export default {
-    props: ['projectId', 'MyTasks', 'projectUsers', 'people'],
+    props: ['projectId',  'projectUsers', 'people'],
     data() {
       return {
         projects: ["pr1"],
@@ -71,7 +70,14 @@ import TaskSideBar from '~/components/tasks/taskSideBar'
       'task-side-bar' : TaskSideBar,
     },
      methods: {
-        async selectTask(task){
+       checkme(){
+        console.log("you can check", this.projectMyTask)
+      },
+       listenToChange(){
+         console.log("listened to changes ------->");
+          this.$store.dispatch('task/fetchTasksMyTasks', this.projectId)
+       },
+    async selectTask(task){
      this.task = task;
      console.log("selectedTask", task);
       this.$axios.get (`/users/${this.task.taskAssignee}`)
@@ -109,16 +115,19 @@ import TaskSideBar from '~/components/tasks/taskSideBar'
       })     
     }, 
     getProjectDates(date) {
-       if(date === null)
+      if(date === null)
           return "Add Due Date";
         let stringDate  =  date + "";
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0,10);           
         return stringDate;
-      },
-      
-    
-     }
+      }
+     },
+         computed: {
+      ...mapState({
+          projectMyTask: state => state.task.myTasks,
+      })
+    }
   }
 </script>
 

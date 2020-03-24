@@ -23,7 +23,7 @@
                 sm="6"
                 md="6"                
             >
-            <select v-model="taskAssignee" class="formElements" >
+            <select v-model="addTaskAssignee" class="formElements" >
               <option disabled value="" >Assignee</option>
               <option v-for="(projectUser, index) in projectUsers" :key="index" :value="projectUser.userId">
                 {{projectUser.firstName}} {{projectUser.lastName}}
@@ -55,7 +55,7 @@
                 md="6"
                 
             >
-            <input  v-model="taskDueDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='text')" type="text" class="formElements">
+            <input  v-model="taskDueDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" class="formElements">
             </v-col>
         </v-row>
 
@@ -69,7 +69,7 @@
                 md="6"
                 
             >
-        <input v-model="taskRemindOnDate"  type="text" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='text')" placeholder="Reminder" class="formElements">
+        <input v-model="taskRemindOnDate"  type="text" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Reminder" class="formElements">
             </v-col>
              <v-col
                 sm="6"
@@ -237,6 +237,15 @@ import axios from 'axios'
           set(value) {
             this.taskName = value;
           }            
+        },
+        addTaskAssignee:{
+          get(){
+            console.log("Task assignee -->!", this.taskAssignee)
+              return this.taskAssignee;
+          },
+          set(value){
+              this.taskAssignee = value
+          }
         },
          addTaskStyling: {
             get(){
