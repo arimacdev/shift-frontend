@@ -305,11 +305,6 @@
       EditTaskName(){
         this.editTask = false;
       },
-      showUsers(){
-        console.log(this.assignee);
-        // console.log(this.taskFiles)
-        // console.log(this.people)
-      },
       changeDue(){
         console.log("change me")
       },
@@ -328,6 +323,7 @@
               }
             }
         )
+        this.$emit('listenChange');
         console.log("update task status response", response);
        } catch(e){
           console.log("Error updating a status", e);
