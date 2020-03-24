@@ -38,24 +38,21 @@
                 md="6"
                 
             >
-            <select v-model="taskStatus" class="formElements">
-              <option disabled value="pending" >Task status</option>
-                <option key="pending" value="pending" >Pending</option>
-                <option key="implementing" value="implementing">Implementing</option>
-                <option key="qa" value="qa">QA</option>
-                <option key="readyToDeploy" value="readyToDeploy">Ready to Deploy</option>
-                <option key="reOpened" value="reOpened">Re-Opened</option>
-                <option key="deployed" value="deployed">Deployed</option>
-                <option key="closed" value="closed">Closed</option>
-            </select>
-            
+           
+             <!-- <input  v-model="taskDueDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" class="formElements"> -->
+           <div class="pickerContainer pickerDiv">
+            <VueCtkDateTimePicker class="dateTimePickerInternal" v-model="taskDueDate" label="Project start date and time"/>
+           </div>
             </v-col>
              <v-col
                 sm="6"
                 md="6"
                 
             >
-            <input  v-model="taskDueDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" class="formElements">
+          <!-- <input v-model="taskRemindOnDate"  type="text" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Reminder" class="formElements"> -->
+         <div class="pickerContainer pickerDiv">
+         <VueCtkDateTimePicker  class="dateTimePickerInternal" v-model="taskRemindOnDate" label="Reminder"/>
+         </div>
             </v-col>
         </v-row>
 
@@ -69,7 +66,17 @@
                 md="6"
                 
             >
-        <input v-model="taskRemindOnDate"  type="text" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Reminder" class="formElements">
+            <select v-model="taskStatus" class="formElements">
+              <option disabled value="pending" >Task status</option>
+                <option key="pending" value="pending" >Pending</option>
+                <option key="implementing" value="implementing">Implementing</option>
+                <option key="qa" value="qa">QA</option>
+                <option key="readyToDeploy" value="readyToDeploy">Ready to Deploy</option>
+                <option key="reOpened" value="reOpened">Re-Opened</option>
+                <option key="deployed" value="deployed">Deployed</option>
+                <option key="closed" value="closed">Closed</option>
+            </select>
+           
             </v-col>
              <v-col
                 sm="6"
@@ -130,6 +137,8 @@
 import { required, maxLength } from 'vuelidate/lib/validators'
 import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
+
+import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
  
 import axios from 'axios'
   export default {
@@ -156,7 +165,9 @@ import axios from 'axios'
           taskAssignee: '',
           taskStatus: 'pending',
           taskName: '',
-          data: ''
+          data: '',
+          taskDueDate: new Date(),
+          taskRemindOnDate: new Date()
       }
     },
     validations: {

@@ -96,10 +96,11 @@ margin-bottom: -5px !important;
     margin-right: 10px;
     padding: 15px;
     border-radius: 5px;
-    background: #EDF0F5;
+    /* background: #EDF0F5; */
     border-style: none;
     margin-bottom: -30px;
     margin-top: -50px;
+    border: solid 1px #c5c7cc;
 }
 .submitButton{
     background-color: #0BAFFF;
@@ -717,7 +718,7 @@ popupSubitle{
     margin-top: -1px;
 }
 .pickerDiv{
-    margin-top: -15px;
+    /* margin-top: -5px; */
     border-radius: 5px;
     height: 55px;
 }
