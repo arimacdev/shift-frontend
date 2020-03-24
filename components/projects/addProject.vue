@@ -45,18 +45,45 @@
                 <v-col
                 sm="6"
                 md="6"
+                class=""
                 
             >
-        <input type="text" v-model.trim="$v.startDate.$model" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Project start date" class="formElements">
-            <div v-if="$v.startDate.$error && !$v.startDate.required" class="errorText"> Start date is required</div>
+        <!-- <input type="text" v-model.trim="$v.startDate.$model" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Project start date" class="formElements">
+            <div v-if="$v.startDate.$error && !$v.startDate.required" class="errorText"> Start date is required</div> -->
+           <div class="pickerContainer pickerDiv">
+            <v-datetime-picker v-model.trim="$v.startDate.$model" class="dateTimePicker" label="Project start date & time">
+                  <template slot="dateIcon">
+                    <v-icon>fas fa-calendar</v-icon>
+                  </template>
+                  <template slot="timeIcon">
+                    <v-icon>fas fa-clock</v-icon>
+                  </template>
+                </v-datetime-picker>
+            <div v-if="$v.startDate.$error && !$v.startDate.required" class="errorText errorDiv"> End date is required</div>
+          
+           </div>
+           
             </v-col>
              <v-col
                 sm="6"
                 md="6"
-                
+                class=""
             >
-            <input type="text" v-model.trim="$v.endDate.$model" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Project end date" class="formElements">
-             <div v-if="$v.endDate.$error && !$v.endDate.required" class="errorText"> End date is required</div>
+            <!-- <input type="text" v-model.trim="$v.endDate.$model" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Project end date" class="formElements">
+             <div v-if="$v.endDate.$error && !$v.endDate.required" class="errorText"> End date is required</div> -->
+           <div class="pickerContainer pickerDiv">
+          <v-datetime-picker v-model.trim="$v.endDate.$model" class="dateTimePicker" label="Project end date & time">
+                  <template slot="dateIcon">
+                    <v-icon>fas fa-calendar</v-icon>
+                  </template>
+                  <template slot="timeIcon">
+                    <v-icon>fas fa-clock</v-icon>
+                  </template>
+                </v-datetime-picker>
+            <div v-if="$v.endDate.$error && !$v.endDate.required" class="errorText errorDiv"> End date is required</div>
+          
+           </div>
+          
             </v-col>
         </v-row>
 
@@ -125,6 +152,13 @@ import { numeric, required, between, minLength, maxLength } from 'vuelidate/lib/
 import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
 
+import Vue from 'vue'
+import DatetimePicker from 'vuetify-datetime-picker'
+// (Optional) import 'vuetify-datetime-picker/src/stylus/main.styl'
+
+Vue.use(DatetimePicker)
+import '@fortawesome/fontawesome-free/css/all.css'
+
 
 
 
@@ -137,6 +171,9 @@ export default {
     
     methods: {
      async postData(){
+
+
+        console.log("date test -------> " + this.endDate)
       let response;
        try{
         response = await this.$axios.$post('/projects', {
@@ -148,7 +185,7 @@ export default {
         })
 
         this.component = 'success-popup'
-        // window.setTimeout(location.reload(), 8000)
+        window.setTimeout(location.reload(), 8000)
        }  catch(e){
           console.log("Error creating project", e);
           this.component = 'error-popup'
@@ -172,7 +209,8 @@ export default {
             userId: this.$store.state.user.userId,
             projectName: '',
             client: '',
-            startDate: new Date().toISOString().split('.')[0],
+            // startDate: new Date().toISOString().split('.')[0],
+            startDate: new Date,
              endDate: '',
             // endDate: new Date(new Date().getTime() + (24 * 60 * 60 * 1000)).toISOString().split('T')[0],
             projectOwner: '',
