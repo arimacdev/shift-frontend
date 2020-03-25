@@ -7,7 +7,7 @@
           <div class="profilePictureUpload">
               <form>
               <template>
-                <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Select profile picture" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload"/>
+                <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Select profile picture" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload profPicUploader"/>
                 <!-- <v-file-input id="files" ref="files" v-on:change="handleFileUploads()"  prepend-icon="mdi-camera" chips label="Upload profile picture"></v-file-input> -->
               </template>
               <div class="pictureUploadButton">
@@ -24,6 +24,53 @@
                 </v-btn>
               </div>
               </form>
+
+<!-- ----------------------- slack --------------------- -->
+
+
+    <v-card 
+    class="mx-auto  slackCard"
+    max-width="344"
+    height="220px"
+    outlined>
+
+    <v-img
+      class="white--text align-end slackImage"
+      width="100px"
+      
+      src="https://images.squarespace-cdn.com/content/v1/59023aa1e58c62227ce776c3/1503518408354-JKWF2TL6XMAPUDUDXHB8/ke17ZwdGBToddI8pDm48kDdoBnacxb2NT7zhAvcunbkUqsxRUqqbr1mOJYKfIPR7LoDQ9mXPOjoJoqy81S2I8N_N4V1vUb5AoIIIbLZhVYxCRW4BPu10St3TBAUQYVKcnQaz6sFZ284KgYK7oqQKwCiboq4NyF9jYMWrqFYNBZyhQt1FiR_Knww7CTx6buRm/Slack_CMYK.png"
+    ></v-img>
+    <div class="cardSlogan">It's time to connect your app with slack</div>
+
+<div class="slackButton">
+       <a href="https://slack.com/oauth/v2/authorize?scope=incoming-webhook,chat:write&client_id=345426929140.1020110511447&redirect_uri=http://localhost:3000/mainPages/profile">
+          <img alt="Join Slack Notifications" height="" width="120" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" />
+          </a>
+</div>
+          <br>
+             <!-- v-if="user.userSlackId != null && user.notification == false" -->
+
+             <div class="slackCardButton">
+       <!-- <v-btn x-small depressed color="primary" v-if="user.userSlackId != null && user.notification == false" v-show="enableNotification"  @click='changeNotificationStatus(user.notification)' >Enable Notifications</v-btn>  
+      <v-btn x-small depressed   v-if="user.userSlackId != null && user.notification == true" v-show="disableNotification"  @click='changeNotificationStatus(user.notification)'>Disable Notifications</v-btn>     -->
+            
+           
+            <div class="notiTitle">Enable Notifications</div>
+            <div class="notiButton">
+            
+          <v-switch inset v-model="switch1" x-small depressed color="primary" v-if="user.userSlackId != null && user.notification == false" v-show="enableNotification"  @click='changeNotificationStatus(user.notification)' >Enable Notifications </v-switch>
+   <v-switch inset v-model="switch2" v-btn x-small depressed   v-if="user.userSlackId != null && user.notification == true" v-show="disableNotification"  @click='changeNotificationStatus(user.notification)'>Disable Notifications   </v-switch>
+</div>
+             </div>
+
+       </v-card>
+
+<!-- --------------------- end slack ----------------- -->
+ <!-- <v-switch v-model="switch1" inset :label="`Switch 1: ${switch1.toString()}`"></v-switch> -->
+
+
+
+
            </div>
         </div>
         <form @submit.prevent="handleSubmit">
@@ -117,14 +164,15 @@
         </v-row>
     </div>
         </form>
-          <div>
-             <!-- v-if="user.userSlackId != null && user.notification == false" -->
-      <button v-if="user.userSlackId != null && user.notification == false" v-show="enableNotification"  @click='changeNotificationStatus(user.notification)' >Enable Notifications</button>  
-      <button  v-if="user.userSlackId != null && user.notification == true" v-show="disableNotification"  @click='changeNotificationStatus(user.notification)'>Disable Notifications</button>    
 
-      <a href="https://slack.com/oauth/v2/authorize?scope=incoming-webhook,chat:write&client_id=345426929140.1020110511447&redirect_uri=http://localhost:3000/mainPages/profile">
-      <img alt="Join Slack Notifications" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" />
-      </a>
+     <div>
+       
+<!-- ---- this is a switch button if applicable ---- -->
+    <!-- <v-sheet class="pa-5">
+        <v-switch v-model="switch1" inset :label="`Switch 1: ${switch1.toString()}`"></v-switch>
+      </v-sheet> -->
+
+         
     </div>
 
         <div @click="close">
@@ -160,6 +208,10 @@ export default {
     // },
     data () {
       return {
+         switch1: true,
+        switch2: false,
+
+
         userName: this.user.userName,
         firstName: this.user.firstName,
         lastName: this.user.lastName,
