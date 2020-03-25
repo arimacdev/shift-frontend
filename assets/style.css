@@ -741,7 +741,7 @@ popupSubitle{
 
 .dateTimePickerInternal{
     outline: none !important;
-    background: red;
+    background: green;
     background-color: #EDF0F5 !important;
     /* z-index: 1000; */
     position: absolute;
@@ -758,7 +758,7 @@ popupSubitle{
 
 .datePickerNew{
     margin-top: 20px;
-    color: red;
+    color: green;
 }
 
 .pickerNewText{
@@ -770,6 +770,10 @@ popupSubitle{
     margin-left: 8px !important;
 }
 
-/* .dueFieldDate{
-    margin-left: 12px !important;
-} */
+.btnPicker{
+    width: 50px;
+    font-size: 10px;
+}
+.btnPickerText{
+    font-size: 8px;
+}

@@ -187,7 +187,7 @@
                 >
                 <label for="startDate" slot="before" class="tabListItemsText "><span class="pickerNewText">Due date</span></label>
                  <span class="description sdfsdf" slot="after" >
-                     <v-btn x-small depressed color="primary" @click="updateTaskDates('dueDate')"> Update </v-btn>
+                     <v-btn class="btnPicker" x-small depressed color="primary" @click="updateTaskDates('dueDate')"> <span class="btnPickerText"> Update</span> </v-btn>
                  </span>
                 <template slot="button-cancel">
                   <fa :icon="['far', 'times']"></fa>
@@ -225,7 +225,7 @@
                 >
                 <label for="endDate" slot="before" class="tabListItemsText "><span class="pickerNewText">Remind on</span></label>
                  <span class="description " slot="after">
-                     <v-btn x-small depressed color="primary"  @click="updateTaskDates('remindOn')"> Update </v-btn>
+                     <v-btn class="btnPicker" x-small depressed color="primary"  @click="updateTaskDates('remindOn')"> <span class="btnPickerText"> Update </span></v-btn>
                  </span>
                 <template slot="button-cancel">
                   <fa :icon="['far', 'times']"></fa>
@@ -307,6 +307,7 @@
              <span>{{ taskFile.taskFileName }}</span> </div>
             </a>
           </div>
+          
         </v-list-item>
         </div>
       </v-list-group>
@@ -319,6 +320,10 @@
     </v-list>
     </div>
    
+          <!-- <div @click="close">
+            <component v-bind:is="component" ></component>
+            <success-popup />
+         </div> -->
 
     </div>
 </template>
@@ -328,15 +333,23 @@
 import { Datetime } from 'vue-datetime';
 import Vue from 'vue' 
 Vue.component('datetime', Datetime);
-
 import { Settings } from 'luxon'
  
 Settings.defaultLocale = 'IST'
 
+import SuccessPopup from '~/components/popups/successPopup'
+import ErrorPopup from '~/components/popups/errorPopup'
+
   export default {
     props: ['task', 'assignee', 'projectId', 'subTasks', 'taskFiles', 'projectUsers', 'people'],
+
+    components: {
+      'success-popup' : SuccessPopup,
+      'error-popup': ErrorPopup
+    },
     data() {
       return {
+        component: '',
         hidden: false,
         userId: this.$store.state.user.userId,
         drawer: null,
@@ -376,6 +389,9 @@ Settings.defaultLocale = 'IST'
       }
     },
     methods: {
+      close(){
+                this.component = ''
+            },
       showNewSubTaskField: function(){
         this.showNewSubTask =true;
       },

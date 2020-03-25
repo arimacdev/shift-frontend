@@ -165,7 +165,8 @@ export default {
           projectStartDate: new Date(this.startDate),
           projectEndDate: new Date(this.endDate),
         })
-        // console.log("adadasdas ----> " + new Date(this.startDate).toTimeString())
+
+        console.log("project added successfully", response);
         this.component = 'success-popup'
         window.setTimeout(location.reload(), 8000)
        }  catch(e){
