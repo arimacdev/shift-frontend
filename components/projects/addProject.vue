@@ -142,13 +142,6 @@ import ErrorPopup from '~/components/popups/errorPopup'
 
 import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
 
-// import Vue from 'vue'
-// import DatetimePicker from 'vuetify-datetime-picker'
-// Vue.use(DatetimePicker)
-
-
-// import '@fortawesome/fontawesome-free/css/all.css'
-// (Optional) import 'vuetify-datetime-picker/src/stylus/main.styl'
 
 
 
@@ -174,7 +167,7 @@ export default {
         })
         // console.log("adadasdas ----> " + new Date(this.startDate).toTimeString())
         this.component = 'success-popup'
-        // window.setTimeout(location.reload(), 8000)
+        window.setTimeout(location.reload(), 8000)
        }  catch(e){
           console.log("Error creating project", e);
           this.component = 'error-popup'

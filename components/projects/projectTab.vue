@@ -97,7 +97,41 @@
                 md="12"
                 
             >
-       <input type="text" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='text')" v-model="projectStartDate" placeholder="Project start date" class="formElements">
+
+            <!-- ------------------------------ -->
+
+            <v-list-item-group class="sideBarFormElementsForPickers">
+        <v-list-item>
+        
+          <v-list-item-content>
+           <div class="pickerContainer pickerDiv sideBarPickers datePickerNew">
+           
+           <datetime
+              type="datetime"
+              v-model="projectStartDate"
+              zone="local"
+                input-id="endDate"
+                >
+                <label for="endDate" slot="before" class=" "><span class="pickerNewText">Start Date</span></label>
+                 
+                <template slot="button-cancel">
+                  <fa :icon="['far', 'times']"></fa>
+                  Cancel
+                </template>
+                <template slot="button-confirm">
+                  <fa :icon="['fas', 'check-circle']"></fa>
+                <p > Confirm </p>
+            </template>
+          </datetime>
+         </div>
+          
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+
+            <!-- ----------------------------- -->
+
+       <!-- <input type="text" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='text')" v-model="projectStartDate" placeholder="Project start date" class="formElements"> -->
             </v-col>
         </v-row>
 
@@ -110,7 +144,36 @@
                 md="12"
                 
             >
-       <input type="text" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='text')" v-model="projectEndDate" placeholder="Project end date" class="formElements">
+
+             <v-list-item-group class="sideBarFormElementsForPickers">
+        <v-list-item>
+        
+          <v-list-item-content>
+           <div class="pickerContainer pickerDiv sideBarPickers datePickerNew">
+           
+           <datetime
+              type="datetime"
+              v-model="projectEndDate"
+              zone="local"
+                input-id="endDate"
+                >
+                <label for="endDate" slot="before" class=" "><span class="pickerNewText">End Date</span></label>
+                 
+                <template slot="button-cancel">
+                  <fa :icon="['far', 'times']"></fa>
+                  Cancel
+                </template>
+                <template slot="button-confirm">
+                  <fa :icon="['fas', 'check-circle']"></fa>
+                <p > Confirm </p>
+            </template>
+          </datetime>
+         </div>
+          
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+       <!-- <input type="text" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='text')" v-model="projectEndDate" placeholder="Project end date" class="formElements"> -->
             </v-col>
         </v-row>
 

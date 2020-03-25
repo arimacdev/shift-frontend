@@ -157,8 +157,8 @@ import axios from 'axios'
             taskName: '',
             taskAssignee: '',
             taskStatus: '',
-            taskDueDate:'',
-            taskRemindOnDate:'',
+            taskDueDate:new Date(),
+            taskRemindOnDate:new Date(),
             taskNotes: '',
       },
          component: '',
@@ -203,8 +203,8 @@ import axios from 'axios'
           projectId: this.projectId,
           taskInitiator: this.userId,
           taskAssignee: this.taskAssignee,
-          taskDueDate: this.taskDueDate,
-          taskRemindOnDate: this.taskRemindOnDate,
+          taskDueDate: new Date(this.taskDueDate),
+          taskRemindOnDate: new Date(this.taskRemindOnDate),
           taskStatus: this.taskStatus,
           taskNotes: this.taskNotes
         })
