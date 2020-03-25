@@ -118,8 +118,9 @@
     </div>
         </form>
           <div>
-      <button v-if="user.userSlackId != null && user.notification == false" @click='changeNotificationStatus(user.notification)'>Enable Notifications</button>  
-      <button v-else-if="user.userSlackId != null && user.notification == true" @click='changeNotificationStatus(user.notification)'>Disable Notifications</button>    
+             <!-- v-if="user.userSlackId != null && user.notification == false" -->
+      <button v-if="user.userSlackId != null && user.notification == false" v-show="enableNotification"  @click='changeNotificationStatus(user.notification)' >Enable Notifications</button>  
+      <button  v-if="user.userSlackId != null && user.notification == true" v-show="disableNotification"  @click='changeNotificationStatus(user.notification)'>Disable Notifications</button>    
 
       <a href="https://slack.com/oauth/v2/authorize?scope=incoming-webhook,chat:write&client_id=345426929140.1020110511447&redirect_uri=http://localhost:3000/mainPages/profile">
       <img alt="Join Slack Notifications" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" />
@@ -152,25 +153,28 @@ export default {
        'success-popup' : SuccessPopup,
       'error-popup': ErrorPopup
     },
-    data: function(){
-    return{
+    // data: function(){
+    // return{
+        
+    // }
+    // },
+    data () {
+      return {
         userName: this.user.userName,
         firstName: this.user.firstName,
         lastName: this.user.lastName,
         email: this.user.email,
-    }
-    },
-    data () {
-      return {
+        enableNotification: !this.user.notificationStatus,
+        disableNotification: !this.user.notificationStatus,
         loader: null,
         loading: false,
-          password: '',
-            confirmPassword: '',
-            file: '',
+        password: '',
+        confirmPassword: '',
+        file: '',
         userId: this.$store.state.user.userId,
         dismissSecs: 5,
         dismissCountDown: 0,
-         component: ''
+        component: ''
       }
     },
     watch: {
@@ -244,6 +248,17 @@ export default {
             }
           }
       )
+      if(status === true){
+        console.log("cuurent status--> Ture", status)
+        // this.enableNotification = true;
+        this.disableNotification = false;
+      } else {
+        console.log("cuurent status--> False", status)
+        // this.disableNotification = true;
+        this.enableNotification = false;
+      }
+      // this.enableNotification = ;
+      // this.disableNotification = ;
       console.log("Notification Status updated successfuly", response);
     } catch(e){
         console.log("Error Updating Notification Status", e);
