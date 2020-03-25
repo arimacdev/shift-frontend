@@ -614,6 +614,8 @@ font-size: 19px !important;
 }
 
 .sideBarContent{
+    /* z-index: 1000; */
+    /* min-height: 600px !important; */
 }
 .iconExpansion{
     margin-left: -30px !important;
@@ -721,7 +723,6 @@ popupSubitle{
     /* margin-top: -5px; */
     border-radius: 5px;
     height: 55px;
-    z-index: 100;
 }
 
 .pickerContainer{
@@ -734,12 +735,33 @@ popupSubitle{
     outline: none !important;
     background: red;
     background-color: #EDF0F5 !important;
-    z-index: 1000;
+    /* z-index: 1000; */
     position: absolute;
     
 }
 
 .sideBarPickers{
     position: absolute;
-    z-index: 100;
+    /* z-index: 100; */
+    width: 300px;
+    /* margin-left: 60px; */
+    margin-top: 8px;
 }
+
+.datePickerNew{
+    margin-top: 20px;
+    color: red;
+}
+
+.pickerNewText{
+    margin-right: 5px !important;
+    color: black !important;
+}
+
+.sdfsdf{
+    margin-left: 8px !important;
+}
+
+/* .dueFieldDate{
+    margin-left: 12px !important;
+} */

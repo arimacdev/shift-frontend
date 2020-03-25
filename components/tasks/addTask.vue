@@ -41,7 +41,7 @@
            
              <!-- <input  v-model="taskDueDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" class="formElements"> -->
            <div class="pickerContainer pickerDiv">
-            <VueCtkDateTimePicker class="dateTimePickerInternal" v-model="taskDueDate" label="Project start date and time"/>
+            <VueCtkDateTimePicker color="#3f51b5" class="dateTimePickerInternal" v-model="taskDueDate" label="Project start date and time"/>
            </div>
             </v-col>
              <v-col
@@ -51,7 +51,7 @@
             >
           <!-- <input v-model="taskRemindOnDate"  type="text" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Reminder" class="formElements"> -->
          <div class="pickerContainer pickerDiv">
-         <VueCtkDateTimePicker  class="dateTimePickerInternal" v-model="taskRemindOnDate" label="Reminder"/>
+         <VueCtkDateTimePicker color="#3f51b5"  class="dateTimePickerInternal" v-model="taskRemindOnDate" label="Reminder"/>
          </div>
             </v-col>
         </v-row>

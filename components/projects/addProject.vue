@@ -51,7 +51,7 @@
         <!-- <input type="text" v-model.trim="$v.startDate.$model" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Project start date" class="formElements">
             <div v-if="$v.startDate.$error && !$v.startDate.required" class="errorText"> Start date is required</div> -->
            <div class="pickerContainer pickerDiv">
-            <VueCtkDateTimePicker class="dateTimePickerInternal" v-model="$v.startDate.$model" label="Project start date and time"/>
+            <VueCtkDateTimePicker color="#3f51b5" class="dateTimePickerInternal" v-model="$v.startDate.$model" label="Project start date and time"/>
             <div v-if="$v.startDate.$error && !$v.startDate.required" class="errorText errorDiv"> End date is required</div>
           
            </div>
@@ -65,7 +65,7 @@
             <!-- <input type="text" v-model.trim="$v.endDate.$model" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Project end date" class="formElements">
              <div v-if="$v.endDate.$error && !$v.endDate.required" class="errorText"> End date is required</div> -->
            <div class="pickerContainer pickerDiv">
-            <VueCtkDateTimePicker class="dateTimePickerInternal" v-model="$v.endDate.$model" label="Project start date and time"/>
+            <VueCtkDateTimePicker color="#3f51b5" class="dateTimePickerInternal" v-model="$v.endDate.$model" label="Project start date and time"/>
             
             <div v-if="$v.endDate.$error && !$v.endDate.required" class="errorText errorDiv"> End date is required</div>
           

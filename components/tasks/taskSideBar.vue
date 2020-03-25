@@ -173,14 +173,32 @@
             <v-icon size="30" color="#0BAFFF" >mdi-calendar-blank-outline</v-icon>
           </v-list-item-icon>
           <!-- <v-list-item-content class="dueTitle"> -->
-          <p class="tabListItemsText datesTitle">Due date</p>
+          <!-- <p class="tabListItemsText datesTitle">Due date</p> -->
            <!-- </v-list-item-content> -->
           <v-list-item-content>
-            <input class="sideBarDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" v-model="taskDue" @change="updateTaskDates('dueDate')">
-         <div class="pickerContainer pickerDiv sideBarPickers">
-           <!-- <VueCtkDateTimePicker class="dateTimePickerInternal" v-model="taskDueDate" label="Project start date and time"/> -->
+            <!-- <input class="sideBarDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" v-model="taskDue" @change="updateTaskDates('dueDate')"> -->
+         <div class="pickerContainer pickerDiv sideBarPickers datePickerNew">
+           
+           <datetime
+              type="datetime"
+              v-model="taskDue"
+              zone="local"
+                input-id="startDate"
+                >
+                <label for="startDate" slot="before" class="tabListItemsText "><span class="pickerNewText">Due date</span></label>
+                 <span class="description sdfsdf" slot="after" >
+                     <v-btn x-small depressed color="primary" @click="updateTaskDates('dueDate')"> Update </v-btn>
+                 </span>
+                <template slot="button-cancel">
+                  <fa :icon="['far', 'times']"></fa>
+                  Cancel
+                </template>
+                <template slot="button-confirm">
+                  <fa :icon="['fas', 'check-circle']"></fa>
+                <p > Confirm </p>
+            </template>
+          </datetime>
          </div>
-         
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -193,13 +211,52 @@
             <v-icon size="30" color="#FFC213" >mdi-clock-outline</v-icon>
           </v-list-item-icon>
            <!-- <v-list-item-content> -->
-          <p class="tabListItemsText datesTitle">Remind on</p>
+          <!-- <p class="tabListItemsText datesTitle">Remind on</p> -->
            <!-- </v-list-item-content> -->
+          <v-list-item-content>
+             <!-- <input class="sideBarDate " placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" v-model="taskRemindOn" @change="updateTaskDates('remindOn')"> -->
+           <div class="pickerContainer pickerDiv sideBarPickers datePickerNew">
+           
+           <datetime
+              type="datetime"
+              v-model="taskRemindOn"
+              zone="local"
+                input-id="endDate"
+                >
+                <label for="endDate" slot="before" class="tabListItemsText "><span class="pickerNewText">Remind on</span></label>
+                 <span class="description " slot="after">
+                     <v-btn x-small depressed color="primary"  @click="updateTaskDates('remindOn')"> Update </v-btn>
+                 </span>
+                <template slot="button-cancel">
+                  <fa :icon="['far', 'times']"></fa>
+                  Cancel
+                </template>
+                <template slot="button-confirm">
+                  <fa :icon="['fas', 'check-circle']"></fa>
+                <p > Confirm </p>
+            </template>
+          </datetime>
+         </div>
+          
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+
+
+      <!-- -------------------------- -->
+ <!-- <v-list-item-group class="tabListItems">
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon size="30" color="#FFC213" >mdi-clock-outline</v-icon>
+          </v-list-item-icon>
+          <p class="tabListItemsText datesTitle">Remind on</p>
           <v-list-item-content>
              <input class="sideBarDate " placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" v-model="taskRemindOn" @change="updateTaskDates('remindOn')">
           </v-list-item-content>
         </v-list-item>
-      </v-list-item-group>
+      </v-list-item-group> -->
+
+      <!-- --------------------------- -->
 
 
 
@@ -268,19 +325,28 @@
 
 <script>
 
-// import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
+import { Datetime } from 'vue-datetime';
+import Vue from 'vue' 
+Vue.component('datetime', Datetime);
 
+<<<<<<< Updated upstream
 // import Vue from 'vue'
 // import { Datetime } from 'vue-datetime'
 // // You need a specific loader for CSS files
 // import 'vue-datetime/dist/vue-datetime.css'
  
 // Vue.use(Datetime)
+=======
+import { Settings } from 'luxon'
+ 
+Settings.defaultLocale = 'IST'
+>>>>>>> Stashed changes
 
   export default {
     props: ['task', 'assignee', 'projectId', 'subTasks', 'taskFiles', 'projectUsers', 'people'],
     data() {
       return {
+        hidden: false,
         userId: this.$store.state.user.userId,
         drawer: null,
         selected : true,
