@@ -270,12 +270,12 @@
 
 // import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
 
-import Vue from 'vue'
-import { Datetime } from 'vue-datetime'
-// You need a specific loader for CSS files
-import 'vue-datetime/dist/vue-datetime.css'
+// import Vue from 'vue'
+// import { Datetime } from 'vue-datetime'
+// // You need a specific loader for CSS files
+// import 'vue-datetime/dist/vue-datetime.css'
  
-Vue.use(Datetime)
+// Vue.use(Datetime)
 
   export default {
     props: ['task', 'assignee', 'projectId', 'subTasks', 'taskFiles', 'projectUsers', 'people'],
