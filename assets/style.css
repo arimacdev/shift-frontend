@@ -274,12 +274,7 @@ margin-top: -60px;
 
 /* ------------ project tab ------------ */
 
-.projectTabContent{
-    width: 101%;
-    height: 100%;
-    margin-left: -10px;
-    padding: 20px;
-}
+
 .detailSection{
     padding: 10px !important;
    background-color: #E5E5E5;;
@@ -585,6 +580,7 @@ font-size: 19px !important;
 }
 .addPeopleButton{
     width: 200px;
+    z-index: 100;
 }
 
 .addUserField{
@@ -776,4 +772,76 @@ popupSubitle{
 }
 .btnPickerText{
     font-size: 8px;
+}
+
+
+
+/* ------------------- logs --------------- */
+
+.projectTabContent{
+    width: 101%;
+    height: 82vh;
+    margin-left: -10px;
+    padding: 20px;
+}
+
+.logsContainer{
+    background-color: #080848;
+    width: 108% !important;
+    margin-right: -30px !important;
+    margin-left: -30px !important;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+    color: #FFFFFF;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.logsContainerContent{
+    width: 100% !important;
+}
+
+.dateContent{
+    margin-top: 10px !important;
+    margin-bottom: 20px !important;
+    color: #4A4A4A;
+    background-color: #EDF0F5 !important;
+    font-size: 16px;
+    font-weight: 600;
+    padding-left: 30px !important;
+    height: 40px;
+    padding-top: 8px !important;
+}
+
+.logContent{
+    margin-bottom: 5px;
+    color: #4A4A4A;
+    background-color: #EDF0F5 !important;
+    font-size: 14px;
+    height: 80px;
+}
+.logTitle{
+    font-size: 12px !important;
+    color: #7A8B9F;
+    font-weight: 600;
+    width: 100px;
+}
+
+.logText1{
+    font-size: 12px !important;
+    color: #576377;
+    font-weight: 400;
+}
+.logText2{
+    font-size: 12px !important;
+    color: #576377;
+    font-weight: 500;
+}
+
+.logText3{
+    color: #2EC973;
+    font-size: 12px !important;
+}
+.logTitleContainer{
+    padding: 0;
 }

@@ -1,5 +1,5 @@
 <template>
-    <div class="projectTabContent">
+    <div class="projectTabContent  overflow-y-auto">
         <v-container class="detailContainer">
     <v-row
       class="mb-12"
@@ -35,7 +35,7 @@
       absolute
       temporary
       right=""
-      height="100vh"
+      height="82vh"
       width="350px"
       class=""
     >
@@ -318,14 +318,64 @@
             </v-row>
 
   </v-container>
+
+  <!-- ----------------------- start logs ------------------ -->
+
+
+  <v-container class="logsContainer">
+      <div> Task Log  </div>
+   </v-container>
+
+   <!-- -------------- put logs below this line ---------- -->
+
+   <v-container class="logsContainerContent ">
+
+<!-- -------- logs date ------- -->
+   <v-container class="dateContent"> 
+       <div class=""> 2020 Jan 4 </div>
+   </v-container>
+
+   <!-- --------- one log --------- -->
+
+    <v-container class="logContent"> 
+
+      <v-list-item >
+              <div class="logTitleContainer">
+                 <v-list-item-title class="logTitle">
+                  10:25 AM :
+                </v-list-item-title>
+              </div>
+              <v-list-item-content>
+                    <v-list-item-title class="logText1">
+                      @Indika has created a new task and assigned to @Dasun
+                    </v-list-item-title>
+                      <v-list-item-title class="logText2">
+                      > Develop the login flow
+                    </v-list-item-title>
+            </v-list-item-content>
+              <div class="updatedDate">
+               <v-list-item-title class="logText3">
+                      Task created
+                    </v-list-item-title>
+              </div>
+            </v-list-item>
+   </v-container>
+
+ <!-- --------- end log --------- -->
+ 
+
+   </v-container>
+
+
+
      <div @click="close" class="popupBox">
             <component v-bind:is="component" ></component>
          </div> 
          <!-- <div class="popupBox">
         <success-popup />
          </div> -->
-  
     </div>
+    
 </template>
 <script>
 import SuccessPopup from '~/components/popups/successPopup'
