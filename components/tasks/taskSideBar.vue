@@ -329,18 +329,9 @@ import { Datetime } from 'vue-datetime';
 import Vue from 'vue' 
 Vue.component('datetime', Datetime);
 
-<<<<<<< Updated upstream
-// import Vue from 'vue'
-// import { Datetime } from 'vue-datetime'
-// // You need a specific loader for CSS files
-// import 'vue-datetime/dist/vue-datetime.css'
- 
-// Vue.use(Datetime)
-=======
 import { Settings } from 'luxon'
  
 Settings.defaultLocale = 'IST'
->>>>>>> Stashed changes
 
   export default {
     props: ['task', 'assignee', 'projectId', 'subTasks', 'taskFiles', 'projectUsers', 'people'],
