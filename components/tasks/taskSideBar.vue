@@ -19,17 +19,7 @@
           </v-list-item-content>
 
 
-           <v-list-item-content class="dropDownList">
-             <select v-model="taskStatus" class="selectUserDropDown" @change="updateStatus">
-                <option key="pending" value="pending" >Pending</option>
-                <option key="implementing" value="implementing">Implementing</option>
-                <option key="qa" value="qa">QA</option>
-                <option key="readyToDeploy" value="readyToDeploy">Ready to Deploy</option>
-                <option key="reOpened" value="reOpened">Re-Opened</option>
-                <option key="deployed" value="deployed">Deployed</option>
-                <option key="closed" value="closed">Closed</option>
-            </select>
-             </v-list-item-content>
+          
 
          
       </v-list-item>
@@ -73,10 +63,25 @@
 
 
       </v-list-item-group> -->
+ <v-list-item-group class="">
+<v-list-item>
 
+   <v-list-item-content class="">
+             <select v-model="taskStatus" class="selectUserDropDown" @change="updateStatus">
+                <option key="pending" value="pending" >Pending</option>
+                <option key="implementing" value="implementing">Implementing</option>
+                <option key="qa" value="qa">QA</option>
+                <option key="readyToDeploy" value="readyToDeploy">Ready to Deploy</option>
+                <option key="reOpened" value="reOpened">Re-Opened</option>
+                <option key="deployed" value="deployed">Deployed</option>
+                <option key="closed" value="closed">Closed</option>
+            </select>
+             </v-list-item-content>
 
+</v-list-item>
+ </v-list-item-group>
 
-
+<v-divider></v-divider>
       <!-- ---------------------- -->
 
       <v-list-item-group class="tabListItems">
@@ -172,6 +177,10 @@
            <!-- </v-list-item-content> -->
           <v-list-item-content>
             <input class="sideBarDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" v-model="taskDue" @change="updateTaskDates('dueDate')">
+         <div class="pickerContainer pickerDiv sideBarPickers">
+           <!-- <VueCtkDateTimePicker class="dateTimePickerInternal" v-model="taskDueDate" label="Project start date and time"/> -->
+         </div>
+         
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -248,6 +257,8 @@
 
 <v-divider></v-divider>
 
+
+
     </v-list>
     </div>
    
@@ -256,6 +267,15 @@
 </template>
 
 <script>
+
+// import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
+
+import Vue from 'vue'
+import { Datetime } from 'vue-datetime'
+// You need a specific loader for CSS files
+import 'vue-datetime/dist/vue-datetime.css'
+ 
+Vue.use(Datetime)
 
   export default {
     props: ['task', 'assignee', 'projectId', 'subTasks', 'taskFiles', 'projectUsers', 'people'],

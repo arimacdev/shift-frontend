@@ -721,6 +721,7 @@ popupSubitle{
     /* margin-top: -5px; */
     border-radius: 5px;
     height: 55px;
+    z-index: 100;
 }
 
 .pickerContainer{
@@ -733,5 +734,12 @@ popupSubitle{
     outline: none !important;
     background: red;
     background-color: #EDF0F5 !important;
+    z-index: 1000;
+    position: absolute;
     
+}
+
+.sideBarPickers{
+    position: absolute;
+    z-index: 100;
 }
