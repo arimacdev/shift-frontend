@@ -117,8 +117,10 @@
         </v-row>
     </div>
         </form>
-        <button @click="slackAuth">CLICK!!!!!</button>
           <div>
+      <button v-if="user.userSlackId != null && user.notification == false" @click='changeNotificationStatus(user.notification)'>Enable Notifications</button>  
+      <button v-else-if="user.userSlackId != null && user.notification == true" @click='changeNotificationStatus(user.notification)'>Disable Notifications</button>    
+
       <a href="https://slack.com/oauth/v2/authorize?scope=incoming-webhook,chat:write&client_id=345426929140.1020110511447&redirect_uri=http://localhost:3000/mainPages/profile">
       <img alt="Join Slack Notifications" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" />
       </a>
@@ -204,7 +206,7 @@ export default {
                let response;
                   try{
                     response = await this.$axios.$put(`/users/${this.userId}/slack`, {
-                     slackAssignerId: this.userId,
+                    slackAssignerId: this.userId,
                     slackAssigneeId: this.user.userId,
                     assigneeSlackId: slackId
                   },
@@ -228,45 +230,24 @@ export default {
     },
     
      methods: {
-       slackAuth(){
-         console.log("TYYE ----> ", this.userId);
-         console.log("store")
-    //      const authCode = this.$route.query.code;
-    //      console.log("auth code", this.$route.query.code);
-    //      axios({
-    //   method: 'post',
-    //   url: 'https://slack.com/api/oauth.v2.access',
-    //   data: qs.stringify({
-    //     client_id: '345426929140.1020110511447',
-    //     client_secret: 'fd851b7af77e525c1700879de9b328ab',
-    //     code: authCode
-    //   }),
-    //   headers: {
-    //     'content-type': 'application/x-www-form-urlencoded'
-    //   }
-    // }).then (response => {
-    // console.log("Success slack", response.data.authed_user.id)
-    // })
-    // .catch (e => {
-    // console.log("error from slack", e,response.data)
-    // })
-  },
-
-    async saveSlackId(slackId){
-        console.log("Save Slack Id", );
-      //   let response;
-      //     try{
-      //     response = await this.axios.post(`/users/${this.projectId}/slack`, 
-      //     {
-      //       slackAssignerId: this.userId,
-      //       slackAssigneeId: this.user.userId,
-      //       assigneeSlackId: slackId
-      //     }
-      //   )
-      //  } catch(e){
-      //    console.log("Error saving slack Id in database");
-      //  }
-          
+    async changeNotificationStatus(status){
+      let response;
+      try{
+        response = await this.$axios.$put(`/users/${this.userId}/slack/status`, {
+        slackAssignerId: this.userId,
+        slackAssigneeId: this.user.userId,
+        notificationStatus: !status
+      },
+        {
+            headers: {
+                'userId': this.userId
+            }
+          }
+      )
+      console.log("Notification Status updated successfuly", response);
+    } catch(e){
+        console.log("Error Updating Notification Status", e);
+      }  
     },
 
      async postData(){
