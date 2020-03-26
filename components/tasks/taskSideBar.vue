@@ -441,7 +441,6 @@ Settings.defaultLocale = 'IST'
 
 import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
-import SideBarSuccessPopup from '~/components/popups/sideBarSuccessPopup'
 
   export default {
     props: ['task', 'assignee', 'projectId', 'subTasks', 'taskFiles', 'projectUsers', 'people'],
@@ -449,7 +448,6 @@ import SideBarSuccessPopup from '~/components/popups/sideBarSuccessPopup'
     components: {
       'success-popup' : SuccessPopup,
       'error-popup': ErrorPopup,
-      'sidebar-success-popup' : SideBarSuccessPopup
     },
     data() {
       return {
