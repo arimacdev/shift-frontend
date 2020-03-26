@@ -212,7 +212,14 @@ import axios from 'axios'
         // window.setTimeout(location.reload(), 8000)
         console.log("Task adding successful", response);
 
-         let taskId= response.data.taskId;
+          this.taskName = '',
+          this.taskAssignee = '',
+          this.taskStatus = 'pending',
+          this.taskDueDate = new Date(),
+          this.taskRemindOnDate = new Date(),
+          this.taskNotes = new Date()
+
+        let taskId= response.data.taskId;
 
         let formData = new FormData();
         formData.append('files', this.file);
