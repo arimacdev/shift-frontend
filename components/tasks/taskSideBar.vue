@@ -183,7 +183,7 @@
                           </v-checkbox>
                     <v-list-item-content>
                       <v-list-item-title class="subTaskListName">
-                        <input v-model="subtask.subtaskName" type="text" @keyup.enter="addSubTask"/>
+                        <input v-model="subtask.subtaskName" type="text" @keyup.enter="subTaskUpdate(subtask)"/>
                         <!-- {{ subtask.subtaskName}} -->
                         </v-list-item-title>
                     </v-list-item-content>
@@ -660,6 +660,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
+        this.$emit('listenChange');
         console.log("update sub task status response", response);
        } catch(e){
           console.log("Error updating a status", e);
