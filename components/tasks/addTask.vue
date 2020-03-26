@@ -217,7 +217,7 @@ import axios from 'axios'
           this.taskStatus = 'pending',
           this.taskDueDate = new Date(),
           this.taskRemindOnDate = new Date(),
-          this.taskNotes = new Date()
+          this.taskNotes = ''
 
         let taskId= response.data.taskId;
 
