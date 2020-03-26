@@ -118,9 +118,9 @@
             </v-col>
         </v-row>
         </form>
-         <keep-alive>
-            <component v-bind:is="component"></component>
-            </keep-alive>
+         <div @click="close">
+            <component v-bind:is="component" ></component>
+         </div>
             <!-- <success-popup /> -->
     </div>
     
@@ -151,7 +151,7 @@ export default {
         })
     //    alert("User created successfully!")
     this.component = 'success-popup'
-        window.setTimeout(location.reload(), 8000)
+        // window.setTimeout(location.reload(), 8000)
        }  catch(e){
           console.log("Error creating user", e);
            this.component = 'error-popup'
@@ -166,7 +166,10 @@ export default {
                     return;
                 }
       
-      }
+      },
+      close(){
+                this.component = ''
+            },
       
     },
     data(){

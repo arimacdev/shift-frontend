@@ -37,7 +37,7 @@
       height="85vh"
       width="400px"
       class=""
-      color="#E5E5E5"
+      color="#FFFFFF"
     >
     <task-side-bar :task=task :assignee="assignee" :projectId="projectId" :subTasks="subTasks" :taskFiles="taskFiles" :projectUsers="projectUsers" :people="people" @listenChange="listenToChange"/>
     

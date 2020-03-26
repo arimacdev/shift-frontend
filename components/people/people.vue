@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="projectTabContent  overflow-y-auto">
         <div class="peopleWrapper">
             <div class="titleDiv">
             <p class="catTitle" @click="fetchUsers">Admins</p>

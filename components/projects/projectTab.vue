@@ -1,5 +1,5 @@
 <template>
-    <div class="projectTabContent">
+    <div class="projectTabContent  overflow-y-auto">
         <v-container class="detailContainer">
     <v-row
       class="mb-12"
@@ -35,7 +35,7 @@
       absolute
       temporary
       right=""
-      height="100vh"
+      height="82vh"
       width="350px"
       class=""
     >
@@ -97,7 +97,41 @@
                 md="12"
                 
             >
-       <input type="text" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='text')" v-model="projectStartDate" placeholder="Project start date" class="formElements">
+
+            <!-- ------------------------------ -->
+
+            <v-list-item-group class="sideBarFormElementsForPickers">
+        <v-list-item>
+        
+          <v-list-item-content>
+           <div class="pickerContainer pickerDiv sideBarPickers datePickerNew">
+           
+           <datetime
+              type="datetime"
+              v-model="projectStartDate"
+              zone="local"
+                input-id="endDate"
+                >
+                <label for="endDate" slot="before" class=" "><span class="pickerNewText">Start Date</span></label>
+                 
+                <template slot="button-cancel">
+                  <fa :icon="['far', 'times']"></fa>
+                  Cancel
+                </template>
+                <template slot="button-confirm">
+                  <fa :icon="['fas', 'check-circle']"></fa>
+                <p > Confirm </p>
+            </template>
+          </datetime>
+         </div>
+          
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+
+            <!-- ----------------------------- -->
+
+       <!-- <input type="text" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='text')" v-model="projectStartDate" placeholder="Project start date" class="formElements"> -->
             </v-col>
         </v-row>
 
@@ -110,7 +144,36 @@
                 md="12"
                 
             >
-       <input type="text" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='text')" v-model="projectEndDate" placeholder="Project end date" class="formElements">
+
+             <v-list-item-group class="sideBarFormElementsForPickers">
+        <v-list-item>
+        
+          <v-list-item-content>
+           <div class="pickerContainer pickerDiv sideBarPickers datePickerNew">
+           
+           <datetime
+              type="datetime"
+              v-model="projectEndDate"
+              zone="local"
+                input-id="endDate"
+                >
+                <label for="endDate" slot="before" class=" "><span class="pickerNewText">End Date</span></label>
+                 
+                <template slot="button-cancel">
+                  <fa :icon="['far', 'times']"></fa>
+                  Cancel
+                </template>
+                <template slot="button-confirm">
+                  <fa :icon="['fas', 'check-circle']"></fa>
+                <p > Confirm </p>
+            </template>
+          </datetime>
+         </div>
+          
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+       <!-- <input type="text" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='text')" v-model="projectEndDate" placeholder="Project end date" class="formElements"> -->
             </v-col>
         </v-row>
 
@@ -126,7 +189,7 @@
                     </v-list-item-content>
                     </v-list-item>
                 </div>
-       
+      
          
             <div class="submitButton deleteProjectButton">
                 <v-list-item @click="deleteData()" 
@@ -142,10 +205,11 @@
        
         
         </form>
-
          
     </v-navigation-drawer>
 </div>
+
+
           <!-- --------------- end side bar --------------------- -->
 
           <v-row
@@ -198,6 +262,8 @@
             
             </v-row>
       </v-col>
+
+    
     </v-row>
 
 
@@ -251,13 +317,63 @@
             
             </v-row>
 
-  <!-- <keep-alive>
-            <component v-bind:is="component"></component>
-            </keep-alive> 
-        <success-popup />-->
-
   </v-container>
-  
+
+  <!-- ----------------------- start logs ------------------ -->
+
+
+  <v-container class="logsContainer">
+      <div> Task Log  </div>
+   </v-container>
+
+   <!-- -------------- put logs below this line ---------- -->
+
+   <v-container class="logsContainerContent ">
+
+<!-- -------- logs date ------- -->
+   <v-container class="dateContent"> 
+       <div class=""> 2020 Jan 4 </div>
+   </v-container>
+
+   <!-- --------- one log --------- -->
+
+    <v-container class="logContent"> 
+
+      <v-list-item >
+              <div class="logTitleContainer">
+                 <v-list-item-title class="logTitle">
+                  10:25 AM :
+                </v-list-item-title>
+              </div>
+              <v-list-item-content>
+                    <v-list-item-title class="logText1">
+                      @Indika has created a new task and assigned to @Dasun
+                    </v-list-item-title>
+                      <v-list-item-title class="logText2">
+                      > Develop the login flow
+                    </v-list-item-title>
+            </v-list-item-content>
+              <div class="updatedDate">
+               <v-list-item-title class="logText3">
+                      Task created
+                    </v-list-item-title>
+              </div>
+            </v-list-item>
+   </v-container>
+
+ <!-- --------- end log --------- -->
+ 
+
+   </v-container>
+
+
+
+     <div @click="close" class="popupBox">
+            <component v-bind:is="component" ></component>
+         </div> 
+         <!-- <div class="popupBox">
+        <success-popup />
+         </div> -->
     </div>
     
 </template>
@@ -348,11 +464,17 @@ export default {
           projectEndDate: this.updateProject.projectEndDate,
           projectStatus: this.updateProject.projectStatus
         })
-        location.reload();
+        // location.reload();
+        this.component = 'success-popup'
        } catch(e){
+
+         this.component = 'error-popup'
           console.log("Error updating a project", e);
        }
       },
+      close(){
+                this.component = ''
+            },
         async deleteData(){
        console.log(this.project.projectId);
       let response;
@@ -364,9 +486,11 @@ export default {
                 }
         })
         location.reload();
+        this.component = 'success-popup'
         console.log(response.data);
        }  catch(e){
-          console.log("Error creating project", e);
+         this.component = 'error-popup'
+          console.log("Error deleting project", e);
        }          
       },
       getProjectDates(date, type) {

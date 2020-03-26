@@ -45,18 +45,32 @@
                 <v-col
                 sm="6"
                 md="6"
+                class=""
                 
             >
-        <input type="text" v-model.trim="$v.startDate.$model" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Project start date" class="formElements">
-            <div v-if="$v.startDate.$error && !$v.startDate.required" class="errorText"> Start date is required</div>
+        <!-- <input type="text" v-model.trim="$v.startDate.$model" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Project start date" class="formElements">
+            <div v-if="$v.startDate.$error && !$v.startDate.required" class="errorText"> Start date is required</div> -->
+           <div class="pickerContainer pickerDiv">
+            <VueCtkDateTimePicker color="#3f51b5" class="dateTimePickerInternal" v-model="$v.startDate.$model" label="Project start date and time"/>
+            <div v-if="$v.startDate.$error && !$v.startDate.required" class="errorText errorDiv"> End date is required</div>
+          
+           </div>
+           
             </v-col>
              <v-col
                 sm="6"
                 md="6"
-                
+                class=""
             >
-            <input type="text" v-model.trim="$v.endDate.$model" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Project end date" class="formElements">
-             <div v-if="$v.endDate.$error && !$v.endDate.required" class="errorText"> End date is required</div>
+            <!-- <input type="text" v-model.trim="$v.endDate.$model" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Project end date" class="formElements">
+             <div v-if="$v.endDate.$error && !$v.endDate.required" class="errorText"> End date is required</div> -->
+           <div class="pickerContainer pickerDiv">
+            <VueCtkDateTimePicker color="#3f51b5" class="dateTimePickerInternal" v-model="$v.endDate.$model" label="Project start date and time"/>
+            
+            <div v-if="$v.endDate.$error && !$v.endDate.required" class="errorText errorDiv"> End date is required</div>
+          
+           </div>
+          
             </v-col>
         </v-row>
 
@@ -94,6 +108,8 @@
             md="6"
             class="buttonGrid"
       >
+
+      
                 <button class="submitButton">
                 <v-list-item  @click="postData()" 
                 dark >
@@ -108,10 +124,12 @@
                 </button>
             </v-col>
         </v-row>
+
+
         </form>
-         <keep-alive>
-            <component v-bind:is="component"></component>
-            </keep-alive>
+         <div @click="close">
+            <component v-bind:is="component" ></component>
+         </div>
         <!-- <success-popup /> -->
     </div>
 </template>
@@ -119,9 +137,14 @@
 <script>
 import axios from 'axios'
 import { numeric, required, between, minLength, maxLength } from 'vuelidate/lib/validators'
-
 import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
+
+import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
+
+
+
+
 
 export default {
 
@@ -132,22 +155,27 @@ export default {
     
     methods: {
      async postData(){
+
       let response;
        try{
         response = await this.$axios.$post('/projects', {
           projectOwner: this.userId,
           projectName: this.projectName,
           clientId: this.client,
-          projectStartDate: this.startDate,
-          projectEndDate: this.endDate,
+          projectStartDate: new Date(this.startDate),
+          projectEndDate: new Date(this.endDate),
         })
 
+        console.log("project added successfully", response);
         this.component = 'success-popup'
         window.setTimeout(location.reload(), 8000)
        }  catch(e){
           console.log("Error creating project", e);
           this.component = 'error-popup'
        }   
+      },
+      close(){
+          this.component = ''
       },
 
       handleSubmit(e) {
@@ -164,8 +192,9 @@ export default {
             userId: this.$store.state.user.userId,
             projectName: '',
             client: '',
-            startDate: new Date().toISOString().split('.')[0],
-             endDate: '',
+            // startDate: new Date().toISOString().split('.')[0],
+            startDate: new Date(),
+             endDate: new Date(),
             // endDate: new Date(new Date().getTime() + (24 * 60 * 60 * 1000)).toISOString().split('T')[0],
             projectOwner: '',
             component: ''

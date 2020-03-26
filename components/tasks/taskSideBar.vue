@@ -19,17 +19,7 @@
           </v-list-item-content>
 
 
-           <v-list-item-content class="dropDownList">
-             <select v-model="taskStatus" class="selectUserDropDown" @change="updateStatus">
-                <option key="pending" value="pending" >Pending</option>
-                <option key="implementing" value="implementing">Implementing</option>
-                <option key="qa" value="qa">QA</option>
-                <option key="readyToDeploy" value="readyToDeploy">Ready to Deploy</option>
-                <option key="reOpened" value="reOpened">Re-Opened</option>
-                <option key="deployed" value="deployed">Deployed</option>
-                <option key="closed" value="closed">Closed</option>
-            </select>
-             </v-list-item-content>
+          
 
          
       </v-list-item>
@@ -73,10 +63,25 @@
 
 
       </v-list-item-group> -->
+ <v-list-item-group class="">
+<v-list-item>
 
+   <v-list-item-content class="">
+             <select v-model="taskStatus" class="selectUserDropDown" @change="updateStatus">
+                <option key="pending" value="pending" >Pending</option>
+                <option key="implementing" value="implementing">Implementing</option>
+                <option key="qa" value="qa">QA</option>
+                <option key="readyToDeploy" value="readyToDeploy">Ready to Deploy</option>
+                <option key="reOpened" value="reOpened">Re-Opened</option>
+                <option key="deployed" value="deployed">Deployed</option>
+                <option key="closed" value="closed">Closed</option>
+            </select>
+             </v-list-item-content>
 
+</v-list-item>
+ </v-list-item-group>
 
-
+<v-divider></v-divider>
       <!-- ---------------------- -->
 
       <v-list-item-group class="tabListItems">
@@ -168,10 +173,32 @@
             <v-icon size="30" color="#0BAFFF" >mdi-calendar-blank-outline</v-icon>
           </v-list-item-icon>
           <!-- <v-list-item-content class="dueTitle"> -->
-          <p class="tabListItemsText datesTitle">Due date</p>
+          <!-- <p class="tabListItemsText datesTitle">Due date</p> -->
            <!-- </v-list-item-content> -->
           <v-list-item-content>
-            <input class="sideBarDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" v-model="taskDue" @change="updateTaskDates('dueDate')">
+            <!-- <input class="sideBarDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" v-model="taskDue" @change="updateTaskDates('dueDate')"> -->
+         <div class="pickerContainer pickerDiv sideBarPickers datePickerNew">
+           
+           <datetime
+              type="datetime"
+              v-model="taskDue"
+              zone="local"
+                input-id="startDate"
+                >
+                <label for="startDate" slot="before" class="tabListItemsText "><span class="pickerNewText">Due date</span></label>
+                 <span class="description sdfsdf" slot="after" >
+                     <v-btn class="btnPicker" x-small depressed color="primary" @click="updateTaskDates('dueDate')"> <span class="btnPickerText"> Update</span> </v-btn>
+                 </span>
+                <template slot="button-cancel">
+                  <fa :icon="['far', 'times']"></fa>
+                  Cancel
+                </template>
+                <template slot="button-confirm">
+                  <fa :icon="['fas', 'check-circle']"></fa>
+                <p > Confirm </p>
+            </template>
+          </datetime>
+         </div>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -184,13 +211,52 @@
             <v-icon size="30" color="#FFC213" >mdi-clock-outline</v-icon>
           </v-list-item-icon>
            <!-- <v-list-item-content> -->
-          <p class="tabListItemsText datesTitle">Remind on</p>
+          <!-- <p class="tabListItemsText datesTitle">Remind on</p> -->
            <!-- </v-list-item-content> -->
+          <v-list-item-content>
+             <!-- <input class="sideBarDate " placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" v-model="taskRemindOn" @change="updateTaskDates('remindOn')"> -->
+           <div class="pickerContainer pickerDiv sideBarPickers datePickerNew">
+           
+           <datetime
+              type="datetime"
+              v-model="taskRemindOn"
+              zone="local"
+                input-id="endDate"
+                >
+                <label for="endDate" slot="before" class="tabListItemsText "><span class="pickerNewText">Remind on</span></label>
+                 <span class="description " slot="after">
+                     <v-btn class="btnPicker" x-small depressed color="primary"  @click="updateTaskDates('remindOn')"> <span class="btnPickerText"> Update </span></v-btn>
+                 </span>
+                <template slot="button-cancel">
+                  <fa :icon="['far', 'times']"></fa>
+                  Cancel
+                </template>
+                <template slot="button-confirm">
+                  <fa :icon="['fas', 'check-circle']"></fa>
+                <p > Confirm </p>
+            </template>
+          </datetime>
+         </div>
+          
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+
+
+      <!-- -------------------------- -->
+ <!-- <v-list-item-group class="tabListItems">
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon size="30" color="#FFC213" >mdi-clock-outline</v-icon>
+          </v-list-item-icon>
+          <p class="tabListItemsText datesTitle">Remind on</p>
           <v-list-item-content>
              <input class="sideBarDate " placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" v-model="taskRemindOn" @change="updateTaskDates('remindOn')">
           </v-list-item-content>
         </v-list-item>
-      </v-list-item-group>
+      </v-list-item-group> -->
+
+      <!-- --------------------------- -->
 
 
 
@@ -241,6 +307,7 @@
              <span>{{ taskFile.taskFileName }}</span> </div>
             </a>
           </div>
+          
         </v-list-item>
         </div>
       </v-list-group>
@@ -248,19 +315,42 @@
 
 <v-divider></v-divider>
 
+
+
     </v-list>
     </div>
    
+          <!-- <div @click="close">
+            <component v-bind:is="component" ></component>
+            <success-popup />
+         </div> -->
 
     </div>
 </template>
 
 <script>
 
+import { Datetime } from 'vue-datetime';
+import Vue from 'vue' 
+Vue.component('datetime', Datetime);
+import { Settings } from 'luxon'
+ 
+Settings.defaultLocale = 'IST'
+
+import SuccessPopup from '~/components/popups/successPopup'
+import ErrorPopup from '~/components/popups/errorPopup'
+
   export default {
     props: ['task', 'assignee', 'projectId', 'subTasks', 'taskFiles', 'projectUsers', 'people'],
+
+    components: {
+      'success-popup' : SuccessPopup,
+      'error-popup': ErrorPopup
+    },
     data() {
       return {
+        component: '',
+        hidden: false,
         userId: this.$store.state.user.userId,
         drawer: null,
         selected : true,
@@ -299,6 +389,9 @@
       }
     },
     methods: {
+      close(){
+                this.component = ''
+            },
       showNewSubTaskField: function(){
         this.showNewSubTask =true;
       },

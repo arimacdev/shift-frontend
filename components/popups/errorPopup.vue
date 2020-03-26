@@ -10,7 +10,12 @@
                         <v-list-item-title class="popupTitle">Error occurred!</v-list-item-title>
                         <v-list-item-subtitle class="popupSubtitle"> Please try again</v-list-item-subtitle>
                     </v-list-item-content>
+
+                     <div>
+                        <v-icon size="15" @click="" class="closeButton" color="red">mdi-close-circle-outline</v-icon>
+                    </div>
      </v-list-item>
+    
     </v-card>
     </transition>
 </div>

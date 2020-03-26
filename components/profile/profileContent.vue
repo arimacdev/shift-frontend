@@ -7,7 +7,7 @@
           <div class="profilePictureUpload">
               <form>
               <template>
-                <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Select profile picture" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload"/>
+                <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Select profile picture" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload profPicUploader"/>
                 <!-- <v-file-input id="files" ref="files" v-on:change="handleFileUploads()"  prepend-icon="mdi-camera" chips label="Upload profile picture"></v-file-input> -->
               </template>
               <div class="pictureUploadButton">
@@ -24,6 +24,53 @@
                 </v-btn>
               </div>
               </form>
+
+<!-- ----------------------- slack --------------------- -->
+
+
+    <v-card 
+    class="mx-auto  slackCard"
+    max-width="344"
+    height="220px"
+    outlined>
+
+    <v-img
+      class="white--text align-end slackImage"
+      width="100px"
+      
+      src="https://images.squarespace-cdn.com/content/v1/59023aa1e58c62227ce776c3/1503518408354-JKWF2TL6XMAPUDUDXHB8/ke17ZwdGBToddI8pDm48kDdoBnacxb2NT7zhAvcunbkUqsxRUqqbr1mOJYKfIPR7LoDQ9mXPOjoJoqy81S2I8N_N4V1vUb5AoIIIbLZhVYxCRW4BPu10St3TBAUQYVKcnQaz6sFZ284KgYK7oqQKwCiboq4NyF9jYMWrqFYNBZyhQt1FiR_Knww7CTx6buRm/Slack_CMYK.png"
+    ></v-img>
+    <div class="cardSlogan">It's time to connect your app with slack</div>
+
+<div class="slackButton">
+       <a href="https://slack.com/oauth/v2/authorize?scope=incoming-webhook,chat:write&client_id=345426929140.1020110511447&redirect_uri=http://localhost:3000/mainPages/profile">
+          <img alt="Join Slack Notifications" height="" width="120" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" />
+          </a>
+</div>
+          <br>
+             <!-- v-if="user.userSlackId != null && user.notification == false" -->
+
+             <div class="slackCardButton">
+       <!-- <v-btn x-small depressed color="primary" v-if="user.userSlackId != null && user.notification == false" v-show="enableNotification"  @click='changeNotificationStatus(user.notification)' >Enable Notifications</v-btn>  
+      <v-btn x-small depressed   v-if="user.userSlackId != null && user.notification == true" v-show="disableNotification"  @click='changeNotificationStatus(user.notification)'>Disable Notifications</v-btn>     -->
+            
+           
+            <div class="notiTitle">Enable Notifications</div>
+            <div class="notiButton">
+            
+          <v-switch inset v-model="switch1" x-small depressed color="primary" v-if="user.userSlackId != null && user.notification == false" v-show="enableNotification"  @click='changeNotificationStatus(user.notification)' >Enable Notifications </v-switch>
+   <v-switch inset v-model="switch2" v-btn x-small depressed   v-if="user.userSlackId != null && user.notification == true" v-show="disableNotification"  @click='changeNotificationStatus(user.notification)'>Disable Notifications   </v-switch>
+</div>
+             </div>
+
+       </v-card>
+
+<!-- --------------------- end slack ----------------- -->
+ <!-- <v-switch v-model="switch1" inset :label="`Switch 1: ${switch1.toString()}`"></v-switch> -->
+
+
+
+
            </div>
         </div>
         <form @submit.prevent="handleSubmit">
@@ -118,9 +165,19 @@
     </div>
         </form>
 
-         <keep-alive>
-            <component v-bind:is="component"></component>
-            </keep-alive>
+     <div>
+       
+<!-- ---- this is a switch button if applicable ---- -->
+    <!-- <v-sheet class="pa-5">
+        <v-switch v-model="switch1" inset :label="`Switch 1: ${switch1.toString()}`"></v-switch>
+      </v-sheet> -->
+
+         
+    </div>
+
+        <div @click="close">
+            <component v-bind:is="component" ></component>
+         </div>
         <!-- <success-popup /> -->
     
     </div>
@@ -131,8 +188,8 @@
 <script>
 import EditProfile from '~/components/profile/editProfile'
 import axios from 'axios'
+import qs from 'qs';
 import { required, minLength, sameAs} from 'vuelidate/lib/validators'
-
 import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
 
@@ -144,25 +201,32 @@ export default {
        'success-popup' : SuccessPopup,
       'error-popup': ErrorPopup
     },
-    data: function(){
-    return{
+    // data: function(){
+    // return{
+        
+    // }
+    // },
+    data () {
+      return {
+         switch1: true,
+        switch2: false,
+
+
         userName: this.user.userName,
         firstName: this.user.firstName,
         lastName: this.user.lastName,
         email: this.user.email,
-    }
-    },
-    data () {
-      return {
+        enableNotification: !this.user.notificationStatus,
+        disableNotification: !this.user.notificationStatus,
         loader: null,
         loading: false,
-          password: '',
-            confirmPassword: '',
-            file: '',
+        password: '',
+        confirmPassword: '',
+        file: '',
         userId: this.$store.state.user.userId,
         dismissSecs: 5,
         dismissCountDown: 0,
-         component: ''
+        component: ''
       }
     },
     watch: {
@@ -175,10 +239,87 @@ export default {
         this.loader = null
       },
     },
+
+    created: function(){
+      const authCode = this.$route.query.code;
+      console.log("SLACK CODE", authCode);
+      if(authCode !== undefined){
+            console.log("Slack Auth code present");
+            axios({
+            method: 'post',
+            url: 'https://slack.com/api/oauth.v2.access',
+            data: qs.stringify({
+              client_id: '345426929140.1020110511447',
+              client_secret: 'fd851b7af77e525c1700879de9b328ab',
+              code: authCode
+            }),
+            headers: {
+              'content-type': 'application/x-www-form-urlencoded'
+            }
+          }).then (async resp => {
+            const slackId = resp.data.authed_user.id;
+            console.log("User Slack Id", slackId)
+               let response;
+                  try{
+                    response = await this.$axios.$put(`/users/${this.userId}/slack`, {
+                    slackAssignerId: this.userId,
+                    slackAssigneeId: this.user.userId,
+                    assigneeSlackId: slackId
+                  },
+                    {
+                        headers: {
+                            'userId': this.userId
+                        }
+                      }
+                  )
+                  console.log("Slack Id saved successfuly", response);
+                } catch(e){
+                    console.log("Error saving slack Id in database", e);
+                 }  
+          })
+          .catch (e => {
+          console.log("error from slack", e)
+          })
+      } else {
+        console.log("No Slack Auth Code Present");
+      }
+    },
+    
      methods: {
+    async changeNotificationStatus(status){
+      let response;
+      try{
+        response = await this.$axios.$put(`/users/${this.userId}/slack/status`, {
+        slackAssignerId: this.userId,
+        slackAssigneeId: this.user.userId,
+        notificationStatus: !status
+      },
+        {
+            headers: {
+                'userId': this.userId
+            }
+          }
+      )
+      if(status === true){
+        console.log("cuurent status--> Ture", status)
+        // this.enableNotification = true;
+        this.disableNotification = false;
+      } else {
+        console.log("cuurent status--> False", status)
+        // this.disableNotification = true;
+        this.enableNotification = false;
+      }
+      // this.enableNotification = ;
+      // this.disableNotification = ;
+      console.log("Notification Status updated successfuly", response);
+    } catch(e){
+        console.log("Error Updating Notification Status", e);
+      }  
+    },
+
      async postData(){
 
-         let response;
+      let response;
        try{
            response = await this.$axios.$put(`/users/${this.userId}`, {
           firstName: this.user.firstName,
@@ -189,7 +330,7 @@ export default {
         })
         //  location.reload();
          this.component = 'success-popup'
-        window.setTimeout(location.reload(), 8000)
+        // window.setTimeout(location.reload(), 8000)
         console.log(response.message);
        }
        catch(e){
@@ -208,6 +349,9 @@ export default {
                 }
       
       },
+      close(){
+                this.component = ''
+            },
        submit () {
          try{
         let formData = new FormData();
