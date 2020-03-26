@@ -63,7 +63,7 @@
 </div>  
       </div>
             <keep-alive>
-            <component v-bind:is="component" :name=name :projectId=this.project.projectId :project=project :users=users :Alltasks=Alltasks :MyTasks=MyTasks :taskCompletion=taskCompletion :people=people></component>
+            <component v-bind:is="component" :name=name :projectId=this.project.projectId :project=project :users=users :Alltasks=Alltasks :MyTasks=MyTasks :taskCompletion=taskCompletion :people=people :taskLog="taskLog"></component>
             </keep-alive>
     </div> 
 
@@ -89,6 +89,7 @@ export default {
       return {
         component:'tab-views',
         project: {},
+        taskLog: [],
         Alltasks: [],
         MyTasks: [],
         taskCompletion: {},
@@ -172,6 +173,15 @@ export default {
       .then (response => {
       //  console.log("users data", response.data.data)
        this.users = response.data.data;
+      })
+      .catch (e => {
+       console.log("error", e)
+      })
+
+     this.$axios.get(`log/${this.project.projectId}`)
+      .then (response => {
+        console.log("task log", response.data.data);
+       this.taskLog = response.data.data;
       })
       .catch (e => {
        console.log("error", e)
