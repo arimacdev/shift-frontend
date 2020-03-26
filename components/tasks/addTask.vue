@@ -230,7 +230,7 @@ import axios from 'axios'
             {
               headers: {
                   'Content-Type': 'multipart/form-data',
-                  'user': this.userIdz
+                  'user': this.userId
               }
             }
           ).then(function(res){
