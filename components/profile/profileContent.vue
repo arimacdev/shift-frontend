@@ -43,7 +43,7 @@
     <div class="cardSlogan">It's time to connect your app with slack</div>
 
 <div class="slackButton">
-       <a href="https://slack.com/oauth/v2/authorize?scope=incoming-webhook,chat:write&client_id=345426929140.1020110511447&redirect_uri=http://localhost:3000/mainPages/profile">
+       <a href="https://slack.com/oauth/v2/authorize?scope=incoming-webhook,chat:write&client_id=345426929140.1020110511447&redirect_uri=https://project.arimaclanka.com/mainPages/profile">
           <img alt="Join Slack Notifications" height="" width="120" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" />
           </a>
 </div>
@@ -300,6 +300,7 @@ export default {
             }
           }
       )
+       location.reload();
       if(status === true){
         console.log("cuurent status--> Ture", status)
         // this.enableNotification = true;
