@@ -407,7 +407,25 @@ margin-top: -60px;
 .taskTitle{
     color: #FFFFFF !important;
     font-weight: 500;
-font-size: 14px;
+    font-size: 14px;
+    width: 250px;
+    height: 40px;
+    margin-right: 10px;
+    margin-left: -20px;
+}
+
+.taskTitleEdit{
+    width: 240px;
+    height: 30px;
+    background: #EDF0F5;
+    border-radius: 5px;
+    padding-left: 5px;
+    margin-right: 10px;
+    margin-left: -20px;
+}
+
+.textAreaSideBar{
+    vertical-align: middle;
 }
 .selectUserDropDown{
     width: 200px !important;
@@ -423,7 +441,7 @@ font-size: 14px;
 
 }
 .editIcon{
-    margin-left: -60px !important;
+    margin-left: 5px !important;
 }
 .subTaskAdd{
     color: #0BAFFF !important;
@@ -570,7 +588,7 @@ font-size: 19px !important;
     z-index: 100;
     position: absolute;
     right: 50px;
-    bottom: -60px;
+    bottom: -25px;
 }
 
 
@@ -659,12 +677,13 @@ color: #576377;
     width: 20px;
     height: 20px;
 }
+.attachmentClose{
+}
 .listAttachment{
-    background-color: #FFFFFF;
+    background-color: #EDF0F5!important;
     width: 100%;
     min-height: 60px;
     max-height: auto !important;
-    margin-bottom: ;
     padding-left: 20px;
     margin-left: 60px;
     border-radius: 5px;
@@ -885,4 +904,34 @@ margin-right: 10px;
     margin-top: 20px;
     font-size: 12px;
     font-weight: 600;
+}
+
+
+/* ----------------- popups styling --------------- */
+.popupContainer{
+}
+.popupConfirmHeadline{
+    /* background-color: saddlebrown; */
+    text-align: center;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.alertPopupTitle{
+    font-weight: bold;
+font-size: 16px;
+color: #040428;
+}
+.alertPopupText{
+    font-weight: 450;
+    font-size: 14px;
+    color: #576377;
+}
+
+.deletePopupIcon{
+    margin-top: 30px;
+}
+
+.popupBottom{
+    padding-bottom: 20px;
+    padding-top: 10px;
 }

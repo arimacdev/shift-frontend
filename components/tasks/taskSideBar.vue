@@ -2,7 +2,6 @@
  <div>
   <div class="taskTitleDiv">
       <div class="taskName-sideBar">
-
         <v-list-item>
         <v-list-item-icon>
              <div class="round">
@@ -10,17 +9,66 @@
                 <label for="checkbox"></label>
             </div>
           </v-list-item-icon>
-           <v-list-item-content class="">
-             <input type="text" class="taskTitle" v-model="updatedName"  :disabled="editTask" @keyup.enter="saveEditTaskName"/>
+           <div class="textAreaSideBar">
+             <input type="text" class="taskTitle" v-model="updatedName" v-if="editTask == true"  :disabled="editTask" @keyup.enter="saveEditTaskName"/>
+             <input type="text" class="taskTitleEdit" v-model="updatedName" v-if="editTask == false"  :disabled="editTask" @keyup.enter="saveEditTaskName"/>
+             
             <!-- <v-list-item-title class="taskTitle">{{ this.task.taskName }}</v-list-item-title> -->
-          </v-list-item-content>
-          <v-list-item-content >
+          </div>
+          <div >
             <v-icon size="20" color="#FFFFFF" class="editIcon" @click="EditTaskName">mdi-pencil-circle</v-icon>
-          </v-list-item-content>
-
-
+          </div>
+          <div >
+            <v-icon size="20" color="#FF6161" class="editIcon" @click="taskDialog = true">mdi-trash-can-outline</v-icon>
+          </div>
           
 
+<!-- --------------------- delete task popup --------------- -->
+
+
+ <v-dialog
+      v-model="taskDialog"
+      max-width="380"
+    >
+      <v-card>
+        <div class="popupConfirmHeadline">
+          <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
+          <br>
+          <span class="alertPopupTitle">Delete Task</span>
+          <br>
+          <span class="alertPopupText">You're about to permanantly delete this task, its comments and attachments, and all of its data. If you're not sure, you can cancel this action. </span>
+        </div>
+
+        
+ <div class="popupBottom">
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+            color="success"
+            width="100px"
+            @click="taskDialog = false"
+          >
+            Cancel
+          </v-btn>
+ <v-spacer></v-spacer>
+ <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
+          <v-btn
+            color="error"
+            width="100px"
+            @click="taskDialog = false"
+          >
+            Delete
+          </v-btn>
+           <v-spacer></v-spacer>
+        </v-card-actions>
+
+        
+        </div>
+      </v-card>
+    </v-dialog>
+
+<!-- ---------------------- end popup ------------------ -->
          
       </v-list-item>
 
@@ -33,6 +81,8 @@
     <div class="sideBarContent overflow-y-auto">
       
     <v-list flat>
+
+  
 
 <!-- ---------------------------- -->
 
@@ -134,7 +184,54 @@
                         <!-- {{ subtask.subtaskName}} -->
                         </v-list-item-title>
                     </v-list-item-content>
-                    <v-icon color="#FF6161" @click="deleteSubTask(subtask,index)">mdi-trash-can-outline</v-icon>
+                    <v-icon color="#FF6161" @click="subTaskDialog = true">mdi-trash-can-outline</v-icon>
+
+                    <!-- --------------------- delete sub task popup --------------- -->
+
+
+                  <v-dialog
+                        v-model="subTaskDialog"
+                        max-width="380"
+                      >
+                        <v-card>
+                          <div class="popupConfirmHeadline">
+                            <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
+                            <br>
+                            <span class="alertPopupTitle">Delete Sub Task</span>
+                            <br>
+                            <span class="alertPopupText">You're about to permanantly delete this sub task and all of it's data. If you're not sure, you can cancel this action. </span>
+                          </div>
+
+                          
+                  <div class="popupBottom">
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+
+                            <v-btn
+                              color="success"
+                              width="100px"
+                              @click="subTaskDialog = false"
+                            >
+                              Cancel
+                            </v-btn>
+                  <v-spacer></v-spacer>
+                  <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
+                            <v-btn
+                              color="error"
+                              width="100px"
+                              @click="subTaskDialog = false; deleteSubTask(subtask,index)"
+                            >
+                              Delete
+                            </v-btn>
+                            <v-spacer></v-spacer>
+                          </v-card-actions>
+
+                          
+                          </div>
+                        </v-card>
+                      </v-dialog>
+
+                  <!-- ---------------------- end popup ------------------ -->
                 </v-list-item>
                 <v-list-item v-if="showNewSubTask" class="subTaskListItems">
                        <v-checkbox
@@ -300,13 +397,18 @@
         </div>
         <div class="attchmentContainer">
         <v-list-item class="subTaskListItems"  v-for="(taskFile,index) in taskFiles" :key="index">
+          
           <div class="listAttachment">
             <a style="text-decoration: none;" :href="taskFile.taskFileUrl">
-            <v-icon size="30" color="#0BAFFF">mdi-image-outline</v-icon>
+            <v-icon size="30" color="#0BAFFF">mdi-paperclip</v-icon>
            <div class="attachmentName"> 
-             <span>{{ taskFile.taskFileName }}</span> </div>
+             <span>{{ taskFile.taskFileName }}</span> 
+             </div>
             </a>
           </div>
+          <div class="attachmentClose">
+               <v-icon size="15" @click="" class="closeButton" color="red">mdi-close-circle-outline</v-icon>
+             </div>
           
         </v-list-item>
         </div>
@@ -345,10 +447,12 @@ import ErrorPopup from '~/components/popups/errorPopup'
 
     components: {
       'success-popup' : SuccessPopup,
-      'error-popup': ErrorPopup
+      'error-popup': ErrorPopup,
     },
     data() {
       return {
+        taskDialog: false,
+        subTaskDialog: false,
         component: '',
         hidden: false,
         userId: this.$store.state.user.userId,
@@ -480,6 +584,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
             }
         )
         this.$emit('listenChange');
+        this.editTask = true;
         console.log("edit task response", response);
        
        } catch(e){
@@ -598,6 +703,9 @@ import ErrorPopup from '~/components/popups/errorPopup'
             console.log('File Upload Failed');
           });
       },
+      test(){
+        console.log("test close --------->")
+      }
    
 
     },

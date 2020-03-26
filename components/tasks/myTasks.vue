@@ -7,10 +7,13 @@
         :key="index" class="taskList" >
             <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)">
               <v-list-item-action>
-              <div class="round">
+              <!-- <div class="round">
                 <input type="checkbox" disabled name="a2" value="1" id="checkbox" />
                 <label for="checkbox"></label>
-            </div>
+            </div> -->
+             <v-icon v-if="task.taskStatus == 'closed'" size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
+             <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+        
               </v-list-item-action>
               <v-list-item-content>
                 <v-list-item-title class="body-2">{{ task.taskName}}</v-list-item-title>
