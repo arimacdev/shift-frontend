@@ -68,7 +68,7 @@
             >
             <select v-model="taskStatus" class="formElements">
               <option disabled value="pending" >Pending</option>
-                <!-- <option key="pending" value="pending" >Pending</option> -->
+                <option key="pending" value="pending" >Pending</option>
                 <option key="implementing" value="implementing">Implementing</option>
                 <option key="qa" value="qa">QA</option>
                 <option key="readyToDeploy" value="readyToDeploy">Ready to Deploy</option>
@@ -217,7 +217,7 @@ import axios from 'axios'
           this.taskStatus = 'pending',
           this.taskDueDate = new Date(),
           this.taskRemindOnDate = new Date(),
-          this.taskNotes = new Date()
+          this.taskNotes = ''
 
         let taskId= response.data.taskId;
 
