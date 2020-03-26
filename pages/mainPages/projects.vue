@@ -45,11 +45,14 @@
     
 
 <div class="listView overflow-y-auto">
-<v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Pre sales</v-toolbar-title>
+
+  <!-- --------------- ongoing loop ----------- -->
+<v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Ongoing</v-toolbar-title>
+
 
           <div v-for="(project, index) in projects"
         :key="index"  v-on:click="component='tab-views'">
-            <v-list-item @click="selectProject(project)" >
+            <v-list-item v-if="project.projectStatus == 'ongoing'" @click="selectProject(project)" >
               <v-list-item-action>
                 <v-icon size="20" color="deep-orange lighten-1">mdi-folder-outline</v-icon>
               </v-list-item-action>
@@ -57,7 +60,59 @@
                 <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-             <v-divider class="mx-4"></v-divider>
+             <!-- <v-divider class="mx-4"></v-divider> -->
+       
+          </div>
+
+<!-- --------------- Support loop ----------- -->
+<v-divider class="mx-4"></v-divider>
+          <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Support</v-toolbar-title>
+
+          <div v-for="(project, index) in projects"
+        :key="index"  v-on:click="component='tab-views'">
+            <v-list-item v-if="project.projectStatus == 'support'" @click="selectProject(project)" >
+              <v-list-item-action>
+                <v-icon size="20" color="deep-orange lighten-1">mdi-folder-outline</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+             <!-- <v-divider class="mx-4"></v-divider> -->
+       
+          </div>
+<!-- --------------- Finished loop ----------- -->
+<v-divider class="mx-4"></v-divider>
+          <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Finished</v-toolbar-title>
+
+          <div v-for="(project, index) in projects"
+        :key="index"  v-on:click="component='tab-views'">
+            <v-list-item v-if="project.projectStatus == 'finished'" @click="selectProject(project)" >
+              <v-list-item-action>
+                <v-icon size="20" color="deep-orange lighten-1">mdi-folder-outline</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+             <!-- <v-divider class="mx-4"></v-divider> -->
+       
+          </div>
+<!-- --------------- Pre sales loop ----------- -->
+<v-divider class="mx-4"></v-divider>
+            <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Pre sales</v-toolbar-title>
+
+          <div v-for="(project, index) in projects"
+        :key="index"  v-on:click="component='tab-views'">
+            <v-list-item v-if="project.projectStatus == 'presales'" @click="selectProject(project)" >
+              <v-list-item-action>
+                <v-icon size="20" color="deep-orange lighten-1">mdi-folder-outline</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+             <!-- <v-divider class="mx-4"></v-divider> -->
        
           </div>
 </div>  
