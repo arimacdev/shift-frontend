@@ -41,7 +41,7 @@
            
              <!-- <input  v-model="taskDueDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" class="formElements"> -->
            <div class="pickerContainer pickerDiv">
-            <VueCtkDateTimePicker color="#3f51b5" class="dateTimePickerInternal" v-model="taskDueDate" label="Project start date and time"/>
+            <VueCtkDateTimePicker color="#3f51b5" class="dateTimePickerInternal" v-model="taskDueDate" label="Task due date and time"/>
            </div>
             </v-col>
              <v-col
