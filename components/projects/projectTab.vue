@@ -192,7 +192,7 @@
       
          
             <div class="submitButton deleteProjectButton">
-                <v-list-item @click="deleteData()" 
+                <v-list-item @click="projectDialog = true" 
                 dark >
                     <v-list-item-action>
                         <v-icon size="20" color="">mdi-trash-can-outline</v-icon>
@@ -211,6 +211,53 @@
 
 
           <!-- --------------- end side bar --------------------- -->
+<!-- --------------------- delete task popup --------------- -->
+
+
+                <v-dialog
+                      v-model="projectDialog"
+                      max-width="380"
+                    >
+                      <v-card>
+                        <div class="popupConfirmHeadline">
+                          <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
+                          <br>
+                          <span class="alertPopupTitle">Delete Project</span>
+                          <br>
+                          <span class="alertPopupText">You're about to permanantly delete this project, its comments and attachments, and all of its data. If you're not sure, you can cancel this action. </span>
+                        </div>
+
+                        
+                <div class="popupBottom">
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+
+                          <v-btn
+                            color="success"
+                            width="100px"
+                            @click="projectDialog = false"
+                          >
+                            Cancel
+                          </v-btn>
+                <v-spacer></v-spacer>
+                <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
+                          <v-btn
+                            color="error"
+                            width="100px"
+                            @click="projectDialog = false; deleteData()"
+                          >
+                            Delete
+                          </v-btn>
+                          <v-spacer></v-spacer>
+                        </v-card-actions>
+
+                        
+                        </div>
+                      </v-card>
+                    </v-dialog>
+
+                <!-- ---------------------- end popup ------------------ -->
+          
 
           <v-row
             class="mb-12"
@@ -392,6 +439,7 @@ export default {
     data () {
       return {
         userId: this.$store.state.user.userId,
+        projectDialog: false,
         updateProject: {
           "projectName": "",
           "clientId": "",

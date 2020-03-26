@@ -2,7 +2,6 @@
  <div>
   <div class="taskTitleDiv">
       <div class="taskName-sideBar">
-
         <v-list-item>
         <v-list-item-icon>
              <div class="round">
@@ -20,14 +19,15 @@
             <v-icon size="20" color="#FFFFFF" class="editIcon" @click="EditTaskName">mdi-pencil-circle</v-icon>
           </div>
           <div >
-            <v-icon size="20" color="#FF6161" class="editIcon" @click.stop="dialog = true">mdi-trash-can-outline</v-icon>
+            <v-icon size="20" color="#FF6161" class="editIcon" @click="taskDialog = true">mdi-trash-can-outline</v-icon>
           </div>
+          
 
 <!-- --------------------- delete task popup --------------- -->
 
 
  <v-dialog
-      v-model="dialog"
+      v-model="taskDialog"
       max-width="380"
     >
       <v-card>
@@ -47,7 +47,7 @@
           <v-btn
             color="success"
             width="100px"
-            @click="dialog = false"
+            @click="taskDialog = false"
           >
             Cancel
           </v-btn>
@@ -56,7 +56,7 @@
           <v-btn
             color="error"
             width="100px"
-            @click="dialog = false"
+            @click="taskDialog = false"
           >
             Delete
           </v-btn>
@@ -69,8 +69,6 @@
     </v-dialog>
 
 <!-- ---------------------- end popup ------------------ -->
-          
-
          
       </v-list-item>
 
@@ -186,7 +184,54 @@
                         <!-- {{ subtask.subtaskName}} -->
                         </v-list-item-title>
                     </v-list-item-content>
-                    <v-icon color="#FF6161" @click="deleteSubTask(subtask,index)">mdi-trash-can-outline</v-icon>
+                    <v-icon color="#FF6161" @click="subTaskDialog = true">mdi-trash-can-outline</v-icon>
+
+                    <!-- --------------------- delete sub task popup --------------- -->
+
+
+                  <v-dialog
+                        v-model="subTaskDialog"
+                        max-width="380"
+                      >
+                        <v-card>
+                          <div class="popupConfirmHeadline">
+                            <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
+                            <br>
+                            <span class="alertPopupTitle">Delete Sub Task</span>
+                            <br>
+                            <span class="alertPopupText">You're about to permanantly delete this sub task and all of it's data. If you're not sure, you can cancel this action. </span>
+                          </div>
+
+                          
+                  <div class="popupBottom">
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+
+                            <v-btn
+                              color="success"
+                              width="100px"
+                              @click="subTaskDialog = false"
+                            >
+                              Cancel
+                            </v-btn>
+                  <v-spacer></v-spacer>
+                  <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
+                            <v-btn
+                              color="error"
+                              width="100px"
+                              @click="subTaskDialog = false; deleteSubTask(subtask,index)"
+                            >
+                              Delete
+                            </v-btn>
+                            <v-spacer></v-spacer>
+                          </v-card-actions>
+
+                          
+                          </div>
+                        </v-card>
+                      </v-dialog>
+
+                  <!-- ---------------------- end popup ------------------ -->
                 </v-list-item>
                 <v-list-item v-if="showNewSubTask" class="subTaskListItems">
                        <v-checkbox
@@ -396,17 +441,20 @@ Settings.defaultLocale = 'IST'
 
 import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
+import SideBarSuccessPopup from '~/components/popups/sideBarSuccessPopup'
 
   export default {
     props: ['task', 'assignee', 'projectId', 'subTasks', 'taskFiles', 'projectUsers', 'people'],
 
     components: {
       'success-popup' : SuccessPopup,
-      'error-popup': ErrorPopup
+      'error-popup': ErrorPopup,
+      'sidebar-success-popup' : SideBarSuccessPopup
     },
     data() {
       return {
-        dialog: false,
+        taskDialog: false,
+        subTaskDialog: false,
         component: '',
         hidden: false,
         userId: this.$store.state.user.userId,
