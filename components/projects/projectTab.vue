@@ -331,26 +331,28 @@
    <v-container class="logsContainerContent ">
 
 <!-- -------- logs date ------- -->
-   <v-container class="dateContent"> 
+   <!-- <v-container class="dateContent"> 
        <div class=""> 2020 Jan 4 </div>
-   </v-container>
+   </v-container> -->
 
    <!-- --------- one log --------- -->
 
     <v-container class="logContent"> 
 
-      <v-list-item >
+      <v-list-item v-for="(log, index) in taskLog" :key="index" >
+         <!-- <div v-for="(task, index) in projectAllTasks"> -->
+        <!-- <div v-for="(task, index) in projectAllTasks" -->
               <div class="logTitleContainer">
                  <v-list-item-title class="logTitle">
-                  10:25 AM :
+                  {{log.timestamp}}
                 </v-list-item-title>
               </div>
               <v-list-item-content>
                     <v-list-item-title class="logText1">
-                      @Indika has created a new task and assigned to @Dasun
+                      @Naveen has created {{log.taskLogEntity}}
                     </v-list-item-title>
                       <v-list-item-title class="logText2">
-                      > Develop the login flow
+                      > {{log.taskLogEntityId}}
                     </v-list-item-title>
             </v-list-item-content>
               <div class="updatedDate">
@@ -382,7 +384,7 @@ import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
 
 export default {
-    props: ['project', 'taskCompletion'],
+    props: ['project', 'taskCompletion', 'taskLog'],
     components: {
       'success-popup' : SuccessPopup,
       'error-popup': ErrorPopup

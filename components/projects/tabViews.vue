@@ -40,7 +40,7 @@
       <v-tab-item>
         <v-divider class="mx-4"></v-divider>
         <v-card flat>
-          <project-tab :project="project" :taskCompletion="taskCompletion"/>
+          <project-tab :project="project" :taskCompletion="taskCompletion" :taskLog="taskLog"/>
         </v-card>
       </v-tab-item>
       <v-tab-item>
@@ -70,12 +70,11 @@ import ProjectTab from '~/components/projects/projectTab'
      data () {
       return {
         drawer: null,
-        items: [
-          
+        items: [          
         ],
       }
     },
-     props: ['name', 'projectId', 'project', 'users', 'MyTasks', 'taskCompletion', 'people'],
+     props: ['name', 'projectId', 'project', 'users', 'MyTasks', 'taskCompletion', 'people', 'taskLog'],
     name: 'tabViews',
     components: {
       'tasks' : Tasks,
