@@ -4,10 +4,13 @@
       <div class="taskName-sideBar">
         <v-list-item>
         <v-list-item-icon>
-             <div class="round">
+             <!-- <div class="round">
                 <input type="checkbox" disabled name="a2" value="1" id="checkbox" />
                 <label for="checkbox"></label>
-            </div>
+            </div> -->
+              <v-icon v-if="this.task.taskStatus == 'closed'" size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
+             <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+        
           </v-list-item-icon>
            <div class="textAreaSideBar">
              <input type="text" class="taskTitle" v-model="updatedName" v-if="editTask == true"  :disabled="editTask" @keyup.enter="saveEditTaskName"/>
