@@ -50,7 +50,7 @@
           <v-btn
             color="success"
             width="100px"
-            @click="deleteTask"
+            @click="taskDialog = false;"
           >
             Cancel
           </v-btn>
@@ -59,7 +59,7 @@
           <v-btn
             color="error"
             width="100px"
-            @click="taskDialog = false;"
+            @click="taskDialog = false; deleteTask()"
           >
             Delete
           </v-btn>
@@ -531,7 +531,6 @@ import ErrorPopup from '~/components/popups/errorPopup'
         
       },
       async deleteTask(){
-            console.log(this.project.projectId);
       let response;
        try{
         response = await this.$axios.$delete(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {    
@@ -541,10 +540,8 @@ import ErrorPopup from '~/components/popups/errorPopup'
                 }
         })
         location.reload();
-        this.component = 'success-popup'
         console.log(response.data);
        }  catch(e){
-         this.component = 'error-popup'
           console.log("Error deleting project", e);
        }  
       },
