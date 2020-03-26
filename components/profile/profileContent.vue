@@ -58,8 +58,8 @@
             <div class="notiTitle">Enable Notifications</div>
             <div class="notiButton">
             
-          <v-switch inset v-model="switch1" x-small depressed color="primary" v-if="user.userSlackId != null && user.notification == false" v-show="enableNotification"  @click='changeNotificationStatus(user.notification)' >Enable Notifications </v-switch>
-   <v-switch inset v-model="switch2" v-btn x-small depressed   v-if="user.userSlackId != null && user.notification == true" v-show="disableNotification"  @click='changeNotificationStatus(user.notification)'>Disable Notifications   </v-switch>
+          <v-switch inset v-model="switch2" x-small depressed color="primary" v-if="user.userSlackId != null && user.notification == false" v-show="enableNotification"  @click='changeNotificationStatus(user.notification)' >Enable Notifications </v-switch>
+   <v-switch inset v-model="switch1" v-btn x-small depressed   v-if="user.userSlackId != null && user.notification == true" v-show="disableNotification"  @click='changeNotificationStatus(user.notification)'>Disable Notifications   </v-switch>
 </div>
              </div>
 
