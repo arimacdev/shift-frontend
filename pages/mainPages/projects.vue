@@ -54,7 +54,7 @@
         :key="index"  v-on:click="component='tab-views'">
             <v-list-item v-if="project.projectStatus == 'ongoing'" @click="selectProject(project)" >
               <v-list-item-action>
-                <v-icon size="20" color="deep-orange lighten-1">mdi-folder-outline</v-icon>
+                <v-icon size="20" color="#FFC212">mdi-folder-outline</v-icon>
               </v-list-item-action>
               <v-list-item-content>
                 <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
@@ -72,7 +72,7 @@
         :key="index"  v-on:click="component='tab-views'">
             <v-list-item v-if="project.projectStatus == 'support'" @click="selectProject(project)" >
               <v-list-item-action>
-                <v-icon size="20" color="deep-orange lighten-1">mdi-folder-outline</v-icon>
+                <v-icon size="20" color="#ED5ED1">mdi-folder-outline</v-icon>
               </v-list-item-action>
               <v-list-item-content>
                 <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
@@ -89,7 +89,7 @@
         :key="index"  v-on:click="component='tab-views'">
             <v-list-item v-if="project.projectStatus == 'finished'" @click="selectProject(project)" >
               <v-list-item-action>
-                <v-icon size="20" color="deep-orange lighten-1">mdi-folder-outline</v-icon>
+                <v-icon size="20" color="#0BAFFF">mdi-folder-outline</v-icon>
               </v-list-item-action>
               <v-list-item-content>
                 <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
