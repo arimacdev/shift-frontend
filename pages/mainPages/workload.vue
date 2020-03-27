@@ -97,9 +97,23 @@
         </div>
 
   </div>
+
+
+  
   </div>
 
-
+<div class="workLoadTitleDiv workloadBody">
+    <v-list-item-title class="hi" v-if="this.userData.firstName == null">
+        Select a person
+    </v-list-item-title>
+    <v-list-item-title v-else>
+        {{ this.userData.firstName }} {{ this.userData.lastName }}
+    </v-list-item-title>
+</div>
+    <v-divider ></v-divider>
+    <div class="workloadContentDiv workloadBody">
+        
+    </div>
 
   </div>
 
@@ -119,6 +133,7 @@ export default {
         userId: this.$store.state.user.userId,
         component:'add-user',
         workLoad: {},
+        userData: {},
          skill: '',
          search: null,
         select: null,
@@ -144,8 +159,8 @@ export default {
             console.log("------ details ---> " + this.select)
         },
           selectUser(userData){
-     this.userData = userData;
-    },
+            this.userData = userData;
+            },
       querySelections (v) {
         let projectSearchList = this.workLoad;
         for (let index = 0; index < projectSearchList.length; ++index) {
@@ -167,6 +182,8 @@ export default {
       ...mapState({
           taskWorkLoadUsers: state => state.workload.taskWorkLoadUsers,
       })
+      
     },
+    
 }
 </script>
