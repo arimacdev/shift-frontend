@@ -21,7 +21,7 @@
              <v-icon size="30" color="#2EC973" >mdi-package-variant-closed</v-icon>
             </v-list-item-icon>
              <v-list-item-content>
-            <v-list-item-title class="tabListItemsText">Sub Tasks</v-list-item-title>
+            <v-list-item-title class="tabListItemsText itemGroupTitles">Sub Tasks</v-list-item-title>
           </v-list-item-content>
           </template>
           <!-- ----------- loop following list item -------- -->
@@ -42,6 +42,40 @@
                     </v-list-item-content>
         </v-list-item>
         </v-list-group>
+         <v-divider></v-divider>
+
+       <v-list-item-group class="tabListItems">
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon size="30" color="#0BAFFF" >mdi-calendar-blank-outline</v-icon>
+          </v-list-item-icon>
+          <div>
+             <v-list-item-title class="tabListItemsText itemGroupTitles">Due Date</v-list-item-title>
+           </div>
+            <v-list-item-content>
+             <v-list-item-title class="tabListItemsText itemGroupDate">22nd of Frebuary 2020</v-list-item-title>
+           </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+<v-divider></v-divider>
+
+<v-list-item-group class="tabListItems">
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon size="30" color="#FF6767" >mdi-file-document-edit-outline</v-icon>
+          </v-list-item-icon>
+          <div>
+             <v-list-item-title class="tabListItemsText itemGroupTitles">Notes</v-list-item-title>
+           </div>
+        </v-list-item>
+        <v-list-item>
+          <div class="noteDiv">
+            Add note here
+          </div>
+        </v-list-item>
+      </v-list-item-group>
+<v-divider></v-divider>
+
       </div>
   </div>
   </div>

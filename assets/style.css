@@ -1094,3 +1094,14 @@ color: #040428;
 .subTaskItem{
     margin-left: 60px;
 }
+
+.itemGroupTitles{
+    color: #576377 !important;
+}
+.itemGroupDate{
+    color: #000000;
+}
+.noteDiv{
+    margin-left: 65px;
+    color: #5F5F5F;
+}
