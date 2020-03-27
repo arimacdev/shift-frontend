@@ -51,7 +51,7 @@
 
         <div class="listView overflow-y-auto">
 
-  <div v-for="(user, index) in workLoad"
+  <div v-for="(user, index) in taskWorkLoadUsers"
         :key="index" >
             <v-list-item @click="selectUser(user)" class="workloadListItem">
                <v-list-item-avatar> 
@@ -109,6 +109,7 @@
 <script>
 import NavigationDrawer from '~/components/navigationDrawer'
 import usersSearchBar from '~/components/tools/usersSearchBar'
+import { mapState } from 'vuex';
 
 export default {
   components: {
@@ -127,6 +128,10 @@ export default {
         ],
       }
     },
+
+      async asyncData({ $axios, store }) {
+      store.dispatch('workload/fetchAllTaskLoadUsers')
+  },
 
  watch: {
       search (val) {
@@ -173,6 +178,11 @@ async created() {
           this.loading = false
         }, 500)
       },
+    },
+    computed: {
+      ...mapState({
+          taskWorkLoadUsers: state => state.workload.taskWorkLoadUsers,
+      })
     },
 }
 </script>
