@@ -178,7 +178,7 @@ import axios from 'axios'
         },
     methods: {
       submit () {
-        this.$refs.observer.validate()
+       this.$v.$touch()
       },
       handleFileUploads(e){
          this.file = this.$refs.files.files[0];
@@ -217,7 +217,8 @@ import axios from 'axios'
           this.taskStatus = 'pending',
           this.taskDueDate = new Date(),
           this.taskRemindOnDate = new Date(),
-          this.taskNotes = ''
+          this.taskNotes = '',
+           this.$v.$reset()
 
         let taskId= response.data.taskId;
 

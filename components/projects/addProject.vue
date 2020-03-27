@@ -193,6 +193,10 @@ export default {
           projectEndDate: new Date(this.endDate),
         })
 
+        this.projectName = '',
+        this.clientId = '',
+        this.$v.$reset()
+
         console.log("project added successfully", response);
         this.component = 'success-popup'
         window.setTimeout(location.reload(), 8000)
