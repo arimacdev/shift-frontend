@@ -128,30 +128,15 @@ export default {
       }
     },
 
-      async asyncData({ $axios, store }) {
-      store.dispatch('workload/fetchAllTaskLoadUsers')
-  },
-
  watch: {
       search (val) {
         val && val !== this.select && this.querySelections(val)
       },
  },
+ created() {
 
-async created() {
+      this.$store.dispatch('workload/fetchAllTaskLoadUsers')
 
-   let workloadResponse;
-      workloadResponse = await this.$axios.$get(`/projects/tasks/users/workload`,
-      {
-        headers: {
-          user: this.userId,
-       }
-      }
-      ) 
-     
-      this.workLoad = workloadResponse.data;
-       console.log("workload data",workloadResponse.data)
-      
    
 },
     methods: {
