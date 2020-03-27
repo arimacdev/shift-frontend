@@ -979,3 +979,27 @@ color: #040428;
    background-color: #FFFFFF;
    margin-top: -20px;
  }
+ .workloadListItem{
+     height: 80px;
+ }
+
+ .workloadProgressLine{
+     margin-left: 10px;
+    width: 45%;
+    background-color: #FF6161;
+    border-radius: 13px;
+}
+.workloadListName{
+    width: 200px !important;
+    background-color: red;
+}
+.workloadCompletedStatus{
+    color: #7A8B9F;
+    font-size: 10px !important;
+    font-weight: 500;
+    margin-left: 10px;
+}
+.workloadDivider{
+    height: 40px !important;
+    margin-top: 20px !important;
+}

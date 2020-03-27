@@ -46,13 +46,14 @@
           prepend-inner-icon="mdi-magnify"
           label="Search Here"
           solo-inverted
+          @change="test()"
         ></v-autocomplete>
 
         <div class="listView overflow-y-auto">
 
   <div v-for="(user, index) in taskWorkLoadUsers"
         :key="index" >
-            <v-list-item @click="selectUser(user)" >
+            <v-list-item @click="selectUser(user)" class="workloadListItem">
                <v-list-item-avatar> 
                  <v-img v-if="user.profileImage != null" :src="user.profileImage"></v-img>
             <v-img v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img> 
@@ -60,12 +61,28 @@
               <v-list-item-content >
                 <v-list-item-title @click="selectUser(user)"  v-on:click="component='view-user'" class="body-2">{{ user.firstName }} {{ user.lastName}}</v-list-item-title>
               </v-list-item-content>
-              <v-list-item-action @click="selectUser(user)"  v-on:click="component='edit-user'">
-               <div class="iconBackCircle"> <v-icon size="17" color="#0BAFFF">mdi-pencil-outline</v-icon></div>
-              </v-list-item-action>
-              <!-- <v-list-item-action >
-               <div class="iconBackCircle"> <v-icon size="17" color="#FF6161">mdi-block-helper</v-icon></div>
-              </v-list-item-action> -->
+               <v-divider vertical inset class="workloadDivider"></v-divider>
+<v-list-item-content>
+               <v-task-title class="workloadCompletedStatus">{{ user.tasksCompleted + "/" + user.totalTasks + " Tasks completed"}}</v-task-title>
+
+            <v-list-item-subtitle class="workloadProgressLine"> 
+
+                    <v-progress-linear
+                        :value="(user.tasksCompleted/user.totalTasks)*100"
+                        color="#2EC973"
+                        height="8"
+                        rounded
+                        reactive
+                        >
+                        <!-- <template v-slot="{ value }"> -->
+                            <template>
+                            <!-- <span class="presentageValue">{{ Math.ceil(value) }}%</span> -->
+                        </template>
+                        </v-progress-linear>
+
+                        </v-list-item-subtitle>
+</v-list-item-content>
+            
             </v-list-item>
              <v-divider class="mx-4"></v-divider>
        
@@ -95,17 +112,65 @@ export default {
       return {
         userId: this.$store.state.user.userId,
         component:'add-user',
+        workLoad: {},
+         skill: '',
+         search: null,
+        select: null,
+        states: [
+          
+        ],
       }
     },
 
-    async asyncData({ $axios, store }) {
+      async asyncData({ $axios, store }) {
       store.dispatch('workload/fetchAllTaskLoadUsers')
   },
+
+ watch: {
+      search (val) {
+        val && val !== this.select && this.querySelections(val)
+      },
+ },
+
+async created() {
+
+   let workloadResponse;
+      workloadResponse = await this.$axios.$get(`/projects/tasks/users/workload`,
+      {
+        headers: {
+          user: this.userId,
+       }
+      }
+      ) 
+     
+      this.workLoad = workloadResponse.data;
+       console.log("workload data",workloadResponse.data)
+      
+   
+},
     methods: {
-       selectUser(userData){
-     this.name=userData;
+        test(){
+            console.log("------ details ---> " + this.select)
+        },
+          selectUser(userData){
      this.userData = userData;
-    }
+    },
+      querySelections (v) {
+        let projectSearchList = this.workLoad;
+        for (let index = 0; index < projectSearchList.length; ++index) {
+            let user = projectSearchList[index];
+            this.states.push(user.firstName + " " + user.lastName);
+        }
+        console.log("usersList", this.users, "nameList", this.states)
+        this.loading = true
+        // Simulated ajax query
+        setTimeout(() => {
+          this.items = this.states.filter(e => {
+            return (e || '').toLowerCase().indexOf((v || '').toLowerCase()) > -1
+          })
+          this.loading = false
+        }, 500)
+      },
     },
     computed: {
       ...mapState({
