@@ -212,14 +212,6 @@ import axios from 'axios'
         // window.setTimeout(location.reload(), 8000)
         console.log("Task adding successful", response);
 
-          this.taskName = '',
-          this.taskAssignee = '',
-          this.taskStatus = 'pending',
-          this.taskDueDate = new Date(),
-          this.taskRemindOnDate = new Date(),
-          this.taskNotes = '',
-           this.$v.$reset()
-
         let taskId= response.data.taskId;
 
         let formData = new FormData();
@@ -240,7 +232,22 @@ import axios from 'axios'
           .catch(function(){
             console.log('File Upload Failed');
           });
-      
+          
+      if(this.taskAssignee === this.userId){
+        console.log("assignee is me", this.taskAssignee,this.userId)
+        this.$store.dispatch('task/fetchTasksMyTasks', this.projectId);
+        this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
+      } else {
+         console.log("assignee is NOT me",this.taskAssignee,)
+        this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
+      }
+          this.taskName = '',
+          this.taskAssignee = '',
+          this.taskStatus = 'pending',
+          this.taskDueDate = new Date(),
+          this.taskRemindOnDate = new Date(),
+          this.taskNotes = '',
+           this.$v.$reset()
        } catch(e){
          this.component = 'error-popup'
           console.log("Error adding a Task", e);
