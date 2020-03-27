@@ -119,7 +119,7 @@
  <v-list-item-group class="">
 <v-list-item>
 
-   <v-list-item-content class="">
+   <div class="taskStatusDropdown">
              <select v-model="taskStatus" class="selectUserDropDown" @change="updateStatus">
                 <option key="pending" value="pending" >Pending</option>
                 <option key="implementing" value="implementing">Implementing</option>
@@ -129,7 +129,7 @@
                 <option key="deployed" value="deployed">Deployed</option>
                 <option key="closed" value="closed">Closed</option>
             </select>
-             </v-list-item-content>
+             </div>
 
 </v-list-item>
  </v-list-item-group>
@@ -183,7 +183,7 @@
                           </v-checkbox>
                     <v-list-item-content>
                       <v-list-item-title class="subTaskListName">
-                        <input v-model="subtask.subtaskName" type="text" @keyup.enter="subTaskUpdate(subtask)"/>
+                        <input class="subTaskListNameContent" v-model="subtask.subtaskName" type="text" @keyup.enter="subTaskUpdate(subtask)"/>
                         <!-- {{ subtask.subtaskName}} -->
                         </v-list-item-title>
                     </v-list-item-content>
@@ -243,11 +243,11 @@
                           class="shrink mr-2 mt-0"           
                           >
                        </v-checkbox>
-                       <v-list-item-content>
+                       <div>
                          <v-list-item-title class="subTaskListName">
-                        <input  placeholder="Add new" v-model="newSubTask.subtaskName" type="text"  @keyup.enter="addSubTask"/>   
+                        <input class="subTaskListNameContent addSubTaskTextbox"  placeholder="Add new" v-model="newSubTask.subtaskName" type="text"  @keyup.enter="addSubTask"/>   
                            </v-list-item-title>
-                       </v-list-item-content>
+                       </div>
                 <!-- </div> -->
                 </v-list-item>
 

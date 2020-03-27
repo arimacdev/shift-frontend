@@ -103,6 +103,15 @@ margin-bottom: -5px !important;
     border: solid 1px #c5c7cc;
 }
 
+.createFormElements{
+    width: 98%;
+    /* background-color: red; */
+    height: 40px;
+}
+.formRow{
+    margin-bottom: -20px !important;
+}
+
 .sideBarFormElementsForPickers{
     border-radius: 5px;
     border: solid 1px #c5c7cc;
@@ -408,7 +417,7 @@ margin-top: -60px;
     color: #FFFFFF !important;
     font-weight: 500;
     font-size: 14px;
-    width: 250px;
+    width: 100% !important;
     height: 40px;
     margin-right: 10px;
     margin-left: -20px;
@@ -417,18 +426,23 @@ margin-top: -60px;
 .taskTitleEdit{
     width: 240px;
     height: 30px;
+    width: 100% !important;
     background: #EDF0F5;
     border-radius: 5px;
     padding-left: 5px;
     margin-right: 10px;
     margin-left: -20px;
 }
+.taskStatusDropdown{
+    
+}
 
 .textAreaSideBar{
     vertical-align: middle;
+    width: 100%;
 }
 .selectUserDropDown{
-    width: 200px !important;
+    width: 300px !important;
     padding:7px;
     border-radius: 5px;
     background: #0BAFFF;
@@ -450,7 +464,7 @@ margin-top: -60px;
 .sideBarDate{
     background: #FFFFFF !important;
     outline: none;
-    color: red;
+    color: green;
     font-weight: 500;
     font-size: 14px;
     /* background: violet; */
@@ -459,6 +473,7 @@ margin-top: -60px;
 .tabListItemsText{
     font-weight: 500;
     font-size: 16px;
+    margin-right: 30px;
 }
 .datesTitle{
     margin-top: 15px;
@@ -665,6 +680,19 @@ font-size: 19px !important;
 font-weight: 500;
 font-size: 11px;
 color: #576377;
+width: 400px !important;
+}
+.subTaskListNameContent{
+    width: 100%;
+    height: 30px;
+    border-radius: 5px;
+    padding-left: 5px;
+}
+.addSubTaskTextbox{
+    width: 100% !important;
+    background: #EDF0F5;
+    outline: none;
+    height: 40px;
 }
 .subTaskListItems{
     margin-bottom: 10px;
@@ -749,7 +777,7 @@ popupSubitle{
 .pickerDiv{
     /* margin-top: -5px; */
     border-radius: 5px;
-    height: 55px;
+    /* height: 55px; */
 }
 
 .pickerContainer{
@@ -770,13 +798,14 @@ popupSubitle{
 .sideBarPickers{
     position: absolute;
     /* z-index: 100; */
-    width: 300px;
+    /* width: 300px; */
     /* margin-left: 60px; */
+    width: 80%;
     margin-top: 8px;
 }
 
 .datePickerNew{
-    margin-top: 20px;
+    margin-top: 0px !important;
     color: green;
 }
 
@@ -792,6 +821,7 @@ popupSubitle{
 .btnPicker{
     width: 50px;
     font-size: 10px;
+    margin-left: 150px;
 }
 .btnPickerText{
     font-size: 8px;
