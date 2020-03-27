@@ -161,18 +161,13 @@ export default {
       },
  },
     methods: {
-        test(){
-            console.log("------ details ---> " + this.select)
-        },
-          selectUser(userData){
-            this.userData = userData;
-
-            // ------------------- call API for getting projects list for user -------------
-
-
-
-
-            },
+    test(){
+        console.log("------ details ---> " + this.select)
+    },
+    async selectUser(userData){
+      this.userData = userData;      
+      this.$store.dispatch('workload/fetchAllWorkloadTasks', userData.userId)
+      },
       querySelections (v) {
         let projectSearchList = this.workLoad;
         for (let index = 0; index < projectSearchList.length; ++index) {

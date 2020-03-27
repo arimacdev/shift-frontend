@@ -9,22 +9,22 @@
                 >
 
                 <!-- -------------- loop this pannel for every project ---------- -->
-                <v-expansion-panel class="projectDetailsPannels">
-                    <v-expansion-panel-header class="projectDetailsPannelHeader" color="#080848">Project SAIV - 1/5</v-expansion-panel-header>
+                <v-expansion-panel v-for="(project, index) in workloadTasks" :key="index" class="projectDetailsPannels">
+                    <v-expansion-panel-header class="projectDetailsPannelHeader" color="#080848">{{project.projectName}} - {{project.completed}}/{{project.total}}</v-expansion-panel-header>
                     <v-expansion-panel-content class="projectDetailsPannelContent" color="#EDF0F5">
                     
                     <!-- ----------- loop content for tasks of projects --------------- -->
         <div class="taskDetailsBar">
-                      <v-list-item  @click.stop="drawer = !drawer" @click="">
+                      <v-list-item  @click.stop="drawer = !drawer"  v-for="(task, index) in project.taskList" :key="index">
                         <v-list-item-action>
                         <!-- <v-icon v-if="task.taskStatus == 'closed'" size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon> -->
                         <v-icon  size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title class="workloadTaskName">Add Task Name</v-list-item-title>
+                            <v-list-item-title class="workloadTaskName">{{task.taskName}}</v-list-item-title>
                         </v-list-item-content>
                         <v-list-item-content class="updatedDate">
-                            <v-list-item-title class="body-2">add due date</v-list-item-title>
+                            <v-list-item-title class="body-2">{{task.dueDate}}</v-list-item-title>
                         </v-list-item-content>
                         <v-list-item-avatar>
                     <!-- <v-img v-if="task.taskAssigneeProfileImage != null" :src="task.taskAssigneeProfileImage"></v-img> -->
@@ -60,6 +60,7 @@
 
 <script>
 import TaskSideBar from '~/components/workload/taskSideBar'
+import { mapState, mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -69,6 +70,12 @@ export default {
       return {
         drawer: null,
       }
+    },
+   computed: {
+      ...mapState({
+          workloadTasks: state => state.workload.workloadTasks,
+      })
+      
     },
 }
 </script>
