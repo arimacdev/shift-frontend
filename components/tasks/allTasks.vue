@@ -1,12 +1,46 @@
 <template>
      <div class="taskContent">
+        <v-select
+        v-model="taskSelect"
+          :items="items"
+          label="All"
+          solo
+          @change="taskFilter"
+        ></v-select>
 
        <div class="allTasksDropDown">
        </div>
        <div class="taskListViewContent overflow-y-auto">
+
+         <!-- ------ start task filter list ------- -->
         <div v-for="(task, index) in projectAllTasks"
         :key="index" class="taskList" >
-            <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)">
+            <v-list-item v-if="task.taskStatus == taskSelect" @click.stop="drawer = !drawer" @click="selectTask(task)">
+              <v-list-item-action>
+              <!-- <div class="round">
+                <input type="checkbox" disabled name="a2" value="1" id="checkbox" />
+                <label for="checkbox"></label>
+            </div> -->
+              <v-icon v-if="task.taskStatus == 'closed'" size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
+             <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+        
+            
+               
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title class="body-2">{{ task.taskName}}</v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-content class="updatedDate">
+                <v-list-item-title class="body-2">{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
+              </v-list-item-content>
+               <v-list-item-avatar>
+          <v-img v-if="task.taskAssigneeProfileImage != null" :src="task.taskAssigneeProfileImage"></v-img>
+          <v-img v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
+
+        </v-list-item-avatar>
+            </v-list-item>
+<!-- -------------- filter for all ------------ -->
+             <v-list-item v-if="taskSelect == 'all' || taskSelect == null" @click.stop="drawer = !drawer" @click="selectTask(task)">
               <v-list-item-action>
               <!-- <div class="round">
                 <input type="checkbox" disabled name="a2" value="1" id="checkbox" />
@@ -53,23 +87,28 @@
     </div>
 </template>
 
+
+
+
+
+
+
 <script>
 import TaskSideBar from '~/components/tasks/taskSideBar'
-import { mapState } from 'vuex';;
+import { mapState } from 'vuex';
   export default {
     props: ['projectId',  'projectUsers', 'people'],
     data() {
       return {
+         items: ['all', 'pending', 'implementing', 'qa', 'readyToDeploy', 'reOpened', 'deployed', 'closed'],
         projects: ["pr1"],
         drawer: null,
-        items: [
-          
-        ],
         task: {},
         subTasks: [],
         taskFiles: [],
         assignee: {},
-        userId: this.$store.state.user.userId
+        userId: this.$store.state.user.userId,
+        taskSelect: null
       }
     },
     components: {
@@ -79,6 +118,9 @@ import { mapState } from 'vuex';;
        listenToChange(){
          console.log("listened to changes ------->");
           this.$store.dispatch('task/fetchTasksAllTasks', this.projectId)
+       },
+       taskFilter(){
+         console.log("-----------> changed" + this.taskSelect)
        },
     async selectTask(task){
      this.task = task;
