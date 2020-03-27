@@ -97,8 +97,6 @@
         </div>
 
   </div>
-
-
   
   </div>
 
@@ -153,17 +151,15 @@ export default {
       }
     },
 
+      async asyncData({ $axios, store }) {
+      store.dispatch('workload/fetchAllTaskLoadUsers')
+  },
+
  watch: {
       search (val) {
         val && val !== this.select && this.querySelections(val)
       },
  },
- created() {
-
-      this.$store.dispatch('workload/fetchAllTaskLoadUsers')
-
-   
-},
     methods: {
         test(){
             console.log("------ details ---> " + this.select)
