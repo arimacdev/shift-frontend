@@ -33,7 +33,8 @@
       
   </div>
   <div class="content-div">
-    <v-list-item-title class="font-weight-bold">{{ this.project.projectName }}</v-list-item-title>
+    <v-list-item-title v-if="this.project.projectName == null " class="font-weight-bold">Select a project</v-list-item-title>
+    <v-list-item-title v-else class="font-weight-bold">{{ this.project.projectName }}</v-list-item-title>
   </div>
 </div>
     </v-toolbar>

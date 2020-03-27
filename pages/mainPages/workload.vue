@@ -98,18 +98,22 @@
 
   </div>
 
-<div class="workLoadTitleDiv">
-    <v-list-item-title v-if="this.userData.firstName == null">
+
+  
+  </div>
+
+<div class="workLoadTitleDiv workloadBody">
+    <v-list-item-title class="hi" v-if="this.userData.firstName == null">
         Select a person
     </v-list-item-title>
     <v-list-item-title v-else>
         {{ this.userData.firstName }} {{ this.userData.lastName }}
     </v-list-item-title>
 </div>
-  
-  </div>
-
-
+    <v-divider ></v-divider>
+    <div class="workloadContentDiv workloadBody">
+        
+    </div>
 
   </div>
 
