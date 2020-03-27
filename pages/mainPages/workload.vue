@@ -110,17 +110,18 @@ export default {
      }
   },
 
-created() {
+async created() {
 
-   let taskFilesResponse;
-      taskFilesResponse = await this.$axios.$get(`/projects/${this.projectId}/tasks/${task.taskId}/files`,
+   let workloadResponse;
+      workloadResponse = await this.$axios.$get(`/projects/tasks/users/workload`,
       {
         headers: {
           user: this.userId,
        }
       }
       ) 
-      this.taskFiles = taskFilesResponse.data;
+      console.log("workload data",workloadResponse)
+      this.workLoad = workloadResponse.data.data;
       
    
 },
