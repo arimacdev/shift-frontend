@@ -1024,6 +1024,7 @@ color: #040428;
 
 .workloadBody{
     margin-left: 35% !important;
+    margin-right: 2% !important;
     padding-left: 30px;
     padding-top: 15px;
 }
@@ -1035,4 +1036,25 @@ color: #040428;
 }
 .workloadContentDiv{
 
+}
+
+.projectDetailsPannels{
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+.projectDetailsPannelHeader{
+    color: #FFFFFF;
+}
+.projectDetailsPannelContent{
+    padding-top: 10px;
+    color: #576377;
+}
+.taskDetailsBar{
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+.workloadTaskName{
+
+    color:  #576377;
 }

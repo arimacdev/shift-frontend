@@ -111,22 +111,31 @@
     </v-list-item-title>
 </div>
     <v-divider ></v-divider>
-    <div class="workloadContentDiv workloadBody">
-        
-    </div>
+    
+
+<!-- -------------- component of the content ----------- -->
+      
+        <workload-content />
+
+
 
   </div>
+
+  
 
 </div>
 </template>
 <script>
 import NavigationDrawer from '~/components/navigationDrawer'
 import usersSearchBar from '~/components/tools/usersSearchBar'
+import TaskSideBar from '~/components/workload/taskSideBar'
+import WorkloadContent from '~/components/workload/workloadContent'
 import { mapState, mapGetters } from 'vuex';
 
 export default {
   components: {
-    NavigationDrawer
+    NavigationDrawer,
+    'workload-content': WorkloadContent
   },
    data() {
       return {
@@ -140,6 +149,7 @@ export default {
         states: [
           
         ],
+        drawer: null,
       }
     },
 
@@ -160,6 +170,12 @@ export default {
         },
           selectUser(userData){
             this.userData = userData;
+
+            // ------------------- call API for getting projects list for user -------------
+
+
+
+
             },
       querySelections (v) {
         let projectSearchList = this.workLoad;
