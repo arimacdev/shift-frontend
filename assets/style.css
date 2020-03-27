@@ -965,3 +965,17 @@ color: #040428;
     padding-bottom: 20px;
     padding-top: 10px;
 }
+
+
+
+/* ---------------- workload page -------------- */
+
+
+.workloadSideBar{
+    width: 35%;
+   float: left;
+   /* padding-left: 12px; */
+   padding-top: 20px;
+   background-color: #FFFFFF;
+   margin-top: -20px;
+ }

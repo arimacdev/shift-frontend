@@ -77,6 +77,7 @@
           { title: 'Projects', icon: 'mdi-folder-outline', route: '../mainPages/projects'},
           { title: 'Tasks', icon: 'mdi-calendar-blank-multiple', route: '../mainPages/tasks' },
           { title: 'Inventory', icon: 'mdi-comment-outline', route: '../mainPages/inventory'},
+          { title: 'Workload', icon: 'mdi-bag-checked', route: '../mainPages/workload'},
           { title: 'Users', icon: 'mdi-account-multiple-outline', route: '../mainPages/users'  },
           { title: 'Admin', icon: 'mdi-account-circle-outline', route: '../mainPages/admin' },
         ],

@@ -170,7 +170,7 @@ export default {
       projects: projects,
       users:users,
       // tasks: tasks,
-       project: projects[0],
+       project: '',
        people : []       
      }
   },
