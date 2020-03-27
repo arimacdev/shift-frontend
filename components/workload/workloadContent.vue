@@ -15,7 +15,7 @@
                     
                     <!-- ----------- loop content for tasks of projects --------------- -->
         <div class="taskDetailsBar">
-                      <v-list-item class="workloadTaskItems"  @click.stop="drawer = !drawer"  v-for="(task, index) in project.taskList" :key="index">
+                      <v-list-item class="workloadTaskItems"  @click.stop="drawer = !drawer"  v-for="(task, index) in project.taskList" :key="index" @click="selectTask(task, project.projectId)">
                         <v-list-item-action>
                         <v-icon v-if="task.taskStatus == 'closed'" size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
                         <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
@@ -50,7 +50,7 @@
                 class=""
                 color="#FFFFFF"
                 >
-    <task-side-bar />
+    <task-side-bar :task="task" :projectId="projectId"/>
 
             </v-navigation-drawer>
           <!-- --------------- end side bar --------------------- -->
@@ -69,6 +69,17 @@ export default {
    data() {
       return {
         drawer: null,
+        task: {},
+        projectId: ''
+      }
+    },
+    methods: {
+      selectTask(task, projectId) {
+        this.task = task;
+        this.projectId = projectId
+        this.$store.dispatch('subtask/fetchSubTasks',
+         {projectId:projectId, 
+         taskId:task.taskId});
       }
     },
    computed: {

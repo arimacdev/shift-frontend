@@ -675,7 +675,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
-        this.$emit('listenChange');
+        // this.$emit('listenChange');
         console.log("update sub task status response", response);
        } catch(e){
           console.log("Error updating a status", e);

@@ -9,8 +9,8 @@
              <v-icon size="35" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
              </v-list-item-icon>
              <div class="textAreaSideBar">
-               <textarea type="text" disabled class="selectedTaskTitle" v-model="updatedName" placeholder="TaskName" ></textarea>
-                <span class="selectedTaskStatus">Implementing</span>
+               <textarea type="text" disabled class="selectedTaskTitle"  :placeholder="this.task.taskName" ></textarea>
+                <span class="selectedTaskStatus">{{this.task.taskStatus}}</span>
              </div>
          </v-list-item>
       </div>
@@ -21,7 +21,7 @@
              <v-icon size="30" color="#2EC973" >mdi-package-variant-closed</v-icon>
             </v-list-item-icon>
              <v-list-item-content>
-            <v-list-item-title class="tabListItemsText itemGroupTitles">Sub Tasks</v-list-item-title>
+            <v-list-item-title class="tabListItemsText itemGroupTitles" @click="fetchSubtasks">Sub Tasks</v-list-item-title>
           </v-list-item-content>
           </template>
           <!-- ----------- loop following list item -------- -->
@@ -53,7 +53,7 @@
              <v-list-item-title class="tabListItemsText itemGroupTitles">Due Date</v-list-item-title>
            </div>
             <v-list-item-content>
-             <v-list-item-title class="tabListItemsText itemGroupDate">22nd of Frebuary 2020</v-list-item-title>
+             <v-list-item-title class="tabListItemsText itemGroupDate">{{this.task.dueDate}}</v-list-item-title>
            </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -70,7 +70,7 @@
         </v-list-item>
         <v-list-item>
           <div class="noteDiv">
-            Add note here
+            {{this.task.taskNotes}}
           </div>
         </v-list-item>
       </v-list-item-group>
@@ -80,3 +80,17 @@
   </div>
   </div>
 </template>
+
+
+<script>
+import { mapState, mapGetters } from 'vuex';
+export default {
+props: ['task', 'projectId'],
+methods: {
+  fetchSubtasks() {
+    console.log("fetch sub task");
+  }
+},
+    
+  }
+</script>
