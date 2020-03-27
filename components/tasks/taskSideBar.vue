@@ -4,10 +4,13 @@
       <div class="taskName-sideBar">
         <v-list-item>
         <v-list-item-icon>
-             <div class="round">
+             <!-- <div class="round">
                 <input type="checkbox" disabled name="a2" value="1" id="checkbox" />
                 <label for="checkbox"></label>
-            </div>
+            </div> -->
+              <v-icon v-if="this.task.taskStatus == 'closed'" size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
+             <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+        
           </v-list-item-icon>
            <div class="textAreaSideBar">
              <input type="text" class="taskTitle" v-model="updatedName" v-if="editTask == true"  :disabled="editTask" @keyup.enter="saveEditTaskName"/>
@@ -47,7 +50,7 @@
           <v-btn
             color="success"
             width="100px"
-            @click="taskDialog = false"
+            @click="taskDialog = false;"
           >
             Cancel
           </v-btn>
@@ -56,7 +59,7 @@
           <v-btn
             color="error"
             width="100px"
-            @click="taskDialog = false"
+            @click="taskDialog = false; deleteTask()"
           >
             Delete
           </v-btn>
@@ -180,7 +183,7 @@
                           </v-checkbox>
                     <v-list-item-content>
                       <v-list-item-title class="subTaskListName">
-                        <input v-model="subtask.subtaskName" type="text" @keyup.enter="addSubTask"/>
+                        <input v-model="subtask.subtaskName" type="text" @keyup.enter="subTaskUpdate(subtask)"/>
                         <!-- {{ subtask.subtaskName}} -->
                         </v-list-item-title>
                     </v-list-item-content>
@@ -527,6 +530,21 @@ import ErrorPopup from '~/components/popups/errorPopup'
        }
         
       },
+      async deleteTask(){
+      let response;
+       try{
+        response = await this.$axios.$delete(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {    
+                data: {},
+                headers: {
+                    'user': this.userId,
+                }
+        })
+        location.reload();
+        console.log(response.data);
+       }  catch(e){
+          console.log("Error deleting project", e);
+       }  
+      },
       async addSubTask(){
         console.log("add subTask", this.task.taskId,this.newSubTask.subtaskName);
         let response;
@@ -657,6 +675,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
+        this.$emit('listenChange');
         console.log("update sub task status response", response);
        } catch(e){
           console.log("Error updating a status", e);

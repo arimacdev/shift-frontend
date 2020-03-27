@@ -67,7 +67,7 @@
                 
             >
             <select v-model="taskStatus" class="formElements">
-              <option disabled value="pending" >Task status</option>
+              <option disabled value="pending" >Pending</option>
                 <option key="pending" value="pending" >Pending</option>
                 <option key="implementing" value="implementing">Implementing</option>
                 <option key="qa" value="qa">QA</option>
@@ -212,7 +212,14 @@ import axios from 'axios'
         // window.setTimeout(location.reload(), 8000)
         console.log("Task adding successful", response);
 
-         let taskId= response.data.taskId;
+          this.taskName = '',
+          this.taskAssignee = '',
+          this.taskStatus = 'pending',
+          this.taskDueDate = new Date(),
+          this.taskRemindOnDate = new Date(),
+          this.taskNotes = ''
+
+        let taskId= response.data.taskId;
 
         let formData = new FormData();
         formData.append('files', this.file);
@@ -223,7 +230,7 @@ import axios from 'axios'
             {
               headers: {
                   'Content-Type': 'multipart/form-data',
-                  'user': this.userIdz
+                  'user': this.userId
               }
             }
           ).then(function(res){

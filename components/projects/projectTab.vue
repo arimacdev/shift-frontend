@@ -185,7 +185,7 @@
                         <v-icon size="20" color="">mdi-plus-circle</v-icon>
                     </v-list-item-action>
                     <v-list-item-content class="buttonText">
-                        <v-list-item-title class="bodyWiew">Edit project</v-list-item-title>
+                        <v-list-item-title class="bodyWiew">Edit Project</v-list-item-title>
                     </v-list-item-content>
                     </v-list-item>
                 </div>
@@ -198,7 +198,7 @@
                         <v-icon size="20" color="">mdi-trash-can-outline</v-icon>
                     </v-list-item-action>
                     <v-list-item-content class="buttonText">
-                        <v-list-item-title class="bodyWiew">Delete the project</v-list-item-title>
+                        <v-list-item-title class="bodyWiew">Delete Project</v-list-item-title>
                     </v-list-item-content>
                     </v-list-item>
                 </div>
@@ -554,8 +554,13 @@ export default {
          } else {
            this.endDate = formateedDate;
          }
+         stringDate = date + " ";
+         stringDate = stringDate.toString();
+         stringDate = stringDate.slice(0,10);           
+         return stringDate;
          return formateedDate;
       },
+      
       getProjectTimeLine(){
           let startDate = new Date(this.startDate);
           let endDate = new Date(this.endDate);
