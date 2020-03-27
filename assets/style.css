@@ -1003,3 +1003,21 @@ color: #040428;
     height: 40px !important;
     margin-top: 20px !important;
 }
+.progressColorCode{
+    width: 3px;
+    height: 100%;
+    margin-right: -10px;
+    margin-left: 10px;
+}
+.progressBad{
+    background-color: #FF6161;
+}
+.progressFair{
+    background-color: #FFC213;
+}
+.progressGood{
+    background-color: #2EC973;
+}
+.progressNoWorks{
+    background-color: #0BAFFF;
+}

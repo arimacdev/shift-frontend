@@ -82,6 +82,13 @@
 
                         </v-list-item-subtitle>
 </v-list-item-content>
+        <div v-if="(user.tasksCompleted/user.totalTasks)*100 < 25" class="progressColorCode progressBad"> </div>
+        <div v-else-if="(user.tasksCompleted/user.totalTasks)*100 >= 25 && (user.tasksCompleted/user.totalTasks)*100 < 75 " class="progressColorCode progressFair"> </div>
+        <div v-else-if="(user.tasksCompleted/user.totalTasks)*100 >= 75" class="progressColorCode progressGood"> </div>
+        <div v-else-if="user.totalTasks == 0" class="progressColorCode progressNoWorks"> </div>
+        
+           
+        
             
             </v-list-item>
              <v-divider class="mx-4"></v-divider>
