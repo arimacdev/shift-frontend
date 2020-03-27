@@ -126,7 +126,7 @@
 <script>
 import NavigationDrawer from '~/components/navigationDrawer'
 import usersSearchBar from '~/components/tools/usersSearchBar'
-import TaskSideBar from '~/components/workload/taskSideBar'
+import TaskSideBar from '~/components/workload/workloadSideBar'
 import WorkloadContent from '~/components/workload/workloadContent'
 import { mapState, mapGetters } from 'vuex';
 

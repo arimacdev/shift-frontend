@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="workloadContentDiv workloadBody">
+        <div class="workloadContentDiv workloadBody overflow-y-auto">
            <v-expansion-panels
                 v-model="panel"
                 :disabled="disabled"
@@ -15,10 +15,10 @@
                     
                     <!-- ----------- loop content for tasks of projects --------------- -->
         <div class="taskDetailsBar">
-                      <v-list-item  @click.stop="drawer = !drawer"  v-for="(task, index) in project.taskList" :key="index">
+                      <v-list-item class="workloadTaskItems"  @click.stop="drawer = !drawer"  v-for="(task, index) in project.taskList" :key="index">
                         <v-list-item-action>
-                        <!-- <v-icon v-if="task.taskStatus == 'closed'" size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon> -->
-                        <v-icon  size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                        <v-icon v-if="task.taskStatus == 'closed'" size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
+                        <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
                             <v-list-item-title class="workloadTaskName">{{task.taskName}}</v-list-item-title>
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import TaskSideBar from '~/components/workload/taskSideBar'
+import TaskSideBar from '~/components/workload/workloadSideBar'
 import { mapState, mapGetters } from 'vuex';
 
 export default {
