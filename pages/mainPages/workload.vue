@@ -50,7 +50,6 @@
         ></v-autocomplete>
 
         <div class="listView overflow-y-auto">
-
   <div v-for="(user, index) in taskWorkLoadUsers"
         :key="index" >
             <v-list-item @click="selectUser(user)" class="workloadListItem">
@@ -102,7 +101,7 @@
 <script>
 import NavigationDrawer from '~/components/navigationDrawer'
 import usersSearchBar from '~/components/tools/usersSearchBar'
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -170,7 +169,7 @@ async created() {
           })
           this.loading = false
         }, 500)
-      },
+      }
     },
     computed: {
       ...mapState({

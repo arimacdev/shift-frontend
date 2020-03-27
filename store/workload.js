@@ -29,7 +29,7 @@ export const actions = {
 
 export const getters = {
     getWorkLoadUsers: state => {
-        return state.taskLoadUsers
+        return state.taskWorkLoadUsers
       }
 }
 
