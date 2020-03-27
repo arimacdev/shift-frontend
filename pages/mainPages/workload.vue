@@ -97,6 +97,16 @@
         </div>
 
   </div>
+
+<div class="workLoadTitleDiv">
+    <v-list-item-title v-if="this.userData.firstName == null">
+        Select a person
+    </v-list-item-title>
+    <v-list-item-title v-else>
+        {{ this.userData.firstName }} {{ this.userData.lastName }}
+    </v-list-item-title>
+</div>
+  
   </div>
 
 
@@ -119,6 +129,7 @@ export default {
         userId: this.$store.state.user.userId,
         component:'add-user',
         workLoad: {},
+        userData: {},
          skill: '',
          search: null,
         select: null,
@@ -138,29 +149,29 @@ export default {
       },
  },
 
-async created() {
+// async created() {
 
-   let workloadResponse;
-      workloadResponse = await this.$axios.$get(`/projects/tasks/users/workload`,
-      {
-        headers: {
-          user: this.userId,
-       }
-      }
-      ) 
+//    let workloadResponse;
+//       workloadResponse = await this.$axios.$get(`/projects/tasks/users/workload`,
+//       {
+//         headers: {
+//           user: this.userId,
+//        }
+//       }
+//       ) 
      
-      this.workLoad = workloadResponse.data;
-       console.log("workload data",workloadResponse.data)
+//       this.workLoad = workloadResponse.data;
+//        console.log("workload data",workloadResponse.data)
       
    
-},
+// },
     methods: {
         test(){
             console.log("------ details ---> " + this.select)
         },
           selectUser(userData){
-     this.userData = userData;
-    },
+            this.userData = userData;
+            },
       querySelections (v) {
         let projectSearchList = this.workLoad;
         for (let index = 0; index < projectSearchList.length; ++index) {
@@ -182,6 +193,8 @@ async created() {
       ...mapState({
           taskWorkLoadUsers: state => state.workload.taskWorkLoadUsers,
       })
+      
     },
+    
 }
 </script>

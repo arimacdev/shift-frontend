@@ -1021,3 +1021,11 @@ color: #040428;
 .progressNoWorks{
     background-color: #0BAFFF;
 }
+
+.workLoadTitleDiv{
+    font-weight: bold;
+    font-size: 19px;
+    color: #7A8B9F;
+    padding-left: 100px !important;
+    margin-left: 100px !important;
+}
