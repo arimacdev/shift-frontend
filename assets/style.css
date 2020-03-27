@@ -1067,13 +1067,16 @@ color: #040428;
 .titleBar{
     margin-top: 60px !important;
 }
+.checkBoxSideBar{
+    margin-top: 7px !important;
+}
 .selectedTaskTitle{
     color: #FFFFFF;
     font-weight: ;
     font-size: 16px;
     width: 360px !important;
     /* background-color: red; */
-    max-height: 100px;
+    height: 40px !important;
 
 }
 .selectedTaskStatus{
@@ -1086,4 +1089,8 @@ color: #040428;
     font-size: 12px;
     float: right;
 
+}
+
+.subTaskItem{
+    margin-left: 60px;
 }
