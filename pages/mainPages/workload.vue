@@ -50,7 +50,7 @@
 
         <div class="listView overflow-y-auto">
 
-  <div v-for="(user, index) in users"
+  <div v-for="(user, index) in taskWorkLoadUsers"
         :key="index" >
             <v-list-item @click="selectUser(user)" >
                <v-list-item-avatar> 
@@ -85,6 +85,7 @@
 <script>
 import NavigationDrawer from '~/components/navigationDrawer'
 import usersSearchBar from '~/components/tools/usersSearchBar'
+import { mapState } from 'vuex';
 
 export default {
   components: {
@@ -98,38 +99,18 @@ export default {
     },
 
     async asyncData({ $axios, store }) {
-    let userId = store.state.user.userId;
-    const { data: projects } = await $axios.$get(`/projects?userId=${userId}`)
-    const { data: users } = await $axios.$get('/users')
-
-    console.log(projects)
-    return { 
-      projects: projects,
-      users:users,
-       name: users[0].userId
-     }
+      store.dispatch('workload/fetchAllTaskLoadUsers')
   },
-
-async created() {
-
-   let workloadResponse;
-      workloadResponse = await this.$axios.$get(`/projects/tasks/users/workload`,
-      {
-        headers: {
-          user: this.userId,
-       }
-      }
-      ) 
-      console.log("workload data",workloadResponse)
-      this.workLoad = workloadResponse.data.data;
-      
-   
-},
     methods: {
        selectUser(userData){
      this.name=userData;
      this.userData = userData;
     }
+    },
+    computed: {
+      ...mapState({
+          taskWorkLoadUsers: state => state.workload.taskWorkLoadUsers,
+      })
     },
 }
 </script>
