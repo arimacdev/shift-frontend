@@ -40,7 +40,7 @@
       temporary
       right=""
       height="85vh"
-      width="400px"
+      width="600px"
       class=""
       color="#FFFFFF"
     >

@@ -26,6 +26,16 @@
        <div v-if="$v.projectName.$error && !$v.projectName.required" class="errorText"> Project name is required</div>
        <div v-if="$v.projectName.$error && !$v.projectName.maxLength" class="errorText"> Cannot use more than 50 characters</div>
            
+            <!-- <v-text-field
+            label="Project name"
+            outlined
+            class="createFormElements"
+            v-model.trim="$v.projectName.$model"
+          ></v-text-field>
+ <div v-if="$v.projectName.$error && !$v.projectName.required" class="errorText"> Project name is required</div>
+       <div v-if="$v.projectName.$error && !$v.projectName.maxLength" class="errorText"> Cannot use more than 50 characters</div>
+            -->
+
             </v-col>
              <v-col
                 sm="6"
@@ -34,6 +44,15 @@
             >
             <input v-model.trim="$v.client.$model" placeholder="Client" class="formElements">
             <div v-if="$v.client.$error && !$v.client.required" class="errorText"> Client is required</div>
+            
+            <!-- <v-text-field
+            label="Client"
+            outlined
+            class="createFormElements"
+            v-model.trim="$v.client.$model"
+          ></v-text-field>
+           <div v-if="$v.client.$error && !$v.client.required" class="errorText"> Client is required</div> 
+             -->
             </v-col>
         </v-row>
 
@@ -85,6 +104,14 @@
                 
             >
         <input v-model="projectTimeLine" disabled placeholder="Estimated project timeline" class="formElements">
+            <!-- <v-text-field
+            label="Estimated project timeline"
+            outlined
+            class="createFormElements"
+            disabled=""
+            v-model.trim="projectTimeLine"
+          ></v-text-field> -->
+          
             </v-col>
              <v-col
                 sm="6"
