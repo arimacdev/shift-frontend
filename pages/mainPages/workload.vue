@@ -151,8 +151,8 @@ export default {
       }
     },
 
-      async asyncData({ $axios, store }) {
-      store.dispatch('workload/fetchAllTaskLoadUsers')
+  created(){
+     this.$store.dispatch('workload/fetchAllTaskLoadUsers')
   },
 
  watch: {
