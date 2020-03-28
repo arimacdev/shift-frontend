@@ -25,6 +25,7 @@
           </v-list-item-content>
           </template>
           <!-- ----------- loop following list item -------- -->
+          <div>
            <v-list-item class="subTaskItem" v-for="(subTask, index) in subTasks" :key="index">
              <div>
                          <v-checkbox
@@ -43,6 +44,7 @@
                         </v-list-item-title>
                     </v-list-item-content>
         </v-list-item>
+          </div>
         </v-list-group>
          <v-divider></v-divider>
 
