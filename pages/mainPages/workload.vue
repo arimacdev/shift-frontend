@@ -169,12 +169,12 @@ export default {
       this.$store.dispatch('workload/fetchAllWorkloadTasks', userData.userId)
       },
       querySelections (v) {
-        let projectSearchList = this.workLoad;
+        let projectSearchList = this.taskWorkLoadUsers;
         for (let index = 0; index < projectSearchList.length; ++index) {
             let user = projectSearchList[index];
             this.states.push(user.firstName + " " + user.lastName);
         }
-        console.log("usersList", this.users, "nameList", this.states)
+        console.log("usersList for search bar", this.taskWorkLoadUsers, "nameList", this.states)
         this.loading = true
         // Simulated ajax query
         setTimeout(() => {
