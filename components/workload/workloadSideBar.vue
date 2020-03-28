@@ -25,19 +25,21 @@
           </v-list-item-content>
           </template>
           <!-- ----------- loop following list item -------- -->
-           <v-list-item class="subTaskItem">
-                    <div>
+           <v-list-item class="subTaskItem" v-for="(subTask, index) in subTasks" :key="index">
+             <div>
                          <v-checkbox
-                          v-model="subtaskStatus"
+                          v-model="subTask.subtaskStatus"
                           hide-details
-                          class="shrink mr-2 mt-0"            
+                          class="shrink mr-2 mt-0"   
+                          disabled="true"         
                           >
                           </v-checkbox>
 
                      </div>
                     <v-list-item-content>
                       <v-list-item-title class="subTaskListName">
-                        <span>this is a sub task of main task of project of company of country of world </span>
+                         <input class="subTaskListNameContent" v-model="subTask.subtaskName" type="text" disabled/>
+                            <!-- <span>{{subtask.subtaskName}}</span> -->
                         </v-list-item-title>
                     </v-list-item-content>
         </v-list-item>
@@ -90,6 +92,11 @@ methods: {
   fetchSubtasks() {
     console.log("fetch sub task");
   }
+},
+computed: {
+...mapState({
+  subTasks: state => state.subtask.subtasks
+})
 },
     
   }

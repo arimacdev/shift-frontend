@@ -77,9 +77,10 @@ export default {
       selectTask(task, projectId) {
         this.task = task;
         this.projectId = projectId
-        this.$store.dispatch('subtask/fetchSubTasks',
-         {projectId:projectId, 
-         taskId:task.taskId});
+        this.$store.dispatch('subtask/fetchSubTasks',{
+          projectId:projectId, 
+          taskId:task.taskId
+         });
       }
     },
    computed: {
