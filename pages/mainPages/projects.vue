@@ -119,7 +119,7 @@
 </div>  
       </div>
             <keep-alive>
-            <component v-bind:is="component" :name=name :projectId=this.project.projectId :project=project :users=users :Alltasks=Alltasks :MyTasks=MyTasks :taskCompletion=taskCompletion :people=people :taskLog="taskLog"></component>
+            <component v-if="this.project.projectName != null" v-bind:is="component" :name=name :projectId=this.project.projectId :project=project :users=users :Alltasks=Alltasks :MyTasks=MyTasks :taskCompletion=taskCompletion :people=people :taskLog="taskLog"></component>
             </keep-alive>
     </div> 
 

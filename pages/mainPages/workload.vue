@@ -113,7 +113,7 @@
 
 <!-- -------------- component of the content ----------- -->
       
-        <workload-content />
+        <workload-content v-if="this.userData.firstName != null" />
 
 
 
