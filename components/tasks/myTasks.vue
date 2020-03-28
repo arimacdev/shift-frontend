@@ -2,7 +2,9 @@
      <div class="taskContent">
         <v-select
         v-model="taskSelect"
-          :items="items"
+           :items="items"
+          item-text="name"
+          item-value="id"
           label="All"
           solo
           @change="taskFilter"
