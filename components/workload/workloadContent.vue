@@ -24,7 +24,7 @@
                             <v-list-item-title class="workloadTaskName">{{task.taskName}}</v-list-item-title>
                         </v-list-item-content>
                         <v-list-item-content class="updatedDate">
-                            <v-list-item-title class="body-2">{{task.dueDate}}</v-list-item-title>
+                            <v-list-item-title class="body-2">{{getDueDate(task.dueDate)}}</v-list-item-title>
                         </v-list-item-content>
                         <v-list-item-avatar>
                     <!-- <v-img v-if="task.taskAssigneeProfileImage != null" :src="task.taskAssigneeProfileImage"></v-img> -->
@@ -81,13 +81,18 @@ export default {
           projectId:projectId, 
           taskId:task.taskId
          });
+      },
+      getDueDate(date){
+        let stringDate  = date + " ";
+        stringDate = stringDate.toString();
+        stringDate = stringDate.slice(0,16);           
+        return stringDate;
       }
     },
    computed: {
       ...mapState({
           workloadTasks: state => state.workload.workloadTasks,
       })
-      
-    },
+   }
 }
 </script>

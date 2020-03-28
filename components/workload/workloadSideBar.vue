@@ -55,7 +55,7 @@
              <v-list-item-title class="tabListItemsText itemGroupTitles">Due Date</v-list-item-title>
            </div>
             <v-list-item-content>
-             <v-list-item-title class="tabListItemsText itemGroupDate">{{this.task.dueDate}}</v-list-item-title>
+             <v-list-item-title class="tabListItemsText itemGroupDate" >{{taskDue}}</v-list-item-title>
            </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -78,6 +78,36 @@
       </v-list-item-group>
 <v-divider></v-divider>
 
+<v-divider></v-divider>
+
+  <v-list-group >
+        <template v-slot:activator>
+          <v-list-item-icon>
+            <v-icon size="30" color="#FF6767">mdi-paperclip</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title class="tabListItemsText">Files</v-list-item-title>
+          </v-list-item-content>
+        </template>
+        <div class="attchmentContainer fileAttachSideBar">
+        </div>
+        <div class="attchmentContainer">
+        <v-list-item class="subTaskListItems"  v-for="(taskFile,index) in subTaskFiles" :key="index">          
+          <div class="listAttachment">
+            <a style="text-decoration: none;" :href="taskFile.taskFileUrl">
+            <v-icon size="30" color="#0BAFFF">mdi-paperclip</v-icon>
+           <div class="attachmentName"> 
+             <span>{{ taskFile.taskFileName }}</span> 
+             </div>
+            </a>
+          </div>
+        </v-list-item>
+        </div>
+      </v-list-group>
+
+
+<v-divider></v-divider>
+
       </div>
   </div>
   </div>
@@ -95,9 +125,21 @@ methods: {
 },
 computed: {
 ...mapState({
-  subTasks: state => state.subtask.subtasks
-})
-},
+  subTasks: state => state.subtask.subtasks,
+  subTaskFiles: state => state.subtask.subTaskFiles
+}),
+      taskDue: {
+        get(){        
+          let stringDate  = this.task.dueDate + " ";
+            // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
+              stringDate = stringDate.toString();
+              stringDate = stringDate.slice(0,16);           
+              return stringDate;
+              // return newDate;
+            }
+       
+}
+}
     
   }
 </script>
