@@ -1083,14 +1083,14 @@ color: #040428;
     width: 100% !important;
 }
 .selectedTaskStatus{
-    /* width: 80px; */
-    /* height: 20px; */
+    width: 100px;
     color: #FFFFFF;
     background-color: #0BAFFF;
-    padding: 5px;
+    padding: 10px;
     border-radius: 5px;
     font-size: 12px;
     float: right;
+    text-align: center;
 
 }
 
