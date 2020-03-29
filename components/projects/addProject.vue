@@ -182,13 +182,13 @@ export default {
     
     methods: {
     getStartDate(){       
-        const startDate = this.startDate;
+        const startDate = new Date(this.startDate);
         const isoDate = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000)).toISOString();
         console.log("iso Start date",isoDate)
         return isoDate;
     },
     getEndDate(){       
-    const endDate = this.endDate;
+    const endDate = new Date(this.endDate);
     const isoDate = new Date(endDate.getTime() - (endDate.getTimezoneOffset() * 60000)).toISOString();
     console.log("iso end date",isoDate)
     return isoDate;
@@ -202,7 +202,7 @@ export default {
           projectName: this.projectName,
           clientId: this.client,
           projectStartDate: this.getStartDate(),
-          projectEndDate: new Date(),
+          projectEndDate: this.getEndDate(),
         })
 
         this.projectName = '',
