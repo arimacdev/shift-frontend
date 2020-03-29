@@ -181,6 +181,18 @@ export default {
     },
     
     methods: {
+    getStartDate(){       
+        const startDate = this.startDate;
+        const isoDate = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000)).toISOString();
+        console.log("iso Start date",isoDate)
+        return isoDate;
+    },
+    getEndDate(){       
+    const endDate = this.endDate;
+    const isoDate = new Date(endDate.getTime() - (endDate.getTimezoneOffset() * 60000)).toISOString();
+    console.log("iso end date",isoDate)
+    return isoDate;
+    },
      async postData(){
 
       let response;
@@ -189,8 +201,8 @@ export default {
           projectOwner: this.userId,
           projectName: this.projectName,
           clientId: this.client,
-          projectStartDate: new Date(this.startDate),
-          projectEndDate: new Date(this.endDate),
+          projectStartDate: this.getStartDate(),
+          projectEndDate: new Date(),
         })
 
         this.projectName = '',
@@ -199,7 +211,7 @@ export default {
 
         console.log("project added successfully", response);
         this.component = 'success-popup'
-        window.setTimeout(location.reload(), 8000)
+        // window.setTimeout(location.reload(), 8000)
        }  catch(e){
           console.log("Error creating project", e);
           this.component = 'error-popup'
