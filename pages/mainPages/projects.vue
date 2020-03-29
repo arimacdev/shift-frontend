@@ -119,7 +119,8 @@
 </div>  
       </div>
             <keep-alive>
-            <component v-if="this.project.projectName != null" v-bind:is="component" :name=name :projectId=this.project.projectId :project=project :users=users :Alltasks=Alltasks :MyTasks=MyTasks :taskCompletion=taskCompletion :people=people :taskLog="taskLog"></component>
+            <component v-if="this.project.projectName != null"  v-bind:is="component" :name=name :projectId=this.project.projectId :project=project :users=users :Alltasks=Alltasks :MyTasks=MyTasks :taskCompletion=taskCompletion :people=people :taskLog="taskLog"></component>
+             <component v-else-if="this.component == 'add-project'" v-bind:is="component" :name=name :projectId=this.project.projectId :project=project :users=users :Alltasks=Alltasks :MyTasks=MyTasks :taskCompletion=taskCompletion :people=people :taskLog="taskLog"></component>
             </keep-alive>
     </div> 
 
@@ -179,6 +180,7 @@ export default {
     methods: {
     selectProject(project){
      this.project = project;
+     console.log("selected project ---------->", project);
 
     this.$store.dispatch('task/fetchTasksAllTasks', this.project.projectId)
     this.$store.dispatch('task/fetchTasksMyTasks', this.project.projectId)
