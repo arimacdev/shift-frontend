@@ -488,10 +488,16 @@ export default {
         },
          projectEndDate: {
             get(){
-                return this.project.projectEndDate
+                 let stringDate  = this.project.projectEndDate + "";
+              stringDate = stringDate.toString();
+              stringDate = stringDate.slice(0,16);           
+              return stringDate;
             },
           set(value) {
-            this.updateProject.projectEndDate =  value;
+            const startDate = new Date(value);
+            const isoDate = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000)).toISOString();
+            console.log("iso edit end date",isoDate)
+            this.updateProject.projectEndDate =  isoDate;
           }            
         },
          projectStatus: {
