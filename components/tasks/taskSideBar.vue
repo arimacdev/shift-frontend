@@ -631,15 +631,21 @@ import ErrorPopup from '~/components/popups/errorPopup'
         async updateTaskDates(type){
           let dueDate;
           let remindDate;
-          if(type === "dueDate"){
-            dueDate = this.updatedTask.taskDueDateAt;
+          if(type === "dueDate"){       
+            console.log("inside due date")   
+            dueDate = new Date(this.updatedTask.taskDueDateAt);
+            const isoDate = new Date(dueDate.getTime() - (dueDate.getTimezoneOffset() * 60000)).toISOString();
+            console.log("iso edit due date",isoDate)   
+            dueDate = isoDate;
             remindDate = this.task.taskReminderAt;
           } else {
+            console.log("inside remind on date");
+            remindDate = new Date(this.updatedTask.taskRemindOnDate);
+            const isoDate = new Date(remindDate.getTime() - (remindDate.getTimezoneOffset() * 60000)).toISOString();
+            console.log("iso edit remind date",isoDate)   
             dueDate = this.task.taskDueDateAt;
-            remindDate = this.updatedTask.taskRemindOnDate
+            remindDate = isoDate;
           }
-        // console.log("onchange update task dates -> remind->", this.updatedTask.taskRemindOnDate)
-        // console.log("onchange update task dates -> due->", this.updatedTask.taskDueDate)
         console.log("dueDate",dueDate);
         console.log("remindDate",remindDate);
          let response;
