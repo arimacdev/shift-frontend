@@ -480,7 +480,10 @@ export default {
               return stringDate;
             },
           set(value) {
-            this.updateProject.projectStartDate =  value;
+            const startDate = new Date(value);
+            const isoDate = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000)).toISOString();
+            console.log("iso edit Start date",isoDate)
+            this.updateProject.projectStartDate =  isoDate;
           }            
         },
          projectEndDate: {
