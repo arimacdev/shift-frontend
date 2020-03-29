@@ -747,7 +747,7 @@ width: 400px !important;
 }
 
 .taskListViewContent{
-    height: 80vh;
+    height: 60vh;
 }
 
 /* --------------- popup ---------------- */
@@ -1078,6 +1078,9 @@ color: #040428;
     /* background-color: red; */
     height: 40px !important;
 
+}
+.selectedsubTaskTitle{
+    width: 100% !important;
 }
 .selectedTaskStatus{
     /* width: 80px; */

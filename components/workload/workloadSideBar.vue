@@ -39,7 +39,10 @@
                      </div>
                     <v-list-item-content>
                       <v-list-item-title class="subTaskListName">
-                         <input class="subTaskListNameContent" v-model="subTask.subtaskName" type="text" disabled/>
+                         <!-- <input class="subTaskListNameContent" v-model="subTask.subtaskName" type="text" disabled/> -->
+                         <textarea type="text" disabled class="selectedTaskTitle selectedsubTaskTitle"  :placeholder="subTask.subtaskName" ></textarea>
+
+                  
                             <!-- <span>{{subtask.subtaskName}}</span> -->
                         </v-list-item-title>
                     </v-list-item-content>

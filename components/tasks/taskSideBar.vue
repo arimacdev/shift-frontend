@@ -14,7 +14,9 @@
           </v-list-item-icon>
            <div class="textAreaSideBar">
              <input type="text" class="taskTitle" v-model="updatedName" v-if="editTask == true"  :disabled="editTask" @keyup.enter="saveEditTaskName"/>
-             <input type="text" class="taskTitleEdit" v-model="updatedName" v-if="editTask == false"  :disabled="editTask" @keyup.enter="saveEditTaskName"/>
+             <input maxlength="49" type="text" class="taskTitleEdit" v-model="updatedName" v-if="editTask == false"  :disabled="editTask" @keyup.enter="saveEditTaskName"/>
+              <!-- <textarea class="taskTitle" v-model="updatedName" v-if="editTask == true"  :disabled="editTask" @keyup.enter="saveEditTaskName" ></textarea> -->
+              
              
             <!-- <v-list-item-title class="taskTitle">{{ this.task.taskName }}</v-list-item-title> -->
           </div>
@@ -183,7 +185,10 @@
                           </v-checkbox>
                     <v-list-item-content>
                       <v-list-item-title class="subTaskListName">
-                        <input class="subTaskListNameContent" v-model="subtask.subtaskName" type="text" @keyup.enter="subTaskUpdate(subtask)"/>
+                        <input maxlength="51" class="subTaskListNameContent" v-model="subtask.subtaskName" type="text" @keyup.enter="subTaskUpdate(subtask)"/>
+                        <!-- <textarea class="subTaskListNameContent" v-model="subtask.subtaskName" type="text" @keyup.enter="subTaskUpdate(subtask)"> </textarea> -->
+                        <!-- <textarea disabled class="selectedTaskTitle selectedsubTaskTitle"  v-model="subtask.subtaskName" ></textarea> -->
+
                         <!-- {{ subtask.subtaskName}} -->
                         </v-list-item-title>
                     </v-list-item-content>
@@ -245,7 +250,7 @@
                        </v-checkbox>
                        <div>
                          <v-list-item-title class="subTaskListName">
-                        <input class="subTaskListNameContent addSubTaskTextbox"  placeholder="Add new" v-model="newSubTask.subtaskName" type="text"  @keyup.enter="addSubTask"/>   
+                        <input maxlength="51" class="subTaskListNameContent addSubTaskTextbox"  placeholder="Add new" v-model="newSubTask.subtaskName" type="text"  @keyup.enter="addSubTask"/>   
                            </v-list-item-title>
                        </div>
                 <!-- </div> -->

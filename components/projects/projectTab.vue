@@ -50,7 +50,7 @@
                 md="12"
                 
             >
-        <input v-model="projectName" placeholder="Project name" class="formElements">
+        <input maxlength="51" v-model="projectName" placeholder="Project name" class="formElements">
             </v-col>
         </v-row>
 
