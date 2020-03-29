@@ -1079,6 +1079,9 @@ color: #040428;
     height: 40px !important;
 
 }
+.selectedsubTaskTitle{
+    width: 100% !important;
+}
 .selectedTaskStatus{
     /* width: 80px; */
     /* height: 20px; */

@@ -184,6 +184,9 @@
                     <v-list-item-content>
                       <v-list-item-title class="subTaskListName">
                         <input class="subTaskListNameContent" v-model="subtask.subtaskName" type="text" @keyup.enter="subTaskUpdate(subtask)"/>
+                        <!-- <textarea class="subTaskListNameContent" v-model="subtask.subtaskName" type="text" @keyup.enter="subTaskUpdate(subtask)"> </textarea> -->
+                        <!-- <textarea disabled class="selectedTaskTitle selectedsubTaskTitle"  v-model="subtask.subtaskName" ></textarea> -->
+
                         <!-- {{ subtask.subtaskName}} -->
                         </v-list-item-title>
                     </v-list-item-content>
