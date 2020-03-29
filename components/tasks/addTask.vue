@@ -12,7 +12,7 @@
                 
             >
         <!-- <input v-model="taskName" placeholder="Task name" class="formElements"> -->
-          <input v-model.trim="$v.taskName.$model" placeholder="Task name" class="formElements">
+          <input maxlength="50" v-model.trim="$v.taskName.$model" placeholder="Task name" class="formElements">
        <div v-if="$v.taskName.$error && !$v.taskName.required" class="errorText"> Task name is required</div>
        <div v-if="$v.taskName.$error && !$v.taskName.maxLength" class="errorText"> Cannot use more than 50 characters</div>
       
@@ -173,7 +173,7 @@ import axios from 'axios'
     validations: {
             taskName: {
             required,
-            maxLength: maxLength(50)
+            maxLength: maxLength(49)
             },
         },
     methods: {

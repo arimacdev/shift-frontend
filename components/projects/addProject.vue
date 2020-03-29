@@ -22,7 +22,7 @@
                 md="6"
                 
             >
-        <input v-model.trim="$v.projectName.$model" placeholder="Project name" class="formElements">
+        <input maxlength="50" v-model.trim="$v.projectName.$model" placeholder="Project name" class="formElements">
        <div v-if="$v.projectName.$error && !$v.projectName.required" class="errorText"> Project name is required</div>
        <div v-if="$v.projectName.$error && !$v.projectName.maxLength" class="errorText"> Cannot use more than 50 characters</div>
            
@@ -42,7 +42,7 @@
                 md="6"
                 
             >
-            <input v-model.trim="$v.client.$model" placeholder="Client" class="formElements">
+            <input maxlength="49" v-model.trim="$v.client.$model" placeholder="Client" class="formElements">
             <div v-if="$v.client.$error && !$v.client.required" class="errorText"> Client is required</div>
             
             <!-- <v-text-field
@@ -71,7 +71,7 @@
             <div v-if="$v.startDate.$error && !$v.startDate.required" class="errorText"> Start date is required</div> -->
            <div class="pickerContainer pickerDiv">
             <VueCtkDateTimePicker color="#3f51b5" class="dateTimePickerInternal" v-model="$v.startDate.$model" label="Project start date and time"/>
-            <div v-if="$v.startDate.$error && !$v.startDate.required" class="errorText errorDiv"> End date is required</div>
+            <!-- <div v-if="$v.startDate.$error && !$v.startDate.required" class="errorText errorDiv"> End date is required</div> -->
           
            </div>
            
@@ -86,7 +86,7 @@
            <div class="pickerContainer pickerDiv">
             <VueCtkDateTimePicker color="#3f51b5" class="dateTimePickerInternal" v-model="$v.endDate.$model" label="Project end date and time"/>
             
-            <div v-if="$v.endDate.$error && !$v.endDate.required" class="errorText errorDiv"> End date is required</div>
+            <!-- <div v-if="$v.endDate.$error && !$v.endDate.required" class="errorText errorDiv"> End date is required</div> -->
           
            </div>
           
@@ -211,7 +211,7 @@ export default {
 
         console.log("project added successfully", response);
         this.component = 'success-popup'
-        // window.setTimeout(location.reload(), 8000)
+        window.setTimeout(location.reload(), 8000)
        }  catch(e){
           console.log("Error creating project", e);
           this.component = 'error-popup'
@@ -246,7 +246,7 @@ export default {
         validations: {
             projectName: {
             required,
-            maxLength: maxLength(50)
+            maxLength: maxLength(49)
             },
             client: {
             required,
