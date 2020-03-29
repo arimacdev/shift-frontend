@@ -177,6 +177,18 @@ import axios from 'axios'
             },
         },
     methods: {
+      getDueDate(){       
+        const startDate = new Date(this.taskDueDate);
+        const isoDate = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000)).toISOString();
+        console.log("iso due date",isoDate)
+        return isoDate;
+    },
+    getRemindOnDate(){       
+    const endDate = new Date(this.taskRemindOnDate);
+    const isoDate = new Date(endDate.getTime() - (endDate.getTimezoneOffset() * 60000)).toISOString();
+    console.log("iso remond on date",isoDate)
+    return isoDate;
+    },
       submit () {
        this.$v.$touch()
       },
@@ -203,8 +215,8 @@ import axios from 'axios'
           projectId: this.projectId,
           taskInitiator: this.userId,
           taskAssignee: this.taskAssignee,
-          taskDueDate: new Date(this.taskDueDate),
-          taskRemindOnDate: new Date(this.taskRemindOnDate),
+          taskDueDate: this.getDueDate(),
+          taskRemindOnDate: this.getRemindOnDate(),
           taskStatus: this.taskStatus,
           taskNotes: this.taskNotes
         })
