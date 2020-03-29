@@ -237,7 +237,7 @@ export default {
             client: '',
             // startDate: new Date().toISOString().split('.')[0],
             startDate: new Date(),
-             endDate: new Date(),
+            endDate: new Date(),
             // endDate: new Date(new Date().getTime() + (24 * 60 * 60 * 1000)).toISOString().split('T')[0],
             projectOwner: '',
             component: ''
@@ -259,6 +259,15 @@ export default {
             },
         },
         computed: {
+            setDates: {
+                get(){
+                    let date = new Date(this.startDate);
+                    return date;
+                },
+                set(value){
+                    this.startDate = new Date(this.startDate)
+                }
+            },
             projectTimeLine : {
                get(){
             if(this.startDate === '' || this.endDate === ''){
