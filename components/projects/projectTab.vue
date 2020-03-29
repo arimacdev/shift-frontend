@@ -105,6 +105,7 @@
         
           <v-list-item-content>
            <div class="pickerContainer pickerDiv sideBarPickers datePickerNew">
+             <!-- <input type="text" v-model="projectStartDate"> -->
            
            <datetime
               type="datetime"
@@ -471,9 +472,12 @@ export default {
             this.updateProject.clientId =  value;
           }            
         },
-         projectStartDate: {
+        projectStartDate: {
             get(){
-                return this.project.projectStartDate
+              let stringDate  = this.project.projectStartDate + "";
+              stringDate = stringDate.toString();
+              stringDate = stringDate.slice(0,16);           
+              return stringDate;
             },
           set(value) {
             this.updateProject.projectStartDate =  value;
@@ -515,6 +519,7 @@ export default {
           projectStatus: this.updateProject.projectStatus
         })
         // location.reload();
+        console.log("project edit response ----------> ", response)
         this.component = 'success-popup'
        } catch(e){
 
