@@ -14,7 +14,7 @@
             People
           </v-tab>
           <v-tab @click="onSelectProject">
-            Projects
+            Project
           </v-tab>
           <v-tab>
             Files
