@@ -129,6 +129,7 @@ import { mapState } from 'vuex';
        listenToChange(){
          console.log("listened to changes ------->");
           this.$store.dispatch('task/fetchTasksAllTasks', this.projectId)
+          this.$store.dispatch('task/fetchTasksMyTasks', this.projectId)
        },
        taskFilter(){
          console.log("-----------> changed" + this.taskSelect)
