@@ -562,7 +562,8 @@ import ErrorPopup from '~/components/popups/errorPopup'
           }
         )
         this.newSubTask.subtaskName = '';
-        this.showNewSubTask = false;
+        this.showNewSubTask =true
+        // this.showNewSubTask = false;
         this.subTasks.push(response.data)
         console.log(response);
 
