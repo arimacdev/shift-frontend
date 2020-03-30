@@ -24,13 +24,13 @@
                             <v-list-item-title class="workloadTaskName">{{task.taskName}}</v-list-item-title>
                         </v-list-item-content>
                         <v-list-item-content class="updatedDate">
-                            <v-list-item-title class="body-2">{{getDueDate(task.dueDate)}}</v-list-item-title>
+                            <v-list-item-title class="body-2"> {{getDueDate(task.dueDate)}}</v-list-item-title>
                         </v-list-item-content>
-                        <v-list-item-avatar>
-                    <!-- <v-img v-if="task.taskAssigneeProfileImage != null" :src="task.taskAssigneeProfileImage"></v-img> -->
+                        <!-- <v-list-item-avatar>
+                    <v-img v-if="task.taskAssigneeProfileImage != null" :src="task.taskAssigneeProfileImage"></v-img>
                         <v-img src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
 
-                        </v-list-item-avatar>
+                        </v-list-item-avatar> -->
                     </v-list-item>
         </div>
 
@@ -85,7 +85,7 @@ export default {
       getDueDate(date){
         let stringDate  = date + " ";
         stringDate = stringDate.toString();
-        stringDate = stringDate.slice(0,16);           
+        stringDate = stringDate.slice(0,10) + " " + stringDate.slice(11,16);           
         return stringDate;
       }
     },

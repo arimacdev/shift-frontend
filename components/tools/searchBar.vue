@@ -2,7 +2,9 @@
     <v-autocomplete
           v-model="select"
           :loading="loading"
-          :items="items"
+           :items="states"
+           item-text="name"
+          item-value="id"
           :search-input.sync="search"
           cache-items
           class="mx-4 searchBar"
@@ -42,7 +44,7 @@ export default {
         let projectSearchList = this.projects;
         for (let index = 0; index < projectSearchList.length; ++index) {
             let project = projectSearchList[index];
-            this.states.push(project.projectName);
+            this.states.push({name: project.projectName, id: project.projectId});
         }
         console.log("projectsList", this.projects, "nameList", this.states)
         this.loading = true
