@@ -42,13 +42,15 @@
           cache-items
           class="mx-4 searchBar"
           flat
+          dark="true"
           hide-no-data
           hide-details
+          hide-selected="true"
           append-icon
           prepend-inner-icon="mdi-magnify"
-          label="Search Here"
+          label="Type a Name to search"
           solo-inverted
-          @change="test()"
+          @change="onSelectUser()"
         ></v-autocomplete>
 
         <div class="listView overflow-y-auto">
@@ -115,7 +117,9 @@
 
 <!-- -------------- component of the content ----------- -->
       
-        <workload-content v-if="this.userData.firstName != null" />
+        <!-- <workload-content v-if="this.userData.firstName != null" /> -->
+        <workload-content />
+
 
 
 
@@ -128,7 +132,6 @@
 <script>
 import NavigationDrawer from '~/components/navigationDrawer'
 import usersSearchBar from '~/components/tools/usersSearchBar'
-import TaskSideBar from '~/components/workload/workloadSideBar'
 import WorkloadContent from '~/components/workload/workloadContent'
 import { mapState, mapGetters } from 'vuex';
 
@@ -145,7 +148,7 @@ export default {
         userData: {},
          skill: '',
          search: null,
-        select: null,
+        select: {},
         states: [
           
         ],
@@ -163,8 +166,11 @@ export default {
       },
  },
     methods: {
-    test(){
-        console.log("------ details ---> " + this.select)
+    onSelectUser(){
+        console.log("------ details ---> " + this.select.userId)
+        this.userData.firstName = this.select.firstName;
+        this.userData.lastName = this.select.lastName;
+        this.$store.dispatch('workload/fetchAllWorkloadTasks', this.select.userId)
     },
     async selectUser(userData){
       this.userData = userData;      
@@ -174,7 +180,7 @@ export default {
         let projectSearchList = this.taskWorkLoadUsers;
         for (let index = 0; index < projectSearchList.length; ++index) {
             let user = projectSearchList[index];
-            this.states.push({name: user.firstName + " " + user.lastName, id: user.userId});
+            this.states.push({name: user.firstName + " " + user.lastName, id: user});
         }
         console.log("usersList for search bar", this.taskWorkLoadUsers, "nameList", this.states)
         this.loading = true
@@ -184,7 +190,8 @@ export default {
             return (e || '').toLowerCase().indexOf((v || '').toLowerCase()) > -1
           })
           this.loading = false
-        }, 500)
+        })
+        this.loading = false
       }
     },
     computed: {

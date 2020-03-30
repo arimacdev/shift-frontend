@@ -76,7 +76,7 @@
       temporary
       right=""
       height="85vh"
-      width="600px"
+      width="800px"
       class=""
       color="#FFFFFF"
     >

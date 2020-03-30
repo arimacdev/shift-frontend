@@ -45,6 +45,18 @@
     text-align: right;
     color: #FF6161;
 }
+.workLoadTaskDone{
+  text-align: right;
+  color: rgb(10, 126, 0);
+}
+.workLoadTaskOverDue{
+  text-align: right;
+  color: rgb(163, 11, 0);
+}
+.workLoadTaskHealthy{
+  text-align: right;
+  color: rgb(243, 207, 2);
+}
 .round {
   position: relative;
   margin-bottom: 8px;
