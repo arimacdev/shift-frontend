@@ -9,7 +9,7 @@
              <v-icon size="35" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
              </v-list-item-icon>
              <div class="textAreaSideBar">
-               <textarea type="text" disabled class="selectedTaskTitle"  :placeholder="this.task.taskName" ></textarea>
+               <textarea type="text" disabled class="selectedTaskTitle"  :placeholder="this.task.taskName" v-model="this.task.taskName" ></textarea>
                 <span class="selectedTaskStatus">{{this.task.taskStatus}}</span>
              </div>
          </v-list-item>
@@ -27,7 +27,7 @@
           <!-- ----------- loop following list item -------- -->
           <div>
            <v-list-item class="subTaskItem" v-for="(subTask, index) in subTasks" :key="index">
-             <div>
+             <div class="workloadCheckBox">
                          <v-checkbox
                           v-model="subTask.subtaskStatus"
                           hide-details
