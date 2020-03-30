@@ -34,6 +34,7 @@
                     <v-progress-linear
                         :value="(assignee.tasksCompleted/assignee.totalTasks)*100"
                         color="#2EC973"
+                        background-color="red"
                         height="13"
                         rounded
                         reactive
@@ -85,6 +86,7 @@
                     <v-progress-linear
                         :value="(assignee.tasksCompleted/assignee.totalTasks)*100"
                         color="#2EC973"
+                        background-color="red"
                         height="13"
                         rounded
                         reactive
@@ -137,6 +139,7 @@
                     <v-progress-linear
                         :value="(assignee.tasksCompleted/assignee.totalTasks)*100"
                         color="#2EC973"
+                        background-color="red"
                         height="13"
                         rounded
                         reactive

@@ -647,7 +647,7 @@ font-size: 19px !important;
 }
 .progressLine{
     width: 350px;
-    background-color: rgb(255, 0, 0);
+    /* background-color: rgb(255, 0, 0); */
     border-radius: 13px;
 }
 .presentageValue{
@@ -986,7 +986,7 @@ color: #040428;
  .workloadProgressLine{
      margin-left: 10px;
     width: 45%;
-    background-color: red;
+    /* background-color: red; */
     border-radius: 13px;
 }
 .workloadListName{

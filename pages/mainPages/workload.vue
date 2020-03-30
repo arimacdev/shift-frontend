@@ -73,6 +73,7 @@
                     <v-progress-linear
                         :value="(user.tasksCompleted/user.totalTasks)*100"
                         color="#2EC973"
+                        background-color="red"
                         height="8"
                         rounded
                         reactive
