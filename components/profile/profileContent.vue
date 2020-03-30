@@ -257,6 +257,7 @@ export default {
               'content-type': 'application/x-www-form-urlencoded'
             }
           }).then (async resp => {
+            console.log("Slack Token Response", resp.data)
             const slackId = resp.data.authed_user.id;
             console.log("User Slack Id", slackId)
                let response;
