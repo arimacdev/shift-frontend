@@ -78,7 +78,7 @@
           response = await this.$axios.$post(`/projects/${this.projectId}/users`, 
           this.addUser
         )
-        location.reload();
+        // location.reload();
        } catch(e){
           console.log("Error adding a User", e);
        }   
