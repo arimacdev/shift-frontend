@@ -1076,8 +1076,11 @@ color: #040428;
     font-size: 16px;
     width: 360px !important;
     /* background-color: red; */
-    height: 40px !important;
+    height: 45px !important;
 
+}
+.workloadCheckBox{
+    margin-top: -30px;
 }
 .selectedsubTaskTitle{
     width: 100% !important;

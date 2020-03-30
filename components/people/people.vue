@@ -1,18 +1,21 @@
 <template>
+<div>
     <div class="projectTabContent  overflow-y-auto">
         <div class="peopleWrapper">
-            <div class="titleDiv">
-            <p class="catTitle" @click="fetchUsers">Admins</p>
-            </div>
-        
+           
         <addProjectUser :editUser="assignee" :projectId="projectId" :users="users"/>
         </div>
         
 
-        <div class="peopleList">
+        <div class="">
+             <div class="">
+            <p class="peopleRoleTitle" @click="fetchUsers">Admins</p>
+            </div>
+        
+            
         <div v-for="(assignee, index) in people"
         :key="index" class="taskList peopleListItems" >
-            <v-list-item class="peopleContainer">
+            <v-list-item v-if="assignee.projectRoleId == 1 || assignee.projectRoleId == 2" class="peopleContainer">
               <v-list-item-avatar>
            <v-img v-if="assignee.assigneeProfileImage != null" :src="assignee.assigneeProfileImage"></v-img>
           <v-img v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
@@ -53,8 +56,69 @@
                
             </v-list-item>
         </div>
+        <!-- --------- -->
+
+         <div class="">
+             <div class="">
+            <p class="peopleRoleTitle" @click="fetchUsers">Other users</p>
+            </div>
+        
+            
+        <div v-for="(assignee, index) in people"
+        :key="index" class="taskList peopleListItems" >
+            <v-list-item v-if="assignee.projectRoleId == 3" class="peopleContainer">
+              <v-list-item-avatar>
+           <v-img v-if="assignee.assigneeProfileImage != null" :src="assignee.assigneeProfileImage"></v-img>
+          <v-img v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
+        </v-list-item-avatar>
+              <v-list-item-content>
+                 <v-list-item-title class="projectRole"> {{assignee.projectJobRoleName}} </v-list-item-title >
+                <v-list-item-title class="peopleName">{{ assignee.assigneeFirstName }} {{assignee.assigneeLastName}}</v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-content class="projectProgressSection">
+                <v-list-item-title class="completedStatus">{{ assignee.tasksCompleted + "/" + assignee.totalTasks + " Tasks completed"}}</v-list-item-title>
+                <v-list-item-title class="projectProgress"> 
+                    <!-- <div class="progressBar"></div> -->
+                    <div class="progressLine"> 
+
+                    <v-progress-linear
+                        :value="(assignee.tasksCompleted/assignee.totalTasks)*100"
+                        color="#2EC973"
+                        height="13"
+                        rounded
+                        reactive
+                        >
+                        <!-- <template v-slot="{ value }"> -->
+                            <template>
+                            <!-- <span class="presentageValue">{{ Math.ceil(value) }}%</span> -->
+                        </template>
+                        </v-progress-linear>
+
+                        </div>
+
+                    </v-list-item-title >
+              </v-list-item-content>
+             <v-list-item-action >
+               <editProjectUser :editUser="assignee" :projectId="projectId" />
+              </v-list-item-action>
+              <v-list-item-action >
+               <deleteProjectUser :blockedUserId="assignee.assigneeId" :projectId="projectId" />
+              </v-list-item-action>
+               
+            </v-list-item>
+        </div></div>
+
+        <!-- ------ -->
        </div>
-    </div>
+       
+       </div>
+
+
+       <!-- =============================== second list ===================== -->
+       
+
+       <!-- =================== end =============== -->
+</div>
 
 </template>
 
@@ -105,10 +169,19 @@ export default {
     width: 30%;
     float: left;
 }
-.catTitle{
+.peopleRoleTitle{
     font-style: normal;
     font-weight: bold;
     font-size: 25px;
+    margin-left: 20px;
+}
+.catPeopleTitle{
+     font-style: normal;
+    font-weight: bold;
+    font-size: 25px;
+    margin-top: 60px;
+    margin-bottom: -20px;
+    margin-left: 30px;
 }
 .addPeopleButton{
     border-radius: 5px;
