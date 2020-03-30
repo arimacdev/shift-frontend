@@ -14,7 +14,9 @@
           </v-list-item-icon>
            <div class="textAreaSideBar">
              <input type="text" class="taskTitle" v-model="updatedName" v-if="editTask == true"  :disabled="editTask" @keyup.enter="saveEditTaskName"/>
-             <input type="text" class="taskTitleEdit" v-model="updatedName" v-if="editTask == false"  :disabled="editTask" @keyup.enter="saveEditTaskName"/>
+             <input maxlength="49" type="text" class="taskTitleEdit" v-model="updatedName" v-if="editTask == false"  :disabled="editTask" @keyup.enter="saveEditTaskName"/>
+              <!-- <textarea class="taskTitle" v-model="updatedName" v-if="editTask == true"  :disabled="editTask" @keyup.enter="saveEditTaskName" ></textarea> -->
+              
              
             <!-- <v-list-item-title class="taskTitle">{{ this.task.taskName }}</v-list-item-title> -->
           </div>
@@ -119,7 +121,7 @@
  <v-list-item-group class="">
 <v-list-item>
 
-   <v-list-item-content class="">
+   <div class="taskStatusDropdown">
              <select v-model="taskStatus" class="selectUserDropDown" @change="updateStatus">
                 <option key="pending" value="pending" >Pending</option>
                 <option key="implementing" value="implementing">Implementing</option>
@@ -129,7 +131,7 @@
                 <option key="deployed" value="deployed">Deployed</option>
                 <option key="closed" value="closed">Closed</option>
             </select>
-             </v-list-item-content>
+             </div>
 
 </v-list-item>
  </v-list-item-group>
@@ -183,7 +185,10 @@
                           </v-checkbox>
                     <v-list-item-content>
                       <v-list-item-title class="subTaskListName">
-                        <input v-model="subtask.subtaskName" type="text" @keyup.enter="subTaskUpdate(subtask)"/>
+                        <input maxlength="51" class="subTaskListNameContent" v-model="subtask.subtaskName" type="text" @keyup.enter="subTaskUpdate(subtask)"/>
+                        <!-- <textarea class="subTaskListNameContent" v-model="subtask.subtaskName" type="text" @keyup.enter="subTaskUpdate(subtask)"> </textarea> -->
+                        <!-- <textarea disabled class="selectedTaskTitle selectedsubTaskTitle"  v-model="subtask.subtaskName" ></textarea> -->
+
                         <!-- {{ subtask.subtaskName}} -->
                         </v-list-item-title>
                     </v-list-item-content>
@@ -243,11 +248,11 @@
                           class="shrink mr-2 mt-0"           
                           >
                        </v-checkbox>
-                       <v-list-item-content>
+                       <div>
                          <v-list-item-title class="subTaskListName">
-                        <input  placeholder="Add new" v-model="newSubTask.subtaskName" type="text"  @keyup.enter="addSubTask"/>   
+                        <input maxlength="51" class="subTaskListNameContent addSubTaskTextbox"  placeholder="Add new" v-model="newSubTask.subtaskName" type="text"  @keyup.enter="addSubTask"/>   
                            </v-list-item-title>
-                       </v-list-item-content>
+                       </div>
                 <!-- </div> -->
                 </v-list-item>
 
@@ -631,15 +636,21 @@ import ErrorPopup from '~/components/popups/errorPopup'
         async updateTaskDates(type){
           let dueDate;
           let remindDate;
-          if(type === "dueDate"){
-            dueDate = this.updatedTask.taskDueDateAt;
+          if(type === "dueDate"){       
+            console.log("inside due date")   
+            dueDate = new Date(this.updatedTask.taskDueDateAt);
+            const isoDate = new Date(dueDate.getTime() - (dueDate.getTimezoneOffset() * 60000)).toISOString();
+            console.log("iso edit due date",isoDate)   
+            dueDate = isoDate;
             remindDate = this.task.taskReminderAt;
           } else {
+            console.log("inside remind on date");
+            remindDate = new Date(this.updatedTask.taskRemindOnDate);
+            const isoDate = new Date(remindDate.getTime() - (remindDate.getTimezoneOffset() * 60000)).toISOString();
+            console.log("iso edit remind date",isoDate)   
             dueDate = this.task.taskDueDateAt;
-            remindDate = this.updatedTask.taskRemindOnDate
+            remindDate = isoDate;
           }
-        // console.log("onchange update task dates -> remind->", this.updatedTask.taskRemindOnDate)
-        // console.log("onchange update task dates -> due->", this.updatedTask.taskDueDate)
         console.log("dueDate",dueDate);
         console.log("remindDate",remindDate);
          let response;
@@ -675,7 +686,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
-        this.$emit('listenChange');
+        // this.$emit('listenChange');
         console.log("update sub task status response", response);
        } catch(e){
           console.log("Error updating a status", e);

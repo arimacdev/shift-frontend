@@ -13,7 +13,7 @@
           <v-tab>
             People
           </v-tab>
-          <v-tab>
+          <v-tab @click="onSelectProject">
             Projects
           </v-tab>
           <v-tab>
@@ -70,17 +70,34 @@ import ProjectTab from '~/components/projects/projectTab'
      data () {
       return {
         drawer: null,
+        userId: this.$store.state.user.userId,
         items: [          
         ],
+        taskCompletion: {}
       }
     },
-     props: ['name', 'projectId', 'project', 'users', 'MyTasks', 'taskCompletion', 'people', 'taskLog'],
+     props: ['name', 'projectId', 'project', 'users', 'MyTasks', 'people', 'taskLog', 'taskCompletion'],
     name: 'tabViews',
     components: {
       'tasks' : Tasks,
       'task-drawer' : TaskDrawer,
       'people' : People,
       'project-tab' : ProjectTab
+    },
+    methods: {
+      onSelectProject() {
+      //      this.$axios.get(`projects/${this.project.projectId}/tasks/completion`, {
+      //    headers: {
+      //     user: this.userId,
+      //  }
+      // })
+      // .then (response => {
+      //  this.taskCompletion = response.data.data;
+      // })
+      // .catch (e => {
+      //  console.log("error", e)
+      // })
+      }
     },
   }
 </script>

@@ -22,18 +22,37 @@
                 md="6"
                 
             >
-        <input v-model.trim="$v.projectName.$model" placeholder="Project name" class="formElements">
+        <input maxlength="50" v-model.trim="$v.projectName.$model" placeholder="Project name" class="formElements">
        <div v-if="$v.projectName.$error && !$v.projectName.required" class="errorText"> Project name is required</div>
        <div v-if="$v.projectName.$error && !$v.projectName.maxLength" class="errorText"> Cannot use more than 50 characters</div>
            
+            <!-- <v-text-field
+            label="Project name"
+            outlined
+            class="createFormElements"
+            v-model.trim="$v.projectName.$model"
+          ></v-text-field>
+ <div v-if="$v.projectName.$error && !$v.projectName.required" class="errorText"> Project name is required</div>
+       <div v-if="$v.projectName.$error && !$v.projectName.maxLength" class="errorText"> Cannot use more than 50 characters</div>
+            -->
+
             </v-col>
              <v-col
                 sm="6"
                 md="6"
                 
             >
-            <input v-model.trim="$v.client.$model" placeholder="Client" class="formElements">
+            <input maxlength="49" v-model.trim="$v.client.$model" placeholder="Client" class="formElements">
             <div v-if="$v.client.$error && !$v.client.required" class="errorText"> Client is required</div>
+            
+            <!-- <v-text-field
+            label="Client"
+            outlined
+            class="createFormElements"
+            v-model.trim="$v.client.$model"
+          ></v-text-field>
+           <div v-if="$v.client.$error && !$v.client.required" class="errorText"> Client is required</div> 
+             -->
             </v-col>
         </v-row>
 
@@ -52,7 +71,7 @@
             <div v-if="$v.startDate.$error && !$v.startDate.required" class="errorText"> Start date is required</div> -->
            <div class="pickerContainer pickerDiv">
             <VueCtkDateTimePicker color="#3f51b5" class="dateTimePickerInternal" v-model="$v.startDate.$model" label="Project start date and time"/>
-            <div v-if="$v.startDate.$error && !$v.startDate.required" class="errorText errorDiv"> End date is required</div>
+            <!-- <div v-if="$v.startDate.$error && !$v.startDate.required" class="errorText errorDiv"> End date is required</div> -->
           
            </div>
            
@@ -67,7 +86,7 @@
            <div class="pickerContainer pickerDiv">
             <VueCtkDateTimePicker color="#3f51b5" class="dateTimePickerInternal" v-model="$v.endDate.$model" label="Project end date and time"/>
             
-            <div v-if="$v.endDate.$error && !$v.endDate.required" class="errorText errorDiv"> End date is required</div>
+            <!-- <div v-if="$v.endDate.$error && !$v.endDate.required" class="errorText errorDiv"> End date is required</div> -->
           
            </div>
           
@@ -85,6 +104,14 @@
                 
             >
         <input v-model="projectTimeLine" disabled placeholder="Estimated project timeline" class="formElements">
+            <!-- <v-text-field
+            label="Estimated project timeline"
+            outlined
+            class="createFormElements"
+            disabled=""
+            v-model.trim="projectTimeLine"
+          ></v-text-field> -->
+          
             </v-col>
              <v-col
                 sm="6"
@@ -154,6 +181,18 @@ export default {
     },
     
     methods: {
+    getStartDate(){       
+        const startDate = new Date(this.startDate);
+        const isoDate = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000)).toISOString();
+        console.log("iso Start date",isoDate)
+        return isoDate;
+    },
+    getEndDate(){       
+    const endDate = new Date(this.endDate);
+    const isoDate = new Date(endDate.getTime() - (endDate.getTimezoneOffset() * 60000)).toISOString();
+    console.log("iso end date",isoDate)
+    return isoDate;
+    },
      async postData(){
 
       let response;
@@ -162,9 +201,13 @@ export default {
           projectOwner: this.userId,
           projectName: this.projectName,
           clientId: this.client,
-          projectStartDate: new Date(this.startDate),
-          projectEndDate: new Date(this.endDate),
+          projectStartDate: this.getStartDate(),
+          projectEndDate: this.getEndDate(),
         })
+
+        this.projectName = '',
+        this.clientId = '',
+        this.$v.$reset()
 
         console.log("project added successfully", response);
         this.component = 'success-popup'
@@ -194,7 +237,7 @@ export default {
             client: '',
             // startDate: new Date().toISOString().split('.')[0],
             startDate: new Date(),
-             endDate: new Date(),
+            endDate: new Date(),
             // endDate: new Date(new Date().getTime() + (24 * 60 * 60 * 1000)).toISOString().split('T')[0],
             projectOwner: '',
             component: ''
@@ -203,7 +246,7 @@ export default {
         validations: {
             projectName: {
             required,
-            maxLength: maxLength(50)
+            maxLength: maxLength(49)
             },
             client: {
             required,
@@ -216,6 +259,15 @@ export default {
             },
         },
         computed: {
+            setDates: {
+                get(){
+                    let date = new Date(this.startDate);
+                    return date;
+                },
+                set(value){
+                    this.startDate = new Date(this.startDate)
+                }
+            },
             projectTimeLine : {
                get(){
             if(this.startDate === '' || this.endDate === ''){

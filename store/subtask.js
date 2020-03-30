@@ -15,7 +15,8 @@ export const mutations = {
   }
 
 export const actions = {
-    async fetchSubTasks({commit, rootState}, projectId, taskId){
+    async fetchSubTasks({commit, rootState}, {projectId, taskId}){
+      console.log("store fetch subtasks", projectId, taskId)
         const userId = rootState.user.userId;
         let subTaskResponse;
         try {

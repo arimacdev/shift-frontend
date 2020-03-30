@@ -103,6 +103,15 @@ margin-bottom: -5px !important;
     border: solid 1px #c5c7cc;
 }
 
+.createFormElements{
+    width: 98%;
+    /* background-color: red; */
+    height: 40px;
+}
+.formRow{
+    margin-bottom: -20px !important;
+}
+
 .sideBarFormElementsForPickers{
     border-radius: 5px;
     border: solid 1px #c5c7cc;
@@ -408,7 +417,7 @@ margin-top: -60px;
     color: #FFFFFF !important;
     font-weight: 500;
     font-size: 14px;
-    width: 250px;
+    width: 100% !important;
     height: 40px;
     margin-right: 10px;
     margin-left: -20px;
@@ -417,18 +426,23 @@ margin-top: -60px;
 .taskTitleEdit{
     width: 240px;
     height: 30px;
+    width: 100% !important;
     background: #EDF0F5;
     border-radius: 5px;
     padding-left: 5px;
     margin-right: 10px;
     margin-left: -20px;
 }
+.taskStatusDropdown{
+    
+}
 
 .textAreaSideBar{
     vertical-align: middle;
+    width: 100%;
 }
 .selectUserDropDown{
-    width: 200px !important;
+    width: 300px !important;
     padding:7px;
     border-radius: 5px;
     background: #0BAFFF;
@@ -450,7 +464,7 @@ margin-top: -60px;
 .sideBarDate{
     background: #FFFFFF !important;
     outline: none;
-    color: red;
+    color: green;
     font-weight: 500;
     font-size: 14px;
     /* background: violet; */
@@ -459,6 +473,7 @@ margin-top: -60px;
 .tabListItemsText{
     font-weight: 500;
     font-size: 16px;
+    margin-right: 30px;
 }
 .datesTitle{
     margin-top: 15px;
@@ -665,6 +680,19 @@ font-size: 19px !important;
 font-weight: 500;
 font-size: 11px;
 color: #576377;
+width: 400px !important;
+}
+.subTaskListNameContent{
+    width: 100%;
+    height: 30px;
+    border-radius: 5px;
+    padding-left: 5px;
+}
+.addSubTaskTextbox{
+    width: 100% !important;
+    background: #EDF0F5;
+    outline: none;
+    height: 40px;
 }
 .subTaskListItems{
     margin-bottom: 10px;
@@ -719,7 +747,7 @@ color: #576377;
 }
 
 .taskListViewContent{
-    height: 80vh;
+    height: 60vh;
 }
 
 /* --------------- popup ---------------- */
@@ -749,7 +777,7 @@ popupSubitle{
 .pickerDiv{
     /* margin-top: -5px; */
     border-radius: 5px;
-    height: 55px;
+    /* height: 55px; */
 }
 
 .pickerContainer{
@@ -770,13 +798,14 @@ popupSubitle{
 .sideBarPickers{
     position: absolute;
     /* z-index: 100; */
-    width: 300px;
+    /* width: 300px; */
     /* margin-left: 60px; */
+    width: 80%;
     margin-top: 8px;
 }
 
 .datePickerNew{
-    margin-top: 20px;
+    margin-top: 0px !important;
     color: green;
 }
 
@@ -792,6 +821,7 @@ popupSubitle{
 .btnPicker{
     width: 50px;
     font-size: 10px;
+    margin-left: 150px;
 }
 .btnPickerText{
     font-size: 8px;
@@ -934,4 +964,147 @@ color: #040428;
 .popupBottom{
     padding-bottom: 20px;
     padding-top: 10px;
+}
+
+
+
+/* ---------------- workload page -------------- */
+
+
+.workloadSideBar{
+    width: 35%;
+   float: left;
+   /* padding-left: 12px; */
+   padding-top: 20px;
+   background-color: #FFFFFF;
+   margin-top: -20px;
+ }
+ .workloadListItem{
+     height: 80px;
+ }
+
+ .workloadProgressLine{
+     margin-left: 10px;
+    width: 45%;
+    background-color: #FF6161;
+    border-radius: 13px;
+}
+.workloadListName{
+    width: 200px !important;
+    background-color: red;
+}
+.workloadCompletedStatus{
+    color: #7A8B9F;
+    font-size: 10px !important;
+    font-weight: 500;
+    margin-left: 10px;
+}
+.workloadDivider{
+    height: 40px !important;
+    margin-top: 20px !important;
+}
+.progressColorCode{
+    width: 3px;
+    height: 100%;
+    margin-right: -10px;
+    margin-left: 10px;
+}
+.progressBad{
+    background-color: #FF6161;
+}
+.progressFair{
+    background-color: #FFC213;
+}
+.progressGood{
+    background-color: #2EC973;
+}
+.progressNoWorks{
+    background-color: #0BAFFF;
+}
+
+.workloadBody{
+    margin-left: 35% !important;
+    margin-right: 2% !important;
+    padding-left: 30px;
+    padding-top: 15px;
+    height: 80vh;
+}
+.workLoadTitleDiv{
+    font-weight: bold;
+    font-size: 19px;
+    color: #7A8B9F;
+    height: 60px !important;
+}
+.workloadContentDiv{
+
+}
+
+.projectDetailsPannels{
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+.projectDetailsPannelHeader{
+    color: #FFFFFF;
+}
+.projectDetailsPannelContent{
+    padding-top: 10px;
+    color: #576377;
+}
+.taskDetailsBar{
+    /* background-color: #FFFFFF; */
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+.workloadTaskItems{
+    border-radius: 5px;
+    margin-bottom: 15px;
+    background-color: #FFFFFF;
+}
+.workloadTaskName{
+
+    color:  #576377;
+}
+.titleBar{
+    margin-top: 60px !important;
+}
+.checkBoxSideBar{
+    margin-top: 7px !important;
+}
+.selectedTaskTitle{
+    color: #FFFFFF;
+    font-weight: ;
+    font-size: 16px;
+    width: 360px !important;
+    /* background-color: red; */
+    height: 40px !important;
+
+}
+.selectedsubTaskTitle{
+    width: 100% !important;
+}
+.selectedTaskStatus{
+    width: 100px;
+    color: #FFFFFF;
+    background-color: #0BAFFF;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    float: right;
+    text-align: center;
+
+}
+
+.subTaskItem{
+    margin-left: 60px;
+}
+
+.itemGroupTitles{
+    color: #576377 !important;
+}
+.itemGroupDate{
+    color: #000000;
+}
+.noteDiv{
+    margin-left: 65px;
+    color: #5F5F5F;
 }

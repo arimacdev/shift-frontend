@@ -50,7 +50,7 @@
                 md="12"
                 
             >
-        <input v-model="projectName" placeholder="Project name" class="formElements">
+        <input maxlength="51" v-model="projectName" placeholder="Project name" class="formElements">
             </v-col>
         </v-row>
 
@@ -105,6 +105,7 @@
         
           <v-list-item-content>
            <div class="pickerContainer pickerDiv sideBarPickers datePickerNew">
+             <!-- <input type="text" v-model="projectStartDate"> -->
            
            <datetime
               type="datetime"
@@ -471,20 +472,32 @@ export default {
             this.updateProject.clientId =  value;
           }            
         },
-         projectStartDate: {
+        projectStartDate: {
             get(){
-                return this.project.projectStartDate
+              let stringDate  = this.project.projectStartDate + "";
+              stringDate = stringDate.toString();
+              stringDate = stringDate.slice(0,16);           
+              return stringDate;
             },
           set(value) {
-            this.updateProject.projectStartDate =  value;
+            const startDate = new Date(value);
+            const isoDate = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000)).toISOString();
+            console.log("iso edit Start date",isoDate)
+            this.updateProject.projectStartDate =  isoDate;
           }            
         },
          projectEndDate: {
             get(){
-                return this.project.projectEndDate
+                 let stringDate  = this.project.projectEndDate + "";
+              stringDate = stringDate.toString();
+              stringDate = stringDate.slice(0,16);           
+              return stringDate;
             },
           set(value) {
-            this.updateProject.projectEndDate =  value;
+            const startDate = new Date(value);
+            const isoDate = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000)).toISOString();
+            console.log("iso edit end date",isoDate)
+            this.updateProject.projectEndDate =  isoDate;
           }            
         },
          projectStatus: {
@@ -515,6 +528,7 @@ export default {
           projectStatus: this.updateProject.projectStatus
         })
         // location.reload();
+        console.log("project edit response ----------> ", response)
         this.component = 'success-popup'
        } catch(e){
 

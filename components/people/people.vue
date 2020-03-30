@@ -28,7 +28,7 @@
                     <div class="progressLine"> 
 
                     <v-progress-linear
-                        v-model="skill"
+                        :value="(assignee.tasksCompleted/assignee.totalTasks)*100"
                         color="#2EC973"
                         height="13"
                         rounded

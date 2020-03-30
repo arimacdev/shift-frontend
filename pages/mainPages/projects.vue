@@ -33,7 +33,8 @@
       
   </div>
   <div class="content-div">
-    <v-list-item-title class="font-weight-bold">{{ this.project.projectName }}</v-list-item-title>
+    <v-list-item-title v-if="this.project.projectName == null " class="font-weight-bold">Select a project</v-list-item-title>
+    <v-list-item-title v-else class="font-weight-bold">{{ this.project.projectName }}</v-list-item-title>
   </div>
 </div>
     </v-toolbar>
@@ -118,7 +119,8 @@
 </div>  
       </div>
             <keep-alive>
-            <component v-bind:is="component" :name=name :projectId=this.project.projectId :project=project :users=users :Alltasks=Alltasks :MyTasks=MyTasks :taskCompletion=taskCompletion :people=people :taskLog="taskLog"></component>
+            <component v-if="this.project.projectName != null"  v-bind:is="component" :name=name :projectId=this.project.projectId :project=project :users=users :Alltasks=Alltasks :MyTasks=MyTasks :taskCompletion=taskCompletion :people=people :taskLog="taskLog"></component>
+             <component v-else-if="this.component == 'add-project'" v-bind:is="component" :name=name :projectId=this.project.projectId :project=project :users=users :Alltasks=Alltasks :MyTasks=MyTasks :taskCompletion=taskCompletion :people=people :taskLog="taskLog"></component>
             </keep-alive>
     </div> 
 
@@ -170,7 +172,7 @@ export default {
       projects: projects,
       users:users,
       // tasks: tasks,
-       project: projects[0],
+       project: '',
        people : []       
      }
   },
@@ -178,6 +180,7 @@ export default {
     methods: {
     selectProject(project){
      this.project = project;
+     console.log("selected project ---------->", project);
 
     this.$store.dispatch('task/fetchTasksAllTasks', this.project.projectId)
     this.$store.dispatch('task/fetchTasksMyTasks', this.project.projectId)
