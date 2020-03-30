@@ -76,7 +76,7 @@ import ProjectTab from '~/components/projects/projectTab'
         taskCompletion: {}
       }
     },
-     props: ['name', 'projectId', 'project', 'users', 'MyTasks', 'people', 'taskLog'],
+     props: ['name', 'projectId', 'project', 'users', 'MyTasks', 'people', 'taskLog', 'taskCompletion'],
     name: 'tabViews',
     components: {
       'tasks' : Tasks,
@@ -86,17 +86,17 @@ import ProjectTab from '~/components/projects/projectTab'
     },
     methods: {
       onSelectProject() {
-           this.$axios.get(`projects/${this.project.projectId}/tasks/completion`, {
-         headers: {
-          user: this.userId,
-       }
-      })
-      .then (response => {
-       this.taskCompletion = response.data.data;
-      })
-      .catch (e => {
-       console.log("error", e)
-      })
+      //      this.$axios.get(`projects/${this.project.projectId}/tasks/completion`, {
+      //    headers: {
+      //     user: this.userId,
+      //  }
+      // })
+      // .then (response => {
+      //  this.taskCompletion = response.data.data;
+      // })
+      // .catch (e => {
+      //  console.log("error", e)
+      // })
       }
     },
   }
