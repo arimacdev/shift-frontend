@@ -67,7 +67,7 @@
                 
             >
             <select v-model="taskStatus" class="formElements">
-              <option disabled value="pending" >Pending</option>
+              <!-- <option disabled value="pending" >Pending</option> -->
                 <option key="pending" value="pending" >Pending</option>
                 <option key="implementing" value="implementing">Implementing</option>
                 <option key="qa" value="qa">QA</option>
