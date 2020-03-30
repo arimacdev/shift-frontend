@@ -191,6 +191,7 @@ export default {
           })
           this.loading = false
         })
+        this.loading = false
       }
     },
     computed: {

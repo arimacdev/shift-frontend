@@ -9,8 +9,9 @@
              <v-icon size="35" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
              </v-list-item-icon>
              <div class="textAreaSideBar">
-               <textarea type="text" disabled class="selectedTaskTitle"  :placeholder="this.task.taskName" v-model="this.task.taskName" ></textarea>
-                <span class="selectedTaskStatus">{{this.task.taskStatus}}</span>
+               <!-- <textarea type="text" disabled class="selectedTaskTitle"  :placeholder="this.task.taskName" v-model="this.task.taskName" ></textarea> -->
+                <div class="selectedTaskTitle">{{ this.task.taskName }}</div>
+                <div class="selectedTaskStatus">{{this.task.taskStatus}}</div>
              </div>
          </v-list-item>
       </div>
@@ -41,8 +42,7 @@
                       <v-list-item-title class="subTaskListName">
                          <!-- <input class="subTaskListNameContent" v-model="subTask.subtaskName" type="text" disabled/> -->
                          <textarea type="text" disabled class="selectedTaskTitle selectedsubTaskTitle"  :placeholder="subTask.subtaskName" ></textarea>
-
-                  
+                                
                             <!-- <span>{{subtask.subtaskName}}</span> -->
                         </v-list-item-title>
                     </v-list-item-content>
