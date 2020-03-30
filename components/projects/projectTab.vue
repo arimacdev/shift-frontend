@@ -50,6 +50,7 @@
                 md="12"
                 
             >
+            <div class="editProjectLabels">Project name</div>
         <input maxlength="51" v-model="projectName" placeholder="Project name" class="formElements">
             </v-col>
         </v-row>
@@ -63,6 +64,7 @@
                 md="12"
                 
             >
+            <div class="editProjectLabels">Client</div>
        <input v-model="clientId" placeholder="client" class="formElements">
             </v-col>
         </v-row>
@@ -76,7 +78,7 @@
                 
             >
        <!-- <input t v-model="projectStatus" placeholder="Project status" class="formElements"> -->
-
+      <div class="editProjectLabels">Project status</div>
        <select v-model="projectStatus" class="formElements">
               <option value="" disabled>{{ this.projectStatus }}</option>
                 <option key="presales" value="presales" >Presales</option>
@@ -97,10 +99,11 @@
                 md="12"
                 
             >
-
+<div class="editProjectLabels datesLabel">Project start date</div>
             <!-- ------------------------------ -->
 
             <v-list-item-group class="sideBarFormElementsForPickers">
+              
         <v-list-item>
         
           <v-list-item-content>
@@ -145,6 +148,7 @@
                 md="12"
                 
             >
+            <div class="editProjectLabels datesLabel">Project end date</div>
 
              <v-list-item-group class="sideBarFormElementsForPickers">
         <v-list-item>

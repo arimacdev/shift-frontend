@@ -1112,3 +1112,16 @@ color: #040428;
     margin-left: 65px;
     color: #5F5F5F;
 }
+
+/* ----------- project edit ------------- */
+
+.editProjectLabels{
+    margin-bottom: 15px !important;
+    margin-top: -20px;
+    margin-left: 5px;
+    font-size: 10px;
+    color: #704CF1;
+}
+.datesLabel{
+    margin-bottom: 10px !important;
+}
