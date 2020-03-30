@@ -162,15 +162,18 @@ export default {
 
  watch: {
       search (val) {
+           console.log("value is ", val)
         val && val !== this.select && this.querySelections(val)
       },
  },
     methods: {
     onSelectUser(){
-        console.log("------ details ---> " + this.select.userId)
+      console.log("details", this.select)
+      if(this.select !== undefined){
         this.userData.firstName = this.select.firstName;
         this.userData.lastName = this.select.lastName;
         this.$store.dispatch('workload/fetchAllWorkloadTasks', this.select.userId)
+      }        
     },
     async selectUser(userData){
       this.userData = userData;      
@@ -184,7 +187,6 @@ export default {
         }
         console.log("usersList for search bar", this.taskWorkLoadUsers, "nameList", this.states)
         this.loading = true
-        // Simulated ajax query
         setTimeout(() => {
           this.items = this.states.filter(e => {
             return (e || '').toLowerCase().indexOf((v || '').toLowerCase()) > -1
