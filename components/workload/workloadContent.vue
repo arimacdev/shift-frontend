@@ -26,6 +26,11 @@
                         <v-list-item-content>
                             <v-list-item-title :class="dueDateCheck(task)"> {{getDueDate(task.dueDate)}}</v-list-item-title>
                         </v-list-item-content>
+                            
+                          <div class="">{{task.taskStatus}}</div>
+                        <div class="updatedDate">
+                            <div class="body-2"> {{getDueDate(task.dueDate)}}</div>
+                        </div>
                         <!-- <v-list-item-avatar>
                     <v-img v-if="task.taskAssigneeProfileImage != null" :src="task.taskAssigneeProfileImage"></v-img>
                         <v-img src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
