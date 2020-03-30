@@ -647,7 +647,7 @@ font-size: 19px !important;
 }
 .progressLine{
     width: 350px;
-    background-color: #FF6161;
+    background-color: rgb(255, 0, 0);
     border-radius: 13px;
 }
 .presentageValue{
