@@ -60,7 +60,7 @@
              <v-list-item-title class="tabListItemsText itemGroupTitles">Due Date</v-list-item-title>
            </div>
             <v-list-item-content>
-             <v-list-item-title class="tabListItemsText itemGroupDate" >{{taskDue}}</v-list-item-title>
+             <v-list-item-title class="tabListItemsText itemGroupDate" >{{getDueDate(taskDue)}}</v-list-item-title>
            </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -126,7 +126,16 @@ props: ['task', 'projectId'],
 methods: {
   fetchSubtasks() {
     console.log("fetch sub task");
-  }
+  },
+
+    getDueDate(date){
+        if(date ==  '1970-01-01T05:30')
+        return "No Due Date"
+        let stringDate  = date + " ";
+        stringDate = stringDate.toString();
+        stringDate = stringDate.slice(0,10) + " " + stringDate.slice(11,16);           
+        return stringDate;
+      },
 },
 computed: {
 ...mapState({
