@@ -305,12 +305,27 @@ margin-top: -60px;
     
 }
 .tab-status{
-    background-color: #0BAFFF;
+    /* background-color: #0BAFFF; */
     color: #FFFFFF;
     margin-left: 60px;
     width: 170px;
     text-align: center;
     border-radius: 5px;
+}
+.statusOption1{
+    background-color: #576377;
+}
+.statusOption2{
+    background-color:#FF6363;
+}
+.statusOption3{
+    background-color: #5E98F0;
+}
+.statusOption4{
+    background-color: #FFA800;
+}
+.statusOption5{
+    background-color: #36DD5B;
 }
 .tab-health{
     background-color: #2EC973;

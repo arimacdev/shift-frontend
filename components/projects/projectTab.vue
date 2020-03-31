@@ -19,8 +19,20 @@
     ></v-divider>
           <div class="tab-clientName">{{ fetchProject.clientId }} </div>
 
-          <div class="tab-status">{{ fetchProject.projectStatus }}</div>
+          <!-- <div class="tab-status">{{ fetchProject.projectStatus }}</div> -->
+          <div class="tab-status statusOption1" v-if="fetchProject.projectStatus == 'presales'">Presales</div>
+          <div class="tab-status statusOption1" v-if="fetchProject.projectStatus == 'presalesPD'">Project Discovery</div>
+          <div class="tab-status statusOption1" v-if="fetchProject.projectStatus == 'preSalesQS'">Quotation Submission</div>
+          <div class="tab-status statusOption1" v-if="fetchProject.projectStatus == 'preSalesN'">Negotiation</div>
+          <div class="tab-status statusOption1" v-if="fetchProject.projectStatus == 'preSalesC'">Confirmed</div>
+          <div class="tab-status statusOption2" v-if="fetchProject.projectStatus == 'preSalesL'">Lost</div>
+          <div class="tab-status statusOption3" v-if="fetchProject.projectStatus == 'ongoing'">Ongoing</div>
+          <div class="tab-status statusOption4" v-if="fetchProject.projectStatus == 'support'">Support</div>
+          <div class="tab-status statusOption5" v-if="fetchProject.projectStatus == 'finished'">Finished</div>
+          
           <div class="tab-health">Healthy</div>
+
+          
 
         <div class="tab-icon">
             <v-icon @click.stop="drawer = !drawer" size="20" class="aaaaa" color="#0BAFFF">mdi-pencil-outline</v-icon>
@@ -89,7 +101,7 @@
                 <option key="preSalesL" value="preSalesL">Presales : Lost</option>
                 <option key="ongoing" value="ongoing">Ongoing</option>
                 <option key="support" value="support">Support</option>
-                <option key="finished" value="finished">Finish</option>
+                <option key="finished" value="finished">Finished</option>
             </select>
 
        
@@ -196,7 +208,7 @@
                         <v-icon size="20" color="">mdi-plus-circle</v-icon>
                     </v-list-item-action>
                     <v-list-item-content class="buttonText">
-                        <v-list-item-title class="bodyWiew">Edit Project</v-list-item-title>
+                        <v-list-item-title class="bodyWiew">Save</v-list-item-title>
                     </v-list-item-content>
                     </v-list-item>
                 </div>

@@ -7,30 +7,30 @@
           <v-tab>
             Tasks
           </v-tab>
-          <v-tab>
+          <!-- <v-tab>
             Board
-          </v-tab>
+          </v-tab> -->
           <v-tab>
             People
           </v-tab>
           <v-tab @click="onSelectProject">
             Project
           </v-tab>
-          <v-tab>
+          <!-- <v-tab>
             Files
-          </v-tab>
+          </v-tab> -->
           
       <v-tab-item>
         <v-divider class="mx-4"></v-divider>
             <tasks :MyTasks="MyTasks" :projectId="projectId" :people="people"/>
 
       </v-tab-item>
-      <v-tab-item>
+      <!-- <v-tab-item>
         <v-divider class="mx-4"></v-divider>
         <v-card flat>
          
         </v-card>
-      </v-tab-item>
+      </v-tab-item> -->
       <v-tab-item>
         <v-divider class="mx-4"></v-divider>
         <v-card flat>
@@ -43,7 +43,7 @@
           <project-tab :project="project" :taskCompletion="taskCompletion" :taskLog="taskLog"/>
         </v-card>
       </v-tab-item>
-      <v-tab-item>
+      <!-- <v-tab-item>
         <v-divider class="mx-4"></v-divider>
         <v-card flat>
           <v-card-text>
@@ -51,7 +51,7 @@
 
           </v-card-text>
         </v-card>
-      </v-tab-item>
+      </v-tab-item> -->
     </v-tabs>
   </v-card>
   </div>
