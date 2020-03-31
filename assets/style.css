@@ -1126,5 +1126,6 @@ color: #040428;
     margin-bottom: 10px !important;
 }
 
-.selectedProject{
+.projectSubtitle{
+    font-size: 10px !important;
 }
