@@ -158,7 +158,7 @@ export default {
         this.$v.$reset()
     //    alert("User created successfully!")
     this.component = 'success-popup'
-        // window.setTimeout(location.reload(), 8000)
+        window.setTimeout(location.reload(), 8000)
        }  catch(e){
           console.log("Error creating user", e);
            this.component = 'error-popup'
