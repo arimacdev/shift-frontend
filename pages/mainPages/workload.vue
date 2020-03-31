@@ -175,12 +175,17 @@ export default {
       if(this.select !== undefined){
         this.userData.firstName = this.select.firstName;
         this.userData.lastName = this.select.lastName;
+         if(this.select.totalTasks != 0){
         this.$store.dispatch('workload/fetchAllWorkloadTasks', this.select.userId)
+         }
       }        
     },
     async selectUser(userData){
-      this.userData = userData;      
-      this.$store.dispatch('workload/fetchAllWorkloadTasks', userData.userId)
+      this.userData = userData; 
+      console.log("check", userData);
+      if(userData.totalTasks != 0){
+        this.$store.dispatch('workload/fetchAllWorkloadTasks', userData.userId);
+      }     
       },
       querySelections (v) {
         let projectSearchList = this.taskWorkLoadUsers;
@@ -188,7 +193,7 @@ export default {
             let user = projectSearchList[index];
             this.states.push({name: user.firstName + " " + user.lastName, id: user});
         }
-        console.log("usersList for search bar", this.taskWorkLoadUsers, "nameList", this.states)
+        // console.log("usersList for search bar", this.taskWorkLoadUsers, "nameList", this.states)
         this.loading = true
         setTimeout(() => {
           this.items = this.states.filter(e => {
