@@ -34,7 +34,7 @@
     <div class="body-div">
       <div class="users-list">
 
-        <search-bar :users=users />
+        <search-bar :users=users @searchSelected="viewSearchComponent"/>
     
 
 <div class="listView overflow-y-auto">
@@ -110,6 +110,11 @@ export default {
   },
 
     methods: {
+      viewSearchComponent(data){
+        this.name = data;
+        this.userData =data;
+        this.component='view-user'
+      },
        selectUser(userData){
      this.name=userData;
      this.userData = userData;

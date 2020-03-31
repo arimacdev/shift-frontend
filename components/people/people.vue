@@ -22,8 +22,8 @@
           <v-img v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
         </v-list-item-avatar>
               <v-list-item-content>
-                 <v-list-item-title class="projectRole"> {{assignee.projectJobRoleName}} </v-list-item-title >
-                <v-list-item-title class="peopleName">{{ assignee.assigneeFirstName }} {{assignee.assigneeLastName}}</v-list-item-title>
+                 <v-list-item-title class="projectRole"> {{ assignee.assigneeFirstName }} {{assignee.assigneeLastName}}</v-list-item-title >
+                <v-list-item-title class="peopleName">{{assignee.projectJobRoleName}} </v-list-item-title>
               </v-list-item-content>
               <v-list-item-content class="projectProgressSection">
                 <v-list-item-title class="completedStatus">{{ assignee.tasksCompleted + "/" + assignee.totalTasks + " Tasks completed"}}</v-list-item-title>
@@ -74,8 +74,8 @@
           <v-img v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
         </v-list-item-avatar>
               <v-list-item-content>
-                 <v-list-item-title class="projectRole"> {{assignee.projectJobRoleName}} </v-list-item-title >
-                <v-list-item-title class="peopleName">{{ assignee.assigneeFirstName }} {{assignee.assigneeLastName}}</v-list-item-title>
+                 <v-list-item-title class="projectRole"> {{ assignee.assigneeFirstName }} {{assignee.assigneeLastName}}</v-list-item-title >
+                <v-list-item-title class="peopleName">{{assignee.projectJobRoleName}} </v-list-item-title>
               </v-list-item-content>
               <v-list-item-content class="projectProgressSection">
                 <v-list-item-title class="completedStatus">{{ assignee.tasksCompleted + "/" + assignee.totalTasks + " Tasks completed"}}</v-list-item-title>
@@ -127,8 +127,8 @@
           <v-img v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
         </v-list-item-avatar>
               <v-list-item-content>
-                 <v-list-item-title class="projectRole"> {{assignee.projectJobRoleName}} </v-list-item-title >
-                <v-list-item-title class="peopleName">{{ assignee.assigneeFirstName }} {{assignee.assigneeLastName}}</v-list-item-title>
+                 <v-list-item-title class="projectRole">{{ assignee.assigneeFirstName }} {{assignee.assigneeLastName}}</v-list-item-title >
+                <v-list-item-title class="peopleName"> {{assignee.projectJobRoleName}} </v-list-item-title>
               </v-list-item-content>
               <v-list-item-content class="projectProgressSection">
                 <v-list-item-title class="completedStatus">{{ assignee.tasksCompleted + "/" + assignee.totalTasks + " Tasks completed"}}</v-list-item-title>

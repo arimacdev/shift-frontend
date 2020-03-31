@@ -15,6 +15,7 @@
           prepend-inner-icon="mdi-magnify"
           label="Search Here"
           solo-inverted
+          @change="onSelectProject()"
         ></v-autocomplete>
 </template>
 
@@ -40,21 +41,26 @@ export default {
       },
     },
     methods: {
+      onSelectProject(){
+         if(this.select !== undefined){
+        this.$emit('selectSearched', this.select);
+         }
+      },
       querySelections (v) {
         let projectSearchList = this.projects;
         for (let index = 0; index < projectSearchList.length; ++index) {
             let project = projectSearchList[index];
-            this.states.push({name: project.projectName, id: project.projectId});
+            this.states.push({name: project.projectName, id: project});
         }
-        console.log("projectsList", this.projects, "nameList", this.states)
+        // console.log("projectsList", this.projects, "nameList", this.states)
         this.loading = true
-        // Simulated ajax query
         setTimeout(() => {
           this.items = this.states.filter(e => {
             return (e || '').toLowerCase().indexOf((v || '').toLowerCase()) > -1
           })
           this.loading = false
-        }, 500)
+        })
+        this.loading = false
       },
     },
   }
