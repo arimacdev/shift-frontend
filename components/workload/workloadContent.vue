@@ -115,7 +115,8 @@ export default {
             console.log("overdue")
             return 'workLoadTaskOverDue';
           } else if (today){ /// This is where I check
-              'workLoadTaskOverDue';
+             return 'workLoadTaskOverDue';
+              console.log("this is Today--->", today)
           } {
             return 'workLoadTaskHealthy';
           }
