@@ -511,9 +511,12 @@ export default {
         },
          projectStatus: {
             get(){
+              console.log("get status", this.fetchProject.projectStatus)
                 return this.fetchProject.projectStatus
             },
           set(value) {
+              console.log("set status", this.fetchProject.projectStatus)
+
             this.updateProject.projectStatus =  value;
           }            
         }, 
@@ -541,7 +544,12 @@ export default {
         })
         // location.reload();
         console.log("project edit response ----------> ", response)
-        this.$store.dispatch('project/fetchProject', this.fetchProject.projectId)
+        this.$store.dispatch('project/fetchProject', this.fetchProject.projectId);
+        if(this.updateProject.projectStatus === '' || this.updateProject.projectStatus === this.fetchProject.projectStatus){
+            console.log("i won't fetch")
+        } else {
+            console.log("i will fetch")
+        }
         this.component = 'success-popup'
        } catch(e){
 
