@@ -52,7 +52,7 @@ export default {
             let project = projectSearchList[index];
             this.states.push({name: project.projectName, id: project});
         }
-        console.log("projectsList", this.projects, "nameList", this.states)
+        // console.log("projectsList", this.projects, "nameList", this.states)
         this.loading = true
         setTimeout(() => {
           this.items = this.states.filter(e => {
