@@ -86,7 +86,7 @@
 
 <script>
 import TaskSideBar from '~/components/tasks/taskSideBar'
-import { mapState } from 'vuex';;
+import { mapState } from 'vuex';
   export default {
     props: ['projectId',  'projectUsers', 'people'],
     data() {

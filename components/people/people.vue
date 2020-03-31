@@ -14,7 +14,7 @@
             </div>
         
             
-        <div v-for="(assignee, index) in people"
+        <div v-for="(assignee, index) in userCompletionTasks"
         :key="index" class="taskList peopleListItems" >
             <v-list-item v-if="assignee.projectRoleId == 1" class="peopleContainer">
               <v-list-item-avatar>
@@ -34,6 +34,7 @@
                     <v-progress-linear
                         :value="(assignee.tasksCompleted/assignee.totalTasks)*100"
                         color="#2EC973"
+                        background-color="red"
                         height="13"
                         rounded
                         reactive
@@ -65,7 +66,7 @@
             </div>
         
             
-        <div v-for="(assignee, index) in people"
+        <div v-for="(assignee, index) in userCompletionTasks"
         :key="index" class="taskList peopleListItems" >
             <v-list-item v-if="assignee.projectRoleId == 2" class="peopleContainer">
               <v-list-item-avatar>
@@ -85,6 +86,7 @@
                     <v-progress-linear
                         :value="(assignee.tasksCompleted/assignee.totalTasks)*100"
                         color="#2EC973"
+                        background-color="red"
                         height="13"
                         rounded
                         reactive
@@ -117,7 +119,7 @@
             </div>
         
             
-        <div v-for="(assignee, index) in people"
+        <div v-for="(assignee, index) in userCompletionTasks"
         :key="index" class="taskList peopleListItems" >
             <v-list-item v-if="assignee.projectRoleId == 3" class="peopleContainer">
               <v-list-item-avatar>
@@ -137,6 +139,7 @@
                     <v-progress-linear
                         :value="(assignee.tasksCompleted/assignee.totalTasks)*100"
                         color="#2EC973"
+                        background-color="red"
                         height="13"
                         rounded
                         reactive
@@ -176,6 +179,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import deleteProjectUser from '@/components/people/deleteProjectUser.vue'
 import editProjectUser from '@/components/people/editProjectUser.vue'
 import addProjectUser from '@/components/people/addProjectUser.vue'
@@ -209,6 +213,11 @@ export default {
              console.log("projectId", this.projectId)
         },
     },
+        computed: {
+    ...mapState({
+        userCompletionTasks: state => state.task.userCompletionTasks,
+    })
+    }
    
 }
 </script>

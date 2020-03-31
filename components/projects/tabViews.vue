@@ -90,14 +90,14 @@ import ProjectTab from '~/components/projects/projectTab'
       //    headers: {
       //     user: this.userId,
       //  }
-      // })
-      // .then (response => {
+      //    .then (response => {
       //  this.taskCompletion = response.data.data;
       // })
       // .catch (e => {
       //  console.log("error", e)
       // })
-      }
+      }   // })
+
     },
   }
 </script>

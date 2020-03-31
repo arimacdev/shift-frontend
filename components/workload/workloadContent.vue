@@ -67,7 +67,6 @@
 <script>
 import TaskSideBar from '~/components/workload/workloadSideBar'
 import { mapState, mapGetters } from 'vuex';
-
 export default {
   components: {
     'task-side-bar' : TaskSideBar
@@ -89,6 +88,8 @@ export default {
          });
       },
       getDueDate(date){
+        if(date == '1970-01-01T05:30:00.000+0000')
+        return "No Due Date"
         let stringDate  = date + " ";
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0,10) + " " + stringDate.slice(11,16);           
@@ -98,24 +99,21 @@ export default {
         console.log("check due date color", task);
         if(task.taskStatus === 'closed'){
           return 'workLoadTaskDone';
-        } else {
-          console.log("due date wf", task.dueDate);
+        }
+        else if (task.dueDate == null) {
+          return 'workLoadTaskDefault';
+        }
+        else {
           const dueDate = new Date(task.dueDate);
-          const isoDate = dueDate.toUTCString();
-          const isoDateS = dueDate.toISOString();
-
-          console.log("due date iso", isoDate, isoDateS);
-          const now = new Date().toLocaleString("en-US", {timeZone: "Asia/Colombo"});
-          const slNow = new Date(now);
-          console.log("duedate-->", dueDate, "now", slNow);
-          const isounix = Date.parse(isoDateS)
-          console.log("unix", isounix)
-          console.log("SLTime", slNow.getTime(), "DueTime", isounix);
-          if(slNow.getTime()> isounix){
+          const dueToUtc = new Date(dueDate.toLocaleString("en-US", {timeZone: "UTC"}));
+          const dueToUtcDate = new Date(dueToUtc);
+          const now = new Date();
+          console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
+          if(now.getTime() > dueToUtcDate.getTime()){
             console.log("overdue")
-            return 'workLoadTaskHealthy';
-          } else {
             return 'workLoadTaskOverDue';
+          } else {
+            return 'workLoadTaskHealthy';
           }
         }
       }
@@ -127,3 +125,39 @@ export default {
    }
 }
 </script>
+
+
+
+
+// console.log("due date wf", task.dueDate);
+//           const dueDate = new Date(task.dueDate);
+//           console.log("due date --->", dueDate)
+//           var timeZoneFromDB = -5.30; 
+//           var tzDifference = timeZoneFromDB * 60 + dueDate.getTimezoneOffset();
+//           var offsetTime = new Date(dueDate.getTime() + tzDifference * 60 * 1000);
+//           console.log("offsettime", offsetTime)
+//           var noq1 = new Date(); 
+//           var now_utc = new Date(noq1.getUTCFullYear(), noq1.getUTCMonth(), noq1.getUTCDate(),  noq1.getUTCHours(), noq1.getUTCMinutes(), noq1.getUTCSeconds());
+//           const new_date = new Date((now_utc * 1) + (330*60*1000))
+//           console.log("now date", noq1)
+//           console.log("newdate", new_date, new_date.getTime())
+
+//           const AsiaCol = new Date(dueDate.toLocaleString("en-US", {timeZone: "UTC"}));
+//           const AsiaColDate = new Date(AsiaCol);
+//           console.log("ASIA",AsiaCol)
+
+
+
+
+//           const isoDateqq = new Date(dueDate.getTime() - (dueDate.getTimezoneOffset() * 60000)).toISOString();
+//           console.log("qq", isoDateqq);
+//           const isoDate = dueDate.toUTCString();
+//           const isoDateS = dueDate.toISOString();
+
+//           console.log("due date iso", isoDate, isoDateS);
+//           const now = new Date().toLocaleString("en-US", {timeZone: "Asia/Colombo"});
+//           const slNow = new Date(now);
+//           console.log("duedate-->", dueDate, "now", slNow);
+//           const isounix = Date.parse(isoDateS)
+//           console.log("unix", isounix)
+//           console.log("SLTime", slNow.getTime(), "DueTime", AsiaColDate.getTime());

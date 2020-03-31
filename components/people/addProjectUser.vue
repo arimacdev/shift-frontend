@@ -34,7 +34,7 @@
              <v-card-actions class="roleField">
              
                 <v-checkbox
-                v-model="selected"
+                v-model="adminStatus"
                 hide-details
                 class="shrink mr-2 mt-0"                
                 label="Admin">
@@ -60,7 +60,7 @@
           "assignerId": this.$store.state.user.userId,
           "assigneeId": "",
           "assigneeJobRole": "",
-          "assigneeProjectRole": 3 
+          "assigneeProjectRole": this.getProjectRole()
         },
         isShow: false,
         selected: false,
@@ -69,28 +69,40 @@
     },
     methods: {
       async changeHandler() {
-        console.log("add user",this.addUser);
         this.dialog = false;
-        let assigneeProjectRoleId = this.adminStatus;
-        console.log(assigneeProjectRoleId);
+        let assigneeProjectRoleId = this.getProjectRole();
+        this.addUser.assigneeProjectRole = assigneeProjectRoleId;
         let response;
           try{
           response = await this.$axios.$post(`/projects/${this.projectId}/users`, 
           this.addUser
         )
-        // location.reload();
+        this.$store.dispatch('task/fetchProjectUserCompletionTasks', this.projectId)
+        this.addUser.assigneeId = "";
+        this.addUser.assigneeJobRole ="";
+        this.selected = false;
+
        } catch(e){
           console.log("Error adding a User", e);
        }   
-      }
+      },
+      getProjectRole(){
+        console.log("getProjectRole", this.selected)
+          if(this.selected == true){
+            return 2;
+          } else {
+            return 3;
+          }
+        }
     },
      computed: {
-        adminStatus: function() {
-              if(this.selected){
-                return 2;
-              } else {
-                return 3;
-              }
+        adminStatus : {
+          get(){
+            return this.selected;
+          },
+          set(value){
+            this.selected = !this.selected
+          }
         }
     },
   }

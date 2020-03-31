@@ -44,25 +44,33 @@
 
         <search-bar :projects=projects />
     
-
+<v-list-item-group>
 <div class="listView overflow-y-auto">
   <!-- --------------- Pre sales loop ----------- -->
 <v-divider class="mx-4"></v-divider>
-            <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Pre sales</v-toolbar-title>
+            <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Presales</v-toolbar-title>
 
           <div v-for="(project, index) in projects"
         :key="index"  v-on:click="component='tab-views'">
-            <v-list-item v-if="project.projectStatus == 'presales'" @click="selectProject(project)" >
+        
+            <v-list-item class="selectedProject" v-if="project.projectStatus == 'presalesPD' || project.projectStatus == 'preSalesQS' || project.projectStatus == 'preSalesN' || project.projectStatus == 'preSalesC' || project.projectStatus == 'preSalesL' || project.projectStatus == 'presales'" @click="selectProject(project)" >
               <v-list-item-action>
                 <v-icon size="20" color="deep-orange lighten-1">mdi-folder-outline</v-icon>
               </v-list-item-action>
               <v-list-item-content>
                 <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
+                <v-list-item-subtitle v-if="project.projectStatus == 'presalesPD'" class="projectSubtitle">(Project discovery)</v-list-item-subtitle>
+                <v-list-item-subtitle v-if="project.projectStatus == 'preSalesQS'" class="projectSubtitle">(Quotation submission)</v-list-item-subtitle>
+                <v-list-item-subtitle v-if="project.projectStatus == 'preSalesN'" class="projectSubtitle">(Negotiation)</v-list-item-subtitle>
+                <v-list-item-subtitle v-if="project.projectStatus == 'preSalesC'" class="projectSubtitle">(Confirm)</v-list-item-subtitle>
+                <v-list-item-subtitle v-if="project.projectStatus == 'preSalesL'" class="projectSubtitle">(Lost)</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
+            
              <!-- <v-divider class="mx-4"></v-divider> -->
-       
           </div>
+
+     
           <v-divider class="mx-4"></v-divider>
 
   <!-- --------------- ongoing loop ----------- -->
@@ -100,6 +108,7 @@
              <!-- <v-divider class="mx-4"></v-divider> -->
        
           </div>
+      
 <!-- --------------- Finished loop ----------- -->
 <v-divider class="mx-4"></v-divider>
           <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Finished</v-toolbar-title>
@@ -118,7 +127,8 @@
        
           </div>
 
-</div>  
+</div> 
+</v-list-item-group> 
       </div>
             <keep-alive>
             <component v-if="this.project.projectName != null"  v-bind:is="component" :name=name :projectId=this.project.projectId :project=project :users=users :Alltasks=Alltasks :MyTasks=MyTasks :taskCompletion=taskCompletion :people=people :taskLog="taskLog"></component>
@@ -185,9 +195,11 @@ export default {
      console.log("selected project ---------->", project);
 
     this.$store.dispatch('task/fetchTasksAllTasks', this.project.projectId)
-    this.$store.dispatch('task/fetchTasksMyTasks', this.project.projectId)
+    this.$store.dispatch('task/fetchTasksMyTasks', this.project.projectId) 
+    this.$store.dispatch('task/fetchProjectUserCompletionTasks', this.project.projectId)
+    this.$store.dispatch('project/fetchProject', this.project.projectId)
 
-    //  console.log("userId", this.userId)
+    //  console.log("userId", this.userId)   @ALLTASKS DEPRECATED
     //  console.log("access_token", this.access_token)     
     //    //Get all projects for now
     //   this.$axios.get (`projects/${this.project.projectId}/tasks?userId=${this.userId}`)
@@ -207,7 +219,7 @@ export default {
       //  console.log("error", e)
       // })
 
-      // this.$axios.get (`projects/${this.project.projectId}/tasks/user?userId=${this.userId}`)
+      // this.$axios.get (`projects/${this.project.projectId}/tasks/user?userId=${this.userId}`) @MYTASKS DEPRECATED
       // .then (response => {
       // //  console.log("data", response.data)
       //  this.MyTasks = response.data.data;

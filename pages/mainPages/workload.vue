@@ -54,6 +54,7 @@
         ></v-autocomplete>
 
         <div class="listView overflow-y-auto">
+          <v-list-item-group>
   <div v-for="(user, index) in taskWorkLoadUsers"
         :key="index" >
             <v-list-item @click="selectUser(user)" class="workloadListItem">
@@ -73,6 +74,7 @@
                     <v-progress-linear
                         :value="(user.tasksCompleted/user.totalTasks)*100"
                         color="#2EC973"
+                        background-color="red"
                         height="8"
                         rounded
                         reactive
@@ -97,6 +99,7 @@
              <v-divider class="mx-4"></v-divider>
        
           </div> 
+          </v-list-item-group>
 
         </div>
 
@@ -118,7 +121,7 @@
 <!-- -------------- component of the content ----------- -->
       
         <!-- <workload-content v-if="this.userData.firstName != null" /> -->
-        <workload-content />
+        <workload-content v-if="this.userData.firstName != null" />
 
 
 
@@ -162,15 +165,18 @@ export default {
 
  watch: {
       search (val) {
+           console.log("value is ", val)
         val && val !== this.select && this.querySelections(val)
       },
  },
     methods: {
     onSelectUser(){
-        console.log("------ details ---> " + this.select.userId)
+      console.log("details", this.select)
+      if(this.select !== undefined){
         this.userData.firstName = this.select.firstName;
         this.userData.lastName = this.select.lastName;
         this.$store.dispatch('workload/fetchAllWorkloadTasks', this.select.userId)
+      }        
     },
     async selectUser(userData){
       this.userData = userData;      
@@ -184,7 +190,6 @@ export default {
         }
         console.log("usersList for search bar", this.taskWorkLoadUsers, "nameList", this.states)
         this.loading = true
-        // Simulated ajax query
         setTimeout(() => {
           this.items = this.states.filter(e => {
             return (e || '').toLowerCase().indexOf((v || '').toLowerCase()) > -1
