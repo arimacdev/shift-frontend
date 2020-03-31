@@ -374,9 +374,9 @@
   <!-- ----------------------- start logs ------------------ -->
 
 
-  <v-container class="logsContainer">
+  <!-- <v-container class="logsContainer">
       <div> Task Log  </div>
-   </v-container>
+   </v-container> -->
 
    <!-- -------------- put logs below this line ---------- -->
 
@@ -389,11 +389,9 @@
 
    <!-- --------- one log --------- -->
 
-    <v-container class="logContent"> 
+    <!-- <v-container class="logContent"> 
 
       <v-list-item v-for="(log, index) in taskLog" :key="index" >
-         <!-- <div v-for="(task, index) in projectAllTasks"> -->
-        <!-- <div v-for="(task, index) in projectAllTasks" -->
               <div class="logTitleContainer">
                  <v-list-item-title class="logTitle">
                   {{log.timestamp}}
@@ -413,7 +411,7 @@
                     </v-list-item-title>
               </div>
             </v-list-item>
-   </v-container>
+   </v-container> -->
 
  <!-- --------- end log --------- -->
  

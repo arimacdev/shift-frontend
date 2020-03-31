@@ -129,7 +129,7 @@ methods: {
   },
 
     getDueDate(date){
-        if(date ==  '1970-01-01T05:30')
+        if(date ==  '1970-01-01T05:30' || date == null)
         return "No Due Date"
         let stringDate  = date + " ";
         stringDate = stringDate.toString();
