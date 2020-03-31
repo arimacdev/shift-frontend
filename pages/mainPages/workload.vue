@@ -54,6 +54,7 @@
         ></v-autocomplete>
 
         <div class="listView overflow-y-auto">
+          <v-list-item-group>
   <div v-for="(user, index) in taskWorkLoadUsers"
         :key="index" >
             <v-list-item @click="selectUser(user)" class="workloadListItem">
@@ -98,6 +99,7 @@
              <v-divider class="mx-4"></v-divider>
        
           </div> 
+          </v-list-item-group>
 
         </div>
 

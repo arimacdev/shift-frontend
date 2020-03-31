@@ -44,7 +44,7 @@
 
         <search-bar :projects=projects />
     
-
+<v-list-item-group>
 <div class="listView overflow-y-auto">
   <!-- --------------- Pre sales loop ----------- -->
 <v-divider class="mx-4"></v-divider>
@@ -52,7 +52,8 @@
 
           <div v-for="(project, index) in projects"
         :key="index"  v-on:click="component='tab-views'">
-            <v-list-item v-if="project.projectStatus == 'presales'" @click="selectProject(project)" >
+        
+            <v-list-item class="selectedProject" v-if="project.projectStatus == 'presales'" @click="selectProject(project)" >
               <v-list-item-action>
                 <v-icon size="20" color="deep-orange lighten-1">mdi-folder-outline</v-icon>
               </v-list-item-action>
@@ -60,9 +61,10 @@
                 <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
+            
              <!-- <v-divider class="mx-4"></v-divider> -->
-       
           </div>
+     
           <v-divider class="mx-4"></v-divider>
 
   <!-- --------------- ongoing loop ----------- -->
@@ -100,6 +102,7 @@
              <!-- <v-divider class="mx-4"></v-divider> -->
        
           </div>
+      
 <!-- --------------- Finished loop ----------- -->
 <v-divider class="mx-4"></v-divider>
           <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Finished</v-toolbar-title>
@@ -118,7 +121,8 @@
        
           </div>
 
-</div>  
+</div> 
+</v-list-item-group> 
       </div>
             <keep-alive>
             <component v-if="this.project.projectName != null"  v-bind:is="component" :name=name :projectId=this.project.projectId :project=project :users=users :Alltasks=Alltasks :MyTasks=MyTasks :taskCompletion=taskCompletion :people=people :taskLog="taskLog"></component>

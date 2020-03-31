@@ -38,7 +38,7 @@
     
 
 <div class="listView overflow-y-auto">
-
+<v-list-item-group>
            <div v-for="(user, index) in users"
         :key="index" >
             <v-list-item @click="selectUser(user)" >
@@ -59,7 +59,7 @@
              <v-divider class="mx-4"></v-divider>
        
           </div> 
-
+</v-list-item-group>
          
 </div>  
       </div>
