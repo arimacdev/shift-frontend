@@ -53,7 +53,7 @@
           <div v-for="(project, index) in projects"
         :key="index"  v-on:click="component='tab-views'">
         
-            <v-list-item class="selectedProject" v-if="project.projectStatus == 'presales'" @click="selectProject(project)" >
+            <v-list-item class="selectedProject" v-if="project.projectStatus == 'presalesPD' || project.projectStatus == 'presalesQS' || project.projectStatus == 'presalesN' || project.projectStatus == 'presalesC' || project.projectStatus == 'presalesL' || project.projectStatus == 'presales'" @click="selectProject(project)" >
               <v-list-item-action>
                 <v-icon size="20" color="deep-orange lighten-1">mdi-folder-outline</v-icon>
               </v-list-item-action>
@@ -64,6 +64,7 @@
             
              <!-- <v-divider class="mx-4"></v-divider> -->
           </div>
+
      
           <v-divider class="mx-4"></v-divider>
 

@@ -80,12 +80,18 @@
        <!-- <input t v-model="projectStatus" placeholder="Project status" class="formElements"> -->
       <div class="editProjectLabels">Project status</div>
        <select v-model="projectStatus" class="formElements">
-              <option value="" disabled>{{ this.projectStatus }}</option>
-                <option key="presales" value="presales" >Presales</option>
+              <!-- <option value="" disabled>{{ this.projectStatus }}</option> -->
+              <option key="presales" value="presales" >Presales</option>
+                <option key="presalesPD" value="presalesPD" >Presales - project Discovery</option>
+                <option key="preSalesQS" value="preSalesQS">Presales - quotation submission</option>
+                <option key="preSalesN" value="preSalesN">Presales - negotiation</option>
+                <option key="preSalesC" value="preSalesC">Presales - confirm</option>
+                <option key="preSalesL" value="preSalesL">Presales - lost</option>
                 <option key="ongoing" value="ongoing">Ongoing</option>
                 <option key="support" value="support">Support</option>
                 <option key="finished" value="finished">Finish</option>
             </select>
+
        
             </v-col>
         </v-row>
