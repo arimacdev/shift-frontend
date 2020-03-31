@@ -48,7 +48,7 @@
 <div class="listView overflow-y-auto">
   <!-- --------------- Pre sales loop ----------- -->
 <v-divider class="mx-4"></v-divider>
-            <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Pre sales</v-toolbar-title>
+            <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Presales</v-toolbar-title>
 
           <div v-for="(project, index) in projects"
         :key="index"  v-on:click="component='tab-views'">
@@ -197,6 +197,7 @@ export default {
     this.$store.dispatch('task/fetchTasksAllTasks', this.project.projectId)
     this.$store.dispatch('task/fetchTasksMyTasks', this.project.projectId) 
     this.$store.dispatch('task/fetchProjectUserCompletionTasks', this.project.projectId)
+    this.$store.dispatch('project/fetchProject', this.project.projectId)
 
     //  console.log("userId", this.userId)   @ALLTASKS DEPRECATED
     //  console.log("access_token", this.access_token)     

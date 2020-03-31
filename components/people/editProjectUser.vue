@@ -72,6 +72,8 @@
           assigneeJobRole: this.jobRole,
           assigneeProjectRole: roleIdValue
         })
+        this.$store.dispatch('task/fetchProjectUserCompletionTasks', this.projectId)
+
        } catch(e){
           console.log("Error blocking user", e);
        }       
@@ -87,8 +89,8 @@
                 this.isAdmin = false;
                 return false;
             }
-        }, set() {
-             this.isAdmin = !this.isAdmin
+        }, set(value) {
+             this.isAdmin = value
         }            
         }
     },

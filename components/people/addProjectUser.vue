@@ -78,6 +78,10 @@
           this.addUser
         )
         this.$store.dispatch('task/fetchProjectUserCompletionTasks', this.projectId)
+        this.addUser.assigneeId = "";
+        this.addUser.assigneeJobRole ="";
+        this.selected = false;
+
        } catch(e){
           console.log("Error adding a User", e);
        }   

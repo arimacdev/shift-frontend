@@ -11,15 +11,15 @@
         class="detailSection"
       >
       <v-list-item>
-          <div class="tab-projectName">{{ project.projectName }}</div>
+          <div class="tab-projectName">{{ fetchProject.projectName }}</div>
           <v-divider
       class="mx-3"
       inset
       vertical
     ></v-divider>
-          <div class="tab-clientName">{{ project.clientId }} </div>
+          <div class="tab-clientName">{{ fetchProject.clientId }} </div>
 
-          <div class="tab-status">{{ project.projectStatus }}</div>
+          <div class="tab-status">{{ fetchProject.projectStatus }}</div>
           <div class="tab-health">Healthy</div>
 
         <div class="tab-icon">
@@ -82,11 +82,11 @@
        <select v-model="projectStatus" class="formElements">
               <!-- <option value="" disabled>{{ this.projectStatus }}</option> -->
               <option key="presales" value="presales" >Presales</option>
-                <option key="presalesPD" value="presalesPD" >Presales - project Discovery</option>
-                <option key="preSalesQS" value="preSalesQS">Presales - quotation submission</option>
-                <option key="preSalesN" value="preSalesN">Presales - negotiation</option>
-                <option key="preSalesC" value="preSalesC">Presales - confirm</option>
-                <option key="preSalesL" value="preSalesL">Presales - lost</option>
+                <option key="presalesPD" value="presalesPD" >Presales : Project Discovery</option>
+                <option key="preSalesQS" value="preSalesQS">Presales : Quotation Submission</option>
+                <option key="preSalesN" value="preSalesN">Presales : Negotiation</option>
+                <option key="preSalesC" value="preSalesC">Presales : Confirmed</option>
+                <option key="preSalesL" value="preSalesL">Presales : Lost</option>
                 <option key="ongoing" value="ongoing">Ongoing</option>
                 <option key="support" value="support">Support</option>
                 <option key="finished" value="finished">Finish</option>
@@ -281,7 +281,7 @@
       >
          <v-list-item>
              <div class="detailTitle">Project start date : </div>
-             <div class="detailContent">{{this.getProjectDates(project.projectStartDate, "startDate")}}</div>
+             <div class="detailContent">{{this.getProjectDates(fetchProject.projectStartDate, "startDate")}}</div>
           </v-list-item>
       </v-col>
 
@@ -292,7 +292,7 @@
       >
       <v-list-item class="detailList">
             <div class="detailTitle">Project end date : </div>
-             <div class="detailContent">{{ this.getProjectDates(project.projectEndDate, "endDate")}}</div>
+             <div class="detailContent">{{ this.getProjectDates(fetchProject.projectEndDate, "endDate")}}</div>
       </v-list-item>
              </v-col>
 
@@ -314,7 +314,7 @@
       >
       <v-list-item class="detailList">
             <div class="detailTitle">Actual time for now : </div>
-             <div class="detailContent">{{ this.getProjectTimeForNow()}}</div>
+             <div class="detailContent">{{ this.getProjectTimeForNow(fetchProject.projectStartDate)}}</div>
       </v-list-item>
              </v-col>
             
@@ -436,11 +436,12 @@
     
 </template>
 <script>
+import { mapState } from 'vuex';
 import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
 
 export default {
-    props: ['project', 'taskCompletion', 'taskLog'],
+    props: ['taskCompletion', 'taskLog'],
     components: {
       'success-popup' : SuccessPopup,
       'error-popup': ErrorPopup
@@ -466,7 +467,7 @@ export default {
     }, computed: {
         projectName: {
             get(){
-                return this.project.projectName
+                return this.fetchProject.projectName
             },
           set(value) {
             this.updateProject.projectName =  value;
@@ -474,7 +475,7 @@ export default {
         },
          clientId: {
             get(){
-                return this.project.clientId
+                return this.fetchProject.clientId
             },
           set(value) {
             this.updateProject.clientId =  value;
@@ -482,7 +483,7 @@ export default {
         },
         projectStartDate: {
             get(){
-              let stringDate  = this.project.projectStartDate + "";
+              let stringDate  = this.fetchProject.projectStartDate + "";
               stringDate = stringDate.toString();
               stringDate = stringDate.slice(0,16);           
               return stringDate;
@@ -496,7 +497,7 @@ export default {
         },
          projectEndDate: {
             get(){
-                 let stringDate  = this.project.projectEndDate + "";
+              let stringDate  = this.fetchProject.projectEndDate + "";
               stringDate = stringDate.toString();
               stringDate = stringDate.slice(0,16);           
               return stringDate;
@@ -510,16 +511,19 @@ export default {
         },
          projectStatus: {
             get(){
-                return this.project.projectStatus
+                return this.fetchProject.projectStatus
             },
           set(value) {
             this.updateProject.projectStatus =  value;
           }            
-        },
+        }, 
+      ...mapState({
+          fetchProject: state => state.project.project,
+      })
     },
     methods: {
       updateField(){
-        let projectName = this.project.projectName;
+        let projectName = this.fetchProject.projectName;
         this.updateProject.projectName =  projectName;
         return "123";
       },
@@ -527,7 +531,7 @@ export default {
         console.log("update Project", this.updateProject);
         let response;
        try{
-          response = await this.$axios.$put(`/projects/${this.project.projectId}`, {
+          response = await this.$axios.$put(`/projects/${this.fetchProject.projectId}`, {
           modifierId: this.userId,
           projectName: this.updateProject.projectName,
           clientId: this.updateProject.clientId,
@@ -537,6 +541,7 @@ export default {
         })
         // location.reload();
         console.log("project edit response ----------> ", response)
+        this.$store.dispatch('project/fetchProject', this.fetchProject.projectId)
         this.component = 'success-popup'
        } catch(e){
 
@@ -548,10 +553,10 @@ export default {
                 this.component = ''
             },
         async deleteData(){
-       console.log(this.project.projectId);
+       console.log(this.fetchProject.projectId);
       let response;
        try{
-        response = await this.$axios.$delete(`/projects/${this.project.projectId}`, {    
+        response = await this.$axios.$delete(`/projects/${this.fetchProject.projectId}`, {    
                 data: {},
                 headers: {
                     'user': this.userId,
@@ -570,7 +575,7 @@ export default {
          let stringDate = new Date(date);
          console.log(stringDate);
          let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
-         console.log(formateedDate);
+         console.log("formateedDate for date", formateedDate);
          if(type === "startDate"){
             this.startDate = formateedDate;
          } else {
@@ -580,7 +585,7 @@ export default {
          stringDate = stringDate.toString();
          stringDate = stringDate.slice(0,10);           
          return stringDate;
-         return formateedDate;
+        //  return formateedDate;
       },
       
       getProjectTimeLine(){
@@ -601,13 +606,18 @@ export default {
              return days + " day(s)"
            }
       },
-      getProjectTimeForNow(){
-          let now = new Date();
-          console.log("today", now)
-          let startDate = new Date(this.startDate);
-          console.log("startDate", this.startDate)
+      getProjectTimeForNow(date){
+         let now = new Date();
+         let stringDate = new Date(date);
+         stringDate = date + " ";
+         stringDate = stringDate.toString();
+         stringDate = stringDate.slice(0,10);   
+          let startDate = new Date(stringDate);
           let days = parseInt((now - startDate) / (1000 * 60 * 60 * 24), 10); 
-           let months;
+          console.log("days", days);
+          if(days < 0)
+            return "0 Days"
+          let months;
           let weeks;
            if(days > 30){
              months = Math.floor(days/30)
