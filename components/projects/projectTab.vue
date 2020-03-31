@@ -314,7 +314,7 @@
       >
       <v-list-item class="detailList">
             <div class="detailTitle">Actual time for now : </div>
-             <div class="detailContent">{{ this.getProjectTimeForNow()}}</div>
+             <div class="detailContent">{{ this.getProjectTimeForNow(fetchProject.projectStartDate)}}</div>
       </v-list-item>
              </v-col>
             
@@ -575,7 +575,7 @@ export default {
          let stringDate = new Date(date);
          console.log(stringDate);
          let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
-         console.log(formateedDate);
+         console.log("formateedDate for date", formateedDate);
          if(type === "startDate"){
             this.startDate = formateedDate;
          } else {
@@ -585,7 +585,7 @@ export default {
          stringDate = stringDate.toString();
          stringDate = stringDate.slice(0,10);           
          return stringDate;
-         return formateedDate;
+        //  return formateedDate;
       },
       
       getProjectTimeLine(){
@@ -606,13 +606,18 @@ export default {
              return days + " day(s)"
            }
       },
-      getProjectTimeForNow(){
-          let now = new Date();
-          console.log("today", now)
-          let startDate = new Date(this.startDate);
-          console.log("startDate", this.startDate)
+      getProjectTimeForNow(date){
+         let now = new Date();
+         let stringDate = new Date(date);
+         stringDate = date + " ";
+         stringDate = stringDate.toString();
+         stringDate = stringDate.slice(0,10);   
+          let startDate = new Date(stringDate);
           let days = parseInt((now - startDate) / (1000 * 60 * 60 * 24), 10); 
-           let months;
+          console.log("days", days);
+          if(days < 0)
+            return "0 Days"
+          let months;
           let weeks;
            if(days > 30){
              months = Math.floor(days/30)
