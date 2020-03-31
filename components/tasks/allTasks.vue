@@ -57,8 +57,8 @@
               <v-list-item-content>
                 <v-list-item-title class="body-2">{{ task.taskName}}</v-list-item-title>
               </v-list-item-content>
-              <v-list-item-content class="updatedDate">
-                <v-list-item-title class="body-2">{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
+              <v-list-item-content>
+                <v-list-item-title :class="dueDateCheck(task)">{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
               </v-list-item-content>
                <v-list-item-avatar>
           <v-img v-if="task.taskAssigneeProfileImage != null" :src="task.taskAssigneeProfileImage"></v-img>
@@ -171,6 +171,28 @@ import { mapState } from 'vuex';
        console.log("error", e)
       })     
     }, 
+    dueDateCheck(task){
+        console.log("check due date color", task);
+        if(task.taskStatus === 'closed'){
+          return 'workLoadTaskDone';
+        }
+        else if (task.taskDueDateAt == null) {
+          return 'workLoadTaskDefault';
+        }
+        else {
+          const dueDate = new Date(task.taskDueDateAt);
+          const dueToUtc = new Date(dueDate.toLocaleString("en-US", {timeZone: "UTC"}));
+          const dueToUtcDate = new Date(dueToUtc);
+          const now = new Date();
+          console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
+          if(now.getTime() > dueToUtcDate.getTime()){
+            console.log("overdue")
+            return 'workLoadTaskOverDue';
+          } else {
+            return 'workLoadTaskHealthy';
+          }
+        }
+      },
     getProjectDates(date) {
       if(date === null)
           return "Add Due Date";
