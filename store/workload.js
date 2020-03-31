@@ -9,6 +9,9 @@ export const mutations = {
     },
     SET_WORKLOAD_TASKS(state, workloadTasks){
         state.workloadTasks = workloadTasks;
+    },
+    EMPTY_WORKLOAD_TASKS(state){
+        state.workloadTasks = [];
     }
 }
 
@@ -45,6 +48,9 @@ export const actions = {
         } catch {
             console.log("Error fetching fetchAllWorkloadTasks",e);
         }
+    },
+    clearWorkLoadTasks({commit}){
+        commit('EMPTY_WORKLOAD_TASKS');
     }
 }
 

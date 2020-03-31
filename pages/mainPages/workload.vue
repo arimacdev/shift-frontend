@@ -177,6 +177,8 @@ export default {
         this.userData.lastName = this.select.lastName;
          if(this.select.totalTasks != 0){
         this.$store.dispatch('workload/fetchAllWorkloadTasks', this.select.userId)
+         } else {
+           this.$store.dispatch('workload/clearWorkLoadTasks');
          }
       }        
     },
@@ -185,7 +187,9 @@ export default {
       console.log("check", userData);
       if(userData.totalTasks != 0){
         this.$store.dispatch('workload/fetchAllWorkloadTasks', userData.userId);
-      }     
+      } else {
+        this.$store.dispatch('workload/clearWorkLoadTasks');
+      }  
       },
       querySelections (v) {
         let projectSearchList = this.taskWorkLoadUsers;
