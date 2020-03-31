@@ -3,7 +3,8 @@ import axios from 'axios';
 export const state =  {
     allTasks: [],
     myTasks: [],
-    userCompletionTasks: []
+    userCompletionTasks: [],
+    projectTaskCompletion: {}
 
   }
 
@@ -16,6 +17,9 @@ export const mutations = {
     },
     SET_USER_TASK_COMPLETION(state, event){
       state.userCompletionTasks = event;
+    },
+    SET_PROJECT_TASK_COMPLETION(state, projectTaskCompletion){
+      state.projectTaskCompletion = projectTaskCompletion;
     }
   }
 
@@ -54,7 +58,24 @@ export const actions = {
     .catch (e => {
      console.log("error fetching completed tasks", e)
     })
-    }
+    },
+
+    fetchProjectTaskCompletion({commit, rootState}, projectId){
+      const userId = rootState.user.userId;
+
+       this.$axios.get(`projects/${projectId}/tasks/completion`, {
+         headers: {
+          user: userId,
+       }
+      })
+      .then (response => {
+        console.log("project task completion from store -->", response.data.data);
+        commit('SET_PROJECT_TASK_COMPLETION', response.data.data);
+      })
+      .catch (e => {
+       console.log("error fetching completed tasks", e)
+      })
+      }
 
   }
 

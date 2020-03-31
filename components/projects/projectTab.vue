@@ -345,7 +345,7 @@
         
         class="projectBox due"
       >
-      <p class="projectBoxNumber">{{taskCompletion.tasksDueToday}}</p>
+      <p class="projectBoxNumber">{{projectTaskCompletion.tasksDueToday}}</p>
       <p class="projectBoxtext">Due today</p>
       <v-icon size="30" color="white">mdi-calendar-blank</v-icon>
              </v-col>
@@ -353,7 +353,7 @@
        
         class="projectBox overDue"
       >
-        <p class="projectBoxNumber">{{taskCompletion.tasksOverDue}}</p>
+        <p class="projectBoxNumber">{{projectTaskCompletion.tasksOverDue}}</p>
       <p class="projectBoxtext">Overdue</p>
       <v-icon size="30" color="white">mdi-alert-octagon-outline</v-icon>
       </v-col>
@@ -362,7 +362,7 @@
         
         class="projectBox left"
       >
-      <p class="projectBoxNumber">{{taskCompletion.tasksLeft}}</p>
+      <p class="projectBoxNumber">{{projectTaskCompletion.tasksLeft}}</p>
       <p class="projectBoxtext">Left</p>
       <v-icon size="30" color="white">mdi-clock-outline</v-icon>
              </v-col>
@@ -371,7 +371,7 @@
         
         class="projectBox assign"
       >
-         <p class="projectBoxNumber">{{taskCompletion.tasksAssigned}}</p>
+         <p class="projectBoxNumber">{{projectTaskCompletion.tasksAssigned}}</p>
       <p class="projectBoxtext">Assigned to you</p>
       <v-icon size="30" color="white">mdi-account-outline</v-icon>
       </v-col>
@@ -380,7 +380,7 @@
         
         class="projectBox completed"
       >
-      <p class="projectBoxNumber">{{taskCompletion.tasksCompleted}}</p>
+      <p class="projectBoxNumber">{{projectTaskCompletion.tasksCompleted}}</p>
       <p class="projectBoxtext">Completed</p>
       <v-icon size="30" color="white">mdi-check-circle-outline</v-icon>
              </v-col>
@@ -453,7 +453,7 @@ import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
 
 export default {
-    props: ['taskCompletion', 'taskLog'],
+    props: ['taskLog'],
     components: {
       'success-popup' : SuccessPopup,
       'error-popup': ErrorPopup
@@ -476,7 +476,11 @@ export default {
         ],
          component: ''
       }
-    }, computed: {
+    }, 
+    computed: {
+       ...mapState({
+        projectTaskCompletion: state => state.task.projectTaskCompletion
+      }),
         projectName: {
             get(){
                 return this.fetchProject.projectName
