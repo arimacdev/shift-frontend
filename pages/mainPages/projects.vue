@@ -192,6 +192,7 @@ export default {
     this.$store.dispatch('task/fetchTasksAllTasks', this.project.projectId)
     this.$store.dispatch('task/fetchTasksMyTasks', this.project.projectId) 
     this.$store.dispatch('task/fetchProjectUserCompletionTasks', this.project.projectId)
+    this.$store.dispatch('project/fetchProject', this.project.projectId)
 
     //  console.log("userId", this.userId)   @ALLTASKS DEPRECATED
     //  console.log("access_token", this.access_token)     
