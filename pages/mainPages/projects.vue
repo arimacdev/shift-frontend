@@ -42,7 +42,7 @@
     <div class="body-div">
       <div class="project-list">
 
-        <search-bar :projects=projects />
+        <search-bar :projects=projects @selectSearched="selectProject"/>
     
 <v-list-item-group>
 <div class="listView overflow-y-auto">
@@ -190,6 +190,9 @@ export default {
   },
 
     methods: {
+    searchSelect(arg){
+      console.log("event emitted", arg)
+    },
     selectProject(project){
      this.project = project;
      console.log("selected project ---------->", project);
