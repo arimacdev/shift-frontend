@@ -190,9 +190,6 @@ export default {
   },
 
     methods: {
-    searchSelect(arg){
-      console.log("event emitted", arg)
-    },
     selectProject(project){
      this.project = project;
      console.log("selected project ---------->", project);
@@ -200,7 +197,8 @@ export default {
     this.$store.dispatch('task/fetchTasksAllTasks', this.project.projectId)
     this.$store.dispatch('task/fetchTasksMyTasks', this.project.projectId) 
     this.$store.dispatch('task/fetchProjectUserCompletionTasks', this.project.projectId)
-    this.$store.dispatch('project/fetchProject', this.project.projectId)
+    this.$store.dispatch('project/fetchProject', this.project.projectId) 
+    this.$store.dispatch('task/fetchProjectTaskCompletion', this.project.projectId)
 
     //  console.log("userId", this.userId)   @ALLTASKS DEPRECATED
     //  console.log("access_token", this.access_token)     
@@ -231,18 +229,18 @@ export default {
       //  console.log("error", e)
       // })
 
-      this.$axios.get(`projects/${this.project.projectId}/tasks/completion`, {
-         headers: {
-          user: this.userId,
-       }
-      })
-      .then (response => {
-      //  console.log("task completion list", response.data)
-       this.taskCompletion = response.data.data;
-      })
-      .catch (e => {
-       console.log("error", e)
-      })
+      // this.$axios.get(`projects/${this.project.projectId}/tasks/completion`, {
+      //    headers: {
+      //     user: this.userId,
+      //  }
+      // })
+      // .then (response => {
+      // //  console.log("task completion list", response.data)
+      //  this.taskCompletion = response.data.data;
+      // })
+      // .catch (e => {
+      //  console.log("error", e)
+      // })
 
         this.$axios.get (`users`)
       .then (response => {

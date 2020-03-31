@@ -108,11 +108,16 @@ export default {
           const dueToUtc = new Date(dueDate.toLocaleString("en-US", {timeZone: "UTC"}));
           const dueToUtcDate = new Date(dueToUtc);
           const now = new Date();
+          const today = (dueToUtcDate.toDateString() === now.toDateString())
+          console.log("isToday--->", today)
           console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
           if(now.getTime() > dueToUtcDate.getTime()){
             console.log("overdue")
             return 'workLoadTaskOverDue';
-          } else {
+          } else if (today){ /// This is where I check
+             return 'workLoadTaskOverDue';
+              console.log("this is Today--->", today)
+          } {
             return 'workLoadTaskHealthy';
           }
         }
