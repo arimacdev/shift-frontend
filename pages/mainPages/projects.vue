@@ -189,9 +189,10 @@ export default {
      console.log("selected project ---------->", project);
 
     this.$store.dispatch('task/fetchTasksAllTasks', this.project.projectId)
-    this.$store.dispatch('task/fetchTasksMyTasks', this.project.projectId)
+    this.$store.dispatch('task/fetchTasksMyTasks', this.project.projectId) 
+    this.$store.dispatch('task/fetchProjectUserCompletionTasks', this.project.projectId)
 
-    //  console.log("userId", this.userId)
+    //  console.log("userId", this.userId)   @ALLTASKS DEPRECATED
     //  console.log("access_token", this.access_token)     
     //    //Get all projects for now
     //   this.$axios.get (`projects/${this.project.projectId}/tasks?userId=${this.userId}`)
@@ -211,7 +212,7 @@ export default {
       //  console.log("error", e)
       // })
 
-      // this.$axios.get (`projects/${this.project.projectId}/tasks/user?userId=${this.userId}`)
+      // this.$axios.get (`projects/${this.project.projectId}/tasks/user?userId=${this.userId}`) @MYTASKS DEPRECATED
       // .then (response => {
       // //  console.log("data", response.data)
       //  this.MyTasks = response.data.data;
