@@ -44,7 +44,7 @@ export default {
         let projectSearchList = this.users;
         for (let index = 0; index < projectSearchList.length; ++index) {
             let user = projectSearchList[index];
-            this.states.push({name: user.firstName + " " + user.lastName, id: user.userId});
+            this.states.push({name: user.firstName + " " + user.lastName, id: user});
         }
         console.log("usersList", this.users, "nameList", this.states)
         this.loading = true
@@ -54,7 +54,8 @@ export default {
             return (e || '').toLowerCase().indexOf((v || '').toLowerCase()) > -1
           })
           this.loading = false
-        }, 500)
+        })
+        this.loading = false
       },
     },
   }

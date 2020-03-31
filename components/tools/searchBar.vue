@@ -44,7 +44,7 @@ export default {
         let projectSearchList = this.projects;
         for (let index = 0; index < projectSearchList.length; ++index) {
             let project = projectSearchList[index];
-            this.states.push({name: project.projectName, id: project.projectId});
+            this.states.push({name: project.projectName, id: project});
         }
         console.log("projectsList", this.projects, "nameList", this.states)
         this.loading = true
@@ -54,7 +54,8 @@ export default {
             return (e || '').toLowerCase().indexOf((v || '').toLowerCase()) > -1
           })
           this.loading = false
-        }, 500)
+        })
+        this.loading = false
       },
     },
   }
