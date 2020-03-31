@@ -51,7 +51,7 @@
 }
 .workLoadTaskOverDue{
   text-align: right;
-  color: rgb(163, 11, 0);
+  color: rgb(163, 11, 0) !important;
 }
 .workLoadTaskHealthy{
   text-align: right;
