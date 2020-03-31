@@ -77,6 +77,7 @@
           response = await this.$axios.$post(`/projects/${this.projectId}/users`, 
           this.addUser
         )
+        this.$store.dispatch('task/fetchProjectUserCompletionTasks', this.projectId)
        } catch(e){
           console.log("Error adding a User", e);
        }   
