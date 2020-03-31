@@ -42,7 +42,7 @@
     <div class="body-div">
       <div class="project-list">
 
-        <search-bar :projects=projects @selectSearched="selectProject"/>
+        <search-bar :projects=allProjects @selectSearched="selectProject"/>
     
 <v-list-item-group>
 <div class="listView overflow-y-auto">
@@ -50,7 +50,7 @@
 <v-divider class="mx-4"></v-divider>
             <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Presales</v-toolbar-title>
 
-          <div v-for="(project, index) in projects"
+          <div v-for="(project, index) in allProjects"
         :key="index"  v-on:click="component='tab-views'">
         
             <v-list-item class="selectedProject" v-if="project.projectStatus == 'presalesPD' || project.projectStatus == 'preSalesQS' || project.projectStatus == 'preSalesN' || project.projectStatus == 'preSalesC' || project.projectStatus == 'preSalesL' || project.projectStatus == 'presales'" @click="selectProject(project)" >
@@ -77,7 +77,7 @@
 <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Ongoing</v-toolbar-title>
 
 
-          <div v-for="(project, index) in projects"
+          <div v-for="(project, index) in allProjects"
         :key="index"  v-on:click="component='tab-views'">
             <v-list-item v-if="project.projectStatus == 'ongoing'" @click="selectProject(project)" >
               <v-list-item-action>
@@ -95,7 +95,7 @@
 <v-divider class="mx-4"></v-divider>
           <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Support</v-toolbar-title>
 
-          <div v-for="(project, index) in projects"
+          <div v-for="(project, index) in allProjects"
         :key="index"  v-on:click="component='tab-views'">
             <v-list-item v-if="project.projectStatus == 'support'" @click="selectProject(project)" >
               <v-list-item-action>
@@ -113,7 +113,7 @@
 <v-divider class="mx-4"></v-divider>
           <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Finished</v-toolbar-title>
 
-          <div v-for="(project, index) in projects"
+          <div v-for="(project, index) in allProjects"
         :key="index"  v-on:click="component='tab-views'">
             <v-list-item v-if="project.projectStatus == 'finished'" @click="selectProject(project)" >
               <v-list-item-action>
@@ -123,11 +123,13 @@
                 <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-             <!-- <v-divider class="mx-4"></v-divider> -->
-       
+             <!-- <v-divider class="mx-4"></v-divider>
+             <v-divider class="mx-4"></v-divider> -->       
           </div>
+             <v-divider class="mx-4"></v-divider>
 
-</div> 
+</div>
+ <!-- allProjects -->
 </v-list-item-group> 
       </div>
             <keep-alive>
@@ -170,9 +172,14 @@ export default {
       }
     },
 
+    created() {
+     this.$store.dispatch('project/fetchAllProjects');
+
+    },
+
     async asyncData({ $axios, app, store }) { 
     let userId = store.state.user.userId;
-    const { data: projects } = await $axios.$get(`/projects?userId=${userId}`)
+    // const { data: projects } = await $axios.$get(`/projects?userId=${userId}`)
     const { data: users } = await $axios.$get('/users')
     const { data: currentUser } = await $axios.$get(`/users/${userId}`)
     // const { data: tasks } = await $axios.$get(`/projects/${p1}/tasks?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`)
@@ -181,7 +188,7 @@ export default {
     // console.log("tasks list", tasks)    
     // console.log("Current user", currentUser) 
     return { 
-      projects: projects,
+      // projects: projects,
       users:users,
       // tasks: tasks,
        project: '',
@@ -269,8 +276,11 @@ export default {
        console.log("error", e)
       })
       },
-      computed: mapState({
-        organizationalRole: state => state.user.organizationalRole
+    },
+    computed: {
+      ...mapState({
+          allProjects: state => state.project.projects,
+          organizationalRole: state => state.user.organizationalRole
       })
     }
   }

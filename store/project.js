@@ -8,7 +8,7 @@ export const mutations = {
       state.project = project;
   },
   FETCH_ALL_PROJECTS(state, projects){
-    state.projects = projects;
+    state.projects = projects; // push
 }
 }
 export const actions = {

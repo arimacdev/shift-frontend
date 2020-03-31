@@ -565,6 +565,7 @@ export default {
             console.log("i won't fetch")
         } else {
             console.log("i will fetch")
+            this.$store.dispatch('project/fetchAllProjects');
         }
         this.component = 'success-popup'
        } catch(e){
