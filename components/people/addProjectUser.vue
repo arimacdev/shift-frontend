@@ -17,28 +17,56 @@
         </div>
         </template>
       <v-card class="addUserPopup">
+         <div class="popupFormContent">
           <v-card-actions >
 
-            <select v-model="addUser.assigneeId" class="formElements popupFormElement">
+            <!-- <select v-model="addUser.assigneeId" class="formElements popupFormElement">
               <option disabled value="" >Assignee</option>
               <option v-for="(user, index) in users" :key="index" :value="user.userId">
                 {{user.firstName}} {{user.lastName}}
               </option>
-            </select>
+            </select> -->
+
+            <v-autocomplete
+              filled
+              label="Select user"
+              v-model="addUser.assigneeId"
+              :items="states"
+              item-text="name"
+              item-value="id.userId"
+              :search-input.sync="search"
+              class=" popupFormElement"
+              flat
+              outlined=""
+              background-color="white"
+              append-icon=""
+              hide-no-data
+              @change="onSelectedUser()"
+          >
+            
+          </v-autocomplete>
 
           </v-card-actions>
           <v-card-actions class="">
-             <input v-model="addUser.assigneeJobRole" placeholder="Role" class="formElements popupFormElement">
+              <!-- <input v-model="addUser.assigneeJobRole" placeholder="Role" class="formElements popupFormElement"> -->
+           <v-text-field
+            v-model="addUser.assigneeJobRole" 
+            label="Project Role"
+            flat
+            outlined
+            class=" popupFormElement"
+            ></v-text-field>
+           
             </v-card-actions>
-             
+              </div>
              <v-card-actions class="roleField">
              
-                <v-checkbox
+              <v-checkbox
                 v-model="adminStatus"
                 hide-details
                 class="shrink mr-2 mt-0"                
                 label="Admin">
-                </v-checkbox>
+              </v-checkbox>
              </v-card-actions>
             
 
@@ -64,10 +92,28 @@
         },
         isShow: false,
         selected: false,
-        dialog: false
+        dialog: false,
+        loading: false,
+        items: [],
+        search: null,
+        select: null,
+        states: [
+          
+        ],
       }
     },
+     watch: {
+      search (val) {
+        val && val !== this.select && this.querySelections(val)
+      },
+    },
     methods: {
+       onSelectedUser(){
+        if(this.select !== undefined){
+        this.$emit('searchSelected', this.select);
+        // console.log("selected user",this.select)
+        }
+      },
       async changeHandler() {
         this.dialog = false;
         let assigneeProjectRoleId = this.getProjectRole();
@@ -81,10 +127,25 @@
         this.addUser.assigneeId = "";
         this.addUser.assigneeJobRole ="";
         this.selected = false;
-
        } catch(e){
           console.log("Error adding a User", e);
        }   
+      },
+      querySelections (v) {
+        let projectSearchList = this.users;
+        for (let index = 0; index < projectSearchList.length; ++index) {
+            let user = projectSearchList[index];
+            this.states.push({name: user.firstName + " " + user.lastName, id: user, img: user.profileImage});
+        }
+        // console.log("usersList", this.users, "nameList", this.states)
+        this.loading = true
+        setTimeout(() => {
+          this.items = this.states.filter(e => {
+            return (e || '').toLowerCase().indexOf((v || '').toLowerCase()) > -1
+          })
+          this.loading = false
+        })
+        this.loading = false
       },
       getProjectRole(){
         console.log("getProjectRole", this.selected)
