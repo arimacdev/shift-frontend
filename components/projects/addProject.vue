@@ -22,11 +22,11 @@
                 md="6"
                 
             >
-        <input maxlength="50" @input="$v.projectName.$touch()" v-model="projectName" placeholder="Project name" class="formElements">
+        <!-- <input maxlength="50" @input="$v.projectName.$touch()" v-model="projectName" placeholder="Project name" class="formElements">
        <div v-if="$v.projectName.$error && !$v.projectName.required" class="errorText"> Project name is required</div>
        <div v-if="$v.projectName.$error && !$v.projectName.maxLength" class="errorText"> Cannot use more than 50 characters</div>
-           
-            <!-- <v-text-field
+            -->
+            <v-text-field
             label="Project name"
             outlined
             class="createFormElements"
@@ -34,7 +34,7 @@
           ></v-text-field>
  <div v-if="$v.projectName.$error && !$v.projectName.required" class="errorText"> Project name is required</div>
        <div v-if="$v.projectName.$error && !$v.projectName.maxLength" class="errorText"> Cannot use more than 50 characters</div>
-            -->
+           
 
             </v-col>
              <v-col
@@ -42,17 +42,17 @@
                 md="6"
                 
             >
-            <input maxlength="49" v-model="client" placeholder="Client" class="formElements">
+            <!-- <input maxlength="49" v-model="client" placeholder="Client" class="formElements"> -->
             <!-- <div v-if="$v.client.$error && !$v.client.required" class="errorText"> Client is required</div> -->
             
-            <!-- <v-text-field
+            <v-text-field
             label="Client"
             outlined
             class="createFormElements"
             v-model.trim="$v.client.$model"
           ></v-text-field>
            <div v-if="$v.client.$error && !$v.client.required" class="errorText"> Client is required</div> 
-             -->
+            
             </v-col>
         </v-row>
 
@@ -70,8 +70,15 @@
         <!-- <input type="text" v-model.trim="$v.startDate.$model" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Project start date" class="formElements">
             <div v-if="$v.startDate.$error && !$v.startDate.required" class="errorText"> Start date is required</div> -->
            <div class="pickerContainer pickerDiv">
-            <VueCtkDateTimePicker color="#3f51b5" class="dateTimePickerInternal" v-model="$v.startDate.$model" label="Project start date and time"/>
-            <!-- <div v-if="$v.startDate.$error && !$v.startDate.required" class="errorText errorDiv"> End date is required</div> -->
+               
+            <VueCtkDateTimePicker
+             color="#3f51b5" 
+             class="dateTimePickerInternal" 
+             v-model="$v.startDate.$model" 
+             label="Project start date and time"
+             input-size="lg"
+             />
+            <div v-if="$v.startDate.$error && !$v.startDate.dateCheck" class="errorText errorDiv"> Start date cannot be past date</div>
           
            </div>
            
@@ -84,9 +91,15 @@
             <!-- <input type="text" v-model.trim="$v.endDate.$model" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Project end date" class="formElements">
              <div v-if="$v.endDate.$error && !$v.endDate.required" class="errorText"> End date is required</div> -->
            <div class="pickerContainer pickerDiv">
-            <VueCtkDateTimePicker color="#3f51b5" class="dateTimePickerInternal" v-model="$v.endDate.$model" label="Project end date and time"/>
+            <VueCtkDateTimePicker 
+            color="#3f51b5" 
+            class="dateTimePickerInternal" 
+            v-model="$v.endDate.$model" 
+            label="Project end date and time"
+            input-size="lg"
+            />
             
-            <!-- <div v-if="$v.endDate.$error && !$v.endDate.required" class="errorText errorDiv"> End date is required</div> -->
+            <div v-if="$v.endDate.$error && !$v.endDate.dateCheck" class="errorText errorDiv"> End date should be after start date</div>
           
            </div>
           
@@ -103,14 +116,14 @@
                 md="6"
                 
             >
-        <input v-model="projectTimeLine" disabled placeholder="Estimated project timeline" class="formElements">
-            <!-- <v-text-field
+        <!-- <input v-model="projectTimeLine" disabled placeholder="Estimated project timeline" class="formElements"> -->
+            <v-text-field
             label="Estimated project timeline"
             outlined
             class="createFormElements"
             disabled=""
             v-model.trim="projectTimeLine"
-          ></v-text-field> -->
+          ></v-text-field>
           
             </v-col>
              <v-col
@@ -181,6 +194,7 @@ export default {
     },
     
     methods: {
+        
     getStartDate(){       
         const startDate = new Date(this.startDate);
         const isoDate = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000)).toISOString();
@@ -207,6 +221,7 @@ export default {
 
         this.projectName = '',
         this.clientId = '',
+        this.client = '',
         this.$v.$reset()
 
         console.log("project added successfully", response);
@@ -220,6 +235,7 @@ export default {
       close(){
           this.component = ''
       },
+      
 
       handleSubmit(e) {
                 this.submitted = true;
@@ -253,15 +269,52 @@ export default {
             },
             startDate: {
             required,
+           dateCheck(){
+                const dueDate = new Date(this.startDate);
+                if(this.startDate == null){
+                    return true;
+                } else{
+                    const dueToUtc = new Date(dueDate.toLocaleString("en-US", {timeZone: "UTC"}));
+                    const dueToUtcDate = new Date(dueToUtc);
+                    const now = new Date();
+                    console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime()+350000000);
+                    if(now.getTime() >= dueToUtcDate.getTime()+35000000){
+                        console.log("overdue")
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+                
+      },
             },
             endDate: {
             required,
+            dateCheck(){
+                const endDate = new Date(this.endDate);
+                if(this.endDate == null){
+                    return true;
+                } else{
+                    const endToUtc = new Date(endDate.toLocaleString("en-US", {timeZone: "UTC"}));
+                    const endToUtcDate = new Date(endToUtc);
+                    const startDate = new Date(this.startDate);
+                    console.log("start", startDate.getTime(), "end", endToUtcDate.getTime()+35000000);
+                    if(startDate.getTime() >= endToUtcDate.getTime()+35000000){
+                        console.log("overdue")
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+                
+      },
             },
         },
         computed: {
+            
             checkValidation: {
             get(){
-              if(this.projectName === ''){
+              if(this.$v.$invalid == true){
                 return true
               } else{
                 return false
@@ -273,7 +326,7 @@ export default {
         },
         addProjectStyling: {
             get(){
-              if(this.projectName === ''){
+              if(this.$v.$invalid == true){
                 return 'addProjectButtonFail'
               } else{
                 return 'addProjectButtonSuccess'
