@@ -291,9 +291,9 @@
                 input-id="startDate"
                 >
                 <label for="startDate" slot="before" class="tabListItemsText "><span class="pickerNewText">Due date</span></label>
-                 <span class="description sdfsdf" slot="after" >
+                 <!-- <span class="description sdfsdf" slot="after" >
                      <v-btn class="btnPicker" x-small depressed color="primary" @click="updateTaskDates('dueDate')"> <span class="btnPickerText"> Update</span> </v-btn>
-                 </span>
+                 </span> -->
                 <template slot="button-cancel">
                   <fa :icon="['far', 'times']"></fa>
                   Cancel
@@ -329,9 +329,9 @@
                 input-id="endDate"
                 >
                 <label for="endDate" slot="before" class="tabListItemsText "><span class="pickerNewText">Remind on</span></label>
-                 <span class="description " slot="after">
+                 <!-- <span class="description " slot="after">
                      <v-btn class="btnPicker" x-small depressed color="primary"  @click="updateTaskDates('remindOn')"> <span class="btnPickerText"> Update </span></v-btn>
-                 </span>
+                 </span> -->
                 <template slot="button-cancel">
                   <fa :icon="['far', 'times']"></fa>
                   Cancel
@@ -415,7 +415,7 @@
             </a>
           </div>
           <div class="attachmentClose">
-               <v-icon size="15" @click="" class="closeButton" color="red">mdi-close-circle-outline</v-icon>
+               <v-icon size="15" class="closeButton" color="red">mdi-close-circle-outline</v-icon>
              </div>
           
         </v-list-item>
@@ -800,6 +800,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
         set(value) {
             console.log("updated task due ->", value)
             this.updatedTask.taskDueDateAt =  value;
+            this.updateTaskDates("dueDate");
           }            
         },
           taskRemindOn: {
@@ -816,6 +817,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
         set(value) {
           console.log("updated task reminder ->", value)
             this.updatedTask.taskRemindOnDate =  value;
+            this.updateTaskDates("remindOn");
           }            
         },
          subTaskDescription: {

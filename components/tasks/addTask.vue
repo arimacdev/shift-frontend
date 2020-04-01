@@ -112,7 +112,7 @@
             md="6"
             class="buttonGrid"
       >
-                <button :class="addTaskStyling" @click="addTask" :disabled="checkValidation" >
+                <button :class="addTaskStyling" @click.once="addTask" :disabled="checkValidation" >
                 <v-list-item 
                 dark >
                     

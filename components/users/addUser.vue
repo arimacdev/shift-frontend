@@ -104,7 +104,7 @@
             class="buttonGrid"
       >
                 <button class="submitButton addUserSubmit">
-                <v-list-item @click="postData()" 
+                <v-list-item @click.once="postData()" 
                 dark >
                     <v-list-item-action>
                         <v-icon size="20" color="">mdi-account-outline</v-icon>

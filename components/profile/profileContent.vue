@@ -75,18 +75,7 @@
         </div>
         <form @submit.prevent="handleSubmit">
         <div class="profileUserName">{{ user.firstName }} {{ user.lastName }} </div>
-        <button class="submitButton profileButton">
-                <v-list-item @click="postData()" 
-                dark >
-                    <v-list-item-action>
-                        <v-icon size="20" color="">mdi-account-outline</v-icon>
-                    </v-list-item-action>
-                    <v-list-item-content class="buttonText">
-                        <v-list-item-title class="bodyWiew">Edit profile details</v-list-item-title>
-                    </v-list-item-content>
-                        <div class="iconBackCircle"> <v-icon size="17" color="#0BAFFF">mdi-pencil-outline</v-icon></div>
-                    </v-list-item>
-                </button>
+       
         <div class="userDetails ">
             <p class="userName"></p>
         </div>
@@ -162,6 +151,25 @@
         <div v-if="$v.confirmPassword.$error && !$v.confirmPassword.sameAs" class="errorText"> Passwords must be identical</div>
        </v-col>
         </v-row>
+        <v-row>
+          <v-col
+                sm="12"
+                md="12"
+                
+            >
+         <button class="submitButton profileButton">
+                <v-list-item @click="postData()" 
+                dark >
+                    <v-list-item-action>
+                        <v-icon size="20" color="">mdi-account-outline</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content class="buttonText">
+                        <v-list-item-title class="bodyWiew">Edit profile details</v-list-item-title>
+                    </v-list-item-content>
+                        <div class="iconBackCircle"> <v-icon size="17" color="#0BAFFF">mdi-pencil-outline</v-icon></div>
+                    </v-list-item>
+                </button>
+          </v-col></v-row>
     </div>
         </form>
 

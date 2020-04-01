@@ -138,7 +138,7 @@
 
       
                 <button class="submitButton">
-                <v-list-item  @click="postData()" 
+                <v-list-item  @click.once="postData()" 
                 dark >
                     <v-list-item-action>
                         <v-icon size="20" color="">mdi-folder-outline</v-icon>
