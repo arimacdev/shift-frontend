@@ -3,7 +3,7 @@
         <div class="blackBar profileBlackBar"></div>
         <div class="userImage profileUserImage">
           <v-img v-if="user.profileImage != null"  class="profileImage" :src="user.profileImage"></v-img>
-          <v-img v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>    
+          <v-img v-else class="profileImage" src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>    
           
           <div class="profilePictureUpload">
               <form>
