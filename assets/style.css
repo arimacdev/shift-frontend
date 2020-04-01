@@ -120,6 +120,22 @@ margin-bottom: -5px !important;
     margin-bottom: -20px;
 }
 .submitButton{
+    /* background-color: #0BAFFF; */
+    width: 50%;
+    border-radius: 5px;
+    float: left;
+    margin-right: 5px;
+    float: right;
+}
+.addProjectButtonFail{
+    background-color: red;
+    width: 50%;
+    border-radius: 5px;
+    float: left;
+    margin-right: 5px;
+    float: right;
+}
+.addProjectButtonSuccess{
     background-color: #0BAFFF;
     width: 50%;
     border-radius: 5px;

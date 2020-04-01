@@ -22,7 +22,7 @@
                 md="6"
                 
             >
-        <input maxlength="50" v-model.trim="$v.projectName.$model" placeholder="Project name" class="formElements">
+        <input maxlength="50" @input="$v.projectName.$touch()" v-model="projectName" placeholder="Project name" class="formElements">
        <div v-if="$v.projectName.$error && !$v.projectName.required" class="errorText"> Project name is required</div>
        <div v-if="$v.projectName.$error && !$v.projectName.maxLength" class="errorText"> Cannot use more than 50 characters</div>
            
@@ -42,8 +42,8 @@
                 md="6"
                 
             >
-            <input maxlength="49" v-model.trim="$v.client.$model" placeholder="Client" class="formElements">
-            <div v-if="$v.client.$error && !$v.client.required" class="errorText"> Client is required</div>
+            <input maxlength="49" v-model="client" placeholder="Client" class="formElements">
+            <!-- <div v-if="$v.client.$error && !$v.client.required" class="errorText"> Client is required</div> -->
             
             <!-- <v-text-field
             label="Client"
@@ -137,8 +137,8 @@
       >
 
       
-                <button class="submitButton">
-                <v-list-item  @click.once="postData()" 
+                <button  :class="addProjectStyling" :disabled="checkValidation" @click.once="postData()" >
+                <v-list-item  
                 dark >
                     <v-list-item-action>
                         <v-icon size="20" color="">mdi-folder-outline</v-icon>
@@ -259,6 +259,27 @@ export default {
             },
         },
         computed: {
+            checkValidation: {
+            get(){
+              if(this.projectName === ''){
+                return true
+              } else{
+                return false
+              }
+           },
+          set(value) {
+            this.projectName = value;
+          }            
+        },
+        addProjectStyling: {
+            get(){
+              if(this.projectName === ''){
+                return 'addProjectButtonFail'
+              } else{
+                return 'addProjectButtonSuccess'
+              }
+           }            
+        } ,
             setDates: {
                 get(){
                     let date = new Date(this.startDate);
