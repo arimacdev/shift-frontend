@@ -1,8 +1,13 @@
 import axios from 'axios';
 
-export const state = () => ({
+// export const state = () => ({
+//   userProfile: {}
+// })
+
+export const state =  {
   userProfile: {}
-})
+}
+
 
 
   export const mutations = {
