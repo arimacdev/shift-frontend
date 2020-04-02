@@ -1,5 +1,5 @@
 <template>
-
+<div>
 <v-row justify="center" class="">
     <v-dialog v-model="dialog" persistent max-width="350">
       <template v-slot:activator="{ on }">
@@ -75,12 +75,24 @@
 
       </v-card>
     </v-dialog>
+    
   </v-row>
+  <div @click="close">
+            <component v-bind:is="component" :success=success ></component>
+         </div>
+       <!--  <success-popup /> -->
+  </div>
 </template>
 
 <script>
+import SuccessPopup from '~/components/popups/successPopup'
+import ErrorPopup from '~/components/popups/errorPopup'
   export default {
     props: ['users', 'projectId'],
+    components: {
+      'success-popup' : SuccessPopup,
+      'error-popup': ErrorPopup
+    },
     data() {
       return {
         userId: this.$store.state.user.userId,
@@ -100,6 +112,8 @@
         states: [
           
         ],
+        component: '',
+        success: '',
       }
     },
      watch: {
@@ -108,6 +122,9 @@
       },
     },
     methods: {
+      close(){
+          this.component = ''
+      },
        onSelectedUser(){
         if(this.select !== undefined){
         this.$emit('searchSelected', this.select);
@@ -127,8 +144,11 @@
         this.addUser.assigneeId = "";
         this.addUser.assigneeJobRole ="";
         this.selected = false;
+        this.component = 'success-popup'
+        this.success = response.message
        } catch(e){
           console.log("Error adding a User", e);
+          this.component = 'error-popup'
        }   
       },
       querySelections (v) {
