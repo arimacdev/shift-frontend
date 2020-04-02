@@ -49,8 +49,9 @@
       right=""
       height="82vh"
       width="350px"
-      class=""
+      class="overflow-y-auto"
     >
+    <div >
       <form>
         
         <v-row
@@ -228,6 +229,7 @@
        
         
         </form>
+        </div>
          
     </v-navigation-drawer>
 </div>
