@@ -24,7 +24,7 @@
             v-model.trim="$v.taskName.$model"
           ></v-text-field>
  <div v-if="$v.taskName.$error && !$v.taskName.required" class="errorText"> Project name is required</div>
-       <div v-if="$v.taskName.$error && !$v.taskName.maxLength" class="errorText"> Cannot use more than 50 characters</div>
+       <div v-if="$v.taskName.$error && !$v.taskName.maxLength" class="errorText"> Cannot use more than 100 characters</div>
            
 
 
@@ -155,12 +155,15 @@
       >
        <!-- <textarea v-model="taskNotes" placeholder="Note" class="formElements textArea"></textarea> -->
        <v-textarea
-          v-model="taskNotes"
+          v-model.trim="$v.taskNotes.$model"
           outlined
           class=" textArea"
           label="Notes"
           height="200px"
+          
         ></v-textarea>
+         <div v-if="$v.taskNotes.$error && !$v.taskNotes.maxLength" class="errorText"> Cannot use more than 500 characters</div>
+       
       </v-col>
         </v-row>
         <v-row
@@ -255,7 +258,7 @@ import axios from 'axios'
     validations: {
             taskName: {
             required,
-            maxLength: maxLength(49)
+            maxLength: maxLength(100)
             },
             taskDueDate: {
               dateCheck(){
@@ -275,6 +278,9 @@ import axios from 'axios'
                 }
                 
       },
+            },
+            taskNotes:{
+              maxLength: maxLength(500)
             },
             taskRemindOnDate: {
                dateCheck(){
