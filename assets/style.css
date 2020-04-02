@@ -119,6 +119,14 @@ margin-bottom: -5px !important;
     margin-top: -10px;
     margin-bottom: -20px;
 }
+.submitButtonEdit{
+    background-color: #0BAFFF;
+    width: 50%;
+    border-radius: 5px;
+    float: left;
+    margin-right: 5px;
+    float: right;
+}
 .submitButton{
     /* background-color: #0BAFFF; */
     width: 50%;
@@ -794,6 +802,7 @@ width: 400px !important;
     position: absolute;
     bottom: 50px;
     right: 50px;
+    z-index: 1000;
 }
 .popupContent{
     height: 70px;
@@ -974,6 +983,13 @@ margin-right: 10px;
 
 
 /* ----------------- popups styling --------------- */
+
+.editProjectUserPopup{
+    position: absolute;
+    bottom: 10px;
+    right: 2px;
+    margin-bottom: -250px;
+}
 .popupContainer{
 }
 .popupConfirmHeadline{
