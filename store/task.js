@@ -1,12 +1,11 @@
 import axios from 'axios';
 
-export const state =  {
+  export const state = () => ({
     allTasks: [],
     myTasks: [],
     userCompletionTasks: [],
     projectTaskCompletion: {}
-
-  }
+})
 
 export const mutations = {  
     SET_ALL_TASKS(state, event){

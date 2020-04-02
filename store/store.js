@@ -7,7 +7,5 @@ export const store = new Vuex.Store({
     state: () => ({
         counter: 0
       })
-    // state: {
-    //     myToken : "HELLO----------============>"
-    // }
+ 
 })
