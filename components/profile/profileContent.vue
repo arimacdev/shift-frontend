@@ -158,7 +158,7 @@
                 md="12"
                 
             >
-         <button class="submitButton profileButton">
+         <button class="submitButtonEdit profileButton">
                 <v-list-item @click="postData()" 
                 dark >
                     <v-list-item-action>
