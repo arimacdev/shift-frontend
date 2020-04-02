@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-  export const state =  {
-        userProfile: {}
-  }
+export const state = () => ({
+  userProfile: {}
+})
+
 
   export const mutations = {
       SET_PROFILE_PICTURE(state, event){
