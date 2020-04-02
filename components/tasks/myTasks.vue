@@ -179,7 +179,7 @@ import { mapState } from 'vuex';
       })     
     }, 
     getProjectDates(date) {
-      if(date === null)
+      if(date === null || date === '1970-01-01T05:30:00.000+0000')
           return "Add Due Date";
         let stringDate  =  date + "";
         stringDate = stringDate.toString();
