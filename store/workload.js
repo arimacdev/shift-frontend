@@ -1,7 +1,9 @@
-export const state = {
+
+export const state = () => ({
     taskWorkLoadUsers: [],
     workloadTasks: []
-}
+})
+
 
 export const mutations = {
     SET_TASKLOAD_USERS(state, taskWorkLoadUsers){

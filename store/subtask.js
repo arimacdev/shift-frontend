@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-export const state =  {
+  export const state = () => ({
     subtasks: [],
     subTaskFiles: []
-  }
+})
 
 export const mutations = {  
     SET_SUBTAKS(state, subtasks){

@@ -96,12 +96,13 @@ import ErrorPopup from '~/components/popups/errorPopup'
           this.component = 'error-popup'
        }       
         console.log(response);      
-        },       
+        }
     },
     computed: {
         adminStatus: {
             get(){
                 if( (this.editUser.projectRoleId === "1") || (this.editUser.projectRoleId === "2" )){
+                  this.isAdmin = true;
                 return true;
             } else {
                 this.isAdmin = false;

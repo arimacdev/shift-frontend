@@ -50,7 +50,7 @@
 <v-divider class="mx-4"></v-divider>
             <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Presales</v-toolbar-title>
 
-          <div v-for="(project, index) in allProjects"
+          <div v-for="(project, index) in getProjects('presales')"
         :key="index"  v-on:click="component='tab-views'">
         
             <v-list-item class="selectedProject" v-if="project.projectStatus == 'presalesPD' || project.projectStatus == 'preSalesQS' || project.projectStatus == 'preSalesN' || project.projectStatus == 'preSalesC' || project.projectStatus == 'preSalesL' || project.projectStatus == 'presales'" @click="selectProject(project)" >
@@ -73,13 +73,13 @@
      
           <v-divider class="mx-4"></v-divider>
 
-  <!-- --------------- ongoing loop ----------- -->
+  <!-- --------------- ongoing  ----------- -->
 <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Ongoing</v-toolbar-title>
 
 
-          <div v-for="(project, index) in allProjects"
+          <div v-for="(project, index) in getProjects('ongoing')"
         :key="index"  v-on:click="component='tab-views'">
-            <v-list-item v-if="project.projectStatus == 'ongoing'" @click="selectProject(project)" >
+            <v-list-item  @click="selectProject(project)" >
               <v-list-item-action>
                 <v-icon size="20" color="#FFC212">mdi-folder-outline</v-icon>
               </v-list-item-action>
@@ -91,13 +91,13 @@
        
           </div>
 
-<!-- --------------- Support loop ----------- -->
+<!-- --------------- Support  ----------- -->
 <v-divider class="mx-4"></v-divider>
           <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Support</v-toolbar-title>
 
-          <div v-for="(project, index) in allProjects"
+          <div v-for="(project, index) in getProjects('support')"
         :key="index"  v-on:click="component='tab-views'">
-            <v-list-item v-if="project.projectStatus == 'support'" @click="selectProject(project)" >
+            <v-list-item  @click="selectProject(project)" >
               <v-list-item-action>
                 <v-icon size="20" color="#ED5ED1">mdi-folder-outline</v-icon>
               </v-list-item-action>
@@ -109,13 +109,13 @@
        
           </div>
       
-<!-- --------------- Finished loop ----------- -->
+<!-- --------------- Finished  ----------- -->
 <v-divider class="mx-4"></v-divider>
           <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Finished</v-toolbar-title>
 
-          <div v-for="(project, index) in allProjects"
+          <div v-for="(project, index) in getProjects('finished')"
         :key="index"  v-on:click="component='tab-views'">
-            <v-list-item v-if="project.projectStatus == 'finished'" @click="selectProject(project)" >
+            <v-list-item @click="selectProject(project)" >
               <v-list-item-action>
                 <v-icon size="20" color="#0BAFFF">mdi-folder-outline</v-icon>
               </v-list-item-action>
@@ -167,7 +167,12 @@ export default {
         users: [],
         user_org_role : this.$store.state.user.organizationalRole,
         access_token: this.$store.state.user.access_token,
-        userId: this.$store.state.user.userId
+        userId: this.$store.state.user.userId,
+        ongoingArray: [],
+        supportArray:[],
+        finishedArray: [],
+        preSalesArray: [],
+        looped: false
        
       }
     },
@@ -197,6 +202,45 @@ export default {
   },
 
     methods: {
+    getProjects(type){
+      const projectsAll = this.allProjects;
+      if(this.looped === false){
+        console.log("run loop inside")
+      for(let i =0 ; i < projectsAll.length; i++){
+        let projectType = projectsAll[i].projectStatus
+        switch(projectType){
+          case 'ongoing':
+            this.ongoingArray.push(projectsAll[i]);
+            break;
+          case 'support':
+            this.supportArray.push(projectsAll[i]);
+            break;
+          case 'finished':  
+            this.finishedArray.push(projectsAll[i]);
+            break;
+          default:
+            this.preSalesArray.push(projectsAll[i]);
+            break;
+        }
+      this.looped = true;
+      }
+      }
+         switch(type){
+          case 'ongoing':
+            return this.ongoingArray
+            break;
+          case 'support':
+            return this.supportArray
+            break;
+          case 'finished':
+            return this.finishedArray  
+          case 'presales':
+            return this.preSalesArray
+        }
+    },
+    getPresalesPRojects(type){
+
+    },
     selectProject(project){
      this.project = project;
      console.log("selected project ---------->", project);
@@ -258,14 +302,14 @@ export default {
        console.log("error", e)
       })
 
-     this.$axios.get(`log/${this.project.projectId}`)
-      .then (response => {
-        console.log("task log", response.data.data);
-       this.taskLog = response.data.data;
-      })
-      .catch (e => {
-       console.log("error", e)
-      })
+    //  this.$axios.get(`log/${this.project.projectId}`)
+    //   .then (response => {
+    //     console.log("task log", response.data.data);
+    //    this.taskLog = response.data.data;
+    //   })
+    //   .catch (e => {
+    //    console.log("error", e)
+    //   })
 
       this.$axios.get (`projects/${this.project.projectId}/tasks/${this.userId}/completion/details`)
       .then (response => {
