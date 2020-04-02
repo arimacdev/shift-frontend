@@ -258,14 +258,14 @@ export default {
        console.log("error", e)
       })
 
-     this.$axios.get(`log/${this.project.projectId}`)
-      .then (response => {
-        console.log("task log", response.data.data);
-       this.taskLog = response.data.data;
-      })
-      .catch (e => {
-       console.log("error", e)
-      })
+    //  this.$axios.get(`log/${this.project.projectId}`)
+    //   .then (response => {
+    //     console.log("task log", response.data.data);
+    //    this.taskLog = response.data.data;
+    //   })
+    //   .catch (e => {
+    //    console.log("error", e)
+    //   })
 
       this.$axios.get (`projects/${this.project.projectId}/tasks/${this.userId}/completion/details`)
       .then (response => {
