@@ -1,4 +1,5 @@
 <template>
+<div>
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="350">
       <template v-slot:activator="{ on }">
@@ -31,17 +32,29 @@
       </v-card>
     </v-dialog>
   </v-row>
+  <div @click="close" class="editProjectUserPopup">
+            <component v-bind:is="component" ></component>
+         </div>
+       <!--  <success-popup /> -->
+  </div>
 </template>
 
 <script>
+import SuccessPopup from '~/components/popups/successPopup'
+import ErrorPopup from '~/components/popups/errorPopup'
   export default {
     props: ['editUser', 'projectId'],
+    components: {
+      'success-popup' : SuccessPopup,
+      'error-popup': ErrorPopup
+    },
     data () {
       return {
         userId: this.$store.state.user.userId,
         dialog: false,
         isAdmin: false,
         jobRole: this.editUser.projectJobRoleName,
+         component: '',
       }
     },
     // created(){
@@ -55,6 +68,9 @@
     //     })
     // },
     methods: {  
+      close(){
+          this.component = ''
+      },
        async changeHandler() {
            console.log(this.isAdmin, this.jobRole)
        this.dialog = false
@@ -73,9 +89,11 @@
           assigneeProjectRole: roleIdValue
         })
         this.$store.dispatch('task/fetchProjectUserCompletionTasks', this.projectId)
+         this.component = 'success-popup'
 
        } catch(e){
           console.log("Error blocking user", e);
+          this.component = 'error-popup'
        }       
         console.log(response);      
         },       
