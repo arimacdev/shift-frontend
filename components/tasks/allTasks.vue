@@ -29,9 +29,10 @@
             
                
               </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title class="body-2">{{ task.taskName}}</v-list-item-title>
-              </v-list-item-content>
+              <div class="tasklistTaskNames">
+                <div class="body-2">{{ task.taskName}}</div>
+              </div>
+
               <v-list-item-content class="updatedDate">
                 <v-list-item-title class="body-2">{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
               </v-list-item-content>
@@ -54,9 +55,10 @@
             
                
               </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title class="body-2">{{ task.taskName}}</v-list-item-title>
-              </v-list-item-content>
+                <div class="tasklistTaskNames">
+                <div class="body-2">{{ task.taskName}}</div>
+              </div>
+
               <v-list-item-content>
                 <v-list-item-title :class="dueDateCheck(task)">{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
               </v-list-item-content>
@@ -195,7 +197,7 @@ import { mapState } from 'vuex';
         }
       },
     getProjectDates(date) {
-      if(date === null)
+      if(date === null || date === '1970-01-01T05:30:00.000+0000')
           return "Add Due Date";
         let stringDate  =  date + "";
         stringDate = stringDate.toString();

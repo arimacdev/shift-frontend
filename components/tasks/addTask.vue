@@ -292,7 +292,7 @@ import axios from 'axios'
                     const endToUtcDate = new Date(endToUtc);
                     const taskDueDate = new Date(this.taskDueDate);
                     console.log("start", taskDueDate.getTime(), "end", endToUtcDate.getTime()+35000000);
-                    if(taskDueDate.getTime() <= endToUtcDate.getTime()+35000000){
+                    if(taskDueDate.getTime() <= endToUtcDate.getTime()){
                         console.log("overdue")
                         return false;
                     } else {
@@ -410,7 +410,7 @@ import axios from 'axios'
     computed: {  
         checkValidation: {
             get(){
-              if(this.taskName === ''){
+              if(this.$v.$invalid == true){
                 return true
               } else{
                 return false
@@ -431,7 +431,7 @@ import axios from 'axios'
         },
          addTaskStyling: {
             get(){
-              if(this.taskName === ''){
+              if(this.$v.$invalid == true){
                 return 'addTaskButtonFail'
               } else{
                 return 'addTaskButtonSuccess'
