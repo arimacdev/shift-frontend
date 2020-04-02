@@ -25,9 +25,9 @@
              <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
         
               </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title class="body-2">{{ task.taskName}}</v-list-item-title>
-              </v-list-item-content>
+               <div class="tasklistTaskNames">
+                <div class="body-2">{{ task.taskName}}</div>
+               </div>
               <v-list-item-content class="updatedDate">
                 <v-list-item-title class="body-2">{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
               </v-list-item-content>
@@ -49,9 +49,9 @@
              <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
         
               </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title class="body-2">{{ task.taskName}}</v-list-item-title>
-              </v-list-item-content>
+              <div class="tasklistTaskNames">
+                <div class="body-2">{{ task.taskName}}</div>
+              </div>
               <v-list-item-content class="updatedDate">
                 <v-list-item-title :class="dueDateCheck(task)">{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
               </v-list-item-content>
