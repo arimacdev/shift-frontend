@@ -1,14 +1,9 @@
 
-// export const state = () => ({
-//     project: {},
-//     projects: []
-// })
-
-export const state = {
+export const state = () => ({
     project: {},
     projects: []
-  }
-  
+})
+
 
 export const mutations = {
   SET_PROJECT(state, project){
