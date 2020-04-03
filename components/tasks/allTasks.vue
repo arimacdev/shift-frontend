@@ -32,6 +32,10 @@
               <div class="tasklistTaskNames">
                 <div class="body-2">{{ task.taskName}}</div>
               </div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9d3e9460d75ee461506c3fb2007adfeb887e54e2
               <v-list-item-content class="updatedDate">
                 <v-list-item-title class="body-2">{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
               </v-list-item-content>

@@ -41,16 +41,17 @@
           </v-list-item>
 
           <!-- -------------- start side bar ----------------- -->
-<div class="overflow-y-auto">
+<div class="">
 <v-navigation-drawer
       v-model="drawer"
       absolute
       temporary
       right=""
-      height="82vh"
+      height="84vh"
       width="350px"
-      class=""
+      class="overflow-y-auto"
     >
+    <div >
       <form>
         
         <v-row
@@ -228,6 +229,7 @@
        
         
         </form>
+        </div>
          
     </v-navigation-drawer>
 </div>
