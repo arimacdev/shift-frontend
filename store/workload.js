@@ -1,7 +1,8 @@
 
 export const state = () => ({
     taskWorkLoadUsers: [],
-    workloadTasks: []
+    workloadTasks: [],
+    workloadProjects: []
 })
 
 
@@ -14,6 +15,9 @@ export const mutations = {
     },
     EMPTY_WORKLOAD_TASKS(state){
         state.workloadTasks = [];
+    },
+    SET_WORKLOAD_PROJECTS(state, workloadProjects){
+        state.workloadProjects = workloadProjects;
     }
 }
 
@@ -53,6 +57,23 @@ export const actions = {
     },
     clearWorkLoadTasks({commit}){
         commit('EMPTY_WORKLOAD_TASKS');
+    },
+
+    async loadWorkLoadTask({commit, rootState}, userId){
+        const user = rootState.user.userId;
+        let workloadTasks;
+        try {
+            workloadTasks = await this.$axios.$get(`/projects/tasks/users/${userId}/workload/projects`,
+            {
+                headers : {
+                    user: user
+                }
+            })
+            commit('SET_WORKLOAD_TASKS', workloadTasks.data);
+            console.log("workload projects from store", workloadTasks.data);
+        } catch {
+            console.log("Error fetching fetchAllWorkloadTasks",e);
+        }
     }
 }
 

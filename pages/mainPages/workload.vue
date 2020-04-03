@@ -179,6 +179,7 @@ export default {
         this.$store.dispatch('workload/fetchAllWorkloadTasks', this.select.userId)
          } else {
            this.$store.dispatch('workload/clearWorkLoadTasks');
+           this.$store.dispatch('workload/loadWorkLoadTask',this.select.userId);
          }
       }        
     },
@@ -189,6 +190,7 @@ export default {
         this.$store.dispatch('workload/fetchAllWorkloadTasks', userData.userId);
       } else {
         this.$store.dispatch('workload/clearWorkLoadTasks');
+        this.$store.dispatch('workload/loadWorkLoadTask',userData.userId);
       }  
       },
       querySelections (v) {
