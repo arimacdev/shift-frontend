@@ -1181,3 +1181,8 @@ color: #040428;
 .projectSubtitle{
     font-size: 10px !important;
 }
+
+.tasklistTaskNames{
+    width: 70%;
+    word-wrap: break-word;
+}
