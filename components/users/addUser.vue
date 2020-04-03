@@ -103,7 +103,7 @@
             md="6"
             class="buttonGrid"
       >
-                <button class="submitButton addUserSubmit">
+                <button class="submitButtonEdit addUserSubmit">
                 <v-list-item @click.once="postData()" 
                 dark >
                     <v-list-item-action>
