@@ -9,12 +9,13 @@
           <VueCtkDateTimePicker 
           :no-value-to-custom-elem="(true|false)"
             color="#3f51b5"  
-            v-model="getDateRange" 
+            v-model="dateRange" 
             label="Filter tasks by"
             range
             right
             >
              <button type="button" class="rangePickerButton"><v-icon color="#FFFFFF" >mdi-filter</v-icon> Filter by</button>
+              <button type="button" class="rangePickerButton" @click="applyFilter"><v-icon color="#FFFFFF" >mdi-filter</v-icon> Apply</button>
               </VueCtkDateTimePicker >
              </v-list-item-action>
     
@@ -90,6 +91,7 @@
 import TaskSideBar from '~/components/workload/workloadSideBar'
 import { mapState, mapGetters } from 'vuex';
 export default {
+  props: ['selectedUser'],
   components: {
     'task-side-bar' : TaskSideBar
   },
@@ -98,13 +100,35 @@ export default {
         drawer: null,
         task: {},
         projectId: '',
-        getDateRange: new Date(),
+        dateRange: new Date(),
         filterStart: '',
         filterEnd: ''
       }
     },
     methods: {
-      
+      applyFilter(){   
+        console.log("start WF", this.dateRange.start)
+        console.log("end WF",this.dateRange.end)
+        const startDate = this.dateRange.start;
+        const endDate = this.dateRange.end;
+        if(startDate!= null && endDate!= null){
+          console.log("selected both");
+          let start = new Date(startDate);
+          let end = new Date(endDate);
+          const filterStart = new Date(start.getTime() - (start.getTimezoneOffset() * 60000)).toISOString();
+          const filterEnd = new Date(end.getTime() - (end.getTimezoneOffset() * 60000)).toISOString();
+          console.log("filterStart", filterStart);
+          console.log("filterEnd", filterEnd);
+          console.log("selectedUser", this.selectedUser)
+          this.$store.dispatch('workload/fetchAllWorkloadTasks', 
+         {
+          userId: this.selectedUser,
+          from : filterStart,
+          to: filterEnd
+          }
+        );
+        }
+      },      
       showDates(){
         console.log("fire event-----------")        
         console.log("iso Start date",this.getStartDate())

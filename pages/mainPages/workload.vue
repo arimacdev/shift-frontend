@@ -124,7 +124,7 @@
       
         <!-- <workload-content v-if="this.userData.firstName != null" /> -->
         <!-- <workload-content v-if="this.userData.firstName != null" /> -->
-        <workload-content v-if="this.firstName" />
+        <workload-content v-if="this.firstName" :selectedUser="selectedUser"/>
 
 
 
@@ -155,6 +155,7 @@ export default {
         userData: {},
         firstName: '',
         lastName: '',
+        selectedUser:'',
          skill: '',
          search: null,
         select: {},
@@ -183,6 +184,7 @@ export default {
         // this.userData.lastName = this.select.lastName;
         this.firstName = this.select.firstName
         this.lastName = this.select.lastName
+        this.selectedUser = this.select.userId
          if(this.select.totalTasks != 0){
         this.$store.dispatch('workload/fetchAllWorkloadTasks', 
         {
@@ -202,6 +204,7 @@ export default {
       this.firstName = userData.firstName;
       this.lastName = userData.lastName;
       console.log("check", userData);
+      this.selectedUser = userData.userId;
       if(userData.totalTasks != 0){
         this.$store.dispatch('workload/fetchAllWorkloadTasks', 
          {
