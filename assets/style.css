@@ -1215,3 +1215,11 @@ color: #040428;
     margin-right: -15px !important;
     padding-top: 5px !important;
 }
+
+.rangePickerButton{
+    background: #2EC973;
+    width: 120px;
+    padding: 10px;
+    border-radius: 5px;
+    color: #FFFFFF;
+}

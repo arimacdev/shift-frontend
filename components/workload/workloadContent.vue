@@ -3,16 +3,19 @@
          <div class="workloadFilter">
     
             <v-list-item-action class="filterIcon">
-           <v-icon >mdi-filter</v-icon>
+           
             </v-list-item-action>
              <v-list-item-action>
           <VueCtkDateTimePicker 
+          :no-value-to-custom-elem="(true|false)"
             color="#3f51b5"  
             v-model="dateRange" 
-            label="Filter tasks by"
+            label="Filter by"
             range
             right
-            />
+            >
+             <button type="button" class="rangePickerButton"><v-icon color="#FFFFFF" >mdi-filter</v-icon> Filter by</button>
+              </VueCtkDateTimePicker >
              </v-list-item-action>
     
        </div>
@@ -78,7 +81,7 @@
           <!-- --------------- end side bar --------------------- -->
     </div>
     <!-- {{getStartDate()}} -->
-    <!-- <button @click="test()">test</button> -->
+    <button @click="test()">test</button>
     </div>
 </template>
 
@@ -98,14 +101,19 @@ export default {
       }
     },
     methods: {
-      
+      test(){
+        console.log("date ===========> " + this.getStartDate() + " " +  this.getEndDate())
+      },
       getStartDate(){       
         const startDate = new Date(this.dateRange.start);
         const isoDate = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000)).toISOString();
         console.log("iso Start date",isoDate)
         return isoDate;
     },
-    getEndDate(){       
+    getEndDate(){    
+      if(this.dateRange.end == null) {
+        // add 24h to start date
+      }  
         const endDate = new Date(this.dateRange.end);
         const isoDate = new Date(endDate.getTime() - (endDate.getTimezoneOffset() * 60000)).toISOString();
         console.log("iso end date",isoDate)
