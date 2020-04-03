@@ -49,7 +49,7 @@
           append-icon
           prepend-inner-icon="mdi-magnify"
           label="Type a Name to search"
-          solo-inverted
+          outlined
           @change="onSelectUser()"
         ></v-autocomplete>
 
@@ -124,7 +124,7 @@
       
         <!-- <workload-content v-if="this.userData.firstName != null" /> -->
         <!-- <workload-content v-if="this.userData.firstName != null" /> -->
-        <workload-content v-if="this.firstName" />
+        <workload-content v-if="this.firstName" :selectedUser="selectedUser"/>
 
 
 
@@ -155,6 +155,7 @@ export default {
         userData: {},
         firstName: '',
         lastName: '',
+        selectedUser:'',
          skill: '',
          search: null,
         select: {},
@@ -183,8 +184,15 @@ export default {
         // this.userData.lastName = this.select.lastName;
         this.firstName = this.select.firstName
         this.lastName = this.select.lastName
+        this.selectedUser = this.select.userId
          if(this.select.totalTasks != 0){
-        this.$store.dispatch('workload/fetchAllWorkloadTasks', this.select.userId)
+        this.$store.dispatch('workload/fetchAllWorkloadTasks', 
+        {
+          userId: this.select.userId,
+          from : "all",
+          to: "all"
+          }
+        )
          } else {
            this.$store.dispatch('workload/clearWorkLoadTasks');
            this.$store.dispatch('workload/loadWorkLoadTask',this.select.userId);
@@ -196,8 +204,15 @@ export default {
       this.firstName = userData.firstName;
       this.lastName = userData.lastName;
       console.log("check", userData);
+      this.selectedUser = userData.userId;
       if(userData.totalTasks != 0){
-        this.$store.dispatch('workload/fetchAllWorkloadTasks', userData.userId);
+        this.$store.dispatch('workload/fetchAllWorkloadTasks', 
+         {
+          userId: userData.userId,
+          from : "all",
+          to: "all"
+          }
+        );
       } else {
         this.$store.dispatch('workload/clearWorkLoadTasks');
         this.$store.dispatch('workload/loadWorkLoadTask',userData.userId);

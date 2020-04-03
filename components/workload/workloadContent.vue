@@ -1,5 +1,28 @@
 <template>
     <div>
+         <div class="workloadFilter">
+    
+            <v-list-item-action class="filterIcon">
+           
+            </v-list-item-action>
+             <v-list-item-action>
+          <VueCtkDateTimePicker 
+          :no-value-to-custom-elem="(false)"
+            color="#3f51b5"  
+            v-model="dateRange" 
+            label="Filter tasks by"
+            range
+            right
+            noButton
+            autoClose
+            >
+             <button type="button" class="rangePickerButton"><v-icon color="#FFFFFF" >mdi-filter</v-icon> Filter by</button>
+              <button v-if="dateRange.end == null" disabled type="button" class="filterButtonWorkLoadError" @click="applyFilter"><v-icon color="#FFFFFF" >mdi-magnify</v-icon></button>
+              <button v-else type="button" class="filterButtonWorkLoad" @click="applyFilter"><v-icon color="#FFFFFF" >mdi-magnify</v-icon></button>
+              </VueCtkDateTimePicker >
+             </v-list-item-action>
+    
+       </div>
         <div class="workloadContentDiv workloadBody overflow-y-auto">
            <v-expansion-panels
                 v-model="panel"
@@ -61,6 +84,8 @@
             </v-navigation-drawer>
           <!-- --------------- end side bar --------------------- -->
     </div>
+    <!-- {{getStartDate()}} -->
+    <button @click="test()">test</button>
     </div>
 </template>
 
@@ -68,6 +93,7 @@
 import TaskSideBar from '~/components/workload/workloadSideBar'
 import { mapState, mapGetters } from 'vuex';
 export default {
+  props: ['selectedUser'],
   components: {
     'task-side-bar' : TaskSideBar
   },
@@ -75,10 +101,59 @@ export default {
       return {
         drawer: null,
         task: {},
-        projectId: ''
+        projectId: '',
+        dateRange: new Date(),
+        filterStart: '',
+        filterEnd: ''
       }
     },
     methods: {
+      applyFilter(){   
+        console.log("start WF", this.dateRange.start)
+        console.log("end WF",this.dateRange.end)
+        const startDate = this.dateRange.start;
+        const endDate = this.dateRange.end;
+        if(startDate!= null && endDate!= null){
+          console.log("selected both");
+          let start = new Date(startDate);
+          let end = new Date(endDate);
+          const filterStart = new Date(start.getTime() - (start.getTimezoneOffset() * 60000)).toISOString();
+          const filterEnd = new Date(end.getTime() - (end.getTimezoneOffset() * 60000)).toISOString();
+          console.log("filterStart", filterStart);
+          console.log("filterEnd", filterEnd);
+          console.log("selectedUser", this.selectedUser)
+          this.$store.dispatch('workload/fetchAllWorkloadTasks', 
+         {
+          userId: this.selectedUser,
+          from : filterStart,
+          to: filterEnd,
+          }
+        );
+          this.dateRange.start = null
+          this.dateRange.end = null
+        }
+      },      
+      showDates(){
+        console.log("fire event-----------")        
+        console.log("iso Start date",this.getStartDate())
+        console.log("end WF", this.dateRange.end)
+        console.log("iso end date",this.getEndDate())
+      },
+      getStartDate(){       
+        const startDate = new Date(this.dateRange.start);
+        const isoDate = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000)).toISOString();
+        console.log("iso Start date",isoDate)
+        return isoDate;
+    },
+    getEndDate(){    
+      if(this.dateRange.end == null) {
+        // add 24h to start date
+      }  
+        const endDate = new Date(this.dateRange.end);
+        const isoDate = new Date(endDate.getTime() - (endDate.getTimezoneOffset() * 60000)).toISOString();
+        console.log("iso end date",isoDate)
+        return isoDate;
+    },
       selectTask(task, projectId) {
         this.task = task;
         this.projectId = projectId
@@ -126,7 +201,24 @@ export default {
    computed: {
       ...mapState({
           workloadTasks: state => state.workload.workloadTasks,
-      })
+      }),
+      getDateRange: {
+        get(){
+          console.log("get date range---->")
+          return new Date();
+        },
+        set(value){
+          const startDate = value.start
+          const endDate = value.end
+          console.log("set date range start --->", startDate)
+          console.log("set date range end --->", endDate)
+          this.filterStart = value.start;
+          this.filterEnd = value.end;
+          if(startDate!= null && endDate!= null){
+            console.log("Go Ahead!")
+          }
+        }
+      }
    }
 }
 </script>
