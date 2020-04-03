@@ -8,7 +8,7 @@
              <v-list-item-action>
           <VueCtkDateTimePicker 
             color="#3f51b5"  
-            v-model="dateRange" 
+            v-model="getDateRange" 
             label="Filter tasks by"
             range
             right
@@ -16,6 +16,7 @@
              </v-list-item-action>
     
        </div>
+       <button @click="showDates">Click</button>
         <div class="workloadContentDiv workloadBody overflow-y-auto">
            <v-expansion-panels
                 v-model="panel"
@@ -94,11 +95,19 @@ export default {
         drawer: null,
         task: {},
         projectId: '',
-        dateRange: new Date()
+        getDateRange: new Date(),
+        filterStart: '',
+        filterEnd: ''
       }
     },
     methods: {
       
+      showDates(){
+        console.log("fire event-----------")        
+        console.log("iso Start date",this.getStartDate())
+        console.log("end WF", this.dateRange.end)
+        console.log("iso end date",this.getEndDate())
+      },
       getStartDate(){       
         const startDate = new Date(this.dateRange.start);
         const isoDate = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000)).toISOString();
@@ -158,7 +167,24 @@ export default {
    computed: {
       ...mapState({
           workloadTasks: state => state.workload.workloadTasks,
-      })
+      }),
+      getDateRange: {
+        get(){
+          console.log("get date range---->")
+          return new Date();
+        },
+        set(value){
+          const startDate = value.start
+          const endDate = value.end
+          console.log("set date range start --->", startDate)
+          console.log("set date range end --->", endDate)
+          this.filterStart = value.start;
+          this.filterEnd = value.end;
+          if(startDate!= null && endDate!= null){
+            console.log("Go Ahead!")
+          }
+        }
+      }
    }
 }
 </script>
