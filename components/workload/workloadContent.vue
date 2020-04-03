@@ -1,5 +1,21 @@
 <template>
     <div>
+         <div class="workloadFilter">
+    
+            <v-list-item-action class="filterIcon">
+           <v-icon >mdi-filter</v-icon>
+            </v-list-item-action>
+             <v-list-item-action>
+          <VueCtkDateTimePicker 
+            color="#3f51b5"  
+            v-model="dateRange" 
+            label="Filter tasks by"
+            range
+            right
+            />
+             </v-list-item-action>
+    
+       </div>
         <div class="workloadContentDiv workloadBody overflow-y-auto">
            <v-expansion-panels
                 v-model="panel"
@@ -61,6 +77,7 @@
             </v-navigation-drawer>
           <!-- --------------- end side bar --------------------- -->
     </div>
+    {{this.dateRange}}
     </div>
 </template>
 
@@ -75,7 +92,8 @@ export default {
       return {
         drawer: null,
         task: {},
-        projectId: ''
+        projectId: '',
+        dateRange: new Date()
       }
     },
     methods: {

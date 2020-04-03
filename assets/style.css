@@ -1204,3 +1204,14 @@ color: #040428;
 .tasklistTaskNames{
     width: 70%;
 }
+
+.workloadFilter{
+    position: absolute;
+    right: 30px;
+    top: 80px;
+    /* z-index: 1000; */
+}
+.filterIcon{
+    margin-right: -15px !important;
+    padding-top: 5px !important;
+}
