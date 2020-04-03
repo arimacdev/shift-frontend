@@ -7,20 +7,22 @@
             </v-list-item-action>
              <v-list-item-action>
           <VueCtkDateTimePicker 
-          :no-value-to-custom-elem="(true|false)"
+          :no-value-to-custom-elem="(false)"
             color="#3f51b5"  
             v-model="dateRange" 
             label="Filter tasks by"
             range
             right
+            noButton
+            autoClose
             >
              <button type="button" class="rangePickerButton"><v-icon color="#FFFFFF" >mdi-filter</v-icon> Filter by</button>
-              <button type="button" class="rangePickerButton" @click="applyFilter"><v-icon color="#FFFFFF" >mdi-filter</v-icon> Apply</button>
+              <button v-if="dateRange.end == null" disabled type="button" class="filterButtonWorkLoadError" @click="applyFilter"><v-icon color="#FFFFFF" >mdi-magnify</v-icon></button>
+              <button v-else type="button" class="filterButtonWorkLoad" @click="applyFilter"><v-icon color="#FFFFFF" >mdi-magnify</v-icon></button>
               </VueCtkDateTimePicker >
              </v-list-item-action>
     
        </div>
-       <button @click="showDates">Click</button>
         <div class="workloadContentDiv workloadBody overflow-y-auto">
            <v-expansion-panels
                 v-model="panel"
@@ -124,9 +126,11 @@ export default {
          {
           userId: this.selectedUser,
           from : filterStart,
-          to: filterEnd
+          to: filterEnd,
           }
         );
+          this.dateRange.start = null
+          this.dateRange.end = null
         }
       },      
       showDates(){

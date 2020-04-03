@@ -49,7 +49,7 @@
           append-icon
           prepend-inner-icon="mdi-magnify"
           label="Type a Name to search"
-          solo-inverted
+          outlined
           @change="onSelectUser()"
         ></v-autocomplete>
 

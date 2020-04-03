@@ -1217,9 +1217,23 @@ color: #040428;
 }
 
 .rangePickerButton{
-    background: #2EC973;
-    width: 120px;
+    background: #0BAFFF;
+    /* width: 120px; */
     padding: 10px;
+    border: solid #EDF0F5 1px;
     border-radius: 5px;
     color: #FFFFFF;
+}
+.filterButtonWorkLoadError{
+    background-color: #EDF0F5;
+    border-radius: 50%;
+    padding: 6px;
+}
+.filterButtonWorkLoad{
+    background-color: #2EC973;
+    border-radius: 50%;
+    padding: 6px;
+}
+.filterButtonWorkLoad:hover{
+    background-color: #0BAFFF;
 }
