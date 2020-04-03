@@ -184,7 +184,13 @@ export default {
         this.firstName = this.select.firstName
         this.lastName = this.select.lastName
          if(this.select.totalTasks != 0){
-        this.$store.dispatch('workload/fetchAllWorkloadTasks', this.select.userId)
+        this.$store.dispatch('workload/fetchAllWorkloadTasks', 
+        {
+          userId: this.select.userId,
+          from : "all",
+          to: "all"
+          }
+        )
          } else {
            this.$store.dispatch('workload/clearWorkLoadTasks');
            this.$store.dispatch('workload/loadWorkLoadTask',this.select.userId);
@@ -197,7 +203,13 @@ export default {
       this.lastName = userData.lastName;
       console.log("check", userData);
       if(userData.totalTasks != 0){
-        this.$store.dispatch('workload/fetchAllWorkloadTasks', userData.userId);
+        this.$store.dispatch('workload/fetchAllWorkloadTasks', 
+         {
+          userId: userData.userId,
+          from : "all",
+          to: "all"
+          }
+        );
       } else {
         this.$store.dispatch('workload/clearWorkLoadTasks');
         this.$store.dispatch('workload/loadWorkLoadTask',userData.userId);
