@@ -77,7 +77,8 @@
             </v-navigation-drawer>
           <!-- --------------- end side bar --------------------- -->
     </div>
-    {{this.dateRange}}
+    <!-- {{getStartDate()}} -->
+    <!-- <button @click="test()">test</button> -->
     </div>
 </template>
 
@@ -97,6 +98,19 @@ export default {
       }
     },
     methods: {
+      
+      getStartDate(){       
+        const startDate = new Date(this.dateRange.start);
+        const isoDate = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000)).toISOString();
+        console.log("iso Start date",isoDate)
+        return isoDate;
+    },
+    getEndDate(){       
+        const endDate = new Date(this.dateRange.end);
+        const isoDate = new Date(endDate.getTime() - (endDate.getTimezoneOffset() * 60000)).toISOString();
+        console.log("iso end date",isoDate)
+        return isoDate;
+    },
       selectTask(task, projectId) {
         this.task = task;
         this.projectId = projectId
