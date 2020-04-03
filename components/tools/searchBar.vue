@@ -14,7 +14,7 @@
           append-icon
           prepend-inner-icon="mdi-magnify"
           label="Search Here"
-          solo-inverted
+          outlined
           @change="onSelectProject()"
         ></v-autocomplete>
 </template>

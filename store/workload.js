@@ -39,14 +39,16 @@ export const actions = {
         }
     },
 
-    async fetchAllWorkloadTasks({commit, rootState}, userId){
+    async fetchAllWorkloadTasks({commit, rootState}, {userId,from,to}){
         const user = rootState.user.userId;
         let workloadTasks;
         try {
             workloadTasks = await this.$axios.$get(`/projects/tasks/users/${userId}/workload`,
             {
                 headers : {
-                    user: user
+                    user: user,
+                    from: from,
+                    to: to
                 }
             })
             commit('SET_WORKLOAD_TASKS', workloadTasks.data);
