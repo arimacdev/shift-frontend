@@ -120,7 +120,7 @@ margin-bottom: -5px !important;
     margin-bottom: -20px;
 }
 .submitButtonEdit{
-    background-color: #0BAFFF;
+    background-color: #0BAFFF !important;
     width: 50%;
     border-radius: 5px;
     float: left;
@@ -152,12 +152,20 @@ margin-bottom: -5px !important;
     float: right;
 }
 
+.taskAddPopupPlacements{
+    position: absolute;
+    right: 10px !important;
+    top: 80vh !important;
+}
+
 /* --------- add task ---------- */
 
 .taskFormDiv{
     position: absolute;
     width: 90%;
     margin-top: 10%;
+    padding-top: 10px;
+    padding-right: 10px;
 }
 .fileUpload::-webkit-file-upload-button {
     color: red;
@@ -309,6 +317,10 @@ margin-top: -60px;
     border: 5px solid #FFFFFF;
 }
 
+.fileUploadField{
+    margin-top: 1px;
+}
+
 /* ------------ project tab ------------ */
 
 
@@ -431,6 +443,7 @@ margin-top: -60px;
     margin-top: 70px;
     position: absolute;
     right: 30px;
+    margin-bottom: 100px;
 }
 .addProjectButton{
     position: absolute;
@@ -1180,4 +1193,14 @@ color: #040428;
 
 .projectSubtitle{
     font-size: 10px !important;
+}
+
+.taskDatePickerField{
+    /* margin-top: -50px; */
+}
+.controlWidth{
+    width: 70%;
+}
+.tasklistTaskNames{
+    width: 70%;
 }

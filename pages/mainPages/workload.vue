@@ -108,11 +108,13 @@
   </div>
 
 <div class="workLoadTitleDiv workloadBody">
-    <v-list-item-title class="hi" v-if="this.userData.firstName == null">
+    <!-- <v-list-item-title class="hi" v-if="this.userData.firstName == null"> -->
+    <v-list-item-title class="hi" v-if="!this.firstName">
+
         Select a person
     </v-list-item-title>
     <v-list-item-title v-else>
-        {{ this.userData.firstName }} {{ this.userData.lastName }}
+        {{ this.firstName}} {{ this.lastName }}
     </v-list-item-title>
 </div>
     <v-divider ></v-divider>
@@ -121,7 +123,9 @@
 <!-- -------------- component of the content ----------- -->
       
         <!-- <workload-content v-if="this.userData.firstName != null" /> -->
-        <workload-content v-if="this.userData.firstName != null" />
+        <!-- <workload-content v-if="this.userData.firstName != null" /> -->
+        <workload-content v-if="this.firstName" />
+
 
 
 
@@ -149,6 +153,8 @@ export default {
         component:'add-user',
         workLoad: {},
         userData: {},
+        firstName: '',
+        lastName: '',
          skill: '',
          search: null,
         select: {},
@@ -173,22 +179,28 @@ export default {
     onSelectUser(){
       console.log("details", this.select)
       if(this.select !== undefined){
-        this.userData.firstName = this.select.firstName;
-        this.userData.lastName = this.select.lastName;
+        // this.userData.firstName = this.select.firstName;
+        // this.userData.lastName = this.select.lastName;
+        this.firstName = this.select.firstName
+        this.lastName = this.select.lastName
          if(this.select.totalTasks != 0){
         this.$store.dispatch('workload/fetchAllWorkloadTasks', this.select.userId)
          } else {
            this.$store.dispatch('workload/clearWorkLoadTasks');
+           this.$store.dispatch('workload/loadWorkLoadTask',this.select.userId);
          }
       }        
     },
     async selectUser(userData){
-      this.userData = userData; 
+      // this.userData = userData; 
+      this.firstName = userData.firstName;
+      this.lastName = userData.lastName;
       console.log("check", userData);
       if(userData.totalTasks != 0){
         this.$store.dispatch('workload/fetchAllWorkloadTasks', userData.userId);
       } else {
         this.$store.dispatch('workload/clearWorkLoadTasks');
+        this.$store.dispatch('workload/loadWorkLoadTask',userData.userId);
       }  
       },
       querySelections (v) {
