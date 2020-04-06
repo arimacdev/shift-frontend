@@ -10,37 +10,104 @@
           
       <v-tab-item>
         <v-divider class="mx-4"></v-divider>
-            test 1 - tasks
+           <!-- ------------------------- personal task content ------------------- -->
+
+<div  class="taskFilter-tasksPage">
+        <v-select
+          v-model="taskSelect"
+           :items="items"
+          item-text="name"
+          item-value="id"
+          label="All"
+          solo
+          @change="taskFilter"
+        ></v-select>
+        <v-text-field
+        solo
+        prepend-inner-icon="mdi-plus-circle"
+        label="Add a new task"
+        class="addPersonalTaskTextBox"
+        > </v-text-field>
+
+
+
+
+
+<!-- -------- loop task list here ----------- -->
+    <div class="taskList">
+         <v-list-item @click.stop="drawer = !drawer">
+              <v-list-item-action>
+              <!-- <v-icon v-if="task.taskStatus == 'closed'" size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon> -->
+             <v-icon size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+       
+              </v-list-item-action>
+              <div class="tasklistTaskNames">
+                <div class="body-2">Test task 1 </div>
+              </div>
+              <v-list-item-content class="updatedDate">
+                <v-list-item-title class="body-2">2020-10-19</v-list-item-title>
+              </v-list-item-content>
+               
+            </v-list-item>
+    </div>
+
+
+
+
+</div>
+           <!-- ------------------- personal task content end --------------- -->
       </v-tab-item>
      
     </v-tabs>
   </v-card>
   </div>
+
+
+   <!-- -------------- start side bar ----------------- -->
+
+  <v-navigation-drawer
+      v-model="drawer"
+      absolute
+      temporary
+      right=""
+      height="100vh"
+      width="800px"
+      class=""
+      color="#FFFFFF"
+    >
+      <tasks-side-drawer />
+    </v-navigation-drawer>
+
+          <!-- --------------- end side bar --------------------- -->
        
 
 </div>
 </template>
 
 <script>
+import TaskSideDrawer from '~/components/tasksPage/tasksSideDrawer'
 
   export default {
+       components: {
+      'tasks-side-drawer' : TaskSideDrawer,
+    },
      data () {
       return {
         drawer: null,
-        userId: this.$store.state.user.userId,
-        items: [          
-        ],
-        taskCompletion: {}
+         items: [
+           {id:'all', name: 'All'},
+          {id: 'pending', name: 'Pending'},
+           {id: 'implementing', name: 'Implementing'},
+            {id: 'qa', name: 'QA'},
+             {id:'readyToDeploy', name: 'Ready to deploy'},
+              {id: 'reOpened', name: 'Reopened'},
+               {id: 'deployed', name: 'Deployed'},
+                {id: 'closed', name: 'Closed'}
+                ],
       }
     },
-    name: 'tabViews',
-    components: {
-     
-    },
     methods: {
-      onSelectProject() {
      
-      } 
 
     },
   }

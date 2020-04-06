@@ -1310,3 +1310,15 @@ color: #040428;
     height: 100%;
     float: left;
   }
+
+  .taskFilter-tasksPage{
+      margin-top: 20px;
+      margin-left: 10px;
+      margin-right: 10px;
+  }
+.addPersonalTaskTextBox{
+    margin-top: -20px !important;
+}
+.bodyContentSideDrawer{
+    margin-top: 60px;
+}
