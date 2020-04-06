@@ -40,10 +40,26 @@
 <!-- -------- loop task list here ----------- -->
     <div class="taskList" v-for="(personalTask, index) in personalTasks"
         :key="index" >
-         <v-list-item @click.stop="drawer = !drawer" @click="selectPersonalTask(personalTask)">
+         <v-list-item v-if="personalTask.taskStatus == taskSelect" @click.stop="drawer = !drawer" @click="selectPersonalTask(personalTask)">
               <v-list-item-action>
-              <!-- <v-icon v-if="task.taskStatus == 'closed'" size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon> -->
-             <v-icon size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+              <v-icon v-if="personalTask.taskStatus == 'closed'" size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
+             <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+       
+              </v-list-item-action>
+              <div class="tasklistTaskNames">
+                <div class="body-2">{{ personalTask.taskName }}</div>
+              </div>
+              <v-list-item-content class="updatedDate">
+                <v-list-item-title class="body-2">{{ getTaskDueDate(personalTask.taskDueDateAt) }}</v-list-item-title>
+              </v-list-item-content>
+               
+            </v-list-item>
+
+
+             <v-list-item v-if="taskSelect == 'all' || taskSelect == null" @click.stop="drawer = !drawer" @click="selectPersonalTask(personalTask)">
+              <v-list-item-action>
+              <v-icon v-if="personalTask.taskStatus == 'closed'" size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
+             <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
        
               </v-list-item-action>
               <div class="tasklistTaskNames">
@@ -106,22 +122,21 @@ import axios from 'axios'
         drawer: null,
          userId: this.$store.state.user.userId,
          personalTask: '',
+         taskSelect: null,
          task: {},
          assignee: {},
          items: [
            {id:'all', name: 'All'},
-          {id: 'pending', name: 'Pending'},
-           {id: 'implementing', name: 'Implementing'},
-            {id: 'qa', name: 'QA'},
-             {id:'readyToDeploy', name: 'Ready to deploy'},
-              {id: 'reOpened', name: 'Reopened'},
-               {id: 'deployed', name: 'Deployed'},
-                {id: 'closed', name: 'Closed'}
-                ],
+           {id: 'open', name: 'Open'},
+            {id: 'closed', name: 'Closed'}
+       ],
       }
     },
 
     methods: {
+           taskFilter(){
+         console.log("-----------> changed" + this.taskSelect)
+       },
         async selectPersonalTask(personalTask){
         this.task = personalTask;
      console.log("selectedTask", personalTask);

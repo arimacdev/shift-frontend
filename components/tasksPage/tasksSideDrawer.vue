@@ -8,8 +8,8 @@
                 <input type="checkbox" disabled name="a2" value="1" id="checkbox" />
                 <label for="checkbox"></label>
             </div> -->
-              <!-- <v-icon v-if="this.task.taskStatus == 'closed'" size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon> -->
-             <v-icon size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+              <v-icon v-if="this.task.taskStatus == 'closed'" size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
+             <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
         
           </v-list-item-icon>
            <div class="textAreaSideBar">
@@ -92,12 +92,6 @@
 
    <div class="taskStatusDropdown">
              <select v-model="taskStatus" class="selectUserDropDown" @change="updateStatus">
-                <option key="pending" value="pending" >Pending</option>
-                <option key="implementing" value="implementing">Implementing</option>
-                <option key="qa" value="qa">QA</option>
-                <option key="readyToDeploy" value="readyToDeploy">Ready to Deploy</option>
-                <option key="reOpened" value="reOpened">Re-Opened</option>
-                <option key="deployed" value="deployed">Deployed</option>
                 <option key="closed" value="closed">Closed</option>
                 <option key="open" value="open">Open</option>
             </select>
@@ -563,7 +557,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
         console.log("onchange updated status ->", this.updatedTask.taskStatus)
          let response;
         try{
-          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
+          response = await this.$axios.$put(`/non-project/tasks/personal/${this.task.taskId}`, {
           "taskStatus": this.updatedTask.taskStatus
         },
           {
