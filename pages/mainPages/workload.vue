@@ -185,7 +185,7 @@ export default {
         this.firstName = this.select.firstName
         this.lastName = this.select.lastName
         this.selectedUser = this.select.userId
-         if(this.select.totalTasks != 0){
+        //  if(this.select.totalTasks != 0){
         this.$store.dispatch('workload/fetchAllWorkloadTasks', 
         {
           userId: this.select.userId,
@@ -193,10 +193,10 @@ export default {
           to: "all"
           }
         )
-         } else {
-           this.$store.dispatch('workload/clearWorkLoadTasks');
-           this.$store.dispatch('workload/loadWorkLoadTask',this.select.userId);
-         }
+        //  } else {
+        //    this.$store.dispatch('workload/clearWorkLoadTasks');
+        //    this.$store.dispatch('workload/loadWorkLoadTask',this.select.userId);
+        //  }
       }        
     },
     async selectUser(userData){
@@ -205,7 +205,7 @@ export default {
       this.lastName = userData.lastName;
       console.log("check", userData);
       this.selectedUser = userData.userId;
-      if(userData.totalTasks != 0){
+      // if(userData.totalTasks != 0){
         this.$store.dispatch('workload/fetchAllWorkloadTasks', 
          {
           userId: userData.userId,
@@ -213,10 +213,10 @@ export default {
           to: "all"
           }
         );
-      } else {
-        this.$store.dispatch('workload/clearWorkLoadTasks');
-        this.$store.dispatch('workload/loadWorkLoadTask',userData.userId);
-      }  
+      // } else {
+      //   this.$store.dispatch('workload/clearWorkLoadTasks');
+      //   this.$store.dispatch('workload/loadWorkLoadTask',userData.userId);
+      // }  
       },
       querySelections (v) {
         let projectSearchList = this.taskWorkLoadUsers;
