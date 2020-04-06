@@ -469,7 +469,6 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
-        this.$emit('listenChange');
         console.log("update task status response", response);
        } catch(e){
           console.log("Error updating a status", e);
@@ -529,7 +528,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
-        this.$emit('listenChange');
+        
         console.log("edit task response", response);
        } catch(e){
           console.log("Error updating a note", e);
@@ -548,10 +547,9 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
-        this.$emit('listenChange');
         this.editTask = true;
+        this.$store.dispatch('personalTasks/fetchAllPersonalTasks');       
         console.log("edit task response", response);
-       
        } catch(e){
           console.log("Error updating a note", e);
        }
@@ -569,7 +567,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
-        this.$emit('listenChange');
+        this.$store.dispatch('personalTasks/fetchAllPersonalTasks'); 
         console.log("update task status response", response);
        } catch(e){
           console.log("Error updating a status", e);
@@ -607,7 +605,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
-        this.$emit('listenChange');
+         this.$store.dispatch('personalTasks/fetchAllPersonalTasks'); 
         console.log("update task dates response", response);
        } catch(e){
           console.log("Error updating a status", e);
@@ -687,7 +685,12 @@ import ErrorPopup from '~/components/popups/errorPopup'
     computed: {
         updatedName: {
         get(){
+              if(this.updatedTask.taskName != ""){
+                let name = this.updatedTask.taskName;
+                return name;
+              } else{
               return this.task.taskName
+              }
             },
         set(value) {
           console.log("updated task name ->", value)
