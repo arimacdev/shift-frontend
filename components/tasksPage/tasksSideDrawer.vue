@@ -13,10 +13,10 @@
         
           </v-list-item-icon>
            <div class="textAreaSideBar">
-             <!-- <input type="text" class="taskTitle" v-model="updatedName" v-if="editTask == true"  :disabled="editTask" @keyup.enter="saveEditTaskName"/>
-             <input maxlength="49" type="text" class="taskTitleEdit" v-model="updatedName" v-if="editTask == false"  :disabled="editTask" @keyup.enter="saveEditTaskName"/> -->
+             <input type="text" class="taskTitle" v-model="updatedName" v-if="editTask == true"  :disabled="editTask" @keyup.enter="saveEditTaskName"/>
+             <input maxlength="49" type="text" class="taskTitleEdit" v-model="updatedName" v-if="editTask == false"  :disabled="editTask" @keyup.enter="saveEditTaskName"/>
              
-            <v-list-item-title class="taskTitle">test title</v-list-item-title>
+            <!-- <v-list-item-title class="taskTitle">{{ task.taskName }}</v-list-item-title> -->
           </div>
           <div >
             <v-icon size="20" color="#FFFFFF" class="editIcon" @click="EditTaskName">mdi-pencil-circle</v-icon>
@@ -99,6 +99,7 @@
                 <option key="reOpened" value="reOpened">Re-Opened</option>
                 <option key="deployed" value="deployed">Deployed</option>
                 <option key="closed" value="closed">Closed</option>
+                <option key="open" value="open">Open</option>
             </select>
              </div>
 
@@ -114,13 +115,13 @@
             <v-icon size="30" color="#0BAFFF" >mdi-account-arrow-left-outline</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-              <!-- ///////// add assignee name //////// -->
-           <!-- <select  v-model="taskAssignee" class="tabListItemsText" @change="changeAssignee">
+              <!-- ///////// add assignee name - customize for personal task and group tasks //////// -->
+           <select  v-model="taskAssignee" class="tabListItemsText" @change="changeAssignee">
                 <option value="" disabled>{{ assignee.firstName }} {{assignee.lastName }}</option>
               <option class="tabListItemsText" v-for="(projectUser, index) in people" :key="index" :selected="projectUser.assigneeId === assignee.userId" :value="projectUser.assigneeId" >
                 {{projectUser.assigneeFirstName}} {{projectUser.assigneeLastName}}
               </option>
-            </select> -->
+            </select>
            </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -247,12 +248,8 @@
           <v-list-item-icon>
             <v-icon size="30" color="#0BAFFF" >mdi-calendar-blank-outline</v-icon>
           </v-list-item-icon>
-          <!-- <v-list-item-content class="dueTitle"> -->
-          <!-- <p class="tabListItemsText datesTitle">Due date</p> -->
-           <!-- </v-list-item-content> -->
           <v-list-item-content>
-            <!-- <input class="sideBarDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" v-model="taskDue" @change="updateTaskDates('dueDate')"> -->
-         <div class="pickerContainer pickerDiv sideBarPickers datePickerNew">
+           <div class="pickerContainer pickerDiv sideBarPickers datePickerNew">
            
            <datetime
               type="datetime"
@@ -407,7 +404,7 @@ import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
 
   export default {
-    props: ['task', 'assignee', 'projectId', 'subTasks', 'taskFiles', 'projectUsers', 'people'],
+    props: ['task', 'assignee'],
 
     components: {
       'success-popup' : SuccessPopup,
@@ -423,8 +420,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
         drawer: null,
         selected : true,
         showNewSubTask: false,
-        taskDueDateAt: new Date(),
-        // setDue: this.task.taskDueDateAt,
+        setDue: this.task.taskDueDateAt,
         editTask: true,
         file:'',
         updatedTask: {
@@ -546,7 +542,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
       console.log("updatedTaskName ->",this.updatedTask.taskName)
         let response;
         try{
-          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
+          response = await this.$axios.$put(`/non-project/tasks/personal/${this.task.taskId}`, {
           "taskName": this.updatedTask.taskName
         },
           {
@@ -725,7 +721,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
 
         taskStatus: {
         get(){
-            //   return this.task.taskStatus
+              return this.task.taskStatus
             },
         set(value) {
           console.log("updated task statutus ->", value)
@@ -736,14 +732,15 @@ import ErrorPopup from '~/components/popups/errorPopup'
           taskDue: {
         get(){
             // let stringDate = new Date(this.task.taskDueDateAt);
-        //   if(this.task.taskDueDateAt === null)
-        //   return "Add Due Date";
-        //   let stringDate  = this.task.taskDueDateAt + " ";
-        //     // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
-        //       stringDate = stringDate.toString();
-        //       stringDate = stringDate.slice(0,16);           
-        //       return stringDate;
-        //       // return newDate;
+          if(this.task.taskDueDateAt == null)
+          return "Add Due Date";
+          let stringDate  = this.task.taskDueDateAt + " ";
+            // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
+              stringDate = stringDate.toString();
+              stringDate = stringDate.slice(0,16);           
+              return stringDate;
+              console.log("task date ======================> " + stringDate)
+              // return newDate;
             },
         set(value) {
             console.log("updated task due ->", value)
@@ -753,14 +750,14 @@ import ErrorPopup from '~/components/popups/errorPopup'
         },
           taskRemindOn: {
         get(){
-        //   if(this.task.taskReminderAt === null)
-        //   return "Add Reminder Date";
-        //   let stringDate  = this.task.taskReminderAt + "";
-        //   // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
-        //   // console.log("f---->",formateedDate)
-        //   stringDate = stringDate.toString();
-        //   stringDate = stringDate.slice(0,16);           
-        //   return stringDate;
+          if(this.task.taskReminderAt == null)
+          return "Add Reminder Date";
+          let stringDate  = this.task.taskReminderAt + "";
+          // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
+          // console.log("f---->",formateedDate)
+          stringDate = stringDate.toString();
+          stringDate = stringDate.slice(0,16);           
+          return stringDate;
           },
         set(value) {
           console.log("updated task reminder ->", value)

@@ -766,7 +766,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
 
          taskAssignee: {
         get(){
-              // return this.assignee.firstName
+              return this.assignee.firstName
               return ''
             },
         set(value) {
@@ -788,7 +788,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
           taskDue: {
         get(){
             // let stringDate = new Date(this.task.taskDueDateAt);
-          if(this.task.taskDueDateAt === null)
+          if(this.task.taskDueDateAt === null || this.task.taskDueDateAt === '1970-01-01T05:30:00.000+0000')
           return "Add Due Date";
           let stringDate  = this.task.taskDueDateAt + " ";
             // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
@@ -805,7 +805,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
         },
           taskRemindOn: {
         get(){
-          if(this.task.taskReminderAt === null)
+          if(this.task.taskReminderAt === null || this.task.taskDueDateAt === '1970-01-01T05:30:00.000+0000')
           return "Add Reminder Date";
           let stringDate  = this.task.taskReminderAt + "";
           // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();

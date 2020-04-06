@@ -1320,5 +1320,9 @@ color: #040428;
     margin-top: -20px !important;
 }
 .bodyContentSideDrawer{
-    margin-top: 60px;
+    margin-top: 55px;
+}
+
+.personalTaskSidebarContent{
+    padding-top: 60px !important;
 }

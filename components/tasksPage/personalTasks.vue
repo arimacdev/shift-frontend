@@ -40,7 +40,7 @@
 <!-- -------- loop task list here ----------- -->
     <div class="taskList" v-for="(personalTask, index) in personalTasks"
         :key="index" >
-         <v-list-item @click.stop="drawer = !drawer">
+         <v-list-item @click.stop="drawer = !drawer" @click="selectPersonalTask(personalTask)">
               <v-list-item-action>
               <!-- <v-icon v-if="task.taskStatus == 'closed'" size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon> -->
              <v-icon size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
@@ -79,8 +79,8 @@
       width="800px"
       class=""
       color="#FFFFFF"
-    >
-      <tasks-side-drawer />
+    > 
+      <tasks-side-drawer :task="task" :assignee="assignee" />
     </v-navigation-drawer>
 
           <!-- --------------- end side bar --------------------- -->
@@ -91,6 +91,7 @@
 
 <script>
 import TaskSideDrawer from '~/components/tasksPage/tasksSideDrawer'
+import TaskSideBar from '~/components/tasks/taskSideBar'
 import axios from 'axios'
 
 
@@ -98,12 +99,15 @@ import axios from 'axios'
       props: ['personalTasks'],
        components: {
       'tasks-side-drawer' : TaskSideDrawer,
+      'task-side-bar' : TaskSideBar
     },
      data () {
       return {
         drawer: null,
          userId: this.$store.state.user.userId,
          personalTask: '',
+         task: {},
+         assignee: {},
          items: [
            {id:'all', name: 'All'},
           {id: 'pending', name: 'Pending'},
@@ -118,6 +122,19 @@ import axios from 'axios'
     },
 
     methods: {
+        async selectPersonalTask(personalTask){
+        this.task = personalTask;
+     console.log("selectedTask", personalTask);
+      this.$axios.get (`/users/${this.task.taskAssignee}`)
+      .then (async response => {
+       console.log("fetched task -->", response.data.data)
+       this.assignee = response.data.data;
+            
+      })
+      .catch (e => {
+       console.log("error", e)
+      }) 
+        },
      async addPersonalTask(){
         console.log("add personal task");
         let response;
