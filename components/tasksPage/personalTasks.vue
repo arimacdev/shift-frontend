@@ -22,11 +22,15 @@
           solo
           @change="taskFilter"
         ></v-select>
+
+
         <v-text-field
+        v-model="personalTask"
         solo
         prepend-inner-icon="mdi-plus-circle"
         label="Add a new task"
         class="addPersonalTaskTextBox"
+        @keyup.enter="addPersonalTask"
         > </v-text-field>
 
 
@@ -94,6 +98,8 @@ import TaskSideDrawer from '~/components/tasksPage/tasksSideDrawer'
      data () {
       return {
         drawer: null,
+         userId: this.$store.state.user.userId,
+         personalTask: '',
          items: [
            {id:'all', name: 'All'},
           {id: 'pending', name: 'Pending'},
@@ -107,7 +113,26 @@ import TaskSideDrawer from '~/components/tasksPage/tasksSideDrawer'
       }
     },
     methods: {
-     
+     async addPersonalTask(){
+        console.log("add personal task");
+        let response;
+          try{
+          response = await this.$axios.$post(`/non-project/tasks/personal`, 
+          {
+            taskName: this.personalTask,
+            taskAssignee: this.userId,
+            taskDueDate: null,
+            taskRemindOnDate: null,
+            taskType: 'personal'
+          }
+        )
+        
+        console.log(response);
+
+       } catch(e){
+          console.log("Error adding a subTask", e);
+       }  
+      },
 
     },
   }
