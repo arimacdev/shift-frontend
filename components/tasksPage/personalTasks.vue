@@ -96,7 +96,7 @@
       class=""
       color="#FFFFFF"
     > 
-      <tasks-side-drawer :task="task" :assignee="assignee"  :subTasks="subTasks" />
+      <tasks-side-drawer :task="task" :assignee="assignee"  :subTasks="subTasks" :taskFiles="taskFiles" />
     </v-navigation-drawer>
 
           <!-- --------------- end side bar --------------------- -->
@@ -126,6 +126,7 @@ import { mapState } from 'vuex'
          task: {},
          assignee: {},
          subTasks: [],
+         taskFiles: [],
          items: [
            {id:'all', name: 'All'},
            {id: 'open', name: 'Open'},
@@ -155,7 +156,7 @@ import { mapState } from 'vuex'
       //get files related to task
       let taskFilesResponse;
       try {
-      taskFilesResponse = await this.$axios.$get(`/projects/${this.projectId}/tasks/${task.taskId}/files`,
+      taskFilesResponse = await this.$axios.$get(`/non-project/tasks/personal/${this.task.taskId}/files`,
       {
         headers: {
           user: this.userId,

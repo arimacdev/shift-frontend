@@ -252,7 +252,7 @@
                 input-id="startDate"
                 >
                 <label for="startDate" slot="before" class="tabListItemsText "><span class="pickerNewText">Due date</span></label>
-                 <label for="endDate" slot="after" class="tabListItemsText "><v-icon>mdi-pencil-outline</v-icon></label>
+                 <label for="startDate" slot="after" class="tabListItemsText "><v-icon>mdi-pencil-outline</v-icon></label>
                  <!-- <span class="description sdfsdf" slot="after" >
                      <v-btn class="btnPicker" x-small depressed color="primary" @click="updateTaskDates('dueDate')"> <span class="btnPickerText"> Update</span> </v-btn>
                  </span> -->
@@ -373,6 +373,7 @@
       </v-list-group>
 
 
+
 <v-divider></v-divider>
 
 
@@ -401,7 +402,7 @@ import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
 
   export default {
-    props: ['task', 'assignee', 'subTasks'],
+    props: ['task', 'assignee', 'subTasks' ,'taskFiles'],
 
     components: {
       'success-popup' : SuccessPopup,
@@ -655,7 +656,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
         formData.append('files', this.file);
         formData.append('type', 'profileImage')
 
-        this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
+        this.$axios.$post(`/personal/tasks/${this.task.taskId}/upload`,
             formData,
             {
               headers: {
