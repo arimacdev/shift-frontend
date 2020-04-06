@@ -12,7 +12,7 @@
         <v-divider class="mx-4"></v-divider>
            <!-- ------------------------- personal task content ------------------- -->
 
-<div  class="taskFilter-tasksPage">
+<div  class="taskFilter-tasksPage ">
         <v-select
           v-model="taskSelect"
            :items="items"
@@ -38,6 +38,7 @@
 
 
 <!-- -------- loop task list here ----------- -->
+<div class="taskPageContentScroll overflow-y-auto">
     <div class="taskList" v-for="(personalTask, index) in personalTasks"
         :key="index" >
          <v-list-item v-if="personalTask.taskStatus == taskSelect" @click.stop="drawer = !drawer" @click="selectPersonalTask(personalTask)">
@@ -73,7 +74,7 @@
     </div>
 
 
-
+</div>
 
 </div>
            <!-- ------------------- personal task content end --------------- -->
