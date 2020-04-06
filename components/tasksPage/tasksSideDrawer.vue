@@ -373,6 +373,7 @@
       </v-list-group>
 
 
+
 <v-divider></v-divider>
 
 
@@ -401,7 +402,7 @@ import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
 
   export default {
-    props: ['task', 'assignee', 'subTasks'],
+    props: ['task', 'assignee', 'subTasks' ,'taskFiles'],
 
     components: {
       'success-popup' : SuccessPopup,
@@ -656,7 +657,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
         formData.append('files', this.file);
         formData.append('type', 'profileImage')
 
-        this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
+        this.$axios.$post(`/personal/tasks/${this.task.taskId}/upload`,
             formData,
             {
               headers: {
