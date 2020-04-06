@@ -685,12 +685,12 @@ import ErrorPopup from '~/components/popups/errorPopup'
     computed: {
         updatedName: {
         get(){
-              if(this.updatedTask.taskName != ""){
-                let name = this.updatedTask.taskName;
-                return name;
-              } else{
+              // if(this.updatedTask.taskName != ""){
+              //   let name = this.updatedTask.taskName;
+              //   return name;
+              // } else{
               return this.task.taskName
-              }
+              // }
             },
         set(value) {
           console.log("updated task name ->", value)
