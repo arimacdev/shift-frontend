@@ -96,7 +96,7 @@
       class=""
       color="#FFFFFF"
     > 
-      <tasks-side-drawer :task="task" :assignee="assignee" />
+      <tasks-side-drawer :task="task" :assignee="assignee"  :subTasks="subTasks" />
     </v-navigation-drawer>
 
           <!-- --------------- end side bar --------------------- -->
@@ -125,6 +125,7 @@ import { mapState } from 'vuex'
          taskSelect: null,
          task: {},
          assignee: {},
+         subTasks: [],
          items: [
            {id:'all', name: 'All'},
            {id: 'open', name: 'Open'},
@@ -148,7 +149,31 @@ import { mapState } from 'vuex'
       .then (async response => {
        console.log("fetched task -->", response.data.data)
        this.assignee = response.data.data;
+       //if task fetch is successful,
+       let subTaskResponse;
+       try {
+            subTaskResponse = await this.$axios.$get(`/non-project/tasks/personal/${this.task.taskId}/subtask?userId=${this.userId}`) 
+            console.log("subtasks--->", subTaskResponse.data)     ;
+            this.subTasks = subTaskResponse.data;  
+      //get files related to task
+      let taskFilesResponse;
+      try {
+      taskFilesResponse = await this.$axios.$get(`/projects/${this.projectId}/tasks/${task.taskId}/files`,
+      {
+        headers: {
+          user: this.userId,
+       }
+      }
+      ) 
+      console.log("files--->", taskFilesResponse.data)     ;
+      this.taskFiles = taskFilesResponse.data;   
+       } catch (error) {
+          console.log("Error fetching data", error);
+       }         
             
+       } catch (error) {
+          console.log("Error fetching data", error);
+       }       
       })
       .catch (e => {
        console.log("error", e)
