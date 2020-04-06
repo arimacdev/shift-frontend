@@ -38,7 +38,8 @@
 
 
 <!-- -------- loop task list here ----------- -->
-    <div class="taskList">
+    <div class="taskList" v-for="(personalTask, index) in personalTasks"
+        :key="index" >
          <v-list-item @click.stop="drawer = !drawer">
               <v-list-item-action>
               <!-- <v-icon v-if="task.taskStatus == 'closed'" size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon> -->
@@ -46,10 +47,10 @@
        
               </v-list-item-action>
               <div class="tasklistTaskNames">
-                <div class="body-2">Test task 1 </div>
+                <div class="body-2">{{ personalTask.taskName }}</div>
               </div>
               <v-list-item-content class="updatedDate">
-                <v-list-item-title class="body-2">2020-10-19</v-list-item-title>
+                <v-list-item-title class="body-2">{{ getTaskDueDate(personalTask.taskDueDateAt) }}</v-list-item-title>
               </v-list-item-content>
                
             </v-list-item>
@@ -90,8 +91,11 @@
 
 <script>
 import TaskSideDrawer from '~/components/tasksPage/tasksSideDrawer'
+import axios from 'axios'
+
 
   export default {
+      props: ['personalTasks'],
        components: {
       'tasks-side-drawer' : TaskSideDrawer,
     },
@@ -112,6 +116,7 @@ import TaskSideDrawer from '~/components/tasksPage/tasksSideDrawer'
                 ],
       }
     },
+
     methods: {
      async addPersonalTask(){
         console.log("add personal task");
@@ -126,13 +131,21 @@ import TaskSideDrawer from '~/components/tasksPage/tasksSideDrawer'
             taskType: 'personal'
           }
         )
-        
+        this.personalTask = ''
         console.log(response);
 
        } catch(e){
           console.log("Error adding a subTask", e);
        }  
       },
+      getTaskDueDate(date) {
+      if(date === null || date === '1970-01-01T05:30:00.000+0000')
+          return "Add Due Date";
+        let stringDate  =  date + "";
+        stringDate = stringDate.toString();
+        stringDate = stringDate.slice(0,10);           
+        return stringDate;
+      }
 
     },
   }

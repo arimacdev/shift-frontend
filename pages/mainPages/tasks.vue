@@ -95,7 +95,7 @@
           </v-list-item-group>
         </div>
       </div>
-       <component v-bind:is="component"></component>
+       <component :personalTasks="personalTasks" v-bind:is="component"></component>
  </div>
 
 
@@ -116,6 +116,14 @@ export default {
     'task-search-bar' : TaskSearchBar,
     'personal-tasks' : PersonalTasks,
     'group-tasks' : GroupTasks
+  },
+      async asyncData({ $axios, app, store }) { 
+    let userId = store.state.user.userId;
+    const { data: personalTasks } = await $axios.$get(`/non-project/tasks/personal/${userId}`)
+    console.log("personalTasks list ====> ", personalTasks)
+    return { 
+      personalTasks:personalTasks, 
+     }
   },
    data() {
       return {
