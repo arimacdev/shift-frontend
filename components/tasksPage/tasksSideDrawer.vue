@@ -492,7 +492,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
         console.log("add subTask", this.task.taskId,this.newSubTask.subtaskName);
         let response;
           try{
-          response = await this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask`, 
+          response = await this.$axios.$post(`/non-project/tasks/personal/${this.task.taskId}/subtask`, 
           {
             taskId: this.task.taskId,
             subtaskName: this.newSubTask.subtaskName,
@@ -614,7 +614,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
           console.log("onchange subtask updated ->", editsubtask);
          let response;
         try{
-          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask/${editsubtask.subtaskId}`, {
+          response = await this.$axios.$put(`/non-project/tasks/personal/${this.task.taskId}/subtask/${editsubtask.subtaskId}`, {
           "subTaskEditor": this.userId ,
           "subtaskName": editsubtask.subtaskName,
           "subtaskStatus": editsubtask.subtaskStatus
