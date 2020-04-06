@@ -1152,7 +1152,7 @@ color: #040428;
     width: 100% !important;
 }
 .selectedTaskStatus{
-    width: 80px;
+    width: 100px;
     color: #FFFFFF;
     background-color: #0BAFFF;
     padding: 10px;
@@ -1237,3 +1237,76 @@ color: #040428;
 .filterButtonWorkLoad:hover{
     background-color: #0BAFFF;
 }
+
+
+/* ------------------- tasks page -------------- */
+
+.groupTasksList{
+    width: 25%;
+   float: left;
+   /* padding-left: 12px; */
+   padding-top: 20px;
+   background-color: #FFFFFF;
+   margin-top: -20px;
+ }
+ .tasksListItem{
+     height: 60px;
+     background-color: #2EC973;
+     margin: 10px;
+     border-radius: 5px;
+ }
+ .taskListName{
+    color: #FFFFFF;
+ }
+ .task-name-div{
+    width: 25%;
+    float: left;
+  }
+  .task-content-div {
+    width: 75%;
+    height: 100%;
+    float: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+ .addTasksListItem{
+     /* background-color: #FFFFFF; */
+ }
+
+ .addGroupListTextBox{
+     /* background-color: #FFFFFF; */
+     margin: 10px !important;
+     margin-top: 20px !important;
+     height: 60px !important;
+ }
+ .groupsListItem{
+    height: 60px;
+     background-color: #FFFFFF;
+     margin: 10px;
+     margin-top: 20px !important;
+     border-radius: 5px;
+ }
+ .groupListName{
+    color: #0BAFFF;
+ }
+ .groupListElement{
+    color: #0BAFFF !important;
+ }
+
+ .activeGroupList{
+     background-color: #0BAFFF !important;
+ }
+ .activeGroupList .active .groupListName{
+    color: #FFFFFF !important;
+}
+.activeGroupList .active .groupListElement{
+    color: #FFFFFF !important;
+}
+
+.personal-task-tab{
+    width: 75%;
+    height: 100%;
+    float: left;
+  }
