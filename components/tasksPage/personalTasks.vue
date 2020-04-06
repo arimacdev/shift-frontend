@@ -20,7 +20,6 @@
           item-value="id"
           label="All"
           solo
-          @change="taskFilter"
         ></v-select>
 
 
@@ -141,9 +140,6 @@ import { mapState } from 'vuex'
     },
 
     methods: {
-           taskFilter(){
-         console.log("-----------> changed" + this.taskSelect)
-       },
         async selectPersonalTask(personalTask){
         this.task = personalTask;
      console.log("selectedTask", personalTask);
@@ -155,7 +151,7 @@ import { mapState } from 'vuex'
        let subTaskResponse;
        try {
             subTaskResponse = await this.$axios.$get(`/non-project/tasks/personal/${this.task.taskId}/subtask?userId=${this.userId}`) 
-            console.log("subtasks--->", subTaskResponse.data)     ;
+            console.log("subtasks--->", subTaskResponse.data);
             this.subTasks = subTaskResponse.data;  
       //get files related to task
       let taskFilesResponse;

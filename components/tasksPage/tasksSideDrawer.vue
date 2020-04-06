@@ -505,7 +505,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
         this.newSubTask.subtaskName = '';
         this.showNewSubTask =true
         // this.showNewSubTask = false;
-        this.subTasks.push(response.data)
+        this.subTasks.push(response.data);
         console.log(response);
 
        } catch(e){
@@ -529,7 +529,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
-        
+         this.$store.dispatch('personalTasks/fetchAllPersonalTasks'); 
         console.log("edit task response", response);
        } catch(e){
           console.log("Error updating a note", e);
@@ -627,7 +627,6 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
-        // this.$emit('listenChange');
         console.log("update sub task status response", response);
        } catch(e){
           console.log("Error updating a status", e);
