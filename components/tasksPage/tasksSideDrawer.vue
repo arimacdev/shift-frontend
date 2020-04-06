@@ -485,7 +485,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
                     'user': this.userId,
                 }
         })
-        // location.reload();
+        this.$store.dispatch('personalTasks/fetchAllPersonalTasks'); 
         console.log(response.data);
        }  catch(e){
           console.log("Error deleting project", e);
