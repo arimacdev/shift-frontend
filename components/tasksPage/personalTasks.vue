@@ -109,10 +109,10 @@
 import TaskSideDrawer from '~/components/tasksPage/tasksSideDrawer'
 import TaskSideBar from '~/components/tasks/taskSideBar'
 import axios from 'axios'
+import { mapState } from 'vuex'
 
 
   export default {
-      props: ['personalTasks'],
        components: {
       'tasks-side-drawer' : TaskSideDrawer,
       'task-side-bar' : TaskSideBar
@@ -131,6 +131,10 @@ import axios from 'axios'
             {id: 'closed', name: 'Closed'}
        ],
       }
+    },
+
+    created() {
+     this.$store.dispatch('personalTasks/fetchAllPersonalTasks');
     },
 
     methods: {
@@ -180,6 +184,11 @@ import axios from 'axios'
       }
 
     },
+       computed: {
+      ...mapState({
+          personalTasks: state => state.personalTasks.personalTasks,
+      })
+    }
   }
 </script>
 
