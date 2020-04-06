@@ -30,7 +30,9 @@
   <div class="task-content-div">
     <!-- <v-list-item-title v-if="this.project.projectName == null " class="font-weight-bold">Select a project</v-list-item-title>
     <v-list-item-title v-else class="font-weight-bold">Task group</v-list-item-title> -->
-    <v-list-item-title class="font-weight-bold">Task group</v-list-item-title>
+    <v-list-item-title v-if="this.component == 'personal-tasks'" class="font-weight-bold">My personal Tasks</v-list-item-title>
+   <!-- <v-list-item-title v-else class="font-weight-bold">{{ groupname }}</v-list-item-title> -->
+  
   </div>
 </div>
     </v-toolbar>
