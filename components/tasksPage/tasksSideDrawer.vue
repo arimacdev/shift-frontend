@@ -252,7 +252,7 @@
                 input-id="startDate"
                 >
                 <label for="startDate" slot="before" class="tabListItemsText "><span class="pickerNewText">Due date</span></label>
-                 <label for="endDate" slot="after" class="tabListItemsText "><v-icon>mdi-pencil-outline</v-icon></label>
+                 <label for="startDate" slot="after" class="tabListItemsText "><v-icon>mdi-pencil-outline</v-icon></label>
                  <!-- <span class="description sdfsdf" slot="after" >
                      <v-btn class="btnPicker" x-small depressed color="primary" @click="updateTaskDates('dueDate')"> <span class="btnPickerText"> Update</span> </v-btn>
                  </span> -->
