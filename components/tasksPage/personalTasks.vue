@@ -195,7 +195,7 @@ import { mapState } from 'vuex'
         )
         this.personalTask = ''
         console.log(response);
-
+      this.$store.dispatch('personalTasks/fetchAllPersonalTasks');
        } catch(e){
           console.log("Error adding a subTask", e);
        }  
