@@ -288,6 +288,7 @@
               v-model="taskRemindOn"
               zone="local"
                 input-id="endDate"
+                
                 >
                 <label for="endDate" slot="before" class="tabListItemsText "><span class="pickerNewText">Remind on</span></label>
                  <!-- <span class="description " slot="after">
@@ -517,7 +518,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
         console.log("updatedTaskValue ->",this.updatedTask.taskNotes)
         let response;
         try{
-          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
+          response = await this.$axios.$put(`/non-project/tasks/personal/${this.task.taskId}`, {
           "taskNotes": this.updatedTask.taskNotes
         },
           {
@@ -594,7 +595,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
         console.log("remindDate",remindDate);
          let response;
         try{
-          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
+          response = await this.$axios.$put(`/non-project/tasks/personal/${this.task.taskId}`, {
           "taskDueDate": dueDate,
           "taskRemindOnDate" : remindDate
         },
