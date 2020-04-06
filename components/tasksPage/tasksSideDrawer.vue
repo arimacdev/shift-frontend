@@ -637,7 +637,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
         console.log("deletesubtask ->", subtask);
         let response;
         try{
-          response = await this.$axios.$delete(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask/${subtask.subtaskId}`,
+          response = await this.$axios.$delete(`/non-project/tasks/personal/${subtask.taskId}/subtask/${subtask.subtaskId}`,
           {
              headers: {
                   'user': this.userId
