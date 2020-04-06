@@ -694,7 +694,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
 
         taskNotes: {
         get(){
-            //   return this.task.taskNote
+              return this.task.taskNote
             },
         set(value) {
           console.log("updated task value ->", value)
