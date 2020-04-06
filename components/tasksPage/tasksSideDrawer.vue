@@ -479,13 +479,13 @@ import ErrorPopup from '~/components/popups/errorPopup'
       async deleteTask(){
       let response;
        try{
-        response = await this.$axios.$delete(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {    
+        response = await this.$axios.$delete(`/non-project/tasks/personal/${this.task.taskId}`, {    
                 data: {},
                 headers: {
                     'user': this.userId,
                 }
         })
-        location.reload();
+        // location.reload();
         console.log(response.data);
        }  catch(e){
           console.log("Error deleting project", e);
