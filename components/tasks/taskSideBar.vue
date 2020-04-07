@@ -768,7 +768,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
 
          taskAssignee: {
         get(){
-              return this.assignee.firstName
+              // return this.assignee.firstName
               return ''
             },
         set(value) {
