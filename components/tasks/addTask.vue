@@ -358,7 +358,8 @@ import axios from 'axios'
           taskDueDate: this.getDueDate(),
           taskRemindOnDate: this.getRemindOnDate(),
           taskStatus: this.taskStatus,
-          taskNotes: this.taskNotes
+          taskNotes: this.taskNotes,
+          taskType: 'project'
         })
          this.component = 'success-popup'
         // window.setTimeout(location.reload(), 8000)
