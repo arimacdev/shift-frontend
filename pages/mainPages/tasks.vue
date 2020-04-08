@@ -44,7 +44,7 @@
 
         <task-search-bar :groups="groups" />
 
-        <div class="listView overflow-y-auto">
+        <div class=" ">
 <v-list-item-group active-class="">
           <div v-on:click="component='personal-tasks'">
             <v-list-item class="tasksListItem">
@@ -70,7 +70,7 @@
                 ></v-text-field>
 
                 <!-- group list -->
-
+<div class="listView overflow-y-auto">
           <div v-for="(group, index) in groups"
         :key="index" v-on:click="component='group-tasks'">
             <v-list-item class="groupsListItem" active-class="activeGroupList" @click="selectGroup(group)">
@@ -85,7 +85,7 @@
               </v-list-item-action>
             </v-list-item>
           </div>
-
+</div>
           </v-list-item-group>
         </div>
       </div>

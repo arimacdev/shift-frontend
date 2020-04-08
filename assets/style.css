@@ -10,6 +10,7 @@
     margin-top: 10px;
     height: 80vh;
     background-color: #EDF0F5;
+    padding-bottom: 100px !important;
   }
 
 .projectTabSideBar{
@@ -1267,6 +1268,7 @@ color: #040428;
    padding-top: 20px;
    background-color: #FFFFFF;
    margin-top: -20px;
+   margin-bottom: 100px;
  }
  .tasksListItem{
      height: 60px;
