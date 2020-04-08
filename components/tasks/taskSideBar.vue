@@ -553,9 +553,10 @@ import ErrorPopup from '~/components/popups/errorPopup'
        }  
       },
       async addSubTask(){
+        if(this.newSubTask.subtaskName){
         console.log("add subTask", this.task.taskId,this.newSubTask.subtaskName);
         let response;
-          try{
+        try{
           response = await this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask`, 
           {
             taskId: this.task.taskId,
@@ -572,6 +573,9 @@ import ErrorPopup from '~/components/popups/errorPopup'
        } catch(e){
           console.log("Error adding a subTask", e);
        }  
+       }
+     
+         
       },
       name() {
          this.setDue = this.task.taskDueDateAt;
