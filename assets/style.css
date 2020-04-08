@@ -805,6 +805,7 @@ width: 400px !important;
 
 .taskListViewContent{
     height: 60vh;
+    padding-bottom: 100px;
 }
 
 /* --------------- popup ---------------- */
@@ -1320,7 +1321,7 @@ color: #040428;
     margin-top: -20px !important;
 }
 .bodyContentSideDrawer{
-    /* margin-top: 55px; */
+    margin-top: 55px;
 }
 
 .personalTaskSidebarContent{
@@ -1332,10 +1333,11 @@ color: #040428;
     padding-bottom: 100px;
 }
 .pageBody{
-    position: fixed;
     width: 100%;
     top: 60px;
-    padding-top: 30px;
+    padding-top: 100px;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .sideBarBody{
