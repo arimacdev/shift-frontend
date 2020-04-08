@@ -31,6 +31,7 @@
     <!-- <v-list-item-title v-if="this.project.projectName == null " class="font-weight-bold">Select a project</v-list-item-title>
     <v-list-item-title v-else class="font-weight-bold">Task group</v-list-item-title> -->
     <v-list-item-title v-if="this.component == 'personal-tasks'" class="font-weight-bold">My personal Tasks</v-list-item-title>
+     <v-list-item-title v-else class="font-weight-bold">{{ this.group.taskGroupName }}</v-list-item-title>
    <!-- <v-list-item-title v-else class="font-weight-bold">{{ groupname }}</v-list-item-title> -->
   
   </div>
@@ -41,7 +42,7 @@
  <div class="pageBody">
       <div class="groupTasksList">
 
-        <task-search-bar />
+        <task-search-bar :groups="groups" />
 
         <div class="listView overflow-y-auto">
 <v-list-item-group active-class="">
@@ -59,22 +60,25 @@
             <!-- task input field  -->
                   <v-text-field
                   label="Add a new group"
+                  v-model="groupName"
                   outlined
                   background-color="#FFFFFF"
                   prepend-inner-icon="mdi-plus-circle"
                   color="#0BAFFF"
                   class="addGroupListTextBox"
+                  @keyup.enter="addGroup"
                 ></v-text-field>
 
                 <!-- group list -->
 
-          <div v-on:click="component='group-tasks'">
-            <v-list-item class="groupsListItem" active-class="activeGroupList">
+          <div v-for="(group, index) in groups"
+        :key="index" v-on:click="component='group-tasks'">
+            <v-list-item class="groupsListItem" active-class="activeGroupList" @click="selectGroup(group)">
               <v-list-item-action class="active">
                 <v-icon size="20" class="groupListElement">mdi-calendar-blank-multiple</v-icon>
               </v-list-item-action>
                <v-list-item-content class="active">
-                 <v-list-item-title class="groupListName">Football group is a group</v-list-item-title>
+                 <v-list-item-title class="groupListName">{{ group.taskGroupName }}</v-list-item-title>
                </v-list-item-content>
                <v-list-item-action class="active">
                 <v-icon size="15" class="groupListElement">mdi-account-group-outline</v-icon>
@@ -82,24 +86,12 @@
             </v-list-item>
           </div>
 
-             <v-list-item class="groupsListItem" active-class="activeGroupList">
-              <v-list-item-action class="active">
-                <v-icon size="20" class="groupListElement">mdi-calendar-blank-multiple</v-icon>
-              </v-list-item-action>
-               <v-list-item-content class="active">
-                 <v-list-item-title class="groupListName">Kema sansadaya</v-list-item-title>
-               </v-list-item-content>
-               <v-list-item-action class="active">
-                <v-icon size="15" class="groupListElement">mdi-account-group-outline</v-icon>
-              </v-list-item-action>
-            </v-list-item>
-
           </v-list-item-group>
         </div>
       </div>
-       <component v-bind:is="component"></component>
- </div>
+       <component :users="users" :group="group" v-bind:is="component"></component>
 
+ </div>
 
 
 
@@ -112,7 +104,19 @@ import TaskSearchBar from '~/components/tools/taskSearchBar'
 import PersonalTasks from '~/components/tasksPage/personalTasks'
 import GroupTasks from '~/components/tasksPage/groupTasks'
 
+import axios from 'axios'
+
 export default {
+
+    async asyncData({ $axios, app, store }) { 
+    let userId = store.state.user.userId;
+    const { data: users } = await $axios.$get('/users')
+    console.log("users list", users)
+    return { 
+      users:users,   
+     }
+  },
+
   components: {
     NavigationDrawer,
     'task-search-bar' : TaskSearchBar,
@@ -123,7 +127,52 @@ export default {
    data() {
       return {
         component:'personal-tasks',
+        groupName: '',
+        userId: this.$store.state.user.userId,
+        groups: [],
+        group: {},
+        users: []
       }
-   }
+   },
+   async created(){
+       const user = this.$store.state.user.userId;
+        let getGroupResponse;
+        try {
+            getGroupResponse = await this.$axios.$get('/taskgroup',
+            {
+                headers : {
+                    user: user
+                }
+            })
+            this.groups = getGroupResponse.data
+            console.log("group get response", this.groups);
+        } catch(e) {
+            console.log("Error fetching groups",e);
+        }
+    },
+
+  
+   methods: {
+     async selectGroup(group){
+        this.group = group;
+     },
+     async addGroup(){
+        console.log("add group");
+        let response;
+          try{
+          response = await this.$axios.$post(`/taskgroup`, 
+          {
+            taskGroupName: this.groupName,
+            taskGroupCreator: this.userId,
+          }
+        )
+        this.personalTask = ''
+        console.log(response);
+       } catch(e){
+          console.log("Error adding a group", e);
+       }  
+      },
+   },
+
 }
 </script>

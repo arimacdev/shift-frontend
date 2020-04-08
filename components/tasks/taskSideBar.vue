@@ -681,6 +681,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
        }
       },
          async subTaskUpdate(editsubtask){
+           if(editsubtask.subtaskName){
           console.log("onchange subtask updated ->", editsubtask);
          let response;
         try{
@@ -700,6 +701,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
        } catch(e){
           console.log("Error updating a status", e);
        }
+           }
       },
 
       async deleteSubTask(subtask,index){

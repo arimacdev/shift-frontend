@@ -15,6 +15,7 @@
                         <v-icon>mdi-plus-circle</v-icon>
                     </v-list-item>
         </div>
+
         </template>
       <v-card class="addUserPopup">
          <div class="popupFormContent">
@@ -85,6 +86,8 @@
             <component v-bind:is="component" :success=success ></component>
          </div>
        <!--  <success-popup /> -->
+
+      
   </div>
 </template>
 
@@ -92,7 +95,7 @@
 import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
   export default {
-    props: ['users', 'projectId'],
+    props: ['users', 'group'],
     components: {
       'success-popup' : SuccessPopup,
       'error-popup': ErrorPopup
@@ -137,23 +140,36 @@ import ErrorPopup from '~/components/popups/errorPopup'
       },
       async changeHandler() {
         this.dialog = false;
-        let assigneeProjectRoleId = this.getProjectRole();
-        this.addUser.assigneeProjectRole = assigneeProjectRoleId;
         let response;
           try{
-          response = await this.$axios.$post(`/projects/${this.projectId}/users`, 
-          this.addUser
+          response = await this.$axios.$post(`/taskgroup/add`, 
+          {
+            taskGroupId: this.group.taskGroupId,
+            taskGroupAssigner: this.group.taskGroupMemberId,
+            taskGroupAssignee: this.addUser.assigneeId 
+          }
         )
-        this.$store.dispatch('task/fetchProjectUserCompletionTasks', this.projectId)
-        this.addUser.assigneeId = "";
-        this.addUser.assigneeJobRole ="";
-        this.selected = false;
-        this.component = 'success-popup'
-        this.success = response.message
+        console.log(response);
        } catch(e){
-          console.log("Error adding a User", e);
-          this.component = 'error-popup'
-       }   
+          console.log("Error adding a group", e);
+       }
+      //   let assigneeProjectRoleId = this.getProjectRole();
+      //   this.addUser.assigneeProjectRole = assigneeProjectRoleId;
+      //   let response;
+      //     try{
+      //     response = await this.$axios.$post(`/taskgroup/add`, 
+      //     this.addUser
+      //   )
+      //   this.$store.dispatch('task/fetchProjectUserCompletionTasks', this.projectId)
+      //   this.addUser.assigneeId = "";
+      //   this.addUser.assigneeJobRole ="";
+      //   this.selected = false;
+      //   this.component = 'success-popup'
+      //   this.success = response.message
+      //  } catch(e){
+      //     console.log("Error adding a User", e);
+      //     this.component = 'error-popup'
+      //  }   
       },
       querySelections (v) {
         let projectSearchList = this.users;
@@ -161,7 +177,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
             let user = projectSearchList[index];
             this.states.push({name: user.firstName + " " + user.lastName, id: user, img: user.profileImage});
         }
-        // console.log("usersList", this.users, "nameList", this.states)
+        console.log("usersList", this.users, "nameList", this.states)
         this.loading = true
         setTimeout(() => {
           this.items = this.states.filter(e => {

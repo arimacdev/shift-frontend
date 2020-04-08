@@ -497,6 +497,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
        }  
       },
       async addSubTask(){
+          if(this.newSubTask.subtaskName){
         console.log("add subTask", this.task.taskId,this.newSubTask.subtaskName);
         let response;
           try{
@@ -516,6 +517,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
        } catch(e){
           console.log("Error adding a subTask", e);
        }  
+          }
       },
       name() {
          this.setDue = this.task.taskDueDateAt;
@@ -618,6 +620,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
        }
       },
          async subTaskUpdate(editsubtask){
+             if(editsubtask.subtaskName){
           console.log("onchange subtask updated ->", editsubtask);
          let response;
         try{
@@ -636,6 +639,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
        } catch(e){
           console.log("Error updating a status", e);
        }
+             }
       },
 
       async deleteSubTask(subtask,index){

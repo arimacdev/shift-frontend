@@ -21,49 +21,49 @@
 
 <script>
 
-// export default {
-//    props: ["projects"],
-//     data () {
-//       return {
-//         loading: false,
-//         items: [],
-//         search: null,
-//         select: null,
-//         states: [
+export default {
+   props: ["groups"],
+    data () {
+      return {
+        loading: false,
+        items: [],
+        search: null,
+        select: null,
+        states: [
           
-//         ],
-//       }
-//     },
+        ],
+      }
+    },
    
-//     watch: {
-//       search (val) {
-//         val && val !== this.select && this.querySelections(val)
-//       },
-//     },
-//     methods: {
-//       onSelectProject(){
-//          if(this.select !== undefined){
-//         this.$emit('selectSearched', this.select);
-//          }
-//       },
-//       querySelections (v) {
-//         let projectSearchList = this.projects;
-//         for (let index = 0; index < projectSearchList.length; ++index) {
-//             let project = projectSearchList[index];
-//             this.states.push({name: project.projectName, id: project});
-//         }
-//         // console.log("projectsList", this.projects, "nameList", this.states)
-//         this.loading = true
-//         setTimeout(() => {
-//           this.items = this.states.filter(e => {
-//             return (e || '').toLowerCase().indexOf((v || '').toLowerCase()) > -1
-//           })
-//           this.loading = false
-//         })
-//         this.loading = false
-//       },
-//     },
-//   }
+    watch: {
+      search (val) {
+        val && val !== this.select && this.querySelections(val)
+      },
+    },
+    methods: {
+      onSelectProject(){
+         if(this.select !== undefined){
+        this.$emit('selectSearched', this.select);
+         }
+      },
+      querySelections (v) {
+        let groupSearchList = this.groups;
+        for (let index = 0; index < groupSearchList.length; ++index) {
+            let group = groupSearchList[index];
+            this.states.push({name: group.taskGroupName, id: group});
+        }
+        // console.log("projectsList", this.projects, "nameList", this.states)
+        this.loading = true
+        setTimeout(() => {
+          this.items = this.states.filter(e => {
+            return (e || '').toLowerCase().indexOf((v || '').toLowerCase()) > -1
+          })
+          this.loading = false
+        })
+        this.loading = false
+      },
+    },
+  }
 </script>
 
 <style scoped>

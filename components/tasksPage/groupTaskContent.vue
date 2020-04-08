@@ -4,7 +4,7 @@
               <div>
              <v-card class="tabs">
      
-           <!-- ------------------------- personal task content ------------------- -->
+           <!-- ------------------------- group task content ------------------- -->
 
 <div  class="taskFilter-tasksPage ">
         <v-select
@@ -75,7 +75,7 @@
 </div>
 
 </div>
-           <!-- ------------------- personal task content end --------------- -->
+           <!-- ------------------- group task content end --------------- -->
      
   </v-card>
   </div>

@@ -3,7 +3,7 @@
     <div class="projectTabContent  overflow-y-auto">
         <div class="peopleWrapper">
            
-        <addGroupPeople :editUser="assignee" :projectId="projectId" :users="users"/>
+        <addGroupPeople :group=group :users="users"/>
         </div>
         
 
@@ -109,7 +109,6 @@
             <p class="peopleRoleTitle" @click="fetchUsers">Group members</p>
             <v-divider></v-divider>
             </div>
-        
             
         <!-- <div v-for="(assignee, index) in userCompletionTasks"
         :key="index" class="taskList peopleListItems" >
@@ -163,6 +162,7 @@
        
 
        <!-- =================== end =============== -->
+       
 </div>
 
 </template>
@@ -172,7 +172,7 @@ import { mapState } from 'vuex';
 import removeGroupMember from '@/components/tasksPage/removeGroupMember.vue'
 import addGroupPeople from '@/components/tasksPage/addGroupPeople.vue'
 export default {
-    props: ['projectId',  'people', 'users'],
+    props: ['group', 'users'],
     components: {
         removeGroupMember,
         addGroupPeople
