@@ -25,7 +25,11 @@ export const mutations = {
 export const actions = {
         fetchTasksAllTasks({commit, rootState}, projectId){
         const userId = rootState.user.userId;
-        this.$axios.get (`projects/${projectId}/tasks?userId=${userId}`)
+        this.$axios.get (`projects/${projectId}/tasks?userId=${userId}`,{
+          headers: {
+            type: 'project',
+        }
+       })
         .then (response => {
             console.log("ALL TASKS ARE RETRIEVED SUCCESSFULLY-->", response.data.data);
             commit('SET_ALL_TASKS', response.data.data);

@@ -524,7 +524,8 @@ import ErrorPopup from '~/components/popups/errorPopup'
          let response;
         try{
           response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
-          "taskAssignee": this.updatedTask.taskAssignee
+          "taskAssignee": this.updatedTask.taskAssignee,
+          "taskType": "project"
         },
           {
               headers: {
@@ -563,7 +564,8 @@ import ErrorPopup from '~/components/popups/errorPopup'
           {
             taskId: this.task.taskId,
             subtaskName: this.newSubTask.subtaskName,
-            subTaskCreator: this.userId
+            subTaskCreator: this.userId,
+            "taskType": "project"
           }
         )
         this.newSubTask.subtaskName = '';
@@ -588,7 +590,8 @@ import ErrorPopup from '~/components/popups/errorPopup'
         let response;
         try{
           response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
-          "taskNotes": this.updatedTask.taskNotes
+          "taskNotes": this.updatedTask.taskNotes,
+          "taskType": "project"
         },
           {
               headers: {
@@ -607,7 +610,8 @@ import ErrorPopup from '~/components/popups/errorPopup'
         let response;
         try{
           response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
-          "taskName": this.updatedTask.taskName
+          "taskName": this.updatedTask.taskName,
+          "taskType": "project"
         },
           {
               headers: {
@@ -628,7 +632,8 @@ import ErrorPopup from '~/components/popups/errorPopup'
          let response;
         try{
           response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
-          "taskStatus": this.updatedTask.taskStatus
+          "taskStatus": this.updatedTask.taskStatus,
+          "taskType": "project"
         },
           {
               headers: {
@@ -666,7 +671,8 @@ import ErrorPopup from '~/components/popups/errorPopup'
         try{
           response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
           "taskDueDate": dueDate,
-          "taskRemindOnDate" : remindDate
+          "taskRemindOnDate" : remindDate,
+          "taskType": "project"
         },
           {
               headers: {
@@ -688,7 +694,8 @@ import ErrorPopup from '~/components/popups/errorPopup'
           response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask/${editsubtask.subtaskId}`, {
           "subTaskEditor": this.userId ,
           "subtaskName": editsubtask.subtaskName,
-          "subtaskStatus": editsubtask.subtaskStatus
+          "subtaskStatus": editsubtask.subtaskStatus,
+          "taskType": "project"
         },
           {
               headers: {
@@ -711,7 +718,8 @@ import ErrorPopup from '~/components/popups/errorPopup'
           response = await this.$axios.$delete(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask/${subtask.subtaskId}`,
           {
              headers: {
-                  'user': this.userId
+                  'user': this.userId,
+                  "type": "project"
               }
           }
         );
@@ -725,7 +733,8 @@ import ErrorPopup from '~/components/popups/errorPopup'
          this.file = this.$refs.files.files[0];
          let formData = new FormData();
         formData.append('files', this.file);
-        formData.append('type', 'profileImage')
+        formData.append('type', 'profileImage');
+        formData.append('taskType', 'project')
 
         this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
             formData,

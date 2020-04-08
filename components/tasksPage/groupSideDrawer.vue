@@ -502,7 +502,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
         console.log("add subTask", this.task.taskId,this.newSubTask.subtaskName);
         let response;
           try{
-          response = await this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask`, 
+          response = await this.$axios.$post(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/subtask`, 
           {
             taskId: this.task.taskId,
             subtaskName: this.newSubTask.subtaskName,
@@ -653,10 +653,11 @@ import ErrorPopup from '~/components/popups/errorPopup'
         console.log("deletesubtask ->", subtask);
         let response;
         try{
-          response = await this.$axios.$delete(`/non-project/tasks/personal/${subtask.taskId}/subtask/${subtask.subtaskId}`,
+          response = await this.$axios.$delete(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/subtask/${subtask.subtaskId}`,
           {
              headers: {
-                  'user': this.userId
+                  'user': this.userId,
+                  "type": "taskGroup"
               }
           }
         );
