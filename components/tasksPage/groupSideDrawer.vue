@@ -13,8 +13,8 @@
         
           </v-list-item-icon>
            <div class="textAreaSideBar">
-             <input type="text" class="taskTitle" v-model="updatedName" v-if="editTask == true"  :disabled="editTask" @keyup.enter="saveEditTaskName"/>
-             <input maxlength="49" type="text" class="taskTitleEdit" v-model="updatedName" v-if="editTask == false"  :disabled="editTask" @keyup.enter="saveEditTaskName"/>
+             <input type="text" class="taskTitle" v-model="updatedName" v-if="editTask == true"  :disabled="editTask" @keyup.enter="updateGroupTaskName"/>
+             <input maxlength="49" type="text" class="taskTitleEdit" v-model="updatedName" v-if="editTask == false"  :disabled="editTask" @keyup.enter="updateGroupTaskName"/>
              
             <!-- <v-list-item-title class="taskTitle">{{ task.taskName }}</v-list-item-title> -->
           </div>
@@ -405,7 +405,7 @@ import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
 
   export default {
-    props: ['task', 'assignee', 'subTasks' ,'taskFiles'],
+    props: ['group', 'task', 'assignee', 'subTasks' ,'taskFiles'],
 
     components: {
       'success-popup' : SuccessPopup,
@@ -527,8 +527,9 @@ import ErrorPopup from '~/components/popups/errorPopup'
         console.log("updatedTaskValue ->",this.updatedTask.taskNotes)
         let response;
         try{
-          response = await this.$axios.$put(`/non-project/tasks/personal/${this.task.taskId}`, {
-          "taskNotes": this.updatedTask.taskNotes
+          response = await this.$axios.$put(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}`, {
+          "taskNotes": this.updatedTask.taskNotes,
+          "taskType": "taskGroup"
         },
           {
               headers: {
@@ -542,12 +543,13 @@ import ErrorPopup from '~/components/popups/errorPopup'
           console.log("Error updating a note", e);
        }       
       },
-      async saveEditTaskName(){
+      async updateGroupTaskName(){
       console.log("updatedTaskName ->",this.updatedTask.taskName)
         let response;
         try{
-          response = await this.$axios.$put(`/non-project/tasks/personal/${this.task.taskId}`, {
-          "taskName": this.updatedTask.taskName
+          response = await this.$axios.$put(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}`, {
+          "taskName": this.updatedTask.taskName,
+          "taskType": "taskGroup"
         },
           {
               headers: {
@@ -566,8 +568,9 @@ import ErrorPopup from '~/components/popups/errorPopup'
         console.log("onchange updated status ->", this.updatedTask.taskStatus)
          let response;
         try{
-          response = await this.$axios.$put(`/non-project/tasks/personal/${this.task.taskId}`, {
-          "taskStatus": this.updatedTask.taskStatus
+          response = await this.$axios.$put(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}`, {
+          "taskStatus": this.updatedTask.taskStatus,
+          "taskType": "taskGroup"
         },
           {
               headers: {
@@ -603,9 +606,10 @@ import ErrorPopup from '~/components/popups/errorPopup'
         console.log("remindDate",remindDate);
          let response;
         try{
-          response = await this.$axios.$put(`/non-project/tasks/personal/${this.task.taskId}`, {
+          response = await this.$axios.$put(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}`, {
           "taskDueDate": dueDate,
-          "taskRemindOnDate" : remindDate
+          "taskRemindOnDate" : remindDate,
+          "taskType": "taskGroup"
         },
           {
               headers: {

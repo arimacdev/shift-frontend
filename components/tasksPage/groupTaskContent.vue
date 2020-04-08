@@ -18,12 +18,12 @@
 
 
         <v-text-field
-        v-model="personalTask"
+        v-model="groupTask"
         solo
         prepend-inner-icon="mdi-plus-circle"
         label="Add a new task"
         class="addPersonalTaskTextBox"
-        @keyup.enter="addPersonalTask"
+        @keyup.enter="addGroupTask"
         > </v-text-field>
 
 
@@ -32,38 +32,38 @@
 
 <!-- -------- loop task list here ----------- -->
 <div class="taskPageContentScroll overflow-y-auto">
-    <div class="taskList" v-for="(personalTask, index) in personalTasks"
+    <div class="taskList" v-for="(groupTask, index) in groupTasks"
         :key="index" >
-         <v-list-item v-if="personalTask.taskStatus == taskSelect" @click.stop="drawer = !drawer" @click="selectPersonalTask(personalTask)">
+         <v-list-item v-if="groupTask.taskStatus == taskSelect" @click.stop="drawer = !drawer" @click="selectGroupTask(groupTask)">
               <v-list-item-action>
-              <v-icon v-if="personalTask.taskStatus == 'closed'" size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
+              <v-icon v-if="groupTask.taskStatus == 'closed'" size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
              <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
        
               </v-list-item-action>
               <div class="tasklistTaskNames">
-                <div class="body-2">{{ personalTask.taskName }}</div>
+                <div class="body-2">{{ groupTask.taskName }}</div>
               </div>
               <v-list-item-content class="updatedDate">
-                <v-list-item-title class="body-2">{{ getTaskDueDate(personalTask.taskDueDateAt) }}</v-list-item-title>
+                <v-list-item-title class="body-2">{{ getTaskDueDate(groupTask.taskDueDateAt) }}</v-list-item-title>
               </v-list-item-content>
                
             </v-list-item>
 
 
-             <v-list-item v-if="taskSelect == 'all' || taskSelect == null" @click.stop="drawer = !drawer" @click="selectPersonalTask(personalTask)">
+             <v-list-item v-if="taskSelect == 'all' || taskSelect == null" @click.stop="drawer = !drawer" @click="selectGroupTask(groupTask)">
               <v-list-item-action>
-              <v-icon v-if="personalTask.taskStatus == 'closed'" size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
+              <v-icon v-if="groupTask.taskStatus == 'closed'" size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
              <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
        
               </v-list-item-action>
               <div class="tasklistTaskNames">
-                <div class="body-2">{{ personalTask.taskName }}</div>
+                <div class="body-2">{{ groupTask.taskName }}</div>
               </div>
               <v-list-item-content class="updatedDate">
-                <v-list-item-title :class="dueDateCheck(personalTask)">{{ getTaskDueDate(personalTask.taskDueDateAt) }}</v-list-item-title>
+                <v-list-item-title :class="dueDateCheck(groupTask)">{{ getTaskDueDate(groupTask.taskDueDateAt) }}</v-list-item-title>
               </v-list-item-content>
                <v-list-item-avatar>
-          <v-img v-if="task.taskAssigneeProfileImage != null" :src="task.taskAssigneeProfileImage"></v-img>
+          <v-img v-if="task.taskAssigneeProfileImage != null" :src="groupTask.taskAssigneeProfileImage"></v-img>
           <v-img v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
 
         </v-list-item-avatar>
@@ -92,7 +92,7 @@
       class=""
       color="#FFFFFF"
     > 
-      <group-side-drawer :task="task" :assignee="assignee"  :subTasks="subTasks" :taskFiles="taskFiles" @shrinkSideBar="shrinkSideBar"/>
+      <group-side-drawer :task="task" :group="group" :assignee="assignee"  :subTasks="subTasks" :taskFiles="taskFiles" @shrinkSideBar="shrinkSideBar"/>
     </v-navigation-drawer>
           <!-- --------------- end side bar --------------------- -->
        
@@ -107,6 +107,7 @@ import { mapState } from 'vuex'
 
 
   export default {
+    props: ['groupTasks', 'group'],
        components: {
       'group-side-drawer' : GroupSideDrawer,
     },
@@ -159,9 +160,9 @@ import { mapState } from 'vuex'
         console.log("shrink side bar")
         this.drawer = false;
       },
-        async selectPersonalTask(personalTask){
-        this.task = personalTask;
-     console.log("selectedTask", personalTask);
+        async selectGroupTask(groupTask){
+        this.task = groupTask;
+     console.log("selectedTask", groupTask);
       this.$axios.get (`/users/${this.task.taskAssignee}`)
       .then (async response => {
        console.log("fetched task -->", response.data.data)
@@ -196,24 +197,24 @@ import { mapState } from 'vuex'
        console.log("error", e)
       }) 
         },
-     async addPersonalTask(){
-        console.log("add personal task");
+     async addGroupTask(){
+        console.log("add group task");
         let response;
           try{
-          response = await this.$axios.$post(`/non-project/tasks/personal`, 
+          response = await this.$axios.$post(`/projects/${this.group.taskGroupId}/tasks`, 
           {
-            taskName: this.personalTask,
-            taskAssignee: this.userId,
+            taskName: this.groupTask,
+            projectId: this.group.taskGroupId,
+            taskInitiator: this.userId,
             taskDueDate: null,
             taskRemindOnDate: null,
-            taskType: 'personal'
+            taskType: 'taskGroup'
           }
         )
-        this.personalTask = ''
+        this.groupTask = ''
         console.log(response);
-      this.$store.dispatch('personalTasks/fetchAllPersonalTasks');
        } catch(e){
-          console.log("Error adding a subTask", e);
+          console.log("Error adding a group task", e);
        }  
       },
       getTaskDueDate(date) {
