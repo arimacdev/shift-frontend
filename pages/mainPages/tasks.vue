@@ -89,7 +89,7 @@
           </v-list-item-group>
         </div>
       </div>
-       <component :users="users" :group="group" :groupTasks="groupTasks" v-bind:is="component"></component>
+       <component :users="users" :completionTasks=completionTasks :group="group" :groupTasks="groupTasks" v-bind:is="component"></component>
 
  </div>
 
@@ -132,7 +132,8 @@ export default {
         groups: [],
         group: {},
         users: [],
-        groupTasks: []
+        groupTasks: [],
+        completionTasks: []
       }
    },
    async created(){
@@ -173,6 +174,21 @@ export default {
         } catch(e) {
             console.log("Error fetching group tasks",e);
         }
+
+        let getCompletionTaskResponse;
+        try {
+            getCompletionTaskResponse = await this.$axios.$get(`projects/${this.group.taskGroupId}/tasks/${this.userId}/completion/details`,
+            {
+                headers : {
+                    user: user,
+                    type: 'taskGroup'
+                }
+            })
+            this.completionTasks = getCompletionTaskResponse.data
+            console.log(" task completion get response", this.groupTasks);
+        } catch(e) {
+            console.log("Error fetching completion tasks",e);
+        }
      },
      async addGroup(){
         console.log("add group");
@@ -184,7 +200,7 @@ export default {
             taskGroupCreator: this.userId,
           }
         )
-        this.personalTask = ''
+        this.groupName = ''
         console.log(response);
        } catch(e){
           console.log("Error adding a group", e);

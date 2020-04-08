@@ -8,56 +8,12 @@
         
 
 <div class="">
-             <div class="">
+             <!-- <div class="">
             <p class="peopleRoleTitle" @click="fetchUsers">Group owner</p>
         <v-divider></v-divider>
-            </div>
+            </div> -->
 
-            <!-- -------------------- sample member -------------- -->
-            <div  class="taskList peopleListItems" >
-
-            <v-list-item  class="peopleContainer">
-              <v-list-item-avatar>
-           <!-- <v-img v-if="assignee.assigneeProfileImage != null" :src="assignee.assigneeProfileImage"></v-img> -->
-          <v-img src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
-        </v-list-item-avatar>
-              <v-list-item-content>
-                 <v-list-item-title class="projectRole"> Member name</v-list-item-title >
-                <v-list-item-title class="peopleName">Member </v-list-item-title>
-              </v-list-item-content>
-              <v-list-item-content class="projectProgressSection">
-                <v-list-item-title class="completedStatus">{{ 3 + "/" + 10 + " Tasks completed"}}</v-list-item-title>
-                <v-list-item-title class="projectProgress"> 
-                    <!-- <div class="progressBar"></div> -->
-                    <div class="progressLine"> 
-
-                    <v-progress-linear
-                        :value="44"
-                        color="#2EC973"
-                        background-color="red"
-                        height="13"
-                        rounded
-                        reactive
-                        >
-                        <!-- <template v-slot="{ value }"> -->
-                            <template>
-                            <!-- <span class="presentageValue">{{ Math.ceil(value) }}%</span> -->
-                        </template>
-                        </v-progress-linear>
-
-                        </div>
-
-                    </v-list-item-title >
-              </v-list-item-content>
-              <v-list-item-action >
-               <removeGroupMember  />
-               <!-- <removeGroupMember :blockedUserId="assignee.assigneeId" :projectId="projectId" /> -->
-              </v-list-item-action>
-               
-            </v-list-item>
-            </div>
-
-            <!-- -------------------- end -------------------- -->
+           
         
             
         <!-- <div v-for="(assignee, index) in userCompletionTasks"
@@ -110,9 +66,9 @@
             <v-divider></v-divider>
             </div>
             
-        <!-- <div v-for="(assignee, index) in userCompletionTasks"
+        <div v-for="(assignee, index) in completionTasks"
         :key="index" class="taskList peopleListItems" >
-            <v-list-item v-if="assignee.projectRoleId == 3" class="peopleContainer">
+            <v-list-item class="peopleContainer">
               <v-list-item-avatar>
            <v-img v-if="assignee.assigneeProfileImage != null" :src="assignee.assigneeProfileImage"></v-img>
           <v-img v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
@@ -142,15 +98,13 @@
 
                     </v-list-item-title >
               </v-list-item-content>
-             <v-list-item-action >
-               <editProjectUser :editUser="assignee" :projectId="projectId" />
-              </v-list-item-action>
               <v-list-item-action >
-               <deleteProjectUser :blockedUserId="assignee.assigneeId" :projectId="projectId" />
+                  <removeGroupMember  />
+               <!-- <deleteProjectUser :blockedUserId="assignee.assigneeId" :projectId="projectId" /> -->
               </v-list-item-action>
                
             </v-list-item>
-        </div> -->
+        </div>
         </div>
 
         <!-- ------ -->
@@ -172,7 +126,7 @@ import { mapState } from 'vuex';
 import removeGroupMember from '@/components/tasksPage/removeGroupMember.vue'
 import addGroupPeople from '@/components/tasksPage/addGroupPeople.vue'
 export default {
-    props: ['group', 'users'],
+    props: ['group', 'users', 'completionTasks'],
     components: {
         removeGroupMember,
         addGroupPeople

@@ -484,7 +484,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
       async deleteTask(){
       let response;
        try{
-        response = await this.$axios.$delete(`/non-project/tasks/personal/${this.task.taskId}`, {    
+        response = await this.$axios.$delete(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}`, {    
                 data: {},
                 headers: {
                     'user': this.userId,

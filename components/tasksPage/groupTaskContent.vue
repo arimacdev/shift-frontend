@@ -63,7 +63,7 @@
                 <v-list-item-title :class="dueDateCheck(groupTask)">{{ getTaskDueDate(groupTask.taskDueDateAt) }}</v-list-item-title>
               </v-list-item-content>
                <v-list-item-avatar>
-          <v-img v-if="task.taskAssigneeProfileImage != null" :src="groupTask.taskAssigneeProfileImage"></v-img>
+          <v-img v-if="groupTask.taskAssigneeProfileImage != null" :src="groupTask.taskAssigneeProfileImage"></v-img>
           <v-img v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
 
         </v-list-item-avatar>
