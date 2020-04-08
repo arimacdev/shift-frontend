@@ -1,5 +1,5 @@
 <template>
- <div>
+ <div class="sideBarBody">
   <div class="taskTitleDiv">
       <div class="taskName-sideBar">
         <v-list-item>
