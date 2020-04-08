@@ -192,7 +192,9 @@
                         <!-- {{ subtask.subtaskName}} -->
                         </v-list-item-title>
                     </v-list-item-content>
-                    <v-icon color="#FF6161" @click="subTaskDialog = true">mdi-trash-can-outline</v-icon>
+                    <v-icon color="#FF6161" @click="deleteSubTask(subtask,index)">mdi-trash-can-outline</v-icon>
+                    <!-- <v-icon color="#FF6161" @click="subTaskDialog = true">mdi-trash-can-outline</v-icon> -->
+
 
                     <!-- --------------------- delete sub task popup --------------- -->
 
