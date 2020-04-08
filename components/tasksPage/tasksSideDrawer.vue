@@ -157,7 +157,9 @@
                         <!-- {{ subtask.subtaskName}} -->
                         </v-list-item-title>
                     </v-list-item-content>
-                    <v-icon color="#FF6161" @click="subTaskDialog = true">mdi-trash-can-outline</v-icon>
+                    <!-- <v-icon color="#FF6161" @click="subTaskDialog = true">mdi-trash-can-outline</v-icon> -->
+                    <v-icon color="#FF6161" @click="deleteSubTask(subtask,index)">mdi-trash-can-outline</v-icon>
+
 
                     <!-- --------------------- delete sub task popup --------------- -->
 
@@ -184,15 +186,16 @@
                               color="success"
                               width="100px"
                               @click="subTaskDialog = false"
+                              :retain-focus="false"
                             >
                               Cancel
                             </v-btn>
                   <v-spacer></v-spacer>
-                  <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
                             <v-btn
                               color="error"
                               width="100px"
                               @click="subTaskDialog = false; deleteSubTask(subtask,index)"
+                              :retain-focus="false"
                             >
                               Delete
                             </v-btn>
@@ -407,6 +410,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
     components: {
       'success-popup' : SuccessPopup,
       'error-popup': ErrorPopup,
+      'datetime': Datetime
     },
     data() {
       return {
@@ -486,9 +490,10 @@ import ErrorPopup from '~/components/popups/errorPopup'
                 }
         })
         this.$store.dispatch('personalTasks/fetchAllPersonalTasks'); 
+        this.$emit('shrinkSideBar');
         console.log(response.data);
        }  catch(e){
-          console.log("Error deleting project", e);
+          console.log("Error deleting task", e);
        }  
       },
       async addSubTask(){

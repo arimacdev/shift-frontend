@@ -39,7 +39,7 @@
 </div>
     </v-toolbar>
    
-    <div class="body-div">
+    <div class="pageBody">
       <div class="project-list">
 
         <search-bar :projects=allProjects @selectSearched="selectProject"/>

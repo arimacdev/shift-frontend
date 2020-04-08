@@ -16,9 +16,11 @@
             noButton
             autoClose
             >
+            <!-- <button>Clear Filters</button> -->
              <button type="button" class="rangePickerButton"><v-icon color="#FFFFFF" >mdi-filter</v-icon> Filter by</button>
               <button v-if="dateRange.end == null" disabled type="button" class="filterButtonWorkLoadError" @click="applyFilter"><v-icon color="#FFFFFF" >mdi-magnify</v-icon></button>
               <button v-else type="button" class="filterButtonWorkLoad" @click="applyFilter"><v-icon color="#FFFFFF" >mdi-magnify</v-icon></button>
+              <button v-if="dateRange.end" type="button" class="clearButtonWorkLoad" @click="clearFilter"><v-icon color="#FFFFFF" >mdi-close</v-icon></button>
               </VueCtkDateTimePicker >
              </v-list-item-action>
     
@@ -129,10 +131,23 @@ export default {
           to: filterEnd,
           }
         );
-          this.dateRange.start = null
-          this.dateRange.end = null
+          // this.dateRange.start = null
+          // this.dateRange.end = null
         }
-      },      
+      },  
+      clearFilter(){
+        this.dateRange = new Date(),
+        this.filterStart = '',
+        this.filterEnd = ''
+         this.$store.dispatch('workload/fetchAllWorkloadTasks', 
+        {
+          userId: this.selectedUser,
+          from : "all",
+          to: "all"
+          }
+        )
+
+      },
       showDates(){
         console.log("fire event-----------")        
         console.log("iso Start date",this.getStartDate())
