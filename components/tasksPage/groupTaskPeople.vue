@@ -14,6 +14,7 @@
             </div>
 
             <!-- -------------------- sample member -------------- -->
+            <div  class="taskList peopleListItems" >
 
             <v-list-item  class="peopleContainer">
               <v-list-item-avatar>
@@ -54,12 +55,12 @@
               </v-list-item-action>
                
             </v-list-item>
-
+            </div>
 
             <!-- -------------------- end -------------------- -->
         
             
-        <div v-for="(assignee, index) in userCompletionTasks"
+        <!-- <div v-for="(assignee, index) in userCompletionTasks"
         :key="index" class="taskList peopleListItems" >
             <v-list-item v-if="assignee.projectRoleId == 1" class="peopleContainer">
               <v-list-item-avatar>
@@ -73,7 +74,6 @@
               <v-list-item-content class="projectProgressSection">
                 <v-list-item-title class="completedStatus">{{ assignee.tasksCompleted + "/" + assignee.totalTasks + " Tasks completed"}}</v-list-item-title>
                 <v-list-item-title class="projectProgress"> 
-                    <!-- <div class="progressBar"></div> -->
                     <div class="progressLine"> 
 
                     <v-progress-linear
@@ -84,9 +84,7 @@
                         rounded
                         reactive
                         >
-                        <!-- <template v-slot="{ value }"> -->
                             <template>
-                            <!-- <span class="presentageValue">{{ Math.ceil(value) }}%</span> -->
                         </template>
                         </v-progress-linear>
 
@@ -102,9 +100,9 @@
               </v-list-item-action>
                
             </v-list-item>
-        </div></div>
+        </div> -->
+        </div>
         <!-- --------- -->
-        <div class="">
 
          <div class="">
              <div class="">
@@ -113,7 +111,7 @@
             </div>
         
             
-        <div v-for="(assignee, index) in userCompletionTasks"
+        <!-- <div v-for="(assignee, index) in userCompletionTasks"
         :key="index" class="taskList peopleListItems" >
             <v-list-item v-if="assignee.projectRoleId == 3" class="peopleContainer">
               <v-list-item-avatar>
@@ -127,7 +125,6 @@
               <v-list-item-content class="projectProgressSection">
                 <v-list-item-title class="completedStatus">{{ assignee.tasksCompleted + "/" + assignee.totalTasks + " Tasks completed"}}</v-list-item-title>
                 <v-list-item-title class="projectProgress"> 
-                    <!-- <div class="progressBar"></div> -->
                     <div class="progressLine"> 
 
                     <v-progress-linear
@@ -138,9 +135,7 @@
                         rounded
                         reactive
                         >
-                        <!-- <template v-slot="{ value }"> -->
                             <template>
-                            <!-- <span class="presentageValue">{{ Math.ceil(value) }}%</span> -->
                         </template>
                         </v-progress-linear>
 
@@ -156,10 +151,10 @@
               </v-list-item-action>
                
             </v-list-item>
-        </div></div>
+        </div> -->
+        </div>
 
         <!-- ------ -->
-       </div>
        
        </div>
 

@@ -82,7 +82,6 @@
 
 
    <!-- -------------- start side bar ----------------- -->
-
   <v-navigation-drawer
       v-model="drawer"
       absolute
@@ -93,9 +92,8 @@
       class=""
       color="#FFFFFF"
     > 
-      <tasks-side-drawer :task="task" :assignee="assignee"  :subTasks="subTasks" :taskFiles="taskFiles" @shrinkSideBar="shrinkSideBar"/>
+      <group-side-drawer :task="task" :assignee="assignee"  :subTasks="subTasks" :taskFiles="taskFiles" @shrinkSideBar="shrinkSideBar"/>
     </v-navigation-drawer>
-
           <!-- --------------- end side bar --------------------- -->
        
 
@@ -103,16 +101,14 @@
 </template>
 
 <script>
-import TaskSideDrawer from '~/components/tasksPage/tasksSideDrawer'
-import TaskSideBar from '~/components/tasks/taskSideBar'
+import GroupSideDrawer from '~/components/tasksPage/groupSideDrawer'
 import axios from 'axios'
 import { mapState } from 'vuex'
 
 
   export default {
        components: {
-      'tasks-side-drawer' : TaskSideDrawer,
-      'task-side-bar' : TaskSideBar
+      'group-side-drawer' : GroupSideDrawer,
     },
      data () {
       return {

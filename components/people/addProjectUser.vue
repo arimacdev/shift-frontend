@@ -1,7 +1,7 @@
 <template>
 <div>
 <v-row justify="center" class="">
-    <v-dialog v-model="dialog" persistent max-width="350">
+    <v-dialog v-model="dialog" persistent max-width="380">
       <template v-slot:activator="{ on }">
     <div v-on="on" class="addPeopleButton addPeople">
                 <v-list-item v-on:click="component='add-task'" 
@@ -18,6 +18,8 @@
         </template>
       <v-card class="addUserPopup">
          <div class="popupFormContent">
+              <v-icon class="" size="60" color="deep-orange lighten-1">mdi-account-plus</v-icon>
+             <v-card-text class="deletePopupTitle">Add member to project</v-card-text>
           <v-card-actions >
 
             <!-- <select v-model="addUser.assigneeId" class="formElements popupFormElement">
@@ -35,7 +37,7 @@
               item-text="name"
               item-value="id.userId"
               :search-input.sync="search"
-              class=" popupFormElement"
+              class=" addUserPopupFormElement"
               flat
               outlined=""
               background-color="white"
@@ -70,8 +72,35 @@
              </v-card-actions>
             
 
-          <v-btn class="deleteButton" text @click="dialog = false">Cancel</v-btn>
-          <v-btn class="editButton addUserSave" text @click="changeHandler">Save</v-btn>
+          <!-- <v-btn class="deleteButton" text @click="dialog = false">Cancel</v-btn>
+          <v-btn class="editButton addUserSave" text @click="changeHandler">Save</v-btn> -->
+
+            <div class="AddUserPopupBottom">
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+
+                            <v-btn
+                              color="error"
+                              width="100px"
+                             @click="dialog = false"
+                              :retain-focus="false"
+                            >
+                              Cancel
+                            </v-btn>
+                  <v-spacer></v-spacer>
+                            <v-btn
+                              color="success"
+                              width="100px"
+                             @click="changeHandler"
+                              :retain-focus="false"
+                            >
+                              Save
+                            </v-btn>
+                            <v-spacer></v-spacer>
+                          </v-card-actions>
+
+                          
+                          </div>
 
       </v-card>
     </v-dialog>

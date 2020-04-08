@@ -69,7 +69,7 @@
                              @click="changeHandler"
                               :retain-focus="false"
                             >
-                              Delete
+                              Save
                             </v-btn>
                             <v-spacer></v-spacer>
                           </v-card-actions>

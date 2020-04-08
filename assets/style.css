@@ -679,6 +679,10 @@ font-size: 19px !important;
     margin-bottom: -10px !important;
     /* margin-left: 10px !important; */
 }
+.addUserPopupFormElement{
+    margin-bottom: -30px !important;
+    /* margin-left: 10px !important; */
+}
 .popupFormContent{
     padding-top: 20px;
     margin-left: 10px;
@@ -715,6 +719,7 @@ font-size: 19px !important;
 .sideBarContent{
     /* z-index: 1000; */
     /* min-height: 600px !important; */
+    margin-bottom: 100px;
 }
 .iconExpansion{
     margin-left: -30px !important;
@@ -1034,6 +1039,10 @@ color: #040428;
 .popupBottom{
     padding-bottom: 20px;
     padding-top: 10px;
+}
+.AddUserPopupBottom{
+    padding-bottom: 20px;
+    padding-top: -10px;
 }
 
 
@@ -1364,4 +1373,7 @@ color: #040428;
 
   .popupFormGroupElement{
       margin-bottom: 10px !important;
+  }
+
+  .groupSideBarScroll{
   }
