@@ -1235,6 +1235,11 @@ color: #040428;
     border-radius: 50%;
     padding: 6px;
 }
+.clearButtonWorkLoad{
+    background-color: red;
+    border-radius: 50%;
+    padding: 6px;
+}
 .filterButtonWorkLoad:hover{
     background-color: #0BAFFF;
 }
