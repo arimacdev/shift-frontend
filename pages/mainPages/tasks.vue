@@ -38,7 +38,7 @@
     </v-toolbar>
 
 
- <div class="body-div">
+ <div class="pageBody">
       <div class="groupTasksList">
 
         <task-search-bar />
