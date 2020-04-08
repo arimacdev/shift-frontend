@@ -684,6 +684,7 @@ font-size: 19px !important;
     margin-left: 10px;
     margin-right: 10px;
     margin-bottom: -30px;
+    text-align: center;
 }
 /* -------------- tab content -------------- */
 
@@ -1026,6 +1027,9 @@ color: #040428;
 .deletePopupIcon{
     margin-top: 30px;
 }
+.deleteMemberPopupIcon{
+    margin-top: 20px;
+}
 
 .popupBottom{
     padding-bottom: 20px;
@@ -1326,7 +1330,7 @@ color: #040428;
     margin-top: -20px !important;
 }
 .bodyContentSideDrawer{
-    /* margin-top: 55px; */
+    margin-top: 55px;
 }
 
 .personalTaskSidebarContent{
@@ -1348,3 +1352,16 @@ color: #040428;
 .sideBarBody{
     padding-bottom: 100px;
 }
+
+
+/* ---------------- group task tab -------------- */
+
+.group-task-tab{
+    width: 75%;
+    height: 100%;
+    float: left;
+  }
+
+  .popupFormGroupElement{
+      margin-bottom: 10px !important;
+  }

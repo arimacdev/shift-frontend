@@ -1,15 +1,9 @@
 <template>
-    <div class="personal-task-tab">   
+    <div class="">   
         <!-- tabs body -->
               <div>
              <v-card class="tabs">
-      <v-tabs>
-          <v-tab>
-            Tasks
-          </v-tab>
-          
-      <v-tab-item>
-        <v-divider class="mx-4"></v-divider>
+     
            <!-- ------------------------- personal task content ------------------- -->
 
 <div  class="taskFilter-tasksPage ">
@@ -50,7 +44,7 @@
                 <div class="body-2">{{ personalTask.taskName }}</div>
               </div>
               <v-list-item-content class="updatedDate">
-                <v-list-item-title :class="dueDateCheck(personalTask)">{{ getTaskDueDate(personalTask.taskDueDateAt) }}</v-list-item-title>
+                <v-list-item-title class="body-2">{{ getTaskDueDate(personalTask.taskDueDateAt) }}</v-list-item-title>
               </v-list-item-content>
                
             </v-list-item>
@@ -68,6 +62,11 @@
               <v-list-item-content class="updatedDate">
                 <v-list-item-title :class="dueDateCheck(personalTask)">{{ getTaskDueDate(personalTask.taskDueDateAt) }}</v-list-item-title>
               </v-list-item-content>
+               <v-list-item-avatar>
+          <v-img v-if="task.taskAssigneeProfileImage != null" :src="task.taskAssigneeProfileImage"></v-img>
+          <v-img v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
+
+        </v-list-item-avatar>
                
             </v-list-item>
     </div>
@@ -77,9 +76,7 @@
 
 </div>
            <!-- ------------------- personal task content end --------------- -->
-      </v-tab-item>
      
-    </v-tabs>
   </v-card>
   </div>
 
@@ -140,7 +137,7 @@ import { mapState } from 'vuex'
     },
 
     methods: {
-      dueDateCheck(task){
+        dueDateCheck(task){
         console.log("check due date color", task);
         if(task.taskStatus === 'closed'){
           return 'workLoadTaskDone';

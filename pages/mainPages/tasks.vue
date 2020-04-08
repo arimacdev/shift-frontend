@@ -57,18 +57,18 @@
           </div>
 
             <!-- task input field  -->
-                  <!-- <v-text-field
+                  <v-text-field
                   label="Add a new group"
                   outlined
                   background-color="#FFFFFF"
                   prepend-inner-icon="mdi-plus-circle"
                   color="#0BAFFF"
                   class="addGroupListTextBox"
-                ></v-text-field> -->
+                ></v-text-field>
 
                 <!-- group list -->
 
-          <!-- <div v-on:click="component='group-tasks'">
+          <div v-on:click="component='group-tasks'">
             <v-list-item class="groupsListItem" active-class="activeGroupList">
               <v-list-item-action class="active">
                 <v-icon size="20" class="groupListElement">mdi-calendar-blank-multiple</v-icon>
@@ -92,7 +92,7 @@
                <v-list-item-action class="active">
                 <v-icon size="15" class="groupListElement">mdi-account-group-outline</v-icon>
               </v-list-item-action>
-            </v-list-item> -->
+            </v-list-item>
 
           </v-list-item-group>
         </div>
@@ -119,14 +119,7 @@ export default {
     'personal-tasks' : PersonalTasks,
     'group-tasks' : GroupTasks
   },
-  //     async asyncData({ $axios, app, store }) { 
-  //   let userId = store.state.user.userId;
-  //   const { data: personalTasks } = await $axios.$get(`/non-project/tasks/personal/${userId}`)
-  //   console.log("personalTasks list ====> ", personalTasks)
-  //   return { 
-  //     personalTasks:personalTasks, 
-  //    }
-  // },
+  
    data() {
       return {
         component:'personal-tasks',

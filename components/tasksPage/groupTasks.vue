@@ -1,5 +1,5 @@
 <template>
-    <div class="personal-task-tab">   
+    <div class="group-task-tab">   
         <!-- tabs body -->
               <div>
              <v-card class="tabs">
@@ -13,13 +13,13 @@
           
       <v-tab-item>
         <v-divider class="mx-4"></v-divider>
-            test 1 - tasks
+            <group-task-content />
       </v-tab-item>
     
       <v-tab-item>
         <v-divider class="mx-4"></v-divider>
         <v-card flat>
-       test 2 - people
+          <group-task-people />
         </v-card>
       </v-tab-item>
      
@@ -32,8 +32,14 @@
 </template>
 
 <script>
+import GroupTaskContent from '~/components/tasksPage/groupTaskContent'
+import GroupTaskPeople from '~/components/tasksPage/groupTaskPeople'
 
   export default {
+     components: {
+     'group-task-content' : GroupTaskContent,
+     'group-task-people' : GroupTaskPeople
+    },
      data () {
       return {
         drawer: null,
@@ -44,9 +50,7 @@
       }
     },
     name: 'tabViews',
-    components: {
-     
-    },
+   
     methods: {
       onSelectProject() {
      
