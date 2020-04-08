@@ -96,7 +96,7 @@
       class=""
       color="#FFFFFF"
     > 
-      <tasks-side-drawer :task="task" :assignee="assignee"  :subTasks="subTasks" :taskFiles="taskFiles" />
+      <tasks-side-drawer :task="task" :assignee="assignee"  :subTasks="subTasks" :taskFiles="taskFiles" @shrinkSideBar="shrinkSideBar"/>
     </v-navigation-drawer>
 
           <!-- --------------- end side bar --------------------- -->
@@ -140,6 +140,10 @@ import { mapState } from 'vuex'
     },
 
     methods: {
+      shrinkSideBar(){
+        console.log("shrink side bar")
+        this.drawer = false;
+      },
         async selectPersonalTask(personalTask){
         this.task = personalTask;
      console.log("selectedTask", personalTask);

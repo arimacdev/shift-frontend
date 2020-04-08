@@ -486,9 +486,10 @@ import ErrorPopup from '~/components/popups/errorPopup'
                 }
         })
         this.$store.dispatch('personalTasks/fetchAllPersonalTasks'); 
+        this.$emit('shrinkSideBar');
         console.log(response.data);
        }  catch(e){
-          console.log("Error deleting project", e);
+          console.log("Error deleting task", e);
        }  
       },
       async addSubTask(){
