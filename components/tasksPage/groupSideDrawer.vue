@@ -466,7 +466,8 @@ import ErrorPopup from '~/components/popups/errorPopup'
          let response;
         try{
           response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
-          "taskAssignee": this.updatedTask.taskAssignee
+          "taskAssignee": this.updatedTask.taskAssignee,
+          "taskType": "taskGroup"
         },
           {
               headers: {
@@ -501,11 +502,12 @@ import ErrorPopup from '~/components/popups/errorPopup'
         console.log("add subTask", this.task.taskId,this.newSubTask.subtaskName);
         let response;
           try{
-          response = await this.$axios.$post(`/non-project/tasks/personal/${this.task.taskId}/subtask`, 
+          response = await this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask`, 
           {
             taskId: this.task.taskId,
             subtaskName: this.newSubTask.subtaskName,
-            subTaskCreator: this.userId
+            subTaskCreator: this.userId,
+            "taskType": "taskGroup"
           }
         )
         this.newSubTask.subtaskName = '';
@@ -628,10 +630,11 @@ import ErrorPopup from '~/components/popups/errorPopup'
           console.log("onchange subtask updated ->", editsubtask);
          let response;
         try{
-          response = await this.$axios.$put(`/non-project/tasks/personal/${this.task.taskId}/subtask/${editsubtask.subtaskId}`, {
+          response = await this.$axios.$put(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/subtask/${editsubtask.subtaskId}`, {
           "subTaskEditor": this.userId ,
           "subtaskName": editsubtask.subtaskName,
-          "subtaskStatus": editsubtask.subtaskStatus
+          "subtaskStatus": editsubtask.subtaskStatus,
+          "taskType": "taskGroup"
         },
           {
               headers: {
@@ -667,14 +670,15 @@ import ErrorPopup from '~/components/popups/errorPopup'
          this.file = this.$refs.files.files[0];
          let formData = new FormData();
         formData.append('files', this.file);
-        formData.append('type', 'profileImage')
+        formData.append('type', 'taskFile')
+        formData.append('taskType', 'taskGroup')
 
-        this.$axios.$post(`/personal/tasks/${this.task.taskId}/upload`,
+        this.$axios.$post(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/upload`,
             formData,
             {
               headers: {
                   'Content-Type': 'multipart/form-data',
-                  'user': this.userId
+                  'user': this.userId,
               }
             }
           ).then(function(res){

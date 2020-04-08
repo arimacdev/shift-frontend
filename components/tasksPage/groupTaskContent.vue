@@ -176,10 +176,11 @@ import { mapState } from 'vuex'
       //get files related to task
       let taskFilesResponse;
       try {
-      taskFilesResponse = await this.$axios.$get(`/non-project/tasks/personal/${this.task.taskId}/files`,
+      taskFilesResponse = await this.$axios.$get(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/files`,
       {
         headers: {
           user: this.userId,
+          'type': 'taskGroup'
        }
       }
       ) 
