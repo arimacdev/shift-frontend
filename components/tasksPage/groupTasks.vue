@@ -10,6 +10,10 @@
           <v-tab>
             People
           </v-tab>
+           <v-tab class="groupSettings">
+            Settings
+            <v-icon>mdi-cog-outline</v-icon>
+          </v-tab>
           
       <v-tab-item>
         <v-divider class="mx-4"></v-divider>
@@ -20,6 +24,13 @@
         <v-divider class="mx-4"></v-divider>
         <v-card flat>
           <group-task-people :users=users :group=group />
+        </v-card>
+      </v-tab-item>
+
+       <v-tab-item>
+          <v-divider class="mx-4"></v-divider>
+        <v-card flat>
+          <group-settings :group=group />
         </v-card>
       </v-tab-item>
      
@@ -34,12 +45,14 @@
 <script>
 import GroupTaskContent from '~/components/tasksPage/groupTaskContent'
 import GroupTaskPeople from '~/components/tasksPage/groupTaskPeople'
+import GroupSettings from '~/components/tasksPage/groupSettings'
 
   export default {
     props: ['users', 'group'],
      components: {
      'group-task-content' : GroupTaskContent,
-     'group-task-people' : GroupTaskPeople
+     'group-task-people' : GroupTaskPeople,
+     'group-settings' : GroupSettings
     },
      data () {
       return {

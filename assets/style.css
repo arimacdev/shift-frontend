@@ -1375,5 +1375,19 @@ color: #040428;
       margin-bottom: 10px !important;
   }
 
-  .groupSideBarScroll{
+  .groupSettings{
+      margin-left: 60%;
+  }
+
+  .groupSettingsContent{
+      padding: 20px;
+  }
+  .settingsButton{
+      margin-top: -27px;
+  }
+
+  .groupUpdatePopups{
+      position: absolute;
+      top: 80vh;
+      right: 10px;
   }
