@@ -405,7 +405,21 @@
           </v-list-item-content>
         </template>
         <div class="attchmentContainer fileAttachSideBar">
-        <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Add a new file" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload"/>
+        <!-- <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Add a new file" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload"/> -->
+
+         <v-file-input 
+            label="Attachments"
+            v-model="files"
+            outlined
+            prepend-inner-icon="mdi-paperclip"
+            prepend-icon=""
+            class="createFormElements"
+            chips
+            show-size=""
+            @change="taskFileUpload()"
+            >   </v-file-input>
+ 
+
         </div>
         <div class="attchmentContainer">
         <v-list-item class="subTaskListItems"  v-for="(taskFile,index) in taskFiles" :key="index">
@@ -463,6 +477,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
     },
     data() {
       return {
+        files: [],
         taskDialog: false,
         subTaskDialog: false,
         component: '',
@@ -755,8 +770,28 @@ import ErrorPopup from '~/components/popups/errorPopup'
             console.log('File Upload Failed');
           });
       },
-      test(){
-        console.log("test close --------->")
+      taskFileUpload(){
+        let formData = new FormData();
+        formData.append('files', this.files);
+        formData.append('type', 'profileImage');
+        formData.append('taskType', 'project')
+
+        this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
+            formData,
+            {
+              headers: {
+                  'Content-Type': 'multipart/form-data',
+                  'user': this.userId
+              }
+            }
+          ).then(function(res){
+            this.taskFiles.push(res.data);
+            this.files = null;
+            console.log('File upload successful', res.data);
+          })
+          .catch(function(){
+            console.log('File Upload Failed');
+          });
       }
    
 
