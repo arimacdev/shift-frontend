@@ -13,24 +13,30 @@ export const mutations = {
 
     UPDATE_GROUP_TASK(state, {taskId,  type, value}){
     // const task = state.groupTasks.find(element => element.taskId = taskId);
-    console.log("updateTask", taskId, type, value)
-    const prevTasks = state.groupTasks;
-    const index = prevTasks.findIndex(i => i.taskId === taskId)
-    const updateTask = prevTasks[index];
-    updateTask[type] = value
-    console.log("index updated task",  index, updateTask);
-    state.groupTasks.splice(index, 1, updateTask);
+        console.log("updateTask", taskId, type, value)
+        const prevTasks = state.groupTasks;
+        const index = prevTasks.findIndex(i => i.taskId === taskId)
+        const updateTask = prevTasks[index];
+        updateTask[type] = value
+        console.log("index updated task",  index, updateTask);
+        state.groupTasks.splice(index, 1, updateTask);
     },
 
     UPDATE_GROUP_TASK_DATES(state, {taskId, dueDate, remindDate}){
-    console.log("updateTask dates", taskId, dueDate, remindDate)
-    const prevTasks = state.groupTasks;
-    const index = prevTasks.findIndex(i => i.taskId === taskId);
-    const updateTask = prevTasks[index];
-    updateTask.taskDueDateAt = dueDate;
-    updateTask.taskReminderAt = remindDate;
-    console.log("index updated task",  index, updateTask);
-    state.groupTasks.splice(index, 1, updateTask);
+        console.log("updateTask dates", taskId, dueDate, remindDate)
+        const prevTasks = state.groupTasks;
+        const index = prevTasks.findIndex(i => i.taskId === taskId);
+        const updateTask = prevTasks[index];
+        updateTask.taskDueDateAt = dueDate;
+        updateTask.taskReminderAt = remindDate;
+        console.log("index updated task",  index, updateTask);
+        state.groupTasks.splice(index, 1, updateTask);
+    },
+
+    REMOVE_TASK(state, taskId){
+        const index = state.groupTasks.findIndex(i => i.taskId === taskId);
+        console.log("index remove", index, taskId)
+        state.groupTasks.splice(index, 1);
     }
 }
 
@@ -101,6 +107,10 @@ export const actions = {
                 dueDate : dueDate,
                 remindDate : remindDate
             })       
+    },
+
+    removeTaskFromTaskGroup({commit}, taskId){
+        commit('REMOVE_TASK', taskId)
     }
 }
 
