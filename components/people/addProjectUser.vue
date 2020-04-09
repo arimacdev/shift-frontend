@@ -17,7 +17,7 @@
         </div>
         </template>
       <v-card class="addUserPopup">
-        <v-form v-model="isValid">
+        <v-form v-model="isValid" ref="form">
          <div class="popupFormContent">
               <v-icon class="" size="60" color="deep-orange lighten-1">mdi-account-plus</v-icon>
              <v-card-text class="deletePopupTitle">Add member to project</v-card-text>
@@ -32,7 +32,7 @@
 
             <v-autocomplete
               filled
-              label="Select user*"
+              label="Select user"
               v-model="addUser.assigneeId"
               :items="states"
               item-text="name"
@@ -55,7 +55,7 @@
               <!-- <input v-model="addUser.assigneeJobRole" placeholder="Role" class="formElements popupFormElement"> -->
            <v-text-field
             v-model="addUser.assigneeJobRole" 
-            label="Project Role*"
+            label="Project Role"
             flat
             outlined
             class=" popupFormElement"
@@ -168,6 +168,7 @@ import { required } from 'vuelidate/lib/validators'
     },
     methods: {
       close(){
+        this.$refs.form.reset()
           this.component = ''
       },
        onSelectedUser(){
@@ -177,7 +178,8 @@ import { required } from 'vuelidate/lib/validators'
         }
       },
       async changeHandler() {
-        this.dialog = false;
+        // this.dialog = false;
+        
         let assigneeProjectRoleId = this.getProjectRole();
         this.addUser.assigneeProjectRole = assigneeProjectRoleId;
         let response;
@@ -191,6 +193,7 @@ import { required } from 'vuelidate/lib/validators'
         this.selected = false;
         this.component = 'success-popup'
         this.success = response.message
+         this.$refs.form.reset()
        } catch(e){
           console.log("Error adding a User", e);
           this.component = 'error-popup'

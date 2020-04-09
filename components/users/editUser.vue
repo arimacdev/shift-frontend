@@ -92,7 +92,7 @@
             md="6"
             class="buttonGrid"
       >
-                <button class="submitButton editUserSubmit" @click="postData()" >
+                <button class="submitButtonEdit profileButton" @click="postData()" >
                 <v-list-item 
                 dark >
                     <v-list-item-action>
