@@ -3,9 +3,17 @@
 @import "./css/tasks.css";
 
 @import "./css/base/typo.css";
+@import "circular-std";
+
 
 /* -------------- common --------------- */
 
+* {
+    font-family: CircularStd;
+}
+.body-2{
+    font-family: CircularStd !important;
+}
 .listView{
     margin-top: 10px;
     height: 80vh;
@@ -87,6 +95,7 @@
     height: 85vh;
 }
 .addProjectTitle{
+font-family: CircularStd;
 font-style: normal;
 font-weight: 400;
 font-size: 20px;
@@ -1211,6 +1220,7 @@ color: #040428;
 
 .projectSubtitle{
     font-size: 10px !important;
+    font-family: CircularStd !important;
 }
 
 .taskDatePickerField{
