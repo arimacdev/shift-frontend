@@ -112,8 +112,8 @@
               <!-- ///////// add assignee name - customize for personal task and group tasks //////// -->
            <select  v-model="taskAssignee" class="tabListItemsText" @change="changeAssignee">
                 <option value="" disabled>{{ assignee.firstName }} {{assignee.lastName }}</option>
-              <option class="tabListItemsText" v-for="(projectUser, index) in people" :key="index" :selected="projectUser.assigneeId === assignee.userId" :value="projectUser.assigneeId" >
-                {{projectUser.assigneeFirstName}} {{projectUser.assigneeLastName}}
+              <option class="tabListItemsText" v-for="(groupUser, index) in completionTasks" :key="index" :selected="groupUser.assigneeId === assignee.userId" :value="groupUser.assigneeId" >
+                {{groupUser.assigneeFirstName}} {{groupUser.assigneeLastName}}
               </option>
             </select>
            </v-list-item-content>
@@ -405,7 +405,7 @@ import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
 
   export default {
-    props: ['group', 'task', 'assignee', 'subTasks' ,'taskFiles'],
+    props: ['group', 'task', 'assignee', 'subTasks' ,'taskFiles', 'completionTasks'],
 
     components: {
       'success-popup' : SuccessPopup,
@@ -465,7 +465,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
          console.log("onchange updated assignee ->", this.updatedTask.taskAssignee)
          let response;
         try{
-          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
+          response = await this.$axios.$put(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}`, {
           "taskAssignee": this.updatedTask.taskAssignee,
           "taskType": "taskGroup"
         },

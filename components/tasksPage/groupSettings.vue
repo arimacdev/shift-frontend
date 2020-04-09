@@ -30,10 +30,58 @@
                 color="#FF6161"
                 height="50px"
                 class="settingsButton white--text"
-                @click="deleteData()">
+                @click="settingsDialog = true"
+             >
                     Delete
                 </v-btn>
         </v-list-item-action>
+
+        <!-- --------------------- delete task popup --------------- -->
+
+
+ <v-dialog
+      v-model="settingsDialog"
+      max-width="380"
+    >
+      <v-card>
+        <div class="popupConfirmHeadline">
+          <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
+          <br>
+          <span class="alertPopupTitle">Delete Group</span>
+          <br>
+          <span class="alertPopupText">You're about to permanantly delete this group and all of its data. If you're not sure, you can cancel this action. </span>
+        </div>
+
+        
+ <div class="popupBottom">
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+            color="success"
+            width="100px"
+            @click="settingsDialog = false;"
+          >
+            Cancel
+          </v-btn>
+ <v-spacer></v-spacer>
+ <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
+          <v-btn
+            color="error"
+            width="100px"
+            @click="settingsDialog = false; deleteData()"
+          >
+            Delete
+          </v-btn>
+           <v-spacer></v-spacer>
+        </v-card-actions>
+
+        
+        </div>
+      </v-card>
+    </v-dialog>
+
+<!-- ---------------------- end popup ------------------ -->
 
       </v-list-item>
        <div @click="close" class="groupUpdatePopups">
@@ -59,6 +107,7 @@ export default {
        return{
             userId: this.$store.state.user.userId,
         component: '',
+        settingsDialog: false,
        }
     },
     methods: {

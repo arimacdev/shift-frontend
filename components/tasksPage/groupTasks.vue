@@ -17,7 +17,7 @@
           
       <v-tab-item>
         <v-divider class="mx-4"></v-divider>
-            <group-task-content :group=group :groupTasks=groupTasks />
+            <group-task-content :group=group :groupTasks=groupTasks :completionTasks=completionTasks />
       </v-tab-item>
     
       <v-tab-item>

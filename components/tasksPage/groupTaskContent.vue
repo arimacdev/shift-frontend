@@ -92,7 +92,7 @@
       class=""
       color="#FFFFFF"
     > 
-      <group-side-drawer :task="task" :group="group" :assignee="assignee"  :subTasks="subTasks" :taskFiles="taskFiles" @shrinkSideBar="shrinkSideBar"/>
+      <group-side-drawer :completionTasks=completionTasks :task="task" :group="group" :assignee="assignee"  :subTasks="subTasks" :taskFiles="taskFiles" @shrinkSideBar="shrinkSideBar"/>
     </v-navigation-drawer>
           <!-- --------------- end side bar --------------------- -->
        
@@ -107,7 +107,7 @@ import { mapState } from 'vuex'
 
 
   export default {
-    props: ['groupTasks', 'group'],
+    props: ['groupTasks', 'group', 'completionTasks'],
        components: {
       'group-side-drawer' : GroupSideDrawer,
     },
@@ -170,7 +170,11 @@ import { mapState } from 'vuex'
        //if task fetch is successful,
        let subTaskResponse;
        try {
-            subTaskResponse = await this.$axios.$get(`/non-project/tasks/personal/${this.task.taskId}/subtask?userId=${this.userId}`) 
+            subTaskResponse = await this.$axios.$get(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/subtask?userId=${this.userId}`,{
+        headers: {
+          'type': 'taskGroup'
+       }
+      }) 
             console.log("subtasks--->", subTaskResponse.data);
             this.subTasks = subTaskResponse.data;  
       //get files related to task

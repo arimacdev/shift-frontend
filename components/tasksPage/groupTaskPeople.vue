@@ -71,7 +71,7 @@
             <v-list-item class="peopleContainer">
               <v-list-item-avatar>
            <v-img v-if="assignee.assigneeProfileImage != null" :src="assignee.assigneeProfileImage"></v-img>
-          <v-img v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
+          <v-img v-if="assignee.assigneeProfileImage == null"  src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
         </v-list-item-avatar>
               <v-list-item-content>
                  <v-list-item-title class="projectRole">{{ assignee.assigneeFirstName }} {{assignee.assigneeLastName}}</v-list-item-title >

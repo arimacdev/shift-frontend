@@ -151,7 +151,11 @@ import { mapState } from 'vuex';
        //if task fetch is successful,
        let subTaskResponse;
        try {
-            subTaskResponse = await this.$axios.$get(`/projects/${this.projectId}/tasks/${task.taskId}/subtask?userId=${this.userId}`) 
+            subTaskResponse = await this.$axios.$get(`/projects/${this.projectId}/tasks/${task.taskId}/subtask?userId=${this.userId}`,{
+        headers: {
+          'type': 'project'
+       }
+      }) 
             console.log("subtasks--->", subTaskResponse.data)     ;
             this.subTasks = subTaskResponse.data;  
       //get files related to task
@@ -161,6 +165,7 @@ import { mapState } from 'vuex';
       {
         headers: {
           user: this.userId,
+          'type': 'project'
        }
       }
       ) 
