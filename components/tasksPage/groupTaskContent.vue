@@ -236,7 +236,7 @@ import { mapState } from 'vuex'
     },
        computed: {
       ...mapState({
-          groupTasks: state => state.group.groupTasks,
+          groupTasks: state => state.groups.groupTask.groupTasks,
       })
     }
   }

@@ -142,7 +142,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
       },
        onSelectedUser(){
         if(this.select !== undefined){
-        this.$emit('searchSelected', this.select);
+        // this.$emit('searchSelected', this.select);
         // console.log("selected user",this.select)
         }
       },
@@ -159,6 +159,10 @@ import ErrorPopup from '~/components/popups/errorPopup'
         )
         this.$refs.form.reset()
         this.component = 'success-popup'
+        this.$store.dispatch('groups/groupPeople/fetchGroupPeople',{
+          taskGroupId: this.group.taskGroupId, 
+          userId: this.userId
+        });
         console.log(response);
        } catch(e){
           console.log("Error adding a group", e);
