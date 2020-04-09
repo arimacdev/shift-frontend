@@ -1,5 +1,6 @@
 export const state = () => ({
-    myGroups: []
+    myGroups: [],
+    groupTasks: []
 })
 
 export const mutations = {
@@ -8,6 +9,9 @@ export const mutations = {
     },
     ADD_MY_GROUP(state, myGroup){
         state.myGroups.push(myGroup);
+    },
+    SET_GROUP_TASKS(state, groupTasks){
+        state.groupTasks = groupTasks;
     }
 }
 
@@ -47,16 +51,23 @@ export const actions = {
     },
 
 
-    fetchTasksMyTasks({commit, rootState}, projectId){
-        const userId = rootState.user.userId;
-        this.$axios.get (`projects/${projectId}/tasks/user?userId=${userId}`)
-        .then (response => {
-            console.log("MY TASKS ARE RETRIEVED SUCCESSFULLY-->", response.data.data);
-            commit('SET_MY_TASKS', response.data.data);
-        })
-        .catch (e => {
-            console.log("error", e)
-        })
+    async fetchGroupTasks({commit, rootState}, {taskGroupId, userId}){
+        // this.group = group;
+      const user = rootState.user.userId;
+       let getGroupTaskResponse;
+       try {
+           getGroupTaskResponse = await this.$axios.$get(`/projects/${taskGroupId}/tasks?userId=${userId}`,
+           {
+               headers : {
+                   user: user,
+                   type: 'taskGroup'
+               }
+           })
+           console.log("group task get response", getGroupTaskResponse.data);
+           commit('SET_GROUP_TASKS', getGroupTaskResponse.data)
+       } catch(e) {
+           console.log("Error fetching group tasks",e);
+       }
     },
 
 }

@@ -169,23 +169,25 @@ export default {
    methods: {
      async selectGroup(group){
         this.group = group;
-        console.log("task trigered! ===========>");
-
-         const user = this.$store.state.user.userId;
-        let getGroupTaskResponse;
-        try {
-            getGroupTaskResponse = await this.$axios.$get(`/projects/${this.group.taskGroupId}/tasks?userId=${this.userId}`,
-            {
-                headers : {
-                    user: user,
-                    type: 'taskGroup'
-                }
-            })
-            this.groupTasks = getGroupTaskResponse.data
-            console.log("group task get response", this.groupTasks);
-        } catch(e) {
-            console.log("Error fetching group tasks",e);
-        }
+        this.$store.dispatch('group/fetchGroupTasks',{
+          taskGroupId: this.group.taskGroupId,
+          userId: this.userId
+        });
+        //  const user = this.$store.state.user.userId;
+        // let getGroupTaskResponse;
+        // try {
+        //     getGroupTaskResponse = await this.$axios.$get(`/projects/${this.group.taskGroupId}/tasks?userId=${this.userId}`,
+        //     {
+        //         headers : {
+        //             user: user,
+        //             type: 'taskGroup'
+        //         }
+        //     })
+        //     this.groupTasks = getGroupTaskResponse.data
+        //     console.log("group task get response", this.groupTasks);
+        // } catch(e) {
+        //     console.log("Error fetching group tasks",e);
+        // }
 
         let getCompletionTaskResponse;
         try {
