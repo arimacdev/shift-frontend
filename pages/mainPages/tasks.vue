@@ -75,7 +75,7 @@
 
 <div >
           <div v-for="(group, index) in groups"
-        :key="index" v-on:click="component='group-tasks'">
+        :key="index">
             <v-list-item class="groupsListItem" active-class="activeGroupList" @click="selectGroup(group)">
               <v-list-item-action class="active">
                 <v-icon size="20" class="groupListElement">mdi-calendar-blank-multiple</v-icon>
@@ -168,8 +168,15 @@ export default {
     },  
    methods: {
      async selectGroup(group){
+        this.component='group-tasks'
         this.group = group;
+        
         this.$store.dispatch('group/fetchGroupTasks',{
+          taskGroupId: this.group.taskGroupId,
+          userId: this.userId
+        });
+
+         this.$store.dispatch('group/fetchGroupPeople',{
           taskGroupId: this.group.taskGroupId,
           userId: this.userId
         });
@@ -189,21 +196,23 @@ export default {
         //     console.log("Error fetching group tasks",e);
         // }
 
-        let getCompletionTaskResponse;
-        try {
-            getCompletionTaskResponse = await this.$axios.$get(`projects/${this.group.taskGroupId}/tasks/${this.userId}/completion/details`,
-            {
-                headers : {
-                    user: user,
-                    type: 'taskGroup'
-                }
-            })
-            this.completionTasks = getCompletionTaskResponse.data
-            console.log(" task completion get response", this.groupTasks);
-        } catch(e) {
-            console.log("Error fetching completion tasks",e);
-        }
+    //     let getCompletionTaskResponse;
+    //     try {
+    //         getCompletionTaskResponse = await this.$axios.$get(`projects/${this.group.taskGroupId}/tasks/${this.userId}/completion/details`,
+    //         {
+    //             headers : {
+    //                 user: user,
+    //                 type: 'taskGroup'
+    //             }
+    //         })
+    //         this.completionTasks = getCompletionTaskResponse.data
+    //         console.log(" task completion get response", this.groupTasks);
+    //     } catch(e) {
+    //         console.log("Error fetching completion tasks",e);
+    //     }
      },
+
+     
      async addGroup(){
         console.log("add group");
         this.$store.dispatch('group/addGroup', this.groupName)

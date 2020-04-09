@@ -64,6 +64,8 @@ import GroupSettings from '~/components/tasksPage/groupSettings'
       }
     },
     name: 'tabViews',
+
+   
    
     methods: {
       onSelectProject() {

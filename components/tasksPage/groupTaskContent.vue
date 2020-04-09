@@ -130,9 +130,10 @@ import { mapState } from 'vuex'
       }
     },
 
-    created() {
-    //  this.$store.dispatch('personalTasks/fetchAllPersonalTasks');
-    },
+
+    // created() {
+    // //  this.$store.dispatch('personalTasks/fetchAllPersonalTasks');
+    // },
 
     methods: {
         dueDateCheck(task){

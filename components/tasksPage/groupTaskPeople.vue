@@ -120,7 +120,7 @@ import { mapState } from 'vuex';
 import removeGroupMember from '@/components/tasksPage/removeGroupMember.vue'
 import addGroupPeople from '@/components/tasksPage/addGroupPeople.vue'
 export default {
-    props: ['group', 'users', 'completionTasks'],
+    props: ['group', 'users'],
     components: {
         removeGroupMember,
         addGroupPeople
@@ -150,7 +150,7 @@ export default {
     },
         computed: {
     ...mapState({
-        userCompletionTasks: state => state.task.userCompletionTasks,
+        completionTasks: state => state.group.groupPeople,
     })
     }
    
