@@ -6,8 +6,31 @@ export const mutations = {
     SET_GROUP_TASKS(state, groupTasks){
         state.groupTasks = groupTasks;
     },
+
     ADD_GROUP_TASK(state, groupTask){
         state.groupTasks.push(groupTask);
+    },
+
+    UPDATE_GROUP_TASK(state, {taskId,  type, value}){
+    // const task = state.groupTasks.find(element => element.taskId = taskId);
+    console.log("updateTask", taskId, type, value)
+    const prevTasks = state.groupTasks;
+    const index = prevTasks.findIndex(i => i.taskId === taskId)
+    const updateTask = prevTasks[index];
+    updateTask[type] = value
+    console.log("index updated task",  index, updateTask);
+    state.groupTasks.splice(index, 1, updateTask);
+    },
+
+    UPDATE_GROUP_TASK_DATES(state, {taskId, dueDate, remindDate}){
+    console.log("updateTask dates", taskId, dueDate, remindDate)
+    const prevTasks = state.groupTasks;
+    const index = prevTasks.findIndex(i => i.taskId === taskId);
+    const updateTask = prevTasks[index];
+    updateTask.taskDueDateAt = dueDate;
+    updateTask.taskReminderAt = remindDate;
+    console.log("index updated task",  index, updateTask);
+    state.groupTasks.splice(index, 1, updateTask);
     }
 }
 
@@ -61,12 +84,26 @@ export const actions = {
      } catch(e){
         console.log("Error adding a group task", e);
      } 
+    },
+
+    updateGroupTask({commit}, {taskId, type, value}){
+        console.log("taskId", taskId, " task name", value)
+            commit('UPDATE_GROUP_TASK',{
+                taskId: taskId,
+                type : type,
+                value : value
+            })       
+    },
+
+    updateGroupTaskDates({commit}, {taskId, dueDate, remindDate}){
+        console.log("taskId", taskId, " task name", value)
+            commit('UPDATE_GROUP_TASK_DATES',{
+                taskId: taskId,
+                dueDate : dueDate,
+                remindDate : remindDate
+            })       
     }
-
-
-
 }
-
 
 export const getters = {
     getGroups: state => {

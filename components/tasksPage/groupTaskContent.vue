@@ -162,12 +162,12 @@ import { mapState } from 'vuex'
         console.log("shrink side bar")
         this.drawer = false;
       },
-        async selectGroupTask(groupTask){
-        this.task = groupTask;
+      async selectGroupTask(groupTask){
+      this.task = groupTask;
      console.log("selectedTask", groupTask);
       this.$axios.get (`/users/${this.task.taskAssignee}`)
       .then (async response => {
-       console.log("fetched task -->", response.data.data)
+      //  console.log("fetched task -->", response.data.data)
        this.assignee = response.data.data;
        //if task fetch is successful,
        let subTaskResponse;

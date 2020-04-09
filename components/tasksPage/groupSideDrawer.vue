@@ -561,7 +561,13 @@ import ErrorPopup from '~/components/popups/errorPopup'
             }
         )
         this.editTask = true;
-        this.$store.dispatch('personalTasks/fetchAllPersonalTasks');       
+        
+         this.$store.dispatch('groups/groupTask/updateGroupTask',{
+          taskId: this.task.taskId,
+          type: 'taskName',
+          value : this.updatedTask.taskName
+        });
+        // this.$store.dispatch('personalTasks/fetchAllPersonalTasks');       
         console.log("edit task response", response);
        } catch(e){
           console.log("Error updating a note", e);
@@ -581,7 +587,11 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
-        this.$store.dispatch('personalTasks/fetchAllPersonalTasks'); 
+          this.$store.dispatch('groups/groupTask/updateGroupTask',{
+          taskId: this.task.taskId,
+          type: 'taskStatus',
+          value : this.updatedTask.taskStatus
+        });
         console.log("update task status response", response);
        } catch(e){
           console.log("Error updating a status", e);
@@ -620,7 +630,12 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
-         this.$store.dispatch('personalTasks/fetchAllPersonalTasks'); 
+          this.$store.dispatch('groups/groupTask/updateGroupTaskDates',{
+          taskId: this.task.taskId,
+          dueDate: dueDate,
+          remindDate : remindDate
+        });
+        //  this.$store.dispatch('personalTasks/fetchAllPersonalTasks'); 
         console.log("update task dates response", response);
        } catch(e){
           console.log("Error updating a status", e);

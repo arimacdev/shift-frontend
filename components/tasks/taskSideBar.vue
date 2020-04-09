@@ -606,6 +606,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
        }       
       },
       async saveEditTaskName(){
+        console.log("NAMEEEE", this.$store.state.task.myTasks)
       console.log("updatedTaskName ->",this.updatedTask.taskName)
         let response;
         try{
@@ -619,6 +620,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
+        console.log("UPDATED", this.$store.state.task.myTasks)
         this.$emit('listenChange');
         this.editTask = true;
         console.log("edit task response", response);
