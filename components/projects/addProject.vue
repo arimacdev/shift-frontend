@@ -1,5 +1,5 @@
 <template>
-    <div class="formDiv">
+    <div class="formDiv createProjectPage overflow-y-auto">
         <form @submit.prevent="handleSubmit">
         <v-row
             class="mb-12 formRow"

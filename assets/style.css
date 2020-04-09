@@ -83,6 +83,9 @@
     margin-left: 22%;
     padding: 10px;
 }
+.createProjectPage{
+    height: 85vh;
+}
 .addProjectTitle{
 font-style: normal;
 font-weight: 400;
