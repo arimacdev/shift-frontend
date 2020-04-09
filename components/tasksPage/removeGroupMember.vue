@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="390">
       <template v-slot:activator="{ on }">
-        <div class="iconBackCircle"> <v-icon v-on="on" size="17" color="#FF6161">mdi-trash-can-outline</v-icon></div>
+        <!-- <div class="iconBackCircle"> <v-icon v-on="on" size="17" color="#FF6161">mdi-trash-can-outline</v-icon></div> -->
       </template>
       <v-card >
         <div class="deletePopupContent">
@@ -38,7 +38,7 @@
           executorId: this.userId,
           blockedUserId: this.blockedUserId,
           blockedStatus: true,
-          
+
         })
        } catch(e){
           console.log("Error blocking user", e);
