@@ -8,24 +8,20 @@
         
 
 <div class="">
-             <!-- <div class="">
+             <div class="">
             <p class="peopleRoleTitle" @click="fetchUsers">Group owner</p>
         <v-divider></v-divider>
-            </div> -->
-
-           
-        
-            
-        <!-- <div v-for="(assignee, index) in userCompletionTasks"
+            </div>
+       <div v-for="(assignee, index) in completionTasks"
         :key="index" class="taskList peopleListItems" >
-            <v-list-item v-if="assignee.projectRoleId == 1" class="peopleContainer">
+            <v-list-item v-if="assignee.taskGroupRole == 1" class="peopleContainer">
               <v-list-item-avatar>
            <v-img v-if="assignee.assigneeProfileImage != null" :src="assignee.assigneeProfileImage"></v-img>
-          <v-img v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
+          <v-img v-if="assignee.assigneeProfileImage == null"  src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
         </v-list-item-avatar>
               <v-list-item-content>
-                 <v-list-item-title class="projectRole"> {{ assignee.assigneeFirstName }} {{assignee.assigneeLastName}}</v-list-item-title >
-                <v-list-item-title class="peopleName">{{assignee.projectJobRoleName}} </v-list-item-title>
+                 <v-list-item-title class="projectRole">{{ assignee.assigneeFirstName }} {{assignee.assigneeLastName}}</v-list-item-title >
+                <v-list-item-title class="peopleName"> {{assignee.projectJobRoleName}} </v-list-item-title>
               </v-list-item-content>
               <v-list-item-content class="projectProgressSection">
                 <v-list-item-title class="completedStatus">{{ assignee.tasksCompleted + "/" + assignee.totalTasks + " Tasks completed"}}</v-list-item-title>
@@ -48,15 +44,13 @@
 
                     </v-list-item-title >
               </v-list-item-content>
-             <v-list-item-action >
-               <editProjectUser :editUser="assignee" :projectId="projectId" />
-              </v-list-item-action>
               <v-list-item-action >
-               <deleteProjectUser :blockedUserId="assignee.assigneeId" :projectId="projectId" />
+                  <removeGroupMember :group=group :blockedUserId="assignee.assigneeId" />
+               <!-- <deleteProjectUser :blockedUserId="assignee.assigneeId" :projectId="projectId" /> -->
               </v-list-item-action>
                
             </v-list-item>
-        </div> -->
+        </div>
         </div>
         <!-- --------- -->
 
@@ -68,7 +62,7 @@
             
         <div v-for="(assignee, index) in completionTasks"
         :key="index" class="taskList peopleListItems" >
-            <v-list-item class="peopleContainer">
+            <v-list-item v-if="assignee.taskGroupRole == 2" class="peopleContainer">
               <v-list-item-avatar>
            <v-img v-if="assignee.assigneeProfileImage != null" :src="assignee.assigneeProfileImage"></v-img>
           <v-img v-if="assignee.assigneeProfileImage == null"  src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>

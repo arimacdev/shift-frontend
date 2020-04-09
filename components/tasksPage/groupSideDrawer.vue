@@ -488,6 +488,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
                 data: {},
                 headers: {
                     'user': this.userId,
+                    'type': 'taskGroup'
                 }
         })
         this.$store.dispatch('personalTasks/fetchAllPersonalTasks'); 
