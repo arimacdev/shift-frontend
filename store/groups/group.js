@@ -8,6 +8,14 @@ export const mutations = {
     },
     ADD_MY_GROUP(state, myGroup){
         state.myGroups.push(myGroup);
+    },
+    UPDATE_GROUP(state, {groupId, name}){
+        const groups = state.myGroups;
+        const index = groups.findIndex(i => i.taskGroupId === groupId);
+        const group = state.myGroups[index];
+        group.taskGroupName = name;
+        state.myGroups.splice(index, 1, group);
+        
     }
 }
 
@@ -28,7 +36,6 @@ export const actions = {
     })
     },
 
-
     async addGroup({commit, rootState}, groupName){
         const userId = rootState.user.userId;
         let response;
@@ -44,7 +51,12 @@ export const actions = {
        } catch(e){
           console.log("Error adding a group", e);
        }
+    },
+
+    updateGroup({commit}, {groupId, name}){
+        commit('UPDATE_GROUP', {groupId, name});
     }
+
 
 }
 

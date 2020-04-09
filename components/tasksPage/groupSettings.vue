@@ -120,13 +120,14 @@ export default {
           taskGroupEditor: this.userId,
         })
          this.component = 'success-popup'
-        // window.setTimeout(location.reload(), 8000)
-
+         this.$store.dispatch('groups/group/updateGroup', {
+           groupId: this.group.taskGroupId,
+           name: this.groupName
+           });
       }
        catch(e){
           console.log("Error edit user", e);
            this.component = 'error-popup'
-        //   alert("Error updating user!")
        } 
       },
      async deleteData(){
