@@ -99,7 +99,7 @@
                     </v-list-item-title >
               </v-list-item-content>
               <v-list-item-action >
-                  <removeGroupMember  />
+                  <removeGroupMember :group=group :blockedUserId="assignee.assigneeId" />
                <!-- <deleteProjectUser :blockedUserId="assignee.assigneeId" :projectId="projectId" /> -->
               </v-list-item-action>
                

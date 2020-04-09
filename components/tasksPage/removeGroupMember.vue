@@ -22,7 +22,7 @@
 
 <script>
   export default {
-    props: ['blockedUserId', 'projectId'],
+    props: ['blockedUserId', 'projectId', 'group'],
     data () {
       return {
         userId: this.$store.state.user.userId,
@@ -34,10 +34,11 @@
        this.dialog = false
        let response;
        try{
-          response = await this.$axios.$post(`/projects/${this.projectId}/users/${this.userId}/block`, {
+          response = await this.$axios.$post(`/projects/${this.group.taskGroupId}/users/${this.userId}/block`, {
           executorId: this.userId,
           blockedUserId: this.blockedUserId,
-          blockedStatus: true
+          blockedStatus: true,
+          
         })
        } catch(e){
           console.log("Error blocking user", e);
