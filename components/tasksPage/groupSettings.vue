@@ -141,6 +141,7 @@ export default {
           }
         );
         this.component = 'success-popup'
+        this.$store.dispatch('groups/group/removeGroup', this.group.taskGroupId)
         console.log("delete group", response);
        } catch(e){
            this.component = 'error-popup'

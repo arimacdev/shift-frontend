@@ -6,16 +6,22 @@ export const mutations = {
     SET_MY_GROUPS(state, mygroups){
         state.myGroups = mygroups;
     },
+
     ADD_MY_GROUP(state, myGroup){
         state.myGroups.push(myGroup);
     },
+
     UPDATE_GROUP(state, {groupId, name}){
         const groups = state.myGroups;
         const index = groups.findIndex(i => i.taskGroupId === groupId);
         const group = state.myGroups[index];
         group.taskGroupName = name;
-        state.myGroups.splice(index, 1, group);
-        
+        state.myGroups.splice(index, 1, group);        
+    },
+
+    REMOVE_GROUP(state, groupId){
+        const index = state.myGroups.findIndex(i => i.taskGroupId === groupId);
+        state.myGroups.splice(index, 1);
     }
 }
 
@@ -55,6 +61,10 @@ export const actions = {
 
     updateGroup({commit}, {groupId, name}){
         commit('UPDATE_GROUP', {groupId, name});
+    },
+
+    removeGroup({commit}, groupId){
+        commit('REMOVE_GROUP', groupId);
     }
 
 
