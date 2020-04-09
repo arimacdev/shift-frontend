@@ -555,7 +555,12 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
-         this.$store.dispatch('personalTasks/fetchAllPersonalTasks'); 
+          this.$store.dispatch('groups/groupTask/updateGroupTask',{
+          taskId: this.task.taskId,
+          type: 'taskNote',
+          value : this.updatedTask.taskNotes
+        });        
+        //  this.$store.dispatch('personalTasks/fetchAllPersonalTasks'); 
         console.log("edit task response", response);
        } catch(e){
           console.log("Error updating a note", e);
@@ -582,7 +587,6 @@ import ErrorPopup from '~/components/popups/errorPopup'
           type: 'taskName',
           value : this.updatedTask.taskName
         });
-        // this.$store.dispatch('personalTasks/fetchAllPersonalTasks');       
         console.log("edit task response", response);
        } catch(e){
           console.log("Error updating a note", e);
@@ -650,7 +654,6 @@ import ErrorPopup from '~/components/popups/errorPopup'
           dueDate: dueDate,
           remindDate : remindDate
         });
-        //  this.$store.dispatch('personalTasks/fetchAllPersonalTasks'); 
         console.log("update task dates response", response);
        } catch(e){
           console.log("Error updating a status", e);

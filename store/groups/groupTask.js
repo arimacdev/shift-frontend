@@ -96,7 +96,6 @@ export const actions = {
     },
 
     updateGroupTaskDates({commit}, {taskId, dueDate, remindDate}){
-        console.log("taskId", taskId, " task name", value)
             commit('UPDATE_GROUP_TASK_DATES',{
                 taskId: taskId,
                 dueDate : dueDate,
