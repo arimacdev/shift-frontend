@@ -145,7 +145,7 @@ export default {
       }
    },
    async created(){
-     this.$store.dispatch('group/fetchMyGroups');
+     this.$store.dispatch('groups/group/fetchMyGroups');
       //  const user = this.$store.state.user.userId;
       //   let getGroupResponse;
       //   try {
@@ -163,7 +163,7 @@ export default {
     },
         computed: {
       ...mapState({
-          groups: state => state.group.myGroups
+          groups: state => state.groups.group.myGroups
       })
     },  
    methods: {
@@ -171,12 +171,12 @@ export default {
         this.component='group-tasks'
         this.group = group;
         
-        this.$store.dispatch('group/fetchGroupTasks',{
+        this.$store.dispatch('groups/groupTask/fetchGroupTasks',{
           taskGroupId: this.group.taskGroupId,
           userId: this.userId
         });
 
-         this.$store.dispatch('group/fetchGroupPeople',{
+         this.$store.dispatch('groups/groupPeople/fetchGroupPeople',{
           taskGroupId: this.group.taskGroupId,
           userId: this.userId
         });
@@ -215,7 +215,7 @@ export default {
      
      async addGroup(){
         console.log("add group");
-        this.$store.dispatch('group/addGroup', this.groupName)
+        this.$store.dispatch('groups/group/addGroup', this.groupName)
       //   let response;
       //     try{
       //     response = await this.$axios.$post(`/taskgroup`, 

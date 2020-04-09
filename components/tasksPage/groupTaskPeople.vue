@@ -150,7 +150,7 @@ export default {
     },
         computed: {
     ...mapState({
-        completionTasks: state => state.group.groupPeople,
+        completionTasks: state => state.groups.groupPeople.groupPeople,
     })
     }
    

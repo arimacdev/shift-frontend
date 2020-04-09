@@ -206,23 +206,28 @@ import { mapState } from 'vuex'
         },
      async addGroupTask(){
         console.log("add group task");
-        let response;
-          try{
-          response = await this.$axios.$post(`/projects/${this.group.taskGroupId}/tasks`, 
-          {
-            taskName: this.groupTask,
-            projectId: this.group.taskGroupId,
-            taskInitiator: this.userId,
-            taskDueDate: null,
-            taskRemindOnDate: null,
-            taskType: 'taskGroup'
-          }
-        )
+        this.$store.dispatch('groups/groupTask/addTaskToGroup',{
+          taskName: this.groupTask,
+          taskGroupId: this.group.taskGroupId
+        });
         this.groupTask = ''
-        console.log(response);
-       } catch(e){
-          console.log("Error adding a group task", e);
-       }  
+      //   let response;
+      //     try{
+      //     response = await this.$axios.$post(`/projects/${this.group.taskGroupId}/tasks`, 
+      //     {
+      //       taskName: this.groupTask,
+      //       projectId: this.group.taskGroupId,
+      //       taskInitiator: this.userId,
+      //       taskDueDate: null,
+      //       taskRemindOnDate: null,
+      //       taskType: 'taskGroup'
+      //     }
+      //   )
+      //   
+      //   console.log(response);
+      //  } catch(e){
+      //     console.log("Error adding a group task", e);
+      //  }  
       },
       getTaskDueDate(date) {
       if(date === null || date === '1970-01-01T05:30:00.000+0000')
@@ -236,7 +241,7 @@ import { mapState } from 'vuex'
     },
        computed: {
       ...mapState({
-          groupTasks: state => state.group.groupTasks,
+          groupTasks: state => state.groups.groupTask.groupTasks,
       })
     }
   }
