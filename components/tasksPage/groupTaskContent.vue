@@ -117,6 +117,7 @@ import { mapState } from 'vuex'
          userId: this.$store.state.user.userId,
          personalTask: '',
          taskSelect: null,
+         groupTask: '',
          task: {},
          assignee: {},
          subTasks: [],
