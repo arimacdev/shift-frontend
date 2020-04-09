@@ -128,9 +128,9 @@
                 md="6"
                 
             >
-            <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Drop files to attach, or browse" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload fileUploadField"/>
+            <!-- <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Drop files to attach, or browse" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload fileUploadField"/> -->
            
-            <!-- <v-file-input 
+            <v-file-input 
             label="Attachments"
             v-model="files"
             outlined
@@ -138,10 +138,10 @@
             prepend-icon=""
             class="createFormElements"
             chips
-            ref="files"
-            @change="test()"
+            show-size=""
             >
-            </v-file-input> -->
+            </v-file-input>
+             
             </v-col>
         </v-row>
         <v-row
@@ -191,6 +191,7 @@
         </button>
             </v-col>
         </v-row>
+
         </form>
        
     </div>
@@ -224,6 +225,7 @@ import axios from 'axios'
     data() {
       return {
          userId: this.$store.state.user.userId,
+         files: [],
          file: '',
          task: {
             taskName: '',
@@ -241,7 +243,6 @@ import axios from 'axios'
           taskDueDate: new Date(),
           taskRemindOnDate: new Date(),
           states: [],
-          files: null,
           search: null,
           items: [
             { name: 'Pending', id: 'pending' },
@@ -304,8 +305,28 @@ import axios from 'axios'
             },
         },
     methods: {
-      test(){
-        console.log("updated files =============> "+ new FileReader().this.files)
+      async test(file){
+        console.log("updated files =============> "+ file[0] )
+
+        let formData = new FormData();
+        formData.append('files', this.files[0]);
+        formData.append('type', 'profileImage');
+         formData.append('taskType', 'project');
+
+        this.$axios.$post(`/projects/033a26dd-0532-4c5b-97f4-55b0c5efa841/tasks/a6a9c249-88f5-4b31-8a16-9b7fba555ad3/upload`,
+            formData,
+            {
+              headers: {
+                  'Content-Type': 'multipart/form-data',
+                  'user': this.userId,
+              }
+            }
+          ).then(function(res){
+            console.log('File upload successful', res.data);
+          })
+          .catch(function(){
+            console.log('File Upload Failed');
+          });
       },
       querySelections (v) {
         let projectSearchList = this.projectUsers;
@@ -368,8 +389,9 @@ import axios from 'axios'
         let taskId= response.data.taskId;
 
         let formData = new FormData();
-        formData.append('files', this.file);
-        formData.append('type', 'profileImage')
+        formData.append('files', this.files);
+        formData.append('type', 'profileImage');
+         formData.append('taskType', 'project');
 
         this.$axios.$post(`/projects/${this.projectId}/tasks/${taskId}/upload`,
             formData,
@@ -380,6 +402,7 @@ import axios from 'axios'
               }
             }
           ).then(function(res){
+            this.files = []
             console.log('File upload successful', res.data);
           })
           .catch(function(){
