@@ -8,8 +8,22 @@
           <div class="profilePictureUpload">
               <form>
               <template>
-                <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Select profile picture" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload profPicUploader"/>
+                <!-- <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Select profile picture" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload profPicUploader"/> -->
                 <!-- <v-file-input id="files" ref="files" v-on:change="handleFileUploads()"  prepend-icon="mdi-camera" chips label="Upload profile picture"></v-file-input> -->
+              <v-file-input 
+            label="Update profile picture"
+            v-model="files"
+            prepend-inner-icon="mdi-camera"
+            prepend-icon=""
+            class="createFormElements"
+            chips
+            
+
+            >
+            </v-file-input>
+             
+             
+             
               </template>
               <div class="pictureUploadButton">
               <v-btn
@@ -116,14 +130,15 @@
                 md="6"
                 
             >
-        <input  v-model="user.userName" disabled  placeholder="Username" class="formElements">
+        <!-- <input  v-model="user.userName" disabled  placeholder="Username" class="formElements"> -->
+         <input type="email" v-model="user.email"  placeholder="Email" class="formElements">
             </v-col>
              <v-col
                 sm="6"
                 md="6"
                 
             >
-           <input type="email" v-model="user.email"  placeholder="Email" class="formElements">
+           <!-- <input type="email" v-model="user.email"  placeholder="Email" class="formElements"> -->
             </v-col>
         </v-row>
 
@@ -220,7 +235,7 @@ export default {
          switch1: true,
         switch2: false,
 
-
+        files: [],
         userName: this.user.userName,
         firstName: this.user.firstName,
         lastName: this.user.lastName,
@@ -366,7 +381,7 @@ export default {
        submit () {
          try{
         let formData = new FormData();
-        formData.append('files', this.file);
+        formData.append('files', this.files);
         formData.append('type', 'profileImage')
 
         this.$axios.$post(`/user/profile/upload`,

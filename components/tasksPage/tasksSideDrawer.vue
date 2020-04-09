@@ -103,13 +103,12 @@
 <v-divider></v-divider>
       <!-- ---------------------- -->
 
-      <v-list-item-group class="tabListItems">
+      <!-- <v-list-item-group class="tabListItems">
         <v-list-item>
           <v-list-item-icon>
             <v-icon size="30" color="#0BAFFF" >mdi-account-arrow-left-outline</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-              <!-- ///////// add assignee name - customize for personal task and group tasks //////// -->
            <select  v-model="taskAssignee" class="tabListItemsText" @change="changeAssignee">
                 <option value="" disabled>{{ assignee.firstName }} {{assignee.lastName }}</option>
               <option class="tabListItemsText" v-for="(projectUser, index) in people" :key="index" :selected="projectUser.assigneeId === assignee.userId" :value="projectUser.assigneeId" >
@@ -118,7 +117,7 @@
             </select>
            </v-list-item-content>
         </v-list-item>
-      </v-list-item-group>
+      </v-list-item-group> -->
 
       <!-- ----------------------- -->
 <v-divider></v-divider>
@@ -354,7 +353,19 @@
           </v-list-item-content>
         </template>
         <div class="attchmentContainer fileAttachSideBar">
-        <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Add a new file" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload"/>
+        <!-- <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Add a new file" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload"/> -->
+        <v-file-input 
+            label="Attachments"
+            v-model="files"
+            outlined
+            prepend-inner-icon="mdi-paperclip"
+            prepend-icon=""
+            class="createFormElements"
+            chips
+            show-size=""
+            @change="taskFileUpload()"
+            >   </v-file-input>
+       
         </div>
         <div class="attchmentContainer">
         <v-list-item class="subTaskListItems"  v-for="(taskFile,index) in taskFiles" :key="index">
@@ -414,6 +425,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
     },
     data() {
       return {
+        files: [],
         taskDialog: false,
         subTaskDialog: false,
         component: '',
@@ -497,6 +509,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
        }  
       },
       async addSubTask(){
+        if(this.newSubTask.subtaskName){
         console.log("add subTask", this.task.taskId,this.newSubTask.subtaskName);
         let response;
           try{
@@ -516,6 +529,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
        } catch(e){
           console.log("Error adding a subTask", e);
        }  
+        }
       },
       name() {
          this.setDue = this.task.taskDueDateAt;
@@ -618,6 +632,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
        }
       },
          async subTaskUpdate(editsubtask){
+           if(editsubtask.subtaskName){
           console.log("onchange subtask updated ->", editsubtask);
          let response;
         try{
@@ -636,6 +651,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
        } catch(e){
           console.log("Error updating a status", e);
        }
+           }
       },
 
       async deleteSubTask(subtask,index){
@@ -672,6 +688,28 @@ import ErrorPopup from '~/components/popups/errorPopup'
           ).then(function(res){
             this.taskFiles.push(res.data);
             this.file = '';
+            console.log('File upload successful', res.data);
+          })
+          .catch(function(){
+            console.log('File Upload Failed');
+          });
+      },
+        taskFileUpload(){
+        let formData = new FormData();
+        formData.append('files', this.files);
+        formData.append('type', 'profileImage');
+
+        this.$axios.$post(`/personal/tasks/${this.task.taskId}/upload`,
+            formData,
+            {
+              headers: {
+                  'Content-Type': 'multipart/form-data',
+                  'user': this.userId
+              }
+            }
+          ).then(function(res){
+            this.taskFiles.push(res.data);
+            this.files = null;
             console.log('File upload successful', res.data);
           })
           .catch(function(){

@@ -1,4 +1,9 @@
 
+
+* {
+  font-family: CircularStd;
+}
+
 .tool-bar{
   position: fixed;
   width: 100%;

@@ -311,7 +311,12 @@ export default {
     //    console.log("error", e)
     //   })
 
-      this.$axios.get (`projects/${this.project.projectId}/tasks/${this.userId}/completion/details`)
+      this.$axios.get (`projects/${this.project.projectId}/tasks/${this.userId}/completion/details`, {
+      headers: {
+       user: this.userId,
+       'type' : 'project'
+    }
+   })
       .then (response => {
        console.log("tasks users data -->", response.data.data)
        this.people = response.data.data;

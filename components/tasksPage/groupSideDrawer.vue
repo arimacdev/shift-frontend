@@ -1,6 +1,6 @@
 <template>
  <div class="sideBarBody">
-  <div class="taskTitleDiv">
+  <div class="taskTitleDiv ">
       <div class="taskName-sideBar">
         <v-list-item>
         <v-list-item-icon>
@@ -13,12 +13,10 @@
         
           </v-list-item-icon>
            <div class="textAreaSideBar">
-             <input type="text" class="taskTitle" v-model="updatedName" v-if="editTask == true"  :disabled="editTask" @keyup.enter="saveEditTaskName"/>
-             <input maxlength="49" type="text" class="taskTitleEdit" v-model="updatedName" v-if="editTask == false"  :disabled="editTask" @keyup.enter="saveEditTaskName"/>
-              <!-- <textarea class="taskTitle" v-model="updatedName" v-if="editTask == true"  :disabled="editTask" @keyup.enter="saveEditTaskName" ></textarea> -->
-              
+             <input type="text" class="taskTitle" v-model="updatedName" v-if="editTask == true"  :disabled="editTask" @keyup.enter="updateGroupTaskName"/>
+             <input maxlength="49" type="text" class="taskTitleEdit" v-model="updatedName" v-if="editTask == false"  :disabled="editTask" @keyup.enter="updateGroupTaskName"/>
              
-            <!-- <v-list-item-title class="taskTitle">{{ this.task.taskName }}</v-list-item-title> -->
+            <!-- <v-list-item-title class="taskTitle">{{ task.taskName }}</v-list-item-title> -->
           </div>
           <div >
             <v-icon size="20" color="#FFFFFF" class="editIcon" @click="EditTaskName">mdi-pencil-circle</v-icon>
@@ -89,47 +87,13 @@
 
   
 
-<!-- ---------------------------- -->
-
-      <!-- <v-list-item-group class="tabListItems">
- <v-list-group >
-        <template v-slot:activator>
-          <v-list-item-icon>
-            <v-icon size="30" color="#FF6767" >mdi-account-arrow-left-outline</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title class="tabListItemsText">{{ assignee.firstName }} {{assignee.lastName }}</v-list-item-title>
-          </v-list-item-content>
-        </template>
-
-        <v-list-item>
-          <v-list-item-content>
-            <v-list-item-title class="" >
-              <select v-model="taskAssignee" class="userSelectDropdown tabListItemsText userAddSelect" @change="changeAssignee">
-                <option value="" disabled >{{ assignee.firstName }} {{assignee.lastName }} </option>
-              <option class="tabListItemsText" v-for="(projectUser, index) in people" :key="index" :selected="projectUser.assigneeId === assignee.userId" :value="projectUser.assigneeId" >
-                {{projectUser.assigneeFirstName}} {{projectUser.assigneeLastName}}
-              </option>
-            </select>
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-group>
-
-
-      </v-list-item-group> -->
  <v-list-item-group class="">
 <v-list-item>
 
    <div class="taskStatusDropdown">
              <select v-model="taskStatus" class="selectUserDropDown" @change="updateStatus">
-                <option key="pending" value="pending" >Pending</option>
-                <option key="implementing" value="implementing">Implementing</option>
-                <option key="qa" value="qa">QA</option>
-                <option key="readyToDeploy" value="readyToDeploy">Ready to Deploy</option>
-                <option key="reOpened" value="reOpened">Re-Opened</option>
-                <option key="deployed" value="deployed">Deployed</option>
                 <option key="closed" value="closed">Closed</option>
+                <option key="open" value="open">Open</option>
             </select>
              </div>
 
@@ -145,10 +109,11 @@
             <v-icon size="30" color="#0BAFFF" >mdi-account-arrow-left-outline</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
+              <!-- ///////// add assignee name - customize for personal task and group tasks //////// -->
            <select  v-model="taskAssignee" class="tabListItemsText" @change="changeAssignee">
                 <option value="" disabled>{{ assignee.firstName }} {{assignee.lastName }}</option>
-              <option class="tabListItemsText" v-for="(projectUser, index) in people" :key="index" :selected="projectUser.assigneeId === assignee.userId" :value="projectUser.assigneeId" >
-                {{projectUser.assigneeFirstName}} {{projectUser.assigneeLastName}}
+              <option class="tabListItemsText" v-for="(groupUser, index) in completionTasks" :key="index" :selected="groupUser.assigneeId === assignee.userId" :value="groupUser.assigneeId" >
+                {{groupUser.assigneeFirstName}} {{groupUser.assigneeLastName}}
               </option>
             </select>
            </v-list-item-content>
@@ -192,8 +157,8 @@
                         <!-- {{ subtask.subtaskName}} -->
                         </v-list-item-title>
                     </v-list-item-content>
-                    <v-icon color="#FF6161" @click="deleteSubTask(subtask,index)">mdi-trash-can-outline</v-icon>
                     <!-- <v-icon color="#FF6161" @click="subTaskDialog = true">mdi-trash-can-outline</v-icon> -->
+                    <v-icon color="#FF6161" @click="deleteSubTask(subtask,index)">mdi-trash-can-outline</v-icon>
 
 
                     <!-- --------------------- delete sub task popup --------------- -->
@@ -221,15 +186,16 @@
                               color="success"
                               width="100px"
                               @click="subTaskDialog = false"
+                              :retain-focus="false"
                             >
                               Cancel
                             </v-btn>
                   <v-spacer></v-spacer>
-                  <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
                             <v-btn
                               color="error"
                               width="100px"
                               @click="subTaskDialog = false; deleteSubTask(subtask,index)"
+                              :retain-focus="false"
                             >
                               Delete
                             </v-btn>
@@ -263,7 +229,7 @@
             <v-icon color="#0BAFFF">mdi-plus-circle</v-icon>
           </v-list-item-icon>
                     <v-list-item-content>
-                      <v-list-item-title class="subTaskListName subTaskAdd">Add sub task</v-list-item-title>
+                      <v-list-item-title class="subTaskListName subTaskAdd">Add Subtask</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
               </div>
@@ -279,12 +245,8 @@
           <v-list-item-icon>
             <v-icon size="30" color="#0BAFFF" >mdi-calendar-blank-outline</v-icon>
           </v-list-item-icon>
-          <!-- <v-list-item-content class="dueTitle"> -->
-          <!-- <p class="tabListItemsText datesTitle">Due date</p> -->
-           <!-- </v-list-item-content> -->
           <v-list-item-content>
-            <!-- <input class="sideBarDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" v-model="taskDue" @change="updateTaskDates('dueDate')"> -->
-         <div class="pickerContainer pickerDiv sideBarPickers datePickerNew">
+           <div class="pickerContainer pickerDiv sideBarPickers datePickerNew">
            
            <datetime
               type="datetime"
@@ -330,9 +292,10 @@
               v-model="taskRemindOn"
               zone="local"
                 input-id="endDate"
+                
                 >
                 <label for="endDate" slot="before" class="tabListItemsText "><span class="pickerNewText">Remind on</span></label>
-                 <label for="endDate" slot="after" class="tabListItemsText "><v-icon>mdi-pencil-outline</v-icon></label>
+                <label for="endDate" slot="after" class="tabListItemsText "><v-icon>mdi-pencil-outline</v-icon></label>
                  <!-- <span class="description " slot="after">
                      <v-btn class="btnPicker" x-small depressed color="primary"  @click="updateTaskDates('remindOn')"> <span class="btnPickerText"> Update </span></v-btn>
                  </span> -->
@@ -352,20 +315,6 @@
       </v-list-item-group>
 
 
-      <!-- -------------------------- -->
- <!-- <v-list-item-group class="tabListItems">
-        <v-list-item>
-          <v-list-item-icon>
-            <v-icon size="30" color="#FFC213" >mdi-clock-outline</v-icon>
-          </v-list-item-icon>
-          <p class="tabListItemsText datesTitle">Remind on</p>
-          <v-list-item-content>
-             <input class="sideBarDate " placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" v-model="taskRemindOn" @change="updateTaskDates('remindOn')">
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group> -->
-
-      <!-- --------------------------- -->
 
 
 
@@ -406,8 +355,8 @@
         </template>
         <div class="attchmentContainer fileAttachSideBar">
         <!-- <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Add a new file" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload"/> -->
-
-         <v-file-input 
+       
+        <v-file-input 
             label="Attachments"
             v-model="files"
             outlined
@@ -418,8 +367,8 @@
             show-size=""
             @change="taskFileUpload()"
             >   </v-file-input>
- 
-
+       
+       
         </div>
         <div class="attchmentContainer">
         <v-list-item class="subTaskListItems"  v-for="(taskFile,index) in taskFiles" :key="index">
@@ -439,6 +388,7 @@
         </v-list-item>
         </div>
       </v-list-group>
+
 
 
 <v-divider></v-divider>
@@ -469,11 +419,12 @@ import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
 
   export default {
-    props: ['task', 'assignee', 'projectId', 'subTasks', 'taskFiles', 'projectUsers', 'people'],
+    props: ['group', 'task', 'assignee', 'subTasks' ,'taskFiles', 'completionTasks'],
 
     components: {
       'success-popup' : SuccessPopup,
       'error-popup': ErrorPopup,
+      'datetime': Datetime
     },
     data() {
       return {
@@ -503,20 +454,11 @@ import ErrorPopup from '~/components/popups/errorPopup'
           subtaskStatus: false,
         },
         subTask: {
-          taskId : this.task.taskId,
+        //   taskId : this.task.taskId,
           subtaskName: "",
           subTaskCreator: ""
         },
-        items: [        
-          {
-            items: [
-              { title: 'Task 1' },
-              { title: 'Task 2' },
-              { title: 'Task 3' },
-            ],
-          },
-          
-        ],
+       
       }
     },
     methods: {
@@ -538,9 +480,9 @@ import ErrorPopup from '~/components/popups/errorPopup'
          console.log("onchange updated assignee ->", this.updatedTask.taskAssignee)
          let response;
         try{
-          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
+          response = await this.$axios.$put(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}`, {
           "taskAssignee": this.updatedTask.taskAssignee,
-          "taskType": "project"
+          "taskType": "taskGroup"
         },
           {
               headers: {
@@ -548,7 +490,6 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
-        this.$emit('listenChange');
         console.log("update task status response", response);
        } catch(e){
           console.log("Error updating a status", e);
@@ -558,43 +499,43 @@ import ErrorPopup from '~/components/popups/errorPopup'
       async deleteTask(){
       let response;
        try{
-        response = await this.$axios.$delete(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {    
+        response = await this.$axios.$delete(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}`, {    
                 data: {},
                 headers: {
                     'user': this.userId,
+                    'type': 'taskGroup'
                 }
         })
-        location.reload();
+        this.$store.dispatch('groups/groupTask/removeTaskFromTaskGroup', this.task.taskId);
+        this.$emit('shrinkSideBar');
         console.log(response.data);
        }  catch(e){
-          console.log("Error deleting project", e);
+          console.log("Error deleting task", e);
        }  
       },
       async addSubTask(){
-        if(this.newSubTask.subtaskName){
+          if(this.newSubTask.subtaskName){
         console.log("add subTask", this.task.taskId,this.newSubTask.subtaskName);
         let response;
-        try{
-          response = await this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask`, 
+          try{
+          response = await this.$axios.$post(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/subtask`, 
           {
             taskId: this.task.taskId,
             subtaskName: this.newSubTask.subtaskName,
             subTaskCreator: this.userId,
-            "taskType": "project"
+            "taskType": "taskGroup"
           }
         )
         this.newSubTask.subtaskName = '';
         this.showNewSubTask =true
         // this.showNewSubTask = false;
-        this.subTasks.push(response.data)
+        this.subTasks.push(response.data);
         console.log(response);
 
        } catch(e){
           console.log("Error adding a subTask", e);
        }  
-       }
-     
-         
+          }
       },
       name() {
          this.setDue = this.task.taskDueDateAt;
@@ -604,9 +545,9 @@ import ErrorPopup from '~/components/popups/errorPopup'
         console.log("updatedTaskValue ->",this.updatedTask.taskNotes)
         let response;
         try{
-          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
+          response = await this.$axios.$put(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}`, {
           "taskNotes": this.updatedTask.taskNotes,
-          "taskType": "project"
+          "taskType": "taskGroup"
         },
           {
               headers: {
@@ -614,20 +555,24 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
-        this.$emit('listenChange');
+          this.$store.dispatch('groups/groupTask/updateGroupTask',{
+          taskId: this.task.taskId,
+          type: 'taskNote',
+          value : this.updatedTask.taskNotes
+        });        
+        //  this.$store.dispatch('personalTasks/fetchAllPersonalTasks'); 
         console.log("edit task response", response);
        } catch(e){
           console.log("Error updating a note", e);
        }       
       },
-      async saveEditTaskName(){
-        console.log("NAMEEEE", this.$store.state.task.myTasks)
+      async updateGroupTaskName(){
       console.log("updatedTaskName ->",this.updatedTask.taskName)
         let response;
         try{
-          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
+          response = await this.$axios.$put(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}`, {
           "taskName": this.updatedTask.taskName,
-          "taskType": "project"
+          "taskType": "taskGroup"
         },
           {
               headers: {
@@ -635,11 +580,14 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
-        console.log("UPDATED", this.$store.state.task.myTasks)
-        this.$emit('listenChange');
         this.editTask = true;
+        
+         this.$store.dispatch('groups/groupTask/updateGroupTask',{
+          taskId: this.task.taskId,
+          type: 'taskName',
+          value : this.updatedTask.taskName
+        });
         console.log("edit task response", response);
-       
        } catch(e){
           console.log("Error updating a note", e);
        }
@@ -648,9 +596,9 @@ import ErrorPopup from '~/components/popups/errorPopup'
         console.log("onchange updated status ->", this.updatedTask.taskStatus)
          let response;
         try{
-          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
+          response = await this.$axios.$put(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}`, {
           "taskStatus": this.updatedTask.taskStatus,
-          "taskType": "project"
+          "taskType": "taskGroup"
         },
           {
               headers: {
@@ -658,7 +606,11 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
-        this.$emit('listenChange');
+          this.$store.dispatch('groups/groupTask/updateGroupTask',{
+          taskId: this.task.taskId,
+          type: 'taskStatus',
+          value : this.updatedTask.taskStatus
+        });
         console.log("update task status response", response);
        } catch(e){
           console.log("Error updating a status", e);
@@ -686,10 +638,10 @@ import ErrorPopup from '~/components/popups/errorPopup'
         console.log("remindDate",remindDate);
          let response;
         try{
-          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
+          response = await this.$axios.$put(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}`, {
           "taskDueDate": dueDate,
           "taskRemindOnDate" : remindDate,
-          "taskType": "project"
+          "taskType": "taskGroup"
         },
           {
               headers: {
@@ -697,22 +649,26 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
-        this.$emit('listenChange');
+          this.$store.dispatch('groups/groupTask/updateGroupTaskDates',{
+          taskId: this.task.taskId,
+          dueDate: dueDate,
+          remindDate : remindDate
+        });
         console.log("update task dates response", response);
        } catch(e){
           console.log("Error updating a status", e);
        }
       },
          async subTaskUpdate(editsubtask){
-           if(editsubtask.subtaskName){
+             if(editsubtask.subtaskName){
           console.log("onchange subtask updated ->", editsubtask);
          let response;
         try{
-          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask/${editsubtask.subtaskId}`, {
+          response = await this.$axios.$put(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/subtask/${editsubtask.subtaskId}`, {
           "subTaskEditor": this.userId ,
           "subtaskName": editsubtask.subtaskName,
           "subtaskStatus": editsubtask.subtaskStatus,
-          "taskType": "project"
+          "taskType": "taskGroup"
         },
           {
               headers: {
@@ -720,23 +676,22 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
-        // this.$emit('listenChange');
         console.log("update sub task status response", response);
        } catch(e){
           console.log("Error updating a status", e);
        }
-           }
+             }
       },
 
       async deleteSubTask(subtask,index){
         console.log("deletesubtask ->", subtask);
         let response;
         try{
-          response = await this.$axios.$delete(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask/${subtask.subtaskId}`,
+          response = await this.$axios.$delete(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/subtask/${subtask.subtaskId}`,
           {
              headers: {
                   'user': this.userId,
-                  "type": "project"
+                  "type": "taskGroup"
               }
           }
         );
@@ -746,37 +701,37 @@ import ErrorPopup from '~/components/popups/errorPopup'
           console.log("Error updating a status", e);
        }
       },
-       handleFileUploads(e){
-         this.file = this.$refs.files.files[0];
-         let formData = new FormData();
-        formData.append('files', this.file);
-        formData.append('type', 'profileImage');
-        formData.append('taskType', 'project')
+      //  handleFileUploads(e){
+      //    this.file = this.$refs.files.files[0];
+      //    let formData = new FormData();
+      //   formData.append('files', this.file);
+      //   formData.append('type', 'taskFile')
+      //   formData.append('taskType', 'taskGroup')
 
-        this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
-            formData,
-            {
-              headers: {
-                  'Content-Type': 'multipart/form-data',
-                  'user': this.userId
-              }
-            }
-          ).then(function(res){
-            this.taskFiles.push(res.data);
-            this.file = '';
-            console.log('File upload successful', res.data);
-          })
-          .catch(function(){
-            console.log('File Upload Failed');
-          });
-      },
+      //   this.$axios.$post(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/upload`,
+      //       formData,
+      //       {
+      //         headers: {
+      //             'Content-Type': 'multipart/form-data',
+      //             'user': this.userId,
+      //         }
+      //       }
+      //     ).then(function(res){
+      //       this.taskFiles.push(res.data);
+      //       this.file = '';
+      //       console.log('File upload successful', res.data);
+      //     })
+      //     .catch(function(){
+      //       console.log('File Upload Failed');
+      //     });
+      // },
       taskFileUpload(){
         let formData = new FormData();
         formData.append('files', this.files);
         formData.append('type', 'profileImage');
-        formData.append('taskType', 'project')
+        formData.append('taskType', 'taskGroup')
 
-        this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
+        this.$axios.$post(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/upload`,
             formData,
             {
               headers: {
@@ -784,16 +739,15 @@ import ErrorPopup from '~/components/popups/errorPopup'
                   'user': this.userId
               }
             }
-          ).then(function(res){
+          ).then((res) => {
             this.taskFiles.push(res.data);
             this.files = null;
             console.log('File upload successful', res.data);
           })
-          .catch(function(){
-            console.log('File Upload Failed');
+          .catch((err) => {
+            console.log('File Upload Failed', err);
           });
-      }
-   
+      },   
 
     },
     components: {
@@ -802,7 +756,12 @@ import ErrorPopup from '~/components/popups/errorPopup'
     computed: {
         updatedName: {
         get(){
+              // if(this.updatedTask.taskName != ""){
+              //   let name = this.updatedTask.taskName;
+              //   return name;
+              // } else{
               return this.task.taskName
+              // }
             },
         set(value) {
           console.log("updated task name ->", value)
@@ -844,13 +803,14 @@ import ErrorPopup from '~/components/popups/errorPopup'
           taskDue: {
         get(){
             // let stringDate = new Date(this.task.taskDueDateAt);
-          if(this.task.taskDueDateAt === null || this.task.taskDueDateAt === '1970-01-01T05:30:00.000+0000')
+          if(this.task.taskDueDateAt == null)
           return "Add Due Date";
           let stringDate  = this.task.taskDueDateAt + " ";
             // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
               stringDate = stringDate.toString();
               stringDate = stringDate.slice(0,16);           
               return stringDate;
+              console.log("task date ======================> " + stringDate)
               // return newDate;
             },
         set(value) {
@@ -861,7 +821,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
         },
           taskRemindOn: {
         get(){
-          if(this.task.taskReminderAt === null || this.task.taskDueDateAt === '1970-01-01T05:30:00.000+0000')
+          if(this.task.taskReminderAt == null)
           return "Add Reminder Date";
           let stringDate  = this.task.taskReminderAt + "";
           // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();

@@ -3,13 +3,22 @@
 @import "./css/tasks.css";
 
 @import "./css/base/typo.css";
+@import "circular-std";
+
 
 /* -------------- common --------------- */
 
+* {
+    font-family: CircularStd;
+}
+.body-2{
+    font-family: CircularStd !important;
+}
 .listView{
     margin-top: 10px;
     height: 80vh;
     background-color: #EDF0F5;
+    padding-bottom: 100px !important;
   }
 
 .projectTabSideBar{
@@ -82,7 +91,11 @@
     margin-left: 22%;
     padding: 10px;
 }
+.createProjectPage{
+    height: 85vh;
+}
 .addProjectTitle{
+font-family: CircularStd;
 font-style: normal;
 font-weight: 400;
 font-size: 20px;
@@ -676,7 +689,11 @@ font-size: 19px !important;
     margin-top: 60px !important;
 }
 .popupFormElement{
-    margin-bottom: -10px !important;
+    /* margin-bottom: -10px !important; */
+    /* margin-left: 10px !important; */
+}
+.addUserPopupFormElement{
+    /* margin-bottom: -30px !important; */
     /* margin-left: 10px !important; */
 }
 .popupFormContent{
@@ -684,6 +701,7 @@ font-size: 19px !important;
     margin-left: 10px;
     margin-right: 10px;
     margin-bottom: -30px;
+    text-align: center;
 }
 /* -------------- tab content -------------- */
 
@@ -714,6 +732,7 @@ font-size: 19px !important;
 .sideBarContent{
     /* z-index: 1000; */
     /* min-height: 600px !important; */
+    margin-bottom: 100px;
 }
 .iconExpansion{
     margin-left: -30px !important;
@@ -1026,10 +1045,17 @@ color: #040428;
 .deletePopupIcon{
     margin-top: 30px;
 }
+.deleteMemberPopupIcon{
+    margin-top: 20px;
+}
 
 .popupBottom{
     padding-bottom: 20px;
-    padding-top: 10px;
+    padding-top: 30px;
+}
+.AddUserPopupBottom{
+    padding-bottom: 20px;
+    padding-top: -10px;
 }
 
 
@@ -1194,6 +1220,7 @@ color: #040428;
 
 .projectSubtitle{
     font-size: 10px !important;
+    font-family: CircularStd !important;
 }
 
 .taskDatePickerField{
@@ -1254,6 +1281,7 @@ color: #040428;
    padding-top: 20px;
    background-color: #FFFFFF;
    margin-top: -20px;
+   margin-bottom: 100px;
  }
  .tasksListItem{
      height: 60px;
@@ -1348,3 +1376,33 @@ color: #040428;
 .sideBarBody{
     padding-bottom: 100px;
 }
+
+
+/* ---------------- group task tab -------------- */
+
+.group-task-tab{
+    width: 75%;
+    height: 100%;
+    float: left;
+  }
+
+  .popupFormGroupElement{
+      margin-bottom: 10px !important;
+  }
+
+  .groupSettings{
+      margin-left: 60%;
+  }
+
+  .groupSettingsContent{
+      padding: 20px;
+  }
+  .settingsButton{
+      margin-top: -27px;
+  }
+
+  .groupUpdatePopups{
+      position: absolute;
+      top: 80vh;
+      right: 10px;
+  }

@@ -25,7 +25,11 @@ export const mutations = {
 export const actions = {
         fetchTasksAllTasks({commit, rootState}, projectId){
         const userId = rootState.user.userId;
-        this.$axios.get (`projects/${projectId}/tasks?userId=${userId}`)
+        this.$axios.get (`projects/${projectId}/tasks?userId=${userId}`,{
+          headers: {
+            type: 'project',
+        }
+       })
         .then (response => {
             console.log("ALL TASKS ARE RETRIEVED SUCCESSFULLY-->", response.data.data);
             commit('SET_ALL_TASKS', response.data.data);
@@ -49,7 +53,12 @@ export const actions = {
 
   fetchProjectUserCompletionTasks({commit, rootState}, projectId){
     const userId = rootState.user.userId;
-    this.$axios.get (`projects/${projectId}/tasks/${userId}/completion/details`)
+    this.$axios.get (`projects/${projectId}/tasks/${userId}/completion/details`, {
+      headers: {
+       user: userId,
+       'type' : 'project'
+    }
+   })
     .then (response => {
       console.log("Completion details -->", response.data.data);
       commit('SET_USER_TASK_COMPLETION', response.data.data);
@@ -65,6 +74,7 @@ export const actions = {
        this.$axios.get(`projects/${projectId}/tasks/completion`, {
          headers: {
           user: userId,
+          'type' : 'project'
        }
       })
       .then (response => {

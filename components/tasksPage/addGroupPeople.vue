@@ -1,7 +1,7 @@
 <template>
 <div>
 <v-row justify="center" class="">
-    <v-dialog v-model="dialog" persistent max-width="380">
+    <v-dialog v-model="dialog" persistent max-width="350">
       <template v-slot:activator="{ on }">
     <div v-on="on" class="addPeopleButton addPeople">
                 <v-list-item v-on:click="component='add-task'" 
@@ -15,20 +15,16 @@
                         <v-icon>mdi-plus-circle</v-icon>
                     </v-list-item>
         </div>
+
         </template>
       <v-card class="addUserPopup">
         <v-form v-model="isValid" ref="form">
          <div class="popupFormContent">
-              <v-icon class="" size="60" color="deep-orange lighten-1">mdi-account-plus</v-icon>
-             <v-card-text class="deletePopupTitle">Add member to project</v-card-text>
+             
+              <v-icon class="" size="60" color="deep-orange lighten-1">mdi-account-multiple-plus</v-icon>
+             <v-card-text class="deletePopupTitle">Add member to group</v-card-text>
           <v-card-actions >
 
-            <!-- <select v-model="addUser.assigneeId" class="formElements popupFormElement">
-              <option disabled value="" >Assignee</option>
-              <option v-for="(user, index) in users" :key="index" :value="user.userId">
-                {{user.firstName}} {{user.lastName}}
-              </option>
-            </select> -->
 
             <v-autocomplete
               filled
@@ -38,48 +34,26 @@
               item-text="name"
               item-value="id.userId"
               :search-input.sync="search"
-              class=" addUserPopupFormElement"
+              class=" popupFormGroupElement"
               flat
               outlined=""
               background-color="white"
               append-icon=""
               hide-no-data
               @change="onSelectedUser()"
-              :rules="assigneeRoleRules" hide-details="auto"
+              :rules="assigneeRules" hide-details="auto"
           >
             
           </v-autocomplete>
 
           </v-card-actions>
-          <v-card-actions class="">
-              <!-- <input v-model="addUser.assigneeJobRole" placeholder="Role" class="formElements popupFormElement"> -->
-           <v-text-field
-            v-model="addUser.assigneeJobRole" 
-            label="Project Role"
-            flat
-            outlined
-            class=" popupFormElement"
-            :rules="projectRoleRules" hide-details="auto"
-            ></v-text-field>
-           
-            </v-card-actions>
+        
               </div>
-             <v-card-actions class="roleField">
-             
-              <v-checkbox
-                v-model="adminStatus"
-                hide-details
-                class="shrink mr-2 mt-0"   
-                             
-                label="Admin">
-              </v-checkbox>
-             </v-card-actions>
-            
-
+              
           <!-- <v-btn class="deleteButton" text @click="dialog = false">Cancel</v-btn>
           <v-btn class="editButton addUserSave" text @click="changeHandler">Save</v-btn> -->
 
-            <div class="AddUserPopupBottom">
+           <div class="popupBottom">
                           <v-card-actions>
                             <v-spacer></v-spacer>
 
@@ -93,11 +67,11 @@
                             </v-btn>
                   <v-spacer></v-spacer>
                             <v-btn
-                             :disabled="!isValid"
                               color="success"
                               width="100px"
                              @click="changeHandler"
                               :retain-focus="false"
+                              :disabled="!isValid"
                             >
                               Save
                             </v-btn>
@@ -107,7 +81,6 @@
                           
                           </div>
         </v-form>
-
       </v-card>
     </v-dialog>
     
@@ -116,17 +89,16 @@
             <component v-bind:is="component" :success=success ></component>
          </div>
        <!--  <success-popup /> -->
+
+      
   </div>
 </template>
 
 <script>
 import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
-import { required } from 'vuelidate/lib/validators'
-
-
   export default {
-    props: ['users', 'projectId'],
+    props: ['users', 'group'],
     components: {
       'success-popup' : SuccessPopup,
       'error-popup': ErrorPopup
@@ -141,10 +113,7 @@ import { required } from 'vuelidate/lib/validators'
           "assigneeJobRole": "",
           "assigneeProjectRole": this.getProjectRole()
         },
-         projectRoleRules: [
-        value => !!value || 'Project role is required!',
-      ],
-      assigneeRoleRules: [
+        assigneeRules: [
         value => !!value || 'Assignee is required!',
       ],
         isShow: false,
@@ -173,31 +142,49 @@ import { required } from 'vuelidate/lib/validators'
       },
        onSelectedUser(){
         if(this.select !== undefined){
-        this.$emit('searchSelected', this.select);
+        // this.$emit('searchSelected', this.select);
         // console.log("selected user",this.select)
         }
       },
       async changeHandler() {
         // this.dialog = false;
-        
-        let assigneeProjectRoleId = this.getProjectRole();
-        this.addUser.assigneeProjectRole = assigneeProjectRoleId;
         let response;
           try{
-          response = await this.$axios.$post(`/projects/${this.projectId}/users`, 
-          this.addUser
+          response = await this.$axios.$post(`/taskgroup/add`, 
+          {
+            taskGroupId: this.group.taskGroupId,
+            taskGroupAssigner: this.group.taskGroupMemberId,
+            taskGroupAssignee: this.addUser.assigneeId 
+          }
         )
-        this.$store.dispatch('task/fetchProjectUserCompletionTasks', this.projectId)
-        this.addUser.assigneeId = "";
-        this.addUser.assigneeJobRole ="";
-        this.selected = false;
+        this.$refs.form.reset()
         this.component = 'success-popup'
-        this.success = response.message
-         this.$refs.form.reset()
+        this.$store.dispatch('groups/groupPeople/fetchGroupPeople',{
+          taskGroupId: this.group.taskGroupId, 
+          userId: this.userId
+        });
+        console.log(response);
        } catch(e){
-          console.log("Error adding a User", e);
+          console.log("Error adding a group", e);
           this.component = 'error-popup'
-       }   
+       }
+      //   let assigneeProjectRoleId = this.getProjectRole();
+      //   this.addUser.assigneeProjectRole = assigneeProjectRoleId;
+      //   let response;
+      //     try{
+      //     response = await this.$axios.$post(`/taskgroup/add`, 
+      //     this.addUser
+      //   )
+      //   this.$store.dispatch('task/fetchProjectUserCompletionTasks', this.projectId)
+      //   this.addUser.assigneeId = "";
+      //   this.addUser.assigneeJobRole ="";
+      //   this.selected = false;
+      //   this.component = 'success-popup'
+      //   this.success = response.message
+      //  } catch(e){
+      //     console.log("Error adding a User", e);
+      //     this.component = 'error-popup'
+      //  }   
       },
       querySelections (v) {
         let projectSearchList = this.users;
@@ -205,7 +192,7 @@ import { required } from 'vuelidate/lib/validators'
             let user = projectSearchList[index];
             this.states.push({name: user.firstName + " " + user.lastName, id: user, img: user.profileImage});
         }
-        // console.log("usersList", this.users, "nameList", this.states)
+        console.log("usersList", this.users, "nameList", this.states)
         this.loading = true
         setTimeout(() => {
           this.items = this.states.filter(e => {

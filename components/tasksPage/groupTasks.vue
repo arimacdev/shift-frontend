@@ -1,5 +1,5 @@
 <template>
-    <div class="personal-task-tab">   
+    <div class="group-task-tab">   
         <!-- tabs body -->
               <div>
              <v-card class="tabs">
@@ -10,16 +10,27 @@
           <v-tab>
             People
           </v-tab>
+           <v-tab class="groupSettings">
+            Settings
+            <v-icon>mdi-cog-outline</v-icon>
+          </v-tab>
           
       <v-tab-item>
         <v-divider class="mx-4"></v-divider>
-            test 1 - tasks
+            <group-task-content :group=group :groupTasks=groupTasks :completionTasks=completionTasks />
       </v-tab-item>
     
       <v-tab-item>
         <v-divider class="mx-4"></v-divider>
         <v-card flat>
-       test 2 - people
+          <group-task-people :users=users :group=group :completionTasks=completionTasks />
+        </v-card>
+      </v-tab-item>
+
+       <v-tab-item>
+          <v-divider class="mx-4"></v-divider>
+        <v-card flat>
+          <group-settings :group=group  />
         </v-card>
       </v-tab-item>
      
@@ -32,8 +43,17 @@
 </template>
 
 <script>
+import GroupTaskContent from '~/components/tasksPage/groupTaskContent'
+import GroupTaskPeople from '~/components/tasksPage/groupTaskPeople'
+import GroupSettings from '~/components/tasksPage/groupSettings'
 
   export default {
+    props: ['users', 'group', 'groupTasks', 'completionTasks'],
+     components: {
+     'group-task-content' : GroupTaskContent,
+     'group-task-people' : GroupTaskPeople,
+     'group-settings' : GroupSettings
+    },
      data () {
       return {
         drawer: null,
@@ -44,9 +64,9 @@
       }
     },
     name: 'tabViews',
-    components: {
-     
-    },
+
+   
+   
     methods: {
       onSelectProject() {
      
