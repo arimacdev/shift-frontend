@@ -6,7 +6,7 @@
                  flat=""
                     solo
                     background-color="#EDF0F5"
-                    v-model="group.taskGroupName"
+                    v-model="groupName"
                 ></v-text-field>
         </v-list-item-content>
         <v-list-item-action>
@@ -108,6 +108,7 @@ export default {
             userId: this.$store.state.user.userId,
         component: '',
         settingsDialog: false,
+        groupName: this.group.taskGroupName
        }
     },
     methods: {
@@ -115,7 +116,7 @@ export default {
           let response;
        try{
         response = await this.$axios.$put(`/taskgroup/${this.group.taskGroupId}`, {
-          taskGroupName: this.group.taskGroupName,
+          taskGroupName: this.groupName,
           taskGroupEditor: this.userId,
         })
          this.component = 'success-popup'
