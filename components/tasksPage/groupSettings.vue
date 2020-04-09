@@ -6,7 +6,7 @@
                  flat=""
                     solo
                     background-color="#EDF0F5"
-                    v-model="groupName"
+                    v-model="taskGroupName"
                 ></v-text-field>
         </v-list-item-content>
         <v-list-item-action>
@@ -151,6 +151,16 @@ export default {
        close(){
                 this.component = ''
             },
+    },
+    computed:{
+      taskGroupName:{
+        get(){
+          return this.group.taskGroupName
+        },
+        set(groupName){
+          this.groupName = groupName;
+        }
+      }
     }
     
 }
