@@ -103,13 +103,12 @@
 <v-divider></v-divider>
       <!-- ---------------------- -->
 
-      <v-list-item-group class="tabListItems">
+      <!-- <v-list-item-group class="tabListItems">
         <v-list-item>
           <v-list-item-icon>
             <v-icon size="30" color="#0BAFFF" >mdi-account-arrow-left-outline</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-              <!-- ///////// add assignee name - customize for personal task and group tasks //////// -->
            <select  v-model="taskAssignee" class="tabListItemsText" @change="changeAssignee">
                 <option value="" disabled>{{ assignee.firstName }} {{assignee.lastName }}</option>
               <option class="tabListItemsText" v-for="(projectUser, index) in people" :key="index" :selected="projectUser.assigneeId === assignee.userId" :value="projectUser.assigneeId" >
@@ -118,7 +117,7 @@
             </select>
            </v-list-item-content>
         </v-list-item>
-      </v-list-item-group>
+      </v-list-item-group> -->
 
       <!-- ----------------------- -->
 <v-divider></v-divider>
