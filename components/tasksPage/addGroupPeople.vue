@@ -18,7 +18,7 @@
 
         </template>
       <v-card class="addUserPopup">
-        <v-form v-model="isValid">
+        <v-form v-model="isValid" ref="form">
          <div class="popupFormContent">
              
               <v-icon class="" size="60" color="deep-orange lighten-1">mdi-account-multiple-plus</v-icon>
@@ -137,6 +137,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
     },
     methods: {
       close(){
+        this.$refs.form.reset()
           this.component = ''
       },
        onSelectedUser(){
@@ -146,7 +147,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
         }
       },
       async changeHandler() {
-        this.dialog = false;
+        // this.dialog = false;
         let response;
           try{
           response = await this.$axios.$post(`/taskgroup/add`, 
@@ -156,9 +157,12 @@ import ErrorPopup from '~/components/popups/errorPopup'
             taskGroupAssignee: this.addUser.assigneeId 
           }
         )
+        this.$refs.form.reset()
+        this.component = 'success-popup'
         console.log(response);
        } catch(e){
           console.log("Error adding a group", e);
+          this.component = 'error-popup'
        }
       //   let assigneeProjectRoleId = this.getProjectRole();
       //   this.addUser.assigneeProjectRole = assigneeProjectRoleId;
