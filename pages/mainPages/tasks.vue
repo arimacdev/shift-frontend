@@ -92,7 +92,12 @@
           </v-list-item-group>
         </div>
       </div>
-       <component :users="users" :completionTasks=completionTasks :group="group" :groupTasks="groupTasks" v-bind:is="component"></component>
+       <component 
+       :users="users" 
+       :completionTasks=completionTasks 
+       :group="group" 
+       :groupTasks="groupTasks" 
+       v-bind:is="component"></component>
 
  </div>
 
@@ -106,7 +111,7 @@ import NavigationDrawer from '~/components/navigationDrawer'
 import TaskSearchBar from '~/components/tools/taskSearchBar'
 import PersonalTasks from '~/components/tasksPage/personalTasks'
 import GroupTasks from '~/components/tasksPage/groupTasks'
-
+import {mapState} from 'vuex';
 import axios from 'axios'
 
 export default {
@@ -132,7 +137,7 @@ export default {
         component:'personal-tasks',
         groupName: '',
         userId: this.$store.state.user.userId,
-        groups: [],
+        // groups: [],
         group: {},
         users: [],
         groupTasks: [],
@@ -140,43 +145,49 @@ export default {
       }
    },
    async created(){
-       const user = this.$store.state.user.userId;
-        let getGroupResponse;
-        try {
-            getGroupResponse = await this.$axios.$get('/taskgroup',
-            {
-                headers : {
-                    user: user
-                }
-            })
-            this.groups = getGroupResponse.data
-            console.log("group get response", this.groups);
-        } catch(e) {
-            console.log("Error fetching groups",e);
-        }
+     this.$store.dispatch('group/fetchMyGroups');
+      //  const user = this.$store.state.user.userId;
+      //   let getGroupResponse;
+      //   try {
+      //       getGroupResponse = await this.$axios.$get('/taskgroup',
+      //       {
+      //           headers : {
+      //               user: user
+      //           }
+      //       })
+      //       this.groups = getGroupResponse.data
+      //       console.log("group get response", this.groups);
+      //   } catch(e) {
+      //       console.log("Error fetching groups",e);
+      //   }
     },
-
-  
+        computed: {
+      ...mapState({
+          groups: state => state.group.myGroups
+      })
+    },  
    methods: {
      async selectGroup(group){
         this.group = group;
-        console.log("task trigered! ===========>");
-
-         const user = this.$store.state.user.userId;
-        let getGroupTaskResponse;
-        try {
-            getGroupTaskResponse = await this.$axios.$get(`/projects/${this.group.taskGroupId}/tasks?userId=${this.userId}`,
-            {
-                headers : {
-                    user: user,
-                    type: 'taskGroup'
-                }
-            })
-            this.groupTasks = getGroupTaskResponse.data
-            console.log("group task get response", this.groupTasks);
-        } catch(e) {
-            console.log("Error fetching group tasks",e);
-        }
+        this.$store.dispatch('group/fetchGroupTasks',{
+          taskGroupId: this.group.taskGroupId,
+          userId: this.userId
+        });
+        //  const user = this.$store.state.user.userId;
+        // let getGroupTaskResponse;
+        // try {
+        //     getGroupTaskResponse = await this.$axios.$get(`/projects/${this.group.taskGroupId}/tasks?userId=${this.userId}`,
+        //     {
+        //         headers : {
+        //             user: user,
+        //             type: 'taskGroup'
+        //         }
+        //     })
+        //     this.groupTasks = getGroupTaskResponse.data
+        //     console.log("group task get response", this.groupTasks);
+        // } catch(e) {
+        //     console.log("Error fetching group tasks",e);
+        // }
 
         let getCompletionTaskResponse;
         try {
@@ -195,19 +206,20 @@ export default {
      },
      async addGroup(){
         console.log("add group");
-        let response;
-          try{
-          response = await this.$axios.$post(`/taskgroup`, 
-          {
-            taskGroupName: this.groupName,
-            taskGroupCreator: this.userId,
-          }
-        )
+        this.$store.dispatch('group/addGroup', this.groupName)
+      //   let response;
+      //     try{
+      //     response = await this.$axios.$post(`/taskgroup`, 
+      //     {
+      //       taskGroupName: this.groupName,
+      //       taskGroupCreator: this.userId,
+      //     }
+      //   )
         this.groupName = ''
-        console.log(response);
-       } catch(e){
-          console.log("Error adding a group", e);
-       }  
+      //   console.log(response);
+      //  } catch(e){
+      //     console.log("Error adding a group", e);
+      //  }  
       },
    },
 

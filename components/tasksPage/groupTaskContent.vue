@@ -131,7 +131,7 @@ import { mapState } from 'vuex'
     },
 
     created() {
-     this.$store.dispatch('personalTasks/fetchAllPersonalTasks');
+    //  this.$store.dispatch('personalTasks/fetchAllPersonalTasks');
     },
 
     methods: {
@@ -235,7 +235,7 @@ import { mapState } from 'vuex'
     },
        computed: {
       ...mapState({
-          personalTasks: state => state.personalTasks.personalTasks,
+          groupTasks: state => state.group.groupTasks,
       })
     }
   }
