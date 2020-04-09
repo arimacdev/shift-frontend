@@ -18,6 +18,7 @@
 
         </template>
       <v-card class="addUserPopup">
+        <v-form v-model="isValid">
          <div class="popupFormContent">
              
               <v-icon class="" size="60" color="deep-orange lighten-1">mdi-account-multiple-plus</v-icon>
@@ -40,6 +41,7 @@
               append-icon=""
               hide-no-data
               @change="onSelectedUser()"
+              :rules="assigneeRules" hide-details="auto"
           >
             
           </v-autocomplete>
@@ -69,6 +71,7 @@
                               width="100px"
                              @click="changeHandler"
                               :retain-focus="false"
+                              :disabled="!isValid"
                             >
                               Save
                             </v-btn>
@@ -77,7 +80,7 @@
 
                           
                           </div>
-
+        </v-form>
       </v-card>
     </v-dialog>
     
@@ -102,6 +105,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
     },
     data() {
       return {
+        isValid: true,
         userId: this.$store.state.user.userId,
         addUser: {
           "assignerId": this.$store.state.user.userId,
@@ -109,6 +113,9 @@ import ErrorPopup from '~/components/popups/errorPopup'
           "assigneeJobRole": "",
           "assigneeProjectRole": this.getProjectRole()
         },
+        assigneeRules: [
+        value => !!value || 'Assignee is required!',
+      ],
         isShow: false,
         selected: false,
         dialog: false,

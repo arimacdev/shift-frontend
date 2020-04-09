@@ -17,6 +17,7 @@
         </div>
         </template>
       <v-card class="addUserPopup">
+        <v-form v-model="isValid">
          <div class="popupFormContent">
               <v-icon class="" size="60" color="deep-orange lighten-1">mdi-account-plus</v-icon>
              <v-card-text class="deletePopupTitle">Add member to project</v-card-text>
@@ -31,7 +32,7 @@
 
             <v-autocomplete
               filled
-              label="Select user"
+              label="Select user*"
               v-model="addUser.assigneeId"
               :items="states"
               item-text="name"
@@ -44,6 +45,7 @@
               append-icon=""
               hide-no-data
               @change="onSelectedUser()"
+              :rules="assigneeRoleRules" hide-details="auto"
           >
             
           </v-autocomplete>
@@ -53,10 +55,11 @@
               <!-- <input v-model="addUser.assigneeJobRole" placeholder="Role" class="formElements popupFormElement"> -->
            <v-text-field
             v-model="addUser.assigneeJobRole" 
-            label="Project Role"
+            label="Project Role*"
             flat
             outlined
             class=" popupFormElement"
+            :rules="projectRoleRules" hide-details="auto"
             ></v-text-field>
            
             </v-card-actions>
@@ -66,7 +69,8 @@
               <v-checkbox
                 v-model="adminStatus"
                 hide-details
-                class="shrink mr-2 mt-0"                
+                class="shrink mr-2 mt-0"   
+                             
                 label="Admin">
               </v-checkbox>
              </v-card-actions>
@@ -89,6 +93,7 @@
                             </v-btn>
                   <v-spacer></v-spacer>
                             <v-btn
+                             :disabled="!isValid"
                               color="success"
                               width="100px"
                              @click="changeHandler"
@@ -101,6 +106,7 @@
 
                           
                           </div>
+        </v-form>
 
       </v-card>
     </v-dialog>
@@ -116,6 +122,9 @@
 <script>
 import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
+import { required } from 'vuelidate/lib/validators'
+
+
   export default {
     props: ['users', 'projectId'],
     components: {
@@ -124,6 +133,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
     },
     data() {
       return {
+        isValid: true,
         userId: this.$store.state.user.userId,
         addUser: {
           "assignerId": this.$store.state.user.userId,
@@ -131,6 +141,12 @@ import ErrorPopup from '~/components/popups/errorPopup'
           "assigneeJobRole": "",
           "assigneeProjectRole": this.getProjectRole()
         },
+         projectRoleRules: [
+        value => !!value || 'Project role is required!',
+      ],
+      assigneeRoleRules: [
+        value => !!value || 'Assignee is required!',
+      ],
         isShow: false,
         selected: false,
         dialog: false,
