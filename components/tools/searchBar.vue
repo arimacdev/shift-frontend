@@ -16,6 +16,7 @@
           label="Search Here"
           outlined
           @change="onSelectProject()"
+          clearable=""
         ></v-autocomplete>
 </template>
 

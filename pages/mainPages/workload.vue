@@ -51,6 +51,7 @@
           label="Type a Name to search"
           outlined
           @change="onSelectUser()"
+          clearable=""
         ></v-autocomplete>
 
         <div class="listView overflow-y-auto">
