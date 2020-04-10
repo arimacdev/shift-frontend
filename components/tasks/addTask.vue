@@ -359,6 +359,7 @@ import axios from 'axios'
                 }
       },
      async addTask(){ 
+       
        let response;
        try{
             response = await this.$axios.$post(`/projects/${this.projectId}/tasks`, {
@@ -382,7 +383,7 @@ import axios from 'axios'
         formData.append('files', this.files);
         formData.append('type', 'profileImage');
          formData.append('taskType', 'project');
-
+        this.files = null
         this.$axios.$post(`/projects/${this.projectId}/tasks/${taskId}/upload`,
             formData,
             {
@@ -391,8 +392,8 @@ import axios from 'axios'
                   'user': this.userId
               }
             }
+            
           ).then(function(res){
-            this.files = []
             console.log('File upload successful', res.data);
           })
           .catch(function(){

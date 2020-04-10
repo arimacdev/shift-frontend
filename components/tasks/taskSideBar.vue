@@ -436,8 +436,21 @@
             class="createFormElements"
             chips
             show-size=""
-            @change="taskFileUpload()"
             >   </v-file-input>
+
+            <div class=" fileUploadButton">
+                  <v-btn 
+                  class="ma-2"  
+                  small 
+                  rounded 
+                  depressed="" 
+                  color="#0BAFFF"
+                  dark=""
+                  @click="taskFileUpload()"
+                  >
+                    <v-icon left>mdi-upload</v-icon> Upload
+                  </v-btn>
+              </div>
  
 
         </div>
@@ -766,35 +779,37 @@ import ErrorPopup from '~/components/popups/errorPopup'
           console.log("Error updating a status", e);
        }
       },
-       handleFileUploads(e){
-         this.file = this.$refs.files.files[0];
-         let formData = new FormData();
-        formData.append('files', this.file);
-        formData.append('type', 'profileImage');
-        formData.append('taskType', 'project')
+      //  handleFileUploads(e){
+      //   //  this.file = this.$refs.files.files[0];
+      //    let formData = new FormData();
+      //   formData.append('files', this.files);
+      //   formData.append('type', 'profileImage');
+      //   formData.append('taskType', 'project');
+      //   this.files = null
 
-        this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
-            formData,
-            {
-              headers: {
-                  'Content-Type': 'multipart/form-data',
-                  'user': this.userId
-              }
-            }
-          ).then(function(res){
-            this.taskFiles.push(res.data);
-            this.file = '';
-            console.log('File upload successful', res.data);
-          })
-          .catch(function(){
-            console.log('File Upload Failed');
-          });
-      },
+      //   this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
+      //       formData,
+      //       {
+      //         headers: {
+      //             'Content-Type': 'multipart/form-data',
+      //             'user': this.userId
+      //         }
+      //       }
+      //     ).then(function(res){
+      //       this.taskFiles.push(res.data);
+      //       this.file = '';
+      //       console.log('File upload successful', res.data);
+      //     })
+      //     .catch(function(){
+      //       console.log('File Upload Failed');
+      //     });
+      // },
       taskFileUpload(){
         let formData = new FormData();
         formData.append('files', this.files);
         formData.append('type', 'profileImage');
         formData.append('taskType', 'project')
+        this.files = null
 
         this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
             formData,
@@ -806,7 +821,6 @@ import ErrorPopup from '~/components/popups/errorPopup'
             }
           ).then(function(res){
             this.taskFiles.push(res.data);
-            this.files = null;
             console.log('File upload successful', res.data);
           })
           .catch(function(){

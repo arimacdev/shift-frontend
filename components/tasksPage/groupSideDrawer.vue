@@ -387,8 +387,23 @@
             class="createFormElements"
             chips
             show-size=""
-            @change="taskFileUpload()"
             >   </v-file-input>
+
+              <div class=" fileUploadButton">
+                  <v-btn 
+                  class="ma-2"  
+                  small 
+                  rounded 
+                  depressed="" 
+                  color="#0BAFFF"
+                  dark=""
+                  @click="taskFileUpload()"
+                  >
+                    <v-icon left>mdi-upload</v-icon> Upload
+                  </v-btn>
+              </div>
+
+              
        
        
         </div>
@@ -767,7 +782,8 @@ import { mapState } from 'vuex';
         let formData = new FormData();
         formData.append('files', this.files);
         formData.append('type', 'profileImage');
-        formData.append('taskType', 'taskGroup')
+        formData.append('taskType', 'taskGroup');
+        this.files = null
 
         this.$axios.$post(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/upload`,
             formData,
@@ -779,7 +795,7 @@ import { mapState } from 'vuex';
             }
           ).then((res) => {
             this.taskFiles.push(res.data);
-            this.files = null;
+            
             console.log('File upload successful', res.data);
           })
           .catch((err) => {

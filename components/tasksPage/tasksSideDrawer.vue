@@ -385,8 +385,21 @@
             class="createFormElements"
             chips
             show-size=""
-            @change="taskFileUpload()"
             >   </v-file-input>
+
+              <div class=" fileUploadButton">
+                  <v-btn 
+                  class="ma-2"  
+                  small 
+                  rounded 
+                  depressed="" 
+                  color="#0BAFFF"
+                  dark=""
+                  @click="taskFileUpload()"
+                  >
+                    <v-icon left>mdi-upload</v-icon> Upload
+                  </v-btn>
+              </div>
        
         </div>
         <div class="attchmentContainer">
@@ -720,6 +733,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
         let formData = new FormData();
         formData.append('files', this.files);
         formData.append('type', 'profileImage');
+        this.files = null
 
         this.$axios.$post(`/personal/tasks/${this.task.taskId}/upload`,
             formData,
