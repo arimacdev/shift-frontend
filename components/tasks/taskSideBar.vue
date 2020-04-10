@@ -466,7 +466,7 @@
             </a>
           </div>
           <div class="attachmentClose">
-               <v-icon size="15" class="closeButton" color="red">mdi-close-circle-outline</v-icon>
+               <v-icon @click="removeFiles(taskFile.taskFileId)" size="15" class="closeButton" color="red">mdi-close-circle-outline</v-icon>
              </div>
           
         </v-list-item>
@@ -553,6 +553,24 @@ import ErrorPopup from '~/components/popups/errorPopup'
       }
     },
     methods: {
+      async removeFiles(taskFile){
+        console.log("SelectedFile ==========> " + taskFile)
+
+        let response;
+       try{
+        response = await this.$axios.$delete(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload/${taskFile}`, {    
+                data: {},
+                headers: {
+                    'user': this.userId,
+                }
+        })
+       
+        console.log(response.data);
+       }  catch(e){
+          console.log("Error deleting task", e);
+       }  
+
+      },
       close(){
                 this.component = ''
             },

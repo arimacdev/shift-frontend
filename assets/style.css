@@ -814,7 +814,7 @@ width: 400px !important;
     font-weight: 450;
     margin-left: 50px;
     height: 30px;
-    width: 200px;
+    /* width: 200px; */
     margin-top: -28px;
     /* white-space:nowrap; */
 }

@@ -408,7 +408,7 @@
        
         </div>
         <div class="attchmentContainer">
-        <v-list-item class="subTaskListItems"  v-for="(taskFile,index) in taskFiles" :key="index">
+        <v-list-item class="subTaskListItems"  v-for="(taskFile,index) in taskFiles" :key="index" >
           
           <div class="listAttachment">
             <a style="text-decoration: none;" :href="taskFile.taskFileUrl">
@@ -419,7 +419,7 @@
             </a>
           </div>
           <div class="attachmentClose">
-               <v-icon size="15" class="closeButton" color="red">mdi-close-circle-outline</v-icon>
+               <v-icon @click="removeFiles(taskFile.taskFileId)" size="15" class="closeButton" color="red">mdi-close-circle-outline</v-icon>
              </div>
           
         </v-list-item>
@@ -505,6 +505,25 @@ import { mapState } from 'vuex';
     //   })
     //  },
     methods: {
+     async removeFiles(taskFile){
+        console.log("SelectedFile ==========> " + taskFile)
+
+        let response;
+       try{
+        response = await this.$axios.$delete(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/upload/${taskFile}`, {    
+                data: {},
+                headers: {
+                    'user': this.userId,
+                    'taskType': 'taskGroup'
+                }
+        })
+       
+        console.log(response.data);
+       }  catch(e){
+          console.log("Error deleting task", e);
+       }  
+
+      },
       close(){
                 this.component = ''
             },
