@@ -9,7 +9,7 @@
 
 <div class="">
              <div class="">
-            <p class="peopleRoleTitle" @click="fetchUsers">Project owner</p>
+            <p class="peopleRoleTitle" @click="fetchUsers">Project Owner</p>
         <v-divider></v-divider>
             </div>
         
@@ -114,7 +114,7 @@
 
          <div class="">
              <div class="">
-            <p class="peopleRoleTitle" @click="fetchUsers">Other users</p>
+            <p class="peopleRoleTitle" @click="fetchUsers">Other Users</p>
             <v-divider></v-divider>
             </div>
         

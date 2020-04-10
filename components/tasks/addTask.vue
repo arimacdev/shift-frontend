@@ -215,7 +215,7 @@ import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
  
 import axios from 'axios'
   export default {
-      props: ['projectId', 'projectUsers'],
+      props: ['projectId', 'projectUsers', 'people'],
        components: {
       'success-popup' : SuccessPopup,
       'error-popup': ErrorPopup
@@ -305,36 +305,15 @@ import axios from 'axios'
             },
         },
     methods: {
-      async test(file){
-        console.log("updated files =============> "+ file[0] )
-
-        let formData = new FormData();
-        formData.append('files', this.files[0]);
-        formData.append('type', 'profileImage');
-         formData.append('taskType', 'project');
-
-        this.$axios.$post(`/projects/033a26dd-0532-4c5b-97f4-55b0c5efa841/tasks/a6a9c249-88f5-4b31-8a16-9b7fba555ad3/upload`,
-            formData,
-            {
-              headers: {
-                  'Content-Type': 'multipart/form-data',
-                  'user': this.userId,
-              }
-            }
-          ).then(function(res){
-            console.log('File upload successful', res.data);
-          })
-          .catch(function(){
-            console.log('File Upload Failed');
-          });
-      },
       querySelections (v) {
-        let projectSearchList = this.projectUsers;
+        console.log("people list", this.people)
+        this.states = [];
+        let projectSearchList = this.people;
         for (let index = 0; index < projectSearchList.length; ++index) {
             let user = projectSearchList[index];
-            this.states.push({name: user.firstName + " " + user.lastName, id: user, img: user.profileImage});
+            this.states.push({name: user.assigneeFirstName + " " + user.assigneeLastName, id: user, img: user.assigneeProfileImage});
         }
-        console.log("usersList", this.users, "nameList", this.states)
+        console.log( "nameList", this.states)
         this.loading = true
         
       },

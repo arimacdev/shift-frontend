@@ -74,18 +74,15 @@ export default {
      },
      methods: {
          setTaskTab(tabType) {
-             console.log("projectId", this.projectId)
              this.component = tabType;
-            //  if(tabType === 'add-task'){
-                this.$axios.get (`users/project/${this.projectId}`)
-                .then (response => {
-                console.log("project users", response.data.data)
-                this.projectUsers = response.data.data;
-                })
-                .catch (e => {
-                console.log("error", e)
-                })
-            //  }
+        //         this.$axios.get (`users/project/${this.projectId}`)
+        //         .then (response => {
+        //         console.log("project users", response.data.data)
+        //         this.projectUsers = response.data.data;
+        //         })
+        //         .catch (e => {
+        //         console.log("error", e)
+        //         })
          }
      },
   }
