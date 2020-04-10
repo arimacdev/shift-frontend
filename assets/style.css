@@ -594,6 +594,11 @@ margin-top: -60px;
     margin-left: -40%;
 }
 
+.noteUpdateButton{
+    margin-top: -30px;
+    margin-left: 65px;
+}
+
 /* --------------- popup -------------- */
 
 .popup-title{

@@ -334,7 +334,29 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="subItem noteSubItem" >
-              <textarea v-model="taskNotes" @keyup.enter="updateTaskNote" placeholder="Note" class="noteTextArea"></textarea>
+              <!-- <textarea v-model="taskNotes" @keyup.enter="updateTaskNote" placeholder="Note" class="noteTextArea"></textarea> -->
+           <v-textarea
+              name="input-7-4"
+              auto-grow=""
+              clearable=""
+              outlined=""
+              v-model="taskNotes"
+            ></v-textarea>
+            </v-list-item-title>
+             <div class=" noteUpdateButton">
+                  <v-btn 
+                  class="ma-2"  
+                  small 
+                  rounded 
+                  depressed="" 
+                  color="#0BAFFF"
+                  dark=""
+                  @click="updateTaskNote"
+                  >
+                    <v-icon left>mdi-pencil</v-icon> Update note
+                  </v-btn>
+              </div>
+           
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
