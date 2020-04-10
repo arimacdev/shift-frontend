@@ -44,7 +44,7 @@
              v-model="addTaskAssignee"
               :items="states"
               item-text="name"
-              item-value="id.userId"
+              item-value="id.assigneeId"
               label="Task assignee"
               outlined
               class="createFormElements"
@@ -318,7 +318,7 @@ import axios from 'axios'
         this.loading = true
         
       },
-      getDueDate(){       
+      getDueDate(){ 
         const startDate = new Date(this.taskDueDate);
         const isoDate = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000)).toISOString();
         console.log("iso due date",isoDate)
@@ -348,7 +348,7 @@ import axios from 'axios'
                     return;
                 }
       },
-     async addTask(){     
+     async addTask(){ 
        let response;
        try{
             response = await this.$axios.$post(`/projects/${this.projectId}/tasks`, {
