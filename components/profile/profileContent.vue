@@ -200,7 +200,7 @@
     </div>
 
         <div @click="close">
-            <component v-bind:is="component" ></component>
+            <component v-bind:is="component" :errorMessage=errorMessage></component>
          </div>
         <!-- <success-popup /> -->
     
@@ -236,6 +236,7 @@ export default {
         switch2: false,
 
         files: [],
+        errorMessage: '',
         userName: this.user.userName,
         firstName: this.user.firstName,
         lastName: this.user.lastName,
@@ -361,6 +362,7 @@ export default {
        }
        catch(e){
           console.log("Error edit user", e);
+          this.errorMessage = e.response.data
            this.component = 'error-popup'
           // alert("Error updating user!")
        }

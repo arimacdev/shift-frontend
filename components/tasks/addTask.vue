@@ -18,12 +18,12 @@
        <div v-if="$v.taskName.$error && !$v.taskName.maxLength" class="errorText"> Cannot use more than 50 characters</div> -->
       
        <v-text-field
-            label="Task name"
+            label="Task name*"
             outlined
             class="createFormElements"
             v-model.trim="$v.taskName.$model"
           ></v-text-field>
- <div v-if="$v.taskName.$error && !$v.taskName.required" class="errorText"> Project name is required</div>
+ <div v-if="$v.taskName.$error && !$v.taskName.required" class="errorText"> Task name is required</div>
        <div v-if="$v.taskName.$error && !$v.taskName.maxLength" class="errorText"> Cannot use more than 100 characters</div>
            
 
@@ -197,7 +197,7 @@
     </div>
 
         <div @click="close" class="taskAddPopupPlacements">
-            <component v-bind:is="component" ></component>
+            <component v-bind:is="component" :errorMessage=errorMessage ></component>
          </div>
         <!-- <success-popup /> -->
 
@@ -224,6 +224,7 @@ import axios from 'axios'
     
     data() {
       return {
+        errorMessage: '',
          userId: this.$store.state.user.userId,
          files: [],
          file: '',
@@ -405,6 +406,7 @@ import axios from 'axios'
            this.$v.$reset()
        } catch(e){
          this.component = 'error-popup'
+         this.errorMessage = e.response.data
           console.log("Error adding a Task", e);
           // alert("Error adding a task")
        }      

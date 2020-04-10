@@ -27,7 +27,7 @@
        <div v-if="$v.projectName.$error && !$v.projectName.maxLength" class="errorText"> Cannot use more than 50 characters</div>
             -->
             <v-text-field
-            label="Project name"
+            label="Project name*"
             outlined
             class="createFormElements"
             v-model.trim="$v.projectName.$model"
@@ -46,7 +46,7 @@
             <!-- <div v-if="$v.client.$error && !$v.client.required" class="errorText"> Client is required</div> -->
             
             <v-text-field
-            label="Client"
+            label="Client*"
             outlined
             class="createFormElements"
             v-model.trim="$v.client.$model"

@@ -32,7 +32,7 @@
 
             <v-autocomplete
               filled
-              label="Select user"
+              label="Select user*"
               v-model="addUser.assigneeId"
               :items="states"
               item-text="name"
@@ -56,7 +56,7 @@
               <!-- <input v-model="addUser.assigneeJobRole" placeholder="Role" class="formElements popupFormElement"> -->
            <v-text-field
             v-model="addUser.assigneeJobRole" 
-            label="Project Role"
+            label="Project Role*"
             flat
             outlined
             class=" popupFormElement"
@@ -65,7 +65,7 @@
            
             </v-card-actions>
               </div>
-             <v-card-actions class="roleField">
+             <v-card-actions class="roleField checkBoxRoleField">
              
               <v-checkbox
                 v-model="adminStatus"
@@ -114,7 +114,7 @@
     
   </v-row>
   <div @click="close">
-            <component v-bind:is="component" :success=success ></component>
+            <component v-bind:is="component" :success=success :errorMessage=errorMessage ></component>
          </div>
        <!--  <success-popup /> -->
   </div>
@@ -134,6 +134,7 @@ import { required } from 'vuelidate/lib/validators'
     },
     data() {
       return {
+        errorMessage: '',
         isValid: true,
         userId: this.$store.state.user.userId,
         addUser: {
@@ -197,6 +198,7 @@ import { required } from 'vuelidate/lib/validators'
          this.$refs.form.reset()
        } catch(e){
           console.log("Error adding a User", e);
+          this.errorMessage = e.response.data
           this.component = 'error-popup'
        }   
       },
