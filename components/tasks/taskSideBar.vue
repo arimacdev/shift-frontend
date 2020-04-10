@@ -386,8 +386,28 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="subItem noteSubItem" >
-              <textarea v-model="taskNotes" @keyup.enter="updateTaskNote" placeholder="Note" class="noteTextArea"></textarea>
+              <!-- <textarea v-model="taskNotes" @keyup.enter="updateTaskNote" placeholder="Note" class="noteTextArea"></textarea> -->
+            <v-textarea
+              name="input-7-4"
+              auto-grow=""
+              clearable=""
+              outlined=""
+              v-model="taskNotes"
+            ></v-textarea>
             </v-list-item-title>
+             <div class=" noteUpdateButton">
+                  <v-btn 
+                  class="ma-2"  
+                  small 
+                  rounded 
+                  depressed="" 
+                  color="#0BAFFF"
+                  dark=""
+                  @click="updateTaskNote"
+                  >
+                    <v-icon left>mdi-pencil</v-icon> Update note
+                  </v-btn>
+              </div>
           </v-list-item-content>
         </v-list-item>
       </v-list-group>
@@ -416,8 +436,21 @@
             class="createFormElements"
             chips
             show-size=""
-            @change="taskFileUpload()"
             >   </v-file-input>
+
+            <div class=" fileUploadButton">
+                  <v-btn 
+                  class="ma-2"  
+                  small 
+                  rounded 
+                  depressed="" 
+                  color="#0BAFFF"
+                  dark=""
+                  @click="taskFileUpload()"
+                  >
+                    <v-icon left>mdi-upload</v-icon> Upload
+                  </v-btn>
+              </div>
  
 
         </div>
@@ -433,7 +466,7 @@
             </a>
           </div>
           <div class="attachmentClose">
-               <v-icon size="15" class="closeButton" color="red">mdi-close-circle-outline</v-icon>
+               <v-icon @click="removeFiles(taskFile.taskFileId)" size="15" class="closeButton" color="red">mdi-close-circle-outline</v-icon>
              </div>
           
         </v-list-item>
@@ -520,6 +553,25 @@ import ErrorPopup from '~/components/popups/errorPopup'
       }
     },
     methods: {
+      async removeFiles(taskFile){
+        console.log("SelectedFile ==========> " + taskFile)
+
+        let response;
+       try{
+        response = await this.$axios.$delete(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload/${taskFile}`, {    
+                data: {},
+                headers: {
+                    'user': this.userId,
+                    'taskType': 'project'
+                }
+        })
+       
+        console.log(response.data);
+       }  catch(e){
+          console.log("Error deleting task", e);
+       }  
+
+      },
       close(){
                 this.component = ''
             },
@@ -746,35 +798,37 @@ import ErrorPopup from '~/components/popups/errorPopup'
           console.log("Error updating a status", e);
        }
       },
-       handleFileUploads(e){
-         this.file = this.$refs.files.files[0];
-         let formData = new FormData();
-        formData.append('files', this.file);
-        formData.append('type', 'profileImage');
-        formData.append('taskType', 'project')
+      //  handleFileUploads(e){
+      //   //  this.file = this.$refs.files.files[0];
+      //    let formData = new FormData();
+      //   formData.append('files', this.files);
+      //   formData.append('type', 'profileImage');
+      //   formData.append('taskType', 'project');
+      //   this.files = null
 
-        this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
-            formData,
-            {
-              headers: {
-                  'Content-Type': 'multipart/form-data',
-                  'user': this.userId
-              }
-            }
-          ).then(function(res){
-            this.taskFiles.push(res.data);
-            this.file = '';
-            console.log('File upload successful', res.data);
-          })
-          .catch(function(){
-            console.log('File Upload Failed');
-          });
-      },
+      //   this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
+      //       formData,
+      //       {
+      //         headers: {
+      //             'Content-Type': 'multipart/form-data',
+      //             'user': this.userId
+      //         }
+      //       }
+      //     ).then(function(res){
+      //       this.taskFiles.push(res.data);
+      //       this.file = '';
+      //       console.log('File upload successful', res.data);
+      //     })
+      //     .catch(function(){
+      //       console.log('File Upload Failed');
+      //     });
+      // },
       taskFileUpload(){
         let formData = new FormData();
         formData.append('files', this.files);
         formData.append('type', 'profileImage');
         formData.append('taskType', 'project')
+        this.files = null
 
         this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
             formData,
@@ -786,7 +840,6 @@ import ErrorPopup from '~/components/popups/errorPopup'
             }
           ).then(function(res){
             this.taskFiles.push(res.data);
-            this.files = null;
             console.log('File upload successful', res.data);
           })
           .catch(function(){

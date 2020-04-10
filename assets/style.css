@@ -594,6 +594,15 @@ margin-top: -60px;
     margin-left: -40%;
 }
 
+.noteUpdateButton{
+    margin-top: -30px;
+    margin-left: 65px;
+}
+.fileUploadButton{
+    margin-top: 15px;
+    margin-bottom: -10px;
+}
+
 /* --------------- popup -------------- */
 
 .popup-title{
@@ -805,7 +814,7 @@ width: 400px !important;
     font-weight: 450;
     margin-left: 50px;
     height: 30px;
-    width: 200px;
+    /* width: 200px; */
     margin-top: -28px;
     /* white-space:nowrap; */
 }
@@ -1426,3 +1435,6 @@ color: #040428;
       top: 80vh;
       right: 10px;
   }
+
+
+  

@@ -319,16 +319,26 @@ import axios from 'axios'
         
       },
       getDueDate(){ 
+        if(this.taskDueDate == null){
+          return null
+        } else {
         const startDate = new Date(this.taskDueDate);
         const isoDate = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000)).toISOString();
         console.log("iso due date",isoDate)
         return isoDate;
+        }
+      
     },
-    getRemindOnDate(){       
-    const endDate = new Date(this.taskRemindOnDate);
+    getRemindOnDate(){     
+      if(this.taskRemindOnDate == null){
+          return null
+        }  else {
+ const endDate = new Date(this.taskRemindOnDate);
     const isoDate = new Date(endDate.getTime() - (endDate.getTimezoneOffset() * 60000)).toISOString();
     console.log("iso remond on date",isoDate)
     return isoDate;
+        }
+   
     },
       submit () {
        this.$v.$touch()
@@ -349,6 +359,7 @@ import axios from 'axios'
                 }
       },
      async addTask(){ 
+       
        let response;
        try{
             response = await this.$axios.$post(`/projects/${this.projectId}/tasks`, {
@@ -372,7 +383,7 @@ import axios from 'axios'
         formData.append('files', this.files);
         formData.append('type', 'profileImage');
          formData.append('taskType', 'project');
-
+        this.files = null
         this.$axios.$post(`/projects/${this.projectId}/tasks/${taskId}/upload`,
             formData,
             {
@@ -381,8 +392,8 @@ import axios from 'axios'
                   'user': this.userId
               }
             }
+            
           ).then(function(res){
-            this.files = []
             console.log('File upload successful', res.data);
           })
           .catch(function(){

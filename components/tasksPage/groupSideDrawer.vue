@@ -335,7 +335,29 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="subItem noteSubItem" >
-              <textarea v-model="taskNotes" @keyup.enter="updateTaskNote" placeholder="Note" class="noteTextArea"></textarea>
+              <!-- <textarea v-model="taskNotes" @keyup.enter="updateTaskNote" placeholder="Note" class="noteTextArea"></textarea> -->
+           <v-textarea
+              name="input-7-4"
+              auto-grow=""
+              clearable=""
+              outlined=""
+              v-model="taskNotes"
+            ></v-textarea>
+            </v-list-item-title>
+             <div class=" noteUpdateButton">
+                  <v-btn 
+                  class="ma-2"  
+                  small 
+                  rounded 
+                  depressed="" 
+                  color="#0BAFFF"
+                  dark=""
+                  @click="updateTaskNote"
+                  >
+                    <v-icon left>mdi-pencil</v-icon> Update note
+                  </v-btn>
+              </div>
+           
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -365,13 +387,28 @@
             class="createFormElements"
             chips
             show-size=""
-            @change="taskFileUpload()"
             >   </v-file-input>
+
+              <div class=" fileUploadButton">
+                  <v-btn 
+                  class="ma-2"  
+                  small 
+                  rounded 
+                  depressed="" 
+                  color="#0BAFFF"
+                  dark=""
+                  @click="taskFileUpload()"
+                  >
+                    <v-icon left>mdi-upload</v-icon> Upload
+                  </v-btn>
+              </div>
+
+              
        
        
         </div>
         <div class="attchmentContainer">
-        <v-list-item class="subTaskListItems"  v-for="(taskFile,index) in taskFiles" :key="index">
+        <v-list-item class="subTaskListItems"  v-for="(taskFile,index) in taskFiles" :key="index" >
           
           <div class="listAttachment">
             <a style="text-decoration: none;" :href="taskFile.taskFileUrl">
@@ -382,7 +419,7 @@
             </a>
           </div>
           <div class="attachmentClose">
-               <v-icon size="15" class="closeButton" color="red">mdi-close-circle-outline</v-icon>
+               <v-icon @click="removeFiles(taskFile.taskFileId)" size="15" class="closeButton" color="red">mdi-close-circle-outline</v-icon>
              </div>
           
         </v-list-item>
@@ -468,6 +505,25 @@ import { mapState } from 'vuex';
     //   })
     //  },
     methods: {
+     async removeFiles(taskFile){
+        console.log("SelectedFile ==========> " + taskFile)
+
+        let response;
+       try{
+        response = await this.$axios.$delete(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/upload/${taskFile}`, {    
+                data: {},
+                headers: {
+                    'user': this.userId,
+                    'taskType': 'taskGroup'
+                }
+        })
+       
+        console.log(response.data);
+       }  catch(e){
+          console.log("Error deleting task", e);
+       }  
+
+      },
       close(){
                 this.component = ''
             },
@@ -745,7 +801,8 @@ import { mapState } from 'vuex';
         let formData = new FormData();
         formData.append('files', this.files);
         formData.append('type', 'profileImage');
-        formData.append('taskType', 'taskGroup')
+        formData.append('taskType', 'taskGroup');
+        this.files = null
 
         this.$axios.$post(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/upload`,
             formData,
@@ -757,7 +814,7 @@ import { mapState } from 'vuex';
             }
           ).then((res) => {
             this.taskFiles.push(res.data);
-            this.files = null;
+            
             console.log('File upload successful', res.data);
           })
           .catch((err) => {

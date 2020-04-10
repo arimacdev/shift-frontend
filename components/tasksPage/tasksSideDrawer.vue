@@ -334,7 +334,29 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="subItem noteSubItem" >
-              <textarea v-model="taskNotes" @keyup.enter="updateTaskNote" placeholder="Note" class="noteTextArea"></textarea>
+              <!-- <textarea v-model="taskNotes" @keyup.enter="updateTaskNote" placeholder="Note" class="noteTextArea"></textarea> -->
+           <v-textarea
+              name="input-7-4"
+              auto-grow=""
+              clearable=""
+              outlined=""
+              v-model="taskNotes"
+            ></v-textarea>
+            </v-list-item-title>
+             <div class=" noteUpdateButton">
+                  <v-btn 
+                  class="ma-2"  
+                  small 
+                  rounded 
+                  depressed="" 
+                  color="#0BAFFF"
+                  dark=""
+                  @click="updateTaskNote"
+                  >
+                    <v-icon left>mdi-pencil</v-icon> Update note
+                  </v-btn>
+              </div>
+           
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -363,8 +385,21 @@
             class="createFormElements"
             chips
             show-size=""
-            @change="taskFileUpload()"
             >   </v-file-input>
+
+              <div class=" fileUploadButton">
+                  <v-btn 
+                  class="ma-2"  
+                  small 
+                  rounded 
+                  depressed="" 
+                  color="#0BAFFF"
+                  dark=""
+                  @click="taskFileUpload()"
+                  >
+                    <v-icon left>mdi-upload</v-icon> Upload
+                  </v-btn>
+              </div>
        
         </div>
         <div class="attchmentContainer">
@@ -379,7 +414,7 @@
             </a>
           </div>
           <div class="attachmentClose">
-               <v-icon size="15" class="closeButton" color="red">mdi-close-circle-outline</v-icon>
+               <v-icon @click="removeFiles(taskFile.taskFileId)" size="15" class="closeButton" color="red">mdi-close-circle-outline</v-icon>
              </div>
           
         </v-list-item>
@@ -459,6 +494,24 @@ import ErrorPopup from '~/components/popups/errorPopup'
       }
     },
     methods: {
+      async removeFiles(taskFile){
+        console.log("SelectedFile ==========> " + taskFile)
+
+        let response;
+       try{
+        response = await this.$axios.$delete(`/non-project/tasks/personal/${this.task.taskId}/files/${taskFile}`, {    
+                data: {},
+                headers: {
+                    'user': this.userId,
+                }
+        })
+       
+        console.log(response.data);
+       }  catch(e){
+          console.log("Error deleting task", e);
+       }  
+
+      },
       close(){
                 this.component = ''
             },
@@ -698,6 +751,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
         let formData = new FormData();
         formData.append('files', this.files);
         formData.append('type', 'profileImage');
+        this.files = null
 
         this.$axios.$post(`/personal/tasks/${this.task.taskId}/upload`,
             formData,
