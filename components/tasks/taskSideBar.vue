@@ -562,6 +562,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
                 data: {},
                 headers: {
                     'user': this.userId,
+                    'taskType': 'project'
                 }
         })
        
