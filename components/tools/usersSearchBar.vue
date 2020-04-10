@@ -15,6 +15,7 @@
           prepend-inner-icon="mdi-magnify"
           label="Search Here"
           outlined
+          clearable=""
           @change="onSelectedUser()"
         ></v-autocomplete>
 </template>

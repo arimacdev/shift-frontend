@@ -42,6 +42,7 @@
               hide-no-data
               @change="onSelectedUser()"
               :rules="assigneeRules" hide-details="auto"
+              clearable=""
           >
             
           </v-autocomplete>

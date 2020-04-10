@@ -15,7 +15,8 @@
           prepend-inner-icon="mdi-magnify"
           label="Search Here"
           outlined
-          @change="onSelectProject()"
+          @change="onSelectGroup()"
+          clearable
         ></v-autocomplete>
 </template>
 
@@ -39,11 +40,12 @@ export default {
       search (val) {
         val && val !== this.select && this.querySelections(val)
       },
+      
     },
     methods: {
-      onSelectProject(){
+      onSelectGroup(){
          if(this.select !== undefined){
-        this.$emit('selectSearched', this.select);
+        this.$emit('searchGroupSelected', this.select);
          }
       },
       querySelections (v) {

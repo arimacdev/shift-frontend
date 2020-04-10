@@ -42,7 +42,7 @@
  <div class="pageBody">
       <div class="groupTasksList">
 
-        <task-search-bar :groups="groups" />
+        <task-search-bar :groups="groups" @searchGroupSelected="viewSearchGroupComponent" />
 
         <div class="listView overflow-y-auto">
 <v-list-item-group active-class="">
@@ -167,6 +167,20 @@ export default {
       })
     },  
    methods: {
+     viewSearchGroupComponent(group){
+        this.group = group;
+        this.component='group-tasks'
+
+        this.$store.dispatch('groups/groupTask/fetchGroupTasks',{
+          taskGroupId: this.group.taskGroupId,
+          userId: this.userId
+        });
+
+         this.$store.dispatch('groups/groupPeople/fetchGroupPeople',{
+          taskGroupId: this.group.taskGroupId,
+          userId: this.userId
+        });
+      },
      async selectGroup(group){
         this.component='group-tasks'
         this.group = group;
