@@ -119,7 +119,7 @@
         </v-row>
         </form>
          <div @click="close">
-            <component v-bind:is="component" ></component>
+            <component v-bind:is="component" :errorMessage=errorMessage></component>
          </div>
             <!-- <success-popup /> -->
     </div>
@@ -161,6 +161,7 @@ export default {
         window.setTimeout(location.reload(), 8000)
        }  catch(e){
           console.log("Error creating user", e);
+          this.errorMessage = e.response.data
            this.component = 'error-popup'
         //   alert("Error creating user!")
        }   
@@ -181,6 +182,7 @@ export default {
     },
     data(){
         return{
+            errorMessage: '',
             userName: '',
             firstName: '',
             lastName: '',

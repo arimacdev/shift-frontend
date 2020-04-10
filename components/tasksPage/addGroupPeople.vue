@@ -87,7 +87,7 @@
     
   </v-row>
   <div @click="close">
-            <component v-bind:is="component" :success=success ></component>
+            <component v-bind:is="component" :success=success :errorMessage=errorMessage ></component>
          </div>
        <!--  <success-popup /> -->
 
@@ -106,6 +106,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
     },
     data() {
       return {
+        errorMessage: '',
         isValid: true,
         userId: this.$store.state.user.userId,
         addUser: {
@@ -167,6 +168,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
         console.log(response);
        } catch(e){
           console.log("Error adding a group", e);
+          this.errorMessage = e.response.data
           this.component = 'error-popup'
        }
       //   let assigneeProjectRoleId = this.getProjectRole();

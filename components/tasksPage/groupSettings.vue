@@ -85,7 +85,7 @@
 
       </v-list-item>
        <div @click="close" class="groupUpdatePopups">
-            <component v-bind:is="component" ></component>
+            <component v-bind:is="component" :errorMessage=errorMessage ></component>
          </div>
         <!-- <success-popup /> -->
 
@@ -108,7 +108,8 @@ export default {
             userId: this.$store.state.user.userId,
         component: '',
         settingsDialog: false,
-        groupName: this.group.taskGroupName
+        groupName: this.group.taskGroupName,
+        errorMessage: '',
        }
     },
     methods: {
@@ -127,6 +128,7 @@ export default {
       }
        catch(e){
           console.log("Error edit user", e);
+          this.errorMessage = e.response.data
            this.component = 'error-popup'
        } 
       },
@@ -145,7 +147,8 @@ export default {
         console.log("delete group", response);
        } catch(e){
            this.component = 'error-popup'
-          console.log("Error deleting group", e);
+           this.errorMessage = e.response.data
+          console.log("Error deleting group", e.response);
        }
       },
        close(){

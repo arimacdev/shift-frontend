@@ -63,7 +63,7 @@
                 md="12"
                 
             >
-            <div class="editProjectLabels">Project name</div>
+            <div class="editProjectLabels">Project name*</div>
         <input maxlength="51" v-model="projectName" placeholder="Project name" class="formElements">
             </v-col>
         </v-row>
@@ -77,7 +77,7 @@
                 md="12"
                 
             >
-            <div class="editProjectLabels">Client</div>
+            <div class="editProjectLabels">Client*</div>
        <input v-model="clientId" placeholder="client" class="formElements">
             </v-col>
         </v-row>
@@ -91,7 +91,7 @@
                 
             >
        <!-- <input t v-model="projectStatus" placeholder="Project status" class="formElements"> -->
-      <div class="editProjectLabels">Project status</div>
+      <div class="editProjectLabels">Project status*</div>
        <select v-model="projectStatus" class="formElements">
               <!-- <option value="" disabled>{{ this.projectStatus }}</option> -->
               <option key="presales" value="presales" >Presales</option>
@@ -441,7 +441,7 @@
 
 
      <div @click="close" class="popupBox">
-            <component v-bind:is="component" ></component>
+            <component v-bind:is="component" :errorMessage=errorMessage  ></component>
          </div> 
          <!-- <div class="popupBox">
         <success-popup />
@@ -462,6 +462,7 @@ export default {
     },
     data () {
       return {
+        errorMessage: '',
         userId: this.$store.state.user.userId,
         projectDialog: false,
         updateProject: {
@@ -573,6 +574,7 @@ export default {
        } catch(e){
 
          this.component = 'error-popup'
+         this.errorMessage = e.response.data
           console.log("Error updating a project", e);
        }
       },
@@ -594,6 +596,7 @@ export default {
         console.log(response.data);
        }  catch(e){
          this.component = 'error-popup'
+         this.errorMessage = e.response.data
           console.log("Error deleting project", e);
        }          
       },

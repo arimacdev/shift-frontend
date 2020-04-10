@@ -108,7 +108,7 @@
         </v-row>
         </form>
          <div @click="close">
-            <component v-bind:is="component" ></component>
+            <component v-bind:is="component" :errorMessage=errorMessage ></component>
          </div>
         <!-- <success-popup /> -->
     </div>
@@ -151,6 +151,7 @@ export default {
        catch(e){
           console.log("Error edit user", e);
            this.component = 'error-popup'
+           this.errorMessage = e.response.data
         //   alert("Error updating user!")
        } 
       },
@@ -171,7 +172,8 @@ export default {
         return{
              password: '',
             confirmPassword: '',
-            component: ''
+            component: '',
+            errorMessage: '',
         }
     },
     validations: {
