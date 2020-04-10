@@ -112,8 +112,8 @@
               <!-- ///////// add assignee name - customize for personal task and group tasks //////// -->
            <select  v-model="taskAssignee" class="tabListItemsText" @change="changeAssignee">
                 <option value="" disabled>{{ assignee.firstName }} {{assignee.lastName }}</option>
-              <option class="tabListItemsText" v-for="(groupUser, index) in completionTasks" :key="index" :selected="groupUser.assigneeId === assignee.userId" :value="groupUser.assigneeId" >
-                {{groupUser.assigneeFirstName}} {{groupUser.assigneeLastName}}
+              <option class="tabListItemsText" v-for="(groupUser, index) in groupPeople" :key="index" :selected="groupUser.assigneeId === assignee.userId" :value="groupUser.assigneeId" >
+                {{groupUser.assigneeFirstName}} {{groupUser.assigneeLastName}} 
               </option>
             </select>
            </v-list-item-content>
@@ -417,9 +417,10 @@ Settings.defaultLocale = 'IST'
 
 import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
+import { mapState } from 'vuex';
 
   export default {
-    props: ['group', 'task', 'assignee', 'subTasks' ,'taskFiles', 'completionTasks'],
+    props: ['group', 'task', 'assignee', 'subTasks' ,'taskFiles', 'groupPeople'],
 
     components: {
       'success-popup' : SuccessPopup,
@@ -461,6 +462,11 @@ import ErrorPopup from '~/components/popups/errorPopup'
        
       }
     },
+    //  computed: {
+    // ...mapState({
+    //     groupPeople: state => state.groups.groupPeople.groupPeople,
+    //   })
+    //  },
     methods: {
       close(){
                 this.component = ''
@@ -490,6 +496,17 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
+        // this.$store.dispatch('groups/groupTask/changeTaskAssignee',{
+        //   taskId: this.task.taskId,
+        //   type: 'taskAssignee',
+        //   assignee : this.updatedTask.taskAssignee,
+        //   profileImage: this.u
+        // }); // TODO
+         this.$store.dispatch('groups/groupTask/fetchGroupTasks',{
+          taskGroupId: this.group.taskGroupId,
+          userId: this.userId
+        });
+
         console.log("update task status response", response);
        } catch(e){
           console.log("Error updating a status", e);
@@ -560,7 +577,6 @@ import ErrorPopup from '~/components/popups/errorPopup'
           type: 'taskNote',
           value : this.updatedTask.taskNotes
         });        
-        //  this.$store.dispatch('personalTasks/fetchAllPersonalTasks'); 
         console.log("edit task response", response);
        } catch(e){
           console.log("Error updating a note", e);

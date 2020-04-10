@@ -17,7 +17,7 @@
           
       <v-tab-item>
         <v-divider class="mx-4"></v-divider>
-            <group-task-content :group=group :groupTasks=groupTasks :completionTasks=completionTasks />
+            <group-task-content :group=group :completionTasks=completionTasks />
       </v-tab-item>
     
       <v-tab-item>
@@ -48,7 +48,7 @@ import GroupTaskPeople from '~/components/tasksPage/groupTaskPeople'
 import GroupSettings from '~/components/tasksPage/groupSettings'
 
   export default {
-    props: ['users', 'group', 'groupTasks', 'completionTasks'],
+    props: ['users', 'group', 'completionTasks'],
      components: {
      'group-task-content' : GroupTaskContent,
      'group-task-people' : GroupTaskPeople,

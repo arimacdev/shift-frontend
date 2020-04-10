@@ -92,7 +92,7 @@
       class=""
       color="#FFFFFF"
     > 
-      <group-side-drawer :completionTasks=completionTasks :task="task" :group="group" :assignee="assignee"  :subTasks="subTasks" :taskFiles="taskFiles" @shrinkSideBar="shrinkSideBar"/>
+      <group-side-drawer :task="task" :group="group" :assignee="assignee" :groupPeople="groupPeople" :subTasks="subTasks" :taskFiles="taskFiles" @shrinkSideBar="shrinkSideBar"/>
     </v-navigation-drawer>
           <!-- --------------- end side bar --------------------- -->
        
@@ -107,7 +107,7 @@ import { mapState } from 'vuex'
 
 
   export default {
-    props: ['groupTasks', 'group', 'completionTasks'],
+    props: [ 'group'],
        components: {
       'group-side-drawer' : GroupSideDrawer,
     },
@@ -242,6 +242,7 @@ import { mapState } from 'vuex'
        computed: {
       ...mapState({
           groupTasks: state => state.groups.groupTask.groupTasks,
+          groupPeople: state => state.groups.groupPeople.groupPeople,
       })
     }
   }
