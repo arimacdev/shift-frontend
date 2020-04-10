@@ -8,8 +8,8 @@
                     </v-list-item-action>
                     <v-list-item-content class="buttonText">
                         <v-list-item-title class="popupTitle">Error occurred!</v-list-item-title>
-                        <div v-if="errorMessage.status != 500" class="popupSubtitle errorSubtitle"> {{errorMessage.message}} </div>
-                        <!-- <div v-else-if="errorMessage.status == 400" class="popupSubtitle errorSubtitle"> Bad request</div> -->
+                        <div v-if="errorMessage.status != 500 && errorMessage.status != 400" class="popupSubtitle errorSubtitle"> {{errorMessage.message}} </div>
+                        <div v-else-if="errorMessage.status == 400" class="popupSubtitle errorSubtitle"> Bad request</div>
                         <div v-else-if="errorMessage.status == 500" class="popupSubtitle errorSubtitle"> Server error</div>
                         <div v-else class="popupSubtitle errorSubtitle"> Please try again</div>
                     </v-list-item-content>
