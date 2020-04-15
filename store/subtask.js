@@ -20,7 +20,11 @@ export const actions = {
         const userId = rootState.user.userId;
         let subTaskResponse;
         try {
-             subTaskResponse = await this.$axios.$get(`/projects/${projectId}/tasks/${taskId}/subtask?userId=${userId}`) 
+             subTaskResponse = await this.$axios.$get(`/projects/${projectId}/tasks/${taskId}/subtask?userId=${userId}`,{
+              headers: {
+                'type': 'project'
+             }
+            }) 
              console.log("fetch subtasks from store--->", subTaskResponse.data);
              commit('SET_SUBTAKS', subTaskResponse.data);
        //get files related to task
@@ -30,6 +34,7 @@ export const actions = {
        {
          headers: {
            user: userId,
+           'type': 'project'
         }
        }
        ) 

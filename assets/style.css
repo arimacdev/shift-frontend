@@ -1150,6 +1150,12 @@ color: #040428;
     padding-top: 15px;
     height: 80vh;
 }
+.myWorkloadBody{
+    margin-right: 2% !important;
+    padding-left: 30px;
+    padding-top: 15px;
+    height: 80vh;
+}
 .workLoadTitleDiv{
     font-weight: bold;
     font-size: 19px;
