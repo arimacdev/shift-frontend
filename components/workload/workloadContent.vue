@@ -35,7 +35,8 @@
 
                 <!-- -------------- loop this pannel for every project ---------- -->
                 <v-expansion-panel v-for="(project, index) in workloadTasks" :key="index" class="projectDetailsPannels">
-                    <v-expansion-panel-header class="projectDetailsPannelHeader" color="#080848">{{project.projectName}} - {{project.completed}}/{{project.total}}</v-expansion-panel-header>
+                    <v-expansion-panel-header v-if="project.total > 0" class="projectDetailsPannelHeader" color="#080848">{{project.projectName}} - {{project.completed}}/{{project.total}}</v-expansion-panel-header>
+                    <v-expansion-panel-header v-else-if="project.total == 0" class="projectDetailsPannelHeader" color="#ACACAC">{{project.projectName}} - {{project.completed}}/{{project.total}}</v-expansion-panel-header>
                     <v-expansion-panel-content class="projectDetailsPannelContent" color="#EDF0F5">
                     
                     <!-- ----------- loop content for tasks of projects --------------- -->
