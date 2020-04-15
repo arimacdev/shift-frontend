@@ -401,6 +401,11 @@
                   >
                     <v-icon left>mdi-upload</v-icon> Upload
                   </v-btn>
+                  <v-progress-circular
+                  v-if="uploadLoading == true"
+                    indeterminate
+                    color="primary"
+                  ></v-progress-circular>
               </div>
 
               
@@ -466,6 +471,7 @@ import { mapState } from 'vuex';
     },
     data() {
       return {
+        uploadLoading: false,
         files: [],
         taskDialog: false,
         subTaskDialog: false,
@@ -776,6 +782,7 @@ import { mapState } from 'vuex';
       },
 
       taskFileUpload(){
+        this.uploadLoading = true
         let formData = new FormData();
         formData.append('files', this.files);
         formData.append('type', 'profileImage');
@@ -792,10 +799,11 @@ import { mapState } from 'vuex';
             }
           ).then((res) => {
             this.taskFiles.push(res.data);
-            
+            this.uploadLoading = false
             console.log('File upload successful', res.data);
           })
           .catch((err) => {
+            this.uploadLoading = false
             console.log('File Upload Failed', err);
           });
       },   
