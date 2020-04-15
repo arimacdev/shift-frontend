@@ -554,7 +554,6 @@ import ErrorPopup from '~/components/popups/errorPopup'
     },
     methods: {
       async removeFiles(taskFile){
-        console.log("SelectedFile ==========> " + taskFile)
 
         let response;
        try{
@@ -565,7 +564,8 @@ import ErrorPopup from '~/components/popups/errorPopup'
                     'taskType': 'project'
                 }
         })
-       
+        const index = this.taskFiles.findIndex(i => i.taskFileId === taskFile);
+        this.taskFiles.splice(index, 1);
         console.log(response.data);
        }  catch(e){
           console.log("Error deleting task", e);
@@ -823,28 +823,29 @@ import ErrorPopup from '~/components/popups/errorPopup'
       //       console.log('File Upload Failed');
       //     });
       // },
-      taskFileUpload(){
+      async taskFileUpload(){
         let formData = new FormData();
         formData.append('files', this.files);
         formData.append('type', 'profileImage');
         formData.append('taskType', 'project')
         this.files = null
 
-        this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
-            formData,
-            {
-              headers: {
-                  'Content-Type': 'multipart/form-data',
-                  'user': this.userId
-              }
-            }
-          ).then(function(res){
-            this.taskFiles.push(res.data);
-            console.log('File upload successful', res.data);
-          })
-          .catch(function(){
-            console.log('File Upload Failed');
-          });
+        let fileResponse;
+         try {
+             fileResponse = await this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
+             formData,
+             {
+                 headers : {
+                     user: this.userId,
+                 }
+             })
+             this.taskFiles.push(fileResponse.data);
+             console.log("group people response", this.taskFiles);
+         } catch(e) {
+             console.log("Error fetching group people",e);
+         }
+
+          
       }
    
 
