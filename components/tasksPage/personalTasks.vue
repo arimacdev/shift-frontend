@@ -107,7 +107,6 @@
 
 <script>
 import TaskSideDrawer from '~/components/tasksPage/tasksSideDrawer'
-import TaskSideBar from '~/components/tasks/taskSideBar'
 import axios from 'axios'
 import { mapState } from 'vuex'
 
@@ -115,7 +114,6 @@ import { mapState } from 'vuex'
   export default {
        components: {
       'tasks-side-drawer' : TaskSideDrawer,
-      'task-side-bar' : TaskSideBar
     },
      data () {
       return {

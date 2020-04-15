@@ -517,7 +517,8 @@ import { mapState } from 'vuex';
                     'taskType': 'taskGroup'
                 }
         })
-       
+       const index = this.taskFiles.findIndex(i => i.taskFileId === taskFile);
+        this.taskFiles.splice(index, 1);
         console.log(response.data);
        }  catch(e){
           console.log("Error deleting task", e);
@@ -773,30 +774,7 @@ import { mapState } from 'vuex';
           console.log("Error updating a status", e);
        }
       },
-      //  handleFileUploads(e){
-      //    this.file = this.$refs.files.files[0];
-      //    let formData = new FormData();
-      //   formData.append('files', this.file);
-      //   formData.append('type', 'taskFile')
-      //   formData.append('taskType', 'taskGroup')
 
-      //   this.$axios.$post(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/upload`,
-      //       formData,
-      //       {
-      //         headers: {
-      //             'Content-Type': 'multipart/form-data',
-      //             'user': this.userId,
-      //         }
-      //       }
-      //     ).then(function(res){
-      //       this.taskFiles.push(res.data);
-      //       this.file = '';
-      //       console.log('File upload successful', res.data);
-      //     })
-      //     .catch(function(){
-      //       console.log('File Upload Failed');
-      //     });
-      // },
       taskFileUpload(){
         let formData = new FormData();
         formData.append('files', this.files);
