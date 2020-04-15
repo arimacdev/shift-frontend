@@ -401,6 +401,11 @@
                   >
                     <v-icon left>mdi-upload</v-icon> Upload
                   </v-btn>
+                  <v-progress-circular
+                  v-if="uploadLoading == true"
+                    indeterminate
+                    color="primary"
+                  ></v-progress-circular>
               </div>
 
               
@@ -466,6 +471,7 @@ import { mapState } from 'vuex';
     },
     data() {
       return {
+        uploadLoading: false,
         files: [],
         taskDialog: false,
         subTaskDialog: false,
@@ -517,7 +523,8 @@ import { mapState } from 'vuex';
                     'taskType': 'taskGroup'
                 }
         })
-       
+       const index = this.taskFiles.findIndex(i => i.taskFileId === taskFile);
+        this.taskFiles.splice(index, 1);
         console.log(response.data);
        }  catch(e){
           console.log("Error deleting task", e);
@@ -773,31 +780,9 @@ import { mapState } from 'vuex';
           console.log("Error updating a status", e);
        }
       },
-      //  handleFileUploads(e){
-      //    this.file = this.$refs.files.files[0];
-      //    let formData = new FormData();
-      //   formData.append('files', this.file);
-      //   formData.append('type', 'taskFile')
-      //   formData.append('taskType', 'taskGroup')
 
-      //   this.$axios.$post(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/upload`,
-      //       formData,
-      //       {
-      //         headers: {
-      //             'Content-Type': 'multipart/form-data',
-      //             'user': this.userId,
-      //         }
-      //       }
-      //     ).then(function(res){
-      //       this.taskFiles.push(res.data);
-      //       this.file = '';
-      //       console.log('File upload successful', res.data);
-      //     })
-      //     .catch(function(){
-      //       console.log('File Upload Failed');
-      //     });
-      // },
       taskFileUpload(){
+        this.uploadLoading = true
         let formData = new FormData();
         formData.append('files', this.files);
         formData.append('type', 'profileImage');
@@ -814,10 +799,11 @@ import { mapState } from 'vuex';
             }
           ).then((res) => {
             this.taskFiles.push(res.data);
-            
+            this.uploadLoading = false
             console.log('File upload successful', res.data);
           })
           .catch((err) => {
+            this.uploadLoading = false
             console.log('File Upload Failed', err);
           });
       },   

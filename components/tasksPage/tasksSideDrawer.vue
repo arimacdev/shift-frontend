@@ -399,6 +399,11 @@
                   >
                     <v-icon left>mdi-upload</v-icon> Upload
                   </v-btn>
+                   <v-progress-circular
+                  v-if="uploadLoading == true"
+                    indeterminate
+                    color="primary"
+                  ></v-progress-circular>
               </div>
        
         </div>
@@ -460,6 +465,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
     },
     data() {
       return {
+        uploadLoading: false,
         files: [],
         taskDialog: false,
         subTaskDialog: false,
@@ -495,7 +501,6 @@ import ErrorPopup from '~/components/popups/errorPopup'
     },
     methods: {
       async removeFiles(taskFile){
-        console.log("SelectedFile ==========> " + taskFile)
 
         let response;
        try{
@@ -505,7 +510,8 @@ import ErrorPopup from '~/components/popups/errorPopup'
                     'user': this.userId,
                 }
         })
-       
+       const index = this.taskFiles.findIndex(i => i.taskFileId === taskFile);
+        this.taskFiles.splice(index, 1);
         console.log(response.data);
        }  catch(e){
           console.log("Error deleting task", e);
@@ -724,33 +730,12 @@ import ErrorPopup from '~/components/popups/errorPopup'
           console.log("Error updating a status", e);
        }
       },
-       handleFileUploads(e){
-         this.file = this.$refs.files.files[0];
-         let formData = new FormData();
-        formData.append('files', this.file);
-        formData.append('type', 'profileImage')
-
-        this.$axios.$post(`/personal/tasks/${this.task.taskId}/upload`,
-            formData,
-            {
-              headers: {
-                  'Content-Type': 'multipart/form-data',
-                  'user': this.userId
-              }
-            }
-          ).then(function(res){
-            this.taskFiles.push(res.data);
-            this.file = '';
-            console.log('File upload successful', res.data);
-          })
-          .catch(function(){
-            console.log('File Upload Failed');
-          });
-      },
         taskFileUpload(){
+          this.uploadLoading = true
         let formData = new FormData();
         formData.append('files', this.files);
         formData.append('type', 'profileImage');
+        formData.append('taskType', 'taskGroup');
         this.files = null
 
         this.$axios.$post(`/personal/tasks/${this.task.taskId}/upload`,
@@ -761,14 +746,17 @@ import ErrorPopup from '~/components/popups/errorPopup'
                   'user': this.userId
               }
             }
-          ).then(function(res){
+          ).then((res) => {
             this.taskFiles.push(res.data);
-            this.files = null;
+            this.uploadLoading = false
             console.log('File upload successful', res.data);
           })
-          .catch(function(){
-            console.log('File Upload Failed');
+          .catch((err) => {
+            this.uploadLoading = false
+            console.log('File Upload Failed', err);
           });
+
+      
       },
       test(){
         console.log("test close --------->")
