@@ -1,7 +1,8 @@
 
 export const state = () => ({
     project: {},
-    projects: []
+    projects: [],
+    projectFiles: []
 })
 
 
@@ -10,8 +11,11 @@ export const mutations = {
       state.project = project;
   },
   FETCH_ALL_PROJECTS(state, projects){
-    state.projects = projects; // push
-}
+    state.projects = projects; 
+  },
+  FETCH_ALL_PROJECTS_FILES(state, projectFiles){
+    state.projectFiles = projectFiles;
+  }
 }
 export const actions = {
   async fetchProject({commit, rootState}, projectId){
@@ -46,7 +50,27 @@ export const actions = {
     } catch(e) {
         console.log("Error fetching projects from store",e);
     }
-}
+},
+
+ async fetchAllProjectFiles({commit, rootState}, projectId){
+    const user = rootState.user.userId;
+       let projectFilesResponse;
+      try {
+      projectFilesResponse = await this.$axios.$get(`/projects/${projectId}/files`,
+      {
+        headers: {
+          user: user,
+       }
+      }
+      ) 
+      console.log("project files--->", projectFilesResponse.data);
+      commit('FETCH_ALL_PROJECTS_FILES', projectFilesResponse.data);   
+       } catch (error) {
+          console.log("Error fetching data", error);
+       } 
+ }
+
+
 }
 
 export const getters = {

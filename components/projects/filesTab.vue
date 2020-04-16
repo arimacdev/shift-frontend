@@ -1,10 +1,10 @@
 <template>
     <div class="fileTabContent overflow-y-auto">
         
-        <file-search-bar :projectFiles=projectFiles />
+        <file-search-bar :AllprojectFiles=AllprojectFiles />
         <div class="filesList">
             <div class="fileScroll overflow-y-auto">
-            <v-list-item class="filesListFile" v-for="(projectFile,index) in projectFiles" :key="index" >
+            <v-list-item class="filesListFile" v-for="(projectFile,index) in AllprojectFiles" :key="index" >
             
        <v-list-item-action >
           <v-icon size="35" >mdi-file-document</v-icon>
@@ -95,8 +95,10 @@
 import FileSearchBar from '~/components/tools/fileSearchBar'
 import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
+import { mapState } from 'vuex';
+
 export default {
-   props: ['projectId', 'projectFiles'],
+   props: ['projectId'],
     components: {
         'file-search-bar' : FileSearchBar,
         'success-popup' : SuccessPopup,
@@ -112,6 +114,12 @@ export default {
        component: ''
       }
     },
+        computed: {
+      ...mapState({
+          AllprojectFiles:state => state.project.projectFiles,
+      })
+    },
+   
     methods: {
        close(){
           this.component = ''
@@ -180,7 +188,8 @@ export default {
         return stringSize
       }
     },
-   
+
+
     
     
 }

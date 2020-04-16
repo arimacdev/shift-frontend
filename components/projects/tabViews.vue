@@ -46,7 +46,7 @@
       <v-tab-item>
         <v-divider class="mx-4"></v-divider>
         <v-card flat>
-          <files-tab :projectFiles=projectFiles :projectId="projectId" />
+          <files-tab :projectId="projectId" />
         </v-card>
       </v-tab-item>
     </v-tabs>
