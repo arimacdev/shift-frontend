@@ -15,7 +15,7 @@
           prepend-inner-icon="mdi-magnify"
           label="Search Here"
           outlined
-          @change="onSelectProject()"
+          @change="onSelectProjectFile()"
           clearable=""
         ></v-autocomplete>
 </template>
@@ -23,7 +23,7 @@
 <script>
 
 export default {
-   props: ["projects"],
+   props: ["projectFiles"],
     data () {
       return {
         loading: false,
@@ -42,16 +42,16 @@ export default {
       },
     },
     methods: {
-      onSelectProject(){
+      onSelectProjectFile(){
          if(this.select !== undefined){
         this.$emit('selectSearched', this.select);
          }
       },
       querySelections (v) {
-        let projectSearchList = this.projects;
-        for (let index = 0; index < projectSearchList.length; ++index) {
-            let project = projectSearchList[index];
-            this.states.push({name: project.projectName, id: project});
+        let projectFileSearchList = this.projectFiles;
+        for (let index = 0; index < projectFileSearchList.length; ++index) {
+            let projectFile = projectFileSearchList[index];
+            this.states.push({name: projectFile.projectFileName, id: projectFile});
         }
         // console.log("projectsList", this.projects, "nameList", this.states)
         this.loading = true
