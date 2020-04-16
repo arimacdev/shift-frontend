@@ -143,17 +143,18 @@ export default {
               }
             }
           ).then((res) => {
-            this.projectFiles.push(res.data);
+            console.log("resp", res.data);
             this.uploadLoading = false
             this.visible = false
             this.component = 'success-popup'
-            console.log('File upload successful', res.data);
+            this.$store.dispatch('project/addProjectFile', res.data);
+            console.log('File upload successful', res);
           })
           .catch((err) => {
             this.uploadLoading = false
             this.visible = false
              this.component = 'error-popup'
-         this.errorMessage = err.response.data
+        //  this.errorMessage = err.response.data
             console.log('File Upload Failed', err);
           });
       },
@@ -167,8 +168,7 @@ export default {
                     'user': this.userId,
                 }
         })
-       const index = this.projectFile.findIndex(i => i.projectFileId === projectFileFile);
-        this.projectFile.splice(index, 1);
+        this.$store.dispatch('project/removeProjectFile', projectFile);
         console.log(response.data);
        }  catch(e){
           console.log("Error deleting task", e);

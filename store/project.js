@@ -15,6 +15,13 @@ export const mutations = {
   },
   FETCH_ALL_PROJECTS_FILES(state, projectFiles){
     state.projectFiles = projectFiles;
+  },
+  ADD_PROJECT_FILES(state, projectFiles){
+    state.projectFiles.push(...projectFiles);
+  },
+  REMOVE_PROJECT_FILE(state, projectFile){
+    const index = state.projectFiles.findIndex(i => i.projectFileId === projectFile);
+    state.projectFiles.splice(index, 1);
   }
 }
 export const actions = {
@@ -68,7 +75,14 @@ export const actions = {
        } catch (error) {
           console.log("Error fetching data", error);
        } 
- }
+ }, 
+  async addProjectFile({commit}, projectFiles){
+    commit('ADD_PROJECT_FILES', projectFiles);
+  },
+
+  async removeProjectFile({commit}, projectFiles){
+  commit('REMOVE_PROJECT_FILE', projectFiles);
+}
 
 
 }
