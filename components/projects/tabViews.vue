@@ -7,9 +7,9 @@
           <v-tab>
             Tasks
           </v-tab>
-          <!-- <v-tab>
+          <v-tab>
             Board
-          </v-tab> -->
+          </v-tab>
           <v-tab>
             People
           </v-tab>
@@ -25,12 +25,12 @@
             <tasks :MyTasks="MyTasks" :projectId="projectId" :people="people"/>
 
       </v-tab-item>
-      <!-- <v-tab-item>
+      <v-tab-item>
         <v-divider class="mx-4"></v-divider>
         <v-card flat>
-         
+        <board-tab :MyTasks="MyTasks" :projectId="projectId" :people="people" />
         </v-card>
-      </v-tab-item> -->
+      </v-tab-item>
       <v-tab-item>
         <v-divider class="mx-4"></v-divider>
         <v-card flat>
@@ -63,6 +63,7 @@ import TaskDrawer from '~/components/projects/taskDrawer'
 import People from '~/components/people/people'
 import ProjectTab from '~/components/projects/projectTab'
 import FilesTab from '~/components/projects/filesTab'
+import BoardTab from '~/components/projects/boardTab'
 
   export default {
      data () {
@@ -81,7 +82,8 @@ import FilesTab from '~/components/projects/filesTab'
       'task-drawer' : TaskDrawer,
       'people' : People,
       'project-tab' : ProjectTab,
-      'files-tab' : FilesTab
+      'files-tab' : FilesTab,
+      'board-tab' : BoardTab
     },
     methods: {
       onSelectProject() {
