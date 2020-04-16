@@ -28,35 +28,6 @@
             </div>
 
         </div>
-        <div class="boardSprintSection overflow-x-auto">
-            <div class="boardSprint">
-            <div class="boardTitle">
-                <span>Default Board</span>
-            </div>
-            <div class="boardTaskList overflow-y-auto">
-                   <div v-for="(task, index) in projectAllTasks"
-                 :key="index" class="boardTaskListItem" >
-            <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)">
-                        <v-list-item-action>
-                        <v-icon v-if="task.taskStatus == 'closed'" size="25" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
-                        <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
-                        </v-list-item-action>
-                        <v-list-item-content>
-                            <v-list-item-title> {{ task.taskName}} </v-list-item-title>
-                            <v-list-item-subtitle> {{ getProjectDates(task.taskDueDateAt) }} </v-list-item-subtitle>
-                        </v-list-item-content>
-                        <v-list-item-avatar size="25">
-                    <v-img  v-if="task.taskAssigneeProfileImage != null" :src="task.taskAssigneeProfileImage"></v-img>
-                    <v-img  v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
-
-                    </v-list-item-avatar>
-            </v-list-item>
-             
-        </div>
-            </div>
-
-        </div>
-        </div>
 
        
 
