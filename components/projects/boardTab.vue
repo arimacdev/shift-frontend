@@ -15,7 +15,7 @@
                         </v-list-item-action>
                         <v-list-item-content>
                             <v-list-item-title> {{ task.taskName}} </v-list-item-title>
-                            <v-list-item-subtitle> {{ getProjectDates(task.taskDueDateAt) }} </v-list-item-subtitle>
+                            <div :class="dueDateCheck(task)"> {{ getProjectDates(task.taskDueDateAt) }} </div>
                         </v-list-item-content>
                         <v-list-item-avatar size="25">
                     <v-img  v-if="task.taskAssigneeProfileImage != null" :src="task.taskAssigneeProfileImage"></v-img>
@@ -127,10 +127,10 @@ export default {
     dueDateCheck(task){
         console.log("check due date color", task);
         if(task.taskStatus === 'closed'){
-          return 'workLoadTaskDone';
+          return 'boardTaskDone';
         }
         else if (task.taskDueDateAt == null) {
-          return 'workLoadTaskDefault';
+          return 'boardTaskDefault';
         }
         else {
           const dueDate = new Date(task.taskDueDateAt);
@@ -140,9 +140,9 @@ export default {
           console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
           if(now.getTime() > dueToUtcDate.getTime()){
             console.log("overdue")
-            return 'workLoadTaskOverDue';
+            return 'boardTaskOverDue';
           } else {
-            return 'workLoadTaskHealthy';
+            return 'boardTaskHealthy';
           }
         }
       },

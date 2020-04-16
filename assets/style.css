@@ -1539,3 +1539,20 @@ color: #040428;
     border-radius: 5px;
     float: left;
 }
+
+.boardTaskDone{
+    color: rgb(10, 126, 0);
+    font-size: 14px;
+  }
+  .boardTaskOverDue{
+    color: rgb(163, 11, 0) !important;
+    font-size: 14px;
+  }
+  .boardTaskHealthy{
+    color: rgb(0, 4, 255);
+    font-size: 14px;
+  }
+  .boardTaskDefault{
+    color: rgb(0, 0, 0);
+    font-size: 14px;
+  }
