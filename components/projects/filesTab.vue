@@ -26,17 +26,17 @@
           <v-list-item-title class="fileDate">{{getUploadDate(projectFile.projectFileAddedOn)}}</v-list-item-title>
         </v-list-item-action>
 
-        <!-- <v-list-item-action>
+        <v-list-item-action>
           <v-btn icon>
             <div class="iconBackCircleFiles"> 
-              <v-icon color="#0BAFFF">mdi-download-outline</v-icon>
+             <a style="text-decoration: none;" :href="projectFile.projectFileUrl" download> <v-icon color="#0BAFFF">mdi-download-outline</v-icon></a>
               </div>
           </v-btn>
-        </v-list-item-action> -->
+        </v-list-item-action>
         <v-list-item-action>
           <v-btn icon>
            <div class="iconBackCircleFiles">  
-             <v-icon @click="removeFiles(projectFile.projectFileId)" color="#FF6161" >mdi-trash-can-outline</v-icon>
+             <v-icon @click="taskDialog = true; selectFile(projectFile.projectFileId)" color="#FF6161" >mdi-trash-can-outline</v-icon>
              </div>
           </v-btn>
         </v-list-item-action>
@@ -47,6 +47,50 @@
        
         </div>
 
+       <!-- ------------- dialog ------------ -->
+              <v-dialog
+                    v-model="taskDialog"
+                    max-width="380"
+                  >
+                    <v-card>
+                      <div class="popupConfirmHeadline">
+                        <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
+                        <br>
+                        <span class="alertPopupTitle">Delete File</span>
+                        <br>
+                        <span class="alertPopupText">You're about to permanantly delete this file, If you're not sure, you can cancel this action. </span>
+                      </div>
+
+                      
+              <div class="popupBottom">
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+
+                        <v-btn
+                          color="success"
+                          width="100px"
+                          @click="taskDialog = false;"
+                        >
+                          Cancel
+                        </v-btn>
+              <v-spacer></v-spacer>
+              <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
+                        <v-btn
+                          color="error"
+                          width="100px"
+                          @click=" removeFiles()"
+                        >
+                          Delete
+                        </v-btn>
+                        <v-spacer></v-spacer>
+                      </v-card-actions>
+
+                      
+                      </div>
+                    </v-card>
+                  </v-dialog>
+
+       <!-- ------------------ -->
         
          <div class="filesUploader">
          
@@ -106,6 +150,8 @@ export default {
     },
     data () {
       return{
+        fileId:'',
+         taskDialog: false,
         errorMessage: '',
         visible: false,
       uploadLoading:false,
@@ -122,6 +168,26 @@ export default {
     },
    
     methods: {
+      selectFile(projectFileId){
+        this.fileId = projectFileId
+        console.log("file Id " +  this.fileId )
+      },
+      downloadFile(projectFileUrl){
+        axios({
+            url: projectFileUrl,
+            method: 'GET',
+            responseType: 'blob',
+        }).then((response) => {
+            var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+            var fileLink = document.createElement('a');
+
+            fileLink.href = fileURL;
+            fileLink.setAttribute('download', 'file.pdf');
+            document.body.appendChild(fileLink);
+
+            fileLink.click();
+        });
+      },
        close(){
           this.component = ''
       },
@@ -163,20 +229,22 @@ export default {
             console.log('File Upload Failed', err);
           });
       },
-      async removeFiles(projectFile){
-
+      async removeFiles(){
+        console.log("projectFile " + this.fileId)
+        this.taskDialog= false;
         let response;
        try{
-        response = await this.$axios.$delete(`/projects/${this.projectId}/files/${projectFile}`, {    
+        response = await this.$axios.$delete(`/projects/${this.projectId}/files/${this.fileId}`, {    
                 data: {},
                 headers: {
                     'user': this.userId,
                 }
         })
-        this.$store.dispatch('project/removeProjectFile', projectFile);
+        this.$store.dispatch('project/removeProjectFile', this.fileId);
         console.log(response.data);
        }  catch(e){
           console.log("Error deleting task", e);
+            this.taskDialog= false;
        }  
 
       },
