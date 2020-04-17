@@ -143,6 +143,7 @@ export default {
           }
         );
         this.component = 'success-popup'
+        location.reload();
         this.$store.dispatch('groups/group/removeGroup', this.group.taskGroupId)
         console.log("delete group", response);
        } catch(e){
