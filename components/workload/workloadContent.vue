@@ -25,7 +25,7 @@
              </v-list-item-action>
     
        </div>
-        <div class="workloadContentDiv workloadBody overflow-y-auto">
+        <div class="workloadContentDiv myWorkloadBody overflow-y-auto">
            <v-expansion-panels
                 v-model="panel"
                 :disabled="disabled"

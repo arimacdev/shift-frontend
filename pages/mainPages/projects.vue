@@ -177,7 +177,7 @@ export default {
       }
     },
 
-    created() {
+   created() {
      this.$store.dispatch('project/fetchAllProjects');
 
     },
@@ -241,7 +241,7 @@ export default {
     getPresalesPRojects(type){
 
     },
-    selectProject(project){
+    async selectProject(project){
      this.project = project;
      console.log("selected project ---------->", project);
 
@@ -250,6 +250,23 @@ export default {
     this.$store.dispatch('task/fetchProjectUserCompletionTasks', this.project.projectId)
     this.$store.dispatch('project/fetchProject', this.project.projectId) 
     this.$store.dispatch('task/fetchProjectTaskCompletion', this.project.projectId)
+    this.$store.dispatch('project/fetchAllProjectFiles', this.project.projectId)
+
+
+      // let projectFilesResponse;
+      // try {
+      // projectFilesResponse = await this.$axios.$get(`/projects/${this.project.projectId}/files`,
+      // {
+      //   headers: {
+      //     user: this.userId,
+      //  }
+      // }
+      // ) 
+      // console.log("files--->", projectFilesResponse.data)     ;
+      // this.projectFiles = projectFilesResponse.data;   
+      //  } catch (error) {
+      //     console.log("Error fetching data", error);
+      //  } 
 
     //  console.log("userId", this.userId)   @ALLTASKS DEPRECATED
     //  console.log("access_token", this.access_token)     

@@ -168,7 +168,7 @@
 
         </form>
          <div @click="close">
-            <component v-bind:is="component" ></component>
+            <component v-bind:is="component" :errorMessage=errorMessage ></component>
          </div>
         <!-- <success-popup /> -->
     </div>
@@ -228,6 +228,7 @@ export default {
         this.component = 'success-popup'
         window.setTimeout(location.reload(), 8000)
        }  catch(e){
+         this.errorMessage = e.response.data
           console.log("Error creating project", e);
           this.component = 'error-popup'
        }   
@@ -248,6 +249,7 @@ export default {
     },
     data() {
         return {
+            errorMessage: '',
             userId: this.$store.state.user.userId,
             projectName: '',
             client: '',

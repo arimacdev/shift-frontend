@@ -1,12 +1,12 @@
 <template>
- <div>
+ <div class="bodyContentSideDrawer">
   
   <div class="taskTitleDiv ">
       <div class="taskName-sideBar titleBar">
          <v-list-item>
              <v-list-item-icon class="checkBoxSideBar">
-               <!-- <v-icon v-if="this.task.taskStatus == 'closed'" size="35" color="#2EC973">mdi-checkbox-marked-circle</v-icon> -->
-             <v-icon size="35" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+               <v-icon v-if="this.task.taskStatus == 'closed'" size="35" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
+             <v-icon v-else size="35" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
              </v-list-item-icon>
              <div class="textAreaSideBar">
                <!-- <textarea type="text" disabled class="selectedTaskTitle"  :placeholder="this.task.taskName" v-model="this.task.taskName" ></textarea> -->
@@ -66,7 +66,7 @@
       </v-list-item-group>
 <v-divider></v-divider>
 
-<v-list-item-group class="tabListItems">
+<!-- <v-list-item-group class="tabListItems"> -->
         <v-list-item>
           <v-list-item-icon>
             <v-icon size="30" color="#FF6767" >mdi-file-document-edit-outline</v-icon>
@@ -75,12 +75,19 @@
              <v-list-item-title class="tabListItemsText itemGroupTitles">Notes</v-list-item-title>
            </div>
         </v-list-item>
-        <v-list-item>
-          <div class="noteDiv">
-            {{this.task.taskNotes}}
-          </div>
+        <v-list-item class="noteDiv">
+          
+            <!-- {{this.task.taskNotes}} -->
+            <v-textarea
+              name="input-7-4"
+              auto-grow=""
+              outlined=""
+              disabled=""
+              v-model="this.task.taskNotes"
+            ></v-textarea>
+         
         </v-list-item>
-      </v-list-item-group>
+      <!-- </v-list-item-group> -->
 <v-divider></v-divider>
 
 <v-divider></v-divider>

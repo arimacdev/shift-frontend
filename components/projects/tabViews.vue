@@ -16,9 +16,9 @@
           <v-tab @click="onSelectProject">
             Project
           </v-tab>
-          <!-- <v-tab>
+          <v-tab>
             Files
-          </v-tab> -->
+          </v-tab>
           
       <v-tab-item>
         <v-divider class="mx-4"></v-divider>
@@ -28,7 +28,7 @@
       <!-- <v-tab-item>
         <v-divider class="mx-4"></v-divider>
         <v-card flat>
-         
+        <board-tab :MyTasks="MyTasks" :projectId="projectId" :people="people" />
         </v-card>
       </v-tab-item> -->
       <v-tab-item>
@@ -43,15 +43,12 @@
           <project-tab :project="project" :taskCompletion="taskCompletion" :taskLog="taskLog"/>
         </v-card>
       </v-tab-item>
-      <!-- <v-tab-item>
+      <v-tab-item>
         <v-divider class="mx-4"></v-divider>
         <v-card flat>
-          <v-card-text>
-            
-
-          </v-card-text>
+          <files-tab :projectId="projectId" />
         </v-card>
-      </v-tab-item> -->
+      </v-tab-item>
     </v-tabs>
   </v-card>
   </div>
@@ -65,6 +62,8 @@ import Tasks from '~/components/tabsView/tasks'
 import TaskDrawer from '~/components/projects/taskDrawer'
 import People from '~/components/people/people'
 import ProjectTab from '~/components/projects/projectTab'
+import FilesTab from '~/components/projects/filesTab'
+import BoardTab from '~/components/projects/boardTab'
 
   export default {
      data () {
@@ -76,13 +75,15 @@ import ProjectTab from '~/components/projects/projectTab'
         taskCompletion: {}
       }
     },
-     props: ['name', 'projectId', 'project', 'users', 'MyTasks', 'people', 'taskLog', 'taskCompletion'],
+     props: ['name', 'projectFiles', 'projectId', 'project', 'users', 'MyTasks', 'people', 'taskLog', 'taskCompletion'],
     name: 'tabViews',
     components: {
       'tasks' : Tasks,
       'task-drawer' : TaskDrawer,
       'people' : People,
-      'project-tab' : ProjectTab
+      'project-tab' : ProjectTab,
+      'files-tab' : FilesTab,
+      'board-tab' : BoardTab
     },
     methods: {
       onSelectProject() {

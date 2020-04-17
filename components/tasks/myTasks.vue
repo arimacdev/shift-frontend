@@ -2,7 +2,7 @@
      <div class="taskContent">
         <v-select
         v-model="taskSelect"
-           :items="items"
+            :items="items"
           item-text="name"
           item-value="id"
           label="All"
@@ -91,7 +91,14 @@ import { mapState } from 'vuex';
     props: ['projectId',  'projectUsers', 'people'],
     data() {
       return {
-        items: ['all', 'pending', 'implementing', 'qa', 'readyToDeploy', 'reOpened', 'deployed', 'closed'],
+        items: [{id:'all', name: 'All'},
+          {id: 'pending', name: 'Pending'},
+           {id: 'implementing', name: 'Implementing'},
+            {id: 'qa', name: 'QA'},
+             {id:'readyToDeploy', name: 'Ready to deploy'},
+              {id: 'reOpened', name: 'Reopened'},
+               {id: 'deployed', name: 'Deployed'},
+                {id: 'closed', name: 'Closed'}],
         projects: ["pr1"],
         drawer: null,
        
