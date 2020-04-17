@@ -155,11 +155,12 @@ import ErrorPopup from '~/components/popups/errorPopup'
           response = await this.$axios.$post(`/taskgroup/add`, 
           {
             taskGroupId: this.group.taskGroupId,
-            taskGroupAssigner: this.group.taskGroupMemberId,
+            taskGroupAssigner: this.userId,
             taskGroupAssignee: this.addUser.assigneeId 
           }
         )
         this.$refs.form.reset()
+        this.addUser.assigneeId = null
         this.component = 'success-popup'
         this.$store.dispatch('groups/groupPeople/fetchGroupPeople',{
           taskGroupId: this.group.taskGroupId, 
