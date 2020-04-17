@@ -117,6 +117,7 @@ export default {
         computed: {
       ...mapState({
           AllprojectFiles:state => state.project.projectFiles,
+          userProfile: state => state.userProfile.userProfile,      
       })
     },
    
@@ -147,6 +148,10 @@ export default {
             this.uploadLoading = false
             this.visible = false
             this.component = 'success-popup'
+            const uploadedFile = res.data[0];
+            uploadedFile.firstName = this.userProfile.firstName;
+            uploadedFile.lastName = this.userProfile.lastName;
+            console.log('File upload successful', res.data);            
             this.$store.dispatch('project/addProjectFile', res.data);
             console.log('File upload successful', res);
           })
