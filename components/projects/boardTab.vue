@@ -33,9 +33,11 @@
       
 
         <div class="scrolling-wrapper">
-         <div class="actualBoard card">
+         <div class="actualBoard card" v-for="(projectSprint,index) in projectSprints" :key="index">
              <div class="sprintTitle">
-                <span>Default Board</span>
+                <!-- <span>Default Board</span> -->
+                <v-list-item-title>{{ projectSprint.sprintName }}</v-list-item-title>
+                <v-list-item-subtitle>( {{ projectSprint.sprintDescription }} )</v-list-item-subtitle>
             </div>
             <div class="boardTaskList overflow-y-auto">
                    <div v-for="(task, index) in projectAllTasks"
@@ -59,7 +61,7 @@
             </div>
           </div>
 
-          <div class="actualBoard card">
+          <!-- <div class="actualBoard card">
              <div class="sprintTitle">
                 <span>Default Board</span>
             </div>
@@ -83,9 +85,9 @@
                  </v-list-item>
               </div>
             </div>
-          </div>
+          </div> -->
 
-          <div class="actualBoard card">
+          <!-- <div class="actualBoard card">
              <div class="sprintTitle">
                 <span>Default Board</span>
             </div>
@@ -109,7 +111,7 @@
                  </v-list-item>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <div class="addSprintBoard card">
             <div class="addSprintSection overflow-y-auto">
@@ -143,7 +145,7 @@ import { mapState } from 'vuex';
 import TaskSideBar from '~/components/tasks/taskSideBar'
 import AddSprint from '~/components/projects/addSprint'
 export default {
-    props: ['projectId',  'projectUsers', 'people'],
+    props: ['projectId',  'projectUsers', 'people', 'projectSprints'],
     components: {
          'task-side-bar' : TaskSideBar,
          'add-sprint' : AddSprint

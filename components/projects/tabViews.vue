@@ -28,7 +28,7 @@
       <v-tab-item>
         <v-divider class="mx-4"></v-divider>
         <v-card flat>
-        <board-tab :MyTasks="MyTasks" :projectId="projectId" :people="people" />
+        <board-tab :MyTasks="MyTasks" :projectSprints="projectSprints" :projectId="projectId" :people="people" />
         </v-card>
       </v-tab-item>
       <v-tab-item>
@@ -75,7 +75,7 @@ import BoardTab from '~/components/projects/boardTab'
         taskCompletion: {}
       }
     },
-     props: ['name', 'projectFiles', 'projectId', 'project', 'users', 'MyTasks', 'people', 'taskLog', 'taskCompletion'],
+     props: ['name', 'projectSprints', 'projectFiles', 'projectId', 'project', 'users', 'MyTasks', 'people', 'taskLog', 'taskCompletion'],
     name: 'tabViews',
     components: {
       'tasks' : Tasks,
