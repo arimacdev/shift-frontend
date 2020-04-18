@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="boardBodyDiv">
+   
         <div class="defaultBoard">
             <div class="boardTitle">
                 <span>Default Board</span>
@@ -28,10 +28,100 @@
             </div>
 
         </div>
+        <div class="">
+ <div class="boardBodyDiv overflow-x-scroll">
+      
 
-       
+        <div class="scrolling-wrapper">
+         <div class="actualBoard card">
+             <div class="sprintTitle">
+                <span>Default Board</span>
+            </div>
+            <div class="boardTaskList overflow-y-auto">
+                   <div v-for="(task, index) in projectAllTasks"
+                 :key="index" class="boardTaskListItem" >
+                 <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)">
+                        <v-list-item-action>
+                        <v-icon v-if="task.taskStatus == 'closed'" size="25" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
+                        <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                            <v-list-item-title> {{ task.taskName}} </v-list-item-title>
+                            <div :class="dueDateCheck(task)"> {{ getProjectDates(task.taskDueDateAt) }} </div>
+                        </v-list-item-content>
+                        <v-list-item-avatar size="25">
+                    <v-img  v-if="task.taskAssigneeProfileImage != null" :src="task.taskAssigneeProfileImage"></v-img>
+                    <v-img  v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
+
+                    </v-list-item-avatar>
+                 </v-list-item>
+              </div>
+            </div>
+          </div>
+
+          <div class="actualBoard card">
+             <div class="sprintTitle">
+                <span>Default Board</span>
+            </div>
+            <div class="boardTaskList overflow-y-auto">
+                   <div v-for="(task, index) in projectAllTasks"
+                 :key="index" class="boardTaskListItem" >
+                 <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)">
+                        <v-list-item-action>
+                        <v-icon v-if="task.taskStatus == 'closed'" size="25" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
+                        <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                            <v-list-item-title> {{ task.taskName}} </v-list-item-title>
+                            <div :class="dueDateCheck(task)"> {{ getProjectDates(task.taskDueDateAt) }} </div>
+                        </v-list-item-content>
+                        <v-list-item-avatar size="25">
+                    <v-img  v-if="task.taskAssigneeProfileImage != null" :src="task.taskAssigneeProfileImage"></v-img>
+                    <v-img  v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
+
+                    </v-list-item-avatar>
+                 </v-list-item>
+              </div>
+            </div>
+          </div>
+
+          <div class="actualBoard card">
+             <div class="sprintTitle">
+                <span>Default Board</span>
+            </div>
+            <div class="boardTaskList overflow-y-auto">
+                   <div v-for="(task, index) in projectAllTasks"
+                 :key="index" class="boardTaskListItem" >
+                 <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)">
+                        <v-list-item-action>
+                        <v-icon v-if="task.taskStatus == 'closed'" size="25" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
+                        <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                            <v-list-item-title> {{ task.taskName}} </v-list-item-title>
+                            <div :class="dueDateCheck(task)"> {{ getProjectDates(task.taskDueDateAt) }} </div>
+                        </v-list-item-content>
+                        <v-list-item-avatar size="25">
+                    <v-img  v-if="task.taskAssigneeProfileImage != null" :src="task.taskAssigneeProfileImage"></v-img>
+                    <v-img  v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
+
+                    </v-list-item-avatar>
+                 </v-list-item>
+              </div>
+            </div>
+          </div>
+
+          <div class="addSprintBoard card">
+            <div class="addSprintSection overflow-y-auto">
+                    <add-sprint :projectId=projectId />
+            </div>
+          </div>
+         
+        </div>
+
 
     </div>
+        </div>
      <v-navigation-drawer
             v-model="drawer"
             absolute
@@ -51,10 +141,12 @@
 <script>
 import { mapState } from 'vuex';
 import TaskSideBar from '~/components/tasks/taskSideBar'
+import AddSprint from '~/components/projects/addSprint'
 export default {
     props: ['projectId',  'projectUsers', 'people'],
     components: {
          'task-side-bar' : TaskSideBar,
+         'add-sprint' : AddSprint
     },
     data() {
       return {

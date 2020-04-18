@@ -11,7 +11,7 @@
         </v-list-item-action>
 
         <v-list-item-content>
-         <a style="text-decoration: none;" :href="projectFile.projectFileUrl"> <v-list-item-title >{{ projectFile.projectFileName }}</v-list-item-title></a>
+         <a style="text-decoration: none;" :href="projectFile.projectFileUrl" target="_blank"> <v-list-item-title >{{ projectFile.projectFileName }}</v-list-item-title></a>
         </v-list-item-content>
 
          <v-list-item-action>
@@ -29,7 +29,7 @@
         <v-list-item-action>
           <v-btn icon>
             <div class="iconBackCircleFiles"> 
-             <a style="text-decoration: none;" :href="projectFile.projectFileUrl" download> <v-icon color="#0BAFFF">mdi-download-outline</v-icon></a>
+             <a style="text-decoration: none;" :href="projectFile.projectFileUrl" target="_blank" download="file"> <v-icon color="#0BAFFF">mdi-download-outline</v-icon></a>
               </div>
           </v-btn>
         </v-list-item-action>

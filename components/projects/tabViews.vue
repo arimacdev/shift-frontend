@@ -7,9 +7,9 @@
           <v-tab>
             Tasks
           </v-tab>
-          <!-- <v-tab>
+          <v-tab>
             Board
-          </v-tab> -->
+          </v-tab>
           <v-tab>
             People
           </v-tab>
@@ -25,12 +25,12 @@
             <tasks :MyTasks="MyTasks" :projectId="projectId" :people="people"/>
 
       </v-tab-item>
-      <!-- <v-tab-item>
+      <v-tab-item>
         <v-divider class="mx-4"></v-divider>
         <v-card flat>
         <board-tab :MyTasks="MyTasks" :projectId="projectId" :people="people" />
         </v-card>
-      </v-tab-item> -->
+      </v-tab-item>
       <v-tab-item>
         <v-divider class="mx-4"></v-divider>
         <v-card flat>
