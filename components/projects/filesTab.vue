@@ -106,6 +106,7 @@
                     background-color="#EDF0F5"
                     height="80"
                     @change="setVisible()"
+                    multiple=""
                     >   </v-file-input>
 
                 <div v-if="this.visible == true" class="projectFileUploadButton">
@@ -197,10 +198,11 @@ export default {
       async projectFileUpload(){
           this.uploadLoading = true
           this.visible = false
+          for (let index = 0; index < this.files.length; ++index) {
         let formData = new FormData();
-        formData.append('files', this.files);
+        formData.append('files', this.files[index]);
         formData.append('type', 'projectFile');
-        this.files = null
+        
 
         this.$axios.$post(`/projects/${this.projectId}/files/upload`,
             formData,
@@ -228,6 +230,8 @@ export default {
         //  this.errorMessage = err.response.data
             console.log('File Upload Failed', err);
           });
+          }
+          this.files = null
       },
       async removeFiles(){
         console.log("projectFile " + this.fileId)
