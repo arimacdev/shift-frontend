@@ -67,10 +67,10 @@
 
   <v-navigation-drawer
       v-model="drawer"
-      absolute
+      fixed
       temporary
       right=""
-      height="85vh"
+      height="100vh"
       width="800px"
       class=""
       color="#FFFFFF"

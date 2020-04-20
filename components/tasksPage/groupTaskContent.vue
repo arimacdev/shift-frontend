@@ -84,10 +84,10 @@
    <!-- -------------- start side bar ----------------- -->
   <v-navigation-drawer
       v-model="drawer"
-      absolute
+      fixed
       temporary
       right=""
-      height="83vh"
+      height="100vh"
       width="800px"
       class=""
       color="#FFFFFF"
