@@ -87,7 +87,7 @@
       absolute
       temporary
       right=""
-      height="100vh"
+      height="83vh"
       width="800px"
       class=""
       color="#FFFFFF"

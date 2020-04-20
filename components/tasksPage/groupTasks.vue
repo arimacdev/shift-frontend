@@ -1,5 +1,5 @@
 <template>
-    <div class="group-task-tab">   
+    <div class="group-task-tab overflow-y-auto">   
         <!-- tabs body -->
               <div>
              <v-card class="tabs">
