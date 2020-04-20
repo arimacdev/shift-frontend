@@ -690,6 +690,10 @@ import { mapState } from 'vuex';
           type: 'taskStatus',
           value : this.updatedTask.taskStatus
         });
+        this.$store.dispatch('groups/groupPeople/fetchGroupPeople',{
+          taskGroupId: this.group.taskGroupId, 
+          userId: this.userId
+        });
         console.log("update task status response", response);
        } catch(e){
           console.log("Error updating a status", e);

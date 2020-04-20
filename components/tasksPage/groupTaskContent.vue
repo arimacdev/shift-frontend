@@ -211,23 +211,10 @@ import { mapState } from 'vuex'
           taskGroupId: this.group.taskGroupId
         });
         this.groupTask = ''
-      //   let response;
-      //     try{
-      //     response = await this.$axios.$post(`/projects/${this.group.taskGroupId}/tasks`, 
-      //     {
-      //       taskName: this.groupTask,
-      //       projectId: this.group.taskGroupId,
-      //       taskInitiator: this.userId,
-      //       taskDueDate: null,
-      //       taskRemindOnDate: null,
-      //       taskType: 'taskGroup'
-      //     }
-      //   )
-      //   
-      //   console.log(response);
-      //  } catch(e){
-      //     console.log("Error adding a group task", e);
-      //  }  
+      this.$store.dispatch('groups/groupPeople/fetchGroupPeople',{
+          taskGroupId: this.group.taskGroupId, 
+          userId: this.userId
+        });
       },
       getTaskDueDate(date) {
 
