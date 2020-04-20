@@ -134,7 +134,7 @@
             class=""
             color="#FFFFFF"
             >
-            <task-side-bar :task=task :assignee="assignee" :projectId="projectId" :subTasks="subTasks" :taskFiles="taskFiles" :projectUsers="projectUsers" :people="people" @listenChange="listenToChange"/>
+            <task-side-bar :task=task :assignee="assignee" :projectId="projectId" :subTasks="subTasks" :taskFiles="taskFiles" :projectUsers="projectUsers" :people="people"/>
             
     </v-navigation-drawer>
 </div>
@@ -145,7 +145,7 @@ import { mapState } from 'vuex';
 import TaskSideBar from '~/components/tasks/taskSideBar'
 import AddSprint from '~/components/projects/addSprint'
 export default {
-    props: ['projectId',  'projectUsers', 'people', 'projectSprints'],
+    props: ['projectId',  'projectUsers', 'people'],
     components: {
          'task-side-bar' : TaskSideBar,
          'add-sprint' : AddSprint
@@ -164,15 +164,10 @@ export default {
     computed: {
       ...mapState({
           projectAllTasks: state => state.task.allTasks,
+          projectSprints: state => state.sprints.sprint.sprints
       })
     },
     methods: {
-       listenToChange(){
-         console.log("listened to changes ------->");
-          this.$store.dispatch('task/fetchTasksAllTasks', this.projectId)
-          this.$store.dispatch('task/fetchTasksMyTasks', this.projectId)
-          this.$store.dispatch('task/fetchProjectTaskCompletion', this.projectId)
-       },
        taskFilter(){
          console.log("-----------> changed" + this.taskSelect)
        },

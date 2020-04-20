@@ -87,7 +87,7 @@
                             <v-btn
                               color="success"
                               width="100px"
-                             @click="changeHandler"
+                             @click="addSprint"
                               :retain-focus="false"
                               :disabled="!isValid"
                             >
@@ -131,12 +131,6 @@ import ErrorPopup from '~/components/popups/errorPopup'
         errorMessage: '',
         isValid: true,
         userId: this.$store.state.user.userId,
-        addUser: {
-          "assignerId": this.$store.state.user.userId,
-          "assigneeId": "",
-          "assigneeJobRole": "",
-          "assigneeProjectRole": this.getProjectRole()
-        },
         sprintNameRules: [
         value => !!value  || 'Sprint name is required!',
       ],
@@ -168,13 +162,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
         this.$refs.form.reset()
           this.component = ''
       },
-       onSelectedUser(){
-        if(this.select !== undefined){
-        // this.$emit('searchSelected', this.select);
-        // console.log("selected user",this.select)
-        }
-      },
-      async changeHandler() {
+      async addSprint() {
         let response;
           try{
           response = await this.$axios.$post(`/sprints`, 
@@ -182,15 +170,11 @@ import ErrorPopup from '~/components/popups/errorPopup'
             projectId: this.projectId,
             sprintName: this.sprintName,
             sprintCreatedBy: this.userId,
-            sprintDescription: this.dateRangeText 
+            sprintDescription: "new sprint" 
           }
         )
         this.$refs.form.reset()
         this.component = 'success-popup'
-        // this.$store.dispatch('groups/groupPeople/fetchGroupPeople',{
-        //   taskGroupId: this.group.taskGroupId, 
-        //   userId: this.userId
-        // });
         console.log(response);
        } catch(e){
           console.log("Error adding a group", e);
@@ -198,27 +182,13 @@ import ErrorPopup from '~/components/popups/errorPopup'
           this.component = 'error-popup'
        }
      
-      },
-      querySelections (v) {
-        
-      },
-      getProjectRole(){
-       
-        }
+      }
     },
      computed: {
           dateRangeText () {
         return this.dates.join(' - ')
-      },
-        adminStatus : {
-          get(){
-            return this.selected;
-          },
-          set(value){
-            this.selected = !this.selected
-          }
-        }
-    },
+      }
+    }
   }
 </script>
 

@@ -252,21 +252,22 @@ export default {
     this.$store.dispatch('project/fetchProject', this.project.projectId) 
     this.$store.dispatch('task/fetchProjectTaskCompletion', this.project.projectId)
     this.$store.dispatch('project/fetchAllProjectFiles', this.project.projectId)
+    this.$store.dispatch('sprints/sprint/fetchAllProjectSprints', this.project.projectId)
 
-    let projectSprintResponse;
-      try {
-      projectSprintResponse = await this.$axios.$get(`/sprints/${this.project.projectId}`,
-      {
-        headers: {
-          userId: this.userId,
-       }
-      }
-      ) 
-      console.log("sprints--->", projectSprintResponse.data);
-      this.projectSprints = projectSprintResponse.data;   
-       } catch (error) {
-          console.log("Error fetching data", error);
-       } 
+    // let projectSprintResponse;
+    //   try {
+    //   projectSprintResponse = await this.$axios.$get(`/sprints/${this.project.projectId}`,
+    //   {
+    //     headers: {
+    //       userId: this.userId,
+    //    }
+    //   }
+    //   ) 
+    //   console.log("sprints--->", projectSprintResponse.data);
+    //   this.projectSprints = projectSprintResponse.data;   
+    //    } catch (error) {
+    //       console.log("Error fetching data", error);
+    //    } 
 
 
       // let projectFilesResponse;
