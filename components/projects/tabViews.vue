@@ -1,5 +1,5 @@
 <template>
-    <div class="body-tabs">   
+    <div class="body-tabs overflow-y-auto">   
         <!-- tabs body -->
               <div>
              <v-card class="tabs">

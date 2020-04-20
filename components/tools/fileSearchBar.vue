@@ -23,7 +23,7 @@
 <script>
 
 export default {
-   props: ["projectFiles"],
+   props: ["AllprojectFiles"],
     data () {
       return {
         loading: false,
@@ -43,15 +43,20 @@ export default {
     },
     methods: {
       onSelectProjectFile(){
+        if(this.select !== undefined){
+        console.log("selected file: " + this.select)
+        window.open(this.select, '_blank');
+        }
+        this.select = ''
          if(this.select !== undefined){
-        this.$emit('selectSearched', this.select);
+        this.$emit('selectSearched', this.select.projectFileName);
          }
       },
       querySelections (v) {
-        let projectFileSearchList = this.projectFiles;
+        let projectFileSearchList = this.AllprojectFiles;
         for (let index = 0; index < projectFileSearchList.length; ++index) {
             let projectFile = projectFileSearchList[index];
-            this.states.push({name: projectFile.projectFileName, id: projectFile});
+            this.states.push({name: projectFile.projectFileName, id: projectFile.projectFileUrl});
         }
         // console.log("projectsList", this.projects, "nameList", this.states)
         this.loading = true

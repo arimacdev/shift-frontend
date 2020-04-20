@@ -143,7 +143,7 @@ export default {
       let response;
        try{
           response = await this.$axios.$post('/users', {
-          userName: this.userName,
+          userName: this.userName.toLowerCase(),
           firstName: this.firstName,
           lastName: this.lastName,
           email: this.email,
