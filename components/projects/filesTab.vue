@@ -11,7 +11,7 @@
         </v-list-item-action>
 
         <v-list-item-content>
-         <a style="text-decoration: none;" :href="projectFile.projectFileUrl"> <v-list-item-title >{{ projectFile.projectFileName }}</v-list-item-title></a>
+         <a style="text-decoration: none;" :href="projectFile.projectFileUrl" target="_blank"> <v-list-item-title >{{ projectFile.projectFileName }}</v-list-item-title></a>
         </v-list-item-content>
 
          <v-list-item-action>
@@ -29,7 +29,7 @@
         <v-list-item-action>
           <v-btn icon>
             <div class="iconBackCircleFiles"> 
-             <a style="text-decoration: none;" :href="projectFile.projectFileUrl" download> <v-icon color="#0BAFFF">mdi-download-outline</v-icon></a>
+             <a style="text-decoration: none;" :href="projectFile.projectFileUrl" target="_blank" download="file"> <v-icon color="#0BAFFF">mdi-download-outline</v-icon></a>
               </div>
           </v-btn>
         </v-list-item-action>
@@ -106,6 +106,7 @@
                     background-color="#EDF0F5"
                     height="80"
                     @change="setVisible()"
+                    multiple=""
                     >   </v-file-input>
 
                 <div v-if="this.visible == true" class="projectFileUploadButton">
@@ -197,10 +198,11 @@ export default {
       async projectFileUpload(){
           this.uploadLoading = true
           this.visible = false
+          for (let index = 0; index < this.files.length; ++index) {
         let formData = new FormData();
-        formData.append('files', this.files);
+        formData.append('files', this.files[index]);
         formData.append('type', 'projectFile');
-        this.files = null
+        
 
         this.$axios.$post(`/projects/${this.projectId}/files/upload`,
             formData,
@@ -228,6 +230,8 @@ export default {
         //  this.errorMessage = err.response.data
             console.log('File Upload Failed', err);
           });
+          }
+          this.files = null
       },
       async removeFiles(){
         console.log("projectFile " + this.fileId)

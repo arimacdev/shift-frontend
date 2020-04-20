@@ -37,6 +37,12 @@
                 Upload
                 <v-icon right dark>mdi-upload</v-icon>
                 </v-btn>
+
+                <v-progress-circular
+                  v-if="uploadLoading == true"
+                    indeterminate
+                    color="primary"
+                  ></v-progress-circular>
               </div>
               </form>
 
@@ -234,7 +240,7 @@ export default {
       return {
          switch1: true,
         switch2: false,
-
+        uploadLoading: false,
         files: [],
         errorMessage: '',
         userName: this.user.userName,
@@ -380,31 +386,65 @@ export default {
       close(){
                 this.component = ''
             },
-       submit () {
-         try{
+       async submit () {
+          this.uploadLoading = true
         let formData = new FormData();
-        formData.append('files', this.files);
-        formData.append('type', 'profileImage')
+         formData.append('files', this.files);
+        formData.append('type', 'profileImage');
+         this.files = null
 
-        this.$axios.$post(`/user/profile/upload`,
-            formData,
-            {
-              headers: {
+         let fileResponse;
+         try {
+             fileResponse = await this.$axios.$post(`/user/profile/upload`,
+             formData,
+             {
+                 headers : {
                   'Content-Type': 'multipart/form-data',
                   'user': this.userId
-              }
-            }
-          ).then(function(res){
-            console.log('File upload successful', res.data);
-          location.reload();
-          })
-          .catch(function(){
-            console.log('File Upload Failed');
-          });
-         } catch (e){
-           console.log(e)
+                 }
+             })
+             this.uploadLoading = false
+              this.component = 'success-popup'
+             console.log("group people response", this.taskFiles);
+             location.reload();
+         } catch(e) {
+             console.log("Error uploading prof pic: ",e);
+             this.component = 'error-popup'
+            console.log('File Upload Failed: ' + e);
+            this.errorMessage = e.response.data
+             this.uploadLoading = false
          }
-        // this.$refs.observer.validate()
+        //  this.uploadLoading = true
+        //  try{
+        // let formData = new FormData();
+        // formData.append('files', this.files);
+        // formData.append('type', 'profileImage')
+
+        // await this.$axios.$post(`/user/profile/upload`,
+        //     formData,
+        //     {
+        //       headers: {
+        //           'Content-Type': 'multipart/form-data',
+        //           'user': this.userId
+        //       }
+        //     }
+        //   ).then(function(res){
+        //      this.component = 'success-popup'
+        //     console.log('File upload successful', res.data);
+        //     this.uploadLoading = false
+        //   location.reload();
+        //   })
+        //   .catch(function(){
+        //     this.component = 'error-popup'
+        //     console.log('File Upload Failed');
+        //     this.uploadLoading = false
+        //   });
+        //  } catch (e){
+        //    console.log(e)
+        //     this.component = 'error-popup'
+        //     console.log('File Upload Failed: ' + e);
+        //     this.uploadLoading = false
+        //  }
          
       },
       handleFileUploads(e){

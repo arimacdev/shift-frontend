@@ -19,6 +19,12 @@ export const mutations = {
     },
     SET_PROJECT_TASK_COMPLETION(state, projectTaskCompletion){
       state.projectTaskCompletion = projectTaskCompletion;
+    },
+    UPDATE_TASK_SPRINT(state, {taskId, sprintId}){
+      const index = state.allTasks.findIndex(i => i.taskId === taskId);
+      const task = state.allTasks[index];
+      task.sprintId = sprintId;
+      state.allTasks.splice(index, 1, task);
     }
   }
 
@@ -84,6 +90,11 @@ export const actions = {
       .catch (e => {
        console.log("error fetching completed tasks", e)
       })
+      },
+
+      updateSprintOfATask({commit}, {taskId, sprintId}){
+        console.log("update sprint", sprintId, taskId)
+          commit('UPDATE_TASK_SPRINT', {taskId, sprintId});
       }
 
   }

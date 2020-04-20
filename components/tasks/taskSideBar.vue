@@ -131,7 +131,24 @@
                 <option key="deployed" value="deployed">Deployed</option>
                 <option key="closed" value="closed">Closed</option>
             </select>
-             </div>
+  </div>
+
+  <!-- <div class="taskStatusDropdown">
+      <select  v-model="taskStatus" class="selectSprintDropDown" @change="changeAssignee">
+          <option value="" disabled>{{ assignee.firstName }} {{assignee.lastName }}</option>
+        <option class="tabListItemsText" v-for="(projectUser, index) in people" :key="index" :selected="projectUser.assigneeId === assignee.userId" :value="projectUser.assigneeId" >
+          {{projectUser.assigneeFirstName}} {{projectUser.assigneeLastName}}
+        </option>
+      </select>
+  </div> -->
+
+  <div class="taskStatusDropdown">
+           <select v-model="updateTaskSprint" class="selectSprintDropDown" @change="changeTaskSprint">
+                <option  class="tabListItemsText" v-for="(projectSprint, index) in projectSprints" :key="index" :value="projectSprint.sprintId">
+                <span  v-text="projectSprint.sprintName"></span>
+              </option>               
+            </select>
+  </div>
 
 </v-list-item>
  </v-list-item-group>
@@ -192,11 +209,42 @@
                         <!-- {{ subtask.subtaskName}} -->
                         </v-list-item-title>
                     </v-list-item-content>
-                    <v-icon color="#FF6161" @click="deleteSubTask(subtask,index)">mdi-trash-can-outline</v-icon>
+                    <v-icon color="#FF6161" @click="selectSubTask(subtask,index); subTaskDialog = true">mdi-trash-can-outline</v-icon>
                     <!-- <v-icon color="#FF6161" @click="subTaskDialog = true">mdi-trash-can-outline</v-icon> -->
 
 
-                    <!-- --------------------- delete sub task popup --------------- -->
+                  
+                </v-list-item>
+                <v-list-item v-if="showNewSubTask" class="subTaskListItems">
+                       <v-checkbox
+                          v-model="newSubTask.subtaskStatus"
+                          hide-details
+                          class="shrink mr-2 mt-0"           
+                          >
+                       </v-checkbox>
+                       <div>
+                         <v-list-item-title class="subTaskListName">
+                        <input maxlength="51" class="subTaskListNameContent addSubTaskTextbox"  placeholder="Add new" v-model="newSubTask.subtaskName" type="text"  @keyup.enter="addSubTask"/>   
+                           </v-list-item-title>
+                       </div>
+                <!-- </div> -->
+                </v-list-item>
+
+                <v-list-item @click="showNewSubTaskField">
+                      <v-list-item-icon >
+            <v-icon color="#0BAFFF">mdi-plus-circle</v-icon>
+          </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-title class="subTaskListName subTaskAdd">Add sub task</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+              </div>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-group>
+
+        <!-- --------------------- delete sub task popup --------------- -->
 
 
                   <v-dialog
@@ -229,7 +277,7 @@
                             <v-btn
                               color="error"
                               width="100px"
-                              @click="subTaskDialog = false; deleteSubTask(subtask,index)"
+                              @click="subTaskDialog = false; deleteSubTask()"
                             >
                               Delete
                             </v-btn>
@@ -242,35 +290,6 @@
                       </v-dialog>
 
                   <!-- ---------------------- end popup ------------------ -->
-                </v-list-item>
-                <v-list-item v-if="showNewSubTask" class="subTaskListItems">
-                       <v-checkbox
-                          v-model="newSubTask.subtaskStatus"
-                          hide-details
-                          class="shrink mr-2 mt-0"           
-                          >
-                       </v-checkbox>
-                       <div>
-                         <v-list-item-title class="subTaskListName">
-                        <input maxlength="51" class="subTaskListNameContent addSubTaskTextbox"  placeholder="Add new" v-model="newSubTask.subtaskName" type="text"  @keyup.enter="addSubTask"/>   
-                           </v-list-item-title>
-                       </div>
-                <!-- </div> -->
-                </v-list-item>
-
-                <v-list-item @click="showNewSubTaskField">
-                      <v-list-item-icon >
-            <v-icon color="#0BAFFF">mdi-plus-circle</v-icon>
-          </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-title class="subTaskListName subTaskAdd">Add sub task</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-              </div>
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-group>
 
    <v-divider></v-divider>
 
@@ -463,7 +482,7 @@
         <v-list-item class="subTaskListItems"  v-for="(taskFile,index) in taskFiles" :key="index">
           
           <div class="listAttachment">
-            <a style="text-decoration: none;" :href="taskFile.taskFileUrl">
+            <a style="text-decoration: none;" :href="taskFile.taskFileUrl" target="_blank">
             <v-icon size="30" color="#0BAFFF">mdi-paperclip</v-icon>
            <div class="attachmentName"> 
              <span>{{ taskFile.taskFileName }}</span> 
@@ -497,6 +516,7 @@
 <script>
 
 import { Datetime } from 'vue-datetime';
+import {mapState} from 'vuex';
 import Vue from 'vue' 
 Vue.component('datetime', Datetime);
 import { Settings } from 'luxon'
@@ -516,6 +536,8 @@ import ErrorPopup from '~/components/popups/errorPopup'
     data() {
       return {
         uploadLoading: false,
+        selectedSubTask: '',
+        selectedSubTaskIndex: '',
         files: [],
         taskDialog: false,
         subTaskDialog: false,
@@ -546,21 +568,19 @@ import ErrorPopup from '~/components/popups/errorPopup'
           subtaskName: "",
           subTaskCreator: ""
         },
-        items: [        
-          {
-            items: [
-              { title: 'Task 1' },
-              { title: 'Task 2' },
-              { title: 'Task 3' },
-            ],
-          },
-          
-        ],
+       updatedSprint: ''
       }
     },
     methods: {
+      getSprintName(){
+          return this.taskSprint;
+      },
+      selectSubTask(subtask, index){
+        this.selectedSubTask = subtask
+        this.selectedSubTaskIndex = index
+        console.log("selected subtask: " + subtask + " " + index)
+      },
       async removeFiles(taskFile){
-
         let response;
        try{
         response = await this.$axios.$delete(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload/${taskFile}`, {    
@@ -610,6 +630,29 @@ import ErrorPopup from '~/components/popups/errorPopup'
         console.log("update task status response", response);
        } catch(e){
           console.log("Error updating a status", e);
+       }
+        
+      },
+         async changeTaskSprint(){
+         console.log("onchange sprint", this.updatedSprint)
+         let response;
+        try{
+          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}/sprint`, {
+          "previousSprint": this.task.sprintId,
+          "newSprint": this.updatedSprint
+        },
+          {
+              headers: {
+                  'user': this.userId
+              }
+            }
+        )
+         this.$store.dispatch('task/updateSprintOfATask', {
+           taskId : this.task.taskId,
+           sprintId: this.updatedSprint})
+        console.log("update sprint status response", response);
+       } catch(e){
+          console.log("Error updating a sprint", e);
        }
         
       },
@@ -786,11 +829,11 @@ import ErrorPopup from '~/components/popups/errorPopup'
            }
       },
 
-      async deleteSubTask(subtask,index){
-        console.log("deletesubtask ->", subtask);
+  async deleteSubTask(){
+        console.log("deletesubtask ->", this.selectedSubTask);
         let response;
         try{
-          response = await this.$axios.$delete(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask/${subtask.subtaskId}`,
+          response = await this.$axios.$delete(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask/${this.selectedSubTask.subtaskId}`,
           {
              headers: {
                   'user': this.userId,
@@ -798,12 +841,30 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
           }
         );
-        this.subTasks.splice(index, 1);
+        this.subTasks.splice(this.selectedSubTaskIndex, 1);
         console.log("delete sub task", response);
        } catch(e){
           console.log("Error updating a status", e);
        }
       },
+      // async deleteSubTask(subtask,index){
+      //   console.log("deletesubtask ->", subtask);
+      //   let response;
+      //   try{
+      //     response = await this.$axios.$delete(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask/${subtask.subtaskId}`,
+      //     {
+      //        headers: {
+      //             'user': this.userId,
+      //             "type": "project"
+      //         }
+      //     }
+      //   );
+      //   this.subTasks.splice(index, 1);
+      //   console.log("delete sub task", response);
+      //  } catch(e){
+      //     console.log("Error updating a status", e);
+      //  }
+      // },
       //  handleFileUploads(e){
       //   //  this.file = this.$refs.files.files[0];
       //    let formData = new FormData();
@@ -859,10 +920,10 @@ import ErrorPopup from '~/components/popups/errorPopup'
    
 
     },
-    components: {
-     
-    },
     computed: {
+      ...mapState({
+          projectSprints:  state => state.sprints.sprint.sprints ,
+      }),
         updatedName: {
         get(){
               return this.task.taskName
@@ -902,6 +963,16 @@ import ErrorPopup from '~/components/popups/errorPopup'
           console.log("updated task statutus ->", value)
             this.updatedTask.taskStatus =  value;
           }            
+        },
+
+        updateTaskSprint:{
+          get(){
+            return this.task.sprintId
+          },
+          set(sprintId){
+            console.log("spid",sprintId)
+              this.updatedSprint = sprintId
+          }
         },
 
           taskDue: {

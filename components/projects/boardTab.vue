@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="boardBodyDiv">
+   
         <div class="defaultBoard">
             <div class="boardTitle">
                 <span>Default Board</span>
@@ -8,7 +8,7 @@
             <div class="boardTaskList overflow-y-auto">
                    <div v-for="(task, index) in projectAllTasks"
                  :key="index" class="boardTaskListItem" >
-            <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)">
+            <v-list-item v-if="task.sprintId == 'default'" @click.stop="drawer = !drawer" @click="selectTask(task)">
                         <v-list-item-action>
                         <v-icon v-if="task.taskStatus == 'closed'" size="25" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
                         <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
@@ -28,21 +28,62 @@
             </div>
 
         </div>
+        <div class="">
+ <div class="boardBodyDiv">
+      
 
-       
+        <div class="scrolling-wrapper">
+         <div class="card" v-for="(projectSprint,index) in projectSprints" :key="index">
+              <div class="actualBoard" v-if="projectSprint.sprintId != 'default'">
+             <div class="sprintTitle">
+                <!-- <span>Default Board</span> -->
+                <v-list-item-title>{{ projectSprint.sprintName }}</v-list-item-title>
+                <v-list-item-subtitle>( {{ projectSprint.sprintDescription }} )</v-list-item-subtitle>
+            </div>
+            <div class="boardTaskList overflow-y-auto">
+                   <div v-for="(task, index) in projectAllTasks"
+                 :key="index" class="boardTaskListItem" >
+                 <v-list-item v-if="task.sprintId == projectSprint.sprintId" @click.stop="drawer = !drawer" @click="selectTask(task)">
+                        <v-list-item-action>
+                        <v-icon v-if="task.taskStatus == 'closed'" size="25" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
+                        <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                            <v-list-item-title> {{ task.taskName}} </v-list-item-title>
+                            <div :class="dueDateCheck(task)"> {{ getProjectDates(task.taskDueDateAt) }} </div>
+                        </v-list-item-content>
+                        <v-list-item-avatar size="25">
+                    <v-img  v-if="task.taskAssigneeProfileImage != null" :src="task.taskAssigneeProfileImage"></v-img>
+                    <v-img  v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
+
+                    </v-list-item-avatar>
+                 </v-list-item>
+              </div>
+            </div>
+              </div>
+          </div>
+          <div class="addSprintBoard card">
+            <div class="addSprintSection overflow-y-auto">
+                    <add-sprint :projectId=projectId />
+            </div>
+          </div>
+         
+        </div>
+
 
     </div>
+        </div>
      <v-navigation-drawer
             v-model="drawer"
-            absolute
+            fixed
             temporary
             right=""
-            height="85vh"
+            height="100vh"
             width="800px"
             class=""
             color="#FFFFFF"
             >
-            <task-side-bar :task=task :assignee="assignee" :projectId="projectId" :subTasks="subTasks" :taskFiles="taskFiles" :projectUsers="projectUsers" :people="people" @listenChange="listenToChange"/>
+            <task-side-bar :task=task :assignee="assignee" :projectId="projectId" :subTasks="subTasks" :taskFiles="taskFiles" :projectUsers="projectUsers" :people="people"/>
             
     </v-navigation-drawer>
 </div>
@@ -51,10 +92,12 @@
 <script>
 import { mapState } from 'vuex';
 import TaskSideBar from '~/components/tasks/taskSideBar'
+import AddSprint from '~/components/projects/addSprint'
 export default {
-    props: ['projectId',  'projectUsers', 'people'],
+    props: ['projectId'],
     components: {
          'task-side-bar' : TaskSideBar,
+         'add-sprint' : AddSprint
     },
     data() {
       return {
@@ -70,19 +113,13 @@ export default {
     computed: {
       ...mapState({
           projectAllTasks: state => state.task.allTasks,
+          projectSprints: state => state.sprints.sprint.sprints
       })
     },
     methods: {
-       listenToChange(){
-         console.log("listened to changes ------->");
-          this.$store.dispatch('task/fetchTasksAllTasks', this.projectId)
-          this.$store.dispatch('task/fetchTasksMyTasks', this.projectId)
-          this.$store.dispatch('task/fetchProjectTaskCompletion', this.projectId)
-       },
-       taskFilter(){
-         console.log("-----------> changed" + this.taskSelect)
-       },
     async selectTask(task){
+     console.log("selectedTask sprint", task.sprintId);
+    //  if(task.sprintId !== "default")
      this.task = task;
      console.log("selectedTask", task);
       this.$axios.get (`/users/${this.task.taskAssignee}`)
@@ -167,7 +204,7 @@ export default {
             return "Tomorrow";
         }
         else{
- let stringDate  =  date + "";
+        let stringDate  =  date + "";
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0,10);      
         return stringDate;
