@@ -8,7 +8,7 @@
             <div class="boardTaskList overflow-y-auto">
                    <div v-for="(task, index) in projectAllTasks"
                  :key="index" class="boardTaskListItem" >
-            <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)">
+            <v-list-item v-if="task.sprintId == 'default'" @click.stop="drawer = !drawer" @click="selectTask(task)">
                         <v-list-item-action>
                         <v-icon v-if="task.taskStatus == 'closed'" size="25" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
                         <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
@@ -42,7 +42,7 @@
             <div class="boardTaskList overflow-y-auto">
                    <div v-for="(task, index) in projectAllTasks"
                  :key="index" class="boardTaskListItem" >
-                 <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)">
+                 <v-list-item v-if="task.sprintId == projectSprint.sprintId" @click.stop="drawer = !drawer" @click="selectTask(task)">
                         <v-list-item-action>
                         <v-icon v-if="task.taskStatus == 'closed'" size="25" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
                         <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
@@ -145,7 +145,7 @@ import { mapState } from 'vuex';
 import TaskSideBar from '~/components/tasks/taskSideBar'
 import AddSprint from '~/components/projects/addSprint'
 export default {
-    props: ['projectId',  'projectUsers', 'people'],
+    props: ['projectId'],
     components: {
          'task-side-bar' : TaskSideBar,
          'add-sprint' : AddSprint

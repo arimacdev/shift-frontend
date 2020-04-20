@@ -5,8 +5,8 @@ export const state = () => ({
 
 
 export const mutations = {
-    SET_SPRINT(state, sprint){
-        state.sprint = sprint;
+    APPEND_SPRINT(state, sprint){
+        state.sprints.push(sprint);
     },
     FETCH_ALL_SPRINTS(state, sprints){
       state.sprints = sprints; 
@@ -30,4 +30,8 @@ export const mutations = {
           console.log("Error fetching sprints from store",e);
       }
   },
+
+   addProjectSprint({commit}, sprint){
+       commit('APPEND_SPRINT', sprint);
+   }
 }  
