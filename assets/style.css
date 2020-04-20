@@ -1428,6 +1428,7 @@ color: #040428;
 
 .sideBarBody{
     padding-bottom: 100px;
+    padding-top: 60px;
 }
 
 
@@ -1504,10 +1505,9 @@ color: #040428;
       width: 100%;
       height: 80vh;
       padding-top: 20px;
-      /* background-color: blanchedalmond; */
       position: absolute;
       left: 25vw;
-      overflow-x: scroll;
+      /* overflow-x: scroll; */
         overflow-y: hidden;
         white-space: nowrap;
         border-left: solid #D9DEEB 5px;
@@ -1620,7 +1620,7 @@ color: #040428;
   }
 
   .scrolling-wrapper {
-    overflow-x: scroll;
+    /* overflow-x: scroll; */
     overflow-y: hidden;
     white-space: nowrap;
     height: 78vh;
@@ -1651,6 +1651,7 @@ color: #040428;
     height: 80vh;
     border-radius: 5px;
     display: inline-block;
+    margin-left: -300px;
   }
   .sprintDateRangePicker{
       margin-left: 10px;
@@ -1662,4 +1663,26 @@ color: #040428;
       position: absolute;
       right: 300px;
       bottom: 10px;
+  }
+
+
+  /* -------------- side bar popup ----------- */
+
+  .sidebarPopup{
+      width: 100px;
+      height: 80px;
+  }
+
+  .sideBarPopupContent{
+      margin-top: 200px;
+      position: absolute;
+      z-index: 100;
+      right: 10px;
+      bottom: 20px;
+      background-color: blue;
+  }
+
+  .sideDrawerBoardTab{
+      /* position: fixed;
+      top: 100px; */
   }

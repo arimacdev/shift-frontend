@@ -29,12 +29,12 @@
 
         </div>
         <div class="">
- <div class="boardBodyDiv overflow-x-scroll">
+ <div class="boardBodyDiv">
       
 
         <div class="scrolling-wrapper">
-         <div class="actualBoard card" v-for="(projectSprint,index) in projectSprints" :key="index">
-              <div v-if="projectSprint.sprintId != 'default'">
+         <div class="card" v-for="(projectSprint,index) in projectSprints" :key="index">
+              <div class="actualBoard" v-if="projectSprint.sprintId != 'default'">
              <div class="sprintTitle">
                 <!-- <span>Default Board</span> -->
                 <v-list-item-title>{{ projectSprint.sprintName }}</v-list-item-title>
@@ -75,10 +75,10 @@
         </div>
      <v-navigation-drawer
             v-model="drawer"
-            absolute
+            fixed
             temporary
             right=""
-            height="85vh"
+            height="100vh"
             width="800px"
             class=""
             color="#FFFFFF"
