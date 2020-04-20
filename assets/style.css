@@ -515,12 +515,22 @@ margin-top: -60px;
     width: 100%;
 }
 .selectUserDropDown{
-    width: 300px !important;
+    width: 200px !important;
     padding:7px;
     border-radius: 5px;
     background: #0BAFFF;
     border-style: none;
     color: #FFFFFF;
+}
+
+.selectSprintDropDown{
+    width: 300px !important;
+    padding:7px;
+    border-radius: 5px;
+    background: #2EC973;
+    border-style: none;
+    color: #FFFFFF;
+    margin-left: 20px;
 }
 .dropDownList{
     margin-left: -50px;

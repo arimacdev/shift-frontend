@@ -131,7 +131,14 @@
                 <option key="deployed" value="deployed">Deployed</option>
                 <option key="closed" value="closed">Closed</option>
             </select>
-             </div>
+  </div>
+
+  <div class="taskStatusDropdown">
+           <select v-model="taskStatus" class="selectSprintDropDown" >
+                <option key="pending" value="pending" >Sprint 1</option>
+               
+            </select>
+  </div>
 
 </v-list-item>
  </v-list-item-group>
