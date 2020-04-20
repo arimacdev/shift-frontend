@@ -34,6 +34,7 @@
 
         <div class="scrolling-wrapper">
          <div class="actualBoard card" v-for="(projectSprint,index) in projectSprints" :key="index">
+              <div v-if="projectSprint.sprintId != 'default'">
              <div class="sprintTitle">
                 <!-- <span>Default Board</span> -->
                 <v-list-item-title>{{ projectSprint.sprintName }}</v-list-item-title>
@@ -59,60 +60,8 @@
                  </v-list-item>
               </div>
             </div>
+              </div>
           </div>
-
-          <!-- <div class="actualBoard card">
-             <div class="sprintTitle">
-                <span>Default Board</span>
-            </div>
-            <div class="boardTaskList overflow-y-auto">
-                   <div v-for="(task, index) in projectAllTasks"
-                 :key="index" class="boardTaskListItem" >
-                 <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)">
-                        <v-list-item-action>
-                        <v-icon v-if="task.taskStatus == 'closed'" size="25" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
-                        <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
-                        </v-list-item-action>
-                        <v-list-item-content>
-                            <v-list-item-title> {{ task.taskName}} </v-list-item-title>
-                            <div :class="dueDateCheck(task)"> {{ getProjectDates(task.taskDueDateAt) }} </div>
-                        </v-list-item-content>
-                        <v-list-item-avatar size="25">
-                    <v-img  v-if="task.taskAssigneeProfileImage != null" :src="task.taskAssigneeProfileImage"></v-img>
-                    <v-img  v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
-
-                    </v-list-item-avatar>
-                 </v-list-item>
-              </div>
-            </div>
-          </div> -->
-
-          <!-- <div class="actualBoard card">
-             <div class="sprintTitle">
-                <span>Default Board</span>
-            </div>
-            <div class="boardTaskList overflow-y-auto">
-                   <div v-for="(task, index) in projectAllTasks"
-                 :key="index" class="boardTaskListItem" >
-                 <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)">
-                        <v-list-item-action>
-                        <v-icon v-if="task.taskStatus == 'closed'" size="25" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
-                        <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
-                        </v-list-item-action>
-                        <v-list-item-content>
-                            <v-list-item-title> {{ task.taskName}} </v-list-item-title>
-                            <div :class="dueDateCheck(task)"> {{ getProjectDates(task.taskDueDateAt) }} </div>
-                        </v-list-item-content>
-                        <v-list-item-avatar size="25">
-                    <v-img  v-if="task.taskAssigneeProfileImage != null" :src="task.taskAssigneeProfileImage"></v-img>
-                    <v-img  v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
-
-                    </v-list-item-avatar>
-                 </v-list-item>
-              </div>
-            </div>
-          </div> -->
-
           <div class="addSprintBoard card">
             <div class="addSprintSection overflow-y-auto">
                     <add-sprint :projectId=projectId />
@@ -168,10 +117,9 @@ export default {
       })
     },
     methods: {
-       taskFilter(){
-         console.log("-----------> changed" + this.taskSelect)
-       },
     async selectTask(task){
+     console.log("selectedTask sprint", task.sprintId);
+    //  if(task.sprintId !== "default")
      this.task = task;
      console.log("selectedTask", task);
       this.$axios.get (`/users/${this.task.taskAssignee}`)
@@ -256,7 +204,7 @@ export default {
             return "Tomorrow";
         }
         else{
- let stringDate  =  date + "";
+        let stringDate  =  date + "";
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0,10);      
         return stringDate;

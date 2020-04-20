@@ -133,10 +133,20 @@
             </select>
   </div>
 
+  <!-- <div class="taskStatusDropdown">
+      <select  v-model="taskStatus" class="selectSprintDropDown" @change="changeAssignee">
+          <option value="" disabled>{{ assignee.firstName }} {{assignee.lastName }}</option>
+        <option class="tabListItemsText" v-for="(projectUser, index) in people" :key="index" :selected="projectUser.assigneeId === assignee.userId" :value="projectUser.assigneeId" >
+          {{projectUser.assigneeFirstName}} {{projectUser.assigneeLastName}}
+        </option>
+      </select>
+  </div> -->
+
   <div class="taskStatusDropdown">
-           <select v-model="taskStatus" class="selectSprintDropDown" >
-                <option key="pending" value="pending" >Sprint 1</option>
-               
+           <select v-model="updateTaskSprint" class="selectSprintDropDown" @change="changeTaskSprint">
+                <option  class="tabListItemsText" v-for="(projectSprint, index) in projectSprints" :key="index" :value="projectSprint.sprintId">
+                <span  v-text="projectSprint.sprintName"></span>
+              </option>               
             </select>
   </div>
 
@@ -504,6 +514,7 @@
 <script>
 
 import { Datetime } from 'vue-datetime';
+import {mapState} from 'vuex';
 import Vue from 'vue' 
 Vue.component('datetime', Datetime);
 import { Settings } from 'luxon'
@@ -553,21 +564,14 @@ import ErrorPopup from '~/components/popups/errorPopup'
           subtaskName: "",
           subTaskCreator: ""
         },
-        items: [        
-          {
-            items: [
-              { title: 'Task 1' },
-              { title: 'Task 2' },
-              { title: 'Task 3' },
-            ],
-          },
-          
-        ],
+       updatedSprint: ''
       }
     },
     methods: {
+      getSprintName(){
+          return this.taskSprint;
+      },
       async removeFiles(taskFile){
-
         let response;
        try{
         response = await this.$axios.$delete(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload/${taskFile}`, {    
@@ -617,6 +621,29 @@ import ErrorPopup from '~/components/popups/errorPopup'
         console.log("update task status response", response);
        } catch(e){
           console.log("Error updating a status", e);
+       }
+        
+      },
+         async changeTaskSprint(){
+         console.log("onchange sprint", this.updatedSprint)
+         let response;
+        try{
+          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}/sprint`, {
+          "previousSprint": this.task.sprintId,
+          "newSprint": this.updatedSprint
+        },
+          {
+              headers: {
+                  'user': this.userId
+              }
+            }
+        )
+         this.$store.dispatch('task/updateSprintOfATask', {
+           taskId : this.task.taskId,
+           sprintId: this.updatedSprint})
+        console.log("update sprint status response", response);
+       } catch(e){
+          console.log("Error updating a sprint", e);
        }
         
       },
@@ -811,31 +838,6 @@ import ErrorPopup from '~/components/popups/errorPopup'
           console.log("Error updating a status", e);
        }
       },
-      //  handleFileUploads(e){
-      //   //  this.file = this.$refs.files.files[0];
-      //    let formData = new FormData();
-      //   formData.append('files', this.files);
-      //   formData.append('type', 'profileImage');
-      //   formData.append('taskType', 'project');
-      //   this.files = null
-
-      //   this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
-      //       formData,
-      //       {
-      //         headers: {
-      //             'Content-Type': 'multipart/form-data',
-      //             'user': this.userId
-      //         }
-      //       }
-      //     ).then(function(res){
-      //       this.taskFiles.push(res.data);
-      //       this.file = '';
-      //       console.log('File upload successful', res.data);
-      //     })
-      //     .catch(function(){
-      //       console.log('File Upload Failed');
-      //     });
-      // },
       async taskFileUpload(){
         this.uploadLoading = true
         let formData = new FormData();
@@ -866,10 +868,10 @@ import ErrorPopup from '~/components/popups/errorPopup'
    
 
     },
-    components: {
-     
-    },
     computed: {
+      ...mapState({
+          projectSprints:  state => state.sprints.sprint.sprints ,
+      }),
         updatedName: {
         get(){
               return this.task.taskName
@@ -909,6 +911,16 @@ import ErrorPopup from '~/components/popups/errorPopup'
           console.log("updated task statutus ->", value)
             this.updatedTask.taskStatus =  value;
           }            
+        },
+
+        updateTaskSprint:{
+          get(){
+            return this.task.sprintId
+          },
+          set(sprintId){
+            console.log("spid",sprintId)
+              this.updatedSprint = sprintId
+          }
         },
 
           taskDue: {

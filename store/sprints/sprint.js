@@ -1,6 +1,6 @@
 export const state = () => ({
     sprint: {},
-    sprints: []
+    sprints: [],
 })
 
 
@@ -25,6 +25,11 @@ export const mutations = {
               }
           })
           commit('FETCH_ALL_SPRINTS', sprintResponse.data);
+          const defaultSprint = {
+              "sprintId": "default",
+              "sprintName": "Default"
+          }
+          commit('APPEND_SPRINT', defaultSprint);
           console.log("fetch all sprints response from store", sprintResponse.data);
       } catch(e) {
           console.log("Error fetching sprints from store",e);
@@ -33,5 +38,7 @@ export const mutations = {
 
    addProjectSprint({commit}, sprint){
        commit('APPEND_SPRINT', sprint);
-   }
+   },
+
+  
 }  
