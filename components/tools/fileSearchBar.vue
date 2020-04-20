@@ -23,7 +23,7 @@
 <script>
 
 export default {
-   props: ["projectFiles"],
+   props: ["AllprojectFiles"],
     data () {
       return {
         loading: false,
@@ -48,7 +48,7 @@ export default {
          }
       },
       querySelections (v) {
-        let projectFileSearchList = this.projectFiles;
+        let projectFileSearchList = this.AllprojectFiles;
         for (let index = 0; index < projectFileSearchList.length; ++index) {
             let projectFile = projectFileSearchList[index];
             this.states.push({name: projectFile.projectFileName, id: projectFile});

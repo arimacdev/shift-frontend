@@ -106,7 +106,7 @@
         <div class="attchmentContainer">
         <v-list-item class="subTaskListItems"  v-for="(taskFile,index) in subTaskFiles" :key="index">          
           <div class="listAttachment">
-            <a style="text-decoration: none;" :href="taskFile.taskFileUrl">
+            <a style="text-decoration: none;" :href="taskFile.taskFileUrl" target="_blank">
             <v-icon size="30" color="#0BAFFF">mdi-paperclip</v-icon>
            <div class="attachmentName"> 
              <span>{{ taskFile.taskFileName }}</span> 
