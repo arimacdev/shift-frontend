@@ -170,7 +170,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
             projectId: this.projectId,
             sprintName: this.sprintName,
             sprintCreatedBy: this.userId,
-            sprintDescription: "new sprint" 
+            sprintDescription: this.dateRangeText 
           }
         )
         this.$refs.form.reset()
