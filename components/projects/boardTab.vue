@@ -83,8 +83,16 @@
             class=""
             color="#FFFFFF"
             >
-            <task-side-bar :task=task :assignee="assignee" :projectId="projectId" :subTasks="subTasks" :taskFiles="taskFiles" :projectUsers="projectUsers" :people="people"/>
-            
+            <task-side-bar 
+            :task=task 
+            :assignee="assignee" 
+            :projectId="projectId" 
+            :subTasks="subTasks" 
+            :taskFiles="taskFiles" 
+            :people="people"
+            @listenChange="listenChange"
+            @shrinkSideBar="shrinkSideBar"
+            />
     </v-navigation-drawer>
 </div>
 </template>
@@ -94,7 +102,7 @@ import { mapState } from 'vuex';
 import TaskSideBar from '~/components/tasks/taskSideBar'
 import AddSprint from '~/components/projects/addSprint'
 export default {
-    props: ['projectId'],
+    props: ['projectId', 'people'],
     components: {
          'task-side-bar' : TaskSideBar,
          'add-sprint' : AddSprint
@@ -117,6 +125,12 @@ export default {
       })
     },
     methods: {
+      listenChange(){
+            this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
+      },
+      shrinkSideBar(){
+        this.drawer = false;
+      },
     async selectTask(task){
      console.log("selectedTask sprint", task.sprintId);
     //  if(task.sprintId !== "default")

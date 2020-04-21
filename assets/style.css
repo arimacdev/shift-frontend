@@ -1514,7 +1514,7 @@ color: #040428;
   }
   .defaultBoard{
       width: 30%;
-      height: 80vh;
+      height: 77vh;
       background-color: #EDF0F5;
       position: absolute;
       left: 20px;
@@ -1522,11 +1522,17 @@ color: #040428;
   }
   .actualBoard{
     width: 300px;
-    height: 80vh;
+    height: 73vh;
     background-color: #EDF0F5;
     left: 20px;
     border-radius: 5px;
     display: inline-block;
+  }
+  .card {
+    display: inline-block;
+    /* width: 300px; */
+    margin-right: 20px;
+    margin-top: -8vh;
   }
   .boardTitle{
       height: 70px;
@@ -1628,16 +1634,17 @@ color: #040428;
     padding-right: 100px;
     padding-left: 10px;
   }
-  .card {
-    display: inline-block;
-    width: 300px;
-    margin-right: 20px;
+ 
+  .rowHeightAddTask{
+      padding-top: 10px !important;
+      margin-top: -10px !important;
+      height: 80px;
   }
 
   .addSprintSection{
         height: 100%;
         width: 100%;
-        padding-top: 20px;
+        padding-top: 60px;
   }
   .addSprintButton{
     background-color: #2EC973;
@@ -1651,7 +1658,7 @@ color: #040428;
     height: 80vh;
     border-radius: 5px;
     display: inline-block;
-    margin-left: -300px;
+    /* margin-left: -300px; */
   }
   .sprintDateRangePicker{
       margin-left: 10px;

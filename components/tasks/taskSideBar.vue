@@ -527,7 +527,7 @@ import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
 
   export default {
-    props: ['task', 'assignee', 'projectId', 'subTasks', 'taskFiles', 'projectUsers', 'people'],
+    props: ['task', 'assignee', 'projectId', 'subTasks', 'taskFiles', 'people'],
 
     components: {
       'success-popup' : SuccessPopup,
@@ -663,9 +663,11 @@ import ErrorPopup from '~/components/popups/errorPopup'
                 data: {},
                 headers: {
                     'user': this.userId,
+                    'type' : 'project'
                 }
         })
-        location.reload();
+        this.$emit('listenChange');
+        this.$emit('shrinkSideBar');
         console.log(response.data);
        }  catch(e){
           console.log("Error deleting project", e);
