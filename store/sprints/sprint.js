@@ -6,7 +6,7 @@ export const state = () => ({
 
 export const mutations = {
     APPEND_SPRINT(state, sprint){
-        state.sprints.push(sprint);
+        state.sprints.unshift(sprint);
     },
     FETCH_ALL_SPRINTS(state, sprints){
       state.sprints = sprints; 

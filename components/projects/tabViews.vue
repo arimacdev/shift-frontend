@@ -28,7 +28,7 @@
       <v-tab-item>
         <v-divider class="mx-4"></v-divider>
         <v-card flat>
-        <board-tab :projectId="projectId"  />
+        <board-tab :projectId="projectId" :people="people"  />
         </v-card>
       </v-tab-item>
       <v-tab-item>

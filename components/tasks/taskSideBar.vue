@@ -527,7 +527,7 @@ import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
 
   export default {
-    props: ['task', 'assignee', 'projectId', 'subTasks', 'taskFiles', 'projectUsers', 'people'],
+    props: ['task', 'assignee', 'projectId', 'subTasks', 'taskFiles', 'people'],
 
     components: {
       'success-popup' : SuccessPopup,
