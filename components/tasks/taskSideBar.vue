@@ -663,9 +663,9 @@ import ErrorPopup from '~/components/popups/errorPopup'
                 data: {},
                 headers: {
                     'user': this.userId,
+                    'type' : 'project'
                 }
         })
-        location.reload();
         console.log(response.data);
        }  catch(e){
           console.log("Error deleting project", e);

@@ -94,7 +94,7 @@ import { mapState } from 'vuex';
 import TaskSideBar from '~/components/tasks/taskSideBar'
 import AddSprint from '~/components/projects/addSprint'
 export default {
-    props: ['projectId'],
+    props: ['projectId', 'people'],
     components: {
          'task-side-bar' : TaskSideBar,
          'add-sprint' : AddSprint
