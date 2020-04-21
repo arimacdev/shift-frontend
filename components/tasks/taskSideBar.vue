@@ -666,6 +666,8 @@ import ErrorPopup from '~/components/popups/errorPopup'
                     'type' : 'project'
                 }
         })
+        this.$emit('listenChange');
+        this.$emit('shrinkSideBar');
         console.log(response.data);
        }  catch(e){
           console.log("Error deleting project", e);

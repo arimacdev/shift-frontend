@@ -80,7 +80,16 @@
       class=""
       color="#FFFFFF"
     >
-    <task-side-bar :task=task :assignee="assignee" :projectId="projectId" :subTasks="subTasks" :taskFiles="taskFiles" :projectUsers="projectUsers" :people="people" @listenChange="listenToChange"/>
+    <task-side-bar 
+    :task=task :assignee="assignee" 
+    :projectId="projectId" 
+    :subTasks="subTasks" 
+    :taskFiles="taskFiles" 
+    :projectUsers="projectUsers" 
+    :people="people" 
+    @listenChange="listenToChange"
+    @shrinkSideBar="shrinkSideBar"    
+    />
     
     </v-navigation-drawer>
 
@@ -132,6 +141,9 @@ import { mapState } from 'vuex';
           this.$store.dispatch('task/fetchTasksMyTasks', this.projectId)
           this.$store.dispatch('task/fetchProjectTaskCompletion', this.projectId)
        },
+       shrinkSideBar(){
+        this.drawer = false;
+      },
        taskFilter(){
          console.log("-----------> changed" + this.taskSelect)
        },

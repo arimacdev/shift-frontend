@@ -91,6 +91,7 @@
             :taskFiles="taskFiles" 
             :people="people"
             @listenChange="listenChange"
+            @shrinkSideBar="shrinkSideBar"
             />
     </v-navigation-drawer>
 </div>
@@ -126,6 +127,9 @@ export default {
     methods: {
       listenChange(){
             this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
+      },
+      shrinkSideBar(){
+        this.drawer = false;
       },
     async selectTask(task){
      console.log("selectedTask sprint", task.sprintId);
