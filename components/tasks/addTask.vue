@@ -101,6 +101,7 @@
                 <v-col
                 sm="6"
                 md="6"
+                class="rowHeightAddTask"
                 
             >
             <!-- <select v-model="taskStatus" class="formElements">
@@ -126,6 +127,7 @@
              <v-col
                 sm="6"
                 md="6"
+                class="rowHeightAddTask overflow-y-auto"
                 
             >
             <!-- <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Drop files to attach, or browse" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload fileUploadField"/> -->
