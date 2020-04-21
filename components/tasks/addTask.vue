@@ -101,6 +101,7 @@
                 <v-col
                 sm="6"
                 md="6"
+                class="rowHeightAddTask"
                 
             >
             <!-- <select v-model="taskStatus" class="formElements">
@@ -126,6 +127,7 @@
              <v-col
                 sm="6"
                 md="6"
+                class="rowHeightAddTask overflow-y-auto"
                 
             >
             <!-- <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Drop files to attach, or browse" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload fileUploadField"/> -->
@@ -139,6 +141,7 @@
             class="createFormElements"
             chips
             show-size=""
+            multiple=""
             >
             </v-file-input>
              
@@ -378,12 +381,12 @@ import axios from 'axios'
         console.log("Task adding successful", response);
 
         let taskId= response.data.taskId;
-
+for (let index = 0; index < this.files.length; ++index) {
         let formData = new FormData();
-        formData.append('files', this.files);
+        formData.append('files', this.files[index]);
         formData.append('type', 'profileImage');
          formData.append('taskType', 'project');
-        this.files = null
+        
         this.$axios.$post(`/projects/${this.projectId}/tasks/${taskId}/upload`,
             formData,
             {
@@ -394,12 +397,14 @@ import axios from 'axios'
             }
             
           ).then(function(res){
-            console.log('File upload successful', res.data);
+            console.log('File upload successful');
           })
           .catch(function(){
             console.log('File Upload Failed');
           });
-          
+      
+           }
+           this.files = null
       if(this.taskAssignee === this.userId){
         console.log("assignee is me", this.taskAssignee,this.userId)
         this.$store.dispatch('task/fetchTasksMyTasks', this.projectId);

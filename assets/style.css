@@ -1630,8 +1630,13 @@ color: #040428;
   }
   .card {
     display: inline-block;
-    width: 300px;
+    /* width: 300px; */
     margin-right: 20px;
+  }
+  .rowHeightAddTask{
+      padding-top: 10px !important;
+      margin-top: -10px !important;
+      height: 80px;
   }
 
   .addSprintSection{
@@ -1651,7 +1656,7 @@ color: #040428;
     height: 80vh;
     border-radius: 5px;
     display: inline-block;
-    margin-left: -300px;
+    /* margin-left: -300px; */
   }
   .sprintDateRangePicker{
       margin-left: 10px;
