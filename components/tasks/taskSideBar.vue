@@ -515,552 +515,582 @@
 </template>
 
 <script>
+import { Datetime } from "vue-datetime";
+import { mapState } from "vuex";
+import Vue from "vue";
+Vue.component("datetime", Datetime);
+import { Settings } from "luxon";
 
-import { Datetime } from 'vue-datetime';
-import {mapState} from 'vuex';
-import Vue from 'vue' 
-Vue.component('datetime', Datetime);
-import { Settings } from 'luxon'
- 
-Settings.defaultLocale = 'IST'
+Settings.defaultLocale = "IST";
 
-import SuccessPopup from '~/components/popups/successPopup'
-import ErrorPopup from '~/components/popups/errorPopup'
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
 
-  export default {
-    props: ['task', 'assignee', 'projectId', 'subTasks', 'taskFiles', 'people'],
+export default {
+  props: ["task", "assignee", "projectId", "subTasks", "taskFiles", "people"],
 
-    components: {
-      'success-popup' : SuccessPopup,
-      'error-popup': ErrorPopup,
-    },
-    data() {
-      return {
-        errorMessage: '',
-        uploadLoading: false,
-        selectedSubTask: '',
-        selectedSubTaskIndex: '',
-        files: [],
-        taskDialog: false,
-        subTaskDialog: false,
-        component: '',
-        hidden: false,
-        userId: this.$store.state.user.userId,
-        drawer: null,
-        selected : true,
-        showNewSubTask: false,
-        setDue: this.task.taskDueDateAt,
-        editTask: true,
-        file:'',
-        updatedTask: {
-          taskName: "",
-          taskAssignee: "",
-          taskNotes: "",
-          taskStatus: "",
-          taskRemindOnDate: "",
-          taskDueDate: ""
-        },
-        newSubTask: {
-          taskId: "",
-          subtaskName : "",
-          subtaskStatus: false,
-        },
-        subTask: {
-          taskId : this.task.taskId,
-          subtaskName: "",
-          subTaskCreator: ""
-        },
-       updatedSprint: ''
-      }
-    },
-    methods: {
-      getSprintName(){
-          return this.taskSprint;
+  components: {
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup
+  },
+  data() {
+    return {
+      errorMessage: "",
+      uploadLoading: false,
+      selectedSubTask: "",
+      selectedSubTaskIndex: "",
+      files: [],
+      taskDialog: false,
+      subTaskDialog: false,
+      component: "",
+      hidden: false,
+      userId: this.$store.state.user.userId,
+      drawer: null,
+      selected: true,
+      showNewSubTask: false,
+      setDue: this.task.taskDueDateAt,
+      editTask: true,
+      file: "",
+      updatedTask: {
+        taskName: "",
+        taskAssignee: "",
+        taskNotes: "",
+        taskStatus: "",
+        taskRemindOnDate: "",
+        taskDueDate: ""
       },
-      selectSubTask(subtask, index){
-        this.selectedSubTask = subtask
-        this.selectedSubTaskIndex = index
-        console.log("selected subtask: " + subtask + " " + index)
+      newSubTask: {
+        taskId: "",
+        subtaskName: "",
+        subtaskStatus: false
       },
-      async removeFiles(taskFile){
-        let response;
-       try{
-        response = await this.$axios.$delete(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload/${taskFile}`, {    
-                data: {},
-                headers: {
-                    'user': this.userId,
-                    'taskType': 'project'
-                }
-        })
+      subTask: {
+        taskId: this.task.taskId,
+        subtaskName: "",
+        subTaskCreator: ""
+      },
+      updatedSprint: ""
+    };
+  },
+  methods: {
+    getSprintName() {
+      return this.taskSprint;
+    },
+    selectSubTask(subtask, index) {
+      this.selectedSubTask = subtask;
+      this.selectedSubTaskIndex = index;
+      console.log("selected subtask: " + subtask + " " + index);
+    },
+    async removeFiles(taskFile) {
+      let response;
+      try {
+        response = await this.$axios.$delete(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}/upload/${taskFile}`,
+          {
+            data: {},
+            headers: {
+              user: this.userId,
+              taskType: "project"
+            }
+          }
+        );
         const index = this.taskFiles.findIndex(i => i.taskFileId === taskFile);
         this.taskFiles.splice(index, 1);
         console.log(response.data);
-        this.component = 'success-popup'
-       }  catch(e){
-          this.errorMessage = e.response.data
-          this.component = 'error-popup'
-          console.log("Error deleting task", e);
-       }  
+        this.component = "success-popup";
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        console.log("Error deleting task", e);
+      }
+    },
+    close() {
+      this.component = "";
+    },
+    showNewSubTaskField: function() {
+      this.showNewSubTask = true;
+    },
+    EditTaskName() {
+      this.editTask = false;
+    },
+    changeDue() {
+      console.log("change me");
+    },
+    async changeAssignee() {
+      console.log("assignee changed");
 
-      },
-      close(){
-                this.component = ''
-            },
-      showNewSubTaskField: function(){
-        this.showNewSubTask =true;
-      },
-      EditTaskName(){
-        this.editTask = false;
-      },
-      changeDue(){
-        console.log("change me")
-      },
-      async changeAssignee(){
-        console.log("assignee changed");
-
-         console.log("onchange updated assignee ->", this.updatedTask.taskAssignee)
-         let response;
-        try{
-          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
-          "taskAssignee": this.updatedTask.taskAssignee,
-          "taskType": "project"
-        },
-          {
-              headers: {
-                  'user': this.userId
-              }
-            }
-        )
-        this.$emit('listenChange');
-        this.component = 'success-popup'
-        console.log("update task status response", response);
-       } catch(e){
-         this.errorMessage = e.response.data
-          this.component = 'error-popup'
-          console.log("Error updating a status", e);
-       }
-        
-      },
-         async changeTaskSprint(){
-         console.log("onchange sprint", this.updatedSprint)
-         let response;
-        try{
-          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}/sprint`, {
-          "previousSprint": this.task.sprintId,
-          "newSprint": this.updatedSprint
-        },
-          {
-              headers: {
-                  'user': this.userId
-              }
-            }
-        )
-         this.$store.dispatch('task/updateSprintOfATask', {
-           taskId : this.task.taskId,
-           sprintId: this.updatedSprint})
-            this.component = 'success-popup'
-        console.log("update sprint status response", response);
-       } catch(e){
-          this.errorMessage = e.response.data
-          this.component = 'error-popup'
-          console.log("Error updating a sprint", e);
-       }
-        
-      },
-      async deleteTask(){
+      console.log(
+        "onchange updated assignee ->",
+        this.updatedTask.taskAssignee
+      );
       let response;
-       try{
-        response = await this.$axios.$delete(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {    
-                data: {},
-                headers: {
-                    'user': this.userId,
-                    'type' : 'project'
-                }
-        })
-        // this.component = 'success-popup'
-        this.$emit('listenChange');
-        this.$emit('shrinkSideBar');
-         
-        console.log(response.data);
-       }  catch(e){
-          this.component = 'error-popup'
-          this.errorMessage = e.response.data
-          console.log("Error creating project", e);
-       }  
-      },
-      async addSubTask(){
-        if(this.newSubTask.subtaskName){
-        console.log("add subTask", this.task.taskId,this.newSubTask.subtaskName);
-        let response;
-        try{
-          response = await this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask`, 
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            taskId: this.task.taskId,
-            subtaskName: this.newSubTask.subtaskName,
-            subTaskCreator: this.userId,
-            "taskType": "project"
+            taskAssignee: this.updatedTask.taskAssignee,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
+            }
           }
-        )
-        this.newSubTask.subtaskName = '';
-        this.showNewSubTask =true
-        // this.showNewSubTask = false;
-        this.subTasks.push(response.data)
-        this.component = 'success-popup'
-        console.log(response);
+        );
+        this.$emit("listenChange");
+        this.component = "success-popup";
+        console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        console.log("Error updating a status", e);
+      }
+    },
+    async changeTaskSprint() {
+      console.log("onchange sprint", this.updatedSprint);
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}/sprint`,
+          {
+            previousSprint: this.task.sprintId,
+            newSprint: this.updatedSprint
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.$store.dispatch("task/updateSprintOfATask", {
+          taskId: this.task.taskId,
+          sprintId: this.updatedSprint
+        });
+        this.component = "success-popup";
+        console.log("update sprint status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        console.log("Error updating a sprint", e);
+      }
+    },
+    async deleteTask() {
+      let response;
+      try {
+        response = await this.$axios.$delete(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            data: {},
+            headers: {
+              user: this.userId,
+              type: "project"
+            }
+          }
+        );
+        // this.component = 'success-popup'
+        this.$emit("listenChange");
+        this.$emit("shrinkSideBar");
 
-       } catch(e){
-           this.errorMessage = e.response.data
-          this.component = 'error-popup'
+        console.log(response.data);
+      } catch (e) {
+        this.component = "error-popup";
+        this.errorMessage = e.response.data;
+        console.log("Error creating project", e);
+      }
+    },
+    async addSubTask() {
+      if (this.newSubTask.subtaskName) {
+        console.log(
+          "add subTask",
+          this.task.taskId,
+          this.newSubTask.subtaskName
+        );
+        let response;
+        try {
+          response = await this.$axios.$post(
+            `/projects/${this.projectId}/tasks/${this.task.taskId}/subtask`,
+            {
+              taskId: this.task.taskId,
+              subtaskName: this.newSubTask.subtaskName,
+              subTaskCreator: this.userId,
+              taskType: "project"
+            }
+          );
+          this.newSubTask.subtaskName = "";
+          this.showNewSubTask = true;
+          // this.showNewSubTask = false;
+          this.subTasks.push(response.data);
+          this.component = "success-popup";
+          console.log(response);
+        } catch (e) {
+          this.errorMessage = e.response.data;
+          this.component = "error-popup";
           console.log("Error adding a subTask", e);
-       }  
-       }
-     
-         
-      },
-      name() {
-         this.setDue = this.task.taskDueDateAt;
-        return this.task.taskDueDateAt
-      },
-      async updateTaskNote(){
-        console.log("updatedTaskValue ->",this.updatedTask.taskNotes)
-        let response;
-        try{
-          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
-          "taskNotes": this.updatedTask.taskNotes,
-          "taskType": "project"
-        },
+        }
+      }
+    },
+    name() {
+      this.setDue = this.task.taskDueDateAt;
+      return this.task.taskDueDateAt;
+    },
+    async updateTaskNote() {
+      console.log("updatedTaskValue ->", this.updatedTask.taskNotes);
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-              headers: {
-                  'user': this.userId
-              }
+            taskNotes: this.updatedTask.taskNotes,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
             }
-        )
-        this.$emit('listenChange');
-        this.component = 'success-popup'
+          }
+        );
+        this.$emit("listenChange");
+        this.component = "success-popup";
         console.log("edit task response", response);
-       } catch(e){
-           this.errorMessage = e.response.data
-          this.component = 'error-popup'
-          console.log("Error updating a note", e);
-       }       
-      },
-      async saveEditTaskName(){
-        console.log("NAMEEEE", this.$store.state.task.myTasks)
-      console.log("updatedTaskName ->",this.updatedTask.taskName)
-        let response;
-        try{
-          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
-          "taskName": this.updatedTask.taskName,
-          "taskType": "project"
-        },
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        console.log("Error updating a note", e);
+      }
+    },
+    async saveEditTaskName() {
+      console.log("NAMEEEE", this.$store.state.task.myTasks);
+      console.log("updatedTaskName ->", this.updatedTask.taskName);
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-              headers: {
-                  'user': this.userId
-              }
+            taskName: this.updatedTask.taskName,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
             }
-        )
-        this.component = 'success-popup'
-        console.log("UPDATED", this.$store.state.task.myTasks)
-        this.$emit('listenChange');
+          }
+        );
+        this.component = "success-popup";
+        console.log("UPDATED", this.$store.state.task.myTasks);
+        this.$emit("listenChange");
         this.editTask = true;
         console.log("edit task response", response);
-       
-       } catch(e){
-          console.log("Error updating the name", e);
-           this.errorMessage = e.response.data
-          this.component = 'error-popup'
-          this.editTask = true;
-       }
-      },
-      async updateStatus(){
-        console.log("onchange updated status ->", this.updatedTask.taskStatus)
-         let response;
-        try{
-          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
-          "taskStatus": this.updatedTask.taskStatus,
-          "taskType": "project"
-        },
+      } catch (e) {
+        console.log("Error updating the name", e);
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        this.editTask = true;
+      }
+    },
+    async updateStatus() {
+      console.log("onchange updated status ->", this.updatedTask.taskStatus);
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-              headers: {
-                  'user': this.userId
-              }
+            taskStatus: this.updatedTask.taskStatus,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
             }
-        )
-        this.$emit('listenChange');
-        this.component = 'success-popup'
-        console.log("update task status response", response);
-       } catch(e){
-          this.errorMessage = e.response.data
-          this.component = 'error-popup'
-          console.log("Error updating a status", e);
-       }
-      },
-        async updateTaskDates(type){
-          let dueDate;
-          let remindDate;
-          if(type === "dueDate"){       
-            console.log("inside due date")   
-            dueDate = new Date(this.updatedTask.taskDueDateAt);
-            const isoDate = new Date(dueDate.getTime() - (dueDate.getTimezoneOffset() * 60000)).toISOString();
-            console.log("iso edit due date",isoDate)   
-            dueDate = isoDate;
-            remindDate = this.task.taskReminderAt;
-          } else {
-            console.log("inside remind on date");
-            remindDate = new Date(this.updatedTask.taskRemindOnDate);
-            const isoDate = new Date(remindDate.getTime() - (remindDate.getTimezoneOffset() * 60000)).toISOString();
-            console.log("iso edit remind date",isoDate)   
-            dueDate = this.task.taskDueDateAt;
-            remindDate = isoDate;
           }
-        console.log("dueDate",dueDate);
-        console.log("remindDate",remindDate);
-         let response;
-        try{
-          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}`, {
-          "taskDueDate": dueDate,
-          "taskRemindOnDate" : remindDate,
-          "taskType": "project"
-        },
+        );
+        this.$emit("listenChange");
+        this.component = "success-popup";
+        console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        console.log("Error updating a status", e);
+      }
+    },
+    async updateTaskDates(type) {
+      let dueDate;
+      let remindDate;
+      if (type === "dueDate") {
+        console.log("inside due date");
+        dueDate = new Date(this.updatedTask.taskDueDateAt);
+        const isoDate = new Date(
+          dueDate.getTime() - dueDate.getTimezoneOffset() * 60000
+        ).toISOString();
+        console.log("iso edit due date", isoDate);
+        dueDate = isoDate;
+        remindDate = this.task.taskReminderAt;
+      } else {
+        console.log("inside remind on date");
+        remindDate = new Date(this.updatedTask.taskRemindOnDate);
+        const isoDate = new Date(
+          remindDate.getTime() - remindDate.getTimezoneOffset() * 60000
+        ).toISOString();
+        console.log("iso edit remind date", isoDate);
+        dueDate = this.task.taskDueDateAt;
+        remindDate = isoDate;
+      }
+      console.log("dueDate", dueDate);
+      console.log("remindDate", remindDate);
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-              headers: {
-                  'user': this.userId
-              }
+            taskDueDate: dueDate,
+            taskRemindOnDate: remindDate,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
             }
-        )
-        this.$emit('listenChange');
-        this.component = 'success-popup'
+          }
+        );
+        this.$emit("listenChange");
+        this.component = "success-popup";
         console.log("update task dates response", response);
-       } catch(e){
-          this.errorMessage = e.response.data
-          this.component = 'error-popup'
-          console.log("Error updating a status", e);
-       }
-      },
-         async subTaskUpdate(editsubtask){
-           if(editsubtask.subtaskName){
-          console.log("onchange subtask updated ->", editsubtask);
-         let response;
-        try{
-          response = await this.$axios.$put(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask/${editsubtask.subtaskId}`, {
-          "subTaskEditor": this.userId ,
-          "subtaskName": editsubtask.subtaskName,
-          "subtaskStatus": editsubtask.subtaskStatus,
-          "taskType": "project"
-        },
-          {
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        console.log("Error updating a status", e);
+      }
+    },
+    async subTaskUpdate(editsubtask) {
+      if (editsubtask.subtaskName) {
+        console.log("onchange subtask updated ->", editsubtask);
+        let response;
+        try {
+          response = await this.$axios.$put(
+            `/projects/${this.projectId}/tasks/${this.task.taskId}/subtask/${editsubtask.subtaskId}`,
+            {
+              subTaskEditor: this.userId,
+              subtaskName: editsubtask.subtaskName,
+              subtaskStatus: editsubtask.subtaskStatus,
+              taskType: "project"
+            },
+            {
               headers: {
-                  'user': this.userId
+                user: this.userId
               }
             }
-        )
-        // this.$emit('listenChange');
-         this.component = 'success-popup'
-        console.log("update sub task status response", response);
-       } catch(e){
-         this.errorMessage = e.response.data
-          this.component = 'error-popup'
+          );
+          // this.$emit('listenChange');
+          this.component = "success-popup";
+          console.log("update sub task status response", response);
+        } catch (e) {
+          this.errorMessage = e.response.data;
+          this.component = "error-popup";
           console.log("Error updating a status", e);
-       }
-           }
-      },
+        }
+      }
+    },
 
-  async deleteSubTask(){
-        console.log("deletesubtask ->", this.selectedSubTask);
-        let response;
-        try{
-          response = await this.$axios.$delete(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask/${this.selectedSubTask.subtaskId}`,
+    async deleteSubTask() {
+      console.log("deletesubtask ->", this.selectedSubTask);
+      let response;
+      try {
+        response = await this.$axios.$delete(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}/subtask/${this.selectedSubTask.subtaskId}`,
           {
-             headers: {
-                  'user': this.userId,
-                  "type": "project"
-              }
+            headers: {
+              user: this.userId,
+              type: "project"
+            }
           }
         );
         this.subTasks.splice(this.selectedSubTaskIndex, 1);
         console.log("delete sub task", response);
-         this.component = 'success-popup'
-       } catch(e){
-          console.log("Error updating a status", e);
-            this.errorMessage = e.response.data
-          this.component = 'error-popup'
-       }
-      },
-      // async deleteSubTask(subtask,index){
-      //   console.log("deletesubtask ->", subtask);
-      //   let response;
-      //   try{
-      //     response = await this.$axios.$delete(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask/${subtask.subtaskId}`,
-      //     {
-      //        headers: {
-      //             'user': this.userId,
-      //             "type": "project"
-      //         }
-      //     }
-      //   );
-      //   this.subTasks.splice(index, 1);
-      //   console.log("delete sub task", response);
-      //  } catch(e){
-      //     console.log("Error updating a status", e);
-      //  }
-      // },
-      //  handleFileUploads(e){
-      //   //  this.file = this.$refs.files.files[0];
-      //    let formData = new FormData();
-      //   formData.append('files', this.files);
-      //   formData.append('type', 'profileImage');
-      //   formData.append('taskType', 'project');
-      //   this.files = null
-
-      //   this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
-      //       formData,
-      //       {
-      //         headers: {
-      //             'Content-Type': 'multipart/form-data',
-      //             'user': this.userId
-      //         }
-      //       }
-      //     ).then(function(res){
-      //       this.taskFiles.push(res.data);
-      //       this.file = '';
-      //       console.log('File upload successful', res.data);
-      //     })
-      //     .catch(function(){
-      //       console.log('File Upload Failed');
-      //     });
-      // },
-      async taskFileUpload(){
-        this.uploadLoading = true
-        let formData = new FormData();
-        formData.append('files', this.files);
-        formData.append('type', 'profileImage');
-        formData.append('taskType', 'project')
-        this.files = null
-
-        let fileResponse;
-         try {
-             fileResponse = await this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
-             formData,
-             {
-                 headers : {
-                     user: this.userId,
-                 }
-             })
-             this.taskFiles.push(fileResponse.data);
-             this.uploadLoading = false
-             this.component = 'success-popup'
-             console.log("file response", this.taskFiles);
-         } catch(e) {
-             console.log("Error adding group file",e);
-              this.errorMessage = e.response.data
-          this.component = 'error-popup'
-             this.uploadLoading = false
-         }
-
-          
+        this.component = "success-popup";
+      } catch (e) {
+        console.log("Error updating a status", e);
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
       }
-   
-
     },
-    computed: {
-      ...mapState({
-          projectSprints:  state => state.sprints.sprint.sprints ,
-      }),
-        updatedName: {
-        get(){
-              return this.task.taskName
-            },
-        set(value) {
-          console.log("updated task name ->", value)
-            this.updatedTask.taskName =  value;
-          }            
-        },
+    // async deleteSubTask(subtask,index){
+    //   console.log("deletesubtask ->", subtask);
+    //   let response;
+    //   try{
+    //     response = await this.$axios.$delete(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask/${subtask.subtaskId}`,
+    //     {
+    //        headers: {
+    //             'user': this.userId,
+    //             "type": "project"
+    //         }
+    //     }
+    //   );
+    //   this.subTasks.splice(index, 1);
+    //   console.log("delete sub task", response);
+    //  } catch(e){
+    //     console.log("Error updating a status", e);
+    //  }
+    // },
+    //  handleFileUploads(e){
+    //   //  this.file = this.$refs.files.files[0];
+    //    let formData = new FormData();
+    //   formData.append('files', this.files);
+    //   formData.append('type', 'profileImage');
+    //   formData.append('taskType', 'project');
+    //   this.files = null
 
-        taskNotes: {
-        get(){
-              return this.task.taskNote
-            },
-        set(value) {
-          console.log("updated task value ->", value)
-            this.updatedTask.taskNotes =  value;
-          }            
-        },
+    //   this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
+    //       formData,
+    //       {
+    //         headers: {
+    //             'Content-Type': 'multipart/form-data',
+    //             'user': this.userId
+    //         }
+    //       }
+    //     ).then(function(res){
+    //       this.taskFiles.push(res.data);
+    //       this.file = '';
+    //       console.log('File upload successful', res.data);
+    //     })
+    //     .catch(function(){
+    //       console.log('File Upload Failed');
+    //     });
+    // },
+    async taskFileUpload() {
+      this.uploadLoading = true;
+      let formData = new FormData();
+      formData.append("files", this.files);
+      formData.append("type", "profileImage");
+      formData.append("taskType", "project");
+      this.files = null;
 
-         taskAssignee: {
-        get(){
-              // return this.assignee.firstName
-              return ''
-            },
-        set(value) {
-          console.log("updated task assignee ->", value)
-            this.updatedTask.taskAssignee =  value;
-          }            
-        },
-
-        taskStatus: {
-        get(){
-              return this.task.taskStatus
-            },
-        set(value) {
-          console.log("updated task statutus ->", value)
-            this.updatedTask.taskStatus =  value;
-          }            
-        },
-
-        updateTaskSprint:{
-          get(){
-            return this.task.sprintId
-          },
-          set(sprintId){
-            console.log("spid",sprintId)
-              this.updatedSprint = sprintId
+      let fileResponse;
+      try {
+        fileResponse = await this.$axios.$post(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
+          formData,
+          {
+            headers: {
+              user: this.userId
+            }
           }
-        },
-
-          taskDue: {
-        get(){
-            // let stringDate = new Date(this.task.taskDueDateAt);
-          if(this.task.taskDueDateAt === null || this.task.taskDueDateAt === '1970-01-01T05:30:00.000+0000')
-          return "Add Due Date";
-          let stringDate  = this.task.taskDueDateAt + " ";
-            // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
-              stringDate = stringDate.toString();
-              stringDate = stringDate.slice(0,16);           
-              return stringDate;
-              // return newDate;
-            },
-        set(value) {
-            console.log("updated task due ->", value)
-            this.updatedTask.taskDueDateAt =  value;
-            this.updateTaskDates("dueDate");
-          }            
-        },
-          taskRemindOn: {
-        get(){
-          if(this.task.taskReminderAt === null || this.task.taskDueDateAt === '1970-01-01T05:30:00.000+0000')
-          return "Add Reminder Date";
-          let stringDate  = this.task.taskReminderAt + "";
-          // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
-          // console.log("f---->",formateedDate)
-          stringDate = stringDate.toString();
-          stringDate = stringDate.slice(0,16);           
-          return stringDate;
-          },
-        set(value) {
-          console.log("updated task reminder ->", value)
-            this.updatedTask.taskRemindOnDate =  value;
-            this.updateTaskDates("remindOn");
-          }            
-        },
-         subTaskDescription: {
-        get(){
-              return this.subTask.subtaskName
-            },
-        set(value) {
-          console.log("updated subtask description ->", value)
-            this.subTask.subtaskName =  value;
-          }            
-        }
+        );
+        this.taskFiles.push(fileResponse.data);
+        this.uploadLoading = false;
+        this.component = "success-popup";
+        console.log("file response", this.taskFiles);
+      } catch (e) {
+        console.log("Error adding group file", e);
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        this.uploadLoading = false;
+      }
+    }
+  },
+  computed: {
+    ...mapState({
+      projectSprints: state => state.sprints.sprint.sprints
+    }),
+    updatedName: {
+      get() {
+        return this.task.taskName;
+      },
+      set(value) {
+        console.log("updated task name ->", value);
+        this.updatedTask.taskName = value;
+      }
     },
+
+    taskNotes: {
+      get() {
+        return this.task.taskNote;
+      },
+      set(value) {
+        console.log("updated task value ->", value);
+        this.updatedTask.taskNotes = value;
+      }
+    },
+
+    taskAssignee: {
+      get() {
+        // return this.assignee.firstName
+        return "";
+      },
+      set(value) {
+        console.log("updated task assignee ->", value);
+        this.updatedTask.taskAssignee = value;
+      }
+    },
+
+    taskStatus: {
+      get() {
+        return this.task.taskStatus;
+      },
+      set(value) {
+        console.log("updated task statutus ->", value);
+        this.updatedTask.taskStatus = value;
+      }
+    },
+
+    updateTaskSprint: {
+      get() {
+        return this.task.sprintId;
+      },
+      set(sprintId) {
+        console.log("spid", sprintId);
+        this.updatedSprint = sprintId;
+      }
+    },
+
+    taskDue: {
+      get() {
+        // let stringDate = new Date(this.task.taskDueDateAt);
+        if (
+          this.task.taskDueDateAt === null ||
+          this.task.taskDueDateAt === "1970-01-01T05:30:00.000+0000"
+        )
+          return "Add Due Date";
+        let stringDate = this.task.taskDueDateAt + " ";
+        // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
+        stringDate = stringDate.toString();
+        stringDate = stringDate.slice(0, 16);
+        return stringDate;
+        // return newDate;
+      },
+      set(value) {
+        console.log("updated task due ->", value);
+        this.updatedTask.taskDueDateAt = value;
+        this.updateTaskDates("dueDate");
+      }
+    },
+    taskRemindOn: {
+      get() {
+        if (
+          this.task.taskReminderAt === null ||
+          this.task.taskDueDateAt === "1970-01-01T05:30:00.000+0000"
+        )
+          return "Add Reminder Date";
+        let stringDate = this.task.taskReminderAt + "";
+        // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
+        // console.log("f---->",formateedDate)
+        stringDate = stringDate.toString();
+        stringDate = stringDate.slice(0, 16);
+        return stringDate;
+      },
+      set(value) {
+        console.log("updated task reminder ->", value);
+        this.updatedTask.taskRemindOnDate = value;
+        this.updateTaskDates("remindOn");
+      }
+    },
+    subTaskDescription: {
+      get() {
+        return this.subTask.subtaskName;
+      },
+      set(value) {
+        console.log("updated subtask description ->", value);
+        this.subTask.subtaskName = value;
+      }
+    }
   }
+};
 </script>
