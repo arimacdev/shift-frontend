@@ -201,6 +201,7 @@
           :taskCompletion="taskCompletion"
           :people="people"
           :taskLog="taskLog"
+          @refreshSelectedTab="refreshSelectedTab"
         ></component>
         <component
           v-else-if="this.component == 'add-project'"
@@ -320,29 +321,123 @@
       createNewProject(type) {
         this.newProject = true;
       },
+      refreshSelectedTab(tab) {
+        switch (tab) {
+          case 'people':
+            this.$store.dispatch(
+              'task/fetchProjectUserCompletionTasks',
+              this.project.projectId
+            );
+            break;
+          case 'task':
+            this.$store.dispatch(
+              'task/fetchTasksAllTasks',
+              this.project.projectId
+            );
+            this.$store.dispatch(
+              'task/fetchTasksMyTasks',
+              this.project.projectId
+            );
+            break;
+          case 'project':
+            this.$store.dispatch(
+              'task/fetchProjectTaskCompletion',
+              this.project.projectId
+            );
+            break;
+          case 'board':
+            this.$store.dispatch(
+              'sprints/sprint/fetchAllProjectSprints',
+              this.project.projectId
+            );
+            this.$store.dispatch(
+              'task/fetchTasksAllTasks',
+              this.project.projectId
+            );
+            break;
+          case 'files':
+            this.$store.dispatch(
+              'project/fetchAllProjectFiles',
+              this.project.projectId
+            );
+            break;
+        }
+      },
       async selectProject(project) {
         this.newProject = false;
         this.project = project;
-        console.log('selected project ---------->', project);
-        this.$store.dispatch('task/fetchTasksAllTasks', this.project.projectId);
-        this.$store.dispatch('task/fetchTasksMyTasks', this.project.projectId);
-        this.$store.dispatch(
-          'task/fetchProjectUserCompletionTasks',
-          this.project.projectId
-        );
+        console.log('selected project ---------->', project, this.selectedTab);
         this.$store.dispatch('project/fetchProject', this.project.projectId);
-        this.$store.dispatch(
-          'task/fetchProjectTaskCompletion',
-          this.project.projectId
-        );
-        this.$store.dispatch(
-          'project/fetchAllProjectFiles',
-          this.project.projectId
-        );
-        this.$store.dispatch(
-          'sprints/sprint/fetchAllProjectSprints',
-          this.project.projectId
-        );
+        switch (this.selectedTab) {
+          case 'task':
+            this.$store.dispatch(
+              'task/fetchTasksAllTasks',
+              this.project.projectId
+            );
+            this.$store.dispatch(
+              'task/fetchTasksMyTasks',
+              this.project.projectId
+            );
+            break;
+          case 'people':
+            this.$store.dispatch(
+              'task/fetchProjectUserCompletionTasks',
+              this.project.projectId
+            );
+            break;
+          case 'project':
+            this.$store.dispatch(
+              'task/fetchProjectTaskCompletion',
+              this.project.projectId
+            );
+            break;
+          case 'board':
+            this.$store.dispatch(
+              'sprints/sprint/fetchAllProjectSprints',
+              this.project.projectId
+            );
+            this.$store.dispatch(
+              'task/fetchTasksAllTasks',
+              this.project.projectId
+            );
+            break;
+          case 'files':
+            this.$store.dispatch(
+              'project/fetchAllProjectFiles',
+              this.project.projectId
+            );
+            break;
+        }
+        // if (this.selectedTab == 'task') {
+        // }
+        // if (this.selectedTab == 'people') {
+        //   console.log('people selected');
+        //   this.$store.dispatch(
+        //     'task/fetchProjectUserCompletionTasks',
+        //     this.project.projectId
+        //   );
+        // }
+
+        // if (this.selectedTab == 'people') {
+        //   this.$store.dispatch(
+        //     'task/fetchProjectUserCompletionTasks',
+        //     this.project.projectId
+        //   );
+        // }
+
+        // this.$store.dispatch('project/fetchProject', this.project.projectId);
+        // this.$store.dispatch(
+        //   'task/fetchProjectTaskCompletion',
+        //   this.project.projectId
+        // );
+        // this.$store.dispatch(
+        //   'project/fetchAllProjectFiles',
+        //   this.project.projectId
+        // );
+        // this.$store.dispatch(
+        //   'sprints/sprint/fetchAllProjectSprints',
+        //   this.project.projectId
+        // );
 
         // let projectSprintResponse;
         //   try {
@@ -435,29 +530,30 @@
         //    console.log("error", e)
         //   })
 
-        this.$axios
-          .get(
-            `projects/${this.project.projectId}/tasks/${this.userId}/completion/details`,
-            {
-              headers: {
-                user: this.userId,
-                type: 'project',
-              },
-            }
-          )
-          .then((response) => {
-            console.log('tasks users data -->', response.data.data);
-            this.people = response.data.data;
-          })
-          .catch((e) => {
-            console.log('error', e);
-          });
+        // this.$axios
+        //   .get(
+        //     `projects/${this.project.projectId}/tasks/${this.userId}/completion/details`,
+        //     {
+        //       headers: {
+        //         user: this.userId,
+        //         type: 'project',
+        //       },
+        //     }
+        //   )
+        //   .then((response) => {
+        //     console.log('tasks users data -->', response.data.data);
+        //     this.people = response.data.data;
+        //   })
+        //   .catch((e) => {
+        //     console.log('error', e);
+        //   });
       },
     },
     computed: {
       ...mapState({
         allProjects: (state) => state.project.projects,
         organizationalRole: (state) => state.user.organizationalRole,
+        selectedTab: (state) => state.tab.selectedTab,
       }),
     },
   };
