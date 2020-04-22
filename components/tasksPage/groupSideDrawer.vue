@@ -442,10 +442,10 @@
     </v-list>
     </div>
    
-          <!-- <div @click="close">
-            <component v-bind:is="component" ></component>
-            <success-popup />
-         </div> -->
+         <div @click="close">
+            <component v-bind:is="component" :errorMessage=errorMessage ></component>
+            <!-- <success-popup /> -->
+         </div>
 
     </div>
 </template>
@@ -473,13 +473,14 @@ import { mapState } from 'vuex';
     },
     data() {
       return {
+        errorMessage: "",
+        component: "",
         selectedSubTask: '',
         selectedSubTaskIndex: '',
         uploadLoading: false,
         files: [],
         taskDialog: false,
         subTaskDialog: false,
-        component: '',
         hidden: false,
         userId: this.$store.state.user.userId,
         drawer: null,
@@ -515,6 +516,9 @@ import { mapState } from 'vuex';
     //   })
     //  },
     methods: {
+      close() {
+      this.component = "";
+    },
        selectSubTask(subtask, index){
         this.selectedSubTask = subtask
         this.selectedSubTaskIndex = index
@@ -535,7 +539,12 @@ import { mapState } from 'vuex';
        const index = this.taskFiles.findIndex(i => i.taskFileId === taskFile);
         this.taskFiles.splice(index, 1);
         console.log(response.data);
+         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
        }  catch(e){
+          this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
           console.log("Error deleting task", e);
        }  
 
@@ -578,10 +587,14 @@ import { mapState } from 'vuex';
           taskGroupId: this.group.taskGroupId,
           userId: this.userId
         });
-
+         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
         console.log("update task status response", response);
        } catch(e){
           console.log("Error updating a status", e);
+           this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
        }
         
       },
@@ -598,8 +611,12 @@ import { mapState } from 'vuex';
         this.$store.dispatch('groups/groupTask/removeTaskFromTaskGroup', this.task.taskId);
         this.$emit('shrinkSideBar');
         console.log(response.data);
+        console.log("update task status response", response);
        }  catch(e){
           console.log("Error deleting task", e);
+             this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
        }  
       },
       async addSubTask(){
@@ -620,9 +637,14 @@ import { mapState } from 'vuex';
         // this.showNewSubTask = false;
         this.subTasks.push(response.data);
         console.log(response);
+         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
 
        } catch(e){
           console.log("Error adding a subTask", e);
+           this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
        }  
           }
       },
@@ -650,8 +672,13 @@ import { mapState } from 'vuex';
           value : this.updatedTask.taskNotes
         });        
         console.log("edit task response", response);
+         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
        } catch(e){
           console.log("Error updating a note", e);
+            this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
        }       
       },
       async updateGroupTaskName(){
@@ -676,8 +703,14 @@ import { mapState } from 'vuex';
           value : this.updatedTask.taskName
         });
         console.log("edit task response", response);
+          this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
        } catch(e){
           console.log("Error updating a note", e);
+           this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
+        this.editTask = true;
        }
       },
       async updateStatus(){
@@ -703,9 +736,14 @@ import { mapState } from 'vuex';
           taskGroupId: this.group.taskGroupId, 
           userId: this.userId
         });
+          this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
         console.log("update task status response", response);
        } catch(e){
           console.log("Error updating a status", e);
+           this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
        }
       },
         async updateTaskDates(type){
@@ -746,9 +784,14 @@ import { mapState } from 'vuex';
           dueDate: dueDate,
           remindDate : remindDate
         });
+         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
         console.log("update task dates response", response);
        } catch(e){
           console.log("Error updating a status", e);
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
        }
       },
          async subTaskUpdate(editsubtask){
@@ -769,8 +812,13 @@ import { mapState } from 'vuex';
             }
         )
         console.log("update sub task status response", response);
+          this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
        } catch(e){
           console.log("Error updating a status", e);
+             this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
        }
              }
       },
@@ -789,8 +837,13 @@ import { mapState } from 'vuex';
         );
         this.subTasks.splice(this.selectedSubTaskIndex, 1);
         console.log("delete sub task", response);
+         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
        } catch(e){
           console.log("Error updating a status", e);
+            this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
        }
       },
 
@@ -814,16 +867,18 @@ import { mapState } from 'vuex';
             this.taskFiles.push(res.data);
             this.uploadLoading = false
             console.log('File upload successful', res.data);
+         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
           })
           .catch((err) => {
             this.uploadLoading = false
             console.log('File Upload Failed', err);
+             this.errorMessage = err.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
           });
       },   
 
-    },
-    components: {
-     
     },
     computed: {
         updatedName: {
