@@ -505,10 +505,11 @@
     </v-list>
     </div>
    
-          <!-- <div @click="close">
-            <component v-bind:is="component" ></component>
-            <success-popup />
-         </div> -->
+          <div @click="close">
+            <component v-bind:is="component" :errorMessage=errorMessage ></component>
+            <!-- <success-popup /> -->
+         </div>
+
 
     </div>
 </template>
@@ -535,6 +536,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
     },
     data() {
       return {
+        errorMessage: '',
         uploadLoading: false,
         selectedSubTask: '',
         selectedSubTaskIndex: '',
@@ -666,11 +668,15 @@ import ErrorPopup from '~/components/popups/errorPopup'
                     'type' : 'project'
                 }
         })
+        // this.component = 'success-popup'
         this.$emit('listenChange');
         this.$emit('shrinkSideBar');
+         
         console.log(response.data);
        }  catch(e){
-          console.log("Error deleting project", e);
+          this.component = 'error-popup'
+          this.errorMessage = e.response.data
+          console.log("Error creating project", e);
        }  
       },
       async addSubTask(){
@@ -738,13 +744,16 @@ import ErrorPopup from '~/components/popups/errorPopup'
               }
             }
         )
+        this.component = 'success-popup'
         console.log("UPDATED", this.$store.state.task.myTasks)
         this.$emit('listenChange');
         this.editTask = true;
         console.log("edit task response", response);
        
        } catch(e){
-          console.log("Error updating a note", e);
+          console.log("Error updating the name", e);
+           this.errorMessage = e.response.data
+          this.component = 'error-popup'
        }
       },
       async updateStatus(){

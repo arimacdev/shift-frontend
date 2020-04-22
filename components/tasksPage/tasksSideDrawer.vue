@@ -445,10 +445,7 @@
    
     </div>
     
-<!-- <div class="sideBarPopupContent">
-  <v-card class="sidebarPopup">test 1</v-card>
-  <success-popup />
-</div> -->
+
     
     </div>
 </template>
