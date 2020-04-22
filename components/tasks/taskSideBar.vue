@@ -598,9 +598,11 @@ export default {
         this.taskFiles.splice(index, 1);
         console.log(response.data);
         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
         console.log("Error deleting task", e);
       }
     },
@@ -639,10 +641,12 @@ export default {
         );
         this.$emit("listenChange");
         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
         console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
         console.log("Error updating a status", e);
       }
     },
@@ -667,10 +671,12 @@ export default {
           sprintId: this.updatedSprint
         });
         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
         console.log("update sprint status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
         console.log("Error updating a sprint", e);
       }
     },
@@ -694,6 +700,7 @@ export default {
         console.log(response.data);
       } catch (e) {
         this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
         this.errorMessage = e.response.data;
         console.log("Error creating project", e);
       }
@@ -721,10 +728,12 @@ export default {
           // this.showNewSubTask = false;
           this.subTasks.push(response.data);
           this.component = "success-popup";
+          setTimeout( () => {this.close()}, 2000)
           console.log(response);
         } catch (e) {
           this.errorMessage = e.response.data;
           this.component = "error-popup";
+          setTimeout( () => {this.close()}, 2000)
           console.log("Error adding a subTask", e);
         }
       }
@@ -736,6 +745,7 @@ export default {
     async updateTaskNote() {
       console.log("updatedTaskValue ->", this.updatedTask.taskNotes);
       let response;
+      
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
@@ -751,10 +761,12 @@ export default {
         );
         this.$emit("listenChange");
         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
         console.log("edit task response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
         console.log("Error updating a note", e);
       }
     },
@@ -776,6 +788,7 @@ export default {
           }
         );
         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
         console.log("UPDATED", this.$store.state.task.myTasks);
         this.$emit("listenChange");
         this.editTask = true;
@@ -784,6 +797,7 @@ export default {
         console.log("Error updating the name", e);
         this.errorMessage = e.response.data;
         this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
         this.editTask = true;
       }
     },
@@ -805,10 +819,12 @@ export default {
         );
         this.$emit("listenChange");
         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
         console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
         console.log("Error updating a status", e);
       }
     },
@@ -853,10 +869,12 @@ export default {
         );
         this.$emit("listenChange");
         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
         console.log("update task dates response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
         console.log("Error updating a status", e);
       }
     },
@@ -881,10 +899,12 @@ export default {
           );
           // this.$emit('listenChange');
           this.component = "success-popup";
+          setTimeout( () => {this.close()}, 2000)
           console.log("update sub task status response", response);
         } catch (e) {
           this.errorMessage = e.response.data;
           this.component = "error-popup";
+          setTimeout( () => {this.close()}, 2000)
           console.log("Error updating a status", e);
         }
       }
@@ -906,10 +926,12 @@ export default {
         this.subTasks.splice(this.selectedSubTaskIndex, 1);
         console.log("delete sub task", response);
         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
       } catch (e) {
         console.log("Error updating a status", e);
         this.errorMessage = e.response.data;
         this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
       }
     },
     // async deleteSubTask(subtask,index){
@@ -977,11 +999,13 @@ export default {
         this.taskFiles.push(fileResponse.data);
         this.uploadLoading = false;
         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
         console.log("file response", this.taskFiles);
       } catch (e) {
         console.log("Error adding group file", e);
         this.errorMessage = e.response.data;
         this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
         this.uploadLoading = false;
       }
     }
