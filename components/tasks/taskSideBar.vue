@@ -595,7 +595,10 @@ import ErrorPopup from '~/components/popups/errorPopup'
         const index = this.taskFiles.findIndex(i => i.taskFileId === taskFile);
         this.taskFiles.splice(index, 1);
         console.log(response.data);
+        this.component = 'success-popup'
        }  catch(e){
+          this.errorMessage = e.response.data
+          this.component = 'error-popup'
           console.log("Error deleting task", e);
        }  
 
@@ -629,8 +632,11 @@ import ErrorPopup from '~/components/popups/errorPopup'
             }
         )
         this.$emit('listenChange');
+        this.component = 'success-popup'
         console.log("update task status response", response);
        } catch(e){
+         this.errorMessage = e.response.data
+          this.component = 'error-popup'
           console.log("Error updating a status", e);
        }
         
@@ -652,8 +658,11 @@ import ErrorPopup from '~/components/popups/errorPopup'
          this.$store.dispatch('task/updateSprintOfATask', {
            taskId : this.task.taskId,
            sprintId: this.updatedSprint})
+            this.component = 'success-popup'
         console.log("update sprint status response", response);
        } catch(e){
+          this.errorMessage = e.response.data
+          this.component = 'error-popup'
           console.log("Error updating a sprint", e);
        }
         
@@ -696,9 +705,12 @@ import ErrorPopup from '~/components/popups/errorPopup'
         this.showNewSubTask =true
         // this.showNewSubTask = false;
         this.subTasks.push(response.data)
+        this.component = 'success-popup'
         console.log(response);
 
        } catch(e){
+           this.errorMessage = e.response.data
+          this.component = 'error-popup'
           console.log("Error adding a subTask", e);
        }  
        }
@@ -724,8 +736,11 @@ import ErrorPopup from '~/components/popups/errorPopup'
             }
         )
         this.$emit('listenChange');
+        this.component = 'success-popup'
         console.log("edit task response", response);
        } catch(e){
+           this.errorMessage = e.response.data
+          this.component = 'error-popup'
           console.log("Error updating a note", e);
        }       
       },
@@ -754,6 +769,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
           console.log("Error updating the name", e);
            this.errorMessage = e.response.data
           this.component = 'error-popup'
+          this.editTask = true;
        }
       },
       async updateStatus(){
@@ -771,8 +787,11 @@ import ErrorPopup from '~/components/popups/errorPopup'
             }
         )
         this.$emit('listenChange');
+        this.component = 'success-popup'
         console.log("update task status response", response);
        } catch(e){
+          this.errorMessage = e.response.data
+          this.component = 'error-popup'
           console.log("Error updating a status", e);
        }
       },
@@ -810,8 +829,11 @@ import ErrorPopup from '~/components/popups/errorPopup'
             }
         )
         this.$emit('listenChange');
+        this.component = 'success-popup'
         console.log("update task dates response", response);
        } catch(e){
+          this.errorMessage = e.response.data
+          this.component = 'error-popup'
           console.log("Error updating a status", e);
        }
       },
@@ -833,8 +855,11 @@ import ErrorPopup from '~/components/popups/errorPopup'
             }
         )
         // this.$emit('listenChange');
+         this.component = 'success-popup'
         console.log("update sub task status response", response);
        } catch(e){
+         this.errorMessage = e.response.data
+          this.component = 'error-popup'
           console.log("Error updating a status", e);
        }
            }
@@ -854,8 +879,11 @@ import ErrorPopup from '~/components/popups/errorPopup'
         );
         this.subTasks.splice(this.selectedSubTaskIndex, 1);
         console.log("delete sub task", response);
+         this.component = 'success-popup'
        } catch(e){
           console.log("Error updating a status", e);
+            this.errorMessage = e.response.data
+          this.component = 'error-popup'
        }
       },
       // async deleteSubTask(subtask,index){
@@ -920,9 +948,12 @@ import ErrorPopup from '~/components/popups/errorPopup'
              })
              this.taskFiles.push(fileResponse.data);
              this.uploadLoading = false
-             console.log("group people response", this.taskFiles);
+             this.component = 'success-popup'
+             console.log("file response", this.taskFiles);
          } catch(e) {
-             console.log("Error fetching group people",e);
+             console.log("Error adding group file",e);
+              this.errorMessage = e.response.data
+          this.component = 'error-popup'
              this.uploadLoading = false
          }
 
