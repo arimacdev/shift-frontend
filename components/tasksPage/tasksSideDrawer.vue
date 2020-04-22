@@ -437,18 +437,12 @@
 
     </div>
    
-          <!-- <div @click="close">
-            <component v-bind:is="component" ></component>
-            <success-popup />
-         </div> -->
-
-   
     </div>
     
-<!-- <div class="sideBarPopupContent">
-  <v-card class="sidebarPopup">test 1</v-card>
-  <success-popup />
-</div> -->
+   <div @click="close">
+            <component v-bind:is="component" :errorMessage=errorMessage ></component>
+            <!-- <success-popup /> -->
+         </div>
     
     </div>
 </template>
@@ -462,26 +456,27 @@ import { Settings } from 'luxon'
  
 Settings.defaultLocale = 'IST'
 
-import SuccessPopup from '~/components/popups/sideBarSuccess'
+import SuccessPopup from '~/components/popups/successPopup'
 import ErrorPopup from '~/components/popups/errorPopup'
 
   export default {
     props: ['task', 'assignee', 'subTasks' ,'taskFiles'],
 
     components: {
-      'success-popup' : SuccessPopup,
+       'success-popup' : SuccessPopup,
       'error-popup': ErrorPopup,
       'datetime': Datetime
     },
     data() {
       return {
+          errorMessage: "",
+        component: '',
          selectedSubTask: '',
         selectedSubTaskIndex: '',
         uploadLoading: false,
         files: [],
         taskDialog: false,
         subTaskDialog: false,
-        component: '',
         hidden: false,
         userId: this.$store.state.user.userId,
         drawer: null,
@@ -512,6 +507,9 @@ import ErrorPopup from '~/components/popups/errorPopup'
       }
     },
     methods: {
+       close() {
+      this.component = "";
+    },
         selectSubTask(subtask, index){
         this.selectedSubTask = subtask
         this.selectedSubTaskIndex = index
@@ -530,8 +528,13 @@ import ErrorPopup from '~/components/popups/errorPopup'
        const index = this.taskFiles.findIndex(i => i.taskFileId === taskFile);
         this.taskFiles.splice(index, 1);
         console.log(response.data);
+         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
        }  catch(e){
           console.log("Error deleting task", e);
+           this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
        }  
 
       },
@@ -563,8 +566,15 @@ import ErrorPopup from '~/components/popups/errorPopup'
             }
         )
         console.log("update task status response", response);
+
+         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
        } catch(e){
           console.log("Error updating a status", e);
+
+           this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
        }
         
       },
@@ -580,8 +590,13 @@ import ErrorPopup from '~/components/popups/errorPopup'
         this.$store.dispatch('personalTasks/fetchAllPersonalTasks'); 
         this.$emit('shrinkSideBar');
         console.log(response.data);
+        
        }  catch(e){
           console.log("Error deleting task", e);
+
+           this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
        }  
       },
       async addSubTask(){
@@ -602,8 +617,15 @@ import ErrorPopup from '~/components/popups/errorPopup'
         this.subTasks.push(response.data);
         console.log(response);
 
+         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
+
        } catch(e){
           console.log("Error adding a subTask", e);
+
+           this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
        }  
         }
       },
@@ -626,8 +648,15 @@ import ErrorPopup from '~/components/popups/errorPopup'
         )
          this.$store.dispatch('personalTasks/fetchAllPersonalTasks'); 
         console.log("edit task response", response);
+
+         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
        } catch(e){
           console.log("Error updating a note", e);
+
+           this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
        }       
       },
       async saveEditTaskName(){
@@ -646,8 +675,15 @@ import ErrorPopup from '~/components/popups/errorPopup'
         this.editTask = true;
         this.$store.dispatch('personalTasks/fetchAllPersonalTasks');       
         console.log("edit task response", response);
+
+         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
        } catch(e){
           console.log("Error updating a note", e);
+
+           this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
        }
       },
       async updateStatus(){
@@ -665,8 +701,15 @@ import ErrorPopup from '~/components/popups/errorPopup'
         )
         this.$store.dispatch('personalTasks/fetchAllPersonalTasks'); 
         console.log("update task status response", response);
+
+         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
        } catch(e){
           console.log("Error updating a status", e);
+
+           this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
        }
       },
         async updateTaskDates(type){
@@ -703,8 +746,15 @@ import ErrorPopup from '~/components/popups/errorPopup'
         )
          this.$store.dispatch('personalTasks/fetchAllPersonalTasks'); 
         console.log("update task dates response", response);
+
+         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
        } catch(e){
           console.log("Error updating a status", e);
+
+           this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
        }
       },
          async subTaskUpdate(editsubtask){
@@ -724,8 +774,15 @@ import ErrorPopup from '~/components/popups/errorPopup'
             }
         )
         console.log("update sub task status response", response);
+
+         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
        } catch(e){
           console.log("Error updating a status", e);
+
+           this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
        }
            }
       },
@@ -743,8 +800,15 @@ import ErrorPopup from '~/components/popups/errorPopup'
         );
         this.subTasks.splice(this.selectedSubTaskIndex, 1);
         console.log("delete sub task", response);
+
+         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
        } catch(e){
           console.log("Error updating a status", e);
+
+           this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
        }
       },
         taskFileUpload(){
@@ -767,10 +831,16 @@ import ErrorPopup from '~/components/popups/errorPopup'
             this.taskFiles.push(res.data);
             this.uploadLoading = false
             console.log('File upload successful', res.data);
+
+         this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
           })
           .catch((err) => {
             this.uploadLoading = false
             console.log('File Upload Failed', err);
+              this.errorMessage = err.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
           });
 
       
@@ -780,9 +850,6 @@ import ErrorPopup from '~/components/popups/errorPopup'
       }
    
 
-    },
-    components: {
-     
     },
     computed: {
         updatedName: {

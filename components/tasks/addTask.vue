@@ -381,6 +381,9 @@ import axios from 'axios'
         console.log("Task adding successful", response);
 
         let taskId= response.data.taskId;
+        if (this.files != null){
+
+        console.log("files ------>" + this.files)
 for (let index = 0; index < this.files.length; ++index) {
         let formData = new FormData();
         formData.append('files', this.files[index]);
@@ -404,6 +407,7 @@ for (let index = 0; index < this.files.length; ++index) {
           });
       
            }
+            }
            this.files = null
       if(this.taskAssignee === this.userId){
         console.log("assignee is me", this.taskAssignee,this.userId)
@@ -419,6 +423,7 @@ for (let index = 0; index < this.files.length; ++index) {
           this.taskDueDate = new Date(),
           this.taskRemindOnDate = new Date(),
           this.taskNotes = '',
+          this.files = null
            this.$v.$reset()
        } catch(e){
          this.component = 'error-popup'
