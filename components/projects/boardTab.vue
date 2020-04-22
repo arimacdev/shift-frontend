@@ -38,7 +38,7 @@
              <div class="sprintTitle">
                 <!-- <span>Default Board</span> -->
                 <v-list-item-title>{{ projectSprint.sprintName }}</v-list-item-title>
-                <v-list-item-subtitle>( {{ projectSprint.sprintDescription }} )</v-list-item-subtitle>
+                <v-list-item-subtitle> {{ projectSprint.sprintDescription }} </v-list-item-subtitle>
             </div>
             <div class="boardTaskList overflow-y-auto">
                    <div v-for="(task, index) in projectAllTasks"

@@ -39,8 +39,19 @@
 
           </v-card-actions>
 
+           
+
     <div class="sprintDateRangePicker">
-      <v-dialog
+      <v-text-field
+                v-model="sprintDescription" 
+                label="Sprint description*" 
+                outlined=""
+                class=""
+                v-on="on"
+                clearable=""
+                :rules="sprintDescriptionRules" hide-details="auto"
+          ></v-text-field>
+      <!-- <v-dialog
         ref="dialog"
         v-model="modal"
         :return-value.sync="date"
@@ -65,7 +76,7 @@
           <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
           <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
         </v-date-picker>
-      </v-dialog>
+      </v-dialog> -->
     </div>
         
               </div>
@@ -83,7 +94,7 @@
                             >
                               Cancel
                             </v-btn>
-                  <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
                             <v-btn
                               color="success"
                               width="100px"
@@ -125,6 +136,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
     data() {
       return {
         sprintName: '',
+        sprintDescription: '',
         modal: false,
         dates: ['', ''],
         userId: this.$store.state.user.userId,
@@ -133,6 +145,9 @@ import ErrorPopup from '~/components/popups/errorPopup'
         userId: this.$store.state.user.userId,
         sprintNameRules: [
         value => !!value  || 'Sprint name is required!',
+      ],
+      sprintDescriptionRules: [
+        value => !!value  || 'Sprint description is required!',
       ],
       dateRangeRules: [
         value => !!value && value != ' - ' || 'Date range is required!',
@@ -170,7 +185,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
             projectId: this.projectId,
             sprintName: this.sprintName,
             sprintCreatedBy: this.userId,
-            sprintDescription: this.dateRangeText 
+            sprintDescription: this.sprintDescription 
           }
         )
         this.$refs.form.reset()
@@ -186,9 +201,9 @@ import ErrorPopup from '~/components/popups/errorPopup'
       }
     },
      computed: {
-          dateRangeText () {
-        return this.dates.join(' - ')
-      }
+      //     dateRangeText () {
+      //   return this.dates.join(' - ')
+      // }
     }
   }
 </script>
