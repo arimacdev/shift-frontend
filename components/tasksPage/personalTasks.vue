@@ -100,13 +100,18 @@
     </v-navigation-drawer>
 
           <!-- --------------- end side bar --------------------- -->
-       
+       <div @click="close">
+            <component v-bind:is="component" :errorMessage=errorMessage ></component>
+            <!-- <success-popup /> -->
+         </div>
 
 </div>
 </template>
 
 <script>
 import TaskSideDrawer from '~/components/tasksPage/tasksSideDrawer'
+import SuccessPopup from '~/components/popups/successPopup'
+import ErrorPopup from '~/components/popups/errorPopup'
 import axios from 'axios'
 import { mapState } from 'vuex'
 
@@ -114,9 +119,13 @@ import { mapState } from 'vuex'
   export default {
        components: {
       'tasks-side-drawer' : TaskSideDrawer,
+        'success-popup' : SuccessPopup,
+      'error-popup': ErrorPopup,
     },
      data () {
       return {
+         errorMessage: "",
+        component: '',
         drawer: null,
          userId: this.$store.state.user.userId,
          personalTask: '',
@@ -138,6 +147,9 @@ import { mapState } from 'vuex'
     },
 
     methods: {
+       close() {
+      this.component = "";
+    },
       dueDateCheck(task){
         console.log("check due date color", task);
         if(task.taskStatus === 'closed'){
@@ -217,8 +229,13 @@ import { mapState } from 'vuex'
         this.personalTask = ''
         console.log(response);
       this.$store.dispatch('personalTasks/fetchAllPersonalTasks');
+       this.component = "success-popup";
+        setTimeout( () => {this.close()}, 2000)
        } catch(e){
           console.log("Error adding a subTask", e);
+           this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout( () => {this.close()}, 2000)
        }  
       },
       getTaskDueDate(date) {

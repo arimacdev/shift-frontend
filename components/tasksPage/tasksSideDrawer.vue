@@ -470,13 +470,13 @@ import ErrorPopup from '~/components/popups/errorPopup'
     data() {
       return {
           errorMessage: "",
+        component: '',
          selectedSubTask: '',
         selectedSubTaskIndex: '',
         uploadLoading: false,
         files: [],
         taskDialog: false,
         subTaskDialog: false,
-        component: '',
         hidden: false,
         userId: this.$store.state.user.userId,
         drawer: null,
