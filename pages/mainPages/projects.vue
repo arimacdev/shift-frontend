@@ -191,30 +191,13 @@
         <component
           v-if="this.project.projectName != null"
           v-bind:is="component"
-          :projectSprints="projectSprints"
           :name="name"
-          :projectId="this.project.projectId"
-          :project="project"
-          :users="users"
-          :Alltasks="Alltasks"
-          :MyTasks="MyTasks"
-          :taskCompletion="taskCompletion"
-          :people="people"
-          :taskLog="taskLog"
           @refreshSelectedTab="refreshSelectedTab"
         ></component>
         <component
           v-else-if="this.component == 'add-project'"
           v-bind:is="component"
           :name="name"
-          :projectId="this.project.projectId"
-          :project="project"
-          :users="users"
-          :Alltasks="Alltasks"
-          :MyTasks="MyTasks"
-          :taskCompletion="taskCompletion"
-          :people="people"
-          :taskLog="taskLog"
         ></component>
       </keep-alive>
     </div>
@@ -260,6 +243,7 @@
 
     created() {
       this.$store.dispatch('project/fetchAllProjects');
+      this.$store.dispatch('user/setAllUsers');
     },
 
     // async asyncData({ $axios, app, store }) {
@@ -510,16 +494,6 @@
         // .catch (e => {
         //  console.log("error", e)
         // })
-
-        this.$axios
-          .get(`users`)
-          .then((response) => {
-            //  console.log("users data", response.data.data)
-            this.users = response.data.data;
-          })
-          .catch((e) => {
-            console.log('error', e);
-          });
 
         //  this.$axios.get(`log/${this.project.projectId}`)
         //   .then (response => {
