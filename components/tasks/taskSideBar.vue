@@ -596,15 +596,22 @@ import ErrorPopup from '~/components/popups/errorPopup'
         this.taskFiles.splice(index, 1);
         console.log(response.data);
         this.component = 'success-popup'
+         setTimeout( () => {this.close()}, 2000)
        }  catch(e){
           this.errorMessage = e.response.data
           this.component = 'error-popup'
+           setTimeout( () => {this.close()}, 2000)
           console.log("Error deleting task", e);
        }  
 
       },
       close(){
                 this.component = ''
+                console.log("popup closed ============> ");
+            },
+      closePopupCall(){
+                this.component = ''
+                console.log("popup closed ============> ");
             },
       showNewSubTaskField: function(){
         this.showNewSubTask =true;
@@ -633,10 +640,12 @@ import ErrorPopup from '~/components/popups/errorPopup'
         )
         this.$emit('listenChange');
         this.component = 'success-popup'
+         setTimeout( () => {this.close()}, 2000)
         console.log("update task status response", response);
        } catch(e){
          this.errorMessage = e.response.data
           this.component = 'error-popup'
+           setTimeout( () => {this.close()}, 2000)
           console.log("Error updating a status", e);
        }
         
@@ -659,10 +668,12 @@ import ErrorPopup from '~/components/popups/errorPopup'
            taskId : this.task.taskId,
            sprintId: this.updatedSprint})
             this.component = 'success-popup'
+             setTimeout( () => {this.close()}, 2000)
         console.log("update sprint status response", response);
        } catch(e){
           this.errorMessage = e.response.data
           this.component = 'error-popup'
+           setTimeout( () => {this.close()}, 2000)
           console.log("Error updating a sprint", e);
        }
         
@@ -685,6 +696,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
        }  catch(e){
           this.component = 'error-popup'
           this.errorMessage = e.response.data
+           setTimeout( () => {this.close()}, 2000)
           console.log("Error creating project", e);
        }  
       },
@@ -706,11 +718,13 @@ import ErrorPopup from '~/components/popups/errorPopup'
         // this.showNewSubTask = false;
         this.subTasks.push(response.data)
         this.component = 'success-popup'
+         setTimeout( () => {this.close()}, 2000)
         console.log(response);
 
        } catch(e){
            this.errorMessage = e.response.data
           this.component = 'error-popup'
+           setTimeout( () => {this.close()}, 2000)
           console.log("Error adding a subTask", e);
        }  
        }
@@ -737,10 +751,12 @@ import ErrorPopup from '~/components/popups/errorPopup'
         )
         this.$emit('listenChange');
         this.component = 'success-popup'
+         setTimeout( () => {this.close()}, 2000)
         console.log("edit task response", response);
        } catch(e){
            this.errorMessage = e.response.data
           this.component = 'error-popup'
+           setTimeout( () => {this.close()}, 2000)
           console.log("Error updating a note", e);
        }       
       },
@@ -760,6 +776,8 @@ import ErrorPopup from '~/components/popups/errorPopup'
             }
         )
         this.component = 'success-popup'
+        // setTimeout(function(){  });
+        setTimeout( () => {this.close()}, 2000);
         console.log("UPDATED", this.$store.state.task.myTasks)
         this.$emit('listenChange');
         this.editTask = true;
@@ -769,6 +787,7 @@ import ErrorPopup from '~/components/popups/errorPopup'
           console.log("Error updating the name", e);
            this.errorMessage = e.response.data
           this.component = 'error-popup'
+           setTimeout( () => {this.close()}, 2000);
           this.editTask = true;
        }
       },
@@ -788,10 +807,12 @@ import ErrorPopup from '~/components/popups/errorPopup'
         )
         this.$emit('listenChange');
         this.component = 'success-popup'
+        setTimeout( () => {this.close()}, 2000);
         console.log("update task status response", response);
        } catch(e){
           this.errorMessage = e.response.data
           this.component = 'error-popup'
+          setTimeout( () => {this.close()}, 2000);
           console.log("Error updating a status", e);
        }
       },
@@ -830,10 +851,12 @@ import ErrorPopup from '~/components/popups/errorPopup'
         )
         this.$emit('listenChange');
         this.component = 'success-popup'
+        setTimeout( () => {this.close()}, 2000);
         console.log("update task dates response", response);
        } catch(e){
           this.errorMessage = e.response.data
           this.component = 'error-popup'
+          setTimeout( () => {this.close()}, 2000);
           console.log("Error updating a status", e);
        }
       },
@@ -856,10 +879,12 @@ import ErrorPopup from '~/components/popups/errorPopup'
         )
         // this.$emit('listenChange');
          this.component = 'success-popup'
+         setTimeout( () => {this.close()}, 2000);
         console.log("update sub task status response", response);
        } catch(e){
          this.errorMessage = e.response.data
           this.component = 'error-popup'
+          setTimeout( () => {this.close()}, 2000);
           console.log("Error updating a status", e);
        }
            }
@@ -880,55 +905,15 @@ import ErrorPopup from '~/components/popups/errorPopup'
         this.subTasks.splice(this.selectedSubTaskIndex, 1);
         console.log("delete sub task", response);
          this.component = 'success-popup'
+         setTimeout( () => {this.close()}, 2000);
        } catch(e){
           console.log("Error updating a status", e);
             this.errorMessage = e.response.data
           this.component = 'error-popup'
+          setTimeout( () => {this.close()}, 2000);
        }
       },
-      // async deleteSubTask(subtask,index){
-      //   console.log("deletesubtask ->", subtask);
-      //   let response;
-      //   try{
-      //     response = await this.$axios.$delete(`/projects/${this.projectId}/tasks/${this.task.taskId}/subtask/${subtask.subtaskId}`,
-      //     {
-      //        headers: {
-      //             'user': this.userId,
-      //             "type": "project"
-      //         }
-      //     }
-      //   );
-      //   this.subTasks.splice(index, 1);
-      //   console.log("delete sub task", response);
-      //  } catch(e){
-      //     console.log("Error updating a status", e);
-      //  }
-      // },
-      //  handleFileUploads(e){
-      //   //  this.file = this.$refs.files.files[0];
-      //    let formData = new FormData();
-      //   formData.append('files', this.files);
-      //   formData.append('type', 'profileImage');
-      //   formData.append('taskType', 'project');
-      //   this.files = null
-
-      //   this.$axios.$post(`/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
-      //       formData,
-      //       {
-      //         headers: {
-      //             'Content-Type': 'multipart/form-data',
-      //             'user': this.userId
-      //         }
-      //       }
-      //     ).then(function(res){
-      //       this.taskFiles.push(res.data);
-      //       this.file = '';
-      //       console.log('File upload successful', res.data);
-      //     })
-      //     .catch(function(){
-      //       console.log('File Upload Failed');
-      //     });
-      // },
+     
       async taskFileUpload(){
         this.uploadLoading = true
         let formData = new FormData();
@@ -949,11 +934,13 @@ import ErrorPopup from '~/components/popups/errorPopup'
              this.taskFiles.push(fileResponse.data);
              this.uploadLoading = false
              this.component = 'success-popup'
+             setTimeout( () => {this.close()}, 2000);
              console.log("file response", this.taskFiles);
          } catch(e) {
              console.log("Error adding group file",e);
               this.errorMessage = e.response.data
           this.component = 'error-popup'
+          setTimeout( () => {this.close()}, 2000);
              this.uploadLoading = false
          }
 
