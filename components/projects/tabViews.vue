@@ -39,17 +39,13 @@
           <v-tab-item>
             <v-divider class="mx-4"></v-divider>
             <v-card flat>
-              <project-tab
-                :project="project"
-                :taskCompletion="taskCompletion"
-                :taskLog="taskLog"
-              />
+              <project-tab />
             </v-card>
           </v-tab-item>
           <v-tab-item>
             <v-divider class="mx-4"></v-divider>
             <v-card flat>
-              <files-tab :projectId="projectId" />
+              <files-tab />
             </v-card>
           </v-tab-item>
         </v-tabs>

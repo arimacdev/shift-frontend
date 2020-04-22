@@ -460,7 +460,6 @@
   import ErrorPopup from '~/components/popups/errorPopup';
 
   export default {
-    props: ['taskLog'],
     components: {
       'success-popup': SuccessPopup,
       'error-popup': ErrorPopup,
