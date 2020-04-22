@@ -326,6 +326,10 @@
               'task/fetchProjectUserCompletionTasks',
               this.project.projectId
             );
+            this.$store.dispatch(
+              'sprints/sprint/fetchAllProjectSprints',
+              this.project.projectId
+            );
             break;
           case 'project':
             this.$store.dispatch(
@@ -368,6 +372,10 @@
             );
             this.$store.dispatch(
               'task/fetchProjectUserCompletionTasks',
+              this.project.projectId
+            );
+            this.$store.dispatch(
+              'sprints/sprint/fetchAllProjectSprints',
               this.project.projectId
             );
             break;
