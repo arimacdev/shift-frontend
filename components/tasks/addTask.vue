@@ -209,261 +209,282 @@
 </template>
 
 <script>
+import { required, maxLength } from "vuelidate/lib/validators";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
+import { mapState } from "vuex";
 
-import { required, maxLength } from 'vuelidate/lib/validators'
-import SuccessPopup from '~/components/popups/successPopup'
-import ErrorPopup from '~/components/popups/errorPopup'
+import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 
-import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
- 
-import axios from 'axios'
-  export default {
-      props: ['projectId', 'projectUsers', 'people'],
-       components: {
-      'success-popup' : SuccessPopup,
-      'error-popup': ErrorPopup
-    },
-    
-    
-    data() {
-      return {
-        errorMessage: '',
-         userId: this.$store.state.user.userId,
-         files: [],
-         file: '',
-         task: {
-            taskName: '',
-            taskAssignee: '',
-            taskStatus: '',
-            taskDueDate:'',
-            taskRemindOnDate:'',
-            taskNotes: '',
+import axios from "axios";
+export default {
+  props: ["projectId", "projectUsers", "people"],
+  components: {
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup
+  },
+
+  data() {
+    return {
+      errorMessage: "",
+      userId: this.$store.state.user.userId,
+      files: [],
+      file: "",
+      task: {
+        taskName: "",
+        taskAssignee: "",
+        taskStatus: "",
+        taskDueDate: "",
+        taskRemindOnDate: "",
+        taskNotes: ""
       },
-         component: '',
-          taskAssignee: '',
-          taskStatus: 'pending',
-          taskName: '',
-          data: '',
-          taskDueDate: new Date(),
-          taskRemindOnDate: new Date(),
-          states: [],
-          search: null,
-          items: [
-            { name: 'Pending', id: 'pending' },
-            { name: 'Implementing', id: 'implementing' },
-            { name: 'QA', id: 'qa' },
-            { name: 'Ready to Deploy', id: 'readyToDeploy' },
-            { name: 'Re-Opened', id: 'reOpened' },
-            { name: 'Deployed', id: 'deployed' },
-            { name: 'Closed', id: 'closed' },
-        ],
-      
+      component: "",
+      taskAssignee: "",
+      taskStatus: "pending",
+      taskName: "",
+      data: "",
+      taskDueDate: new Date(),
+      taskRemindOnDate: new Date(),
+      states: [],
+      search: null,
+      items: [
+        { name: "Pending", id: "pending" },
+        { name: "Implementing", id: "implementing" },
+        { name: "QA", id: "qa" },
+        { name: "Ready to Deploy", id: "readyToDeploy" },
+        { name: "Re-Opened", id: "reOpened" },
+        { name: "Deployed", id: "deployed" },
+        { name: "Closed", id: "closed" }
+      ]
+    };
+  },
+  validations: {
+    taskName: {
+      required,
+      maxLength: maxLength(100)
+    },
+    taskDueDate: {
+      dateCheck() {
+        const dueDate = new Date(this.taskDueDate);
+        if (this.taskDueDate == null) {
+          return true;
+        } else {
+          const dueToUtc = new Date(
+            dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+          );
+          const dueToUtcDate = new Date(dueToUtc);
+          const now = new Date();
+          console.log(
+            "now",
+            now.getTime(),
+            "DueTime",
+            dueToUtcDate.getTime() + 350000000
+          );
+          if (now.getTime() >= dueToUtcDate.getTime() + 35000000) {
+            return false;
+          } else {
+            return true;
+          }
+        }
       }
     },
-    validations: {
-            taskName: {
-            required,
-            maxLength: maxLength(100)
-            },
-            taskDueDate: {
-              dateCheck(){
-                const dueDate = new Date(this.taskDueDate);
-                if(this.taskDueDate == null){
-                    return true;
-                } else{
-                    const dueToUtc = new Date(dueDate.toLocaleString("en-US", {timeZone: "UTC"}));
-                    const dueToUtcDate = new Date(dueToUtc);
-                    const now = new Date();
-                    console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime()+350000000);
-                    if(now.getTime() >= dueToUtcDate.getTime()+35000000){
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
-                
-      },
-            },
-            taskNotes:{
-              maxLength: maxLength(500)
-            },
-            taskRemindOnDate: {
-               dateCheck(){
-                const taskRemindOnDate = new Date(this.taskRemindOnDate);
-                if(this.taskRemindOnDate == null){
-                    return true;
-                } else{
-                    const endToUtc = new Date(taskRemindOnDate.toLocaleString("en-US", {timeZone: "UTC"}));
-                    const endToUtcDate = new Date(endToUtc);
-                    const taskDueDate = new Date(this.taskDueDate);
-                    console.log("start", taskDueDate.getTime(), "end", endToUtcDate.getTime()+35000000);
-                    if(taskDueDate.getTime() <= endToUtcDate.getTime()){
-                        console.log("overdue")
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
-                
-      },
-            },
-        },
-    methods: {
-      querySelections (v) {
-        console.log("people list", this.people)
-        this.states = [];
-        let projectSearchList = this.people;
-        for (let index = 0; index < projectSearchList.length; ++index) {
-            let user = projectSearchList[index];
-            this.states.push({name: user.assigneeFirstName + " " + user.assigneeLastName, id: user, img: user.assigneeProfileImage});
-        }
-        console.log( "nameList", this.states)
-        this.loading = true
-        
-      },
-      getDueDate(){ 
-        if(this.taskDueDate == null){
-          return null
+    taskNotes: {
+      maxLength: maxLength(500)
+    },
+    taskRemindOnDate: {
+      dateCheck() {
+        const taskRemindOnDate = new Date(this.taskRemindOnDate);
+        if (this.taskRemindOnDate == null) {
+          return true;
         } else {
+          const endToUtc = new Date(
+            taskRemindOnDate.toLocaleString("en-US", { timeZone: "UTC" })
+          );
+          const endToUtcDate = new Date(endToUtc);
+          const taskDueDate = new Date(this.taskDueDate);
+          console.log(
+            "start",
+            taskDueDate.getTime(),
+            "end",
+            endToUtcDate.getTime() + 35000000
+          );
+          if (taskDueDate.getTime() <= endToUtcDate.getTime()) {
+            console.log("overdue");
+            return false;
+          } else {
+            return true;
+          }
+        }
+      }
+    }
+  },
+  methods: {
+    querySelections(v) {
+      console.log("people list", this.people);
+      this.states = [];
+      let projectSearchList = this.people;
+      for (let index = 0; index < projectSearchList.length; ++index) {
+        let user = projectSearchList[index];
+        this.states.push({
+          name: user.assigneeFirstName + " " + user.assigneeLastName,
+          id: user,
+          img: user.assigneeProfileImage
+        });
+      }
+      console.log("nameList", this.states);
+      this.loading = true;
+    },
+    getDueDate() {
+      if (this.taskDueDate == null) {
+        return null;
+      } else {
         const startDate = new Date(this.taskDueDate);
-        const isoDate = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000)).toISOString();
-        console.log("iso due date",isoDate)
+        const isoDate = new Date(
+          startDate.getTime() - startDate.getTimezoneOffset() * 60000
+        ).toISOString();
+        console.log("iso due date", isoDate);
         return isoDate;
-        }
-      
+      }
     },
-    getRemindOnDate(){     
-      if(this.taskRemindOnDate == null){
-          return null
-        }  else {
- const endDate = new Date(this.taskRemindOnDate);
-    const isoDate = new Date(endDate.getTime() - (endDate.getTimezoneOffset() * 60000)).toISOString();
-    console.log("iso remond on date",isoDate)
-    return isoDate;
-        }
-   
+    getRemindOnDate() {
+      if (this.taskRemindOnDate == null) {
+        return null;
+      } else {
+        const endDate = new Date(this.taskRemindOnDate);
+        const isoDate = new Date(
+          endDate.getTime() - endDate.getTimezoneOffset() * 60000
+        ).toISOString();
+        console.log("iso remond on date", isoDate);
+        return isoDate;
+      }
     },
-      submit () {
-       this.$v.$touch()
-      },
-      handleFileUploads(e){
-         this.file = this.$refs.files.files[0];
-      },
-      close(){
-                this.component = ''
-            },
+    submit() {
+      this.$v.$touch();
+    },
+    handleFileUploads(e) {
+      this.file = this.$refs.files.files[0];
+    },
+    close() {
+      this.component = "";
+    },
 
-      handleSubmit(e) {
-                this.submitted = true;
-                // stop here if form is invalid
-                this.$v.$touch();
-                if (this.$v.$invalid) {
-                    return;
-                }
-      },
-     async addTask(){ 
-       
-       let response;
-       try{
-            response = await this.$axios.$post(`/projects/${this.projectId}/tasks`, {
-          taskName: this.taskName,
-          projectId: this.projectId,
-          taskInitiator: this.userId,
-          taskAssignee: this.taskAssignee,
-          taskDueDate: this.getDueDate(),
-          taskRemindOnDate: this.getRemindOnDate(),
-          taskStatus: this.taskStatus,
-          taskNotes: this.taskNotes,
-          taskType: 'project'
-        })
-         this.component = 'success-popup'
+    handleSubmit(e) {
+      this.submitted = true;
+      // stop here if form is invalid
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        return;
+      }
+    },
+    async addTask() {
+      let response;
+      try {
+        response = await this.$axios.$post(
+          `/projects/${this.projectId}/tasks`,
+          {
+            taskName: this.taskName,
+            projectId: this.projectId,
+            taskInitiator: this.userId,
+            taskAssignee: this.taskAssignee,
+            taskDueDate: this.getDueDate(),
+            taskRemindOnDate: this.getRemindOnDate(),
+            taskStatus: this.taskStatus,
+            taskNotes: this.taskNotes,
+            taskType: "project"
+          }
+        );
+        this.component = "success-popup";
         // window.setTimeout(location.reload(), 8000)
         console.log("Task adding successful", response);
 
-        let taskId= response.data.taskId;
-        if (this.files != null){
+        let taskId = response.data.taskId;
+        if (this.files != null) {
+          console.log("files ------>" + this.files);
+          for (let index = 0; index < this.files.length; ++index) {
+            let formData = new FormData();
+            formData.append("files", this.files[index]);
+            formData.append("type", "profileImage");
+            formData.append("taskType", "project");
 
-        console.log("files ------>" + this.files)
-for (let index = 0; index < this.files.length; ++index) {
-        let formData = new FormData();
-        formData.append('files', this.files[index]);
-        formData.append('type', 'profileImage');
-         formData.append('taskType', 'project');
-        
-        this.$axios.$post(`/projects/${this.projectId}/tasks/${taskId}/upload`,
-            formData,
-            {
-              headers: {
-                  'Content-Type': 'multipart/form-data',
-                  'user': this.userId
-              }
-            }
-            
-          ).then(function(res){
-            console.log('File upload successful');
-          })
-          .catch(function(){
-            console.log('File Upload Failed');
-          });
-      
-           }
-            }
-           this.files = null
-      if(this.taskAssignee === this.userId){
-        console.log("assignee is me", this.taskAssignee,this.userId)
-        this.$store.dispatch('task/fetchTasksMyTasks', this.projectId);
-        this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
-      } else {
-         console.log("assignee is NOT me",this.taskAssignee,)
-        this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
-      }
-          this.taskName = '',
-          this.taskAssignee = '',
-          this.taskStatus = 'pending',
-          this.taskDueDate = new Date(),
-          this.taskRemindOnDate = new Date(),
-          this.taskNotes = '',
-          this.files = null
-           this.$v.$reset()
-       } catch(e){
-         this.component = 'error-popup'
-         this.errorMessage = e.response.data
-          console.log("Error adding a Task", e);
-          // alert("Error adding a task")
-       }      
-      },
-    },
-    computed: {  
-        checkValidation: {
-            get(){
-              if(this.$v.$invalid == true){
-                return true
-              } else{
-                return false
-              }
-           },
-          set(value) {
-            this.taskName = value;
-          }            
-        },
-        addTaskAssignee:{
-          get(){
-            console.log("Task assignee -->!", this.taskAssignee)
-              return this.taskAssignee;
-          },
-          set(value){
-              this.taskAssignee = value
+            this.$axios
+              .$post(
+                `/projects/${this.projectId}/tasks/${taskId}/upload`,
+                formData,
+                {
+                  headers: {
+                    "Content-Type": "multipart/form-data",
+                    user: this.userId
+                  }
+                }
+              )
+              .then(function(res) {
+                console.log("File upload successful");
+              })
+              .catch(function() {
+                console.log("File Upload Failed");
+              });
           }
-        },
-         addTaskStyling: {
-            get(){
-              if(this.$v.$invalid == true){
-                return 'addTaskButtonFail'
-              } else{
-                return 'addTaskButtonSuccess'
-              }
-           }            
-        }    
+        }
+        this.files = null;
+        if (this.taskAssignee === this.userId) {
+          console.log("assignee is me", this.taskAssignee, this.userId);
+          this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
+          this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        } else {
+          console.log("assignee is NOT me", this.taskAssignee);
+          this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        }
+        (this.taskName = ""),
+          (this.taskAssignee = ""),
+          (this.taskStatus = "pending"),
+          (this.taskDueDate = new Date()),
+          (this.taskRemindOnDate = new Date()),
+          (this.taskNotes = ""),
+          (this.files = null);
+        this.$v.$reset();
+      } catch (e) {
+        this.component = "error-popup";
+        this.errorMessage = e.response.data;
+        console.log("Error adding a Task", e);
+        // alert("Error adding a task")
+      }
+    }
+  },
+  computed: {
+    ...mapState({
+      users: state => state.user.users,
+      projectId: state => state.project.project.projectId
+    }),
+    checkValidation: {
+      get() {
+        if (this.$v.$invalid == true) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      set(value) {
+        this.taskName = value;
+      }
+    },
+    addTaskAssignee: {
+      get() {
+        console.log("Task assignee -->!", this.taskAssignee);
+        return this.taskAssignee;
+      },
+      set(value) {
+        this.taskAssignee = value;
+      }
+    },
+    addTaskStyling: {
+      get() {
+        if (this.$v.$invalid == true) {
+          return "addTaskButtonFail";
+        } else {
+          return "addTaskButtonSuccess";
+        }
+      }
     }
   }
+};
 </script>
