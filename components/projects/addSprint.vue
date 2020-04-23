@@ -190,12 +190,18 @@ import ErrorPopup from '~/components/popups/errorPopup'
         )
         this.$refs.form.reset()
         this.component = 'success-popup'
+         setTimeout(() => {
+          this.close();
+        }, 2000);
         this.$store.dispatch('sprints/sprint/addProjectSprint', response.data)
         console.log("Sprint Added", response.data);
        } catch(e){
           console.log("Error adding a group", e);
           this.errorMessage = e.response.data
           this.component = 'error-popup'
+           setTimeout(() => {
+          this.close();
+        }, 2000);
        }
      
       }
