@@ -1164,7 +1164,8 @@ export default {
   },
   computed: {
     ...mapState({
-      projectSprints: state => state.sprints.sprint.sprints
+      projectSprints: state => state.sprints.sprint.sprints,
+      people: state => state.task.userCompletionTasks
     }),
     updatedName: {
       get() {
