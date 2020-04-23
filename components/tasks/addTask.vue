@@ -453,7 +453,8 @@ export default {
   computed: {
     ...mapState({
       users: state => state.user.users,
-      projectId: state => state.project.project.projectId
+      projectId: state => state.project.project.projectId,
+      people: state => state.task.userCompletionTasks
     }),
     checkValidation: {
       get() {
