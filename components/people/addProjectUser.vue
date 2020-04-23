@@ -120,129 +120,128 @@
 </template>
 
 <script>
-  import SuccessPopup from '~/components/popups/successPopup';
-  import ErrorPopup from '~/components/popups/errorPopup';
-  import { required } from 'vuelidate/lib/validators';
-  import { mapState } from 'vuex';
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
+import { required } from "vuelidate/lib/validators";
+import { mapState } from "vuex";
 
-  export default {
-    components: {
-      'success-popup': SuccessPopup,
-      'error-popup': ErrorPopup,
-    },
-    data() {
-      return {
-        errorMessage: '',
-        isValid: true,
-        userId: this.$store.state.user.userId,
-        addUser: {
-          assignerId: this.$store.state.user.userId,
-          assigneeId: '',
-          assigneeJobRole: '',
-          assigneeProjectRole: this.getProjectRole(),
-        },
-        projectRoleRules: [(value) => !!value || 'Project role is required!'],
-        assigneeRoleRules: [(value) => !!value || 'Assignee is required!'],
-        isShow: false,
-        selected: false,
-        dialog: false,
-        loading: false,
-        items: [],
-        search: null,
-        select: null,
-        states: [],
-        component: '',
-        success: '',
-      };
-    },
-    watch: {
-      search(val) {
-        val && val !== this.select && this.querySelections(val);
+export default {
+  components: {
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup
+  },
+  data() {
+    return {
+      errorMessage: "",
+      isValid: true,
+      userId: this.$store.state.user.userId,
+      addUser: {
+        assignerId: this.$store.state.user.userId,
+        assigneeId: "",
+        assigneeJobRole: "",
+        assigneeProjectRole: this.getProjectRole()
       },
+      projectRoleRules: [value => !!value || "Project role is required!"],
+      assigneeRoleRules: [value => !!value || "Assignee is required!"],
+      isShow: false,
+      selected: false,
+      dialog: false,
+      loading: false,
+      items: [],
+      search: null,
+      select: null,
+      states: [],
+      component: "",
+      success: ""
+    };
+  },
+  watch: {
+    search(val) {
+      val && val !== this.select && this.querySelections(val);
+    }
+  },
+  methods: {
+    close() {
+      this.$refs.form.reset();
+      this.component = "";
     },
-    methods: {
-      close() {
+    onSelectedUser() {
+      if (this.select !== undefined) {
+        this.$emit("searchSelected", this.select);
+        // console.log("selected user",this.select)
+      }
+    },
+    async changeHandler() {
+      // this.dialog = false;
+
+      let assigneeProjectRoleId = this.getProjectRole();
+      this.addUser.assigneeProjectRole = assigneeProjectRoleId;
+      let response;
+      try {
+        response = await this.$axios.$post(
+          `/projects/${this.projectId}/users`,
+          this.addUser
+        );
+        this.$store.dispatch(
+          "task/fetchProjectUserCompletionTasks",
+          this.projectId
+        );
+        this.addUser.assigneeId = "";
+        this.addUser.assigneeJobRole = "";
+        this.selected = false;
+        this.component = "success-popup";
+        this.success = response.message;
         this.$refs.form.reset();
-        this.component = '';
-      },
-      onSelectedUser() {
-        if (this.select !== undefined) {
-          this.$emit('searchSelected', this.select);
-          // console.log("selected user",this.select)
-        }
-      },
-      async changeHandler() {
-        // this.dialog = false;
-
-        let assigneeProjectRoleId = this.getProjectRole();
-        this.addUser.assigneeProjectRole = assigneeProjectRoleId;
-        let response;
-        try {
-          response = await this.$axios.$post(
-            `/projects/${this.projectId}/users`,
-            this.addUser
-          );
-          this.$store.dispatch(
-            'task/fetchProjectUserCompletionTasks',
-            this.projectId
-          );
-          this.addUser.assigneeId = '';
-          this.addUser.assigneeJobRole = '';
-          this.selected = false;
-          this.component = 'success-popup';
-          this.success = response.message;
-          this.$refs.form.reset();
-        } catch (e) {
-          console.log('Error adding a User', e);
-          this.errorMessage = e.response.data;
-          this.component = 'error-popup';
-        }
-      },
-      querySelections(v) {
-        let projectSearchList = this.users;
-        for (let index = 0; index < projectSearchList.length; ++index) {
-          let user = projectSearchList[index];
-          this.states.push({
-            name: user.firstName + ' ' + user.lastName,
-            id: user,
-            img: user.profileImage,
-          });
-        }
-        // console.log("usersList", this.users, "nameList", this.states)
-        this.loading = true;
-        setTimeout(() => {
-          this.items = this.states.filter((e) => {
-            return (
-              (e || '').toLowerCase().indexOf((v || '').toLowerCase()) > -1
-            );
-          });
-          this.loading = false;
+      } catch (e) {
+        console.log("Error adding a User", e);
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+      }
+    },
+    querySelections(v) {
+      let projectSearchList = this.users;
+      for (let index = 0; index < projectSearchList.length; ++index) {
+        let user = projectSearchList[index];
+        this.states.push({
+          name: user.firstName + " " + user.lastName,
+          id: user,
+          img: user.profileImage
+        });
+      }
+      // console.log("usersList", this.users, "nameList", this.states)
+      this.loading = true;
+      setTimeout(() => {
+        this.items = this.states.filter(e => {
+          return (e || "").toLowerCase().indexOf((v || "").toLowerCase()) > -1;
         });
         this.loading = false;
-      },
-      getProjectRole() {
-        console.log('getProjectRole', this.selected);
-        if (this.selected == true) {
-          return 2;
-        } else {
-          return 3;
-        }
-      },
+      });
+      this.loading = false;
     },
-    computed: {
-      ...mapState({
-        users: (state) => state.user.users,
-      }),
-      adminStatus: {
-        get() {
-          return this.selected;
-        },
-        set(value) {
-          this.selected = !this.selected;
-        },
+    getProjectRole() {
+      console.log("getProjectRole", this.selected);
+      if (this.selected == true) {
+        return 2;
+      } else {
+        return 3;
+      }
+    }
+  },
+  computed: {
+    ...mapState({
+      users: state => state.user.users,
+      projectId: state => state.project.project.projectId
+    }),
+    adminStatus: {
+      get() {
+        return this.selected;
       },
-    },
-  };
+      set(value) {
+        this.selected = !this.selected;
+      }
+    }
+  }
+};
 </script>
 
 <style scoped></style>
