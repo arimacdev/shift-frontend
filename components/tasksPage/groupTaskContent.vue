@@ -95,13 +95,18 @@
       <group-side-drawer :task="task" :group="group" :assignee="assignee" :groupPeople="groupPeople" :subTasks="subTasks" :taskFiles="taskFiles" @shrinkSideBar="shrinkSideBar"/>
     </v-navigation-drawer>
           <!-- --------------- end side bar --------------------- -->
-       
+         <div @click="close">
+            <component v-bind:is="component" :errorMessage=errorMessage ></component>
+            <!-- <success-popup /> -->
+         </div>
 
 </div>
 </template>
 
 <script>
 import GroupSideDrawer from '~/components/tasksPage/groupSideDrawer'
+import SuccessPopup from '~/components/popups/successPopup'
+import ErrorPopup from '~/components/popups/errorPopup'
 import axios from 'axios'
 import { mapState } from 'vuex'
 
@@ -109,10 +114,14 @@ import { mapState } from 'vuex'
   export default {
     props: [ 'group'],
        components: {
-      'group-side-drawer' : GroupSideDrawer,
+      'group-side-drawer' : GroupSideDrawer,  
+      'success-popup' : SuccessPopup,
+      'error-popup': ErrorPopup,
     },
      data () {
       return {
+          errorMessage: "",
+        component: '',
         drawer: null,
          userId: this.$store.state.user.userId,
          personalTask: '',
@@ -136,6 +145,9 @@ import { mapState } from 'vuex'
     // },
 
     methods: {
+        close() {
+      this.component = "";
+    },
         dueDateCheck(task){
         console.log("check due date color", task);
         if(task.taskStatus === 'closed'){
