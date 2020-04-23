@@ -1502,15 +1502,16 @@ color: #040428;
   /* --------------------- board tab ---------------- */
 
   .boardBodyDiv{
-      width: 100%;
-      height: 80vh;
-      padding-top: 20px;
-      position: absolute;
-      left: 25vw;
-      /* overflow-x: scroll; */
-        overflow-y: hidden;
-        white-space: nowrap;
-        border-left: solid #D9DEEB 5px;
+    width: 100%;
+    height: 90vh;
+    padding-top: 20px;
+    position: absolute;
+    left: 25vw;
+    overflow-y: scroll;
+      overflow-y: hidden;
+      white-space: nowrap;
+      border-left: solid #D9DEEB 5px;
+
   }
   .defaultBoard{
       width: 30%;
@@ -1629,10 +1630,11 @@ color: #040428;
     /* overflow-x: scroll; */
     overflow-y: hidden;
     white-space: nowrap;
-    height: 78vh;
+    height: 85%;
     width: 70%;
     padding-right: 100px;
     padding-left: 10px;
+
   }
  
   .rowHeightAddTask{
@@ -1643,8 +1645,12 @@ color: #040428;
 
   .addSprintSection{
         height: 100%;
-        width: 100%;
+        width: 300px;
         padding-top: 60px;
+        overflow-y: hidden;
+        /* background-color: burlywood; */
+        padding-right: 50px;
+        padding-left: 50px;
   }
   .addSprintButton{
     background-color: #2EC973;
@@ -1658,6 +1664,7 @@ color: #040428;
     height: 80vh;
     border-radius: 5px;
     display: inline-block;
+    /* background-color: blue; */
     /* margin-left: -300px; */
   }
   .sprintDateRangePicker{
@@ -1669,7 +1676,7 @@ color: #040428;
   .addSprintPopup{
       position: absolute;
       right: 300px;
-      bottom: 10px;
+      bottom: 60px;
   }
 
 

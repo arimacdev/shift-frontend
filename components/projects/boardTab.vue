@@ -110,7 +110,7 @@
             </div>
           </div>
           <div class="addSprintBoard card">
-            <div class="addSprintSection overflow-y-auto">
+            <div class="addSprintSection">
               <add-sprint :projectId="projectId" />
             </div>
           </div>
