@@ -329,129 +329,116 @@
 
         <!-- --------------------- delete sub task popup --------------- -->
 
-        <v-dialog v-model="subTaskDialog" max-width="380">
-          <v-card>
-            <div class="popupConfirmHeadline">
-              <v-icon
-                class="deletePopupIcon"
-                size="60"
-                color="deep-orange lighten-1"
-                >mdi-alert-outline</v-icon
-              >
-              <br />
-              <span class="alertPopupTitle">Delete Sub Task</span>
-              <br />
-              <span class="alertPopupText"
-                >You're about to permanantly delete this sub task and all of
-                it's data. If you're not sure, you can cancel this action.
-              </span>
-            </div>
 
-            <div class="popupBottom">
-              <v-card-actions>
-                <v-spacer></v-spacer>
+                  <v-dialog
+                        v-model="subTaskDialog"
+                        max-width="380"
+                      >
+                        <v-card>
+                          <div class="popupConfirmHeadline">
+                            <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
+                            <br>
+                            <span class="alertPopupTitle">Delete Sub Task</span>
+                            <br>
+                            <span class="alertPopupText">You're about to permanantly delete this sub task and all of it's data. If you're not sure, you can cancel this action. </span>
+                          </div>
 
-                <v-btn
-                  color="success"
-                  width="100px"
-                  @click="subTaskDialog = false"
+                          
+                  <div class="popupBottom">
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+
+                            <v-btn
+                              color="success"
+                              width="100px"
+                              @click="subTaskDialog = false"
+                            >
+                              Cancel
+                            </v-btn>
+                  <v-spacer></v-spacer>
+                  <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
+                            <v-btn
+                              color="error"
+                              width="100px"
+                              @click="subTaskDialog = false; deleteSubTask()"
+                            >
+                              Delete
+                            </v-btn>
+                            <v-spacer></v-spacer>
+                          </v-card-actions>
+
+                          
+                          </div>
+                        </v-card>
+                      </v-dialog>
+
+                  <!-- ---------------------- end popup ------------------ -->
+
+   <v-divider></v-divider>
+
+      <v-list-item-group class="tabListItems">
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon size="30" color="#0BAFFF" >mdi-calendar-blank-outline</v-icon>
+          </v-list-item-icon>
+          <!-- <v-list-item-content class="dueTitle"> -->
+          <!-- <p class="tabListItemsText datesTitle">Due date</p> -->
+           <!-- </v-list-item-content> -->
+          <v-list-item-content>
+            <!-- <input class="sideBarDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" v-model="taskDue" @change="updateTaskDates('dueDate')"> -->
+         <div class="pickerContainer pickerDiv sideBarPickers datePickerNew">
+             <div class="datetimePickerRange">
+             </div>
+           <datetime
+              type="datetime"
+              v-model="taskDue"
+              zone="local"
+                input-id="startDate"
                 >
-                  Cancel
-                </v-btn>
-                <v-spacer></v-spacer>
-                <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
-                <v-btn
-                  color="error"
-                  width="100px"
-                  @click="
-                    subTaskDialog = false;
-                    deleteSubTask();
-                  "
-                >
-                  Delete
-                </v-btn>
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </div>
-          </v-card>
-        </v-dialog>
-
-        <!-- ---------------------- end popup ------------------ -->
-
-        <v-divider></v-divider>
-
-        <v-list-item-group class="tabListItems">
-          <v-list-item>
-            <v-list-item-icon>
-              <v-icon size="30" color="#0BAFFF"
-                >mdi-calendar-blank-outline</v-icon
-              >
-            </v-list-item-icon>
-            <!-- <v-list-item-content class="dueTitle"> -->
-            <!-- <p class="tabListItemsText datesTitle">Due date</p> -->
-            <!-- </v-list-item-content> -->
-            <v-list-item-content>
-              <!-- <input class="sideBarDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" v-model="taskDue" @change="updateTaskDates('dueDate')"> -->
-              <div
-                class="pickerContainer pickerDiv sideBarPickers datePickerNew"
-              >
-                <datetime
-                  type="datetime"
-                  v-model="taskDue"
-                  zone="local"
-                  input-id="startDate"
-                >
-                  <label for="startDate" slot="before" class="tabListItemsText "
-                    ><span class="pickerNewText">Due date</span></label
-                  >
-                  <label for="startDate" slot="after" class="tabListItemsText "
-                    ><v-icon>mdi-pencil-outline</v-icon></label
-                  >
-                  <!-- <span class="description sdfsdf" slot="after" >
+                <label for="startDate" slot="before" class="tabListItemsTextDue "><span class="pickerNewText">Due date</span></label>
+                 <!-- <label for="startDate" slot="after" class="tabListItemsText "><v-icon>mdi-pencil-outline</v-icon></label> -->
+                 <!-- <span class="description sdfsdf" slot="after" >
                      <v-btn class="btnPicker" x-small depressed color="primary" @click="updateTaskDates('dueDate')"> <span class="btnPickerText"> Update</span> </v-btn>
                  </span> -->
-                  <template slot="button-cancel">
-                    <fa :icon="['far', 'times']"></fa>
-                    Cancel
-                  </template>
-                  <template slot="button-confirm">
-                    <fa :icon="['fas', 'check-circle']"></fa>
-                    <p>Confirm</p>
-                  </template>
-                </datetime>
-              </div>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-item-group>
+                <template slot="button-cancel">
+                  <fa :icon="['far', 'times']"></fa>
+                  Cancel
+                </template>
+                <template slot="button-confirm">
+                  <fa :icon="['fas', 'check-circle']"></fa>
+                <p > Confirm </p>
+            </template>
+          </datetime>
+         </div>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
 
-        <v-divider></v-divider>
+<v-divider></v-divider>
 
-        <v-list-item-group class="tabListItems">
-          <v-list-item>
-            <v-list-item-icon>
-              <v-icon size="30" color="#FFC213">mdi-clock-outline</v-icon>
-            </v-list-item-icon>
-            <!-- <v-list-item-content> -->
-            <!-- <p class="tabListItemsText datesTitle">Remind on</p> -->
-            <!-- </v-list-item-content> -->
-            <v-list-item-content>
-              <!-- <input class="sideBarDate " placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" v-model="taskRemindOn" @change="updateTaskDates('remindOn')"> -->
-              <div
-                class="pickerContainer pickerDiv sideBarPickers datePickerNew"
-              >
-                <datetime
-                  type="datetime"
-                  v-model="taskRemindOn"
-                  zone="local"
-                  input-id="endDate"
+ <v-list-item-group class="tabListItems">
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon size="30" color="#FFC213" >mdi-clock-outline</v-icon>
+          </v-list-item-icon>
+           <!-- <v-list-item-content> -->
+          <!-- <p class="tabListItemsText datesTitle">Remind on</p> -->
+           <!-- </v-list-item-content> -->
+          <v-list-item-content>
+             <!-- <input class="sideBarDate " placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" v-model="taskRemindOn" @change="updateTaskDates('remindOn')"> -->
+           <div class="pickerContainer pickerDiv sideBarPickers datePickerNew">
+             <div class="datetimePickerRange">
+             </div>
+           
+           <datetime
+              type="datetime"
+              v-model="taskRemindOn"
+              zone="local"
+                input-id="endDate"
                 >
-                  <label for="endDate" slot="before" class="tabListItemsText "
-                    ><span class="pickerNewText">Remind on</span></label
-                  >
-                  <label for="endDate" slot="after" class="tabListItemsText "
-                    ><v-icon>mdi-pencil-outline</v-icon></label
-                  >
-                  <!-- <span class="description " slot="after">
+                <label for="endDate" slot="before" class="tabListItemsText "><span class="pickerNewText">Remind on</span></label>
+                 <!-- <label for="endDate" slot="after" class="tabListItemsText "><v-icon>mdi-pencil-outline</v-icon></label> -->
+                 <!-- <span class="description " slot="after">
                      <v-btn class="btnPicker" x-small depressed color="primary"  @click="updateTaskDates('remindOn')"> <span class="btnPickerText"> Update </span></v-btn>
                  </span> -->
                   <template slot="button-cancel">

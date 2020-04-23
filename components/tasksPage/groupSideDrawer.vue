@@ -249,15 +249,16 @@
           </v-list-item-icon>
           <v-list-item-content>
            <div class="pickerContainer pickerDiv sideBarPickers datePickerNew">
-           
+            <div class="datetimePickerRange">
+             </div>
            <datetime
               type="datetime"
               v-model="taskDue"
               zone="local"
                 input-id="startDate"
                 >
-                <label for="startDate" slot="before" class="tabListItemsText "><span class="pickerNewText">Due date</span></label>
-                 <label for="startDate" slot="after" class="tabListItemsText "><v-icon>mdi-pencil-outline</v-icon></label>
+                <label for="startDate" slot="before" class="tabListItemsTextDue "><span class="pickerNewText">Due date</span></label>
+                 <!-- <label for="startDate" slot="after" class="tabListItemsText "><v-icon>mdi-pencil-outline</v-icon></label> -->
                  <!-- <span class="description sdfsdf" slot="after" >
                      <v-btn class="btnPicker" x-small depressed color="primary" @click="updateTaskDates('dueDate')"> <span class="btnPickerText"> Update</span> </v-btn>
                  </span> -->
@@ -288,7 +289,8 @@
           <v-list-item-content>
              <!-- <input class="sideBarDate " placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" v-model="taskRemindOn" @change="updateTaskDates('remindOn')"> -->
            <div class="pickerContainer pickerDiv sideBarPickers datePickerNew">
-           
+            <div class="datetimePickerRange">
+             </div>
            <datetime
               type="datetime"
               v-model="taskRemindOn"
@@ -297,7 +299,7 @@
                 
                 >
                 <label for="endDate" slot="before" class="tabListItemsText "><span class="pickerNewText">Remind on</span></label>
-                <label for="endDate" slot="after" class="tabListItemsText "><v-icon>mdi-pencil-outline</v-icon></label>
+                <!-- <label for="endDate" slot="after" class="tabListItemsText "><v-icon>mdi-pencil-outline</v-icon></label> -->
                  <!-- <span class="description " slot="after">
                      <v-btn class="btnPicker" x-small depressed color="primary"  @click="updateTaskDates('remindOn')"> <span class="btnPickerText"> Update </span></v-btn>
                  </span> -->
