@@ -73,7 +73,7 @@
             v-if="this.taskFilter == 'assignee'"
             dark=""
             width="100%"
-            height="45px"
+            height="40px"
             color="#080848"
             ><v-icon color="#FFFFFF">mdi-filter-outline</v-icon> Filter</v-btn
           >
