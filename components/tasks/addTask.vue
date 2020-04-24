@@ -64,6 +64,7 @@
            <div class="pickerContainer taskDatePickerField pickerDiv">
             <VueCtkDateTimePicker 
               color="#3f51b5" 
+              id="due"
               class="dateTimePickerInternal" 
               v-model="$v.taskDueDate.$model" 
               label="Task due date and time"
@@ -82,6 +83,7 @@
          <div class="pickerContainer taskDatePickerField pickerDiv">
          <VueCtkDateTimePicker 
           color="#3f51b5"  
+          id="reminder"
           class="dateTimePickerInternal" 
           v-model="$v.taskRemindOnDate.$model" 
           label="Reminder"

@@ -73,6 +73,7 @@
                
             <VueCtkDateTimePicker
              color="#3f51b5" 
+             id="start"
              class="dateTimePickerInternal" 
              v-model="$v.startDate.$model" 
              label="Project start date and time"
@@ -93,6 +94,7 @@
            <div class="pickerContainer pickerDiv">
             <VueCtkDateTimePicker 
             color="#3f51b5" 
+            id="end"
             class="dateTimePickerInternal" 
             v-model="$v.endDate.$model" 
             label="Project end date and time"
