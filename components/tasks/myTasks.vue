@@ -34,7 +34,7 @@
             <div class="body-2">{{ task.taskName }}</div>
           </div>
           <v-list-item-content class="updatedDate">
-            <v-list-item-title class="body-2">{{
+            <v-list-item-title :class="dueDateCheck(task)">{{
               getProjectDates(task.taskDueDateAt)
             }}</v-list-item-title>
           </v-list-item-content>
@@ -119,152 +119,152 @@
 </template>
 
 <script>
-  import TaskSideBar from '~/components/tasks/taskSideBar';
-  import { mapState } from 'vuex';
-  export default {
-    // props: ['projectId', 'projectUsers', 'people'],
-    data() {
-      return {
-        items: [
-          { id: 'all', name: 'All' },
-          { id: 'pending', name: 'Pending' },
-          { id: 'implementing', name: 'Implementing' },
-          { id: 'qa', name: 'QA' },
-          { id: 'readyToDeploy', name: 'Ready to deploy' },
-          { id: 'reOpened', name: 'Reopened' },
-          { id: 'deployed', name: 'Deployed' },
-          { id: 'closed', name: 'Closed' },
-        ],
-        projects: ['pr1'],
-        drawer: null,
+import TaskSideBar from '~/components/tasks/taskSideBar';
+import { mapState } from 'vuex';
+export default {
+  // props: ['projectId', 'projectUsers', 'people'],
+  data() {
+    return {
+      items: [
+        { id: 'all', name: 'All' },
+        { id: 'pending', name: 'Pending' },
+        { id: 'implementing', name: 'Implementing' },
+        { id: 'qa', name: 'QA' },
+        { id: 'readyToDeploy', name: 'Ready to deploy' },
+        { id: 'reOpened', name: 'Reopened' },
+        { id: 'deployed', name: 'Deployed' },
+        { id: 'closed', name: 'Closed' },
+      ],
+      projects: ['pr1'],
+      drawer: null,
 
-        task: {},
-        subTasks: [],
-        taskFiles: [],
-        assignee: {},
-        userId: this.$store.state.user.userId,
-        taskSelect: null,
-      };
+      task: {},
+      subTasks: [],
+      taskFiles: [],
+      assignee: {},
+      userId: this.$store.state.user.userId,
+      taskSelect: null,
+    };
+  },
+  components: {
+    'task-side-bar': TaskSideBar,
+  },
+  methods: {
+    checkme() {
+      console.log('you can check', this.projectMyTask);
     },
-    components: {
-      'task-side-bar': TaskSideBar,
-    },
-    methods: {
-      checkme() {
-        console.log('you can check', this.projectMyTask);
-      },
-      dueDateCheck(task) {
-        console.log('check due date color', task);
-        if (task.taskStatus === 'closed') {
-          return 'workLoadTaskDone';
-        } else if (task.taskDueDateAt == null) {
-          return 'workLoadTaskDefault';
-        } else {
-          const dueDate = new Date(task.taskDueDateAt);
-          const dueToUtc = new Date(
-            dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
-          );
-          const dueToUtcDate = new Date(dueToUtc);
-          const now = new Date();
-          console.log('now', now.getTime(), 'DueTime', dueToUtcDate.getTime());
-          if (now.getTime() > dueToUtcDate.getTime()) {
-            console.log('overdue');
-            return 'workLoadTaskOverDue';
-          } else {
-            return 'workLoadTaskHealthy';
-          }
-        }
-      },
-      taskFilter() {
-        console.log('-----------> changed' + this.taskSelect);
-      },
-      listenToChange() {
-        console.log('listened to changes ------->');
-        this.$store.dispatch('task/fetchTasksMyTasks', this.projectId);
-        this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
-        this.$store.dispatch('task/fetchProjectTaskCompletion', this.projectId);
-      },
-      shrinkSideBar() {
-        this.drawer = false;
-      },
-      async selectTask(task) {
-        this.task = task;
-        console.log('selectedTask', task);
-        this.$axios
-          .get(`/users/${this.task.taskAssignee}`)
-          .then(async (response) => {
-            console.log('fetched task -->', response.data.data);
-            this.assignee = response.data.data;
-            //if task fetch is successful,
-            let subTaskResponse;
-            try {
-              subTaskResponse = await this.$axios.$get(
-                `/projects/${this.projectId}/tasks/${task.taskId}/subtask?userId=${this.userId}`,
-                {
-                  headers: {
-                    type: 'project',
-                  },
-                }
-              );
-              console.log('subtasks--->', subTaskResponse.data);
-              this.subTasks = subTaskResponse.data;
-              //get files related to task
-              let taskFilesResponse;
-              try {
-                taskFilesResponse = await this.$axios.$get(
-                  `/projects/${this.projectId}/tasks/${task.taskId}/files`,
-                  {
-                    headers: {
-                      user: this.userId,
-                      type: 'project',
-                    },
-                  }
-                );
-                console.log('files--->', taskFilesResponse.data);
-                this.taskFiles = taskFilesResponse.data;
-              } catch (error) {
-                console.log('Error fetching data', error);
-              }
-            } catch (error) {
-              console.log('Error fetching data', error);
-            }
-          })
-          .catch((e) => {
-            console.log('error', e);
-          });
-      },
-      getProjectDates(date) {
-        const dueDate = new Date(date);
+    dueDateCheck(task) {
+      console.log('check due date color', task);
+      if (task.taskStatus === 'closed') {
+        return 'workLoadTaskDone';
+      } else if (task.taskDueDateAt == null) {
+        return 'workLoadTaskDefault';
+      } else {
+        const dueDate = new Date(task.taskDueDateAt);
         const dueToUtc = new Date(
           dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
         );
         const dueToUtcDate = new Date(dueToUtc);
         const now = new Date();
-        console.log('Today', now.getDate(), 'DueDate', dueToUtcDate.getDate());
-
-        if (date === null || date === '1970-01-01T05:30:00.000+0000') {
-          return 'Add Due Date';
-        } else if (now.getDate() === dueToUtcDate.getDate()) {
-          return 'Today';
-        } else if (now.getDate() - 1 === dueToUtcDate.getDate()) {
-          return 'Yesterday';
-        } else if (now.getDate() + 1 === dueToUtcDate.getDate()) {
-          return 'Tomorrow';
+        console.log('now', now.getTime(), 'DueTime', dueToUtcDate.getTime());
+        if (now.getTime() > dueToUtcDate.getTime()) {
+          console.log('overdue');
+          return 'workLoadTaskOverDue';
         } else {
-          let stringDate = date + '';
-          stringDate = stringDate.toString();
-          stringDate = stringDate.slice(0, 10);
-          return stringDate;
+          return 'workLoadTaskHealthy';
         }
-      },
+      }
     },
-    computed: {
-      ...mapState({
-        projectMyTask: (state) => state.task.myTasks,
-        projectId: (state) => state.project.project.projectId,
-      }),
+    taskFilter() {
+      console.log('-----------> changed' + this.taskSelect);
     },
-  };
+    listenToChange() {
+      console.log('listened to changes ------->');
+      this.$store.dispatch('task/fetchTasksMyTasks', this.projectId);
+      this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
+      this.$store.dispatch('task/fetchProjectTaskCompletion', this.projectId);
+    },
+    shrinkSideBar() {
+      this.drawer = false;
+    },
+    async selectTask(task) {
+      this.task = task;
+      console.log('selectedTask', task);
+      this.$axios
+        .get(`/users/${this.task.taskAssignee}`)
+        .then(async (response) => {
+          console.log('fetched task -->', response.data.data);
+          this.assignee = response.data.data;
+          //if task fetch is successful,
+          let subTaskResponse;
+          try {
+            subTaskResponse = await this.$axios.$get(
+              `/projects/${this.projectId}/tasks/${task.taskId}/subtask?userId=${this.userId}`,
+              {
+                headers: {
+                  type: 'project',
+                },
+              }
+            );
+            console.log('subtasks--->', subTaskResponse.data);
+            this.subTasks = subTaskResponse.data;
+            //get files related to task
+            let taskFilesResponse;
+            try {
+              taskFilesResponse = await this.$axios.$get(
+                `/projects/${this.projectId}/tasks/${task.taskId}/files`,
+                {
+                  headers: {
+                    user: this.userId,
+                    type: 'project',
+                  },
+                }
+              );
+              console.log('files--->', taskFilesResponse.data);
+              this.taskFiles = taskFilesResponse.data;
+            } catch (error) {
+              console.log('Error fetching data', error);
+            }
+          } catch (error) {
+            console.log('Error fetching data', error);
+          }
+        })
+        .catch((e) => {
+          console.log('error', e);
+        });
+    },
+    getProjectDates(date) {
+      const dueDate = new Date(date);
+      const dueToUtc = new Date(
+        dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
+      );
+      const dueToUtcDate = new Date(dueToUtc);
+      const now = new Date();
+      console.log('Today', now.getDate(), 'DueDate', dueToUtcDate.getDate());
+
+      if (date === null || date === '1970-01-01T05:30:00.000+0000') {
+        return 'Add Due Date';
+      } else if (now.getDate() === dueToUtcDate.getDate()) {
+        return 'Today';
+      } else if (now.getDate() - 1 === dueToUtcDate.getDate()) {
+        return 'Yesterday';
+      } else if (now.getDate() + 1 === dueToUtcDate.getDate()) {
+        return 'Tomorrow';
+      } else {
+        let stringDate = date + '';
+        stringDate = stringDate.toString();
+        stringDate = stringDate.slice(0, 10);
+        return stringDate;
+      }
+    },
+  },
+  computed: {
+    ...mapState({
+      projectMyTask: (state) => state.task.myTasks,
+      projectId: (state) => state.project.project.projectId,
+    }),
+  },
+};
 </script>
 
 <style scoped></style>

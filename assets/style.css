@@ -1262,7 +1262,7 @@
   width: 70%;
 }
 .tasklistTaskNames {
-  width: 70%;
+  width: 60%;
 }
 
 .workloadFilter {
@@ -1703,4 +1703,39 @@
 }
 .filterButtonBackground {
   background-color: #080848;
+}
+
+.restructuredMainTaskList {
+  background-color: #080848 !important;
+}
+.restructuredMainTaskName {
+  color: #ffffff;
+}
+.restructuredMainTaskCode {
+  font-weight: 600;
+  margin-right: 10px;
+}
+.restructuredSubTaskList {
+  background-color: #edf0f5;
+  margin-left: 50px;
+}
+.restructuredSubTaskName {
+  color: #080848;
+  width: 58% !important;
+}
+.restStatusChip {
+  /* padding-right: 30px; */
+  text-align: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border-radius: 30px;
+  width: 120px;
+}
+.closedStatus {
+  background-color: #ff6bb2;
+}
+.otherStatus {
+  background-color: #0083e2;
 }

@@ -1,65 +1,63 @@
-.heading{
+.heading {
 }
-.tasksButtons{
-    border-radius: 5px;
-    float: left;
-    margin-right: 5px;
+.tasksButtons {
+  border-radius: 5px;
+  float: left;
+  margin-right: 5px;
 }
-.buttonText{
-    margin-left: -20px;
+.buttonText {
+  margin-left: -20px;
 }
-.createTask{
-    background-color: #0BAFFF;
-    width: 30%;
+.createTask {
+  background-color: #0bafff;
+  width: 30%;
 }
-.myTasks{
-    background-color: #2EC973;
-    width: 25%;
+.myTasks {
+  background-color: #2ec973;
+  width: 25%;
 }
-.allTasks{
-    background-color: #0C0C5A;
-    width: 25%;
+.allTasks {
+  background-color: #0c0c5a;
+  width: 25%;
 }
-.showTasks{
-    width: 100%;
-    margin-top: 70px;
+.showTasks {
+  width: 100%;
+  margin-top: 70px;
 }
-
-
 
 /* ------------- All tasks / task list ----------- */
 
-.allTasksDropDown{
-    width: 90%;
-    height: 100%;
+.allTasksDropDown {
+  width: 90%;
+  height: 100%;
 }
-.taskContent{
-    width: 90%;
+.taskContent {
+  width: 90%;
 }
-.taskList{
-    background-color: #EDF0F5;
-    border-radius: 5px;
-    margin-bottom: 10px;
+.taskList {
+  background-color: #edf0f5;
+  border-radius: 5px;
+  margin-bottom: 10px;
 }
-.updatedDate{
-    text-align: right;
-    color: #FF6161;
+.updatedDate {
+  text-align: right;
+  color: #ff6161;
 }
-.workLoadTaskDone{
+.workLoadTaskDone {
   text-align: right;
   color: rgb(10, 126, 0);
 }
-.workLoadTaskOverDue{
+.workLoadTaskOverDue {
   text-align: right;
   color: rgb(163, 11, 0) !important;
 }
-.workLoadTaskHealthy{
+.workLoadTaskHealthy {
   text-align: right;
   color: rgb(0, 4, 255);
 }
-.workLoadTaskDefault{
+.workLoadTaskDefault {
   text-align: right;
-  color: rgb(0, 0, 0);
+  color: #b9b9b9;
 }
 .round {
   position: relative;
@@ -82,7 +80,7 @@
   border: 2px solid #fff;
   border-top: none;
   border-right: none;
-  content: "";
+  content: '';
   height: 6px;
   left: 7px;
   opacity: 0;
@@ -92,15 +90,15 @@
   width: 12px;
 }
 
-.round input[type="checkbox"] {
+.round input[type='checkbox'] {
   visibility: hidden;
 }
 
-.round input[type="checkbox"]:checked + label {
+.round input[type='checkbox']:checked + label {
   background-color: #66bb6a;
   border-color: #66bb6a;
 }
 
-.round input[type="checkbox"]:checked + label:after {
+.round input[type='checkbox']:checked + label:after {
   opacity: 1;
 }

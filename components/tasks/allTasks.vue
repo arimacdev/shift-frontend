@@ -27,6 +27,7 @@
         </div>
       </div>
       <div class="taskFilterDiv">
+        <!-- ---------- filter options ------------- -->
         <div class="filterOptionDiv">
           <v-select
             v-if="this.taskFilter == 'assignee'"
@@ -49,14 +50,32 @@
             label="Select type"
             solo
           ></v-select>
+          <VueCtkDateTimePicker
+            v-if="this.taskFilter == 'dateRange'"
+            :no-value-to-custom-elem="false"
+            color="#3f51b5"
+            v-model="dateRange"
+            label="Filter tasks by"
+            range
+            right
+            noButton
+            autoClose
+          >
+          </VueCtkDateTimePicker>
         </div>
+        <!-- ----------- filter assignee button ---------- -->
         <div class="filterSubmitButton">
           <v-btn
-            v-if="
-              this.taskFilter != null &&
-                this.taskFilter != 'none' &&
-                this.taskFilter != 'type'
-            "
+            v-if="this.taskFilter == 'assignee'"
+            dark=""
+            width="100%"
+            height="45px"
+            color="#080848"
+            ><v-icon color="#FFFFFF">mdi-filter-outline</v-icon> Filter</v-btn
+          >
+          <!-- ------------- filter dateRange button ---------------- -->
+          <v-btn
+            v-else-if="this.taskFilter == 'dateRange'"
             dark=""
             width="100%"
             height="45px"
@@ -73,7 +92,7 @@
       <div
         v-for="(task, index) in projectAllTasks"
         :key="index"
-        class="taskList"
+        class="taskList restructuredMainTaskList"
       >
         <v-list-item
           v-if="
@@ -87,10 +106,6 @@
           @click="selectTask(task)"
         >
           <v-list-item-action>
-            <!-- <div class="round">
-                <input type="checkbox" disabled name="a2" value="1" id="checkbox" />
-                <label for="checkbox"></label>
-            </div> -->
             <v-icon v-if="task.taskStatus == 'closed'" size="30" color="#2EC973"
               >mdi-checkbox-marked-circle</v-icon
             >
@@ -98,11 +113,17 @@
               >mdi-checkbox-blank-circle</v-icon
             >
           </v-list-item-action>
-          <div class="tasklistTaskNames">
-            <div class="body-2">{{ task.taskName }}</div>
+          <div class="tasklistTaskNames restructuredMainTaskName">
+            <div class="body-2">
+              <span class="restructuredMainTaskCode"> MRI - #1 </span>
+              {{ task.taskName }}
+            </div>
+          </div>
+          <div class="restStatusChip" :class="statusCheck(task)">
+            Status code
           </div>
           <v-list-item-content class="updatedDate">
-            <v-list-item-title class="body-2">{{
+            <v-list-item-title :class="dueDateCheck(task)">{{
               getProjectDates(task.taskDueDateAt)
             }}</v-list-item-title>
           </v-list-item-content>
@@ -119,6 +140,46 @@
         </v-list-item>
         <!-- -------------- filter for all ------------ -->
       </div>
+
+      <!-- -------------- sub task design --------------- -->
+      <div class="taskList restructuredSubTaskList">
+        <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)">
+          <v-list-item-action>
+            <v-icon v-if="task.taskStatus == 'closed'" size="30" color="#2EC973"
+              >mdi-checkbox-marked-circle</v-icon
+            >
+            <v-icon v-else size="30" color="#FFFFFF"
+              >mdi-checkbox-blank-circle</v-icon
+            >
+          </v-list-item-action>
+          <div class="tasklistTaskNames restructuredSubTaskName">
+            <div class="body-2">
+              <span class="restructuredMainTaskCode"> MRI - #1 </span>
+              {{ task.taskName }} This is a sub task
+            </div>
+          </div>
+          <div class="restStatusChip" :class="statusCheck(task)">
+            Status code
+          </div>
+          <v-list-item-content class="updatedDate">
+            <v-list-item-title :class="dueDateCheck(task)">{{
+              getProjectDates(task.taskDueDateAt)
+            }}</v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-avatar>
+            <v-img
+              v-if="task.taskAssigneeProfileImage != null"
+              :src="task.taskAssigneeProfileImage"
+            ></v-img>
+            <v-img
+              v-else
+              src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+            ></v-img>
+          </v-list-item-avatar>
+        </v-list-item>
+      </div>
+
+      <!-- -------------- end sub task design -------------- -->
     </div>
 
     <!-- -------------- start side bar ----------------- -->
@@ -157,6 +218,7 @@ export default {
   // props: ['projectId', 'projectUsers', 'people'],
   data() {
     return {
+      dateRange: new Date(),
       dialog: false,
       notifications: false,
       sound: true,
@@ -271,6 +333,13 @@ export default {
         .catch((e) => {
           console.log('error', e);
         });
+    },
+    statusCheck(task) {
+      if (task.taskStatus === 'closed') {
+        return 'closedStatus';
+      } else {
+        return 'otherStatus';
+      }
     },
     dueDateCheck(task) {
       console.log('check due date color', task);
