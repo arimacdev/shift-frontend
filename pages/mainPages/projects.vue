@@ -25,7 +25,7 @@
         </div>
         <div class="content-div">
           <v-list-item-title
-            v-if="this.newProject == true"
+            v-if="this.newProject == false"
             class="font-weight-bold"
             >Select a project</v-list-item-title
           >
@@ -205,346 +205,346 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
-  import NavigationDrawer from '~/components/navigationDrawer';
-  import Logo from '~/components/Logo.vue';
-  import VuetifyLogo from '~/components/VuetifyLogo.vue';
-  import TabViews from '~/components/projects/tabViews';
-  import SearchBar from '~/components/tools/searchBar';
-  import AddProject from '~/components/projects/addProject';
-  export default {
-    components: {
-      NavigationDrawer,
-      'tab-views': TabViews,
-      'search-bar': SearchBar,
-      'add-project': AddProject,
-    },
-    data() {
-      return {
-        component: 'tab-views',
-        project: {},
-        taskLog: [],
-        Alltasks: [],
-        MyTasks: [],
-        taskCompletion: {},
-        users: [],
-        user_org_role: this.$store.state.user.organizationalRole,
-        access_token: this.$store.state.user.access_token,
-        userId: this.$store.state.user.userId,
-        ongoingArray: [],
-        supportArray: [],
-        finishedArray: [],
-        preSalesArray: [],
-        looped: false,
-        projectSprint: {},
-        newProject: false,
-      };
-    },
+import { mapState } from 'vuex';
+import NavigationDrawer from '~/components/navigationDrawer';
+import Logo from '~/components/Logo.vue';
+import VuetifyLogo from '~/components/VuetifyLogo.vue';
+import TabViews from '~/components/projects/tabViews';
+import SearchBar from '~/components/tools/searchBar';
+import AddProject from '~/components/projects/addProject';
+export default {
+  components: {
+    NavigationDrawer,
+    'tab-views': TabViews,
+    'search-bar': SearchBar,
+    'add-project': AddProject,
+  },
+  data() {
+    return {
+      component: 'tab-views',
+      project: {},
+      taskLog: [],
+      Alltasks: [],
+      MyTasks: [],
+      taskCompletion: {},
+      users: [],
+      user_org_role: this.$store.state.user.organizationalRole,
+      access_token: this.$store.state.user.access_token,
+      userId: this.$store.state.user.userId,
+      ongoingArray: [],
+      supportArray: [],
+      finishedArray: [],
+      preSalesArray: [],
+      looped: false,
+      projectSprint: {},
+      newProject: false,
+    };
+  },
 
-    created() {
-      this.$store.dispatch('project/fetchAllProjects');
-      this.$store.dispatch('user/setAllUsers');
-    },
+  created() {
+    this.$store.dispatch('project/fetchAllProjects');
+    this.$store.dispatch('user/setAllUsers');
+  },
 
-    // async asyncData({ $axios, app, store }) {
-    //   let userId = store.state.user.userId;
-    //   // const { data: projects } = await $axios.$get(`/projects?userId=${userId}`)
-    //   const { data: users } = await $axios.$get('/users');
-    //   // const { data: currentUser } = await $axios.$get(`/users/${userId}`);
-    //   // const { data: tasks } = await $axios.$get(`/projects/${p1}/tasks?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`)
-    //   // console.log("projects list", projects)
-    //   // console.log("users list", users)
-    //   // console.log("tasks list", tasks)
-    //   // console.log("Current user", currentUser)
-    //   return {
-    //     // projects: projects,
-    //     users: users,
-    //     // tasks: tasks,
-    //     project: '',
-    //     people: [],
-    //   };
-    // },
+  // async asyncData({ $axios, app, store }) {
+  //   let userId = store.state.user.userId;
+  //   // const { data: projects } = await $axios.$get(`/projects?userId=${userId}`)
+  //   const { data: users } = await $axios.$get('/users');
+  //   // const { data: currentUser } = await $axios.$get(`/users/${userId}`);
+  //   // const { data: tasks } = await $axios.$get(`/projects/${p1}/tasks?userId=138bbb3d-02ed-4d72-9a03-7e8cdfe89eff`)
+  //   // console.log("projects list", projects)
+  //   // console.log("users list", users)
+  //   // console.log("tasks list", tasks)
+  //   // console.log("Current user", currentUser)
+  //   return {
+  //     // projects: projects,
+  //     users: users,
+  //     // tasks: tasks,
+  //     project: '',
+  //     people: [],
+  //   };
+  // },
 
-    methods: {
-      getProjects(type) {
-        const projectsAll = this.allProjects;
-        if (this.looped === false) {
-          console.log('run loop inside');
-          for (let i = 0; i < projectsAll.length; i++) {
-            let projectType = projectsAll[i].projectStatus;
-            switch (projectType) {
-              case 'ongoing':
-                this.ongoingArray.push(projectsAll[i]);
-                break;
-              case 'support':
-                this.supportArray.push(projectsAll[i]);
-                break;
-              case 'finished':
-                this.finishedArray.push(projectsAll[i]);
-                break;
-              default:
-                this.preSalesArray.push(projectsAll[i]);
-                break;
-            }
-            this.looped = true;
+  methods: {
+    getProjects(type) {
+      const projectsAll = this.allProjects;
+      if (this.looped === false) {
+        console.log('run loop inside');
+        for (let i = 0; i < projectsAll.length; i++) {
+          let projectType = projectsAll[i].projectStatus;
+          switch (projectType) {
+            case 'ongoing':
+              this.ongoingArray.push(projectsAll[i]);
+              break;
+            case 'support':
+              this.supportArray.push(projectsAll[i]);
+              break;
+            case 'finished':
+              this.finishedArray.push(projectsAll[i]);
+              break;
+            default:
+              this.preSalesArray.push(projectsAll[i]);
+              break;
           }
+          this.looped = true;
         }
-        switch (type) {
-          case 'ongoing':
-            return this.ongoingArray;
-            break;
-          case 'support':
-            return this.supportArray;
-            break;
-          case 'finished':
-            return this.finishedArray;
-          case 'presales':
-            return this.preSalesArray;
-        }
-      },
-      createNewProject(type) {
-        this.newProject = true;
-      },
-      refreshSelectedTab(tab) {
-        switch (tab) {
-          case 'people':
-            this.$store.dispatch(
-              'task/fetchProjectUserCompletionTasks',
-              this.project.projectId
-            );
-            break;
-          case 'task':
-            this.$store.dispatch(
-              'task/fetchTasksAllTasks',
-              this.project.projectId
-            );
-            this.$store.dispatch(
-              'task/fetchTasksMyTasks',
-              this.project.projectId
-            );
-            this.$store.dispatch(
-              'task/fetchProjectUserCompletionTasks',
-              this.project.projectId
-            );
-            this.$store.dispatch(
-              'sprints/sprint/fetchAllProjectSprints',
-              this.project.projectId
-            );
-            break;
-          case 'project':
-            this.$store.dispatch(
-              'task/fetchProjectTaskCompletion',
-              this.project.projectId
-            );
-            break;
-          case 'board':
-            this.$store.dispatch(
-              'sprints/sprint/fetchAllProjectSprints',
-              this.project.projectId
-            );
-            this.$store.dispatch(
-              'task/fetchTasksAllTasks',
-              this.project.projectId
-            );
-            break;
-          case 'files':
-            this.$store.dispatch(
-              'project/fetchAllProjectFiles',
-              this.project.projectId
-            );
-            break;
-        }
-      },
-      async selectProject(project) {
-        this.newProject = false;
-        this.project = project;
-        console.log('selected project ---------->', project, this.selectedTab);
-        this.$store.dispatch('project/fetchProject', this.project.projectId);
-        switch (this.selectedTab) {
-          case 'task':
-            this.$store.dispatch(
-              'task/fetchTasksAllTasks',
-              this.project.projectId
-            );
-            this.$store.dispatch(
-              'task/fetchTasksMyTasks',
-              this.project.projectId
-            );
-            this.$store.dispatch(
-              'task/fetchProjectUserCompletionTasks',
-              this.project.projectId
-            );
-            this.$store.dispatch(
-              'sprints/sprint/fetchAllProjectSprints',
-              this.project.projectId
-            );
-            break;
-          case 'people':
-            this.$store.dispatch(
-              'task/fetchProjectUserCompletionTasks',
-              this.project.projectId
-            );
-            break;
-          case 'project':
-            this.$store.dispatch(
-              'task/fetchProjectTaskCompletion',
-              this.project.projectId
-            );
-            break;
-          case 'board':
-            this.$store.dispatch(
-              'sprints/sprint/fetchAllProjectSprints',
-              this.project.projectId
-            );
-            this.$store.dispatch(
-              'task/fetchTasksAllTasks',
-              this.project.projectId
-            );
-            break;
-          case 'files':
-            this.$store.dispatch(
-              'project/fetchAllProjectFiles',
-              this.project.projectId
-            );
-            break;
-        }
-        // if (this.selectedTab == 'task') {
-        // }
-        // if (this.selectedTab == 'people') {
-        //   console.log('people selected');
-        //   this.$store.dispatch(
-        //     'task/fetchProjectUserCompletionTasks',
-        //     this.project.projectId
-        //   );
-        // }
-
-        // if (this.selectedTab == 'people') {
-        //   this.$store.dispatch(
-        //     'task/fetchProjectUserCompletionTasks',
-        //     this.project.projectId
-        //   );
-        // }
-
-        // this.$store.dispatch('project/fetchProject', this.project.projectId);
-        // this.$store.dispatch(
-        //   'task/fetchProjectTaskCompletion',
-        //   this.project.projectId
-        // );
-        // this.$store.dispatch(
-        //   'project/fetchAllProjectFiles',
-        //   this.project.projectId
-        // );
-        // this.$store.dispatch(
-        //   'sprints/sprint/fetchAllProjectSprints',
-        //   this.project.projectId
-        // );
-
-        // let projectSprintResponse;
-        //   try {
-        //   projectSprintResponse = await this.$axios.$get(`/sprints/${this.project.projectId}`,
-        //   {
-        //     headers: {
-        //       userId: this.userId,
-        //    }
-        //   }
-        //   )
-        //   console.log("sprints--->", projectSprintResponse.data);
-        //   this.projectSprints = projectSprintResponse.data;
-        //    } catch (error) {
-        //       console.log("Error fetching data", error);
-        //    }
-
-        // let projectFilesResponse;
-        // try {
-        // projectFilesResponse = await this.$axios.$get(`/projects/${this.project.projectId}/files`,
-        // {
-        //   headers: {
-        //     user: this.userId,
-        //  }
-        // }
-        // )
-        // console.log("files--->", projectFilesResponse.data)     ;
-        // this.projectFiles = projectFilesResponse.data;
-        //  } catch (error) {
-        //     console.log("Error fetching data", error);
-        //  }
-
-        //  console.log("userId", this.userId)   @ALLTASKS DEPRECATED
-        //  console.log("access_token", this.access_token)
-        //    //Get all projects for now
-        //   this.$axios.get (`projects/${this.project.projectId}/tasks?userId=${this.userId}`)
-        //   .then (response => {
-        //    this.Alltasks = response.data.data;
-        //   })
-        //   .catch (e => {
-        //    console.log("error", e)
-        //   })
-
-        // this.$axios.get (`/users/${this.userId}`)
-        // .then (response => {
-        //  this.currentUser = response.data.data;
-        //  console.log(this.currentUser)
-        // })
-        // .catch (e => {
-        //  console.log("error", e)
-        // })
-
-        // this.$axios.get (`projects/${this.project.projectId}/tasks/user?userId=${this.userId}`) @MYTASKS DEPRECATED
-        // .then (response => {
-        // //  console.log("data", response.data)
-        //  this.MyTasks = response.data.data;
-        // })
-        // .catch (e => {
-        //  console.log("error", e)
-        // })
-
-        // this.$axios.get(`projects/${this.project.projectId}/tasks/completion`, {
-        //    headers: {
-        //     user: this.userId,
-        //  }
-        // })
-        // .then (response => {
-        // //  console.log("task completion list", response.data)
-        //  this.taskCompletion = response.data.data;
-        // })
-        // .catch (e => {
-        //  console.log("error", e)
-        // })
-
-        //  this.$axios.get(`log/${this.project.projectId}`)
-        //   .then (response => {
-        //     console.log("task log", response.data.data);
-        //    this.taskLog = response.data.data;
-        //   })
-        //   .catch (e => {
-        //    console.log("error", e)
-        //   })
-
-        // this.$axios
-        //   .get(
-        //     `projects/${this.project.projectId}/tasks/${this.userId}/completion/details`,
-        //     {
-        //       headers: {
-        //         user: this.userId,
-        //         type: 'project',
-        //       },
-        //     }
-        //   )
-        //   .then((response) => {
-        //     console.log('tasks users data -->', response.data.data);
-        //     this.people = response.data.data;
-        //   })
-        //   .catch((e) => {
-        //     console.log('error', e);
-        //   });
-      },
+      }
+      switch (type) {
+        case 'ongoing':
+          return this.ongoingArray;
+          break;
+        case 'support':
+          return this.supportArray;
+          break;
+        case 'finished':
+          return this.finishedArray;
+        case 'presales':
+          return this.preSalesArray;
+      }
     },
-    computed: {
-      ...mapState({
-        allProjects: (state) => state.project.projects,
-        organizationalRole: (state) => state.user.organizationalRole,
-        selectedTab: (state) => state.tab.selectedTab,
-      }),
+    createNewProject(type) {
+      this.newProject = true;
     },
-  };
+    refreshSelectedTab(tab) {
+      switch (tab) {
+        case 'people':
+          this.$store.dispatch(
+            'task/fetchProjectUserCompletionTasks',
+            this.project.projectId
+          );
+          break;
+        case 'task':
+          this.$store.dispatch(
+            'task/fetchTasksAllTasks',
+            this.project.projectId
+          );
+          this.$store.dispatch(
+            'task/fetchTasksMyTasks',
+            this.project.projectId
+          );
+          this.$store.dispatch(
+            'task/fetchProjectUserCompletionTasks',
+            this.project.projectId
+          );
+          this.$store.dispatch(
+            'sprints/sprint/fetchAllProjectSprints',
+            this.project.projectId
+          );
+          break;
+        case 'project':
+          this.$store.dispatch(
+            'task/fetchProjectTaskCompletion',
+            this.project.projectId
+          );
+          break;
+        case 'board':
+          this.$store.dispatch(
+            'sprints/sprint/fetchAllProjectSprints',
+            this.project.projectId
+          );
+          this.$store.dispatch(
+            'task/fetchTasksAllTasks',
+            this.project.projectId
+          );
+          break;
+        case 'files':
+          this.$store.dispatch(
+            'project/fetchAllProjectFiles',
+            this.project.projectId
+          );
+          break;
+      }
+    },
+    async selectProject(project) {
+      this.newProject = false;
+      this.project = project;
+      console.log('selected project ---------->', project, this.selectedTab);
+      this.$store.dispatch('project/fetchProject', this.project.projectId);
+      switch (this.selectedTab) {
+        case 'task':
+          this.$store.dispatch(
+            'task/fetchTasksAllTasks',
+            this.project.projectId
+          );
+          this.$store.dispatch(
+            'task/fetchTasksMyTasks',
+            this.project.projectId
+          );
+          this.$store.dispatch(
+            'task/fetchProjectUserCompletionTasks',
+            this.project.projectId
+          );
+          this.$store.dispatch(
+            'sprints/sprint/fetchAllProjectSprints',
+            this.project.projectId
+          );
+          break;
+        case 'people':
+          this.$store.dispatch(
+            'task/fetchProjectUserCompletionTasks',
+            this.project.projectId
+          );
+          break;
+        case 'project':
+          this.$store.dispatch(
+            'task/fetchProjectTaskCompletion',
+            this.project.projectId
+          );
+          break;
+        case 'board':
+          this.$store.dispatch(
+            'sprints/sprint/fetchAllProjectSprints',
+            this.project.projectId
+          );
+          this.$store.dispatch(
+            'task/fetchTasksAllTasks',
+            this.project.projectId
+          );
+          break;
+        case 'files':
+          this.$store.dispatch(
+            'project/fetchAllProjectFiles',
+            this.project.projectId
+          );
+          break;
+      }
+      // if (this.selectedTab == 'task') {
+      // }
+      // if (this.selectedTab == 'people') {
+      //   console.log('people selected');
+      //   this.$store.dispatch(
+      //     'task/fetchProjectUserCompletionTasks',
+      //     this.project.projectId
+      //   );
+      // }
+
+      // if (this.selectedTab == 'people') {
+      //   this.$store.dispatch(
+      //     'task/fetchProjectUserCompletionTasks',
+      //     this.project.projectId
+      //   );
+      // }
+
+      // this.$store.dispatch('project/fetchProject', this.project.projectId);
+      // this.$store.dispatch(
+      //   'task/fetchProjectTaskCompletion',
+      //   this.project.projectId
+      // );
+      // this.$store.dispatch(
+      //   'project/fetchAllProjectFiles',
+      //   this.project.projectId
+      // );
+      // this.$store.dispatch(
+      //   'sprints/sprint/fetchAllProjectSprints',
+      //   this.project.projectId
+      // );
+
+      // let projectSprintResponse;
+      //   try {
+      //   projectSprintResponse = await this.$axios.$get(`/sprints/${this.project.projectId}`,
+      //   {
+      //     headers: {
+      //       userId: this.userId,
+      //    }
+      //   }
+      //   )
+      //   console.log("sprints--->", projectSprintResponse.data);
+      //   this.projectSprints = projectSprintResponse.data;
+      //    } catch (error) {
+      //       console.log("Error fetching data", error);
+      //    }
+
+      // let projectFilesResponse;
+      // try {
+      // projectFilesResponse = await this.$axios.$get(`/projects/${this.project.projectId}/files`,
+      // {
+      //   headers: {
+      //     user: this.userId,
+      //  }
+      // }
+      // )
+      // console.log("files--->", projectFilesResponse.data)     ;
+      // this.projectFiles = projectFilesResponse.data;
+      //  } catch (error) {
+      //     console.log("Error fetching data", error);
+      //  }
+
+      //  console.log("userId", this.userId)   @ALLTASKS DEPRECATED
+      //  console.log("access_token", this.access_token)
+      //    //Get all projects for now
+      //   this.$axios.get (`projects/${this.project.projectId}/tasks?userId=${this.userId}`)
+      //   .then (response => {
+      //    this.Alltasks = response.data.data;
+      //   })
+      //   .catch (e => {
+      //    console.log("error", e)
+      //   })
+
+      // this.$axios.get (`/users/${this.userId}`)
+      // .then (response => {
+      //  this.currentUser = response.data.data;
+      //  console.log(this.currentUser)
+      // })
+      // .catch (e => {
+      //  console.log("error", e)
+      // })
+
+      // this.$axios.get (`projects/${this.project.projectId}/tasks/user?userId=${this.userId}`) @MYTASKS DEPRECATED
+      // .then (response => {
+      // //  console.log("data", response.data)
+      //  this.MyTasks = response.data.data;
+      // })
+      // .catch (e => {
+      //  console.log("error", e)
+      // })
+
+      // this.$axios.get(`projects/${this.project.projectId}/tasks/completion`, {
+      //    headers: {
+      //     user: this.userId,
+      //  }
+      // })
+      // .then (response => {
+      // //  console.log("task completion list", response.data)
+      //  this.taskCompletion = response.data.data;
+      // })
+      // .catch (e => {
+      //  console.log("error", e)
+      // })
+
+      //  this.$axios.get(`log/${this.project.projectId}`)
+      //   .then (response => {
+      //     console.log("task log", response.data.data);
+      //    this.taskLog = response.data.data;
+      //   })
+      //   .catch (e => {
+      //    console.log("error", e)
+      //   })
+
+      // this.$axios
+      //   .get(
+      //     `projects/${this.project.projectId}/tasks/${this.userId}/completion/details`,
+      //     {
+      //       headers: {
+      //         user: this.userId,
+      //         type: 'project',
+      //       },
+      //     }
+      //   )
+      //   .then((response) => {
+      //     console.log('tasks users data -->', response.data.data);
+      //     this.people = response.data.data;
+      //   })
+      //   .catch((e) => {
+      //     console.log('error', e);
+      //   });
+    },
+  },
+  computed: {
+    ...mapState({
+      allProjects: (state) => state.project.projects,
+      organizationalRole: (state) => state.user.organizationalRole,
+      selectedTab: (state) => state.tab.selectedTab,
+    }),
+  },
+};
 </script>

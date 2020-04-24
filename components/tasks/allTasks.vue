@@ -22,6 +22,7 @@
             item-value="id"
             label="None"
             solo
+            @mousedown="clearFilter()"
           ></v-select>
         </div>
       </div>
@@ -45,7 +46,7 @@
             :items="items"
             item-text="name"
             item-value="id"
-            label="All"
+            label="Select type"
             solo
           ></v-select>
         </div>
@@ -75,7 +76,13 @@
         class="taskList"
       >
         <v-list-item
-          v-if="task.taskStatus == taskSelect"
+          v-if="
+            task.taskStatus == taskSelect ||
+              taskFilter == 'none' ||
+              taskFilter == 'assignee' ||
+              taskFilter == 'dateRange' ||
+              taskSelect == 'all'
+          "
           @click.stop="drawer = !drawer"
           @click="selectTask(task)"
         >
@@ -111,47 +118,6 @@
           </v-list-item-avatar>
         </v-list-item>
         <!-- -------------- filter for all ------------ -->
-        <v-list-item
-          v-if="
-            taskSelect == 'all' ||
-              taskSelect == null ||
-              taskFilter == 'none' ||
-              taskFilter == null
-          "
-          @click.stop="drawer = !drawer"
-          @click="selectTask(task)"
-        >
-          <v-list-item-action>
-            <!-- <div class="round">
-                <input type="checkbox" disabled name="a2" value="1" id="checkbox" />
-                <label for="checkbox"></label>
-            </div> -->
-            <v-icon v-if="task.taskStatus == 'closed'" size="30" color="#2EC973"
-              >mdi-checkbox-marked-circle</v-icon
-            >
-            <v-icon v-else size="30" color="#FFFFFF"
-              >mdi-checkbox-blank-circle</v-icon
-            >
-          </v-list-item-action>
-          <div class="tasklistTaskNames">
-            <div class="body-2">{{ task.taskName }}</div>
-          </div>
-          <v-list-item-content>
-            <v-list-item-title :class="dueDateCheck(task)">{{
-              getProjectDates(task.taskDueDateAt)
-            }}</v-list-item-title>
-          </v-list-item-content>
-          <v-list-item-avatar>
-            <v-img
-              v-if="task.taskAssigneeProfileImage != null"
-              :src="task.taskAssigneeProfileImage"
-            ></v-img>
-            <v-img
-              v-else
-              src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-            ></v-img>
-          </v-list-item-avatar>
-        </v-list-item>
       </div>
     </div>
 
@@ -219,8 +185,8 @@ export default {
       taskFiles: [],
       assignee: {},
       userId: this.$store.state.user.userId,
-      taskSelect: null,
-      taskFilter: null,
+      taskSelect: 'all',
+      taskFilter: 'none',
       componentClose: null,
     };
   },
@@ -228,6 +194,10 @@ export default {
     'task-side-bar': TaskSideBar,
   },
   methods: {
+    clearFilter() {
+      console.log('selected===========> ' + this.taskSelect);
+      this.taskSelect == null;
+    },
     querySelections(v) {
       console.log('people list', this.people);
       this.states = [];
