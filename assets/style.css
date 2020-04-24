@@ -1,1696 +1,1706 @@
-@import "./css/projects.css";
-@import "./css/common.css";
-@import "./css/tasks.css";
+@import './css/projects.css';
+@import './css/common.css';
+@import './css/tasks.css';
 
-@import "./css/base/typo.css";
-@import "circular-std";
-
+@import './css/base/typo.css';
+@import 'circular-std';
 
 /* -------------- common --------------- */
 
 * {
-    font-family: CircularStd;
+  font-family: CircularStd;
 }
-.body-2{
-    font-family: CircularStd !important;
+.body-2 {
+  font-family: CircularStd !important;
 }
-.listView{
-    margin-top: 10px;
-    height: 80vh;
-    background-color: #EDF0F5;
-    padding-bottom: 100px !important;
-  }
-
-.projectTabSideBar{
-    height: 100vh;
+.listView {
+  margin-top: 10px;
+  height: 80vh;
+  background-color: #edf0f5;
+  padding-bottom: 100px !important;
 }
 
+.projectTabSideBar {
+  height: 100vh;
+}
 
-.profilePictureUpload{
-    margin-top: 20px !important;
-    height: 20px !important;
-    width: 200px !important;
-    margin-left: -20px !important;
+.profilePictureUpload {
+  margin-top: 20px !important;
+  height: 20px !important;
+  width: 200px !important;
+  margin-left: -20px !important;
 }
-.pictureUploadButton{
-    margin-left: 40px;
-    /* margin-top: -10px; */
-    margin-top: 20px;
+.pictureUploadButton {
+  margin-left: 40px;
+  /* margin-top: -10px; */
+  margin-top: 20px;
 }
-.selectUserDrop{
-    width: 200px !important;
+.selectUserDrop {
+  width: 200px !important;
 }
-.userAddSelect{
-    background: #FFFFFF;
-    width: 400px !important;
-    border-radius: 5px;
-    margin-left: 75px !important;
-    margin-right: 10px;
-    padding-left: 20px;
-    height: 50px;
+.userAddSelect {
+  background: #ffffff;
+  width: 400px !important;
+  border-radius: 5px;
+  margin-left: 75px !important;
+  margin-right: 10px;
+  padding-left: 20px;
+  height: 50px;
 }
 
 /* ------------------- login -------------------- */
 
-
-.loginContainer{
-    width: 100vw;
-    height: 100vh;
-    text-align: center;
-    padding-top: 20%;
-
+.loginContainer {
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+  padding-top: 20%;
 }
 
-.loginContent{
-    text-align: center;
+.loginContent {
+  text-align: center;
 }
 
-.loginTitle{
-    font-size: 20px !important;
-    font-weight: 600;
+.loginTitle {
+  font-size: 20px !important;
+  font-weight: 600;
 }
-.loginText{
-    font-size: 14px !important;
-    font-weight: 400;
-}
-
-.loginButton{
-    background-color: #0BAFFF !important;
-    margin-top: 40px;
-    width: 250px;
-    height: 40px;
-    border-radius: 5px;
-    color: #FFFFFF;
+.loginText {
+  font-size: 14px !important;
+  font-weight: 400;
 }
 
+.loginButton {
+  background-color: #0bafff !important;
+  margin-top: 40px;
+  width: 250px;
+  height: 40px;
+  border-radius: 5px;
+  color: #ffffff;
+}
 
 /* --------- add project ---------- */
 
-.formDiv{
-    /* width: 75vw; */
-    margin-left: 22%;
-    padding: 10px;
+.formDiv {
+  /* width: 75vw; */
+  margin-left: 22%;
+  padding: 10px;
 }
-.createProjectPage{
-    height: 85vh;
+.createProjectPage {
+  height: 85vh;
 }
-.addProjectTitle{
-font-family: CircularStd;
-font-style: normal;
-font-weight: 400;
-font-size: 20px;
-/* or 200% */
+.addProjectTitle {
+  font-family: CircularStd;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  /* or 200% */
 
-color: #576377;
-margin-bottom: -5px !important;
+  color: #576377;
+  margin-bottom: -5px !important;
 }
-.formElements{
-    width: 98%;
-    margin-right: 10px;
-    padding: 15px;
-    border-radius: 5px;
-    /* background: #EDF0F5; */
-    border-style: none;
-    margin-bottom: -30px;
-    margin-top: -50px;
-    border: solid 1px #c5c7cc;
-}
-
-.createFormElements{
-    width: 98%;
-    /* background-color: red; */
-    height: 40px;
-}
-.formRow{
-    margin-bottom: -20px !important;
+.formElements {
+  width: 98%;
+  margin-right: 10px;
+  padding: 15px;
+  border-radius: 5px;
+  /* background: #EDF0F5; */
+  border-style: none;
+  margin-bottom: -30px;
+  margin-top: -50px;
+  border: solid 1px #c5c7cc;
 }
 
-.sideBarFormElementsForPickers{
-    border-radius: 5px;
-    border: solid 1px #c5c7cc;
-    height: 55px;
-    margin-top: -10px;
-    margin-bottom: -20px;
+.createFormElements {
+  width: 98%;
+  /* background-color: red; */
+  height: 40px;
 }
-.submitButtonEdit{
-    background-color: #0BAFFF !important;
-    width: 50%;
-    border-radius: 5px;
-    float: left;
-    margin-right: 5px;
-    float: right;
-}
-.submitButton{
-    /* background-color: #0BAFFF; */
-    width: 50%;
-    border-radius: 5px;
-    float: left;
-    margin-right: 5px;
-    float: right;
-}
-.addProjectButtonFail{
-    background-color: red;
-    width: 50%;
-    border-radius: 5px;
-    float: left;
-    margin-right: 5px;
-    float: right;
-}
-.addProjectButtonSuccess{
-    background-color: #0BAFFF;
-    width: 50%;
-    border-radius: 5px;
-    float: left;
-    margin-right: 5px;
-    float: right;
+.formRow {
+  margin-bottom: -20px !important;
 }
 
-.taskAddPopupPlacements{
-    position: absolute;
-    right: 10px !important;
-    top: 80vh !important;
+.sideBarFormElementsForPickers {
+  border-radius: 5px;
+  border: solid 1px #c5c7cc;
+  height: 55px;
+  margin-top: -10px;
+  margin-bottom: -20px;
+}
+.submitButtonEdit {
+  background-color: #0bafff !important;
+  width: 50%;
+  border-radius: 5px;
+  float: left;
+  margin-right: 5px;
+  float: right;
+}
+.submitButton {
+  /* background-color: #0BAFFF; */
+  width: 50%;
+  border-radius: 5px;
+  float: left;
+  margin-right: 5px;
+  float: right;
+}
+.addProjectButtonFail {
+  background-color: red;
+  width: 50%;
+  border-radius: 5px;
+  float: left;
+  margin-right: 5px;
+  float: right;
+}
+.addProjectButtonSuccess {
+  background-color: #0bafff;
+  width: 50%;
+  border-radius: 5px;
+  float: left;
+  margin-right: 5px;
+  float: right;
+}
+
+.taskAddPopupPlacements {
+  position: absolute;
+  right: 10px !important;
+  top: 80vh !important;
 }
 
 /* --------- add task ---------- */
 
-.taskFormDiv{
-    position: absolute;
-    width: 90%;
-    margin-top: 10%;
-    padding-top: 10px;
-    padding-right: 10px;
+.taskFormDiv {
+  position: absolute;
+  width: 90%;
+  margin-top: 10%;
+  padding-top: 10px;
+  padding-right: 10px;
 }
 .fileUpload::-webkit-file-upload-button {
-    color: red;
-    border-radius: 5px;
-    padding-top: -10px;
-  }
-  .profPicUploader{
-      /* height: 40px !important; */
-  }
-.textArea{
-    height: 187px;
-    width: 99%;
-    margin-top: -15px;
-    vertical-align: top !;
+  color: red;
+  border-radius: 5px;
+  padding-top: -10px;
+}
+.profPicUploader {
+  /* height: 40px !important; */
+}
+.textArea {
+  height: 187px;
+  width: 99%;
+  margin-top: -15px;
+  vertical-align: top !;
 }
 
-.addTaskButtonSuccess{
-    background-color: #2EC973;
-    width: 50%;
-    margin-bottom: -20px;
-    border-radius: 5px;
-    float: left;
-    margin-right: 5px;
-    float: right;
-    text-align: center;
+.addTaskButtonSuccess {
+  background-color: #2ec973;
+  width: 50%;
+  margin-bottom: -20px;
+  border-radius: 5px;
+  float: left;
+  margin-right: 5px;
+  float: right;
+  text-align: center;
 }
 
-.addTaskButtonFail{
-    background-color: rgb(240, 8, 8);
-    width: 50%;
-    margin-bottom: -20px;
-    border-radius: 5px;
-    float: left;
-    margin-right: 5px;
-    float: right;
-    text-align: center;
+.addTaskButtonFail {
+  background-color: rgb(240, 8, 8);
+  width: 50%;
+  margin-bottom: -20px;
+  border-radius: 5px;
+  float: left;
+  margin-right: 5px;
+  float: right;
+  text-align: center;
 }
 
 /* ------------ Users --------- */
 
-.users-list{
-    width: 25%;
-   float: left;
-   /* padding-left: 12px; */
-   padding-top: 20px;
-   background-color: #FFFFFF;
-   margin-top: -20px;
- }
- 
- .users{
-   margin-top: 10px;
-   height: 80vh;
-   background-color: #EDF0F5;
-   bottom: 0;
- }
- .iconBackCircle{
-     background-color: #ffff;
-     height: 25px;
-     width: 25px;
-     border-radius: 50%;
-     text-align: center;
- }
-
- .iconBackCircleFiles{
-    background-color: #ffff;
-    padding-top: 3px;
-    height: 30px;
-    width: 30px;
-    border-radius: 50%;
+.users-list {
+  width: 25%;
+  float: left;
+  /* padding-left: 12px; */
+  padding-top: 20px;
+  background-color: #ffffff;
+  margin-top: -20px;
 }
- .usersForms{
-     padding-left: 5% !important;
- }
- .addUserSubmit{
-     width: 60% !important;
- }
 
- .userDetailsCover{
-     margin-top: -30px;
-     margin-left: 25%;
- }
- .blackBar{
-    width: 100%;
-    height: 200px;
-    background-color: #040428;
-     text-align: center;
-     display: block;
- }
- .userImage{
-    position: absolute;
-    margin-top: -110px;
-    left: 53%;
- }
- .image{
-    border-radius: 50%;
-    width: 215px;
-    height: 215px;
-    border: 5px solid #FFFFFF;
- }
- .userDetails{
-     margin-top: 120px;
-     text-align: center;
- }
- .userName{
-    font-style: normal;
-    font-weight: 500;
-    font-size: 34px;
-    line-height: 30px;
-    letter-spacing: 0.15px;
-    
-    color: #040428;
- }
- .userDetailsForm{
-     margin-top: 50px;
-     margin-right: 20px;
- }
- .editUserSubmit{
-    width: 50% !important;
+.users {
+  margin-top: 10px;
+  height: 80vh;
+  background-color: #edf0f5;
+  bottom: 0;
+}
+.iconBackCircle {
+  background-color: #ffff;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  text-align: center;
+}
+
+.iconBackCircleFiles {
+  background-color: #ffff;
+  padding-top: 3px;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+.usersForms {
+  padding-left: 5% !important;
+}
+.addUserSubmit {
+  width: 60% !important;
+}
+
+.userDetailsCover {
+  margin-top: -30px;
+  margin-left: 25%;
+}
+.blackBar {
+  width: 100%;
+  height: 200px;
+  background-color: #040428;
+  text-align: center;
+  display: block;
+}
+.userImage {
+  position: absolute;
+  margin-top: -110px;
+  left: 53%;
+}
+.image {
+  border-radius: 50%;
+  width: 215px;
+  height: 215px;
+  border: 5px solid #ffffff;
+}
+.userDetails {
+  margin-top: 120px;
+  text-align: center;
+}
+.userName {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 34px;
+  line-height: 30px;
+  letter-spacing: 0.15px;
+
+  color: #040428;
+}
+.userDetailsForm {
+  margin-top: 50px;
+  margin-right: 20px;
+}
+.editUserSubmit {
+  width: 50% !important;
 }
 
 /* ------------- profile ------------ */
 
-.profileDetailsCover{
-    margin-top: -30px;
+.profileDetailsCover {
+  margin-top: -30px;
 }
 
-.profileUserImage{
-    left: 5% !important;
-    margin-top: -120px;
+.profileUserImage {
+  left: 5% !important;
+  margin-top: -120px;
 }
-.profileBlackBar{
-    height: 190px !important;
-}
-
-.profileUserName{
-    font-style: normal;
-font-weight: 500;
-font-size: 34px;
-line-height: 30px;
-margin-left: 25%;
-color: #FFFFFF;
-margin-top: -60px;
-}
-.profileForm{
-    margin-left: 20%;
-    margin-right: 5%;
-}
-.profileButton{
-    width: 250px;
-    /* margin-top: -35px; */
-    /* margin-right: 6%; */
-}
-.profileImage{
-    border-radius: 50%;
-    width: 180px;
-    height: 180px;
-    border: 5px solid #FFFFFF;
+.profileBlackBar {
+  height: 190px !important;
 }
 
-.fileUploadField{
-    margin-top: 1px;
+.profileUserName {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 34px;
+  line-height: 30px;
+  margin-left: 25%;
+  color: #ffffff;
+  margin-top: -60px;
+}
+.profileForm {
+  margin-left: 20%;
+  margin-right: 5%;
+}
+.profileButton {
+  width: 250px;
+  /* margin-top: -35px; */
+  /* margin-right: 6%; */
+}
+.profileImage {
+  border-radius: 50%;
+  width: 180px;
+  height: 180px;
+  border: 5px solid #ffffff;
+}
+
+.fileUploadField {
+  margin-top: 1px;
 }
 
 /* ------------ project tab ------------ */
 
-
-.detailSection{
-    padding: 10px !important;
-   background-color: #E5E5E5;;
+.detailSection {
+  padding: 10px !important;
+  background-color: #e5e5e5;
 }
-.tab-projectName{
-    font-style: normal;
-    font-size: 25px !important;
-    color: #080848;
-    font-weight: 500;
+.tab-projectName {
+  font-style: normal;
+  font-size: 25px !important;
+  color: #080848;
+  font-weight: 500;
 }
-.tab-clientName{
-    color: #576377;
-    font-size: 15px;
-    font-weight: 400;
-    
+.tab-clientName {
+  color: #576377;
+  font-size: 15px;
+  font-weight: 400;
 }
-.tab-status{
-    /* background-color: #0BAFFF; */
-    color: #FFFFFF;
-    margin-left: 60px;
-    width: 170px;
-    text-align: center;
-    border-radius: 5px;
+.tab-status {
+  /* background-color: #0BAFFF; */
+  color: #ffffff;
+  margin-left: 60px;
+  width: 170px;
+  text-align: center;
+  border-radius: 5px;
 }
-.statusOption1{
-    background-color: #576377;
+.statusOption1 {
+  background-color: #576377;
 }
-.statusOption2{
-    background-color:#FF6363;
+.statusOption2 {
+  background-color: #ff6363;
 }
-.statusOption3{
-    background-color: #5E98F0;
+.statusOption3 {
+  background-color: #5e98f0;
 }
-.statusOption4{
-    background-color: #FFA800;
+.statusOption4 {
+  background-color: #ffa800;
 }
-.statusOption5{
-    background-color: #36DD5B;
+.statusOption5 {
+  background-color: #36dd5b;
 }
-.tab-health{
-    background-color: #2EC973;
-    color: #FFFFFF;
-    margin-left: 10px;
-    width: 110px;
-    text-align: center;
-    border-radius: 5px;
+.tab-health {
+  background-color: #2ec973;
+  color: #ffffff;
+  margin-left: 10px;
+  width: 110px;
+  text-align: center;
+  border-radius: 5px;
 }
-.detailTitle{
-    color: #576377;
-    font-size: 14px;
-    font-weight: 500;
-    margin-left: -10px;
+.detailTitle {
+  color: #576377;
+  font-size: 14px;
+  font-weight: 500;
+  margin-left: -10px;
 }
-.detailContent{
-    color: #0BAFFF;
-    font-size: 14px;
-    margin-left: 30px;
+.detailContent {
+  color: #0bafff;
+  font-size: 14px;
+  margin-left: 30px;
 }
-.detailList{
-    margin-left: -60px;
+.detailList {
+  margin-left: -60px;
 }
-.detailContainer{
+.detailContainer {
 }
-.projectBox{
-    text-align: center;
-    padding: 10px !important;
-    margin: 10px;
-    width: 20%;
-    height: 150px;
-    border-radius: 12px;
-    color: #FFFFFF;
-    margin-top: -30px;
+.projectBox {
+  text-align: center;
+  padding: 10px !important;
+  margin: 10px;
+  width: 20%;
+  height: 150px;
+  border-radius: 12px;
+  color: #ffffff;
+  margin-top: -30px;
 }
-.due{
-    background-color: #FFB129;
+.due {
+  background-color: #ffb129;
 }
-.overDue{
-    background-color: #E65C62;
+.overDue {
+  background-color: #e65c62;
 }
-.left{
-    background-color: #704CF1;
+.left {
+  background-color: #704cf1;
 }
-.assign{
-    background-color: #67D2E0;
+.assign {
+  background-color: #67d2e0;
 }
-.completed{
-    background-color: #6FCD17;
+.completed {
+  background-color: #6fcd17;
 }
-.projectBoxNumber{
-    font-size: 40px;
-    font-weight: 900;
-    margin-bottom: -10px !important;
+.projectBoxNumber {
+  font-size: 40px;
+  font-weight: 900;
+  margin-bottom: -10px !important;
 }
-.tab-icon{
-    text-align: right;
-    position: absolute;
-    right: 0;
+.tab-icon {
+  text-align: right;
+  position: absolute;
+  right: 0;
 }
-.iconDiv{
-    float: right;
-    right: 0px;
-    left: 100px !important;
+.iconDiv {
+  float: right;
+  right: 0px;
+  left: 100px !important;
 }
-.aaaaa{
-    background-color: #FFFFFF;
-    border-radius: 50%;
-    padding: 5px;
+.aaaaa {
+  background-color: #ffffff;
+  border-radius: 50%;
+  padding: 5px;
 }
-.projectDrawer{
-    margin-top: 40px !important;
-    margin-left: 15px !important;
-    margin-right: 15px !important;
+.projectDrawer {
+  margin-top: 40px !important;
+  margin-left: 15px !important;
+  margin-right: 15px !important;
 }
-.deleteProjectButton{
-    background-color: #FF6161 !important;
-    width: 250px;
-    margin-top: 70px;
-    position: absolute;
-    right: 30px;
-    margin-bottom: 100px;
+.deleteProjectButton {
+  background-color: #ff6161 !important;
+  width: 250px;
+  margin-top: 70px;
+  position: absolute;
+  right: 30px;
+  margin-bottom: 100px;
 }
-.addProjectButton{
-    position: absolute;
-    right: 30px;
-    width: 250px;
+.addProjectButton {
+  position: absolute;
+  right: 30px;
+  width: 250px;
 }
-.taskTitleDiv{
-    width: 100%;
-    height: 70px;
-    background-color: #080848;
+.taskTitleDiv {
+  width: 100%;
+  height: 70px;
+  background-color: #080848;
 }
 
-.taskName-sideBar{
-    color: #FFFFFF;
-    padding: 10px;
-    font-size: 14px;
-    height: 100%;
+.taskName-sideBar {
+  color: #ffffff;
+  padding: 10px;
+  font-size: 14px;
+  height: 100%;
 }
 
 /* -------------------- task side bar ------------------- */
 
-.taskTitle{
-    color: #FFFFFF !important;
-    font-weight: 500;
-    font-size: 14px;
-    width: 100% !important;
-    height: 40px;
-    margin-right: 10px;
-    margin-left: -20px;
+.taskTitle {
+  color: #ffffff !important;
+  font-weight: 500;
+  font-size: 14px;
+  width: 100% !important;
+  height: 40px;
+  margin-right: 10px;
+  margin-left: -20px;
 }
 
-.taskTitleEdit{
-    width: 240px;
-    height: 30px;
-    width: 100% !important;
-    background: #EDF0F5;
-    border-radius: 5px;
-    padding-left: 5px;
-    margin-right: 10px;
-    margin-left: -20px;
+.taskTitleEdit {
+  width: 240px;
+  height: 30px;
+  width: 100% !important;
+  background: #edf0f5;
+  border-radius: 5px;
+  padding-left: 5px;
+  margin-right: 10px;
+  margin-left: -20px;
 }
-.taskStatusDropdown{
-    text-align-last:center;
-}
-
-.textAreaSideBar{
-    vertical-align: middle;
-    width: 100%;
-}
-.selectUserDropDown{
-    width: 200px !important;
-    padding:7px;
-    border-radius: 5px;
-    background: #0BAFFF;
-    border-style: none;
-    color: #FFFFFF;
+.taskStatusDropdown {
+  text-align-last: center;
 }
 
-.selectSprintDropDown{
-    width: 300px !important;
-    padding:7px;
-    border-radius: 5px;
-    background: #2EC973;
-    border-style: none;
-    color: #FFFFFF;
-    margin-left: 20px;
+.textAreaSideBar {
+  vertical-align: middle;
+  width: 100%;
 }
-.dropDownList{
-    margin-left: -50px;
-    z-index: 100;
-
-}
-.editIcon{
-    margin-left: 5px !important;
-}
-.subTaskAdd{
-    color: #0BAFFF !important;
+.selectUserDropDown {
+  width: 200px !important;
+  padding: 7px;
+  border-radius: 5px;
+  background: #0bafff;
+  border-style: none;
+  color: #ffffff;
 }
 
-.sideBarDate{
-    background: #FFFFFF !important;
-    outline: none;
-    color: green;
-    font-weight: 500;
-    font-size: 14px;
-    /* background: violet; */
-
+.selectSprintDropDown {
+  width: 300px !important;
+  padding: 7px;
+  border-radius: 5px;
+  background: #2ec973;
+  border-style: none;
+  color: #ffffff;
+  margin-left: 20px;
 }
-.tabListItemsText{
-    font-weight: 500;
-    font-size: 16px;
-    margin-right: 30px;
+.dropDownList {
+  margin-left: -50px;
+  z-index: 100;
 }
-.tabListItemsTextDue{
-    font-weight: 500;
-    font-size: 16px;
-    margin-right: 40px;
+.editIcon {
+  margin-left: 5px !important;
 }
-.datesTitle{
-    margin-top: 15px;
-    width: 90px;
+.subTaskAdd {
+  color: #0bafff !important;
 }
 
-.userSelectDropdown{
-    height: 30px;
-    font-size: 30px;
+.sideBarDate {
+  background: #ffffff !important;
+  outline: none;
+  color: green;
+  font-weight: 500;
+  font-size: 14px;
+  /* background: violet; */
 }
-.editIconZ{
-    z-index: -100;
+.tabListItemsText {
+  font-weight: 500;
+  font-size: 16px;
+  margin-right: 30px;
+}
+.tabListItemsTextDue {
+  font-weight: 500;
+  font-size: 16px;
+  margin-right: 40px;
+}
+.datesTitle {
+  margin-top: 15px;
+  width: 90px;
 }
 
+.userSelectDropdown {
+  height: 30px;
+  font-size: 30px;
+}
+.editIconZ {
+  z-index: -100;
+}
 
 /* ----------------- people tab ------------- */
 
-.peopleList{
-    margin-top: 50px !important;
-    margin-right: 10px;
+.peopleList {
+  margin-top: 50px !important;
+  margin-right: 10px;
+}
+.peopleListItems {
+}
+.peopleContainer {
+  margin-top: 20px;
+  height: 70px;
+}
+.projectRole {
+  color: #080848;
+  font-weight: 500;
+  font-size: 14px;
+}
+.peopleName {
+  color: #b9b9b9;
+  font-size: 13px;
+}
+.completedStatus {
+  color: #7a8b9f;
+  font-size: 14px !important;
+  font-weight: 500;
+}
+.progressBar {
+  width: 350px;
+  height: 11px;
+  background-color: #2ec973;
+  border-radius: 13px;
+}
+.projectProgress {
+  padding-right: 10px;
+}
+.projectProgressSection {
+  margin-left: -40%;
+}
 
+.noteUpdateButton {
+  margin-top: -30px;
+  margin-left: 65px;
 }
-.peopleListItems{
-}
-.peopleContainer{
-    margin-top: 20px;
-    height: 70px;
-}
-.projectRole{
-    color: #080848;
-    font-weight: 500;
-    font-size: 14px;
-}
-.peopleName{
-    color: #B9B9B9;
-    font-size: 13px;
-}
-.completedStatus{
-    color: #7A8B9F;
-    font-size: 14px !important;
-    font-weight: 500;
-}
-.progressBar{
-    width: 350px;
-    height: 11px;
-    background-color: #2EC973;
-    border-radius: 13px;
-}
-.projectProgress{
-    padding-right: 10px;
-}
-.projectProgressSection{
-    margin-left: -40%;
-}
-
-.noteUpdateButton{
-    margin-top: -30px;
-    margin-left: 65px;
-}
-.fileUploadButton{
-    margin-top: 15px;
-    margin-bottom: -10px;
+.fileUploadButton {
+  margin-top: 15px;
+  margin-bottom: -10px;
 }
 
 /* --------------- popup -------------- */
 
-.popup-title{
-    color: #080848;
-    font-size: 11px;
-    font-weight: bold;
+.popup-title {
+  color: #080848;
+  font-size: 11px;
+  font-weight: bold;
 }
-.popup-name{
-    color: #7A8B9F;
-    font-weight: 450;
-    font-size: 20px !important;
+.popup-name {
+  color: #7a8b9f;
+  font-weight: 450;
+  font-size: 20px !important;
 }
-.popup-roleTitle{
-    font-weight: bold !important;
-    font-size: 12px;
-    color: #080848;
+.popup-roleTitle {
+  font-weight: bold !important;
+  font-size: 12px;
+  color: #080848;
 }
-.roleField{
-    margin-left: 18px !important;
-    margin-right: 18px !important;
+.roleField {
+  margin-left: 18px !important;
+  margin-right: 18px !important;
 }
-.checkBoxRoleField{
-    margin-top: 25px;
+.checkBoxRoleField {
+  margin-top: 25px;
 }
-.checkBoxField{
-    margin-bottom: 20px;
+.checkBoxField {
+  margin-bottom: 20px;
 }
-.popupButtonContainer{
-    margin: 20px !important;
+.popupButtonContainer {
+  margin: 20px !important;
 }
-.editButton{
-    width: 100px;
-    height: 50px;
-    background-color: #2EC973 !important;
-    margin-bottom: 30px;
+.editButton {
+  width: 100px;
+  height: 50px;
+  background-color: #2ec973 !important;
+  margin-bottom: 30px;
 }
-.editButtonSpec{
-    width: 100px;
-    height: 50px;
-    background-color: #2EC973 !important;
-    margin-bottom: 30px;
-    margin-left: 30px;
+.editButtonSpec {
+  width: 100px;
+  height: 50px;
+  background-color: #2ec973 !important;
+  margin-bottom: 30px;
+  margin-left: 30px;
 }
-.deleteButton{
-    width: 100px;
-    height: 50px;
-    margin-left: 30px;
-    margin-bottom: 30px;
-    background-color: #FF6161 !important;
+.deleteButton {
+  width: 100px;
+  height: 50px;
+  margin-left: 30px;
+  margin-bottom: 30px;
+  background-color: #ff6161 !important;
 }
-.deleteButtonSpec{
-    width: 100px;
-    height: 50px;
-    margin-left: 30px;
-    background-color: #FF6161 !important;
-    margin-bottom: 30px;
+.deleteButtonSpec {
+  width: 100px;
+  height: 50px;
+  margin-left: 30px;
+  background-color: #ff6161 !important;
+  margin-bottom: 30px;
 }
-.deletePopupContent{
-    text-align: center;
+.deletePopupContent {
+  text-align: center;
 }
-.deletePopup{
-    margin-top: 40px;
+.deletePopup {
+  margin-top: 40px;
 }
-.deletePopupTitle{
-    color: #040428;
-    font-weight: bold;
-font-size: 19px;
+.deletePopupTitle {
+  color: #040428;
+  font-weight: bold;
+  font-size: 19px;
 }
-.deletePopupTitle{
-    font-weight: bold !important;
-font-size: 19px !important;
-}
-
-.addUserPopup{
-    padding-top: -50px !important;
+.deletePopupTitle {
+  font-weight: bold !important;
+  font-size: 19px !important;
 }
 
-.popupBox{
-    z-index: 100;
-    position: absolute;
-    right: 50px;
-    bottom: 10px;
+.addUserPopup {
+  padding-top: -50px !important;
 }
 
+.popupBox {
+  z-index: 100;
+  position: absolute;
+  right: 50px;
+  bottom: 10px;
+}
 
 /* -------------- add people to project ------------- */
 
-.addPeople{
-    background-color: #0BAFFF;
-    border-radius: 5px;
-    position: absolute;
-    right: 50px;
+.addPeople {
+  background-color: #0bafff;
+  border-radius: 5px;
+  position: absolute;
+  right: 50px;
 }
-.addPeopleButton{
-    width: 200px;
-    z-index: 100;
+.addPeopleButton {
+  width: 200px;
+  z-index: 100;
 }
 
-.addUserField{
-    margin-top: 60px !important;
+.addUserField {
+  margin-top: 60px !important;
 }
-.popupFormElement{
-    /* margin-bottom: -10px !important; */
-    /* margin-left: 10px !important; */
+.popupFormElement {
+  /* margin-bottom: -10px !important; */
+  /* margin-left: 10px !important; */
 }
-.addUserPopupFormElement{
-    /* margin-bottom: -30px !important; */
-    /* margin-left: 10px !important; */
+.addUserPopupFormElement {
+  /* margin-bottom: -30px !important; */
+  /* margin-left: 10px !important; */
 }
-.popupFormContent{
-    padding-top: 20px;
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-bottom: -30px;
-    text-align: center;
+.popupFormContent {
+  padding-top: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: -30px;
+  text-align: center;
 }
 /* -------------- tab content -------------- */
 
-.tabListItems{
-    margin-left: 0px;
+.tabListItems {
+  margin-left: 0px;
 }
 
-
-.tabListItemsSubTask{
-    color: #576377 !important;
+.tabListItemsSubTask {
+  color: #576377 !important;
 }
 
-.smallCheck{
-    margin-right: -20px !important;
+.smallCheck {
+  margin-right: -20px !important;
 }
-.subItem{
-    font-size: 12px !important;
+.subItem {
+  font-size: 12px !important;
 }
-.progressLine{
-    width: 350px;
-    /* background-color: rgb(255, 0, 0); */
-    border-radius: 13px;
+.progressLine {
+  width: 350px;
+  /* background-color: rgb(255, 0, 0); */
+  border-radius: 13px;
 }
-.presentageValue{
-    font-size: 12px;
-}
-
-.sideBarContent{
-    /* z-index: 1000; */
-    /* min-height: 600px !important; */
-    margin-bottom: 100px;
-}
-.iconExpansion{
-    margin-left: -30px !important;
-}
-.noteTextArea{
-    height: 100px;
-    width: 99%;
-}
-.noteSubItem{
-    margin-top: -10px !important;
-    margin-left: 65px;
-    color: #576377;
-    font-size: 14px !important;
-}
-.subTasksList{
-    margin-top: -10px;
-    margin-left: -10px;
-}
-.subTaskListName{
-    margin-left: 20px;
-font-weight: 500;
-font-size: 11px;
-color: #576377;
-width: 400px !important;
-}
-.subTaskListNameContent{
-    width: 100%;
-    height: 30px;
-    border-radius: 5px;
-    padding-left: 5px;
-}
-.addSubTaskTextbox{
-    width: 100% !important;
-    background: #EDF0F5;
-    outline: none;
-    height: 40px;
-}
-.subTaskListItems{
-    margin-bottom: 10px;
-}
-.subTaskListCheckBox{
-    background-color: royalblue !important;
-    width: 8px !important;
-}
-.checkbox{
-    width: 20px;
-    height: 20px;
-}
-.attachmentClose{
-}
-.listAttachment{
-    background-color: #EDF0F5!important;
-    width: 100%;
-    min-height: 60px;
-    max-height: auto !important;
-    padding-left: 20px;
-    margin-left: 60px;
-    border-radius: 5px;
-    padding-top: 13px;
-}
-.attachmentName{
-    color: #576377;
-    font-weight: 450;
-    margin-left: 50px;
-    height: 30px;
-    /* width: 200px; */
-    margin-top: -28px;
-    /* white-space:nowrap; */
-}
-.attchmentContainer{
-    padding-bottom: 30px;
+.presentageValue {
+  font-size: 12px;
 }
 
-.fileAttachSideBar{
-    margin-left: 75px;
-    margin-right: 10px;
-    margin-top: 10px;
+.sideBarContent {
+  /* z-index: 1000; */
+  /* min-height: 600px !important; */
+  margin-bottom: 100px;
+}
+.iconExpansion {
+  margin-left: -30px !important;
+}
+.noteTextArea {
+  height: 100px;
+  width: 99%;
+}
+.noteSubItem {
+  margin-top: -10px !important;
+  margin-left: 65px;
+  color: #576377;
+  font-size: 14px !important;
+}
+.subTasksList {
+  margin-top: -10px;
+  margin-left: -10px;
+}
+.subTaskListName {
+  margin-left: 20px;
+  font-weight: 500;
+  font-size: 11px;
+  color: #576377;
+  width: 400px !important;
+}
+.subTaskListNameContent {
+  width: 100%;
+  height: 30px;
+  border-radius: 5px;
+  padding-left: 5px;
+}
+.addSubTaskTextbox {
+  width: 100% !important;
+  background: #edf0f5;
+  outline: none;
+  height: 40px;
+}
+.subTaskListItems {
+  margin-bottom: 10px;
+}
+.subTaskListCheckBox {
+  background-color: royalblue !important;
+  width: 8px !important;
+}
+.checkbox {
+  width: 20px;
+  height: 20px;
+}
+.attachmentClose {
+}
+.listAttachment {
+  background-color: #edf0f5 !important;
+  width: 100%;
+  min-height: 60px;
+  max-height: auto !important;
+  padding-left: 20px;
+  margin-left: 60px;
+  border-radius: 5px;
+  padding-top: 13px;
+}
+.attachmentName {
+  color: #576377;
+  font-weight: 450;
+  margin-left: 50px;
+  height: 30px;
+  /* width: 200px; */
+  margin-top: -28px;
+  /* white-space:nowrap; */
+}
+.attchmentContainer {
+  padding-bottom: 30px;
+}
 
+.fileAttachSideBar {
+  margin-left: 75px;
+  margin-right: 10px;
+  margin-top: 10px;
 }
 /* ---------------- validation --------------- */
 
-.errorText{
-    color: red;
-    font-size: 12px;
-    margin-top: 15px;
-    margin-left: 10px;
-    margin-bottom: -20px;
+.errorText {
+  color: red;
+  font-size: 12px;
+  margin-top: 15px;
+  margin-left: 10px;
+  margin-bottom: -20px;
 }
 
-.taskListViewContent{
-    height: 60vh;
-    padding-bottom: 100px;
+.taskListViewContent {
+  height: 60vh;
+  padding-bottom: 100px;
 }
 
 /* --------------- popup ---------------- */
 
-
-.popupDiv{
-    width: 300px;
-    position: absolute;
-    bottom: 50px;
-    right: 50px;
-    z-index: 1000;
+.popupDiv {
+  width: 300px;
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+  z-index: 1000;
 }
-.popupContent{
-    height: 70px;
-    padding-top: 5px !important;
+.popupContent {
+  height: 70px;
+  padding-top: 5px !important;
 }
-.errorPopupContent{
-    height: 80px;
-    padding-top: 7px !important;
+.errorPopupContent {
+  height: 80px;
+  padding-top: 7px !important;
 }
-.popupTitle{
-    font-weight: 600;
+.popupTitle {
+  font-weight: 600;
 }
-.popupSubitle{
-    color: #B9B9B9;
+.popupSubitle {
+  color: #b9b9b9;
 }
-.errorSubtitle{
-    color: #FF6161;
-    font-size: 14px;
+.errorSubtitle {
+  color: #ff6161;
+  font-size: 14px;
 }
-.dateTimePicker{
+.dateTimePicker {
 }
-.errorDiv{
-    margin-top: -1px;
+.errorDiv {
+  margin-top: -1px;
 }
-.pickerDiv{
-    /* margin-top: -5px; */
-    border-radius: 5px;
-    /* height: 55px; */
-}
-
-.pickerContainer{
-    width: 98%;
-    margin-right: 10px;
-    margin-bottom: -10px;
+.pickerDiv {
+  /* margin-top: -5px; */
+  border-radius: 5px;
+  /* height: 55px; */
 }
 
-.dateTimePickerInternal{
-    outline: none !important;
-    background: green;
-    background-color: #EDF0F5 !important;
-    /* z-index: 1000; */
-    position: absolute;
-    
+.pickerContainer {
+  width: 98%;
+  margin-right: 10px;
+  margin-bottom: -10px;
 }
 
-.sideBarPickers{
-    position: absolute;
-    /* z-index: 100; */
-    /* width: 300px; */
-    /* margin-left: 60px; */
-    width: 80%;
-    margin-top: 8px;
+.dateTimePickerInternal {
+  outline: none !important;
+  background: green;
+  background-color: #edf0f5 !important;
+  /* z-index: 1000; */
+  position: absolute;
 }
 
-.datePickerNew{
-    margin-top: 0px !important;
-    color: green;
+.sideBarPickers {
+  position: absolute;
+  /* z-index: 100; */
+  /* width: 300px; */
+  /* margin-left: 60px; */
+  width: 80%;
+  margin-top: 8px;
 }
 
-.pickerNewText{
-    margin-right: 5px !important;
-    color: black !important;
+.datePickerNew {
+  margin-top: 0px !important;
+  color: green;
 }
 
-.sdfsdf{
-    margin-left: 8px !important;
+.pickerNewText {
+  margin-right: 5px !important;
+  color: black !important;
 }
 
-.btnPicker{
-    width: 50px;
-    font-size: 10px;
-    margin-left: 150px;
-}
-.btnPickerText{
-    font-size: 8px;
+.sdfsdf {
+  margin-left: 8px !important;
 }
 
-
+.btnPicker {
+  width: 50px;
+  font-size: 10px;
+  margin-left: 150px;
+}
+.btnPickerText {
+  font-size: 8px;
+}
 
 /* ------------------- logs --------------- */
 
-.projectTabContent{
-    width: 101%;
-    height: 82vh;
-    margin-left: -10px;
-    padding: 20px;
+.projectTabContent {
+  width: 101%;
+  height: 82vh;
+  margin-left: -10px;
+  padding: 20px;
 }
 
-.logsContainer{
-    background-color: #080848;
-    width: 108% !important;
-    margin-right: -30px !important;
-    margin-left: -30px !important;
-    padding-left: 30px !important;
-    padding-right: 30px !important;
-    color: #FFFFFF;
-    font-weight: 500;
-    font-size: 18px;
+.logsContainer {
+  background-color: #080848;
+  width: 108% !important;
+  margin-right: -30px !important;
+  margin-left: -30px !important;
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 18px;
 }
 
-.logsContainerContent{
-    width: 100% !important;
+.logsContainerContent {
+  width: 100% !important;
 }
 
-.dateContent{
-    margin-top: 10px !important;
-    margin-bottom: 20px !important;
-    color: #4A4A4A;
-    background-color: #EDF0F5 !important;
-    font-size: 16px;
-    font-weight: 600;
-    padding-left: 30px !important;
-    height: 40px;
-    padding-top: 8px !important;
+.dateContent {
+  margin-top: 10px !important;
+  margin-bottom: 20px !important;
+  color: #4a4a4a;
+  background-color: #edf0f5 !important;
+  font-size: 16px;
+  font-weight: 600;
+  padding-left: 30px !important;
+  height: 40px;
+  padding-top: 8px !important;
 }
 
-.logContent{
-    margin-bottom: 5px;
-    color: #4A4A4A;
-    background-color: #EDF0F5 !important;
-    font-size: 14px;
-    height: 80px;
+.logContent {
+  margin-bottom: 5px;
+  color: #4a4a4a;
+  background-color: #edf0f5 !important;
+  font-size: 14px;
+  height: 80px;
 }
-.logTitle{
-    font-size: 12px !important;
-    color: #7A8B9F;
-    font-weight: 600;
-    width: 100px;
-}
-
-.logText1{
-    font-size: 12px !important;
-    color: #576377;
-    font-weight: 400;
-}
-.logText2{
-    font-size: 12px !important;
-    color: #576377;
-    font-weight: 500;
+.logTitle {
+  font-size: 12px !important;
+  color: #7a8b9f;
+  font-weight: 600;
+  width: 100px;
 }
 
-.logText3{
-    color: #2EC973;
-    font-size: 12px !important;
+.logText1 {
+  font-size: 12px !important;
+  color: #576377;
+  font-weight: 400;
 }
-.logTitleContainer{
-    padding: 0;
-}
-
-.slackCard{
-    margin-top: 20px;
-    padding-top: 10px;
+.logText2 {
+  font-size: 12px !important;
+  color: #576377;
+  font-weight: 500;
 }
 
-.slackCardButton{
-    padding-bottom: 10px;
-    margin-top: -10px;
+.logText3 {
+  color: #2ec973;
+  font-size: 12px !important;
+}
+.logTitleContainer {
+  padding: 0;
 }
 
-.slackButton{
-    padding-left: 40px !important;
-    margin-bottom: -20px;
-    margin-top: 20px;
+.slackCard {
+  margin-top: 20px;
+  padding-top: 10px;
 }
 
-.slackImage{
-    margin-left: 40px;
-    margin-top: 10px;
+.slackCardButton {
+  padding-bottom: 10px;
+  margin-top: -10px;
 }
 
-.notiTitle{
-width: 80%px;
-float: left;
-padding: 5px;
-padding-left: 10px;
-font-size: 13px;
-margin-right: 10px;
+.slackButton {
+  padding-left: 40px !important;
+  margin-bottom: -20px;
+  margin-top: 20px;
 }
 
-.cardSlogan{
-    text-align: center;
-    margin-top: 20px;
-    font-size: 12px;
-    font-weight: 600;
+.slackImage {
+  margin-left: 40px;
+  margin-top: 10px;
 }
 
+.notiTitle {
+  width: 80%px;
+  float: left;
+  padding: 5px;
+  padding-left: 10px;
+  font-size: 13px;
+  margin-right: 10px;
+}
+
+.cardSlogan {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
 
 /* ----------------- popups styling --------------- */
 
-.editProjectUserPopup{
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    z-index: 1000;
-    
+.editProjectUserPopup {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 1000;
 }
-.editProjectUserDialog{
-    padding-top: 20px;
-    text-align: center;
+.editProjectUserDialog {
+  padding-top: 20px;
+  text-align: center;
 }
-.popupContainer{
+.popupContainer {
 }
-.popupConfirmHeadline{
-    /* background-color: saddlebrown; */
-    text-align: center;
-    padding-left: 10px;
-    padding-right: 10px;
+.popupConfirmHeadline {
+  /* background-color: saddlebrown; */
+  text-align: center;
+  padding-left: 10px;
+  padding-right: 10px;
 }
-.alertPopupTitle{
-    font-weight: bold;
-font-size: 16px;
-color: #040428;
+.alertPopupTitle {
+  font-weight: bold;
+  font-size: 16px;
+  color: #040428;
 }
-.alertPopupText{
-    font-weight: 450;
-    font-size: 14px;
-    color: #576377;
-}
-
-.deletePopupIcon{
-    margin-top: 30px;
-}
-.deleteMemberPopupIcon{
-    margin-top: 20px;
+.alertPopupText {
+  font-weight: 450;
+  font-size: 14px;
+  color: #576377;
 }
 
-.popupBottom{
-    padding-bottom: 20px;
-    padding-top: 30px;
+.deletePopupIcon {
+  margin-top: 30px;
 }
-.AddUserPopupBottom{
-    padding-bottom: 20px;
-    padding-top: -10px;
+.deleteMemberPopupIcon {
+  margin-top: 20px;
 }
 
-
+.popupBottom {
+  padding-bottom: 20px;
+  padding-top: 30px;
+}
+.AddUserPopupBottom {
+  padding-bottom: 20px;
+  padding-top: -10px;
+}
 
 /* ---------------- workload page -------------- */
 
-
-.workloadSideBar{
-    width: 35%;
-   float: left;
-   /* padding-left: 12px; */
-   padding-top: 20px;
-   background-color: #FFFFFF;
-   margin-top: -20px;
- }
- .workloadListItem{
-     height: 80px;
- }
-
- .workloadProgressLine{
-     margin-left: 10px;
-    width: 45%;
-    /* background-color: red; */
-    border-radius: 13px;
+.workloadSideBar {
+  width: 35%;
+  float: left;
+  /* padding-left: 12px; */
+  padding-top: 20px;
+  background-color: #ffffff;
+  margin-top: -20px;
 }
-.workloadListName{
-    width: 200px !important;
-    background-color: red;
-}
-.workloadCompletedStatus{
-    color: #7A8B9F;
-    font-size: 10px !important;
-    font-weight: 500;
-    margin-left: 10px;
-}
-.workloadDivider{
-    height: 40px !important;
-    margin-top: 20px !important;
-}
-.progressColorCode{
-    width: 3px;
-    height: 100%;
-    margin-right: -10px;
-    margin-left: 10px;
-}
-.progressBad{
-    background-color: #FF6161;
-}
-.progressFair{
-    background-color: #FFC213;
-}
-.progressGood{
-    background-color: #2EC973;
-}
-.progressNoWorks{
-    background-color: #0BAFFF;
+.workloadListItem {
+  height: 80px;
 }
 
-.workloadBody{
-    margin-left: 35% !important;
-    margin-right: 2% !important;
-    padding-left: 30px;
-    padding-top: 15px;
-    height: 80vh;
+.workloadProgressLine {
+  margin-left: 10px;
+  width: 45%;
+  /* background-color: red; */
+  border-radius: 13px;
 }
-.myWorkloadBody{
-    margin-right: 2% !important;
-    padding-left: 30px;
-    padding-top: 15px;
-    height: 80vh;
+.workloadListName {
+  width: 200px !important;
+  background-color: red;
 }
-.workLoadTitleDiv{
-    font-weight: bold;
-    font-size: 19px;
-    color: #7A8B9F;
-    height: 60px !important;
+.workloadCompletedStatus {
+  color: #7a8b9f;
+  font-size: 10px !important;
+  font-weight: 500;
+  margin-left: 10px;
 }
-.workloadContentDiv{
-
+.workloadDivider {
+  height: 40px !important;
+  margin-top: 20px !important;
 }
-
-.projectDetailsPannels{
-    margin-bottom: 10px;
-    border-radius: 5px;
+.progressColorCode {
+  width: 3px;
+  height: 100%;
+  margin-right: -10px;
+  margin-left: 10px;
 }
-.projectDetailsPannelHeader{
-    color: #FFFFFF;
+.progressBad {
+  background-color: #ff6161;
 }
-.projectDetailsPannelContent{
-    padding-top: 10px;
-    color: #576377;
+.progressFair {
+  background-color: #ffc213;
 }
-.taskDetailsBar{
-    /* background-color: #FFFFFF; */
-    border-radius: 5px;
-    margin-bottom: 15px;
+.progressGood {
+  background-color: #2ec973;
 }
-.workloadTaskItems{
-    border-radius: 5px;
-    margin-bottom: 15px;
-    background-color: #FFFFFF;
-}
-.workloadTaskName{
-    color:  #576377;
-}
-.titleBar{
-    margin-top: 60px !important;
-}
-.checkBoxSideBar{
-    margin-top: 7px !important;
-}
-.selectedTaskTitle{
-    color: #FFFFFF;
-    font-weight: ;
-    font-size: 16px;
-    width: 360px !important;
-    /* background-color: red; */
-    height: 50px !important;
-    overflow:hidden;
-    float: left;
-
-}
-.workloadCheckBox{
-    margin-top: -30px;
-}
-.selectedsubTaskTitle{
-    width: 100% !important;
-}
-.selectedTaskStatus{
-    width: 100px;
-    color: #FFFFFF;
-    background-color: #0BAFFF;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 12px;
-    float: right;
-    text-align: center;
-
+.progressNoWorks {
+  background-color: #0bafff;
 }
 
-.subTaskItem{
-    margin-left: 60px;
+.workloadBody {
+  margin-left: 35% !important;
+  margin-right: 2% !important;
+  padding-left: 30px;
+  padding-top: 15px;
+  height: 80vh;
+}
+.myWorkloadBody {
+  margin-right: 2% !important;
+  padding-left: 30px;
+  padding-top: 15px;
+  height: 80vh;
+}
+.workLoadTitleDiv {
+  font-weight: bold;
+  font-size: 19px;
+  color: #7a8b9f;
+  height: 60px !important;
+}
+.workloadContentDiv {
 }
 
-.itemGroupTitles{
-    color: #576377 !important;
+.projectDetailsPannels {
+  margin-bottom: 10px;
+  border-radius: 5px;
 }
-.itemGroupDate{
-    color: #000000;
+.projectDetailsPannelHeader {
+  color: #ffffff;
 }
-.noteDiv{
-    margin-left: 65px;
-    color: #5F5F5F;
+.projectDetailsPannelContent {
+  padding-top: 10px;
+  color: #576377;
+}
+.taskDetailsBar {
+  /* background-color: #FFFFFF; */
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+.workloadTaskItems {
+  border-radius: 5px;
+  margin-bottom: 15px;
+  background-color: #ffffff;
+}
+.workloadTaskName {
+  color: #576377;
+}
+.titleBar {
+  margin-top: 60px !important;
+}
+.checkBoxSideBar {
+  margin-top: 7px !important;
+}
+.selectedTaskTitle {
+  color: #ffffff;
+  font-weight: ;
+  font-size: 16px;
+  width: 360px !important;
+  /* background-color: red; */
+  height: 50px !important;
+  overflow: hidden;
+  float: left;
+}
+.workloadCheckBox {
+  margin-top: -30px;
+}
+.selectedsubTaskTitle {
+  width: 100% !important;
+}
+.selectedTaskStatus {
+  width: 100px;
+  color: #ffffff;
+  background-color: #0bafff;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  float: right;
+  text-align: center;
+}
+
+.subTaskItem {
+  margin-left: 60px;
+}
+
+.itemGroupTitles {
+  color: #576377 !important;
+}
+.itemGroupDate {
+  color: #000000;
+}
+.noteDiv {
+  margin-left: 65px;
+  color: #5f5f5f;
 }
 
 /* ----------- project edit ------------- */
 
-.editProjectLabels{
-    margin-bottom: 15px !important;
-    margin-top: -20px;
-    margin-left: 5px;
-    font-size: 10px;
-    color: #576377;
+.editProjectLabels {
+  margin-bottom: 15px !important;
+  margin-top: -20px;
+  margin-left: 5px;
+  font-size: 10px;
+  color: #576377;
 }
-.datesLabel{
-    margin-bottom: 10px !important;
-}
-
-.projectSubtitle{
-    font-size: 10px !important;
-    font-family: CircularStd !important;
+.datesLabel {
+  margin-bottom: 10px !important;
 }
 
-.taskDatePickerField{
-    /* margin-top: -50px; */
-}
-.controlWidth{
-    width: 70%;
-}
-.tasklistTaskNames{
-    width: 70%;
+.projectSubtitle {
+  font-size: 10px !important;
+  font-family: CircularStd !important;
 }
 
-.workloadFilter{
-    position: absolute;
-    right: 30px;
-    top: 80px;
-    /* z-index: 1000; */
+.taskDatePickerField {
+  /* margin-top: -50px; */
 }
-.filterIcon{
-    margin-right: -15px !important;
-    padding-top: 5px !important;
+.controlWidth {
+  width: 70%;
 }
-
-.rangePickerButton{
-    background: #0BAFFF;
-    /* width: 120px; */
-    padding: 10px;
-    border: solid #EDF0F5 1px;
-    border-radius: 5px;
-    color: #FFFFFF;
-}
-.filterButtonWorkLoadError{
-    background-color: #EDF0F5;
-    border-radius: 50%;
-    padding: 6px;
-}
-.filterButtonWorkLoad{
-    background-color: #2EC973;
-    border-radius: 50%;
-    padding: 6px;
-}
-.clearButtonWorkLoad{
-    background-color: red;
-    border-radius: 50%;
-    padding: 6px;
-}
-.filterButtonWorkLoad:hover{
-    background-color: #0BAFFF;
+.tasklistTaskNames {
+  width: 70%;
 }
 
+.workloadFilter {
+  position: absolute;
+  right: 30px;
+  top: 80px;
+  /* z-index: 1000; */
+}
+.filterIcon {
+  margin-right: -15px !important;
+  padding-top: 5px !important;
+}
+
+.rangePickerButton {
+  background: #0bafff;
+  /* width: 120px; */
+  padding: 10px;
+  border: solid #edf0f5 1px;
+  border-radius: 5px;
+  color: #ffffff;
+}
+.filterButtonWorkLoadError {
+  background-color: #edf0f5;
+  border-radius: 50%;
+  padding: 6px;
+}
+.filterButtonWorkLoad {
+  background-color: #2ec973;
+  border-radius: 50%;
+  padding: 6px;
+}
+.clearButtonWorkLoad {
+  background-color: red;
+  border-radius: 50%;
+  padding: 6px;
+}
+.filterButtonWorkLoad:hover {
+  background-color: #0bafff;
+}
 
 /* ------------------- tasks page -------------- */
 
-.groupTasksList{
-    width: 25%;
-   float: left;
-   /* padding-left: 12px; */
-   padding-top: 20px;
-   background-color: #FFFFFF;
-   margin-top: -20px;
-   margin-bottom: 100px;
- }
- .tasksListItem{
-     height: 60px;
-     background-color: #2EC973;
-     margin: 10px;
-     border-radius: 5px;
- }
- .taskListName{
-    color: #FFFFFF;
- }
- .task-name-div{
-    width: 25%;
-    float: left;
-  }
-  .task-content-div {
-    width: 75%;
-    height: 100%;
-    float: left;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
- .addTasksListItem{
-     /* background-color: #FFFFFF; */
- }
-
- .addGroupListTextBox{
-     /* background-color: #FFFFFF; */
-     margin: 10px !important;
-     margin-top: 20px !important;
-     height: 60px !important;
- }
- .groupsListItem{
-    height: 60px;
-     background-color: #FFFFFF;
-     margin: 10px;
-     margin-top: 20px !important;
-     border-radius: 5px;
- }
- .groupListName{
-    color: #0BAFFF;
- }
- .groupListElement{
-    color: #0BAFFF !important;
- }
-
- .activeGroupList{
-     background-color: #0BAFFF !important;
- }
- .activeGroupList .active .groupListName{
-    color: #FFFFFF !important;
+.groupTasksList {
+  width: 25%;
+  float: left;
+  /* padding-left: 12px; */
+  padding-top: 20px;
+  background-color: #ffffff;
+  margin-top: -20px;
+  margin-bottom: 100px;
 }
-.activeGroupList .active .groupListElement{
-    color: #FFFFFF !important;
+.tasksListItem {
+  height: 60px;
+  background-color: #2ec973;
+  margin: 10px;
+  border-radius: 5px;
+}
+.taskListName {
+  color: #ffffff;
+}
+.task-name-div {
+  width: 25%;
+  float: left;
+}
+.task-content-div {
+  width: 75%;
+  height: 100%;
+  float: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.personal-task-tab{
-    width: 75%;
-    height: 100%;
-    float: left;
-  }
-
-  .taskFilter-tasksPage{
-      margin-top: 20px;
-      margin-left: 10px;
-      margin-right: 10px;
-  }
-.addPersonalTaskTextBox{
-    margin-top: -20px !important;
-}
-.bodyContentSideDrawer{
-     margin-top: 55px; 
+.addTasksListItem {
+  /* background-color: #FFFFFF; */
 }
 
-.personalTaskSidebarContent{
-    padding-top: 60px !important;
+.addGroupListTextBox {
+  /* background-color: #FFFFFF; */
+  margin: 10px !important;
+  margin-top: 20px !important;
+  height: 60px !important;
+}
+.groupsListItem {
+  height: 60px;
+  background-color: #ffffff;
+  margin: 10px;
+  margin-top: 20px !important;
+  border-radius: 5px;
+}
+.groupListName {
+  color: #0bafff;
+}
+.groupListElement {
+  color: #0bafff !important;
 }
 
-.taskPageContentScroll{
-    height: 60vh;
-    padding-bottom: 100px;
+.activeGroupList {
+  background-color: #0bafff !important;
 }
-.pageBody{
-    width: 100%;
-    top: 60px;
-    padding-top: 100px;
-    height: 100vh;
-    overflow: hidden;
+.activeGroupList .active .groupListName {
+  color: #ffffff !important;
+}
+.activeGroupList .active .groupListElement {
+  color: #ffffff !important;
 }
 
-.sideBarBody{
-    padding-bottom: 100px;
-    padding-top: 60px;
+.personal-task-tab {
+  width: 75%;
+  height: 100%;
+  float: left;
 }
 
+.taskFilter-tasksPage {
+  margin-top: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.addPersonalTaskTextBox {
+  margin-top: -20px !important;
+}
+.bodyContentSideDrawer {
+  margin-top: 55px;
+}
+
+.personalTaskSidebarContent {
+  padding-top: 60px !important;
+}
+
+.taskPageContentScroll {
+  height: 60vh;
+  padding-bottom: 100px;
+}
+.pageBody {
+  width: 100%;
+  top: 60px;
+  padding-top: 100px;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sideBarBody {
+  padding-bottom: 100px;
+  padding-top: 60px;
+}
 
 /* ---------------- group task tab -------------- */
 
-.group-task-tab{
-    width: 75%;
-    height: 100%;
-    float: left;
-  }
-
-  .popupFormGroupElement{
-      margin-bottom: 10px !important;
-  }
-
-  .groupSettings{
-      margin-left: 60%;
-  }
-
-  .groupSettingsContent{
-      padding: 20px;
-  }
-  .settingsButton{
-      margin-top: -27px;
-  }
-
-  .groupUpdatePopups{
-      position: absolute;
-      top: 80vh;
-      right: 10px;
-  }
-
-
-  /* ------------------- files tab ------------------- */
-
-  .fileTabContent{
-      margin-top: 10px;
-      margin-right: 10px;
-  }
-
-  .filesList{
-      width: 100%;
-      height: 50vh;
-      margin-top: 20px;
-    margin-bottom: 10px;
-  }
-  .fileScroll{
-    height: 50vh;
-  }
-  .filesUploader{
-    width: 99%;
-    height: 30vh;
-    margin-left: 15px;
-    margin-right: 10px !important;
-    margin-bottom: 30px;
-  }
-  .uploaderListItem{
-      background-color: black;
-
-  }
-
-  .filesListFile{
-      background-color: #EDF0F5;
-      border-radius: 5px;
-      margin-top: 10px;
-      margin-left: 15px;
-      margin-right: 15px;
-  }
-
-
-  /* --------------------- board tab ---------------- */
-
-  .boardBodyDiv{
-      width: 100%;
-      height: 90vh;
-      padding-top: 20px;
-      position: absolute;
-      left: 25vw;
-      overflow-y: scroll;
-        overflow-y: hidden;
-        white-space: nowrap;
-        border-left: solid #D9DEEB 5px;
-  }
-  .defaultBoard{
-      width: 30%;
-      height: 77vh;
-      background-color: #EDF0F5;
-      position: absolute;
-      left: 20px;
-      border-radius: 5px;
-  }
-  .actualBoard{
-    width: 300px;
-    height: 73vh;
-    background-color: #EDF0F5;
-    left: 20px;
-    border-radius: 5px;
-    display: inline-block;
-  }
-  .card {
-    display: inline-block;
-    /* width: 300px; */
-    margin-right: 20px;
-    margin-top: -8vh;
-  }
-  .boardTitle{
-      height: 70px;
-      background-color: #060631;
-      color: #FFFFFF;
-      font-size: 16px;
-      text-align: center;
-      padding-top: 20px;
-      border-top-right-radius: 5px;
-      border-top-left-radius: 5px;
-  }
-  .sprintTitle{
-    height: 70px;
-    background-color: #0BAFFF;
-    color: #FFFFFF;
-    font-size: 16px;
-    text-align: center;
-    padding-top: 15px;
-    border-top-right-radius: 5px;
-    border-top-left-radius: 5px;
-}
-  .boardTaskList{
-      height: 85%;
-      padding-bottom: 100px;
-      width: 100%;
-  }
-  .boardProfPic{
-      width: 10px !important;
-      height: 10px !important;
-  }
-  .boardTaskListItem{
-      background-color: #FFFFFF;
-      margin-top: 10px;
-      margin-left: 10px;
-      margin-right: 10px;
-      border-radius: 3px;
-  }
-  .boardSprintSection{
-      width: 65%;
-      height: 100%;
-      float: right;
-      position: absolute;
-      right: 10px;
-      background-color: #FF6161;
-  }
-  .boardSprint{
-    width: 300px;
-    height: 100%;
-    background-color: #EDF0F5;
-    border-radius: 5px;
-    float: left;
+.group-task-tab {
+  width: 75%;
+  height: 100%;
+  float: left;
 }
 
-.boardTaskDone{
-    color: rgb(10, 126, 0);
-    font-size: 14px;
-  }
-  .boardTaskOverDue{
-    color: rgb(163, 11, 0) !important;
-    font-size: 14px;
-  }
-  .boardTaskHealthy{
-    color: rgb(0, 4, 255);
-    font-size: 14px;
-  }
-  .boardTaskDefault{
-    color: rgb(0, 0, 0);
-    font-size: 14px;
-  }
+.popupFormGroupElement {
+  margin-bottom: 10px !important;
+}
 
-  .projectFileUploadButton{
-      position: absolute;
-      right: 60px;
-      margin-top: -5px;
-  }
+.groupSettings {
+  margin-left: 60%;
+}
 
-  .fileSize{
-      margin-left: 30px;
-  }
-  .fileName{
-      margin-left: 30px;
-  }
-  .fileDate{
-      margin-right: 20px;
-  }
-  .popupDivContent{
-      background-color: black;
-      position: absolute;
-      bottom: 100px;
-      right: 20px;
-  }
+.groupSettingsContent {
+  padding: 20px;
+}
+.settingsButton {
+  margin-top: -27px;
+}
 
-  .scrolling-wrapper {
-    /* overflow-x: scroll; */
-    overflow-y: hidden;
-    white-space: nowrap;
-    height: 85%;
-    width: 70%;
-    padding-right: 100px;
-    padding-left: 10px;
+.groupUpdatePopups {
+  position: absolute;
+  top: 80vh;
+  right: 10px;
+}
 
-  }
- 
-  .rowHeightAddTask{
-      padding-top: 10px !important;
-      margin-top: -10px !important;
-      height: 80px;
-  }
+/* ------------------- files tab ------------------- */
 
-  .addSprintSection{
-        height: 100%;
-        width: 300px;
-        padding-top: 60px;
-        overflow-y: hidden;
-        /* background-color: burlywood; */
-        padding-right: 50px;
-        padding-left: 50px;
-  }
-  .addSprintButton{
-    background-color: #2EC973;
-    width: 230px;
-    height: 60px;
-    padding-top: 5px;
-    border-radius: 5px;
-  }
-  .addSprintBoard{
-    width: 250px;
-    height: 80vh;
-    border-radius: 5px;
-    display: inline-block;
-    /* background-color: blue; */
-    /* margin-left: -300px; */
-  }
-  .sprintDateRangePicker{
-      margin-left: 10px;
-      margin-right: 10px;
-      margin-top: 20px;
-      margin-bottom: 20px;
-  }
-  .addSprintPopup{
-      position: absolute;
-      right: 300px;
-      bottom: 60px;
-  }
+.fileTabContent {
+  margin-top: 10px;
+  margin-right: 10px;
+}
 
+.filesList {
+  width: 100%;
+  height: 50vh;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+.fileScroll {
+  height: 50vh;
+}
+.filesUploader {
+  width: 99%;
+  height: 30vh;
+  margin-left: 15px;
+  margin-right: 10px !important;
+  margin-bottom: 30px;
+}
+.uploaderListItem {
+  background-color: black;
+}
 
-  .datetimePickerRange{
-      background-color: #E5E5E5;
-      width: 200px;
-      height: 30px;
-      position: absolute;
-      z-index: -20;
-      margin-top: -6px;
-      margin-left: 100px;
-      border-radius: 5px;
-  }
+.filesListFile {
+  background-color: #edf0f5;
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+/* --------------------- board tab ---------------- */
+
+.boardBodyDiv {
+  width: 100%;
+  height: 90vh;
+  padding-top: 20px;
+  position: absolute;
+  left: 25vw;
+  overflow-y: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  border-left: solid #d9deeb 5px;
+}
+.defaultBoard {
+  width: 30%;
+  height: 77vh;
+  background-color: #edf0f5;
+  position: absolute;
+  left: 20px;
+  border-radius: 5px;
+}
+.actualBoard {
+  width: 300px;
+  height: 73vh;
+  background-color: #edf0f5;
+  left: 20px;
+  border-radius: 5px;
+  display: inline-block;
+}
+.card {
+  display: inline-block;
+  /* width: 300px; */
+  margin-right: 20px;
+  margin-top: -8vh;
+}
+.boardTitle {
+  height: 70px;
+  background-color: #060631;
+  color: #ffffff;
+  font-size: 16px;
+  text-align: center;
+  padding-top: 20px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+.sprintTitle {
+  height: 70px;
+  background-color: #0bafff;
+  color: #ffffff;
+  font-size: 16px;
+  text-align: center;
+  padding-top: 15px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+.boardTaskList {
+  height: 85%;
+  padding-bottom: 100px;
+  width: 100%;
+}
+.boardProfPic {
+  width: 10px !important;
+  height: 10px !important;
+}
+.boardTaskListItem {
+  background-color: #ffffff;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 3px;
+}
+.boardSprintSection {
+  width: 65%;
+  height: 100%;
+  float: right;
+  position: absolute;
+  right: 10px;
+  background-color: #ff6161;
+}
+.boardSprint {
+  width: 300px;
+  height: 100%;
+  background-color: #edf0f5;
+  border-radius: 5px;
+  float: left;
+}
+
+.boardTaskDone {
+  color: rgb(10, 126, 0);
+  font-size: 14px;
+}
+.boardTaskOverDue {
+  color: rgb(163, 11, 0) !important;
+  font-size: 14px;
+}
+.boardTaskHealthy {
+  color: rgb(0, 4, 255);
+  font-size: 14px;
+}
+.boardTaskDefault {
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+}
+
+.projectFileUploadButton {
+  position: absolute;
+  right: 60px;
+  margin-top: -5px;
+}
+
+.fileSize {
+  margin-left: 30px;
+}
+.fileName {
+  margin-left: 30px;
+}
+.fileDate {
+  margin-right: 20px;
+}
+.popupDivContent {
+  background-color: black;
+  position: absolute;
+  bottom: 100px;
+  right: 20px;
+}
+
+.scrolling-wrapper {
+  /* overflow-x: scroll; */
+  overflow-y: hidden;
+  white-space: nowrap;
+  height: 85%;
+  width: 70%;
+  padding-right: 100px;
+  padding-left: 10px;
+}
+
+.rowHeightAddTask {
+  padding-top: 10px !important;
+  margin-top: -10px !important;
+  height: 80px;
+}
+
+.addSprintSection {
+  height: 100%;
+  width: 300px;
+  padding-top: 60px;
+  overflow-y: hidden;
+  /* background-color: burlywood; */
+  padding-right: 50px;
+  padding-left: 50px;
+}
+.addSprintButton {
+  background-color: #2ec973;
+  width: 230px;
+  height: 60px;
+  padding-top: 5px;
+  border-radius: 5px;
+}
+.addSprintBoard {
+  width: 250px;
+  height: 80vh;
+  border-radius: 5px;
+  display: inline-block;
+  /* background-color: blue; */
+  /* margin-left: -300px; */
+}
+.sprintDateRangePicker {
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.addSprintPopup {
+  position: absolute;
+  right: 300px;
+  bottom: 60px;
+}
+
+.datetimePickerRange {
+  background-color: #e5e5e5;
+  width: 200px;
+  height: 30px;
+  position: absolute;
+  z-index: -20;
+  margin-top: -6px;
+  margin-left: 100px;
+  border-radius: 5px;
+}
+
+.dialogpopup {
+  position: absolute;
+  left: 10px;
+  width: 300px !important;
+}
+
+/* ----------------------- task restructure ---------------- */
+
+.filterSection {
+  height: 80px;
+}
+.taskFilterTypeDiv {
+  width: 35% !important;
+  float: left;
+}
+.taskFilterDiv {
+  width: 65% !important;
+  float: left;
+}
+.filterTitleDiv {
+  width: 20%;
+  float: left;
+  color: #7a8b9f;
+  font-weight: 600;
+  font-size: ;
+}
+.filterDropdownDiv {
+  width: 70%;
+  float: left;
+}
+.filterOptionDiv {
+  width: 70%;
+  float: left;
+}
+.filterSubmitButton {
+  width: 25%;
+  float: right;
+  color: #ffffff;
+}
+.filterButtonBackground {
+  background-color: #080848;
+}

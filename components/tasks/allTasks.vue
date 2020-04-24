@@ -1,6 +1,6 @@
 <template>
   <div class="taskContent">
-    <v-select
+    <!-- <v-select
       v-model="taskSelect"
       :items="items"
       item-text="name"
@@ -8,7 +8,129 @@
       label="All"
       solo
       @change="taskFilter"
-    ></v-select>
+    ></v-select> -->
+    <div class="filterSection">
+      <div class="taskFilterTypeDiv">
+        <div class="filterTitleDiv">
+          Filter by:
+        </div>
+        <div class="filterDropdownDiv">
+          <v-select
+            v-model="taskFilter"
+            :items="filterOptions"
+            item-text="name"
+            item-value="id"
+            label="None"
+            solo
+          ></v-select>
+        </div>
+      </div>
+      <div class="taskFilterDiv">
+        <div class="filterOptionDiv">
+          <v-select
+            v-if="this.taskFilter == 'assignee'"
+            v-model="addTaskAssignee"
+            :items="states"
+            item-text="name"
+            item-value="id.assigneeId"
+            label="Task assignee"
+            solo
+            class="createFormElements"
+            @mousedown="querySelections"
+          ></v-select>
+
+          <v-select
+            v-model="taskSelect"
+            v-if="this.taskFilter == 'type'"
+            :items="items"
+            item-text="name"
+            item-value="id"
+            label="All"
+            solo
+          ></v-select>
+        </div>
+        <div class="filterSubmitButton">
+          <v-btn
+            v-if="
+              this.taskFilter != null &&
+                this.taskFilter != 'none' &&
+                this.taskFilter != 'type'
+            "
+            dark=""
+            width="100%"
+            height="45px"
+            color="#080848"
+            ><v-icon color="#FFFFFF">mdi-filter-outline</v-icon> Filter</v-btn
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- <v-row justify="center">
+    <v-dialog v-model="dialog" class="dialogpopup" width="80vw" scrollable="" hide-overlay transition="dialog-bottom-transition">
+      <template v-slot:activator="{ on }">
+        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
+      </template>
+      <v-card>
+        <v-toolbar dark color="primary">
+          <v-btn icon dark @click="dialog = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Settings</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn dark text @click="dialog = false">Save</v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
+        <v-list three-line subheader>
+          <v-subheader>User Controls</v-subheader>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>Content filtering</v-list-item-title>
+              <v-list-item-subtitle>Set the content filtering level to restrict apps that can be downloaded</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>Password</v-list-item-title>
+              <v-list-item-subtitle>Require password for purchase or use password to restrict purchase</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+        <v-divider></v-divider>
+        <v-list three-line subheader>
+          <v-subheader>General</v-subheader>
+          <v-list-item>
+            <v-list-item-action>
+              <v-checkbox v-model="notifications"></v-checkbox>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Notifications</v-list-item-title>
+              <v-list-item-subtitle>Notify me about updates to apps or games that I downloaded</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-action>
+              <v-checkbox v-model="sound"></v-checkbox>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Sound</v-list-item-title>
+              <v-list-item-subtitle>Auto-update apps at any time. Data charges may apply</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-action>
+              <v-checkbox v-model="widgets"></v-checkbox>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Auto-add widgets</v-list-item-title>
+              <v-list-item-subtitle>Automatically add home screen widgets</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-card>
+    </v-dialog>
+  </v-row> -->
 
     <div class="allTasksDropDown"></div>
     <div class="taskListViewContent overflow-y-auto">
@@ -93,6 +215,7 @@
         </v-list-item>
       </div>
     </div>
+
     <!-- -------------- start side bar ----------------- -->
 
     <v-navigation-drawer
@@ -123,150 +246,178 @@
 </template>
 
 <script>
-  import TaskSideBar from '~/components/tasks/taskSideBar';
-  import { mapState } from 'vuex';
-  export default {
-    // props: ['projectId', 'projectUsers', 'people'],
-    data() {
-      return {
-        items: [
-          { id: 'all', name: 'All' },
-          { id: 'pending', name: 'Pending' },
-          { id: 'implementing', name: 'Implementing' },
-          { id: 'qa', name: 'QA' },
-          { id: 'readyToDeploy', name: 'Ready to deploy' },
-          { id: 'reOpened', name: 'Reopened' },
-          { id: 'deployed', name: 'Deployed' },
-          { id: 'closed', name: 'Closed' },
-        ],
-        projects: ['pr1'],
-        drawer: null,
-        task: {},
-        subTasks: [],
-        taskFiles: [],
-        assignee: {},
-        userId: this.$store.state.user.userId,
-        taskSelect: null,
-        componentClose: null,
-      };
+import TaskSideBar from '~/components/tasks/taskSideBar';
+import { mapState } from 'vuex';
+export default {
+  // props: ['projectId', 'projectUsers', 'people'],
+  data() {
+    return {
+      dialog: false,
+      notifications: false,
+      sound: true,
+      widgets: false,
+      states: [],
+      items: [
+        { id: 'all', name: 'All' },
+        { id: 'pending', name: 'Pending' },
+        { id: 'implementing', name: 'Implementing' },
+        { id: 'qa', name: 'QA' },
+        { id: 'readyToDeploy', name: 'Ready to deploy' },
+        { id: 'reOpened', name: 'Reopened' },
+        { id: 'deployed', name: 'Deployed' },
+        { id: 'closed', name: 'Closed' },
+      ],
+      filterOptions: [
+        { id: 'none', name: 'None' },
+        { id: 'assignee', name: 'Assignee' },
+        { id: 'type', name: 'Type' },
+        { id: 'dateRange', name: 'Date Range' },
+      ],
+      projects: ['pr1'],
+      drawer: null,
+      task: {},
+      subTasks: [],
+      taskFiles: [],
+      assignee: {},
+      userId: this.$store.state.user.userId,
+      taskSelect: null,
+      taskFilter: null,
+      componentClose: null,
+    };
+  },
+  components: {
+    'task-side-bar': TaskSideBar,
+  },
+  methods: {
+    querySelections(v) {
+      console.log('people list', this.people);
+      this.states = [];
+      let projectSearchList = this.people;
+      for (let index = 0; index < projectSearchList.length; ++index) {
+        let user = projectSearchList[index];
+        this.states.push({
+          name: user.assigneeFirstName + ' ' + user.assigneeLastName,
+          id: user,
+          img: user.assigneeProfileImage,
+        });
+      }
+      console.log('nameList', this.states);
+      this.loading = true;
     },
-    components: {
-      'task-side-bar': TaskSideBar,
+    listenToChange() {
+      console.log('listened to changes ------->');
+      this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
+      this.$store.dispatch('task/fetchTasksMyTasks', this.projectId);
+      this.$store.dispatch('task/fetchProjectTaskCompletion', this.projectId);
     },
-    methods: {
-      listenToChange() {
-        console.log('listened to changes ------->');
-        this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
-        this.$store.dispatch('task/fetchTasksMyTasks', this.projectId);
-        this.$store.dispatch('task/fetchProjectTaskCompletion', this.projectId);
-      },
-      shrinkSideBar() {
-        this.drawer = false;
-      },
-      taskFilter() {
-        console.log('-----------> changed' + this.taskSelect);
-      },
-      async selectTask(task) {
-        this.task = task;
-        this.componentClose = '';
-        console.log('selectedTask', task);
-        this.$axios
-          .get(`/users/${this.task.taskAssignee}`)
-          .then(async (response) => {
-            console.log('fetched task -->', response.data.data);
-            this.assignee = response.data.data;
-            //if task fetch is successful,
-            let subTaskResponse;
+    shrinkSideBar() {
+      this.drawer = false;
+    },
+    taskFilterHandler() {
+      console.log('-----------> changed' + this.taskSelect);
+    },
+    async selectTask(task) {
+      this.task = task;
+      this.componentClose = '';
+      console.log('selectedTask', task);
+      this.$axios
+        .get(`/users/${this.task.taskAssignee}`)
+        .then(async (response) => {
+          console.log('fetched task -->', response.data.data);
+          this.assignee = response.data.data;
+          //if task fetch is successful,
+          let subTaskResponse;
+          try {
+            subTaskResponse = await this.$axios.$get(
+              `/projects/${this.projectId}/tasks/${task.taskId}/subtask?userId=${this.userId}`,
+              {
+                headers: {
+                  type: 'project',
+                },
+              }
+            );
+            console.log('subtasks--->', subTaskResponse.data);
+            this.subTasks = subTaskResponse.data;
+            //get files related to task
+            let taskFilesResponse;
             try {
-              subTaskResponse = await this.$axios.$get(
-                `/projects/${this.projectId}/tasks/${task.taskId}/subtask?userId=${this.userId}`,
+              taskFilesResponse = await this.$axios.$get(
+                `/projects/${this.projectId}/tasks/${task.taskId}/files`,
                 {
                   headers: {
+                    user: this.userId,
                     type: 'project',
                   },
                 }
               );
-              console.log('subtasks--->', subTaskResponse.data);
-              this.subTasks = subTaskResponse.data;
-              //get files related to task
-              let taskFilesResponse;
-              try {
-                taskFilesResponse = await this.$axios.$get(
-                  `/projects/${this.projectId}/tasks/${task.taskId}/files`,
-                  {
-                    headers: {
-                      user: this.userId,
-                      type: 'project',
-                    },
-                  }
-                );
-                console.log('files--->', taskFilesResponse.data);
-                this.taskFiles = taskFilesResponse.data;
-              } catch (error) {
-                console.log('Error fetching data', error);
-              }
+              console.log('files--->', taskFilesResponse.data);
+              this.taskFiles = taskFilesResponse.data;
             } catch (error) {
               console.log('Error fetching data', error);
             }
-          })
-          .catch((e) => {
-            console.log('error', e);
-          });
-      },
-      dueDateCheck(task) {
-        console.log('check due date color', task);
-        if (task.taskStatus === 'closed') {
-          return 'workLoadTaskDone';
-        } else if (task.taskDueDateAt == null) {
-          return 'workLoadTaskDefault';
-        } else {
-          const dueDate = new Date(task.taskDueDateAt);
-          const dueToUtc = new Date(
-            dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
-          );
-          const dueToUtcDate = new Date(dueToUtc);
-          const now = new Date();
-          console.log('now', now.getTime(), 'DueTime', dueToUtcDate.getTime());
-          if (now.getTime() > dueToUtcDate.getTime()) {
-            console.log('overdue');
-            return 'workLoadTaskOverDue';
-          } else {
-            return 'workLoadTaskHealthy';
+          } catch (error) {
+            console.log('Error fetching data', error);
           }
-        }
-      },
-      getProjectDates(date) {
-        const dueDate = new Date(date);
+        })
+        .catch((e) => {
+          console.log('error', e);
+        });
+    },
+    dueDateCheck(task) {
+      console.log('check due date color', task);
+      if (task.taskStatus === 'closed') {
+        return 'workLoadTaskDone';
+      } else if (task.taskDueDateAt == null) {
+        return 'workLoadTaskDefault';
+      } else {
+        const dueDate = new Date(task.taskDueDateAt);
         const dueToUtc = new Date(
           dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
         );
         const dueToUtcDate = new Date(dueToUtc);
         const now = new Date();
-        console.log('Today', now.getDate(), 'DueDate', dueToUtcDate.getDate());
-
-        if (date === null || date === '1970-01-01T05:30:00.000+0000') {
-          return 'Add Due Date';
-        } else if (now.getDate() === dueToUtcDate.getDate()) {
-          return 'Today';
-        } else if (now.getDate() - 1 === dueToUtcDate.getDate()) {
-          return 'Yesterday';
-        } else if (now.getDate() + 1 === dueToUtcDate.getDate()) {
-          return 'Tomorrow';
+        console.log('now', now.getTime(), 'DueTime', dueToUtcDate.getTime());
+        if (now.getTime() > dueToUtcDate.getTime()) {
+          console.log('overdue');
+          return 'workLoadTaskOverDue';
         } else {
-          let stringDate = date + '';
-          stringDate = stringDate.toString();
-          stringDate = stringDate.slice(0, 10);
-          return stringDate;
+          return 'workLoadTaskHealthy';
         }
-      },
+      }
     },
-    computed: {
-      ...mapState({
-        projectAllTasks: (state) => state.task.allTasks,
-        projectId: (state) => state.project.project.projectId,
-      }),
+    getProjectDates(date) {
+      const dueDate = new Date(date);
+      const dueToUtc = new Date(
+        dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
+      );
+      const dueToUtcDate = new Date(dueToUtc);
+      const now = new Date();
+      console.log('Today', now.getDate(), 'DueDate', dueToUtcDate.getDate());
+
+      if (date === null || date === '1970-01-01T05:30:00.000+0000') {
+        return 'Add Due Date';
+      } else if (now.getDate() === dueToUtcDate.getDate()) {
+        return 'Today';
+      } else if (now.getDate() - 1 === dueToUtcDate.getDate()) {
+        return 'Yesterday';
+      } else if (now.getDate() + 1 === dueToUtcDate.getDate()) {
+        return 'Tomorrow';
+      } else {
+        let stringDate = date + '';
+        stringDate = stringDate.toString();
+        stringDate = stringDate.slice(0, 10);
+        return stringDate;
+      }
     },
-  };
+  },
+  computed: {
+    ...mapState({
+      people: (state) => state.task.userCompletionTasks,
+      projectAllTasks: (state) => state.task.allTasks,
+      projectId: (state) => state.project.project.projectId,
+    }),
+  },
+};
 </script>
 
 <style scoped></style>
