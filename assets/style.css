@@ -1671,11 +1671,12 @@
 /* ----------------------- task restructure ---------------- */
 
 .filterSection {
-  height: 80px;
+  height: 60px;
 }
 .taskFilterTypeDiv {
   width: 35% !important;
   float: left;
+  height: 40px;
 }
 .taskFilterDiv {
   width: 65% !important;
@@ -1715,13 +1716,20 @@
   font-weight: 600;
   margin-right: 10px;
 }
+.restructuredTaskCreate {
+  margin-bottom: -20px;
+}
 .restructuredSubTaskList {
   background-color: #edf0f5;
-  margin-left: 50px;
+  margin-left: 30px;
+}
+.restructuredSubTaskCreate {
+  margin-left: 30px;
+  margin-bottom: -20px;
 }
 .restructuredSubTaskName {
   color: #080848;
-  width: 58% !important;
+  width: 60% !important;
 }
 .restStatusChip {
   /* padding-right: 30px; */

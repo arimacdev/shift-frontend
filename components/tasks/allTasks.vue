@@ -16,6 +16,7 @@
         </div>
         <div class="filterDropdownDiv">
           <v-select
+            dense=""
             v-model="taskFilter"
             :items="filterOptions"
             item-text="name"
@@ -30,6 +31,7 @@
         <!-- ---------- filter options ------------- -->
         <div class="filterOptionDiv">
           <v-select
+            dense=""
             v-if="this.taskFilter == 'assignee'"
             v-model="addTaskAssignee"
             :items="states"
@@ -42,12 +44,14 @@
           ></v-select>
 
           <v-select
+            dense=""
             v-model="taskSelect"
             v-if="this.taskFilter == 'type'"
             :items="items"
             item-text="name"
             item-value="id"
             label="Select type"
+            class="createFormElements"
             solo
           ></v-select>
           <VueCtkDateTimePicker
@@ -86,7 +90,18 @@
       </div>
     </div>
 
-    <div class="allTasksDropDown"></div>
+    <div class="restructuredTaskCreate">
+      <v-text-field
+        v-model="personalTask"
+        background-color="#EDF0F5"
+        solo
+        prepend-inner-icon="mdi-plus-circle"
+        label="Add a main task..."
+        class=""
+      >
+      </v-text-field>
+    </div>
+
     <div class="taskListViewContent overflow-y-auto">
       <!-- ------ start task filter list ------- -->
       <div
@@ -142,6 +157,19 @@
       </div>
 
       <!-- -------------- sub task design --------------- -->
+      <div class="restructuredSubTaskCreate">
+        <v-text-field
+          v-model="personalTask"
+          background-color="#0BAFFF"
+          solo
+          dark=""
+          prepend-inner-icon="mdi-plus-circle"
+          label="Add a sub task..."
+          class=""
+          @keyup.enter="addParentTask"
+        >
+        </v-text-field>
+      </div>
       <div class="taskList restructuredSubTaskList">
         <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)">
           <v-list-item-action>
