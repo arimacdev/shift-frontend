@@ -171,7 +171,7 @@
 .taskFormDiv {
   position: absolute;
   width: 90%;
-  margin-top: 10%;
+  margin-top: 7%;
   padding-top: 10px;
   padding-right: 10px;
 }
@@ -1746,4 +1746,14 @@
 }
 .otherStatus {
   background-color: #0083e2;
+}
+.taskAddTitle {
+  font-size: 16px;
+  margin-bottom: 30px;
+  font-weight: 500;
+}
+.taskAddTitle span {
+  color: #0c0c5a;
+  font-weight: bold;
+  font-size: 18px;
 }
