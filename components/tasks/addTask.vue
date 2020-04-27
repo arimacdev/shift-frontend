@@ -1,47 +1,38 @@
 <template>
-<div>
+  <div>
     <div class="taskFormDiv taskListViewContent overflow-y-auto">
-        <form @submit.prevent="handleSubmit"> 
-        
-        <v-row
-            class="mb-12 formRow" 
-            no-gutters
-            >
-                <v-col
-                sm="6"
-                md="6"
-                
-            >
-        <!-- <input v-model="taskName" placeholder="Task name" class="formElements"> -->
-          <!-- <input maxlength="50" v-model.trim="$v.taskName.$model" placeholder="Task name" class="formElements">
+      <div class="taskAddTitle">
+        New task -
+        <span>#{{ this.projectAllTasks.length+1 }}</span>
+      </div>
+      <form @submit.prevent="handleSubmit">
+        <v-row class="mb-12 formRow" no-gutters>
+          <v-col sm="12" md="12">
+            <!-- <input v-model="taskName" placeholder="Task name" class="formElements"> -->
+            <!-- <input maxlength="50" v-model.trim="$v.taskName.$model" placeholder="Task name" class="formElements">
        <div v-if="$v.taskName.$error && !$v.taskName.required" class="errorText"> Task name is required</div>
-       <div v-if="$v.taskName.$error && !$v.taskName.maxLength" class="errorText"> Cannot use more than 50 characters</div> -->
-      
-       <v-text-field
-            label="Task name*"
-            outlined
-            class="createFormElements"
-            v-model.trim="$v.taskName.$model"
-          ></v-text-field>
- <div v-if="$v.taskName.$error && !$v.taskName.required" class="errorText"> Task name is required</div>
-       <div v-if="$v.taskName.$error && !$v.taskName.maxLength" class="errorText"> Cannot use more than 100 characters</div>
-           
+            <div v-if="$v.taskName.$error && !$v.taskName.maxLength" class="errorText"> Cannot use more than 50 characters</div>-->
 
-
-            </v-col>
-             <v-col
-                sm="6"
-                md="6"                
-            >
-            <!-- <select v-model="addTaskAssignee" class="formElements" >
-              <option disabled value="" >Assignee</option>
-              <option v-for="(projectUser, index) in projectUsers" :key="index" :value="projectUser.userId">
-                {{projectUser.firstName}} {{projectUser.lastName}}
-              </option>
-            </select> -->
-
-             <v-select
-             v-model="addTaskAssignee"
+            <v-text-field
+              label="Task name*"
+              outlined
+              class="createFormElements"
+              v-model.trim="$v.taskName.$model"
+            ></v-text-field>
+            <div
+              v-if="$v.taskName.$error && !$v.taskName.required"
+              class="errorText"
+            >Task name is required</div>
+            <div
+              v-if="$v.taskName.$error && !$v.taskName.maxLength"
+              class="errorText"
+            >Cannot use more than 100 characters</div>
+          </v-col>
+        </v-row>
+        <v-row class="mb-12 formRow" no-gutters>
+          <v-col sm="12" md="12">
+            <v-select
+              v-model="addTaskAssignee"
               :items="states"
               item-text="name"
               item-value="id.assigneeId"
@@ -50,73 +41,38 @@
               class="createFormElements"
               @mousedown="querySelections"
             ></v-select>
-            
-            </v-col>
-        </v-row>        
-        <v-row class="mb-12 formRow" no-gutters >
-                <v-col
-                sm="6"
-                md="6"
-                
-            >
-           
-             <!-- <input  v-model="taskDueDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" class="formElements"> -->
-           <div class="pickerContainer taskDatePickerField pickerDiv">
-            <VueCtkDateTimePicker 
-              color="#3f51b5" 
-              id="due"
-              class="dateTimePickerInternal" 
-              v-model="$v.taskDueDate.$model" 
-              label="Task due date and time"
-              input-size="lg"
-              />
-              <div v-if="$v.taskDueDate.$error && !$v.taskDueDate.dateCheck" class="errorText errorDiv"> Task due date cannot be past date</div>
-          
-           </div>
-            </v-col>
-             <v-col
-                sm="6"
-                md="6"
-                
-            >
-          <!-- <input v-model="taskRemindOnDate"  type="text" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Reminder" class="formElements"> -->
-         <div class="pickerContainer taskDatePickerField pickerDiv">
-         <VueCtkDateTimePicker 
-          color="#3f51b5"  
-          id="reminder"
-          class="dateTimePickerInternal" 
-          v-model="$v.taskRemindOnDate.$model" 
-          label="Reminder"
-          input-size="lg"
-          />
-          <div v-if="$v.taskRemindOnDate.$error && !$v.taskRemindOnDate.dateCheck" class="errorText errorDiv"> Reminder date should be before due date</div>
-          
-         </div>
-            </v-col>
+          </v-col>
         </v-row>
-
-
-        <v-row
-            class="mb-12 formRow"
-            no-gutters
-            >
-                <v-col
-                sm="6"
-                md="6"
-                class="rowHeightAddTask"
-                
-            >
-            <!-- <select v-model="taskStatus" class="formElements">
-                <option key="pending" value="pending" >Pending</option>
-                <option key="implementing" value="implementing">Implementing</option>
-                <option key="qa" value="qa">QA</option>
-                <option key="readyToDeploy" value="readyToDeploy">Ready to Deploy</option>
-                <option key="reOpened" value="reOpened">Re-Opened</option>
-                <option key="deployed" value="deployed">Deployed</option>
-                <option key="closed" value="closed">Closed</option>
-            </select> -->
+        <v-row class="mb-12 formRow" no-gutters>
+          <v-col sm="12" md="12">
             <v-select
-             v-model="taskStatus"
+              v-model="addTaskAssignee"
+              :items="states"
+              item-text="name"
+              item-value="id.assigneeId"
+              label="Parent task"
+              outlined
+              class="createFormElements"
+              @mousedown="querySelections"
+            ></v-select>
+          </v-col>
+        </v-row>
+        <v-row class="mb-12 formRow" no-gutters>
+          <v-col sm="4" md="4">
+            <v-select
+              v-model="addTaskAssignee"
+              :items="states"
+              item-text="name"
+              item-value="id.assigneeId"
+              label="Task type"
+              outlined
+              class="createFormElements"
+              @mousedown="querySelections"
+            ></v-select>
+          </v-col>
+          <v-col sm="4" md="4">
+            <v-select
+              v-model="taskStatus"
               :items="items"
               item-text="name"
               item-value="id"
@@ -124,90 +80,109 @@
               outlined
               class="createFormElements"
             ></v-select>
-           
-            </v-col>
-             <v-col
-                sm="6"
-                md="6"
-                class="rowHeightAddTask overflow-y-auto"
-                
-            >
+          </v-col>
+          <v-col sm="4" md="4">
+            <v-select
+              v-model="taskStatus"
+              :items="items"
+              item-text="name"
+              item-value="id"
+              label="Board"
+              outlined
+              class="createFormElements"
+            ></v-select>
+          </v-col>
+        </v-row>
+        <v-row class="mb-12 formRow" no-gutters>
+          <v-col sm="6" md="6">
+            <!-- <input  v-model="taskDueDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" class="formElements"> -->
+            <div class="pickerContainer taskDatePickerField pickerDiv">
+              <VueCtkDateTimePicker
+                color="#3f51b5"
+                id="due"
+                class="dateTimePickerInternal"
+                v-model="$v.taskDueDate.$model"
+                label="Task due date and time"
+                input-size="lg"
+              />
+              <div
+                v-if="$v.taskDueDate.$error && !$v.taskDueDate.dateCheck"
+                class="errorText errorDiv"
+              >Task due date cannot be past date</div>
+            </div>
+          </v-col>
+          <v-col sm="6" md="6">
+            <!-- <input v-model="taskRemindOnDate"  type="text" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Reminder" class="formElements"> -->
+            <div class="pickerContainer taskDatePickerField pickerDiv">
+              <VueCtkDateTimePicker
+                color="#3f51b5"
+                id="reminder"
+                class="dateTimePickerInternal"
+                v-model="$v.taskRemindOnDate.$model"
+                label="Reminder"
+                input-size="lg"
+              />
+              <div
+                v-if="$v.taskRemindOnDate.$error && !$v.taskRemindOnDate.dateCheck"
+                class="errorText errorDiv"
+              >Reminder date should be before due date</div>
+            </div>
+          </v-col>
+        </v-row>
+
+        <v-row class="mb-12 formRow" no-gutters>
+          <v-col sm="12" md="12">
             <!-- <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Drop files to attach, or browse" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload fileUploadField"/> -->
-           
-            <v-file-input 
-            label="Attachments"
-            v-model="files"
-            outlined
-            prepend-inner-icon="mdi-paperclip"
-            prepend-icon=""
-            class="createFormElements"
-            chips
-            show-size=""
-            multiple=""
-            >
-            </v-file-input>
-             
-            </v-col>
-        </v-row>
-        <v-row
-            class="mb-12 formRow"
-            no-gutters
-            >
-            <v-col
-            sm="12"
-            md="12"
-            class=""
-      >
-       <!-- <textarea v-model="taskNotes" placeholder="Note" class="formElements textArea"></textarea> -->
-       <v-textarea
-          v-model.trim="$v.taskNotes.$model"
-          outlined
-          class=" textArea"
-          label="Notes"
-          height="200px"
-          
-        ></v-textarea>
-         <div v-if="$v.taskNotes.$error && !$v.taskNotes.maxLength" class="errorText"> Cannot use more than 500 characters</div>
-       
-      </v-col>
-        </v-row>
-        <v-row
-            class="mb-12 formRow"
-            no-gutters
-            >
-            <v-col
-            sm="12"
-            md="6"
-            class=""
-      ></v-col>
-            <v-col
-            sm="12"
-            md="6"
-            class="buttonGrid"
-      >
-                <button :class="addTaskStyling" @click="addTask" :disabled="checkValidation" >
-                <v-list-item 
-                dark >
-                    
-                    <v-list-item-content class="buttonText">
-                        <v-list-item-title class="bodyWiew" >Submit</v-list-item-title>
-                    </v-list-item-content>
-                    </v-list-item>
-        </button>
-            </v-col>
-        </v-row>
 
-        </form>
-       
+            <v-file-input
+              label="Attachments"
+              v-model="files"
+              outlined
+              prepend-inner-icon="mdi-paperclip"
+              prepend-icon
+              class="createFormElements"
+              chips
+              show-size
+              multiple
+            ></v-file-input>
+          </v-col>
+        </v-row>
+        <v-row class="mb-12 formRow" no-gutters>
+          <v-col sm="12" md="12" class>
+            <!-- <textarea v-model="taskNotes" placeholder="Note" class="formElements textArea"></textarea> -->
+            <v-textarea
+              v-model.trim="$v.taskNotes.$model"
+              outlined
+              class="textArea"
+              label="Notes"
+              height="200px"
+            ></v-textarea>
+            <div
+              v-if="$v.taskNotes.$error && !$v.taskNotes.maxLength"
+              class="errorText"
+            >Cannot use more than 500 characters</div>
+          </v-col>
+        </v-row>
+        <v-row class="mb-12 formRow" no-gutters>
+          <v-col sm="12" md="6" class></v-col>
+          <v-col sm="12" md="6" class="buttonGrid">
+            <button :class="addTaskStyling" @click="addTask" :disabled="checkValidation">
+              <v-list-item dark>
+                <v-list-item-content class="buttonText">
+                  <v-list-item-title class="bodyWiew">Submit</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </button>
+          </v-col>
+        </v-row>
+      </form>
     </div>
 
-        <div @click="close" class="taskAddPopupPlacements">
-            <component v-bind:is="component" :errorMessage=errorMessage ></component>
-         </div>
-        <!-- <success-popup /> -->
-
+    <div @click="close" class="taskAddPopupPlacements">
+      <component v-bind:is="component" :errorMessage="errorMessage"></component>
     </div>
-    
+    <!-- <success-popup /> -->
+  </div>
 </template>
 
 <script>
@@ -220,7 +195,7 @@ import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 
 import axios from "axios";
 export default {
-  props: ["projectId", "projectUsers", "people"],
+  props: ["projectId", "projectUsers", "people", "AllTasks"],
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup
@@ -456,7 +431,8 @@ export default {
     ...mapState({
       users: state => state.user.users,
       projectId: state => state.project.project.projectId,
-      people: state => state.task.userCompletionTasks
+      people: state => state.task.userCompletionTasks,
+      projectAllTasks: state => state.task.allTasks
     }),
     checkValidation: {
       get() {
