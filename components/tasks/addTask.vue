@@ -8,16 +8,12 @@
       <form @submit.prevent="handleSubmit">
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="12" md="12">
-            <!-- <input v-model="taskName" placeholder="Task name" class="formElements"> -->
-            <!-- <input maxlength="50" v-model.trim="$v.taskName.$model" placeholder="Task name" class="formElements">
-       <div v-if="$v.taskName.$error && !$v.taskName.required" class="errorText"> Task name is required</div>
-            <div v-if="$v.taskName.$error && !$v.taskName.maxLength" class="errorText"> Cannot use more than 50 characters</div>-->
-
             <v-text-field
               label="Task name*"
               outlined
               class="createFormElements"
               v-model.trim="$v.taskName.$model"
+              background-color="#EDF0F5"
             ></v-text-field>
             <div
               v-if="$v.taskName.$error && !$v.taskName.required"
@@ -37,6 +33,7 @@
               item-text="name"
               item-value="id.assigneeId"
               label="Task assignee"
+              background-color="#EDF0F5"
               outlined
               class="createFormElements"
               @mousedown="querySelections"
@@ -52,12 +49,13 @@
               item-value="id.assigneeId"
               label="Parent task"
               outlined
+              background-color="#EDF0F5"
               class="createFormElements"
               @mousedown="querySelections"
             ></v-select>
           </v-col>
         </v-row>
-        <v-row class="mb-12 formRow" no-gutters>
+        <v-row class="mb-12 formRow groupFormRow" no-gutters>
           <v-col sm="4" md="4">
             <v-select
               v-model="addTaskAssignee"
@@ -65,6 +63,7 @@
               item-text="name"
               item-value="id.assigneeId"
               label="Task type"
+              background-color="#EDF0F5"
               outlined
               class="createFormElements"
               @mousedown="querySelections"
@@ -74,6 +73,7 @@
             <v-select
               v-model="taskStatus"
               :items="items"
+              background-color="#EDF0F5"
               item-text="name"
               item-value="id"
               label="Task status"
@@ -86,6 +86,7 @@
               v-model="taskStatus"
               :items="items"
               item-text="name"
+              background-color="#EDF0F5"
               item-value="id"
               label="Board"
               outlined
@@ -93,7 +94,7 @@
             ></v-select>
           </v-col>
         </v-row>
-        <v-row class="mb-12 formRow" no-gutters>
+        <v-row class="mb-12 formRow groupFormRow" no-gutters>
           <v-col sm="6" md="6">
             <!-- <input  v-model="taskDueDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" class="formElements"> -->
             <div class="pickerContainer taskDatePickerField pickerDiv">
@@ -141,13 +142,14 @@
               prepend-inner-icon="mdi-paperclip"
               prepend-icon
               class="createFormElements"
+              background-color="#EDF0F5"
               chips
               show-size
               multiple
             ></v-file-input>
           </v-col>
         </v-row>
-        <v-row class="mb-12 formRow" no-gutters>
+        <v-row class="mb-12 formRow groupFormRow" no-gutters>
           <v-col sm="12" md="12" class>
             <!-- <textarea v-model="taskNotes" placeholder="Note" class="formElements textArea"></textarea> -->
             <v-textarea
@@ -156,6 +158,7 @@
               class="textArea"
               label="Notes"
               height="200px"
+              background-color="#EDF0F5"
             ></v-textarea>
             <div
               v-if="$v.taskNotes.$error && !$v.taskNotes.maxLength"
@@ -163,14 +166,20 @@
             >Cannot use more than 500 characters</div>
           </v-col>
         </v-row>
-        <v-row class="mb-12 formRow" no-gutters>
+        <v-row class="mb-12 formRow groupFormRow" no-gutters>
           <v-col sm="12" md="6" class></v-col>
           <v-col sm="12" md="6" class="buttonGrid">
             <button :class="addTaskStyling" @click="addTask" :disabled="checkValidation">
               <v-list-item dark>
+                <v-list-item-action>
+                  <v-icon size="20" color>mdi-calendar-blank-multiple</v-icon>
+                </v-list-item-action>
                 <v-list-item-content class="buttonText">
-                  <v-list-item-title class="bodyWiew">Submit</v-list-item-title>
+                  <v-list-item-title class="bodyWiew">Create task</v-list-item-title>
                 </v-list-item-content>
+                <v-list-item-action>
+                  <v-icon>mdi-plus-circle</v-icon>
+                </v-list-item-action>
               </v-list-item>
             </button>
           </v-col>
