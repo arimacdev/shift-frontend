@@ -75,23 +75,23 @@ export default {
         {
           title: "Projects",
           icon: "mdi-folder-outline",
-          route: "../projects/projects"
+          route: "../../projects/projects"
         },
         {
           title: "Tasks",
           icon: "mdi-calendar-blank-multiple",
-          route: "../tasks"
+          route: "../../tasks/tasks"
         },
         // { title: 'Inventory', icon: 'mdi-comment-outline', route: '../inventory'},
         {
           title: "Workload",
           icon: "mdi-bag-checked",
-          route: "../workload"
+          route: "../../workload/workload"
         },
         {
           title: "Users",
           icon: "mdi-account-multiple-outline",
-          route: "../users"
+          route: "../../users/users"
         }
         // { title: 'Admin', icon: 'mdi-account-circle-outline', route: '../admin' },
       ],
@@ -101,18 +101,18 @@ export default {
         {
           title: "Projects",
           icon: "mdi-folder-outline",
-          route: "../projects"
+          route: "../../projects/projects"
         },
         {
           title: "Tasks",
           icon: "mdi-calendar-blank-multiple",
-          route: "../tasks"
+          route: "../../tasks/tasks"
         },
         // { title: 'Inventory', icon: 'mdi-comment-outline', route: '../inventory'},
         {
           title: "Workload",
           icon: "mdi-bag-checked",
-          route: "../myWorkload"
+          route: "../../workload/myWorkload"
         }
       ]
     };

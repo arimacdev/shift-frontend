@@ -152,7 +152,7 @@
           </v-list-item-avatar>
           <a
             style="text-decoration: none;"
-            :href="'http://localhost:3000/task/'+ task.taskId"
+            :href="'http://localhost:3000/task/'+ task.taskId + '/?project=' + projectId"
             target="_blank"
           >
             <v-icon color="red">mdi-checkbox-blank-circle</v-icon>

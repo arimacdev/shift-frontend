@@ -218,6 +218,7 @@ export default {
   },
   created() {
     this.taskId = this.$route.params.viewTask;
+    this.projectId = this.$route.query.project;
   }
 };
 </script>
