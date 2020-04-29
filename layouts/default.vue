@@ -11,14 +11,14 @@
 </template>
 
 <script>
-import NavigationDrawer from '~/components/navigationDrawer'
+import NavigationDrawer from "~/components/navigationDrawer";
 
 export default {
   components: {
     NavigationDrawer
   },
-  created () {
-     this.$store.dispatch('userProfile/fetchProfilePicture')
-     }
-}
+  created() {
+    this.$store.dispatch("userProfile/fetchProfilePicture");
+  }
+};
 </script>

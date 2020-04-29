@@ -22,21 +22,23 @@
             <!-- <div class="round">
                 <input type="checkbox" disabled name="a2" value="1" id="checkbox" />
                 <label for="checkbox"></label>
-            </div> -->
-            <v-icon v-if="task.taskStatus == 'closed'" size="30" color="#2EC973"
-              >mdi-checkbox-marked-circle</v-icon
-            >
-            <v-icon v-else size="30" color="#FFFFFF"
-              >mdi-checkbox-blank-circle</v-icon
-            >
+            </div>-->
+            <v-icon
+              v-if="task.taskStatus == 'closed'"
+              size="30"
+              color="#2EC973"
+            >mdi-checkbox-marked-circle</v-icon>
+            <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
           </v-list-item-action>
           <div class="tasklistTaskNames">
             <div class="body-2">{{ task.taskName }}</div>
           </div>
           <v-list-item-content class="updatedDate">
-            <v-list-item-title :class="dueDateCheck(task)">{{
+            <v-list-item-title :class="dueDateCheck(task)">
+              {{
               getProjectDates(task.taskDueDateAt)
-            }}</v-list-item-title>
+              }}
+            </v-list-item-title>
           </v-list-item-content>
           <v-list-item-avatar>
             <v-img
@@ -60,21 +62,23 @@
             <!-- <div class="round">
                 <input type="checkbox" disabled name="a2" value="1" id="checkbox" />
                 <label for="checkbox"></label>
-            </div> -->
-            <v-icon v-if="task.taskStatus == 'closed'" size="30" color="#2EC973"
-              >mdi-checkbox-marked-circle</v-icon
-            >
-            <v-icon v-else size="30" color="#FFFFFF"
-              >mdi-checkbox-blank-circle</v-icon
-            >
+            </div>-->
+            <v-icon
+              v-if="task.taskStatus == 'closed'"
+              size="30"
+              color="#2EC973"
+            >mdi-checkbox-marked-circle</v-icon>
+            <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
           </v-list-item-action>
           <div class="tasklistTaskNames">
             <div class="body-2">{{ task.taskName }}</div>
           </div>
           <v-list-item-content class="updatedDate">
-            <v-list-item-title :class="dueDateCheck(task)">{{
+            <v-list-item-title :class="dueDateCheck(task)">
+              {{
               getProjectDates(task.taskDueDateAt)
-            }}</v-list-item-title>
+              }}
+            </v-list-item-title>
           </v-list-item-content>
           <v-list-item-avatar>
             <v-img
@@ -95,10 +99,10 @@
       v-model="drawer"
       fixed
       temporary
-      right=""
+      right
       height="100vh"
       width="800px"
-      class=""
+      class
       color="#FFFFFF"
     >
       <task-side-bar
@@ -119,23 +123,23 @@
 </template>
 
 <script>
-import TaskSideBar from '~/components/tasks/taskSideBar';
-import { mapState } from 'vuex';
+import TaskSideBar from "~/components/tasks/taskSideBar";
+import { mapState } from "vuex";
 export default {
   // props: ['projectId', 'projectUsers', 'people'],
   data() {
     return {
       items: [
-        { id: 'all', name: 'All' },
-        { id: 'pending', name: 'Pending' },
-        { id: 'implementing', name: 'Implementing' },
-        { id: 'qa', name: 'QA' },
-        { id: 'readyToDeploy', name: 'Ready to deploy' },
-        { id: 'reOpened', name: 'Reopened' },
-        { id: 'deployed', name: 'Deployed' },
-        { id: 'closed', name: 'Closed' },
+        { id: "all", name: "All" },
+        { id: "pending", name: "Pending" },
+        { id: "implementing", name: "Implementing" },
+        { id: "qa", name: "QA" },
+        { id: "readyToDeploy", name: "Ready to deploy" },
+        { id: "reOpened", name: "Reopened" },
+        { id: "deployed", name: "Deployed" },
+        { id: "closed", name: "Closed" }
       ],
-      projects: ['pr1'],
+      projects: ["pr1"],
       drawer: null,
 
       task: {},
@@ -143,57 +147,57 @@ export default {
       taskFiles: [],
       assignee: {},
       userId: this.$store.state.user.userId,
-      taskSelect: null,
+      taskSelect: null
     };
   },
   components: {
-    'task-side-bar': TaskSideBar,
+    "task-side-bar": TaskSideBar
   },
   methods: {
     checkme() {
-      console.log('you can check', this.projectMyTask);
+      console.log("you can check", this.projectMyTask);
     },
     dueDateCheck(task) {
-      console.log('check due date color', task);
-      if (task.taskStatus === 'closed') {
-        return 'workLoadTaskDone';
+      console.log("check due date color", task);
+      if (task.taskStatus === "closed") {
+        return "workLoadTaskDone";
       } else if (task.taskDueDateAt == null) {
-        return 'workLoadTaskDefault';
+        return "workLoadTaskDefault";
       } else {
         const dueDate = new Date(task.taskDueDateAt);
         const dueToUtc = new Date(
-          dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
+          dueDate.toLocaleString("en-US", { timeZone: "UTC" })
         );
         const dueToUtcDate = new Date(dueToUtc);
         const now = new Date();
-        console.log('now', now.getTime(), 'DueTime', dueToUtcDate.getTime());
+        console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
         if (now.getTime() > dueToUtcDate.getTime()) {
-          console.log('overdue');
-          return 'workLoadTaskOverDue';
+          console.log("overdue");
+          return "workLoadTaskOverDue";
         } else {
-          return 'workLoadTaskHealthy';
+          return "workLoadTaskHealthy";
         }
       }
     },
     taskFilter() {
-      console.log('-----------> changed' + this.taskSelect);
+      console.log("-----------> changed" + this.taskSelect);
     },
     listenToChange() {
-      console.log('listened to changes ------->');
-      this.$store.dispatch('task/fetchTasksMyTasks', this.projectId);
-      this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
-      this.$store.dispatch('task/fetchProjectTaskCompletion', this.projectId);
+      console.log("listened to changes ------->");
+      this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
+      this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+      this.$store.dispatch("task/fetchProjectTaskCompletion", this.projectId);
     },
     shrinkSideBar() {
       this.drawer = false;
     },
     async selectTask(task) {
       this.task = task;
-      console.log('selectedTask', task);
+      console.log("selectedTask", task);
       this.$axios
         .get(`/users/${this.task.taskAssignee}`)
-        .then(async (response) => {
-          console.log('fetched task -->', response.data.data);
+        .then(async response => {
+          console.log("fetched task -->", response.data.data);
           this.assignee = response.data.data;
           //if task fetch is successful,
           let subTaskResponse;
@@ -202,11 +206,11 @@ export default {
               `/projects/${this.projectId}/tasks/${task.taskId}/subtask?userId=${this.userId}`,
               {
                 headers: {
-                  type: 'project',
-                },
+                  type: "project"
+                }
               }
             );
-            console.log('subtasks--->', subTaskResponse.data);
+            console.log("subtasks--->", subTaskResponse.data);
             this.subTasks = subTaskResponse.data;
             //get files related to task
             let taskFilesResponse;
@@ -216,54 +220,54 @@ export default {
                 {
                   headers: {
                     user: this.userId,
-                    type: 'project',
-                  },
+                    type: "project"
+                  }
                 }
               );
-              console.log('files--->', taskFilesResponse.data);
+              console.log("files--->", taskFilesResponse.data);
               this.taskFiles = taskFilesResponse.data;
             } catch (error) {
-              console.log('Error fetching data', error);
+              console.log("Error fetching data", error);
             }
           } catch (error) {
-            console.log('Error fetching data', error);
+            console.log("Error fetching data", error);
           }
         })
-        .catch((e) => {
-          console.log('error', e);
+        .catch(e => {
+          console.log("error", e);
         });
     },
     getProjectDates(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
+        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
       );
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
-      console.log('Today', now.getDate(), 'DueDate', dueToUtcDate.getDate());
+      console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
-      if (date === null || date === '1970-01-01T05:30:00.000+0000') {
-        return 'Add Due Date';
+      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
+        return "Add Due Date";
       } else if (now.getDate() === dueToUtcDate.getDate()) {
-        return 'Today';
+        return "Today";
       } else if (now.getDate() - 1 === dueToUtcDate.getDate()) {
-        return 'Yesterday';
+        return "Yesterday";
       } else if (now.getDate() + 1 === dueToUtcDate.getDate()) {
-        return 'Tomorrow';
+        return "Tomorrow";
       } else {
-        let stringDate = date + '';
+        let stringDate = date + "";
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 10);
         return stringDate;
       }
-    },
+    }
   },
   computed: {
     ...mapState({
-      projectMyTask: (state) => state.task.myTasks,
-      projectId: (state) => state.project.project.projectId,
-    }),
-  },
+      projectMyTask: state => state.task.myTasks,
+      projectId: state => state.project.project.projectId
+    })
+  }
 };
 </script>
 

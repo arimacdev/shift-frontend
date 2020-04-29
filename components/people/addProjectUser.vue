@@ -1,12 +1,12 @@
 <template>
   <div>
-    <v-row justify="center" class="">
+    <v-row justify="center" class>
       <v-dialog v-model="dialog" persistent max-width="380">
         <template v-slot:activator="{ on }">
           <div v-on="on" class="addPeopleButton addPeople">
             <v-list-item v-on:click="component = 'add-task'" dark>
               <v-list-item-action>
-                <v-icon size="20" color="">mdi-calendar-blank-multiple</v-icon>
+                <v-icon size="20" color>mdi-calendar-blank-multiple</v-icon>
               </v-list-item-action>
               <v-list-item-content class="buttonText">
                 <v-list-item-title class="bodyWiew">Add new</v-list-item-title>
@@ -18,19 +18,15 @@
         <v-card class="addUserPopup">
           <v-form v-model="isValid" ref="form">
             <div class="popupFormContent">
-              <v-icon class="" size="60" color="deep-orange lighten-1"
-                >mdi-account-plus</v-icon
-              >
-              <v-card-text class="deletePopupTitle"
-                >Add member to project</v-card-text
-              >
+              <v-icon class size="60" color="deep-orange lighten-1">mdi-account-plus</v-icon>
+              <v-card-text class="deletePopupTitle">Add member to project</v-card-text>
               <v-card-actions>
                 <!-- <select v-model="addUser.assigneeId" class="formElements popupFormElement">
               <option disabled value="" >Assignee</option>
               <option v-for="(user, index) in users" :key="index" :value="user.userId">
                 {{user.firstName}} {{user.lastName}}
               </option>
-            </select> -->
+                </select>-->
 
                 <v-autocomplete
                   filled
@@ -40,44 +36,37 @@
                   item-text="name"
                   item-value="id.userId"
                   :search-input.sync="search"
-                  class=" addUserPopupFormElement"
+                  class="addUserPopupFormElement"
                   flat
-                  outlined=""
+                  outlined
                   background-color="white"
-                  append-icon=""
+                  append-icon
                   hide-no-data
                   @change="onSelectedUser()"
                   :rules="assigneeRoleRules"
                   hide-details="auto"
-                  clearable=""
-                >
-                </v-autocomplete>
+                  clearable
+                ></v-autocomplete>
               </v-card-actions>
-              <v-card-actions class="">
+              <v-card-actions class>
                 <!-- <input v-model="addUser.assigneeJobRole" placeholder="Role" class="formElements popupFormElement"> -->
                 <v-text-field
                   v-model="addUser.assigneeJobRole"
                   label="Project Role*"
                   flat
                   outlined
-                  class=" popupFormElement"
+                  class="popupFormElement"
                   :rules="projectRoleRules"
                   hide-details="auto"
                 ></v-text-field>
               </v-card-actions>
             </div>
             <v-card-actions class="roleField checkBoxRoleField">
-              <v-checkbox
-                v-model="adminStatus"
-                hide-details
-                class="shrink mr-2 mt-0"
-                label="Admin"
-              >
-              </v-checkbox>
+              <v-checkbox v-model="adminStatus" hide-details class="shrink mr-2 mt-0" label="Admin"></v-checkbox>
             </v-card-actions>
 
             <!-- <v-btn class="deleteButton" text @click="dialog = false">Cancel</v-btn>
-          <v-btn class="editButton addUserSave" text @click="changeHandler">Save</v-btn> -->
+            <v-btn class="editButton addUserSave" text @click="changeHandler">Save</v-btn>-->
 
             <div class="AddUserPopupBottom">
               <v-card-actions>
@@ -88,9 +77,7 @@
                   width="100px"
                   @click="dialog = false"
                   :retain-focus="false"
-                >
-                  Cancel
-                </v-btn>
+                >Cancel</v-btn>
                 <v-spacer></v-spacer>
                 <v-btn
                   :disabled="!isValid"
@@ -98,9 +85,7 @@
                   width="100px"
                   @click="changeHandler"
                   :retain-focus="false"
-                >
-                  Save
-                </v-btn>
+                >Save</v-btn>
                 <v-spacer></v-spacer>
               </v-card-actions>
             </div>
@@ -109,11 +94,7 @@
       </v-dialog>
     </v-row>
     <div @click="close">
-      <component
-        v-bind:is="component"
-        :success="success"
-        :errorMessage="errorMessage"
-      ></component>
+      <component v-bind:is="component" :success="success" :errorMessage="errorMessage"></component>
     </div>
     <!--  <success-popup /> -->
   </div>

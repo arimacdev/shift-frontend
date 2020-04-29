@@ -1,280 +1,291 @@
 <template>
-    <div class="">   
-        <!-- tabs body -->
-              <div>
-             <v-card class="tabs">
-     
-           <!-- ------------------------- group task content ------------------- -->
+  <div class>
+    <!-- tabs body -->
+    <div>
+      <v-card class="tabs">
+        <!-- ------------------------- group task content ------------------- -->
 
-<div  class="taskFilter-tasksPage ">
-        <v-select
-          v-model="taskSelect"
-           :items="items"
-          item-text="name"
-          item-value="id"
-          label="All"
-          solo
-        ></v-select>
+        <div class="taskFilter-tasksPage">
+          <v-select
+            v-model="taskSelect"
+            :items="items"
+            item-text="name"
+            item-value="id"
+            label="All"
+            solo
+          ></v-select>
 
+          <v-text-field
+            v-model="groupTask"
+            solo
+            prepend-inner-icon="mdi-plus-circle"
+            label="Add a new task"
+            class="addPersonalTaskTextBox"
+            @keyup.enter="addGroupTask"
+          ></v-text-field>
 
-        <v-text-field
-        v-model="groupTask"
-        solo
-        prepend-inner-icon="mdi-plus-circle"
-        label="Add a new task"
-        class="addPersonalTaskTextBox"
-        @keyup.enter="addGroupTask"
-        > </v-text-field>
+          <!-- -------- loop task list here ----------- -->
+          <div class="taskPageContentScroll overflow-y-auto">
+            <div class="taskList" v-for="(groupTask, index) in groupTasks" :key="index">
+              <v-list-item
+                v-if="groupTask.taskStatus == taskSelect"
+                @click.stop="drawer = !drawer"
+                @click="selectGroupTask(groupTask)"
+              >
+                <v-list-item-action>
+                  <v-icon
+                    v-if="groupTask.taskStatus == 'closed'"
+                    size="30"
+                    color="#2EC973"
+                  >mdi-checkbox-marked-circle</v-icon>
+                  <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                </v-list-item-action>
+                <div class="tasklistTaskNames">
+                  <div class="body-2">{{ groupTask.taskName }}</div>
+                </div>
+                <v-list-item-content class="updatedDate">
+                  <v-list-item-title class="body-2">{{ getTaskDueDate(groupTask.taskDueDateAt) }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
 
-
-
-
-
-<!-- -------- loop task list here ----------- -->
-<div class="taskPageContentScroll overflow-y-auto">
-    <div class="taskList" v-for="(groupTask, index) in groupTasks"
-        :key="index" >
-         <v-list-item v-if="groupTask.taskStatus == taskSelect" @click.stop="drawer = !drawer" @click="selectGroupTask(groupTask)">
-              <v-list-item-action>
-              <v-icon v-if="groupTask.taskStatus == 'closed'" size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
-             <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
-       
-              </v-list-item-action>
-              <div class="tasklistTaskNames">
-                <div class="body-2">{{ groupTask.taskName }}</div>
-              </div>
-              <v-list-item-content class="updatedDate">
-                <v-list-item-title class="body-2">{{ getTaskDueDate(groupTask.taskDueDateAt) }}</v-list-item-title>
-              </v-list-item-content>
-               
-            </v-list-item>
-
-
-             <v-list-item v-if="taskSelect == 'all' || taskSelect == null" @click.stop="drawer = !drawer" @click="selectGroupTask(groupTask)">
-              <v-list-item-action>
-              <v-icon v-if="groupTask.taskStatus == 'closed'" size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
-             <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
-       
-              </v-list-item-action>
-              <div class="tasklistTaskNames">
-                <div class="body-2">{{ groupTask.taskName }}</div>
-              </div>
-              <v-list-item-content class="updatedDate">
-                <v-list-item-title :class="dueDateCheck(groupTask)">{{ getTaskDueDate(groupTask.taskDueDateAt) }}</v-list-item-title>
-              </v-list-item-content>
-               <v-list-item-avatar>
-          <v-img v-if="groupTask.taskAssigneeProfileImage != null" :src="groupTask.taskAssigneeProfileImage"></v-img>
-          <v-img v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
-
-        </v-list-item-avatar>
-               
-            </v-list-item>
+              <v-list-item
+                v-if="taskSelect == 'all' || taskSelect == null"
+                @click.stop="drawer = !drawer"
+                @click="selectGroupTask(groupTask)"
+              >
+                <v-list-item-action>
+                  <v-icon
+                    v-if="groupTask.taskStatus == 'closed'"
+                    size="30"
+                    color="#2EC973"
+                  >mdi-checkbox-marked-circle</v-icon>
+                  <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                </v-list-item-action>
+                <div class="tasklistTaskNames">
+                  <div class="body-2">{{ groupTask.taskName }}</div>
+                </div>
+                <v-list-item-content class="updatedDate">
+                  <v-list-item-title
+                    :class="dueDateCheck(groupTask)"
+                  >{{ getTaskDueDate(groupTask.taskDueDateAt) }}</v-list-item-title>
+                </v-list-item-content>
+                <v-list-item-avatar>
+                  <v-img
+                    v-if="groupTask.taskAssigneeProfileImage != null"
+                    :src="groupTask.taskAssigneeProfileImage"
+                  ></v-img>
+                  <v-img
+                    v-else
+                    src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                  ></v-img>
+                </v-list-item-avatar>
+              </v-list-item>
+            </div>
+          </div>
+        </div>
+        <!-- ------------------- group task content end --------------- -->
+      </v-card>
     </div>
 
-
-</div>
-
-</div>
-           <!-- ------------------- group task content end --------------- -->
-     
-  </v-card>
-  </div>
-
-
-   <!-- -------------- start side bar ----------------- -->
-  <v-navigation-drawer
+    <!-- -------------- start side bar ----------------- -->
+    <v-navigation-drawer
       v-model="drawer"
       fixed
       temporary
-      right=""
+      right
       height="100vh"
       width="800px"
-      class=""
+      class
       color="#FFFFFF"
-    > 
-      <group-side-drawer :task="task" :group="group" :assignee="assignee" :groupPeople="groupPeople" :subTasks="subTasks" :taskFiles="taskFiles" @shrinkSideBar="shrinkSideBar"/>
+    >
+      <group-side-drawer
+        :task="task"
+        :group="group"
+        :assignee="assignee"
+        :groupPeople="groupPeople"
+        :subTasks="subTasks"
+        :taskFiles="taskFiles"
+        @shrinkSideBar="shrinkSideBar"
+      />
     </v-navigation-drawer>
-          <!-- --------------- end side bar --------------------- -->
-         <div @click="close">
-            <component v-bind:is="component" :errorMessage=errorMessage ></component>
-            <!-- <success-popup /> -->
-         </div>
-
-</div>
+    <!-- --------------- end side bar --------------------- -->
+    <div @click="close">
+      <component v-bind:is="component" :errorMessage="errorMessage"></component>
+      <!-- <success-popup /> -->
+    </div>
+  </div>
 </template>
 
 <script>
-import GroupSideDrawer from '~/components/tasksPage/groupSideDrawer'
-import SuccessPopup from '~/components/popups/successPopup'
-import ErrorPopup from '~/components/popups/errorPopup'
-import axios from 'axios'
-import { mapState } from 'vuex'
+import GroupSideDrawer from "~/components/tasksPage/groupSideDrawer";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
+import axios from "axios";
+import { mapState } from "vuex";
 
+export default {
+  props: ["group"],
+  components: {
+    "group-side-drawer": GroupSideDrawer,
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup
+  },
+  data() {
+    return {
+      errorMessage: "",
+      component: "",
+      drawer: null,
+      userId: this.$store.state.user.userId,
+      personalTask: "",
+      taskSelect: null,
+      groupTask: "",
+      task: {},
+      assignee: {},
+      subTasks: [],
+      taskFiles: [],
+      items: [
+        { id: "all", name: "All" },
+        { id: "open", name: "Open" },
+        { id: "closed", name: "Closed" }
+      ]
+    };
+  },
 
-  export default {
-    props: [ 'group'],
-       components: {
-      'group-side-drawer' : GroupSideDrawer,  
-      'success-popup' : SuccessPopup,
-      'error-popup': ErrorPopup,
-    },
-     data () {
-      return {
-          errorMessage: "",
-        component: '',
-        drawer: null,
-         userId: this.$store.state.user.userId,
-         personalTask: '',
-         taskSelect: null,
-         groupTask: '',
-         task: {},
-         assignee: {},
-         subTasks: [],
-         taskFiles: [],
-         items: [
-           {id:'all', name: 'All'},
-           {id: 'open', name: 'Open'},
-            {id: 'closed', name: 'Closed'}
-       ],
-      }
-    },
+  // created() {
+  // //  this.$store.dispatch('personalTasks/fetchAllPersonalTasks');
+  // },
 
-
-    // created() {
-    // //  this.$store.dispatch('personalTasks/fetchAllPersonalTasks');
-    // },
-
-    methods: {
-        close() {
+  methods: {
+    close() {
       this.component = "";
     },
-        dueDateCheck(task){
-        console.log("check due date color", task);
-        if(task.taskStatus === 'closed'){
-          return 'workLoadTaskDone';
+    dueDateCheck(task) {
+      console.log("check due date color", task);
+      if (task.taskStatus === "closed") {
+        return "workLoadTaskDone";
+      } else if (
+        task.taskDueDateAt == null ||
+        task.taskDueDateAt === "1970-01-01T05:30:00.000+0000"
+      ) {
+        return "workLoadTaskDefault";
+      } else {
+        const dueDate = new Date(task.taskDueDateAt);
+        const dueToUtc = new Date(
+          dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+        );
+        const dueToUtcDate = new Date(dueToUtc);
+        const now = new Date();
+        console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
+        if (now.getTime() > dueToUtcDate.getTime()) {
+          console.log("overdue");
+          return "workLoadTaskOverDue";
+        } else {
+          return "workLoadTaskHealthy";
         }
-        else if (task.taskDueDateAt == null || task.taskDueDateAt === '1970-01-01T05:30:00.000+0000') {
-          return 'workLoadTaskDefault';
-        }
-        else {
-          const dueDate = new Date(task.taskDueDateAt);
-          const dueToUtc = new Date(dueDate.toLocaleString("en-US", {timeZone: "UTC"}));
-          const dueToUtcDate = new Date(dueToUtc);
-          const now = new Date();
-          console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
-          if(now.getTime() > dueToUtcDate.getTime()){
-            console.log("overdue")
-            return 'workLoadTaskOverDue';
-          } else {
-            return 'workLoadTaskHealthy';
-          }
-        }
-      },
-      shrinkSideBar(){
-        console.log("shrink side bar")
-        this.drawer = false;
-      },
-      async selectGroupTask(groupTask){
-      this.task = groupTask;
-     console.log("selectedTask", groupTask);
-      this.$axios.get (`/users/${this.task.taskAssignee}`)
-      .then (async response => {
-      //  console.log("fetched task -->", response.data.data)
-       this.assignee = response.data.data;
-       //if task fetch is successful,
-       let subTaskResponse;
-       try {
-            subTaskResponse = await this.$axios.$get(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/subtask?userId=${this.userId}`,{
-        headers: {
-          'type': 'taskGroup'
-       }
-      }) 
-            console.log("subtasks--->", subTaskResponse.data);
-            this.subTasks = subTaskResponse.data;  
-      //get files related to task
-      let taskFilesResponse;
-      try {
-      taskFilesResponse = await this.$axios.$get(`/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/files`,
-      {
-        headers: {
-          user: this.userId,
-          'type': 'taskGroup'
-       }
       }
-      ) 
-      console.log("files--->", taskFilesResponse.data)     ;
-      this.taskFiles = taskFilesResponse.data;   
-       } catch (error) {
-          console.log("Error fetching data", error);
-       }         
-            
-       } catch (error) {
-          console.log("Error fetching data", error);
-       }       
-      })
-      .catch (e => {
-       console.log("error", e)
-      }) 
-        },
-     async addGroupTask(){
-        console.log("add group task");
-        this.$store.dispatch('groups/groupTask/addTaskToGroup',{
-          taskName: this.groupTask,
-          taskGroupId: this.group.taskGroupId
-        });
-        this.groupTask = ''
-      this.$store.dispatch('groups/groupPeople/fetchGroupPeople',{
-          taskGroupId: this.group.taskGroupId, 
-          userId: this.userId
-        });
-      },
-      getTaskDueDate(date) {
-
-        const dueDate = new Date(date);
-          const dueToUtc = new Date(dueDate.toLocaleString("en-US", {timeZone: "UTC"}));
-          const dueToUtcDate = new Date(dueToUtc);
-          const now = new Date();
-          console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
-
-
-      if(date === null || date === '1970-01-01T05:30:00.000+0000'){
-          return "Add Due Date";
-      }
-        else if(now.getDate() === dueToUtcDate.getDate()){
-            return "Today";
-        }
-        else if(now.getDate()-1 === dueToUtcDate.getDate()){
-            return "Yesterday";
-        }
-        else if(now.getDate()+1 === dueToUtcDate.getDate()){
-            return "Tomorrow";
-        }
-        else{
- let stringDate  =  date + "";
-        stringDate = stringDate.toString();
-        stringDate = stringDate.slice(0,10);      
-        return stringDate;
-        }
-       
-      }
-
     },
-       computed: {
-      ...mapState({
-          groupTasks: state => state.groups.groupTask.groupTasks,
-          groupPeople: state => state.groups.groupPeople.groupPeople,
-      })
+    shrinkSideBar() {
+      console.log("shrink side bar");
+      this.drawer = false;
+    },
+    async selectGroupTask(groupTask) {
+      this.task = groupTask;
+      console.log("selectedTask", groupTask);
+      this.$axios
+        .get(`/users/${this.task.taskAssignee}`)
+        .then(async response => {
+          //  console.log("fetched task -->", response.data.data)
+          this.assignee = response.data.data;
+          //if task fetch is successful,
+          let subTaskResponse;
+          try {
+            subTaskResponse = await this.$axios.$get(
+              `/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/subtask?userId=${this.userId}`,
+              {
+                headers: {
+                  type: "taskGroup"
+                }
+              }
+            );
+            console.log("subtasks--->", subTaskResponse.data);
+            this.subTasks = subTaskResponse.data;
+            //get files related to task
+            let taskFilesResponse;
+            try {
+              taskFilesResponse = await this.$axios.$get(
+                `/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/files`,
+                {
+                  headers: {
+                    user: this.userId,
+                    type: "taskGroup"
+                  }
+                }
+              );
+              console.log("files--->", taskFilesResponse.data);
+              this.taskFiles = taskFilesResponse.data;
+            } catch (error) {
+              console.log("Error fetching data", error);
+            }
+          } catch (error) {
+            console.log("Error fetching data", error);
+          }
+        })
+        .catch(e => {
+          console.log("error", e);
+        });
+    },
+    async addGroupTask() {
+      console.log("add group task");
+      this.$store.dispatch("groups/groupTask/addTaskToGroup", {
+        taskName: this.groupTask,
+        taskGroupId: this.group.taskGroupId
+      });
+      this.groupTask = "";
+      this.$store.dispatch("groups/groupPeople/fetchGroupPeople", {
+        taskGroupId: this.group.taskGroupId,
+        userId: this.userId
+      });
+    },
+    getTaskDueDate(date) {
+      const dueDate = new Date(date);
+      const dueToUtc = new Date(
+        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+      );
+      const dueToUtcDate = new Date(dueToUtc);
+      const now = new Date();
+      console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
+
+      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
+        return "Add Due Date";
+      } else if (now.getDate() === dueToUtcDate.getDate()) {
+        return "Today";
+      } else if (now.getDate() - 1 === dueToUtcDate.getDate()) {
+        return "Yesterday";
+      } else if (now.getDate() + 1 === dueToUtcDate.getDate()) {
+        return "Tomorrow";
+      } else {
+        let stringDate = date + "";
+        stringDate = stringDate.toString();
+        stringDate = stringDate.slice(0, 10);
+        return stringDate;
+      }
     }
+  },
+  computed: {
+    ...mapState({
+      groupTasks: state => state.groups.groupTask.groupTasks,
+      groupPeople: state => state.groups.groupPeople.groupPeople
+    })
   }
+};
 </script>
 
 <style scoped>
-.tabs{
+.tabs {
   padding-left: 10px;
   box-shadow: none !important;
 }
-.wrapper{
+.wrapper {
   width: 100%;
 }
-
 </style>

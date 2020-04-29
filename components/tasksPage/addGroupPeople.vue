@@ -1,182 +1,159 @@
 <template>
-<div>
-<v-row justify="center" class="">
-    <v-dialog v-model="dialog" persistent max-width="350">
-      <template v-slot:activator="{ on }">
-    <div v-on="on" class="addPeopleButton addPeople">
-                <v-list-item v-on:click="component='add-task'" 
-                dark >
-                    <v-list-item-action>
-                        <v-icon size="20" color="">mdi-calendar-blank-multiple</v-icon>
-                    </v-list-item-action>
-                    <v-list-item-content class="buttonText">
-                        <v-list-item-title class="bodyWiew">Add new</v-list-item-title>
-                    </v-list-item-content>
-                        <v-icon>mdi-plus-circle</v-icon>
-                    </v-list-item>
-        </div>
-
+  <div>
+    <v-row justify="center" class>
+      <v-dialog v-model="dialog" persistent max-width="350">
+        <template v-slot:activator="{ on }">
+          <div v-on="on" class="addPeopleButton addPeople">
+            <v-list-item v-on:click="component='add-task'" dark>
+              <v-list-item-action>
+                <v-icon size="20" color>mdi-calendar-blank-multiple</v-icon>
+              </v-list-item-action>
+              <v-list-item-content class="buttonText">
+                <v-list-item-title class="bodyWiew">Add new</v-list-item-title>
+              </v-list-item-content>
+              <v-icon>mdi-plus-circle</v-icon>
+            </v-list-item>
+          </div>
         </template>
-      <v-card class="addUserPopup">
-        <v-form v-model="isValid" ref="form">
-         <div class="popupFormContent">
-             
-              <v-icon class="" size="60" color="deep-orange lighten-1">mdi-account-multiple-plus</v-icon>
-             <v-card-text class="deletePopupTitle">Add member to group</v-card-text>
-          <v-card-actions >
+        <v-card class="addUserPopup">
+          <v-form v-model="isValid" ref="form">
+            <div class="popupFormContent">
+              <v-icon class size="60" color="deep-orange lighten-1">mdi-account-multiple-plus</v-icon>
+              <v-card-text class="deletePopupTitle">Add member to group</v-card-text>
+              <v-card-actions>
+                <v-autocomplete
+                  filled
+                  label="Select user"
+                  v-model="addUser.assigneeId"
+                  :items="states"
+                  item-text="name"
+                  item-value="id.userId"
+                  :search-input.sync="search"
+                  class="popupFormGroupElement"
+                  flat
+                  outlined
+                  background-color="white"
+                  append-icon
+                  hide-no-data
+                  @change="onSelectedUser()"
+                  :rules="assigneeRules"
+                  hide-details="auto"
+                  clearable
+                ></v-autocomplete>
+              </v-card-actions>
+            </div>
 
+            <!-- <v-btn class="deleteButton" text @click="dialog = false">Cancel</v-btn>
+            <v-btn class="editButton addUserSave" text @click="changeHandler">Save</v-btn>-->
 
-            <v-autocomplete
-              filled
-              label="Select user"
-              v-model="addUser.assigneeId"
-              :items="states"
-              item-text="name"
-              item-value="id.userId"
-              :search-input.sync="search"
-              class=" popupFormGroupElement"
-              flat
-              outlined=""
-              background-color="white"
-              append-icon=""
-              hide-no-data
-              @change="onSelectedUser()"
-              :rules="assigneeRules" hide-details="auto"
-              clearable=""
-          >
-            
-          </v-autocomplete>
+            <div class="popupBottom">
+              <v-card-actions>
+                <v-spacer></v-spacer>
 
-          </v-card-actions>
-        
-              </div>
-              
-          <!-- <v-btn class="deleteButton" text @click="dialog = false">Cancel</v-btn>
-          <v-btn class="editButton addUserSave" text @click="changeHandler">Save</v-btn> -->
-
-           <div class="popupBottom">
-                          <v-card-actions>
-                            <v-spacer></v-spacer>
-
-                            <v-btn
-                              color="error"
-                              width="100px"
-                             @click="dialog = false"
-                              :retain-focus="false"
-                            >
-                              Cancel
-                            </v-btn>
-                  <v-spacer></v-spacer>
-                            <v-btn
-                              color="success"
-                              width="100px"
-                             @click="changeHandler"
-                              :retain-focus="false"
-                              :disabled="!isValid"
-                            >
-                              Save
-                            </v-btn>
-                            <v-spacer></v-spacer>
-                          </v-card-actions>
-
-                          
-                          </div>
-        </v-form>
-      </v-card>
-    </v-dialog>
-    
-  </v-row>
-  <div @click="close">
-            <component v-bind:is="component" :success=success :errorMessage=errorMessage ></component>
-         </div>
-       <!--  <success-popup /> -->
-
-      
+                <v-btn
+                  color="error"
+                  width="100px"
+                  @click="dialog = false"
+                  :retain-focus="false"
+                >Cancel</v-btn>
+                <v-spacer></v-spacer>
+                <v-btn
+                  color="success"
+                  width="100px"
+                  @click="changeHandler"
+                  :retain-focus="false"
+                  :disabled="!isValid"
+                >Save</v-btn>
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </div>
+          </v-form>
+        </v-card>
+      </v-dialog>
+    </v-row>
+    <div @click="close">
+      <component v-bind:is="component" :success="success" :errorMessage="errorMessage"></component>
+    </div>
+    <!--  <success-popup /> -->
   </div>
 </template>
 
 <script>
-import SuccessPopup from '~/components/popups/successPopup'
-import ErrorPopup from '~/components/popups/errorPopup'
-  export default {
-    props: ['users', 'group'],
-    components: {
-      'success-popup' : SuccessPopup,
-      'error-popup': ErrorPopup
-    },
-    data() {
-      return {
-        errorMessage: '',
-        isValid: true,
-        userId: this.$store.state.user.userId,
-        addUser: {
-          "assignerId": this.$store.state.user.userId,
-          "assigneeId": "",
-          "assigneeJobRole": "",
-          "assigneeProjectRole": this.getProjectRole()
-        },
-        assigneeRules: [
-        value => !!value || 'Assignee is required!',
-      ],
-        isShow: false,
-        selected: false,
-        dialog: false,
-        loading: false,
-        items: [],
-        search: null,
-        select: null,
-        states: [
-          
-        ],
-        component: '',
-        success: '',
-      }
-    },
-     watch: {
-      search (val) {
-        val && val !== this.select && this.querySelections(val)
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
+export default {
+  props: ["users", "group"],
+  components: {
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup
+  },
+  data() {
+    return {
+      errorMessage: "",
+      isValid: true,
+      userId: this.$store.state.user.userId,
+      addUser: {
+        assignerId: this.$store.state.user.userId,
+        assigneeId: "",
+        assigneeJobRole: "",
+        assigneeProjectRole: this.getProjectRole()
       },
+      assigneeRules: [value => !!value || "Assignee is required!"],
+      isShow: false,
+      selected: false,
+      dialog: false,
+      loading: false,
+      items: [],
+      search: null,
+      select: null,
+      states: [],
+      component: "",
+      success: ""
+    };
+  },
+  watch: {
+    search(val) {
+      val && val !== this.select && this.querySelections(val);
+    }
+  },
+  methods: {
+    close() {
+      this.$refs.form.reset();
+      this.component = "";
     },
-    methods: {
-      close(){
-        this.$refs.form.reset()
-          this.component = ''
-      },
-       onSelectedUser(){
-        if(this.select !== undefined){
+    onSelectedUser() {
+      if (this.select !== undefined) {
         // this.$emit('searchSelected', this.select);
         // console.log("selected user",this.select)
-        }
-      },
-      async changeHandler() {
-        // this.dialog = false;
-        let response;
-          try{
-          response = await this.$axios.$post(`/taskgroup/add`, 
-          {
-            taskGroupId: this.group.taskGroupId,
-            taskGroupAssigner: this.userId,
-            taskGroupAssignee: this.addUser.assigneeId 
-          }
-        )
-        this.$refs.form.reset()
-        this.addUser.assigneeId = null
-        this.component = 'success-popup'
-        this.$store.dispatch('groups/groupPeople/fetchGroupPeople',{
-          taskGroupId: this.group.taskGroupId, 
+      }
+    },
+    async changeHandler() {
+      // this.dialog = false;
+      let response;
+      try {
+        response = await this.$axios.$post(`/taskgroup/add`, {
+          taskGroupId: this.group.taskGroupId,
+          taskGroupAssigner: this.userId,
+          taskGroupAssignee: this.addUser.assigneeId
+        });
+        this.$refs.form.reset();
+        this.addUser.assigneeId = null;
+        this.component = "success-popup";
+        this.$store.dispatch("groups/groupPeople/fetchGroupPeople", {
+          taskGroupId: this.group.taskGroupId,
           userId: this.userId
         });
         console.log(response);
-       } catch(e){
-          console.log("Error adding a group", e);
-          this.errorMessage = e.response.data
-          this.component = 'error-popup'
-       }
+      } catch (e) {
+        console.log("Error adding a group", e);
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+      }
       //   let assigneeProjectRoleId = this.getProjectRole();
       //   this.addUser.assigneeProjectRole = assigneeProjectRoleId;
       //   let response;
       //     try{
-      //     response = await this.$axios.$post(`/taskgroup/add`, 
+      //     response = await this.$axios.$post(`/taskgroup/add`,
       //     this.addUser
       //   )
       //   this.$store.dispatch('task/fetchProjectUserCompletionTasks', this.projectId)
@@ -188,46 +165,49 @@ import ErrorPopup from '~/components/popups/errorPopup'
       //  } catch(e){
       //     console.log("Error adding a User", e);
       //     this.component = 'error-popup'
-      //  }   
-      },
-      querySelections (v) {
-        let projectSearchList = this.users;
-        for (let index = 0; index < projectSearchList.length; ++index) {
-            let user = projectSearchList[index];
-            this.states.push({name: user.firstName + " " + user.lastName, id: user, img: user.profileImage});
-        }
-        console.log("usersList", this.users, "nameList", this.states)
-        this.loading = true
-        setTimeout(() => {
-          this.items = this.states.filter(e => {
-            return (e || '').toLowerCase().indexOf((v || '').toLowerCase()) > -1
-          })
-          this.loading = false
-        })
-        this.loading = false
-      },
-      getProjectRole(){
-        console.log("getProjectRole", this.selected)
-          if(this.selected == true){
-            return 2;
-          } else {
-            return 3;
-          }
-        }
+      //  }
     },
-     computed: {
-        adminStatus : {
-          get(){
-            return this.selected;
-          },
-          set(value){
-            this.selected = !this.selected
-          }
-        }
+    querySelections(v) {
+      let projectSearchList = this.users;
+      for (let index = 0; index < projectSearchList.length; ++index) {
+        let user = projectSearchList[index];
+        this.states.push({
+          name: user.firstName + " " + user.lastName,
+          id: user,
+          img: user.profileImage
+        });
+      }
+      console.log("usersList", this.users, "nameList", this.states);
+      this.loading = true;
+      setTimeout(() => {
+        this.items = this.states.filter(e => {
+          return (e || "").toLowerCase().indexOf((v || "").toLowerCase()) > -1;
+        });
+        this.loading = false;
+      });
+      this.loading = false;
     },
+    getProjectRole() {
+      console.log("getProjectRole", this.selected);
+      if (this.selected == true) {
+        return 2;
+      } else {
+        return 3;
+      }
+    }
+  },
+  computed: {
+    adminStatus: {
+      get() {
+        return this.selected;
+      },
+      set(value) {
+        this.selected = !this.selected;
+      }
+    }
   }
+};
 </script>
 
 <style scoped>
-
 </style>
