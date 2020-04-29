@@ -95,6 +95,17 @@
               outlined
               class="createFormElements"
             ></v-select>
+            <v-select
+              v-if="this.taskType == 'design'"
+              v-model="taskStatus"
+              :items="design"
+              background-color="#EDF0F5"
+              item-text="name"
+              item-value="id"
+              label="Task status"
+              outlined
+              class="createFormElements"
+            ></v-select>
           </v-col>
           <v-col sm="4" md="4">
             <v-select
@@ -245,7 +256,7 @@ export default {
       userId: this.$store.state.user.userId,
       files: [],
       file: '',
-      taskType: '',
+      taskType: 'development',
       task: {
         taskName: '',
         taskAssignee: '',
@@ -285,6 +296,21 @@ export default {
         { name: 'Pending', id: 'pending' },
         { name: 'Testing', id: 'testing' },
         { name: 'Review', id: 'review' },
+        { name: 'Closed', id: 'closed' },
+      ],
+      design: [
+        { name: 'Pending', id: 'pending' },
+        { name: 'On hold', id: 'onHold' },
+        { name: 'Cancel', id: 'cancel' },
+        { name: 'Fixing', id: 'fixing' },
+        { name: 'Resolved', id: 'resolved' },
+        { name: 'In progress', id: 'inprogress' },
+        { name: 'Completed', id: 'inprogress' },
+        { name: 'Under review', id: 'underReview' },
+        { name: 'Weiting for approval', id: 'waitingForApproval' },
+        { name: 'Review', id: 'review' },
+        { name: 'Waiting response', id: 'waitingResponse' },
+        { name: 'Rejected', id: 'rejected' },
         { name: 'Closed', id: 'closed' },
       ],
     };
