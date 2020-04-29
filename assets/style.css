@@ -1765,10 +1765,11 @@
 
 /* ------------- task view page ------------ */
 .viewTaskContent {
-  width: 90%;
-  margin-left: 5%;
-  margin-right: 5% !important;
-  padding-top: 40px;
+  width: 100%;
+  padding-left: 5%;
+  padding-right: 5% !important;
+  padding-top: 10px;
+  max-height: 100vh;
 }
 .taskRestFormDiv {
   margin-top: 80px;
@@ -1830,6 +1831,7 @@
 }
 .formRowNameRange {
   height: 30px;
+  margin-top: -20px;
 }
 .nameRangeDevider {
   margin-top: -35px;
@@ -1876,7 +1878,6 @@
   border: solid 1px #e5e5e5;
   padding: 5px;
   border-radius: 5px;
-  max-height: 100vh;
 }
 .rightColumnItemsSubTitle {
   font-size: 12px !important;
@@ -1903,4 +1904,23 @@
 }
 .datePickerDivider {
   margin-top: 30px;
+}
+.taskViewFileUploadButton {
+  margin-top: -25px;
+  margin-bottom: 10px;
+}
+.filesViewDiv {
+  background-color: #edf0f5;
+  border-radius: 5px;
+  margin: 10px;
+  margin-top: 20px;
+  margin-left: 30px;
+  margin-top: -3px;
+}
+.fileSubTitles {
+  font-size: 10px !important;
+}
+.fileTitles {
+  font-size: 12px !important;
+  font-weight: 500;
 }

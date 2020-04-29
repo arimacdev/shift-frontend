@@ -17,7 +17,7 @@
         </div>
       </div>
     </v-toolbar>
-    <div class="viewTaskContent">
+    <div class="viewTaskContent overflow-y-auto">
       <div class="taskRestFormDiv">
         <form>
           <v-row class="mb-12 formRowSpec" no-gutters>
@@ -80,59 +80,17 @@
           </v-row>
 
           <!-- --------------- body row ------------ -->
-          <v-row class="mb-12 formRowTaskDetailsBody" no-gutters>
-            <v-col sm="8" md="8">
-              <div class="leftSideColumn">
-                <div class="expansionViewHeader topItemTaskView">
-                  <v-list-item class="taskViewTitleSection">
-                    <v-list-item-icon>
-                      <v-icon size="30" color="#2EC973">mdi-package-variant-closed</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-title class="viewTaskFontColors">Parent Task</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item-content class="parentChildTaskList">
-                    <!-- ---------- task list --------- -->
-                    <div class="taskViewTaskListContent">
-                      <v-list-item @click.stop="drawer = !drawer">
-                        <v-list-item-action>
-                          <v-icon size="25" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
-                          <!-- <v-icon v-else size="30" color="#EDF0F5"
-                        >mdi-checkbox-blank-circle</v-icon
-                          >-->
-                        </v-list-item-action>
-                        <v-list-item-content>
-                          <v-list-item-title>this is the parent task</v-list-item-title>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                          <v-list-item-sub-title>12/12/2010</v-list-item-sub-title>
-                        </v-list-item-action>
-                        <v-list-item-avatar size="25">
-                          <!-- <v-img
-                        v-if="task.taskAssigneeProfileImage != null"
-                        :src="task.taskAssigneeProfileImage"
-                          ></v-img>-->
-                          <v-img
-                            src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-                          ></v-img>
-                        </v-list-item-avatar>
-                      </v-list-item>
-                    </div>
-                    <!-- --------------- -->
-                  </v-list-item-content>
-                </div>
-                <v-divider></v-divider>
-                <div class="expansionViewHeader">
-                  <v-list-group>
-                    <template v-slot:activator>
+          <div class="formRowTaskDetailsBody">
+            <v-row class="mb-12" no-gutters>
+              <v-col sm="8" md="8">
+                <div class="leftSideColumn">
+                  <div class="expansionViewHeader topItemTaskView">
+                    <v-list-item class="taskViewTitleSection">
                       <v-list-item-icon>
                         <v-icon size="30" color="#2EC973">mdi-package-variant-closed</v-icon>
                       </v-list-item-icon>
-                      <v-list-item-title class="viewTaskFontColors">
-                        Child Tasks
-                        <span>(4 tasks)</span>
-                      </v-list-item-title>
-                    </template>
-
+                      <v-list-item-title class="viewTaskFontColors">Parent Task</v-list-item-title>
+                    </v-list-item>
                     <v-list-item-content class="parentChildTaskList">
                       <!-- ---------- task list --------- -->
                       <div class="taskViewTaskListContent">
@@ -144,34 +102,7 @@
                             >-->
                           </v-list-item-action>
                           <v-list-item-content>
-                            <v-list-item-title>this is the child task</v-list-item-title>
-                          </v-list-item-content>
-                          <v-list-item-action>
-                            <v-list-item-sub-title>12/12/2010</v-list-item-sub-title>
-                          </v-list-item-action>
-                          <v-list-item-avatar size="25">
-                            <!-- <v-img
-                        v-if="task.taskAssigneeProfileImage != null"
-                        :src="task.taskAssigneeProfileImage"
-                            ></v-img>-->
-                            <v-img
-                              src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-                            ></v-img>
-                          </v-list-item-avatar>
-                        </v-list-item>
-                      </div>
-                      <!-- --------------- -->
-                      <!-- ---------- task list --------- -->
-                      <div class="taskViewTaskListContent">
-                        <v-list-item @click.stop="drawer = !drawer">
-                          <v-list-item-action>
-                            <v-icon size="25" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
-                            <!-- <v-icon v-else size="30" color="#EDF0F5"
-                        >mdi-checkbox-blank-circle</v-icon
-                            >-->
-                          </v-list-item-action>
-                          <v-list-item-content>
-                            <v-list-item-title>this is the child task</v-list-item-title>
+                            <v-list-item-title>this is the parent task</v-list-item-title>
                           </v-list-item-content>
                           <v-list-item-action>
                             <v-list-item-sub-title>12/12/2010</v-list-item-sub-title>
@@ -189,183 +120,316 @@
                       </div>
                       <!-- --------------- -->
                     </v-list-item-content>
-                  </v-list-group>
-                </div>
-                <v-divider></v-divider>
-                <!-- -------------- task type section ------------- -->
-                <div class="expansionViewHeader">
-                  <v-list-item class="taskViewTitleSection">
-                    <v-list-item-icon>
-                      <v-icon size="30" color="#0BAFFF">mdi-checkbox-multiple-blank-outline</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-title class="viewTaskFontColors">Task type</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item-content class="parentChildTaskList">
-                    <!-- ---------- task list --------- -->
-                    <div class="taskViewTaskListPadding">
-                      <v-row class="mb-12" no-gutters>
-                        <v-col sm="6" md="6">
-                          <v-select
-                            dense
-                            v-model="taskStatus"
-                            :items="items"
-                            background-color="#EDF0F5"
-                            item-text="name"
-                            item-value="id"
-                            label="Task type"
-                            outlined
-                            class="createFormElements"
-                          ></v-select>
-                        </v-col>
-                        <v-col sm="6" md="6">
-                          <v-select
-                            dense
-                            v-model="taskStatus"
-                            :items="items"
-                            background-color="#EDF0F5"
-                            item-text="name"
-                            item-value="id"
-                            label="Task status"
-                            outlined
-                            class="createFormElements"
-                          ></v-select>
-                        </v-col>
-                      </v-row>
-                    </div>
-                    <!-- --------------- -->
-                  </v-list-item-content>
-                </div>
-                <v-divider></v-divider>
+                  </div>
+                  <v-divider></v-divider>
+                  <div class="expansionViewHeader">
+                    <v-list-group>
+                      <template v-slot:activator>
+                        <v-list-item-icon>
+                          <v-icon size="30" color="#2EC973">mdi-package-variant-closed</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-title class="viewTaskFontColors">
+                          Child Tasks
+                          <span>(4 tasks)</span>
+                        </v-list-item-title>
+                      </template>
 
-                <!-- -------------- project board section ------------- -->
-                <div class="expansionViewHeader">
-                  <v-list-item class="taskViewTitleSection">
-                    <v-list-item-icon>
-                      <v-icon size="30" color="#6FCD17">mdi-animation-outline</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-title class="viewTaskFontColors">Board</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item-content class="parentChildTaskList">
-                    <!-- ---------- task list --------- -->
-                    <div class="taskViewTaskListPadding">
-                      <v-row class="mb-12" no-gutters>
-                        <v-col sm="12" md="12">
-                          <v-select
-                            dense
-                            v-model="taskStatus"
-                            :items="items"
-                            background-color="#EDF0F5"
-                            item-text="name"
-                            item-value="id"
-                            label="Board"
-                            outlined
-                            class="createFormElements"
-                          ></v-select>
-                        </v-col>
-                      </v-row>
-                    </div>
-                    <!-- --------------- -->
-                  </v-list-item-content>
-                </div>
-                <v-divider></v-divider>
-                <!-- -------------- notes section ------------- -->
-                <div class="expansionViewHeader">
-                  <v-list-item class="taskViewTitleSection">
-                    <v-list-item-icon>
-                      <v-icon size="30" color="#FF6767">mdi-file-document-edit-outline</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-title class="viewTaskFontColors">Notes</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-list-item-title class="subItem noteSubItem">
-                        <v-textarea
-                          name="input-7-4"
-                          auto-grow
-                          clearable
-                          outlined
-                          v-model="taskNotes"
-                        ></v-textarea>
-                      </v-list-item-title>
-                      <div class="noteUpdateButton">
-                        <v-btn class="ma-2" small rounded depressed color="#0BAFFF" dark>
-                          <v-icon left>mdi-pencil</v-icon>Update note
-                        </v-btn>
+                      <v-list-item-content class="parentChildTaskList">
+                        <!-- ---------- task list --------- -->
+                        <div class="taskViewTaskListContent">
+                          <v-list-item @click.stop="drawer = !drawer">
+                            <v-list-item-action>
+                              <v-icon size="25" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
+                              <!-- <v-icon v-else size="30" color="#EDF0F5"
+                        >mdi-checkbox-blank-circle</v-icon
+                              >-->
+                            </v-list-item-action>
+                            <v-list-item-content>
+                              <v-list-item-title>this is the child task</v-list-item-title>
+                            </v-list-item-content>
+                            <v-list-item-action>
+                              <v-list-item-sub-title>12/12/2010</v-list-item-sub-title>
+                            </v-list-item-action>
+                            <v-list-item-avatar size="25">
+                              <!-- <v-img
+                        v-if="task.taskAssigneeProfileImage != null"
+                        :src="task.taskAssigneeProfileImage"
+                              ></v-img>-->
+                              <v-img
+                                src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                              ></v-img>
+                            </v-list-item-avatar>
+                          </v-list-item>
+                        </div>
+                        <!-- --------------- -->
+                        <!-- ---------- task list --------- -->
+                        <div class="taskViewTaskListContent">
+                          <v-list-item @click.stop="drawer = !drawer">
+                            <v-list-item-action>
+                              <v-icon size="25" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
+                              <!-- <v-icon v-else size="30" color="#EDF0F5"
+                        >mdi-checkbox-blank-circle</v-icon
+                              >-->
+                            </v-list-item-action>
+                            <v-list-item-content>
+                              <v-list-item-title>this is the child task</v-list-item-title>
+                            </v-list-item-content>
+                            <v-list-item-action>
+                              <v-list-item-sub-title>12/12/2010</v-list-item-sub-title>
+                            </v-list-item-action>
+                            <v-list-item-avatar size="25">
+                              <!-- <v-img
+                        v-if="task.taskAssigneeProfileImage != null"
+                        :src="task.taskAssigneeProfileImage"
+                              ></v-img>-->
+                              <v-img
+                                src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                              ></v-img>
+                            </v-list-item-avatar>
+                          </v-list-item>
+                        </div>
+                        <!-- --------------- -->
+                      </v-list-item-content>
+                    </v-list-group>
+                  </div>
+                  <v-divider></v-divider>
+                  <!-- -------------- task type section ------------- -->
+                  <div class="expansionViewHeader">
+                    <v-list-item class="taskViewTitleSection">
+                      <v-list-item-icon>
+                        <v-icon size="30" color="#0BAFFF">mdi-checkbox-multiple-blank-outline</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-title class="viewTaskFontColors">Task type</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item-content class="parentChildTaskList">
+                      <!-- ---------- task list --------- -->
+                      <div class="taskViewTaskListPadding">
+                        <v-row class="mb-12" no-gutters>
+                          <v-col sm="6" md="6">
+                            <v-select
+                              dense
+                              v-model="taskStatus"
+                              :items="items"
+                              background-color="#EDF0F5"
+                              item-text="name"
+                              item-value="id"
+                              label="Task type"
+                              outlined
+                              class="createFormElements"
+                            ></v-select>
+                          </v-col>
+                          <v-col sm="6" md="6">
+                            <v-select
+                              dense
+                              v-model="taskStatus"
+                              :items="items"
+                              background-color="#EDF0F5"
+                              item-text="name"
+                              item-value="id"
+                              label="Task status"
+                              outlined
+                              class="createFormElements"
+                            ></v-select>
+                          </v-col>
+                        </v-row>
                       </div>
+                      <!-- --------------- -->
+                    </v-list-item-content>
+                  </div>
+                  <v-divider></v-divider>
+
+                  <!-- -------------- project board section ------------- -->
+                  <div class="expansionViewHeader">
+                    <v-list-item class="taskViewTitleSection">
+                      <v-list-item-icon>
+                        <v-icon size="30" color="#6FCD17">mdi-animation-outline</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-title class="viewTaskFontColors">Board</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item-content class="parentChildTaskList">
+                      <!-- ---------- task list --------- -->
+                      <div class="taskViewTaskListPadding">
+                        <v-row class="mb-12" no-gutters>
+                          <v-col sm="12" md="12">
+                            <v-select
+                              dense
+                              v-model="taskStatus"
+                              :items="items"
+                              background-color="#EDF0F5"
+                              item-text="name"
+                              item-value="id"
+                              label="Board"
+                              outlined
+                              class="createFormElements"
+                            ></v-select>
+                          </v-col>
+                        </v-row>
+                      </div>
+                      <!-- --------------- -->
+                    </v-list-item-content>
+                  </div>
+                  <v-divider></v-divider>
+                  <!-- -------------- notes section ------------- -->
+                  <div class="expansionViewHeader">
+                    <v-list-item class="taskViewTitleSection">
+                      <v-list-item-icon>
+                        <v-icon size="30" color="#FF6767">mdi-file-document-edit-outline</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-title class="viewTaskFontColors">Notes</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title class="subItem noteSubItem">
+                          <v-textarea
+                            name="input-7-4"
+                            auto-grow
+                            clearable
+                            outlined
+                            v-model="taskNotes"
+                          ></v-textarea>
+                        </v-list-item-title>
+                        <div class="noteUpdateButton">
+                          <v-btn class="ma-2" small rounded depressed color="#0BAFFF" dark>
+                            <v-icon left>mdi-pencil</v-icon>Update note
+                          </v-btn>
+                        </div>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </div>
+                  <v-divider></v-divider>
+                </div>
+              </v-col>
+              <!-- ------------------ right side column ------------- -->
+              <v-col sm="4" md="4">
+                <div class="rightSideColumn">
+                  <!-- --------- assignee section ---------- -->
+                  <v-list-item>
+                    <v-list-item-icon>
+                      <v-icon size="35" color="#02C1D4">mdi-account-arrow-left-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
+                      <v-list-item-title>
+                        <select v-model="taskAssignee" class="rightColumnItemsText">
+                          <option>Naveen Perera</option>
+                        </select>
+                      </v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
+                  <!-- ----------- Due date section --------- -->
+                  <v-list-item>
+                    <v-list-item-icon>
+                      <v-icon size="35" color="#7CDD00">mdi-calendar-blank-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Due Date</v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <div class="viewTaskPickerDiv">
+                    <VueCtkDateTimePicker
+                      color="#3f51b5"
+                      id="duePicker"
+                      class
+                      v-model="taskDueDate"
+                      label="Add due date"
+                      right
+                    />
+                  </div>
+                  <!-- ----------- Reminder date section --------- -->
+                  <v-list-item>
+                    <v-list-item-icon>
+                      <v-icon size="35" color="#7CDD00">mdi-clock-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Remind Date</v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <div class="viewTaskPickerDiv">
+                    <VueCtkDateTimePicker
+                      color="#3f51b5"
+                      id="duePicker"
+                      class
+                      v-model="taskRemindOnDate"
+                      label="Add remind date"
+                      right
+                    />
+                  </div>
+                  <v-divider class="datePickerDivider"></v-divider>
+                  <!-- ----------- Files section --------- -->
+                  <v-list-item>
+                    <v-list-item-icon>
+                      <v-icon size="35" color="#FFAE4F">mdi-paperclip</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-title class="rightColumnItemsTitle">Files</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <div class="viewTaskPickerDiv">
+                    <v-file-input
+                      label="Upload files"
+                      v-model="files"
+                      outlined
+                      prepend-inner-icon="mdi-upload-outline"
+                      prepend-icon
+                      class
+                      chips
+                      multiple
+                      dense
+                    ></v-file-input>
+                  </div>
+                  <div class="viewTaskPickerDiv">
+                    <div class="fileUploadButton taskViewFileUploadButton">
+                      <v-btn class="ma-2" x-small rounded depressed color="#0BAFFF" dark>
+                        <v-icon left>mdi-upload</v-icon>Upload
+                      </v-btn>
+                      <v-progress-circular
+                        v-if="uploadLoading == true"
+                        indeterminate
+                        color="primary"
+                      ></v-progress-circular>
+                    </div>
+                  </div>
+                  <!-- ------------- file viewer ------------ -->
+                  <div class="filesViewDiv">
+                    <v-list-item>
+                      <v-list-item-action>
+                        <v-icon size="30">mdi-file-document-outline</v-icon>
+                      </v-list-item-action>
+                      <v-list-item-content>
+                        <v-list-item-title class="fileTitles">FRS.pdf</v-list-item-title>
+                        <v-list-item-subtitle class="fileSubTitles">125.54kB</v-list-item-subtitle>
+                      </v-list-item-content>
+                      <v-list-item-content>
+                        <v-list-item-title class="fileTitles">Naveen Perera</v-list-item-title>
+                        <v-list-item-subtitle class="fileSubTitles">04/10/2020</v-list-item-subtitle>
+                      </v-list-item-content>
+                      <v-list-item-action>
+                        <v-icon size="25" color="#FF6161">mdi-delete-circle</v-icon>
+                      </v-list-item-action>
+                    </v-list-item>
+                  </div>
+                  <div class="filesViewDiv">
+                    <v-list-item>
+                      <v-list-item-action>
+                        <v-icon size="30">mdi-file-document-outline</v-icon>
+                      </v-list-item-action>
+                      <v-list-item-content>
+                        <v-list-item-title class="fileTitles">FRS.pdf</v-list-item-title>
+                        <v-list-item-subtitle class="fileSubTitles">125.54kB</v-list-item-subtitle>
+                      </v-list-item-content>
+                      <v-list-item-content>
+                        <v-list-item-title class="fileTitles">Naveen Perera</v-list-item-title>
+                        <v-list-item-subtitle class="fileSubTitles">04/10/2020</v-list-item-subtitle>
+                      </v-list-item-content>
+                      <v-list-item-action>
+                        <v-icon size="25" color="#FF6161">mdi-delete-circle</v-icon>
+                      </v-list-item-action>
+                    </v-list-item>
+                  </div>
                 </div>
-                <v-divider></v-divider>
-              </div>
-            </v-col>
-            <!-- ------------------ right side column ------------- -->
-            <v-col sm="4" md="4">
-              <div class="rightSideColumn overflow-y-auto">
-                <!-- --------- assignee section ---------- -->
-                <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon size="35" color="#02C1D4">mdi-account-arrow-left-outline</v-icon>
-                  </v-list-item-icon>
-                  <v-list-item-content>
-                    <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
-                    <v-list-item-title>
-                      <select v-model="taskAssignee" class="rightColumnItemsText">
-                        <option>Naveen Perera</option>
-                      </select>
-                    </v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <!-- ----------- Due date section --------- -->
-                <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon size="35" color="#7CDD00">mdi-calendar-blank-outline</v-icon>
-                  </v-list-item-icon>
-                  <v-list-item-content>
-                    <v-list-item-subtitle class="rightColumnItemsSubTitle">Due Date</v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-                <div class="viewTaskPickerDiv">
-                  <VueCtkDateTimePicker
-                    color="#3f51b5"
-                    id="duePicker"
-                    class
-                    v-model="taskDueDate"
-                    label="Add due date"
-                    right
-                  />
-                </div>
-                <!-- ----------- Reminder date section --------- -->
-                <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon size="35" color="#7CDD00">mdi-clock-outline</v-icon>
-                  </v-list-item-icon>
-                  <v-list-item-content>
-                    <v-list-item-subtitle class="rightColumnItemsSubTitle">Remind Date</v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-                <div class="viewTaskPickerDiv">
-                  <VueCtkDateTimePicker
-                    color="#3f51b5"
-                    id="duePicker"
-                    class
-                    v-model="taskRemindOnDate"
-                    label="Add remind date"
-                    right
-                  />
-                </div>
-                <v-divider class="datePickerDivider"></v-divider>
-                <!-- ----------- Files section --------- -->
-                <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon size="35" color="#02C1D4">mdi-paperclip</v-icon>
-                  </v-list-item-icon>
-                  <v-list-item-content>
-                    <v-list-item-title class="rightColumnItemsTitle">Files</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </div>
-            </v-col>
-          </v-row>
+              </v-col>
+            </v-row>
+          </div>
         </form>
       </div>
     </div>
