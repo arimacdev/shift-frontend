@@ -245,6 +245,7 @@ export default {
       userId: this.$store.state.user.userId,
       files: [],
       file: '',
+      taskType: '',
       task: {
         taskName: '',
         taskAssignee: '',
