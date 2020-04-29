@@ -106,12 +106,12 @@
         <div class="taskList restructuredMainTaskList">
           <v-list-item
             v-if="
-            task.taskStatus == taskSelect ||
-              taskFilter == 'none' ||
-              taskFilter == 'assignee' ||
-              taskFilter == 'dateRange' ||
-              taskSelect == 'all'
-          "
+              task.taskStatus == taskSelect ||
+                taskFilter == 'none' ||
+                taskFilter == 'assignee' ||
+                taskFilter == 'dateRange' ||
+                taskSelect == 'all'
+            "
             @click.stop="drawer = !drawer"
             @click="selectTask(task)"
           >
@@ -120,8 +120,11 @@
                 v-if="task.parentTask.taskStatus == 'closed'"
                 size="30"
                 color="#2EC973"
-              >mdi-checkbox-marked-circle</v-icon>
-              <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                >mdi-checkbox-marked-circle</v-icon
+              >
+              <v-icon v-else size="30" color="#FFFFFF"
+                >mdi-checkbox-blank-circle</v-icon
+              >
             </v-list-item-action>
             <div class="tasklistTaskNames restructuredMainTaskName">
               <div class="body-2">
@@ -129,12 +132,12 @@
                 {{ task.parentTask.taskName }}
               </div>
             </div>
-            <div class="restStatusChip" :class="statusCheck(task)">{{task.parentTask.issueType}}</div>
+            <div class="restStatusChip" :class="statusCheck(task)">
+              {{ task.parentTask.issueType }}
+            </div>
             <v-list-item-content class="updatedDate">
               <v-list-item-title :class="dueDateCheck(task)">
-                {{
-                getProjectDates(task.parentTask.taskDueDateAt)
-                }}
+                {{ getProjectDates(task.parentTask.taskDueDateAt) }}
               </v-list-item-title>
             </v-list-item-content>
             <v-list-item-avatar>
@@ -149,7 +152,13 @@
             </v-list-item-avatar>
             <a
               style="text-decoration: none;"
-              :href="'http://localhost:3000/task/'+ task.parentTask.taskId + '/?project=' + projectId"
+              :href="
+                'http://localhost:3000/task/' +
+                  task.parentTask.taskId +
+                  '/?project=' +
+                  projectId
+              "
+              target="_blank"
             >
               <v-icon color="red">mdi-checkbox-blank-circle</v-icon>
             </a>
@@ -169,41 +178,53 @@
             @keyup.enter="addParentTask"
           ></v-text-field>
         </div>
-        <div v-if="task.childTasks.length !== 0" class="taskList restructuredSubTaskList">
-          <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)" v-for="(childTask, index) in task.childTasks" :key="index">
-            <v-list-item-action>
-              <v-icon
-                v-if="task.taskStatus == 'closed'"
-                size="30"
-                color="#2EC973"
-              >mdi-checkbox-marked-circle</v-icon>
-              <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
-            </v-list-item-action>
-            <div class="tasklistTaskNames restructuredSubTaskName">
-              <div class="body-2">
-                <span class="restructuredMainTaskCode">MRI - #1</span>
-                {{ childTask.taskName }}
+        <div v-if="task.childTasks.length !== 0">
+          <div
+            v-for="(childTask, index) in task.childTasks"
+            :key="index"
+            class="taskList restructuredSubTaskList"
+          >
+            <v-list-item
+              @click.stop="drawer = !drawer"
+              @click="selectTask(task)"
+            >
+              <v-list-item-action>
+                <v-icon
+                  v-if="childTask.taskStatus == 'closed'"
+                  size="30"
+                  color="#2EC973"
+                  >mdi-checkbox-marked-circle</v-icon
+                >
+                <v-icon v-else size="30" color="#FFFFFF"
+                  >mdi-checkbox-blank-circle</v-icon
+                >
+              </v-list-item-action>
+              <div class="tasklistTaskNames restructuredSubTaskName">
+                <div class="body-2">
+                  <span class="restructuredMainTaskCode">MRI - #1</span>
+                  {{ childTask.taskName }}
+                </div>
               </div>
-            </div>
-            <div class="restStatusChip" :class="statusCheck(task)">{{childTask.issueType}}</div>
-            <v-list-item-content class="updatedDate">
-              <v-list-item-title :class="dueDateCheck(task)">
-                {{
-                getProjectDates(childTask.taskDueDateAt)
-                }}
-              </v-list-item-title>
-            </v-list-item-content>
-            <v-list-item-avatar>
-              <v-img
-                v-if="childTask.taskAssigneeProfileImage != null"
-                :src="childTask.taskAssigneeProfileImage"
-              ></v-img>
-              <v-img
-                v-else
-                src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-              ></v-img>
-            </v-list-item-avatar>
-          </v-list-item>
+              <div class="restStatusChip" :class="statusCheck(task)">
+                {{ childTask.issueType }}
+              </div>
+              <v-list-item-content class="updatedDate">
+                <v-list-item-title :class="dueDateCheck(task)">
+                  {{ getProjectDates(childTask.taskDueDateAt) }}
+                </v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-avatar>
+                <v-img
+                  v-if="childTask.taskAssigneeProfileImage != null"
+                  :src="childTask.taskAssigneeProfileImage"
+                ></v-img>
+                <v-img
+                  v-else
+                  src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                ></v-img>
+              </v-list-item-avatar>
+            </v-list-item>
+          </div>
         </div>
 
         <!-- -------------- end sub task design -------------- -->
@@ -316,51 +337,51 @@ export default {
       console.log("-----------> changed" + this.taskSelect);
     },
     async selectTask(task) {
-      // this.task = task.parentTask;
-      // this.componentClose = "";
-      // console.log("selectedTask", task);
-      // this.$axios
-      //   .get(`/users/${this.task.taskAssignee}`)
-      //   .then(async response => {
-      //     console.log("fetched task -->", response.data.data);
-      //     this.assignee = response.data.data;
-      //     //if task fetch is successful,
-      //     let subTaskResponse;
-      //     try {
-      //       subTaskResponse = await this.$axios.$get(
-      //         `/projects/${this.projectId}/tasks/${task.taskId}/subtask?userId=${this.userId}`,
-      //         {
-      //           headers: {
-      //             type: "project"
-      //           }
-      //         }
-      //       );
-      //       console.log("subtasks--->", subTaskResponse.data);
-      //       this.subTasks = subTaskResponse.data;
-      //       //get files related to task
-      //       let taskFilesResponse;
-      //       try {
-      //         taskFilesResponse = await this.$axios.$get(
-      //           `/projects/${this.projectId}/tasks/${task.taskId}/files`,
-      //           {
-      //             headers: {
-      //               user: this.userId,
-      //               type: "project"
-      //             }
-      //           }
-      //         );
-      //         console.log("files--->", taskFilesResponse.data);
-      //         this.taskFiles = taskFilesResponse.data;
-      //       } catch (error) {
-      //         console.log("Error fetching data", error);
-      //       }
-      //     } catch (error) {
-      //       console.log("Error fetching data", error);
-      //     }
-      //   })
-      //   .catch(e => {
-      //     console.log("error", e);
-      //   });
+      this.task = task.parentTask;
+      this.componentClose = "";
+      console.log("selectedTask", task);
+      this.$axios
+        .get(`/users/${this.task.taskAssignee}`)
+        .then(async response => {
+          console.log("fetched task -->", response.data.data);
+          this.assignee = response.data.data;
+          //if task fetch is successful,
+          let subTaskResponse;
+          try {
+            subTaskResponse = await this.$axios.$get(
+              `/projects/${this.projectId}/tasks/${task.taskId}/subtask?userId=${this.userId}`,
+              {
+                headers: {
+                  type: "project"
+                }
+              }
+            );
+            console.log("subtasks--->", subTaskResponse.data);
+            this.subTasks = subTaskResponse.data;
+            //get files related to task
+            let taskFilesResponse;
+            try {
+              taskFilesResponse = await this.$axios.$get(
+                `/projects/${this.projectId}/tasks/${task.taskId}/files`,
+                {
+                  headers: {
+                    user: this.userId,
+                    type: "project"
+                  }
+                }
+              );
+              console.log("files--->", taskFilesResponse.data);
+              this.taskFiles = taskFilesResponse.data;
+            } catch (error) {
+              console.log("Error fetching data", error);
+            }
+          } catch (error) {
+            console.log("Error fetching data", error);
+          }
+        })
+        .catch(e => {
+          console.log("error", e);
+        });
     },
     statusCheck(task) {
       if (task.taskStatus === "closed") {
