@@ -1762,29 +1762,30 @@
 .groupFormRow {
   padding-right: 10px;
 }
+
+/* ------------- task view page ------------ */
 .viewTaskContent {
-  width: 80%;
-  margin-left: 10%;
-  margin-right: 10% !important;
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5% !important;
   padding-top: 40px;
 }
 .taskRestFormDiv {
   margin-top: 80px;
 }
 .taskViewTitle {
-  font-size: 20px;
-  margin-bottom: 20px;
+  font-size: 18px;
+  margin-bottom: -20px;
   font-weight: 500;
   color: #576377;
 }
 .taskViewTitle span {
   color: #0c0c5a;
   font-weight: bold;
-  font-size: 22px;
+  font-size: 20px;
 }
 .taskPageTopRow {
   margin-top: -40px;
-  background-color: rebeccapurple;
 }
 .RestTaskLogDiv {
   width: 100%;
@@ -1798,4 +1799,108 @@
   font-weight: 500;
   padding-top: 5px;
   padding-left: 25px;
+}
+.formRowSpec {
+  margin-bottom: -10px;
+  height: 30px;
+}
+.viewTaskStatusDropDown {
+  height: 30px;
+  border-radius: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-style: none;
+  color: #ffffff;
+}
+.pendingStatus {
+  background: #0bafff;
+}
+.taskViewLinksDiv {
+  text-align: right;
+}
+.viewTaskTitle {
+  color: #424f64 !important;
+  font-weight: 500;
+  font-size: 24px;
+  width: 100% !important;
+  height: 40px;
+}
+.taskEditIconCol {
+  text-align: right;
+}
+.formRowNameRange {
+  height: 30px;
+}
+.nameRangeDevider {
+  margin-top: -35px;
+}
+.formRowTaskDetailsBody {
+  margin-top: 60px;
+}
+.viewTaskFontColors {
+  color: #576377;
+  font-size: 18px;
+}
+.taskViewTaskListContent {
+  background-color: #edf0f5 !important;
+  border-radius: 5px;
+}
+.taskViewTaskNameContentColor {
+  color: #080848;
+  font-size: 8px !important;
+}
+.viewTasklistTaskNames {
+  width: 65%;
+  font-size: 8px !important;
+}
+.parentChildTaskList {
+  margin-left: 60px;
+  margin-right: 20px;
+}
+.taskViewTaskListPadding {
+  padding-left: 20px;
+  height: 50px;
+  margin-top: ;
+}
+.taskViewTitleSection {
+  height: 50px;
+}
+.expansionViewHeader {
+  margin-bottom: 15px;
+  margin-top: 5px;
+}
+.topItemTaskView {
+  margin-top: -10px;
+}
+.rightSideColumn {
+  border: solid 1px #e5e5e5;
+  padding: 5px;
+  border-radius: 5px;
+  max-height: 100vh;
+}
+.rightColumnItemsSubTitle {
+  font-size: 12px !important;
+  color: #576377;
+}
+.rightColumnItemsTitle {
+  font-size: 16px !important;
+  color: #576377;
+}
+.rightColumnItemsText {
+  color: #576377;
+  font-weight: 500;
+  font-size: 16px;
+  margin-right: 30px;
+  width: 100%;
+}
+.viewTaskPickerDiv {
+  width: 250px;
+  margin-left: 80px;
+  margin-top: -20px;
+}
+.leftSideColumn {
+  padding-right: 15px;
+}
+.datePickerDivider {
+  margin-top: 30px;
 }

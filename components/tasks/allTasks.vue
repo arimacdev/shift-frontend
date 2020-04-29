@@ -158,7 +158,6 @@
             <v-icon color="red">mdi-checkbox-blank-circle</v-icon>
           </a>
         </v-list-item>
-        <!-- -------------- filter for all ------------ -->
       </div>
 
       <!-- -------------- sub task design --------------- -->
