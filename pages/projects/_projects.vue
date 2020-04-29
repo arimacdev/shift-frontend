@@ -230,56 +230,6 @@ export default {
   created() {
     this.$store.dispatch("project/fetchAllProjects");
     this.$store.dispatch("user/setAllUsers");
-    console.log("route ================> " + this.$route.params.projects);
-    this.$store.dispatch("project/fetchProject", this.$route.params.projects);
-    switch (this.selectedTab) {
-      case "task":
-        this.$store.dispatch(
-          "task/fetchTasksAllTasks",
-          this.$route.params.projects
-        );
-        this.$store.dispatch(
-          "task/fetchTasksMyTasks",
-          this.$route.params.projects
-        );
-        this.$store.dispatch(
-          "task/fetchProjectUserCompletionTasks",
-          this.$route.params.projects
-        );
-        this.$store.dispatch(
-          "sprints/sprint/fetchAllProjectSprints",
-          this.$route.params.projects
-        );
-        break;
-      case "people":
-        this.$store.dispatch(
-          "task/fetchProjectUserCompletionTasks",
-          this.$route.params.projects
-        );
-        break;
-      case "project":
-        this.$store.dispatch(
-          "task/fetchProjectTaskCompletion",
-          this.$route.params.projects
-        );
-        break;
-      case "board":
-        this.$store.dispatch(
-          "sprints/sprint/fetchAllProjectSprints",
-          this.$route.params.projects
-        );
-        this.$store.dispatch(
-          "task/fetchTasksAllTasks",
-          this.$route.params.projects
-        );
-        break;
-      case "files":
-        this.$store.dispatch(
-          "project/fetchAllProjectFiles",
-          this.$route.params.projects
-        );
-        break;
-    }
   },
 
   methods: {
