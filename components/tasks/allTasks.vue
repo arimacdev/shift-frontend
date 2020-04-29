@@ -129,21 +129,21 @@
           <div class="tasklistTaskNames restructuredMainTaskName">
             <div class="body-2">
               <span class="restructuredMainTaskCode">MRI - #1</span>
-              {{ task.taskName }}
+              {{ task.parentTask.taskName }}
             </div>
           </div>
           <div class="restStatusChip" :class="statusCheck(task)">Status code</div>
           <v-list-item-content class="updatedDate">
             <v-list-item-title :class="dueDateCheck(task)">
               {{
-              getProjectDates(task.taskDueDateAt)
+              getProjectDates(task.parentTask.taskDueDateAt)
               }}
             </v-list-item-title>
           </v-list-item-content>
           <v-list-item-avatar>
             <v-img
-              v-if="task.taskAssigneeProfileImage != null"
-              :src="task.taskAssigneeProfileImage"
+              v-if="task.parentTask.taskAssigneeProfileImage != null"
+              :src="task.parentTask.taskAssigneeProfileImage"
             ></v-img>
             <v-img
               v-else
@@ -152,7 +152,7 @@
           </v-list-item-avatar>
           <a
             style="text-decoration: none;"
-            :href="'http://localhost:3000/task/'+ task.taskId + '/?project=' + projectId"
+            :href="'http://localhost:3000/task/'+ task.parentTask.taskId + '/?project=' + projectId"
             target="_blank"
           >
             <v-icon color="red">mdi-checkbox-blank-circle</v-icon>
@@ -319,7 +319,7 @@ export default {
       console.log("-----------> changed" + this.taskSelect);
     },
     async selectTask(task) {
-      this.task = task;
+      this.task = task.parentTask;
       this.componentClose = "";
       console.log("selectedTask", task);
       this.$axios
