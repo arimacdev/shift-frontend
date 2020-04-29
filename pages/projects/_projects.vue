@@ -23,15 +23,14 @@
         </div>
         <div class="content-div">
           <v-list-item-title
-            v-if="this.newProject == false"
+            v-if="this.newProject == true"
             class="font-weight-bold"
           >Select a project</v-list-item-title>
-
-          <!-- <v-list-item-title class="font-weight-bold">
+          <v-list-item-title v-else class="font-weight-bold">
             {{
             this.project.projectName
             }}
-          </v-list-item-title>-->
+          </v-list-item-title>
         </div>
       </div>
     </v-toolbar>

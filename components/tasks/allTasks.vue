@@ -102,115 +102,113 @@
 
     <div class="taskListViewContent overflow-y-auto">
       <!-- ------ start task filter list ------- -->
-      <div
-        v-for="(task, index) in projectAllTasks"
-        :key="index"
-        class="taskList restructuredMainTaskList"
-      >
-        <v-list-item
-          v-if="
+      <div v-for="(task, index) in projectAllTasks" :key="index">
+        <div class="taskList restructuredMainTaskList">
+          <v-list-item
+            v-if="
             task.taskStatus == taskSelect ||
               taskFilter == 'none' ||
               taskFilter == 'assignee' ||
               taskFilter == 'dateRange' ||
               taskSelect == 'all'
           "
-          @click.stop="drawer = !drawer"
-          @click="selectTask(task)"
-        >
-          <v-list-item-action>
-            <v-icon
-              v-if="task.taskStatus == 'closed'"
-              size="30"
-              color="#2EC973"
-            >mdi-checkbox-marked-circle</v-icon>
-            <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
-          </v-list-item-action>
-          <div class="tasklistTaskNames restructuredMainTaskName">
-            <div class="body-2">
-              <span class="restructuredMainTaskCode">MRI - #1</span>
-              {{ task.parentTask.taskName }}
-            </div>
-          </div>
-          <div class="restStatusChip" :class="statusCheck(task)">Status code</div>
-          <v-list-item-content class="updatedDate">
-            <v-list-item-title :class="dueDateCheck(task)">
-              {{
-              getProjectDates(task.parentTask.taskDueDateAt)
-              }}
-            </v-list-item-title>
-          </v-list-item-content>
-          <v-list-item-avatar>
-            <v-img
-              v-if="task.parentTask.taskAssigneeProfileImage != null"
-              :src="task.parentTask.taskAssigneeProfileImage"
-            ></v-img>
-            <v-img
-              v-else
-              src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-            ></v-img>
-          </v-list-item-avatar>
-          <a
-            style="text-decoration: none;"
-            :href="'http://localhost:3000/task/'+ task.parentTask.taskId + '/?project=' + projectId"
-            target="_blank"
+            @click.stop="drawer = !drawer"
+            @click="selectTask(task)"
           >
-            <v-icon color="red">mdi-checkbox-blank-circle</v-icon>
-          </a>
-        </v-list-item>
-      </div>
-
-      <!-- -------------- sub task design --------------- -->
-      <div class="restructuredSubTaskCreate">
-        <v-text-field
-          v-model="personalTask"
-          background-color="#0BAFFF"
-          solo
-          dark
-          prepend-inner-icon="mdi-plus-circle"
-          label="Add a sub task..."
-          class
-          @keyup.enter="addParentTask"
-        ></v-text-field>
-      </div>
-      <div class="taskList restructuredSubTaskList">
-        <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)">
-          <v-list-item-action>
-            <v-icon
-              v-if="task.taskStatus == 'closed'"
-              size="30"
-              color="#2EC973"
-            >mdi-checkbox-marked-circle</v-icon>
-            <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
-          </v-list-item-action>
-          <div class="tasklistTaskNames restructuredSubTaskName">
-            <div class="body-2">
-              <span class="restructuredMainTaskCode">MRI - #1</span>
-              {{ task.taskName }} This is a sub task
+            <v-list-item-action>
+              <v-icon
+                v-if="task.parentTask.taskStatus == 'closed'"
+                size="30"
+                color="#2EC973"
+              >mdi-checkbox-marked-circle</v-icon>
+              <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+            </v-list-item-action>
+            <div class="tasklistTaskNames restructuredMainTaskName">
+              <div class="body-2">
+                <span class="restructuredMainTaskCode">MRI - #1</span>
+                {{ task.parentTask.taskName }}
+              </div>
             </div>
-          </div>
-          <div class="restStatusChip" :class="statusCheck(task)">Status code</div>
-          <v-list-item-content class="updatedDate">
-            <v-list-item-title :class="dueDateCheck(task)">
-              {{
-              getProjectDates(task.taskDueDateAt)
-              }}
-            </v-list-item-title>
-          </v-list-item-content>
-          <v-list-item-avatar>
-            <v-img
-              v-if="task.taskAssigneeProfileImage != null"
-              :src="task.taskAssigneeProfileImage"
-            ></v-img>
-            <v-img
-              v-else
-              src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-            ></v-img>
-          </v-list-item-avatar>
-        </v-list-item>
-      </div>
+            <div class="restStatusChip" :class="statusCheck(task)">Status code</div>
+            <v-list-item-content class="updatedDate">
+              <v-list-item-title :class="dueDateCheck(task)">
+                {{
+                getProjectDates(task.parentTask.taskDueDateAt)
+                }}
+              </v-list-item-title>
+            </v-list-item-content>
+            <v-list-item-avatar>
+              <v-img
+                v-if="task.parentTask.taskAssigneeProfileImage != null"
+                :src="task.parentTask.taskAssigneeProfileImage"
+              ></v-img>
+              <v-img
+                v-else
+                src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+              ></v-img>
+            </v-list-item-avatar>
+            <a
+              style="text-decoration: none;"
+              :href="'http://localhost:3000/task/'+ task.parentTask.taskId + '/?project=' + projectId"
+              target="_blank"
+            >
+              <v-icon color="red">mdi-checkbox-blank-circle</v-icon>
+            </a>
+          </v-list-item>
+        </div>
 
-      <!-- -------------- end sub task design -------------- -->
+        <!-- -------------- sub task design --------------- -->
+        <div class="restructuredSubTaskCreate">
+          <v-text-field
+            v-model="personalTask"
+            background-color="#0BAFFF"
+            solo
+            dark
+            prepend-inner-icon="mdi-plus-circle"
+            label="Add a sub task..."
+            class
+            @keyup.enter="addParentTask"
+          ></v-text-field>
+        </div>
+        <div v-if="task.childTasks.length !== 0" class="taskList restructuredSubTaskList">
+          <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)">
+            <v-list-item-action>
+              <v-icon
+                v-if="task.taskStatus == 'closed'"
+                size="30"
+                color="#2EC973"
+              >mdi-checkbox-marked-circle</v-icon>
+              <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+            </v-list-item-action>
+            <div class="tasklistTaskNames restructuredSubTaskName">
+              <div class="body-2">
+                <span class="restructuredMainTaskCode">MRI - #1</span>
+                {{ task.taskName }} This is a sub task
+              </div>
+            </div>
+            <div class="restStatusChip" :class="statusCheck(task)">Status code</div>
+            <v-list-item-content class="updatedDate">
+              <v-list-item-title :class="dueDateCheck(task)">
+                {{
+                getProjectDates(task.taskDueDateAt)
+                }}
+              </v-list-item-title>
+            </v-list-item-content>
+            <v-list-item-avatar>
+              <v-img
+                v-if="task.taskAssigneeProfileImage != null"
+                :src="task.taskAssigneeProfileImage"
+              ></v-img>
+              <v-img
+                v-else
+                src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+              ></v-img>
+            </v-list-item-avatar>
+          </v-list-item>
+        </div>
+
+        <!-- -------------- end sub task design -------------- -->
+      </div>
     </div>
 
     <!-- -------------- start side bar ----------------- -->
