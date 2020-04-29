@@ -150,7 +150,6 @@
             <a
               style="text-decoration: none;"
               :href="'http://localhost:3000/task/'+ task.parentTask.taskId + '/?project=' + projectId"
-              target="_blank"
             >
               <v-icon color="red">mdi-checkbox-blank-circle</v-icon>
             </a>
@@ -317,51 +316,51 @@ export default {
       console.log("-----------> changed" + this.taskSelect);
     },
     async selectTask(task) {
-      this.task = task.parentTask;
-      this.componentClose = "";
-      console.log("selectedTask", task);
-      this.$axios
-        .get(`/users/${this.task.taskAssignee}`)
-        .then(async response => {
-          console.log("fetched task -->", response.data.data);
-          this.assignee = response.data.data;
-          //if task fetch is successful,
-          let subTaskResponse;
-          try {
-            subTaskResponse = await this.$axios.$get(
-              `/projects/${this.projectId}/tasks/${task.taskId}/subtask?userId=${this.userId}`,
-              {
-                headers: {
-                  type: "project"
-                }
-              }
-            );
-            console.log("subtasks--->", subTaskResponse.data);
-            this.subTasks = subTaskResponse.data;
-            //get files related to task
-            let taskFilesResponse;
-            try {
-              taskFilesResponse = await this.$axios.$get(
-                `/projects/${this.projectId}/tasks/${task.taskId}/files`,
-                {
-                  headers: {
-                    user: this.userId,
-                    type: "project"
-                  }
-                }
-              );
-              console.log("files--->", taskFilesResponse.data);
-              this.taskFiles = taskFilesResponse.data;
-            } catch (error) {
-              console.log("Error fetching data", error);
-            }
-          } catch (error) {
-            console.log("Error fetching data", error);
-          }
-        })
-        .catch(e => {
-          console.log("error", e);
-        });
+      // this.task = task.parentTask;
+      // this.componentClose = "";
+      // console.log("selectedTask", task);
+      // this.$axios
+      //   .get(`/users/${this.task.taskAssignee}`)
+      //   .then(async response => {
+      //     console.log("fetched task -->", response.data.data);
+      //     this.assignee = response.data.data;
+      //     //if task fetch is successful,
+      //     let subTaskResponse;
+      //     try {
+      //       subTaskResponse = await this.$axios.$get(
+      //         `/projects/${this.projectId}/tasks/${task.taskId}/subtask?userId=${this.userId}`,
+      //         {
+      //           headers: {
+      //             type: "project"
+      //           }
+      //         }
+      //       );
+      //       console.log("subtasks--->", subTaskResponse.data);
+      //       this.subTasks = subTaskResponse.data;
+      //       //get files related to task
+      //       let taskFilesResponse;
+      //       try {
+      //         taskFilesResponse = await this.$axios.$get(
+      //           `/projects/${this.projectId}/tasks/${task.taskId}/files`,
+      //           {
+      //             headers: {
+      //               user: this.userId,
+      //               type: "project"
+      //             }
+      //           }
+      //         );
+      //         console.log("files--->", taskFilesResponse.data);
+      //         this.taskFiles = taskFilesResponse.data;
+      //       } catch (error) {
+      //         console.log("Error fetching data", error);
+      //       }
+      //     } catch (error) {
+      //       console.log("Error fetching data", error);
+      //     }
+      //   })
+      //   .catch(e => {
+      //     console.log("error", e);
+      //   });
     },
     statusCheck(task) {
       if (task.taskStatus === "closed") {

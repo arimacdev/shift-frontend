@@ -63,7 +63,7 @@
                     type="text"
                     placeholder="Test task name"
                     class="viewTaskTitle"
-                    v-model="updatedName"
+                    v-model="taskName"
                   />
                 </v-col>
                 <v-col sm="1" md="1" class="taskEditIconCol">
@@ -453,40 +453,19 @@ export default {
   components: {
     NavigationDrawer
   },
-  data: {
-    taskId: "",
-    projectId: "",
-    userId: "",
-    taskName: "",
-    taskStatus: "",
-    editTask: true,
-    updatedName: "test",
-    taskRemindOnDate: new Date(),
-    taskDueDate: new Date(),
-    task: {
-      taskId: null,
-      taskName: null,
-      projectId: null,
-      sprintId: null,
-      taskAssignee: null,
-      taskInitiator: null,
-      taskNote: null,
-      taskStatus: null,
-      taskCreatedAt: null,
-      taskDueDateAt: null,
-      taskReminderAt: null,
-      isDeleted: null,
-      taskType: null,
-      deleted: null
-    }
-  },
-  methods: {
-    statusCheck() {
-      return "pendingStatus";
-    },
-    EditTaskName() {
-      this.editTask = false;
-    }
+  data() {
+    return {
+      taskId: "",
+      projectId: "",
+      userId: "",
+      // taskStatus: "",
+      editTask: true,
+      updatedName: "test",
+      taskRemindOnDate: new Date(),
+      taskDueDate: new Date(),
+      task: {},
+      updatedTask: {}
+    };
   },
   async created() {
     this.taskId = this.$route.params.viewTask;
@@ -508,6 +487,32 @@ export default {
       console.log("group get response", this.task);
     } catch (e) {
       console.log("Error fetching groups", e);
+    }
+  },
+  methods: {
+    statusCheck() {
+      return "pendingStatus";
+    },
+    EditTaskName() {
+      this.editTask = false;
+    }
+  },
+  computed: {
+    taskName: {
+      get() {
+        return this.task.taskName;
+      },
+      set(name) {
+        this.updatedTask.taskName = name;
+      }
+    },
+    taskStatus: {
+      get() {
+        return this.task.taskStatus;
+      },
+      set(value) {
+        this.updatedTask.taskStatus = value;
+      }
     }
   }
 };
