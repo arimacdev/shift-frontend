@@ -129,7 +129,7 @@
                 {{ task.parentTask.taskName }}
               </div>
             </div>
-            <div class="restStatusChip" :class="statusCheck(task)">Status code</div>
+            <div class="restStatusChip" :class="statusCheck(task)">{{task.parentTask.issueType}}</div>
             <v-list-item-content class="updatedDate">
               <v-list-item-title :class="dueDateCheck(task)">
                 {{
@@ -171,7 +171,7 @@
           ></v-text-field>
         </div>
         <div v-if="task.childTasks.length !== 0" class="taskList restructuredSubTaskList">
-          <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)">
+          <v-list-item @click.stop="drawer = !drawer" @click="selectTask(task)" v-for="(childTask, index) in task.childTasks" :key="index">
             <v-list-item-action>
               <v-icon
                 v-if="task.taskStatus == 'closed'"
@@ -183,21 +183,21 @@
             <div class="tasklistTaskNames restructuredSubTaskName">
               <div class="body-2">
                 <span class="restructuredMainTaskCode">MRI - #1</span>
-                {{ task.taskName }} This is a sub task
+                {{ childTask.taskName }}
               </div>
             </div>
-            <div class="restStatusChip" :class="statusCheck(task)">Status code</div>
+            <div class="restStatusChip" :class="statusCheck(task)">{{childTask.issueType}}</div>
             <v-list-item-content class="updatedDate">
               <v-list-item-title :class="dueDateCheck(task)">
                 {{
-                getProjectDates(task.taskDueDateAt)
+                getProjectDates(childTask.taskDueDateAt)
                 }}
               </v-list-item-title>
             </v-list-item-content>
             <v-list-item-avatar>
               <v-img
-                v-if="task.taskAssigneeProfileImage != null"
-                :src="task.taskAssigneeProfileImage"
+                v-if="childTask.taskAssigneeProfileImage != null"
+                :src="childTask.taskAssigneeProfileImage"
               ></v-img>
               <v-img
                 v-else
