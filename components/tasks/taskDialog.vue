@@ -78,11 +78,27 @@
             <v-col sm="12" md="12" class="formRowNameRange">
               <v-row class="mb-12" no-gutters>
                 <v-col sm="11" md="11">
-                  <input
+                  <!-- <input
                     type="text"
                     placeholder="Test task name"
                     class="viewTaskTitle"
                     v-model="taskName"
+                  /> -->
+
+                  <input
+                    type="text"
+                    class="viewTaskTitle"
+                    v-model="taskName"
+                    v-if="editTask == true"
+                    :disabled="editTask"
+                  />
+                  <input
+                    maxlength="49"
+                    type="text"
+                    class="viewTaskTitleEdit"
+                    v-model="taskName"
+                    v-if="editTask == false"
+                    :disabled="editTask"
                   />
                 </v-col>
                 <v-col sm="1" md="1" class="taskEditIconCol">
