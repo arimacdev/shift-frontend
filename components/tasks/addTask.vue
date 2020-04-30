@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="taskFormDiv taskListViewContent overflow-y-auto">
+    <div class="taskFormDiv  overflow-y-auto">
       <div class="taskAddTitle">
         New task -
         <span>#{{ this.projectAllTasks.length + 1 }}</span>
@@ -581,7 +581,9 @@ export default {
             taskRemindOnDate: this.getRemindOnDate(),
             taskStatus: this.taskStatus,
             taskNotes: this.taskNotes,
-            taskType: 'project',
+            taskType: this.taskStatus,
+            issueType: this.taskType,
+            parentTaskId: this.parentTask,
           }
         );
         this.component = 'success-popup';
