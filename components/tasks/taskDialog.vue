@@ -78,13 +78,6 @@
             <v-col sm="12" md="12" class="formRowNameRange">
               <v-row class="mb-12" no-gutters>
                 <v-col sm="11" md="11">
-                  <!-- <input
-                    type="text"
-                    placeholder="Test task name"
-                    class="viewTaskTitle"
-                    v-model="taskName"
-                  /> -->
-
                   <input
                     type="text"
                     class="viewTaskTitle"
@@ -222,7 +215,7 @@
                           <v-list-item-title class="viewTaskFontColors">
                             Child Tasks
                             <span
-                              >({{ taskObject.childTasks.length }} tasks)</span
+                              >{{ taskObject.childTasks.length }} Task(s)</span
                             >
                           </v-list-item-title>
                         </template>

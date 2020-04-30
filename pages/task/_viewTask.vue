@@ -58,23 +58,44 @@
             </v-col>
             <v-col sm="8" md="8" class="taskViewLinksDiv">
               <a
-                style="text-decoration: none;"
                 :href="'http://localhost:3000/projects/' + this.projectId"
-                >Project Link</a
+                style="text-decoration: none;"
+                target="_blank"
               >
-              /
-              <a href>Parent task link</a>
+                <v-icon size="22" color="#0083E2">mdi-folder-outline</v-icon>
+                Project
+              </a>
               /
               <a
-                style="text-decoration: none;"
+                v-if="this.task.isParent == false"
                 :href="
                   'http://localhost:3000/task/' +
-                    this.taskId +
+                    this.parentTask.taskId +
                     '/?project=' +
                     this.projectId
                 "
-                >Task link</a
+                style="text-decoration: none;"
+                target="_blank"
               >
+                <v-icon size="22" color="#0083E2">mdi-calendar-check</v-icon>
+                Parent Task
+              </a>
+              <span v-if="this.task.isParent == false"> /</span>
+              <a
+                :href="
+                  'http://localhost:3000/task/' +
+                    this.task.taskId +
+                    '/?project=' +
+                    this.projectId
+                "
+                style="text-decoration: none;"
+                target="_blank"
+              >
+                <v-icon size="22" color="#0083E2"
+                  >mdi-calendar-check-outline</v-icon
+                >
+                Current Task
+              </a>
             </v-col>
           </v-row>
           <v-row class="mb-12" no-gutters>
@@ -83,9 +104,18 @@
                 <v-col sm="11" md="11">
                   <input
                     type="text"
-                    placeholder="Test task name"
                     class="viewTaskTitle"
                     v-model="taskName"
+                    v-if="editTask == true"
+                    :disabled="editTask"
+                  />
+                  <input
+                    maxlength="49"
+                    type="text"
+                    class="viewTaskTitleEdit"
+                    v-model="taskName"
+                    v-if="editTask == false"
+                    :disabled="editTask"
                   />
                 </v-col>
                 <v-col sm="1" md="1" class="taskEditIconCol">
@@ -185,13 +215,8 @@
                             <div>
                               <v-list-item-avatar size="25">
                                 <v-img
-                                  v-if="
-                                    this.parentProfile.profileImage !=
-                                      null
-                                  "
-                                  :src="
-                                    this.parentProfile.profileImage
-                                  "
+                                  v-if="this.parentProfile.profileImage != null"
+                                  :src="this.parentProfile.profileImage"
                                 ></v-img>
                                 <v-img
                                   v-else
@@ -257,16 +282,20 @@
                                 child.taskName
                               }}</v-list-item-title>
                             </v-list-item-content>
-                            <v-list-item-action>
-                              <v-list-item-sub-title>{{
-                                getProjectDates(child.taskDueDateAt)
-                              }}</v-list-item-sub-title>
-                            </v-list-item-action>
-                            <v-list-item-avatar size="25">
-                              <v-img
-                                :src="child.taskAssigneeProfileImage"
-                              ></v-img>
-                            </v-list-item-avatar>
+                            <div>
+                              <v-list-item-action>
+                                <v-list-item-sub-title>{{
+                                  getProjectDates(child.taskDueDateAt)
+                                }}</v-list-item-sub-title>
+                              </v-list-item-action>
+                            </div>
+                            <div>
+                              <v-list-item-avatar size="25">
+                                <v-img
+                                  :src="child.taskAssigneeProfileImage"
+                                ></v-img>
+                              </v-list-item-avatar>
+                            </div>
                             <div class="boardTabLinkIcon">
                               <nuxt-link
                                 :to="
@@ -592,29 +621,29 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { mapGetters } from "vuex";
-import NavigationDrawer from "~/components/navigationDrawer";
+import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
+import NavigationDrawer from '~/components/navigationDrawer';
 export default {
   components: {
-    NavigationDrawer
+    NavigationDrawer,
   },
   data() {
     return {
-      taskId: "",
-      projectId: "",
-      userId: "",
+      taskId: '',
+      projectId: '',
+      userId: '',
       sprints: [],
       editTask: true,
       parentTask: {},
       parentProfile: {},
       task: {},
       updatedTask: {},
-      issueTypes: ["development", "qa", "bug", "operational"],
-      taskStatuses: ["open", "pending", "closed"],
-      allSprints: [{ sprintId: "default", sprintName: "Default" }],
+      issueTypes: ['development', 'qa', 'bug', 'operational'],
+      taskStatuses: ['open', 'pending', 'closed'],
+      allSprints: [{ sprintId: 'default', sprintName: 'Default' }],
       fetchSprintCount: 0,
-      fetchFilesCount: 0
+      fetchFilesCount: 0,
     };
   },
   async created() {
@@ -628,93 +657,93 @@ export default {
         {
           headers: {
             user: this.userId,
-            type: "project"
-          }
+            type: 'project',
+          },
         }
       );
       this.task = taskResponse.data;
-      console.log("Selected Task get response", this.task);
+      console.log('Selected Task get response', this.task);
     } catch (e) {
-      console.log("Error fetching task", e);
+      console.log('Error fetching task', e);
     }
     if (this.task.isParent) {
-      console.log("parent tasl");
-      this.$store.dispatch("task/fetchChildren", {
+      console.log('parent tasl');
+      this.$store.dispatch('task/fetchChildren', {
         projectId: this.$route.query.project,
-        taskId: this.$route.params.viewTask
+        taskId: this.$route.params.viewTask,
       });
     } else {
-      console.log("child tasl");
+      console.log('child tasl');
       let response = await this.$axios.$get(
         `/projects/${this.$route.query.project}/tasks/${this.task.parentId}`,
         {
           headers: {
             user: this.userId,
-            type: "project"
-          }
+            type: 'project',
+          },
         }
       );
       this.parentTask = response.data;
-      console.log("Parent Task get response", response.data);
+      console.log('Parent Task get response', response.data);
       let userResponse;
       try {
         userResponse = await this.$axios.$get(
           `/users/${response.data.taskAssignee}`,
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
-        console.log("fetch parent task profile", userResponse.data);
+        console.log('fetch parent task profile', userResponse.data);
         this.parentProfile = userResponse.data;
       } catch (e) {
-        console.log("Error fetching parent task profile", e);
+        console.log('Error fetching parent task profile', e);
       }
     }
   },
   methods: {
     dueDateCheck(task) {
-      console.log("check due date color", task);
-      if (task.taskStatus === "closed") {
-        return "workLoadTaskDone";
+      console.log('check due date color', task);
+      if (task.taskStatus === 'closed') {
+        return 'workLoadTaskDone';
       } else if (task.taskDueDateAt == null) {
-        return "workLoadTaskDefault";
+        return 'workLoadTaskDefault';
       } else {
         const dueDate = new Date(task.taskDueDateAt);
         const dueToUtc = new Date(
-          dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+          dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
         );
         const dueToUtcDate = new Date(dueToUtc);
         const now = new Date();
-        console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
+        console.log('now', now.getTime(), 'DueTime', dueToUtcDate.getTime());
         if (now.getTime() > dueToUtcDate.getTime()) {
-          console.log("overdue");
-          return "workLoadTaskOverDue";
+          console.log('overdue');
+          return 'workLoadTaskOverDue';
         } else {
-          return "workLoadTaskHealthy";
+          return 'workLoadTaskHealthy';
         }
       }
     },
     getProjectDates(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+        dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
       );
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
-      console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
+      console.log('Today', now.getDate(), 'DueDate', dueToUtcDate.getDate());
 
-      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "Add Due Date";
+      if (date === null || date === '1970-01-01T05:30:00.000+0000') {
+        return 'Add Due Date';
       } else if (now.getDate() === dueToUtcDate.getDate()) {
-        return "Today";
+        return 'Today';
       } else if (now.getDate() - 1 === dueToUtcDate.getDate()) {
-        return "Yesterday";
+        return 'Yesterday';
       } else if (now.getDate() + 1 === dueToUtcDate.getDate()) {
-        return "Tomorrow";
+        return 'Tomorrow';
       } else {
-        let stringDate = date + "";
+        let stringDate = date + '';
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 10);
         return stringDate;
@@ -728,13 +757,13 @@ export default {
       }
     },
     statusCheck() {
-      return "pendingStatus";
+      return 'pendingStatus';
     },
     EditTaskName() {
       this.editTask = false;
     },
     getAllSprints() {
-      console.log("lenght", this.projectSprints.length);
+      console.log('lenght', this.projectSprints.length);
       if (this.projectSprints.length != 0) {
         let sprints = this.projectSprints;
         let sprintList = [];
@@ -742,14 +771,14 @@ export default {
           let sprint = sprints[index];
           sprintList.push({
             name: sprint.sprintName,
-            id: sprint.sprintId
+            id: sprint.sprintId,
           });
         }
         return sprintList;
       } else if (this.fetchSprintCount < 1) {
-        console.log("sprint dispatched actually");
+        console.log('sprint dispatched actually');
         this.$store.dispatch(
-          "sprints/sprint/fetchAllProjectSprints",
+          'sprints/sprint/fetchAllProjectSprints',
           this.$route.query.project
         );
         this.fetchSprintCount += 1;
@@ -759,57 +788,57 @@ export default {
     getProjectDates(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+        dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
       );
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
-      console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
+      console.log('Today', now.getDate(), 'DueDate', dueToUtcDate.getDate());
 
-      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "Add Due Date";
+      if (date === null || date === '1970-01-01T05:30:00.000+0000') {
+        return 'Add Due Date';
       } else if (now.getDate() === dueToUtcDate.getDate()) {
-        return "Today";
+        return 'Today';
       } else if (now.getDate() - 1 === dueToUtcDate.getDate()) {
-        return "Yesterday";
+        return 'Yesterday';
       } else if (now.getDate() + 1 === dueToUtcDate.getDate()) {
-        return "Tomorrow";
+        return 'Tomorrow';
       } else {
-        let stringDate = date + "";
+        let stringDate = date + '';
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 10);
         return stringDate;
       }
-    }
+    },
   },
   computed: {
     ...mapState({
-      selectedTaskUser: state => state.user.selectedTaskUser,
-      people: state => state.task.userCompletionTasks,
-      projectSprints: state => state.sprints.sprint.sprints,
-      taskFiles: state => state.task.taskFiles,
-      children: state => state.task.childTasks
+      selectedTaskUser: (state) => state.user.selectedTaskUser,
+      people: (state) => state.task.userCompletionTasks,
+      projectSprints: (state) => state.sprints.sprint.sprints,
+      taskFiles: (state) => state.task.taskFiles,
+      children: (state) => state.task.childTasks,
     }),
-    ...mapGetters(["getuserCompletionTasks"]),
+    ...mapGetters(['getuserCompletionTasks']),
 
     taskUser() {
       if (Object.keys(this.selectedTaskUser).length === 0) {
         this.$store.dispatch(
-          "user/setSelectedTaskUser",
+          'user/setSelectedTaskUser',
           this.task.taskAssignee
         );
-        return "";
+        return '';
       } else {
         return (
-          this.selectedTaskUser.firstName + " " + this.selectedTaskUser.lastName
+          this.selectedTaskUser.firstName + ' ' + this.selectedTaskUser.lastName
         );
       }
     },
 
     peopleList() {
-      console.log("people list", this.people);
+      console.log('people list', this.people);
       if (this.people.length == 0) {
         this.$store.dispatch(
-          "task/fetchProjectUserCompletionTasks",
+          'task/fetchProjectUserCompletionTasks',
           this.$route.query.project
         );
       } else {
@@ -819,10 +848,10 @@ export default {
 
     fileList() {
       if (this.taskFiles.length == 0 && this.fetchFilesCount < 1) {
-        console.log("file length dispatch", this.taskFiles.length);
-        this.$store.dispatch("task/fetchTaskFiles", {
+        console.log('file length dispatch', this.taskFiles.length);
+        this.$store.dispatch('task/fetchTaskFiles', {
           projectId: this.projectId,
-          taskId: this.taskId
+          taskId: this.taskId,
         });
         this.fetchFilesCount += 1;
       } else {
@@ -840,7 +869,7 @@ export default {
       },
       set(name) {
         this.updatedTask.taskName = name;
-      }
+      },
     },
     taskStatus: {
       get() {
@@ -848,7 +877,7 @@ export default {
       },
       set(value) {
         this.updatedTask.taskStatus = value;
-      }
+      },
     },
     issueType: {
       get() {
@@ -856,7 +885,7 @@ export default {
       },
       set(value) {
         this.updatedTask.issueType = value;
-      }
+      },
     },
     // selectedSprint: {
     //   get() {
@@ -872,26 +901,26 @@ export default {
       },
       set(value) {
         this.updatedTask.taskNote = value;
-      }
+      },
     },
     taskDueDate: {
       get() {
         return this.task.taskDueDateAt;
       },
       set(value) {
-        console.log("updated task due ->", value);
+        console.log('updated task due ->', value);
         this.updatedTask.taskDueDateAt = value;
-      }
+      },
     },
     taskRemindOnDate: {
       get() {
         return this.task.taskReminderAt;
       },
       set(value) {
-        console.log("updated remind on ->", value);
+        console.log('updated remind on ->', value);
         this.updatedTask.taskReminderAt = value;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
