@@ -5,6 +5,7 @@ export const state = () => ({
   myTasks: [],
   userCompletionTasks: [],
   projectTaskCompletion: {},
+  taskFiles: [],
 });
 
 export const mutations = {
@@ -109,6 +110,10 @@ export const actions = {
     console.log('update sprint', sprintId, taskId);
     commit('UPDATE_TASK_SPRINT', { taskId, sprintId });
   },
+
+  setTaskFiles({ commit }) {
+    console.log;
+  },
 };
 
 export const getters = {
@@ -118,5 +123,7 @@ export const getters = {
   getMyTasks: (state) => {
     return state.myTasks;
   },
-  getuserCompletionTasks: state,
+  getuserCompletionTasks: (state) => {
+    return state.userCompletionTasks;
+  },
 };
