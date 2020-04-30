@@ -113,7 +113,7 @@
                 taskSelect == 'all'
             "
             @click.stop="drawer = !drawer"
-            @click="selectTask(task)"
+            @click="selectTask(task.parentTask)"
           >
             <v-list-item-action>
               <v-icon
@@ -140,22 +140,28 @@
                 {{ getProjectDates(task.parentTask.taskDueDateAt) }}
               </v-list-item-title>
             </v-list-item-content>
-            <v-list-item-avatar>
-              <v-img
-                v-if="task.parentTask.taskAssigneeProfileImage != null"
-                :src="task.parentTask.taskAssigneeProfileImage"
-              ></v-img>
-              <v-img
-                v-else
-                src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-              ></v-img>
-            </v-list-item-avatar>
-            <nuxt-link
-              :to="'/task/' + task.parentTask.taskId + '/?project=' + projectId"
-              style="text-decoration: none;"
-            >
-              <v-icon color="blue">mdi-link-variant</v-icon>
-            </nuxt-link>
+            <div>
+              <v-list-item-avatar>
+                <v-img
+                  v-if="task.parentTask.taskAssigneeProfileImage != null"
+                  :src="task.parentTask.taskAssigneeProfileImage"
+                ></v-img>
+                <v-img
+                  v-else
+                  src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                ></v-img>
+              </v-list-item-avatar>
+            </div>
+            <div class="boardTabLinkIcon">
+              <nuxt-link
+                :to="
+                  '/task/' + task.parentTask.taskId + '/?project=' + projectId
+                "
+                style="text-decoration: none;"
+              >
+                <v-icon color="blue">mdi-link-variant</v-icon>
+              </nuxt-link>
+            </div>
           </v-list-item>
         </div>
 
@@ -180,7 +186,7 @@
           >
             <v-list-item
               @click.stop="drawer = !drawer"
-              @click="selectTask(task)"
+              @click="selectTask(childTask)"
             >
               <v-list-item-action>
                 <v-icon
@@ -207,22 +213,26 @@
                   {{ getProjectDates(childTask.taskDueDateAt) }}
                 </v-list-item-title>
               </v-list-item-content>
-              <v-list-item-avatar>
-                <v-img
-                  v-if="childTask.taskAssigneeProfileImage != null"
-                  :src="childTask.taskAssigneeProfileImage"
-                ></v-img>
-                <v-img
-                  v-else
-                  src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-                ></v-img>
-              </v-list-item-avatar>
-              <nuxt-link
-                :to="'/task/' + childTask.taskId + '/?project=' + projectId"
-                style="text-decoration: none;"
-              >
-                <v-icon color="blue">mdi-link-variant</v-icon>
-              </nuxt-link>
+              <div>
+                <v-list-item-avatar>
+                  <v-img
+                    v-if="childTask.taskAssigneeProfileImage != null"
+                    :src="childTask.taskAssigneeProfileImage"
+                  ></v-img>
+                  <v-img
+                    v-else
+                    src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                  ></v-img>
+                </v-list-item-avatar>
+              </div>
+              <div class="boardTabLinkIcon">
+                <nuxt-link
+                  :to="'/task/' + childTask.taskId + '/?project=' + projectId"
+                  style="text-decoration: none;"
+                >
+                  <v-icon color="blue">mdi-link-variant</v-icon>
+                </nuxt-link>
+              </div>
             </v-list-item>
           </div>
         </div>
@@ -256,17 +266,34 @@
       />
     </v-navigation-drawer>
 
+    <!-- ------------ task dialog --------- -->
+
+    <v-dialog
+      v-model="taskDialog"
+      width="90vw"
+      transition="dialog-bottom-transition"
+      ><v-toolbar dark color="primary">
+        <v-btn icon dark @click="taskDialog = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <v-toolbar-title>{{ task.taskName }}</v-toolbar-title>
+      </v-toolbar>
+      <task-dialog />
+    </v-dialog>
+
     <!-- --------------- end side bar --------------------- -->
   </div>
 </template>
 
 <script>
 import TaskSideBar from "~/components/tasks/taskSideBar";
+import TaskDialog from "~/components/tasks/taskDialog";
 import { mapState } from "vuex";
 export default {
   // props: ['projectId', 'projectUsers', 'people'],
   data() {
     return {
+      taskDialog: false,
       dateRange: new Date(),
       dialog: false,
       notifications: false,
@@ -302,7 +329,8 @@ export default {
     };
   },
   components: {
-    "task-side-bar": TaskSideBar
+    "task-side-bar": TaskSideBar,
+    "task-dialog": TaskDialog
   },
   methods: {
     clearFilter() {
