@@ -34,23 +34,44 @@
             </v-col>
             <v-col sm="8" md="8" class="taskViewLinksDiv">
               <a
-                style="text-decoration: none;"
                 :href="'http://localhost:3000/projects/' + this.projectId"
-                >Project Link</a
+                style="text-decoration: none;"
+                target="_blank"
               >
-              /
-              <a href>Parent task link</a>
+                <v-icon size="22" color="#0083E2">mdi-folder-outline</v-icon>
+                Project
+              </a>
               /
               <a
-                style="text-decoration: none;"
+                v-if="task.isParent == false"
                 :href="
                   'http://localhost:3000/task/' +
-                    this.taskId +
+                    this.taskObject.parentTask.taskId +
                     '/?project=' +
                     this.projectId
                 "
-                >Task link</a
+                style="text-decoration: none;"
+                target="_blank"
               >
+                <v-icon size="22" color="#0083E2">mdi-calendar-check</v-icon>
+                Parent Task
+              </a>
+              <span v-if="task.isParent == false"> /</span>
+              <a
+                :href="
+                  'http://localhost:3000/task/' +
+                    this.task.taskId +
+                    '/?project=' +
+                    this.projectId
+                "
+                style="text-decoration: none;"
+                target="_blank"
+              >
+                <v-icon size="22" color="#0083E2"
+                  >mdi-calendar-check-outline</v-icon
+                >
+                Current Task
+              </a>
             </v-col>
           </v-row>
           <v-row class="mb-12" no-gutters>
