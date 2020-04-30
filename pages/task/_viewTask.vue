@@ -248,75 +248,77 @@
                     <v-divider></v-divider>
                   </div>
                   <!-- -------------- child tasks section ----------- -->
-                  <div v-if="this.task.isParent" class="expansionViewHeader">
-                    <v-list-group>
-                      <template v-slot:activator>
-                        <v-list-item-icon>
-                          <v-icon size="30" color="#2EC973"
-                            >mdi-package-variant-closed</v-icon
-                          >
-                        </v-list-item-icon>
-                        <v-list-item-title class="viewTaskFontColors">
-                          Child Tasks:
-                          <span>{{ childrenCount }} Task(s)</span>
-                        </v-list-item-title>
-                      </template>
+                  <div v-if="this.task.isParent == true">
+                    <div class="expansionViewHeader">
+                      <v-list-group>
+                        <template v-slot:activator>
+                          <v-list-item-icon>
+                            <v-icon size="30" color="#2EC973"
+                              >mdi-package-variant-closed</v-icon
+                            >
+                          </v-list-item-icon>
+                          <v-list-item-title class="viewTaskFontColors">
+                            Child Tasks:
+                            <span>{{ childrenCount }} Task(s)</span>
+                          </v-list-item-title>
+                        </template>
 
-                      <v-list-item-content
-                        v-for="(child, index) in children"
-                        :key="index"
-                        class="parentChildTaskList"
-                      >
-                        <!-- ---------- task list --------- -->
-                        <!-- <nuxt-link :to="'/task/' + child.taskId + '/?project=' + this.projectId" style="text-decoration: none;"> -->
+                        <v-list-item-content
+                          v-for="(child, index) in children"
+                          :key="index"
+                          class="parentChildTaskList"
+                        >
+                          <!-- ---------- task list --------- -->
+                          <!-- <nuxt-link :to="'/task/' + child.taskId + '/?project=' + this.projectId" style="text-decoration: none;"> -->
 
-                        <div class="taskViewTaskListContent">
-                          <v-list-item @click.stop="drawer = !drawer">
-                            <v-list-item-action>
-                              <v-icon size="25" color="#2EC973"
-                                >mdi-checkbox-marked-circle</v-icon
-                              >
-                            </v-list-item-action>
-                            <v-list-item-content>
-                              <v-list-item-title>{{
-                                child.taskName
-                              }}</v-list-item-title>
-                            </v-list-item-content>
-                            <div>
+                          <div class="taskViewTaskListContent">
+                            <v-list-item>
                               <v-list-item-action>
-                                <v-list-item-sub-title>{{
-                                  getProjectDates(child.taskDueDateAt)
-                                }}</v-list-item-sub-title>
-                              </v-list-item-action>
-                            </div>
-                            <div>
-                              <v-list-item-avatar size="25">
-                                <v-img
-                                  :src="child.taskAssigneeProfileImage"
-                                ></v-img>
-                              </v-list-item-avatar>
-                            </div>
-                            <div class="boardTabLinkIcon">
-                              <nuxt-link
-                                :to="
-                                  '/task/' +
-                                    child.taskId +
-                                    '/?project=' +
-                                    projectId
-                                "
-                                style="text-decoration: none;"
-                                target="_blank"
-                              >
-                                <v-icon size="20" color="blue"
-                                  >mdi-link-variant</v-icon
+                                <v-icon size="25" color="#2EC973"
+                                  >mdi-checkbox-marked-circle</v-icon
                                 >
-                              </nuxt-link>
-                            </div>
-                          </v-list-item>
-                        </div>
-                        <!-- </nuxt-link> -->
-                      </v-list-item-content>
-                    </v-list-group>
+                              </v-list-item-action>
+                              <v-list-item-content>
+                                <v-list-item-title>{{
+                                  child.taskName
+                                }}</v-list-item-title>
+                              </v-list-item-content>
+                              <div>
+                                <v-list-item-action>
+                                  <v-list-item-sub-title>{{
+                                    getProjectDates(child.taskDueDateAt)
+                                  }}</v-list-item-sub-title>
+                                </v-list-item-action>
+                              </div>
+                              <div>
+                                <v-list-item-avatar size="25">
+                                  <v-img
+                                    :src="child.taskAssigneeProfileImage"
+                                  ></v-img>
+                                </v-list-item-avatar>
+                              </div>
+                              <div class="boardTabLinkIcon">
+                                <nuxt-link
+                                  :to="
+                                    '/task/' +
+                                      child.taskId +
+                                      '/?project=' +
+                                      projectId
+                                  "
+                                  style="text-decoration: none;"
+                                  target="_blank"
+                                >
+                                  <v-icon size="20" color="blue"
+                                    >mdi-link-variant</v-icon
+                                  >
+                                </nuxt-link>
+                              </div>
+                            </v-list-item>
+                          </div>
+                          <!-- </nuxt-link> -->
+                        </v-list-item-content>
+                      </v-list-group>
+                    </div>
                   </div>
                   <v-divider></v-divider>
                   <!-- -------------- task type section ------------- -->
