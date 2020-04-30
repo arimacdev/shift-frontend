@@ -1855,6 +1855,16 @@
   width: 100% !important;
   height: 40px;
 }
+.viewTaskTitleEdit {
+  color: #424f64 !important;
+  background: #edf0f5;
+  font-weight: 500;
+  font-size: 24px;
+  padding-left: 20px;
+  border-radius: 5px;
+  width: 100% !important;
+  height: 40px;
+}
 .taskEditIconCol {
   text-align: right;
 }
