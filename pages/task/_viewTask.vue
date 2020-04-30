@@ -14,6 +14,8 @@
         </div>
         <div class="content-div">
           <v-list-item-title class="font-weight-bold">{{this.taskId}}</v-list-item-title>
+          <v-list-item-title class="font-weight-bold">{{this.task.taskAssignee}}</v-list-item-title>
+
         </div>
       </div>
     </v-toolbar>
@@ -253,14 +255,15 @@
                           <v-col sm="12" md="12">
                             <v-select
                               dense
-                              v-model="taskStatus"
-                              :items="items"
+                              v-model="selectedSprint"
+                              :items="getSprintDetails()"
                               background-color="#EDF0F5"
                               item-text="name"
                               item-value="id"
                               label="Board"
                               outlined
                               class="createFormElements"
+                              
                             ></v-select>
                           </v-col>
                         </v-row>
@@ -312,15 +315,15 @@
                       <v-list-item-title>
                         <select v-model="taskAssignee" class="rightColumnItemsText">
                           <!-- <option>Naveen Perera</option> -->
+                          <option value disabled>{{ this.task.taskAssignee }}</option>
                           <option
                             class="tabListItemsText"
-                            v-for="(projectUser, index) in people"
+                            v-for="(taskAssignee, index) in peopleList"
                             :key="index"
-                            
-                            :value="projectUser.assigneeId"
+                            :value="taskAssignee.assigneeId"
                           >
-                            {{ projectUser.assigneeFirstName }}
-                            {{ projectUser.assigneeLastName }}
+                            {{ taskAssignee.assigneeFirstName }}
+                            {{ taskAssignee.assigneeLastName }}
                           </option>
                         </select>
                       </v-list-item-title>
@@ -458,6 +461,7 @@
 
 <script>
 import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 import NavigationDrawer from "~/components/navigationDrawer";
 export default {
   components: {
@@ -468,15 +472,13 @@ export default {
       taskId: "",
       projectId: "",
       userId: "",
-      // taskStatus: "",
+      sprints: [],
       editTask: true,
-      updatedName: "test",
-      taskRemindOnDate: new Date(),
-      taskDueDate: new Date(),
       task: {},
       updatedTask: {},
       issueTypes: ["development", "qa", "bug", "operational"],
-      taskStatuses: ["open", "pending", "closed"]
+      taskStatuses: ["open", "pending", "closed"],
+      allSprints: [{ sprintId: "default", sprintName: "Default" }]
     };
   },
   async created() {
@@ -502,19 +504,60 @@ export default {
     }
   },
   methods: {
+    isTaskAssignee(taskAssignee) {
+      if (taskAssignee.assigneeId == this.task.taskAssignee) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     statusCheck() {
       return "pendingStatus";
     },
     EditTaskName() {
       this.editTask = false;
+    },
+    getSprintDetails() {
+      console.log("lenght", this.projectSprints.length);
+      if (this.projectSprints.length != 0) {
+        let sprints = this.projectSprints;
+        let sprintList = [];
+        for (let index = 0; index < sprints.length; ++index) {
+          let sprint = sprints[index];
+          sprintList.push({
+            name: sprint.sprintName,
+            id: sprint.sprintId
+          });
+        }
+        return sprintList;
+      } else {
+        this.$store.dispatch(
+          "sprints/sprint/fetchAllProjectSprints",
+          this.$route.query.project
+        );
+        return [];
+      }
     }
   },
   computed: {
     ...mapState({
       people: state => state.task.userCompletionTasks,
+      projectSprints: state => state.sprints.sprint.sprints,
       projectAllTasks: state => state.task.allTasks,
       projectId: state => state.project.project.projectId
     }),
+    ...mapGetters(["getuserCompletionTasks"]),
+    peopleList() {
+      console.log("people list", this.people);
+      if (this.people.length == 0) {
+        this.$store.dispatch(
+          "task/fetchProjectUserCompletionTasks",
+          this.$route.query.project
+        );
+      } else {
+        return this.people;
+      }
+    },
 
     taskName: {
       get() {
@@ -540,12 +583,38 @@ export default {
         this.updatedTask.issueType = value;
       }
     },
+    // selectedSprint: {
+    //   get() {
+    //     return this.task.sprintId;
+    //   },
+    //   set(value) {
+    //     this.updatedTask.sprintId = value;
+    //   }
+    // },
     taskNote: {
       get() {
         return this.task.taskNote;
       },
       set(value) {
         this.updatedTask.taskNote = value;
+      }
+    },
+    taskDueDate: {
+      get() {
+        return this.task.taskDueDateAt;
+      },
+      set(value) {
+        console.log("updated task due ->", value);
+        this.updatedTask.taskDueDateAt = value;
+      }
+    },
+    taskRemindOnDate: {
+      get() {
+        return this.task.taskReminderAt;
+      },
+      set(value) {
+        console.log("updated remind on ->", value);
+        this.updatedTask.taskReminderAt = value;
       }
     }
   }
