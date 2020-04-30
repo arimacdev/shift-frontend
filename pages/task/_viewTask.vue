@@ -637,6 +637,7 @@ export default {
       editTask: true,
       parentTask: {},
       parentProfile: {},
+      taskAssignee: '',
       task: {},
       updatedTask: {},
       issueTypes: ['development', 'qa', 'bug', 'operational'],
