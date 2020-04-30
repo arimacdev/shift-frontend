@@ -1745,11 +1745,37 @@
   border-radius: 30px;
   width: 120px;
 }
-.closedStatus {
-  background-color: #ff6bb2;
+.developmentStatus {
+  background-color: #ffa800;
+  color: #ffffff;
+}
+.qaStatus {
+  background-color: #ff7a00;
+  color: #ffffff;
+}
+.designStatus {
+  background-color: #4ebc44;
+  color: #ffffff;
+}
+.bugStatus {
+  background-color: #fb3f3f;
+  color: #ffffff;
+}
+.operationalStatus {
+  background-color: #dd6def;
+  color: #ffffff;
+}
+.preSalesStatus {
+  background-color: #00c29f;
+  color: #ffffff;
+}
+.generalStatus {
+  background-color: #0083e2;
+  color: #ffffff;
 }
 .otherStatus {
   background-color: #0083e2;
+  color: #ffffff;
 }
 .taskAddTitle {
   font-size: 16px;

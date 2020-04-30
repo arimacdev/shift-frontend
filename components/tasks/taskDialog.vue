@@ -639,9 +639,7 @@ export default {
       task: {},
       updatedTask: {},
       taskAssignee: '',
-      //   issueTypes: ['development', 'qa', 'bug', 'operational'],
       taskStatuses: this.task.taskStatus,
-      //   allSprints: [{ sprintId: 'default', sprintName: 'Default' }],
       issueType: this.task.issueType,
       taskStatus: this.task.taskStatus,
       items: [
@@ -833,14 +831,15 @@ export default {
         this.updatedTask.issueType = value;
       },
     },
-    // selectedSprint: {
-    //   get() {
-    //     return this.task.sprintId;
-    //   },
-    //   set(value) {
-    //     this.updatedTask.sprintId = value;
-    //   }
-    // },
+    selectedSprint: {
+      get() {
+        return this.task.sprintId;
+      },
+      set(sprintId) {
+        console.log('spid', sprintId);
+        this.updatedSprint = sprintId;
+      },
+    },
     taskNote: {
       get() {
         return this.task.taskNote;

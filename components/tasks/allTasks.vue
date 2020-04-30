@@ -135,11 +135,14 @@
                 {{ task.parentTask.taskName }}
               </div>
             </div>
-            <div class="restStatusChip" :class="statusCheck(task)">
+            <div
+              class="restStatusChip"
+              :class="statusCheck(task.parentTask.issueType)"
+            >
               {{ task.parentTask.issueType }}
             </div>
             <v-list-item-content class="updatedDate">
-              <v-list-item-title :class="dueDateCheck(task)">
+              <v-list-item-title :class="dueDateCheck(task.parentTask)">
                 {{ getProjectDates(task.parentTask.taskDueDateAt) }}
               </v-list-item-title>
             </v-list-item-content>
@@ -211,11 +214,14 @@
                   {{ childTask.taskName }}
                 </div>
               </div>
-              <div class="restStatusChip" :class="statusCheck(task)">
+              <div
+                class="restStatusChip"
+                :class="statusCheck(childTask.issueType)"
+              >
                 {{ childTask.issueType }}
               </div>
               <v-list-item-content class="updatedDate">
-                <v-list-item-title :class="dueDateCheck(task)">
+                <v-list-item-title :class="dueDateCheck(childTask)">
                   {{ getProjectDates(childTask.taskDueDateAt) }}
                 </v-list-item-title>
               </v-list-item-content>
@@ -379,7 +385,7 @@ export default {
     taskFilterHandler() {
       console.log('-----------> changed' + this.taskSelect);
     },
-    async selectTask(task) {
+    async selectTask(task, taskObject) {
       this.task = task;
       let parentTask = task;
       this.componentClose = '';
@@ -410,8 +416,20 @@ export default {
       }
     },
     statusCheck(task) {
-      if (task.taskStatus === 'closed') {
-        return 'closedStatus';
+      if (task === 'development') {
+        return 'developmentStatus';
+      } else if (task === 'qa') {
+        return 'qaStatus';
+      } else if (task === 'design') {
+        return 'designStatus';
+      } else if (task === 'bug') {
+        return 'bugStatus';
+      } else if (task === 'operational') {
+        return 'operationalStatus';
+      } else if (task === 'preSales') {
+        return 'preSalesStatus';
+      } else if (task === 'general') {
+        return 'generalStatus';
       } else {
         return 'otherStatus';
       }
