@@ -619,54 +619,30 @@
                     </div>
                   </div>
                   <!-- ------------- file viewer ------------ -->
-                  <div class="filesViewDiv">
+                  <div
+                    class="filesViewDiv"
+                    v-for="(file, index) in this.taskFiles"
+                    :key="index"
+                  >
                     <v-list-item>
                       <v-list-item-action>
                         <v-icon size="30">mdi-file-document-outline</v-icon>
                       </v-list-item-action>
                       <v-list-item-content>
-                        <v-list-item-title class="fileTitles"
-                          >FRS.pdf</v-list-item-title
-                        >
+                        <v-list-item-title class="fileTitles">{{
+                          file.taskFileName
+                        }}</v-list-item-title>
                         <v-list-item-subtitle class="fileSubTitles"
                           >125.54kB</v-list-item-subtitle
                         >
                       </v-list-item-content>
                       <v-list-item-content>
-                        <v-list-item-title class="fileTitles"
-                          >Naveen Perera</v-list-item-title
-                        >
-                        <v-list-item-subtitle class="fileSubTitles"
-                          >04/10/2020</v-list-item-subtitle
-                        >
-                      </v-list-item-content>
-                      <v-list-item-action>
-                        <v-icon size="25" color="#FF6161"
-                          >mdi-delete-circle</v-icon
-                        >
-                      </v-list-item-action>
-                    </v-list-item>
-                  </div>
-                  <div class="filesViewDiv">
-                    <v-list-item>
-                      <v-list-item-action>
-                        <v-icon size="30">mdi-file-document-outline</v-icon>
-                      </v-list-item-action>
-                      <v-list-item-content>
-                        <v-list-item-title class="fileTitles"
-                          >FRS.pdf</v-list-item-title
-                        >
-                        <v-list-item-subtitle class="fileSubTitles"
-                          >125.54kB</v-list-item-subtitle
-                        >
-                      </v-list-item-content>
-                      <v-list-item-content>
-                        <v-list-item-title class="fileTitles"
-                          >Naveen Perera</v-list-item-title
-                        >
-                        <v-list-item-subtitle class="fileSubTitles"
-                          >04/10/2020</v-list-item-subtitle
-                        >
+                        <v-list-item-title class="fileTitles">{{
+                          taskUser
+                        }}</v-list-item-title>
+                        <v-list-item-subtitle class="fileSubTitles">{{
+                          getProjectDates(file.taskFileDate)
+                        }}</v-list-item-subtitle>
                       </v-list-item-content>
                       <v-list-item-action>
                         <v-icon size="25" color="#FF6161"
@@ -910,12 +886,26 @@ export default {
     },
   },
   computed: {
+    taskUser() {
+      if (Object.keys(this.selectedTaskUser).length === 0) {
+        this.$store.dispatch(
+          'user/setSelectedTaskUser',
+          this.task.taskAssignee
+        );
+        return '';
+      } else {
+        return (
+          this.selectedTaskUser.firstName + ' ' + this.selectedTaskUser.lastName
+        );
+      }
+    },
     ...mapState({
       people: (state) => state.task.userCompletionTasks,
       projectSprints: (state) => state.sprints.sprint.sprints,
       projectAllTasks: (state) => state.task.allTasks,
       projectId: (state) => state.project.project.projectId,
       selectedTaskUser: (state) => state.user.selectedTaskUser,
+      taskFiles: (state) => state.task.taskFiles,
     }),
     ...mapGetters(['getuserCompletionTasks']),
     peopleList() {

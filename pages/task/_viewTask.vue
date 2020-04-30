@@ -573,8 +573,12 @@
                     </div>
                   </div>
                   <!-- ------------- file viewer ------------ -->
-                  <div class="filesViewDiv">
-                    <v-list-item v-for="(file, index) in fileList" :key="index">
+                  <div
+                    class="filesViewDiv"
+                    v-for="(file, index) in fileList"
+                    :key="index"
+                  >
+                    <v-list-item>
                       <v-list-item-action>
                         <v-icon size="30">mdi-file-document-outline</v-icon>
                       </v-list-item-action>
@@ -592,7 +596,7 @@
                         }}</v-list-item-title>
 
                         <v-list-item-subtitle class="fileSubTitles">{{
-                          file.taskFileDate
+                          getProjectDates(file.taskFileDate)
                         }}</v-list-item-subtitle>
                       </v-list-item-content>
                       <v-list-item-action>
