@@ -266,17 +266,34 @@
       />
     </v-navigation-drawer>
 
+    <!-- ------------ task dialog --------- -->
+
+    <v-dialog
+      v-model="taskDialog"
+      width="90vw"
+      transition="dialog-bottom-transition"
+      ><v-toolbar dark color="primary">
+        <v-btn icon dark @click="taskDialog = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <v-toolbar-title>{{ task.taskName }}</v-toolbar-title>
+      </v-toolbar>
+      <task-dialog />
+    </v-dialog>
+
     <!-- --------------- end side bar --------------------- -->
   </div>
 </template>
 
 <script>
 import TaskSideBar from '~/components/tasks/taskSideBar';
+import TaskDialog from '~/components/tasks/taskDialog';
 import { mapState } from 'vuex';
 export default {
   // props: ['projectId', 'projectUsers', 'people'],
   data() {
     return {
+      taskDialog: false,
       dateRange: new Date(),
       dialog: false,
       notifications: false,
@@ -313,6 +330,7 @@ export default {
   },
   components: {
     'task-side-bar': TaskSideBar,
+    'task-dialog': TaskDialog,
   },
   methods: {
     clearFilter() {
