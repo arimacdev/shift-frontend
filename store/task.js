@@ -27,6 +27,9 @@ export const mutations = {
     task.sprintId = sprintId;
     state.allTasks.splice(index, 1, task);
   },
+  SET_TASK_FILES(state, files) {
+    state.taskFiles = files;
+  },
 };
 
 export const actions = {
@@ -111,8 +114,29 @@ export const actions = {
     commit('UPDATE_TASK_SPRINT', { taskId, sprintId });
   },
 
-  setTaskFiles({ commit }) {
-    console.log;
+  setTaskFiles({ commit }, taskFiles) {
+    console.log('taskFiles', taskFiles);
+    commit('SET_TASK_FILES', taskFiles);
+  },
+
+  async fetchTaskFiles({ commit, rootState }, { projectId, taskId }) {
+    const userId = rootState.user.userId;
+    let taskFilesResponse;
+    try {
+      taskFilesResponse = await this.$axios.$get(
+        `/projects/${projectId}/tasks/${taskId}/files`,
+        {
+          headers: {
+            user: userId,
+            type: 'project',
+          },
+        }
+      );
+      console.log('store files--->', taskFilesResponse.data);
+      commit('SET_TASK_FILES', taskFilesResponse.data);
+    } catch (error) {
+      console.log('Error fetching data', error);
+    }
   },
 };
 
