@@ -106,6 +106,50 @@
               outlined
               class="createFormElements"
             ></v-select>
+            <v-select
+              v-if="this.taskType == 'bug'"
+              v-model="taskStatus"
+              :items="bug"
+              background-color="#EDF0F5"
+              item-text="name"
+              item-value="id"
+              label="Task status"
+              outlined
+              class="createFormElements"
+            ></v-select>
+            <v-select
+              v-if="this.taskType == 'operational'"
+              v-model="taskStatus"
+              :items="operational"
+              background-color="#EDF0F5"
+              item-text="name"
+              item-value="id"
+              label="Task status"
+              outlined
+              class="createFormElements"
+            ></v-select>
+            <v-select
+              v-if="this.taskType == 'preSales'"
+              v-model="taskStatus"
+              :items="preSales"
+              background-color="#EDF0F5"
+              item-text="name"
+              item-value="id"
+              label="Task status"
+              outlined
+              class="createFormElements"
+            ></v-select>
+            <v-select
+              v-if="this.taskType == 'general'"
+              v-model="taskStatus"
+              :items="general"
+              background-color="#EDF0F5"
+              item-text="name"
+              item-value="id"
+              label="Task status"
+              outlined
+              class="createFormElements"
+            ></v-select>
           </v-col>
           <v-col sm="4" md="4">
             <v-select
@@ -305,12 +349,65 @@ export default {
         { name: 'Fixing', id: 'fixing' },
         { name: 'Resolved', id: 'resolved' },
         { name: 'In progress', id: 'inprogress' },
-        { name: 'Completed', id: 'inprogress' },
+        { name: 'Completed', id: 'completed' },
         { name: 'Under review', id: 'underReview' },
         { name: 'Weiting for approval', id: 'waitingForApproval' },
         { name: 'Review', id: 'review' },
         { name: 'Waiting response', id: 'waitingResponse' },
         { name: 'Rejected', id: 'rejected' },
+        { name: 'Closed', id: 'closed' },
+      ],
+      bug: [
+        { name: 'Pending', id: 'pending' },
+        { name: 'On hold', id: 'onHold' },
+        { name: 'Open', id: 'open' },
+        { name: 'Cancel', id: 'cancel' },
+        { name: 'Reopen', id: 'reopen' },
+        { name: 'Fixing', id: 'fixing' },
+        { name: 'Testing', id: 'testing' },
+        { name: 'Resolved', id: 'resolved' },
+        { name: 'Under review', id: 'underReview' },
+        { name: 'Review', id: 'review' },
+        { name: 'Waiting response', id: 'waitingResponse' },
+        { name: 'Closed', id: 'closed' },
+      ],
+      operational: [
+        { name: 'Pending', id: 'pending' },
+        { name: 'On hold', id: 'onHold' },
+        { name: 'Open', id: 'open' },
+        { name: 'Cancel', id: 'cancel' },
+        { name: 'Resolved', id: 'resolved' },
+        { name: 'In progress', id: 'inprogress' },
+        { name: 'Completed', id: 'completed' },
+        { name: 'Under review', id: 'underReview' },
+        { name: 'Weiting for approval', id: 'waitingForApproval' },
+        { name: 'Discussion', id: 'discussion' },
+        { name: 'Waiting response', id: 'waitingResponse' },
+        { name: 'Ready', id: 'ready' },
+        { name: 'Rejected', id: 'rejected' },
+        { name: 'Closed', id: 'closed' },
+      ],
+      preSales: [
+        { name: 'Pending', id: 'pending' },
+        { name: 'On hold', id: 'onHold' },
+        { name: 'Open', id: 'open' },
+        { name: 'Cancel', id: 'cancel' },
+        { name: 'Resolved', id: 'resolved' },
+        { name: 'In progress', id: 'inprogress' },
+        { name: 'Under review', id: 'underReview' },
+        { name: 'Weiting for approval', id: 'waitingForApproval' },
+        { name: 'Discussion', id: 'discussion' },
+        { name: 'Waiting response', id: 'waitingResponse' },
+        { name: 'Rejected', id: 'rejected' },
+        { name: 'Closed', id: 'closed' },
+      ],
+      general: [
+        { name: 'Pending', id: 'pending' },
+        { name: 'On hold', id: 'onHold' },
+        { name: 'Open', id: 'open' },
+        { name: 'Cancel', id: 'cancel' },
+        { name: 'In progress', id: 'inprogress' },
+        { name: 'Completed', id: 'completed' },
         { name: 'Closed', id: 'closed' },
       ],
     };
