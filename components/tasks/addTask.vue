@@ -493,7 +493,7 @@ export default {
       this.loading = true;
     },
     getSprintDetails(v) {
-      console.log('people list', this.projectSprints);
+      console.log('board list', this.projectSprints);
       this.sprints = [];
       let sprintSearchList = this.projectSprints;
       for (let index = 0; index < sprintSearchList.length; ++index) {

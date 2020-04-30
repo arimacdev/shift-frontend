@@ -5,86 +5,190 @@
         <span>Default Board</span>
       </div>
       <div class="boardTaskList overflow-y-auto">
-        <div v-for="(task, index) in projectAllTasks" :key="index" class="boardTaskListItem">
-          <v-list-item
-            v-if="task.sprintId == 'default'"
-            @click.stop="drawer = !drawer"
-            @click="selectTask(task)"
+        <div v-for="(task, index) in projectAllTasks" :key="index">
+          <div class="boardTaskListItem">
+            <!-- -------- load parent tasks (default board) ------------ -->
+            <v-list-item
+              v-if="task.parentTask.sprintId == 'default'"
+              @click.stop="drawer = !drawer"
+              @click="selectTask(task.parentTask)"
+            >
+              <v-list-item-action>
+                <v-icon
+                  v-if="task.parentTask.taskStatus == 'closed'"
+                  size="25"
+                  color="#2EC973"
+                  >mdi-checkbox-marked-circle</v-icon
+                >
+                <v-icon v-else size="30" color="#EDF0F5"
+                  >mdi-checkbox-blank-circle</v-icon
+                >
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>{{
+                  task.parentTask.taskName
+                }}</v-list-item-title>
+                <div :class="dueDateCheck(task.parentTask)">
+                  {{ getProjectDates(task.parentTask.taskDueDateAt) }}
+                </div>
+              </v-list-item-content>
+              <v-list-item-avatar size="25">
+                <v-img
+                  v-if="task.parentTask.taskAssigneeProfileImage != null"
+                  :src="task.parentTask.taskAssigneeProfileImage"
+                ></v-img>
+                <v-img
+                  v-else
+                  src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                ></v-img>
+              </v-list-item-avatar>
+            </v-list-item>
+          </div>
+          <!-- -------------- load child tasks (default board) ----------- -->
+          <div
+            v-for="(childTask, index) in task.childTasks"
+            :key="index"
+            class="boardTaskListItem"
           >
-            <v-list-item-action>
-              <v-icon
-                v-if="task.taskStatus == 'closed'"
-                size="25"
-                color="#2EC973"
-              >mdi-checkbox-marked-circle</v-icon>
-              <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>{{ task.taskName }}</v-list-item-title>
-              <div :class="dueDateCheck(task)">{{ getProjectDates(task.taskDueDateAt) }}</div>
-            </v-list-item-content>
-            <v-list-item-avatar size="25">
-              <v-img
-                v-if="task.taskAssigneeProfileImage != null"
-                :src="task.taskAssigneeProfileImage"
-              ></v-img>
-              <v-img
-                v-else
-                src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-              ></v-img>
-            </v-list-item-avatar>
-          </v-list-item>
+            <v-list-item
+              v-if="childTask.sprintId == 'default'"
+              @click.stop="drawer = !drawer"
+              @click="selectTask(childTask)"
+            >
+              <v-list-item-action>
+                <v-icon
+                  v-if="childTask.taskStatus == 'closed'"
+                  size="25"
+                  color="#2EC973"
+                  >mdi-checkbox-marked-circle</v-icon
+                >
+                <v-icon v-else size="30" color="#EDF0F5"
+                  >mdi-checkbox-blank-circle</v-icon
+                >
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>{{ childTask.taskName }}</v-list-item-title>
+                <div :class="dueDateCheck(childTask)">
+                  {{ getProjectDates(childTask.taskDueDateAt) }}
+                </div>
+              </v-list-item-content>
+              <v-list-item-avatar size="25">
+                <v-img
+                  v-if="childTask.taskAssigneeProfileImage != null"
+                  :src="childTask.taskAssigneeProfileImage"
+                ></v-img>
+                <v-img
+                  v-else
+                  src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                ></v-img>
+              </v-list-item-avatar>
+            </v-list-item>
+          </div>
         </div>
       </div>
     </div>
     <div class>
       <div class="boardBodyDiv">
         <div class="scrolling-wrapper">
-          <div class="card" v-for="(projectSprint, index) in projectSprints" :key="index">
+          <div
+            class="card"
+            v-for="(projectSprint, index) in projectSprints"
+            :key="index"
+          >
             <div class="actualBoard" v-if="projectSprint.sprintId != 'default'">
               <div class="sprintTitle">
                 <!-- <span>Default Board</span> -->
                 <v-list-item-title>
-                  {{
-                  projectSprint.sprintName
-                  }}
+                  {{ projectSprint.sprintName }}
                 </v-list-item-title>
-                <v-list-item-subtitle>{{ projectSprint.sprintDescription }}</v-list-item-subtitle>
+                <v-list-item-subtitle>{{
+                  projectSprint.sprintDescription
+                }}</v-list-item-subtitle>
               </div>
               <div class="boardTaskList overflow-y-auto">
-                <div
-                  v-for="(task, index) in projectAllTasks"
-                  :key="index"
-                  class="boardTaskListItem"
-                >
-                  <v-list-item
-                    v-if="task.sprintId == projectSprint.sprintId"
-                    @click.stop="drawer = !drawer"
-                    @click="selectTask(task)"
+                <!-- -------- load parent tasks (project boards) ------------ -->
+                <div v-for="(task, index) in projectAllTasks" :key="index">
+                  <div class="boardTaskListItem">
+                    <v-list-item
+                      v-if="task.parentTask.sprintId == projectSprint.sprintId"
+                      @click.stop="drawer = !drawer"
+                      @click="selectTask(task.parentTask)"
+                    >
+                      <v-list-item-action>
+                        <v-icon
+                          v-if="task.parentTask.taskStatus == 'closed'"
+                          size="25"
+                          color="#2EC973"
+                          >mdi-checkbox-marked-circle</v-icon
+                        >
+                        <v-icon v-else size="30" color="#EDF0F5"
+                          >mdi-checkbox-blank-circle</v-icon
+                        >
+                      </v-list-item-action>
+                      <v-list-item-content>
+                        <v-list-item-title>{{
+                          task.parentTask.taskName
+                        }}</v-list-item-title>
+                        <div :class="dueDateCheck(task.parentTask)">
+                          {{ getProjectDates(task.parentTask.taskDueDateAt) }}
+                        </div>
+                      </v-list-item-content>
+                      <v-list-item-avatar size="25">
+                        <v-img
+                          v-if="
+                            task.parentTask.taskAssigneeProfileImage != null
+                          "
+                          :src="task.parentTask.taskAssigneeProfileImage"
+                        ></v-img>
+                        <v-img
+                          v-else
+                          src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                        ></v-img>
+                      </v-list-item-avatar>
+                    </v-list-item>
+                  </div>
+                  <!-- -------- load child tasks (project boards) ------------ -->
+                  <div
+                    v-for="(childTask, index) in task.childTasks"
+                    :key="index"
+                    class="boardTaskListItem"
                   >
-                    <v-list-item-action>
-                      <v-icon
-                        v-if="task.taskStatus == 'closed'"
-                        size="25"
-                        color="#2EC973"
-                      >mdi-checkbox-marked-circle</v-icon>
-                      <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
-                    </v-list-item-action>
-                    <v-list-item-content>
-                      <v-list-item-title>{{ task.taskName }}</v-list-item-title>
-                      <div :class="dueDateCheck(task)">{{ getProjectDates(task.taskDueDateAt) }}</div>
-                    </v-list-item-content>
-                    <v-list-item-avatar size="25">
-                      <v-img
-                        v-if="task.taskAssigneeProfileImage != null"
-                        :src="task.taskAssigneeProfileImage"
-                      ></v-img>
-                      <v-img
-                        v-else
-                        src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-                      ></v-img>
-                    </v-list-item-avatar>
-                  </v-list-item>
+                    <v-list-item
+                      v-if="childTask.sprintId == projectSprint.sprintId"
+                      @click.stop="drawer = !drawer"
+                      @click="selectTask(childTask)"
+                    >
+                      <v-list-item-action>
+                        <v-icon
+                          v-if="childTask.taskStatus == 'closed'"
+                          size="25"
+                          color="#2EC973"
+                          >mdi-checkbox-marked-circle</v-icon
+                        >
+                        <v-icon v-else size="30" color="#EDF0F5"
+                          >mdi-checkbox-blank-circle</v-icon
+                        >
+                      </v-list-item-action>
+                      <v-list-item-content>
+                        <v-list-item-title>{{
+                          childTask.taskName
+                        }}</v-list-item-title>
+                        <div :class="dueDateCheck(childTask)">
+                          {{ getProjectDates(childTask.taskDueDateAt) }}
+                        </div>
+                      </v-list-item-content>
+                      <v-list-item-avatar size="25">
+                        <v-img
+                          v-if="childTask.taskAssigneeProfileImage != null"
+                          :src="childTask.taskAssigneeProfileImage"
+                        ></v-img>
+                        <v-img
+                          v-else
+                          src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                        ></v-img>
+                      </v-list-item-avatar>
+                    </v-list-item>
+                  </div>
                 </div>
               </div>
             </div>
@@ -122,13 +226,13 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import TaskSideBar from "~/components/tasks/taskSideBar";
-import AddSprint from "~/components/projects/addSprint";
+import { mapState } from 'vuex';
+import TaskSideBar from '~/components/tasks/taskSideBar';
+import AddSprint from '~/components/projects/addSprint';
 export default {
   components: {
-    "task-side-bar": TaskSideBar,
-    "add-sprint": AddSprint
+    'task-side-bar': TaskSideBar,
+    'add-sprint': AddSprint,
   },
   data() {
     return {
@@ -138,33 +242,33 @@ export default {
       taskFiles: [],
       assignee: {},
       userId: this.$store.state.user.userId,
-      taskSelect: null
+      taskSelect: null,
     };
   },
   computed: {
     ...mapState({
-      projectAllTasks: state => state.task.allTasks,
-      projectSprints: state => state.sprints.sprint.sprints,
-      projectId: state => state.project.project.projectId
+      projectAllTasks: (state) => state.task.allTasks,
+      projectSprints: (state) => state.sprints.sprint.sprints,
+      projectId: (state) => state.project.project.projectId,
       // people: (state) => state.
-    })
+    }),
   },
   methods: {
     listenChange() {
-      this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+      this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
     },
     shrinkSideBar() {
       this.drawer = false;
     },
     async selectTask(task) {
-      console.log("selectedTask sprint", task.sprintId);
+      console.log('selectedTask sprint', task.sprintId);
       //  if(task.sprintId !== "default")
       this.task = task;
-      console.log("selectedTask", task);
+      console.log('selectedTask', task);
       this.$axios
         .get(`/users/${this.task.taskAssignee}`)
-        .then(async response => {
-          console.log("fetched task -->", response.data.data);
+        .then(async (response) => {
+          console.log('fetched task -->', response.data.data);
           this.assignee = response.data.data;
           //if task fetch is successful,
           let subTaskResponse;
@@ -173,11 +277,11 @@ export default {
               `/projects/${this.projectId}/tasks/${task.taskId}/subtask?userId=${this.userId}`,
               {
                 headers: {
-                  type: "project"
-                }
+                  type: 'project',
+                },
               }
             );
-            console.log("subtasks--->", subTaskResponse.data);
+            console.log('subtasks--->', subTaskResponse.data);
             this.subTasks = subTaskResponse.data;
             //get files related to task
             let taskFilesResponse;
@@ -187,69 +291,69 @@ export default {
                 {
                   headers: {
                     user: this.userId,
-                    type: "project"
-                  }
+                    type: 'project',
+                  },
                 }
               );
-              console.log("files--->", taskFilesResponse.data);
+              console.log('files--->', taskFilesResponse.data);
               this.taskFiles = taskFilesResponse.data;
             } catch (error) {
-              console.log("Error fetching data", error);
+              console.log('Error fetching data', error);
             }
           } catch (error) {
-            console.log("Error fetching data", error);
+            console.log('Error fetching data', error);
           }
         })
-        .catch(e => {
-          console.log("error", e);
+        .catch((e) => {
+          console.log('error', e);
         });
     },
     dueDateCheck(task) {
-      console.log("check due date color", task);
-      if (task.taskStatus === "closed") {
-        return "boardTaskDone";
+      console.log('check due date color', task);
+      if (task.taskStatus === 'closed') {
+        return 'boardTaskDone';
       } else if (task.taskDueDateAt == null) {
-        return "boardTaskDefault";
+        return 'boardTaskDefault';
       } else {
         const dueDate = new Date(task.taskDueDateAt);
         const dueToUtc = new Date(
-          dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+          dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
         );
         const dueToUtcDate = new Date(dueToUtc);
         const now = new Date();
-        console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
+        console.log('now', now.getTime(), 'DueTime', dueToUtcDate.getTime());
         if (now.getTime() > dueToUtcDate.getTime()) {
-          console.log("overdue");
-          return "boardTaskOverDue";
+          console.log('overdue');
+          return 'boardTaskOverDue';
         } else {
-          return "boardTaskHealthy";
+          return 'boardTaskHealthy';
         }
       }
     },
     getProjectDates(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+        dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
       );
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
-      console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
+      console.log('Today', now.getDate(), 'DueDate', dueToUtcDate.getDate());
 
-      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "Add Due Date";
+      if (date === null || date === '1970-01-01T05:30:00.000+0000') {
+        return 'Add Due Date';
       } else if (now.getDate() === dueToUtcDate.getDate()) {
-        return "Today";
+        return 'Today';
       } else if (now.getDate() - 1 === dueToUtcDate.getDate()) {
-        return "Yesterday";
+        return 'Yesterday';
       } else if (now.getDate() + 1 === dueToUtcDate.getDate()) {
-        return "Tomorrow";
+        return 'Tomorrow';
       } else {
-        let stringDate = date + "";
+        let stringDate = date + '';
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 10);
         return stringDate;
       }
-    }
-  }
+    },
+  },
 };
 </script>
