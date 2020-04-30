@@ -112,9 +112,12 @@
                 taskFilter == 'dateRange' ||
                 taskSelect == 'all'
             "
-            @click.stop="drawer = !drawer"
-            @click="selectTask(task.parentTask)"
+            @click="
+              selectTask(task.parentTask);
+              taskDialog = true;
+            "
           >
+            <!-- @click.stop="drawer = !drawer" -->
             <v-list-item-action>
               <v-icon
                 v-if="task.parentTask.taskStatus == 'closed'"
@@ -276,9 +279,19 @@
         <v-btn icon dark @click="taskDialog = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
-        <v-toolbar-title>{{ task.taskName }}</v-toolbar-title>
+        <v-toolbar-title class="font-weight-bold">{{
+          task.taskName
+        }}</v-toolbar-title>
       </v-toolbar>
-      <task-dialog />
+      <task-dialog
+        :task="task"
+        :assignee="assignee"
+        :projectId="projectId"
+        :subTasks="subTasks"
+        :taskFiles="taskFiles"
+        :projectUsers="projectUsers"
+        :componentClose="componentClose"
+      />
     </v-dialog>
 
     <!-- --------------- end side bar --------------------- -->

@@ -1935,3 +1935,16 @@
 .updatedDate {
   margin-right: 10px;
 }
+
+/* ------------- task dialog ------------- */
+
+.viewDialogTaskContent {
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px !important;
+  /* padding-top: 10px; */
+  /* max-height: 100vh; */
+}
+.taskDialogFormDiv {
+  padding-top: 30px;
+}
