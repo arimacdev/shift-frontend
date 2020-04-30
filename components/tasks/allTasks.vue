@@ -113,7 +113,7 @@
                 taskSelect == 'all'
             "
             @click="
-              selectTask(task.parentTask);
+              selectTask(task.parentTask, task);
               taskDialog = true;
             "
           >
@@ -192,7 +192,7 @@
           >
             <v-list-item
               @click="
-                selectTask(childTask);
+                selectTask(childTask, task);
                 taskDialog = true;
               "
             >
@@ -293,12 +293,12 @@
       </v-toolbar>
       <task-dialog
         :task="task"
-        :assignee="assignee"
         :projectId="projectId"
         :subTasks="subTasks"
         :taskFiles="taskFiles"
         :projectUsers="projectUsers"
         :componentClose="componentClose"
+        :taskObject="taskObject"
       />
     </v-dialog>
 
@@ -340,6 +340,7 @@ export default {
       projects: ['pr1'],
       drawer: null,
       task: {},
+      taskObject: {},
       subTasks: [],
       taskFiles: [],
       assignee: {},
@@ -386,16 +387,12 @@ export default {
       console.log('-----------> changed' + this.taskSelect);
     },
     async selectTask(task, taskObject) {
+      this.taskObject = taskObject;
       this.task = task;
       let parentTask = task;
       this.componentClose = '';
       console.log('selectedTask', parentTask);
-      this.$axios
-        .get(`/users/${this.task.taskAssignee}`)
-        .then(async (response) => {
-          console.log('fetched task -->', response.data.data);
-          this.assignee = response.data.data;
-        });
+
       this.$store.dispatch('user/setSelectedTaskUser', parentTask.taskAssignee);
       let taskFilesResponse;
       try {
