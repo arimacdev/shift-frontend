@@ -99,15 +99,12 @@
                         <v-list-item @click.stop="drawer = !drawer">
                           <v-list-item-action>
                             <v-icon size="25" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
-                            <!-- <v-icon v-else size="30" color="#EDF0F5"
-                        >mdi-checkbox-blank-circle</v-icon
-                            >-->
                           </v-list-item-action>
                           <v-list-item-content>
-                            <v-list-item-title>this is the parent task</v-list-item-title>
+                            <v-list-item-title>{{this.parentTask.taskName}}</v-list-item-title>
                           </v-list-item-content>
                           <v-list-item-action>
-                            <v-list-item-sub-title>12/12/2010</v-list-item-sub-title>
+                            <v-list-item-sub-title>{{getProjectDates(this.parentTask.taskDueDateAt)}}</v-list-item-sub-title>
                           </v-list-item-action>
                           <v-list-item-avatar size="25">
                             <!-- <v-img
@@ -115,7 +112,7 @@
                         :src="task.taskAssigneeProfileImage"
                             ></v-img>-->
                             <v-img
-                              src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                              :src="this.parentProfile.profileImage"
                             ></v-img>
                           </v-list-item-avatar>
                         </v-list-item>
@@ -439,6 +436,8 @@ export default {
       userId: "",
       sprints: [],
       editTask: true,
+      parentTask: {},
+      parentProfile: {},
       task: {},
       updatedTask: {},
       issueTypes: ["development", "qa", "bug", "operational"],
@@ -464,14 +463,45 @@ export default {
         }
       );
       this.task = taskResponse.data;
-      console.log("Task get response", this.task);
+      console.log("Selected Task get response", this.task);
     } catch (e) {
       console.log("Error fetching task", e);
     }
-    this.$store.dispatch("task/fetchChildren", {
-      projectId: this.$route.query.project,
-      taskId: this.$route.params.viewTask
-    });
+    if (this.task.isParent) {
+      console.log("parent tasl");
+      this.$store.dispatch("task/fetchChildren", {
+        projectId: this.$route.query.project,
+        taskId: this.$route.params.viewTask
+      });
+    } else {
+      console.log("child tasl");
+      let response = await this.$axios.$get(
+        `/projects/${this.$route.query.project}/tasks/${this.task.parentId}`,
+        {
+          headers: {
+            user: this.userId,
+            type: "project"
+          }
+        }
+      );
+      this.parentTask = response.data;
+      console.log("Parent Task get response", response.data);
+      let userResponse;
+      try {
+        userResponse = await this.$axios.$get(
+          `/users/${response.data.taskAssignee}`,
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        console.log("fetch parent task profile", userResponse.data);
+        this.parentProfile = userResponse.data;
+      } catch (e) {
+        console.log("Error fetching parent task profile", e);
+      }
+    }
   },
   methods: {
     isTaskAssignee(taskAssignee) {
