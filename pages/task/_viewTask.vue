@@ -208,8 +208,8 @@
                           <v-col sm="6" md="6">
                             <v-select
                               dense
-                              v-model="taskStatus"
-                              :items="items"
+                              v-model="issueType"
+                              :items="issueTypes"
                               background-color="#EDF0F5"
                               item-text="name"
                               item-value="id"
@@ -222,7 +222,7 @@
                             <v-select
                               dense
                               v-model="taskStatus"
-                              :items="items"
+                              :items="taskStatuses"
                               background-color="#EDF0F5"
                               item-text="name"
                               item-value="id"
@@ -285,7 +285,7 @@
                             auto-grow
                             clearable
                             outlined
-                            v-model="taskNotes"
+                            v-model="taskNote"
                           ></v-textarea>
                         </v-list-item-title>
                         <div class="noteUpdateButton">
@@ -311,7 +311,17 @@
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
                       <v-list-item-title>
                         <select v-model="taskAssignee" class="rightColumnItemsText">
-                          <option>Naveen Perera</option>
+                          <!-- <option>Naveen Perera</option> -->
+                          <option
+                            class="tabListItemsText"
+                            v-for="(projectUser, index) in people"
+                            :key="index"
+                            
+                            :value="projectUser.assigneeId"
+                          >
+                            {{ projectUser.assigneeFirstName }}
+                            {{ projectUser.assigneeLastName }}
+                          </option>
                         </select>
                       </v-list-item-title>
                     </v-list-item-content>
@@ -464,7 +474,9 @@ export default {
       taskRemindOnDate: new Date(),
       taskDueDate: new Date(),
       task: {},
-      updatedTask: {}
+      updatedTask: {},
+      issueTypes: ["development", "qa", "bug", "operational"],
+      taskStatuses: ["open", "pending", "closed"]
     };
   },
   async created() {
@@ -498,6 +510,12 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      people: state => state.task.userCompletionTasks,
+      projectAllTasks: state => state.task.allTasks,
+      projectId: state => state.project.project.projectId
+    }),
+
     taskName: {
       get() {
         return this.task.taskName;
@@ -512,6 +530,22 @@ export default {
       },
       set(value) {
         this.updatedTask.taskStatus = value;
+      }
+    },
+    issueType: {
+      get() {
+        return this.task.issueType;
+      },
+      set(value) {
+        this.updatedTask.issueType = value;
+      }
+    },
+    taskNote: {
+      get() {
+        return this.task.taskNote;
+      },
+      set(value) {
+        this.updatedTask.taskNote = value;
       }
     }
   }

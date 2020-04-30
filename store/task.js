@@ -118,4 +118,5 @@ export const getters = {
   getMyTasks: (state) => {
     return state.myTasks;
   },
+  getuserCompletionTasks: state,
 };

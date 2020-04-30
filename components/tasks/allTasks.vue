@@ -150,18 +150,9 @@
                 src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
               ></v-img>
             </v-list-item-avatar>
-            <a
-              style="text-decoration: none;"
-              :href="
-                'http://localhost:3000/task/' +
-                  task.parentTask.taskId +
-                  '/?project=' +
-                  projectId
-              "
-              target="_blank"
-            >
-              <v-icon color="red">mdi-checkbox-blank-circle</v-icon>
-            </a>
+            <nuxt-link :to="'/task/' + task.parentTask.taskId +'/?project=' +
+                  projectId">  <v-icon color="red">mdi-checkbox-blank-circle</v-icon> </nuxt-link>
+          
           </v-list-item>
         </div>
 
