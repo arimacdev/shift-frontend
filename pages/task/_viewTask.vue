@@ -256,7 +256,7 @@
                             <v-select
                               dense
                               v-model="selectedSprint"
-                              :items="getSprintDetails()"
+                              :items="getAllSprints()"
                               background-color="#EDF0F5"
                               item-text="name"
                               item-value="id"
@@ -404,35 +404,19 @@
                   </div>
                   <!-- ------------- file viewer ------------ -->
                   <div class="filesViewDiv">
-                    <v-list-item>
+                    
+                    <v-list-item v-for="(file, index) in fileList" :key="index">
                       <v-list-item-action>
                         <v-icon size="30">mdi-file-document-outline</v-icon>
                       </v-list-item-action>
                       <v-list-item-content>
-                        <v-list-item-title class="fileTitles">FRS.pdf</v-list-item-title>
+                        <v-list-item-title class="fileTitles">{{file.taskFileName}}</v-list-item-title>
                         <v-list-item-subtitle class="fileSubTitles">125.54kB</v-list-item-subtitle>
                       </v-list-item-content>
                       <v-list-item-content>
-                        <v-list-item-title class="fileTitles">Naveen Perera</v-list-item-title>
-                        <v-list-item-subtitle class="fileSubTitles">04/10/2020</v-list-item-subtitle>
-                      </v-list-item-content>
-                      <v-list-item-action>
-                        <v-icon size="25" color="#FF6161">mdi-delete-circle</v-icon>
-                      </v-list-item-action>
-                    </v-list-item>
-                  </div>
-                  <div class="filesViewDiv">
-                    <v-list-item>
-                      <v-list-item-action>
-                        <v-icon size="30">mdi-file-document-outline</v-icon>
-                      </v-list-item-action>
-                      <v-list-item-content>
-                        <v-list-item-title class="fileTitles">FRS.pdf</v-list-item-title>
-                        <v-list-item-subtitle class="fileSubTitles">125.54kB</v-list-item-subtitle>
-                      </v-list-item-content>
-                      <v-list-item-content>
-                        <v-list-item-title class="fileTitles">Naveen Perera</v-list-item-title>
-                        <v-list-item-subtitle class="fileSubTitles">04/10/2020</v-list-item-subtitle>
+                        <v-list-item-title class="fileTitles">{{taskUser}}</v-list-item-title>
+
+                        <v-list-item-subtitle class="fileSubTitles">{{file.taskFileDate}}</v-list-item-subtitle>
                       </v-list-item-content>
                       <v-list-item-action>
                         <v-icon size="25" color="#FF6161">mdi-delete-circle</v-icon>
@@ -517,7 +501,7 @@ export default {
     EditTaskName() {
       this.editTask = false;
     },
-    getSprintDetails() {
+    getAllSprints() {
       console.log("lenght", this.projectSprints.length);
       if (this.projectSprints.length != 0) {
         let sprints = this.projectSprints;
@@ -541,12 +525,27 @@ export default {
   },
   computed: {
     ...mapState({
+      selectedTaskUser: state => state.user.selectedTaskUser,
       people: state => state.task.userCompletionTasks,
       projectSprints: state => state.sprints.sprint.sprints,
-      projectAllTasks: state => state.task.allTasks,
-      projectId: state => state.project.project.projectId
+      taskFiles: state => state.task.taskFiles
     }),
     ...mapGetters(["getuserCompletionTasks"]),
+
+    taskUser() {
+      if (Object.keys(this.selectedTaskUser).length === 0) {
+        this.$store.dispatch(
+          "user/setSelectedTaskUser",
+          this.task.taskAssignee
+        );
+        return "";
+      } else {
+        return (
+          this.selectedTaskUser.firstName + " " + this.selectedTaskUser.lastName
+        );
+      }
+    },
+
     peopleList() {
       console.log("people list", this.people);
       if (this.people.length == 0) {
@@ -556,6 +555,21 @@ export default {
         );
       } else {
         return this.people;
+      }
+    },
+
+    fileList() {
+      console.log("file List!", this.taskFiles);
+      if (this.taskFiles.length == 0) {
+        console.log("dispatched!");
+        this.$store.dispatch("task/fetchTaskFiles", {
+          projectId: this.$route.query.project,
+          taskId: this.task.taskId
+        });
+      } else {
+        console.log("not dispatched!");
+
+        return this.taskFiles;
       }
     },
 
