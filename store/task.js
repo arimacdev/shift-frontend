@@ -6,11 +6,15 @@ export const state = () => ({
   userCompletionTasks: [],
   projectTaskCompletion: {},
   taskFiles: [],
+  childTasks: [],
 });
 
 export const mutations = {
   SET_ALL_TASKS(state, event) {
     state.allTasks = event;
+  },
+  SET_CHILD_TASKS(state, children) {
+    state.childTasks = children;
   },
   SET_MY_TASKS(state, event) {
     state.myTasks = event;
@@ -33,6 +37,25 @@ export const mutations = {
 };
 
 export const actions = {
+  fetchChildren({ commit, rootState }, { projectId, taskId }) {
+    const userId = rootState.user.userId;
+    this.$axios
+      .get(`projects/${projectId}/tasks/${taskId}/children`, {
+        headers: {
+          user: userId,
+        },
+      })
+      .then((response) => {
+        console.log(
+          'CHILD TASKS ARE RETRIEVED SUCCESSFULLY-->',
+          response.data.data
+        );
+        commit('SET_CHILD_TASKS', response.data.data);
+      })
+      .catch((e) => {
+        console.log('error', e);
+      });
+  },
   fetchTasksAllTasks({ commit, rootState }, projectId) {
     const userId = rootState.user.userId;
     this.$axios

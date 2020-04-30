@@ -86,7 +86,7 @@
             <v-row class="mb-12" no-gutters>
               <v-col sm="8" md="8">
                 <div class="leftSideColumn">
-                  <div class="expansionViewHeader topItemTaskView">
+                  <div v-if="!this.task.isParent" class="expansionViewHeader topItemTaskView">
                     <v-list-item class="taskViewTitleSection">
                       <v-list-item-icon>
                         <v-icon size="30" color="#2EC973">mdi-package-variant-closed</v-icon>
@@ -124,19 +124,19 @@
                     </v-list-item-content>
                   </div>
                   <v-divider></v-divider>
-                  <div class="expansionViewHeader">
+                  <div v-if="this.task.isParent" class="expansionViewHeader">
                     <v-list-group>
                       <template v-slot:activator>
                         <v-list-item-icon>
                           <v-icon size="30" color="#2EC973">mdi-package-variant-closed</v-icon>
                         </v-list-item-icon>
                         <v-list-item-title class="viewTaskFontColors">
-                          Child Tasks
-                          <span>(4 tasks)</span>
+                          Child Tasks:
+                          <span>{{childrenCount}} Task(s)</span>
                         </v-list-item-title>
                       </template>
 
-                      <v-list-item-content class="parentChildTaskList">
+                      <v-list-item-content v-for="(child, index) in children" :key='index' class="parentChildTaskList">
                         <!-- ---------- task list --------- -->
                         <div class="taskViewTaskListContent">
                           <v-list-item @click.stop="drawer = !drawer">
@@ -147,50 +147,19 @@
                               >-->
                             </v-list-item-action>
                             <v-list-item-content>
-                              <v-list-item-title>this is the child task</v-list-item-title>
+                              <v-list-item-title>{{child.taskName}}</v-list-item-title>
                             </v-list-item-content>
                             <v-list-item-action>
-                              <v-list-item-sub-title>12/12/2010</v-list-item-sub-title>
+                              <v-list-item-sub-title>{{getProjectDates(child.taskDueDateAt)}}</v-list-item-sub-title>
                             </v-list-item-action>
                             <v-list-item-avatar size="25">
-                              <!-- <v-img
-                        v-if="task.taskAssigneeProfileImage != null"
-                        :src="task.taskAssigneeProfileImage"
-                              ></v-img>-->
                               <v-img
-                                src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                                :src="child.taskAssigneeProfileImage"
                               ></v-img>
                             </v-list-item-avatar>
                           </v-list-item>
                         </div>
-                        <!-- --------------- -->
-                        <!-- ---------- task list --------- -->
-                        <div class="taskViewTaskListContent">
-                          <v-list-item @click.stop="drawer = !drawer">
-                            <v-list-item-action>
-                              <v-icon size="25" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
-                              <!-- <v-icon v-else size="30" color="#EDF0F5"
-                        >mdi-checkbox-blank-circle</v-icon
-                              >-->
-                            </v-list-item-action>
-                            <v-list-item-content>
-                              <v-list-item-title>this is the child task</v-list-item-title>
-                            </v-list-item-content>
-                            <v-list-item-action>
-                              <v-list-item-sub-title>12/12/2010</v-list-item-sub-title>
-                            </v-list-item-action>
-                            <v-list-item-avatar size="25">
-                              <!-- <v-img
-                        v-if="task.taskAssigneeProfileImage != null"
-                        :src="task.taskAssigneeProfileImage"
-                              ></v-img>-->
-                              <v-img
-                                src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-                              ></v-img>
-                            </v-list-item-avatar>
-                          </v-list-item>
-                        </div>
-                        <!-- --------------- -->
+                   
                       </v-list-item-content>
                     </v-list-group>
                   </div>
@@ -462,14 +431,15 @@ export default {
       updatedTask: {},
       issueTypes: ["development", "qa", "bug", "operational"],
       taskStatuses: ["open", "pending", "closed"],
-      allSprints: [{ sprintId: "default", sprintName: "Default" }]
+      allSprints: [{ sprintId: "default", sprintName: "Default" }],
+      fetchSprintCount: 0,
+      fetchFilesCount: 0
     };
   },
   async created() {
     this.taskId = this.$route.params.viewTask;
     this.projectId = this.$route.query.project;
     this.userId = this.$store.state.user.userId;
-
     let taskResponse;
     try {
       taskResponse = await this.$axios.$get(
@@ -482,10 +452,14 @@ export default {
         }
       );
       this.task = taskResponse.data;
-      console.log("group get response", this.task);
+      console.log("Task get response", this.task);
     } catch (e) {
-      console.log("Error fetching groups", e);
+      console.log("Error fetching task", e);
     }
+    this.$store.dispatch("task/fetchChildren", {
+      projectId: this.$route.query.project,
+      taskId: this.$route.params.viewTask
+    });
   },
   methods: {
     isTaskAssignee(taskAssignee) {
@@ -514,12 +488,38 @@ export default {
           });
         }
         return sprintList;
-      } else {
+      } else if (this.fetchSprintCount < 1) {
+        console.log("sprint dispatched actually");
         this.$store.dispatch(
           "sprints/sprint/fetchAllProjectSprints",
           this.$route.query.project
         );
-        return [];
+        this.fetchSprintCount += 1;
+      }
+      // return [];
+    },
+    getProjectDates(date) {
+      const dueDate = new Date(date);
+      const dueToUtc = new Date(
+        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+      );
+      const dueToUtcDate = new Date(dueToUtc);
+      const now = new Date();
+      console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
+
+      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
+        return "Add Due Date";
+      } else if (now.getDate() === dueToUtcDate.getDate()) {
+        return "Today";
+      } else if (now.getDate() - 1 === dueToUtcDate.getDate()) {
+        return "Yesterday";
+      } else if (now.getDate() + 1 === dueToUtcDate.getDate()) {
+        return "Tomorrow";
+      } else {
+        let stringDate = date + "";
+        stringDate = stringDate.toString();
+        stringDate = stringDate.slice(0, 10);
+        return stringDate;
       }
     }
   },
@@ -528,7 +528,8 @@ export default {
       selectedTaskUser: state => state.user.selectedTaskUser,
       people: state => state.task.userCompletionTasks,
       projectSprints: state => state.sprints.sprint.sprints,
-      taskFiles: state => state.task.taskFiles
+      taskFiles: state => state.task.taskFiles,
+      children: state => state.task.childTasks
     }),
     ...mapGetters(["getuserCompletionTasks"]),
 
@@ -559,18 +560,20 @@ export default {
     },
 
     fileList() {
-      console.log("file List!", this.taskFiles);
-      if (this.taskFiles.length == 0) {
-        console.log("dispatched!");
+      if (this.taskFiles.length == 0 && this.fetchFilesCount < 1) {
+        console.log("file length dispatch", this.taskFiles.length);
         this.$store.dispatch("task/fetchTaskFiles", {
-          projectId: this.$route.query.project,
-          taskId: this.task.taskId
+          projectId: this.projectId,
+          taskId: this.taskId
         });
+        this.fetchFilesCount += 1;
       } else {
-        console.log("not dispatched!");
-
         return this.taskFiles;
       }
+    },
+
+    childrenCount() {
+      return this.children.length;
     },
 
     taskName: {
