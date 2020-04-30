@@ -150,9 +150,12 @@
                 src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
               ></v-img>
             </v-list-item-avatar>
-            <nuxt-link :to="'/task/' + task.parentTask.taskId +'/?project=' +
-                  projectId">  <v-icon color="red">mdi-checkbox-blank-circle</v-icon> </nuxt-link>
-          
+            <nuxt-link
+              :to="'/task/' + task.parentTask.taskId + '/?project=' + projectId"
+              style="text-decoration: none;"
+            >
+              <v-icon color="blue">mdi-link-variant</v-icon>
+            </nuxt-link>
           </v-list-item>
         </div>
 
@@ -214,6 +217,12 @@
                   src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
                 ></v-img>
               </v-list-item-avatar>
+              <nuxt-link
+                :to="'/task/' + childTask.taskId + '/?project=' + projectId"
+                style="text-decoration: none;"
+              >
+                <v-icon color="blue">mdi-link-variant</v-icon>
+              </nuxt-link>
             </v-list-item>
           </div>
         </div>
@@ -252,8 +261,8 @@
 </template>
 
 <script>
-import TaskSideBar from "~/components/tasks/taskSideBar";
-import { mapState } from "vuex";
+import TaskSideBar from '~/components/tasks/taskSideBar';
+import { mapState } from 'vuex';
 export default {
   // props: ['projectId', 'projectUsers', 'people'],
   data() {
@@ -265,76 +274,76 @@ export default {
       widgets: false,
       states: [],
       items: [
-        { id: "all", name: "All" },
-        { id: "pending", name: "Pending" },
-        { id: "implementing", name: "Implementing" },
-        { id: "qa", name: "QA" },
-        { id: "readyToDeploy", name: "Ready to deploy" },
-        { id: "reOpened", name: "Reopened" },
-        { id: "deployed", name: "Deployed" },
-        { id: "closed", name: "Closed" }
+        { id: 'all', name: 'All' },
+        { id: 'pending', name: 'Pending' },
+        { id: 'implementing', name: 'Implementing' },
+        { id: 'qa', name: 'QA' },
+        { id: 'readyToDeploy', name: 'Ready to deploy' },
+        { id: 'reOpened', name: 'Reopened' },
+        { id: 'deployed', name: 'Deployed' },
+        { id: 'closed', name: 'Closed' },
       ],
       filterOptions: [
-        { id: "none", name: "None" },
-        { id: "assignee", name: "Assignee" },
-        { id: "type", name: "Type" },
-        { id: "dateRange", name: "Date Range" }
+        { id: 'none', name: 'None' },
+        { id: 'assignee', name: 'Assignee' },
+        { id: 'type', name: 'Type' },
+        { id: 'dateRange', name: 'Date Range' },
       ],
-      projects: ["pr1"],
+      projects: ['pr1'],
       drawer: null,
       task: {},
       subTasks: [],
       taskFiles: [],
       assignee: {},
       userId: this.$store.state.user.userId,
-      taskSelect: "all",
-      taskFilter: "none",
-      componentClose: null
+      taskSelect: 'all',
+      taskFilter: 'none',
+      componentClose: null,
     };
   },
   components: {
-    "task-side-bar": TaskSideBar
+    'task-side-bar': TaskSideBar,
   },
   methods: {
     clearFilter() {
-      console.log("selected===========> " + this.taskSelect);
+      console.log('selected===========> ' + this.taskSelect);
       this.taskSelect == null;
     },
     querySelections(v) {
-      console.log("people list", this.people);
+      console.log('people list', this.people);
       this.states = [];
       let projectSearchList = this.people;
       for (let index = 0; index < projectSearchList.length; ++index) {
         let user = projectSearchList[index];
         this.states.push({
-          name: user.assigneeFirstName + " " + user.assigneeLastName,
+          name: user.assigneeFirstName + ' ' + user.assigneeLastName,
           id: user,
-          img: user.assigneeProfileImage
+          img: user.assigneeProfileImage,
         });
       }
-      console.log("nameList", this.states);
+      console.log('nameList', this.states);
       this.loading = true;
     },
     listenToChange() {
-      console.log("listened to changes ------->");
-      this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
-      this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
-      this.$store.dispatch("task/fetchProjectTaskCompletion", this.projectId);
+      console.log('listened to changes ------->');
+      this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
+      this.$store.dispatch('task/fetchTasksMyTasks', this.projectId);
+      this.$store.dispatch('task/fetchProjectTaskCompletion', this.projectId);
     },
     shrinkSideBar() {
       this.drawer = false;
     },
     taskFilterHandler() {
-      console.log("-----------> changed" + this.taskSelect);
+      console.log('-----------> changed' + this.taskSelect);
     },
     async selectTask(task) {
       this.task = task.parentTask;
-      this.componentClose = "";
-      console.log("selectedTask", task);
+      this.componentClose = '';
+      console.log('selectedTask', task);
       this.$axios
         .get(`/users/${this.task.taskAssignee}`)
-        .then(async response => {
-          console.log("fetched task -->", response.data.data);
+        .then(async (response) => {
+          console.log('fetched task -->', response.data.data);
           this.assignee = response.data.data;
           //if task fetch is successful,
           let subTaskResponse;
@@ -343,11 +352,11 @@ export default {
               `/projects/${this.projectId}/tasks/${task.taskId}/subtask?userId=${this.userId}`,
               {
                 headers: {
-                  type: "project"
-                }
+                  type: 'project',
+                },
               }
             );
-            console.log("subtasks--->", subTaskResponse.data);
+            console.log('subtasks--->', subTaskResponse.data);
             this.subTasks = subTaskResponse.data;
             //get files related to task
             let taskFilesResponse;
@@ -357,84 +366,84 @@ export default {
                 {
                   headers: {
                     user: this.userId,
-                    type: "project"
-                  }
+                    type: 'project',
+                  },
                 }
               );
-              console.log("files--->", taskFilesResponse.data);
+              console.log('files--->', taskFilesResponse.data);
               this.taskFiles = taskFilesResponse.data;
             } catch (error) {
-              console.log("Error fetching data", error);
+              console.log('Error fetching data', error);
             }
           } catch (error) {
-            console.log("Error fetching data", error);
+            console.log('Error fetching data', error);
           }
         })
-        .catch(e => {
-          console.log("error", e);
+        .catch((e) => {
+          console.log('error', e);
         });
     },
     statusCheck(task) {
-      if (task.taskStatus === "closed") {
-        return "closedStatus";
+      if (task.taskStatus === 'closed') {
+        return 'closedStatus';
       } else {
-        return "otherStatus";
+        return 'otherStatus';
       }
     },
     dueDateCheck(task) {
-      console.log("check due date color", task);
-      if (task.taskStatus === "closed") {
-        return "workLoadTaskDone";
+      console.log('check due date color', task);
+      if (task.taskStatus === 'closed') {
+        return 'workLoadTaskDone';
       } else if (task.taskDueDateAt == null) {
-        return "workLoadTaskDefault";
+        return 'workLoadTaskDefault';
       } else {
         const dueDate = new Date(task.taskDueDateAt);
         const dueToUtc = new Date(
-          dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+          dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
         );
         const dueToUtcDate = new Date(dueToUtc);
         const now = new Date();
-        console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
+        console.log('now', now.getTime(), 'DueTime', dueToUtcDate.getTime());
         if (now.getTime() > dueToUtcDate.getTime()) {
-          console.log("overdue");
-          return "workLoadTaskOverDue";
+          console.log('overdue');
+          return 'workLoadTaskOverDue';
         } else {
-          return "workLoadTaskHealthy";
+          return 'workLoadTaskHealthy';
         }
       }
     },
     getProjectDates(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+        dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
       );
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
-      console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
+      console.log('Today', now.getDate(), 'DueDate', dueToUtcDate.getDate());
 
-      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "Add Due Date";
+      if (date === null || date === '1970-01-01T05:30:00.000+0000') {
+        return 'Add Due Date';
       } else if (now.getDate() === dueToUtcDate.getDate()) {
-        return "Today";
+        return 'Today';
       } else if (now.getDate() - 1 === dueToUtcDate.getDate()) {
-        return "Yesterday";
+        return 'Yesterday';
       } else if (now.getDate() + 1 === dueToUtcDate.getDate()) {
-        return "Tomorrow";
+        return 'Tomorrow';
       } else {
-        let stringDate = date + "";
+        let stringDate = date + '';
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 10);
         return stringDate;
       }
-    }
+    },
   },
   computed: {
     ...mapState({
-      people: state => state.task.userCompletionTasks,
-      projectAllTasks: state => state.task.allTasks,
-      projectId: state => state.project.project.projectId
-    })
-  }
+      people: (state) => state.task.userCompletionTasks,
+      projectAllTasks: (state) => state.task.allTasks,
+      projectId: (state) => state.project.project.projectId,
+    }),
+  },
 };
 </script>
 
