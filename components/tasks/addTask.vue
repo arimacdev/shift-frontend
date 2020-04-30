@@ -47,15 +47,15 @@
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="12" md="12">
             <v-select
-              v-model="addTaskAssignee"
-              :items="states"
+              v-model="parentTask"
+              :items="parentTasks"
               item-text="name"
-              item-value="id.assigneeId"
+              item-value="id"
               label="Parent task"
               outlined
               background-color="#EDF0F5"
               class="createFormElements"
-              @mousedown="querySelections"
+              @mousedown="getParentTasks"
             ></v-select>
           </v-col>
         </v-row>
@@ -154,13 +154,14 @@
           <v-col sm="4" md="4">
             <v-select
               v-model="taskBoard"
-              :items="items"
+              :items="sprints"
               item-text="name"
               background-color="#EDF0F5"
               item-value="id"
               label="Board"
               outlined
               class="createFormElements"
+              @mousedown="getSprintDetails"
             ></v-select>
           </v-col>
         </v-row>
@@ -317,6 +318,9 @@ export default {
       taskDueDate: new Date(),
       taskRemindOnDate: new Date(),
       states: [],
+      sprints: [],
+      parentTasks: [],
+      parentTask: '',
       search: null,
       items: [
         { name: 'Development', id: 'development' },
@@ -488,6 +492,39 @@ export default {
       console.log('nameList', this.states);
       this.loading = true;
     },
+    getSprintDetails(v) {
+      console.log('people list', this.projectSprints);
+      this.sprints = [];
+      let sprintSearchList = this.projectSprints;
+      for (let index = 0; index < sprintSearchList.length; ++index) {
+        let sprint = sprintSearchList[index];
+        this.sprints.push({
+          name: sprint.sprintName,
+          id: sprint.sprintId,
+        });
+      }
+      console.log('nameList', this.states);
+      this.loading = true;
+    },
+    getParentTasks(v) {
+      console.log('parent task list', this.projectAllTasks);
+      this.parentTasks = [];
+      let parentSearchList = this.projectAllTasks;
+      this.parentTasks.push({
+        name: 'No parent',
+        id: '',
+      });
+      for (let index = 0; index < parentSearchList.length; ++index) {
+        let parent = parentSearchList[index];
+        this.parentTasks.push({
+          name: parent.parentTask.taskName,
+          id: parent.parentTask.taskId,
+        });
+      }
+
+      console.log('nameList', this.states);
+      this.loading = true;
+    },
     getDueDate() {
       if (this.taskDueDate == null) {
         return null;
@@ -610,6 +647,7 @@ export default {
       projectId: (state) => state.project.project.projectId,
       people: (state) => state.task.userCompletionTasks,
       projectAllTasks: (state) => state.task.allTasks,
+      projectSprints: (state) => state.sprints.sprint.sprints,
     }),
     checkValidation: {
       get() {
