@@ -42,6 +42,19 @@
                   src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
                 ></v-img>
               </v-list-item-avatar>
+              <div class="boardTabLinkIcon">
+                <nuxt-link
+                  :to="
+                    '/task/' + task.parentTask.taskId + '/?project=' + projectId
+                  "
+                  style="text-decoration: none;"
+                  target="_blank"
+                >
+                  <v-icon size="15" color="blue"
+                    >mdi-link-variant</v-icon
+                  ></nuxt-link
+                >
+              </div>
             </v-list-item>
           </div>
           <!-- -------------- load child tasks (default board) ----------- -->
@@ -82,6 +95,17 @@
                   src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
                 ></v-img>
               </v-list-item-avatar>
+              <div class="boardTabLinkIcon">
+                <nuxt-link
+                  :to="'/task/' + childTask.taskId + '/?project=' + projectId"
+                  style="text-decoration: none;"
+                  target="_blank"
+                >
+                  <v-icon size="15" color="blue"
+                    >mdi-link-variant</v-icon
+                  ></nuxt-link
+                >
+              </div>
             </v-list-item>
           </div>
         </div>
@@ -145,6 +169,22 @@
                           src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
                         ></v-img>
                       </v-list-item-avatar>
+                      <div class="boardTabLinkIcon">
+                        <nuxt-link
+                          :to="
+                            '/task/' +
+                              task.parentTask.taskId +
+                              '/?project=' +
+                              projectId
+                          "
+                          style="text-decoration: none;"
+                          target="_blank"
+                        >
+                          <v-icon size="15" color="blue"
+                            >mdi-link-variant</v-icon
+                          ></nuxt-link
+                        >
+                      </div>
                     </v-list-item>
                   </div>
                   <!-- -------- load child tasks (project boards) ------------ -->
@@ -187,6 +227,22 @@
                           src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
                         ></v-img>
                       </v-list-item-avatar>
+                      <div class="boardTabLinkIcon">
+                        <nuxt-link
+                          :to="
+                            '/task/' +
+                              childTask.taskId +
+                              '/?project=' +
+                              projectId
+                          "
+                          style="text-decoration: none;"
+                          target="_blank"
+                        >
+                          <v-icon size="15" color="blue"
+                            >mdi-link-variant</v-icon
+                          ></nuxt-link
+                        >
+                      </div>
                     </v-list-item>
                   </div>
                 </div>

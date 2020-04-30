@@ -1927,3 +1927,11 @@
   font-size: 12px !important;
   font-weight: 500;
 }
+.boardTabLinkIcon {
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+}
+.updatedDate {
+  margin-right: 10px;
+}

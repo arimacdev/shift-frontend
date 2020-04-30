@@ -140,22 +140,28 @@
                 {{ getProjectDates(task.parentTask.taskDueDateAt) }}
               </v-list-item-title>
             </v-list-item-content>
-            <v-list-item-avatar>
-              <v-img
-                v-if="task.parentTask.taskAssigneeProfileImage != null"
-                :src="task.parentTask.taskAssigneeProfileImage"
-              ></v-img>
-              <v-img
-                v-else
-                src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-              ></v-img>
-            </v-list-item-avatar>
-            <nuxt-link
-              :to="'/task/' + task.parentTask.taskId + '/?project=' + projectId"
-              style="text-decoration: none;"
-            >
-              <v-icon color="blue">mdi-link-variant</v-icon>
-            </nuxt-link>
+            <div>
+              <v-list-item-avatar>
+                <v-img
+                  v-if="task.parentTask.taskAssigneeProfileImage != null"
+                  :src="task.parentTask.taskAssigneeProfileImage"
+                ></v-img>
+                <v-img
+                  v-else
+                  src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                ></v-img>
+              </v-list-item-avatar>
+            </div>
+            <div class="boardTabLinkIcon">
+              <nuxt-link
+                :to="
+                  '/task/' + task.parentTask.taskId + '/?project=' + projectId
+                "
+                style="text-decoration: none;"
+              >
+                <v-icon color="blue">mdi-link-variant</v-icon>
+              </nuxt-link>
+            </div>
           </v-list-item>
         </div>
 
@@ -207,22 +213,26 @@
                   {{ getProjectDates(childTask.taskDueDateAt) }}
                 </v-list-item-title>
               </v-list-item-content>
-              <v-list-item-avatar>
-                <v-img
-                  v-if="childTask.taskAssigneeProfileImage != null"
-                  :src="childTask.taskAssigneeProfileImage"
-                ></v-img>
-                <v-img
-                  v-else
-                  src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-                ></v-img>
-              </v-list-item-avatar>
-              <nuxt-link
-                :to="'/task/' + childTask.taskId + '/?project=' + projectId"
-                style="text-decoration: none;"
-              >
-                <v-icon color="blue">mdi-link-variant</v-icon>
-              </nuxt-link>
+              <div>
+                <v-list-item-avatar>
+                  <v-img
+                    v-if="childTask.taskAssigneeProfileImage != null"
+                    :src="childTask.taskAssigneeProfileImage"
+                  ></v-img>
+                  <v-img
+                    v-else
+                    src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                  ></v-img>
+                </v-list-item-avatar>
+              </div>
+              <div class="boardTabLinkIcon">
+                <nuxt-link
+                  :to="'/task/' + childTask.taskId + '/?project=' + projectId"
+                  style="text-decoration: none;"
+                >
+                  <v-icon color="blue">mdi-link-variant</v-icon>
+                </nuxt-link>
+              </div>
             </v-list-item>
           </div>
         </div>
