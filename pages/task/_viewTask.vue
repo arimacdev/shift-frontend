@@ -138,13 +138,12 @@
 
                       <v-list-item-content v-for="(child, index) in children" :key='index' class="parentChildTaskList">
                         <!-- ---------- task list --------- -->
+                             <!-- <nuxt-link :to="'/task/' + child.taskId + '/?project=' + this.projectId" style="text-decoration: none;"> -->
+
                         <div class="taskViewTaskListContent">
                           <v-list-item @click.stop="drawer = !drawer">
                             <v-list-item-action>
                               <v-icon size="25" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
-                              <!-- <v-icon v-else size="30" color="#EDF0F5"
-                        >mdi-checkbox-blank-circle</v-icon
-                              >-->
                             </v-list-item-action>
                             <v-list-item-content>
                               <v-list-item-title>{{child.taskName}}</v-list-item-title>
@@ -157,8 +156,21 @@
                                 :src="child.taskAssigneeProfileImage"
                               ></v-img>
                             </v-list-item-avatar>
-                          </v-list-item>
+                               <div class="boardTabLinkIcon">
+                                <nuxt-link :to="'/task/' + child.taskId +'/?project=' + projectId"
+                                  style="text-decoration: none;"
+                                  target="_blank"
+                                >
+                                  <v-icon size="20" color="blue"
+                                    >mdi-link-variant</v-icon
+                                  >
+                                </nuxt-link>
+                              </div>
+                          </v-list-item>                     
+
                         </div>
+                     <!-- </nuxt-link> -->
+
                    
                       </v-list-item-content>
                     </v-list-group>
