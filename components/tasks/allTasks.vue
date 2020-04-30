@@ -188,9 +188,12 @@
             class="taskList restructuredSubTaskList"
           >
             <v-list-item
-              @click.stop="drawer = !drawer"
-              @click="selectTask(childTask)"
+              @click="
+                selectTask(childTask);
+                taskDialog = true;
+              "
             >
+              <!-- @click.stop="drawer = !drawer" -->
               <v-list-item-action>
                 <v-icon
                   v-if="childTask.taskStatus == 'closed'"
@@ -381,6 +384,12 @@ export default {
       let parentTask = task;
       this.componentClose = '';
       console.log('selectedTask', parentTask);
+      this.$axios
+        .get(`/users/${this.task.taskAssignee}`)
+        .then(async (response) => {
+          console.log('fetched task -->', response.data.data);
+          this.assignee = response.data.data;
+        });
       this.$store.dispatch('user/setSelectedTaskUser', parentTask.taskAssignee);
       let taskFilesResponse;
       try {
