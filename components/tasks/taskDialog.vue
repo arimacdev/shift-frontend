@@ -84,139 +84,184 @@
             <v-row class="mb-12" no-gutters>
               <v-col sm="8" md="8">
                 <div class="leftSideColumn">
-                  <div class="expansionViewHeader topItemTaskView">
-                    <v-list-item class="taskViewTitleSection">
-                      <v-list-item-icon>
-                        <v-icon size="30" color="#2EC973"
-                          >mdi-package-variant-closed</v-icon
-                        >
-                      </v-list-item-icon>
-                      <v-list-item-title class="viewTaskFontColors"
-                        >Parent Task</v-list-item-title
-                      >
-                    </v-list-item>
-                    <v-list-item-content class="parentChildTaskList">
-                      <!-- ---------- task list --------- -->
-                      <div class="taskViewTaskListContent">
-                        <v-list-item @click.stop="drawer = !drawer">
-                          <v-list-item-action>
-                            <v-icon size="25" color="#2EC973"
-                              >mdi-checkbox-marked-circle</v-icon
-                            >
-                            <!-- <v-icon v-else size="30" color="#EDF0F5"
-                        >mdi-checkbox-blank-circle</v-icon
-                            >-->
-                          </v-list-item-action>
-                          <v-list-item-content>
-                            <v-list-item-title
-                              >this is the parent task</v-list-item-title
-                            >
-                          </v-list-item-content>
-                          <v-list-item-action>
-                            <v-list-item-sub-title
-                              >12/12/2010</v-list-item-sub-title
-                            >
-                          </v-list-item-action>
-                          <v-list-item-avatar size="25">
-                            <!-- <v-img
-                        v-if="task.taskAssigneeProfileImage != null"
-                        :src="task.taskAssigneeProfileImage"
-                            ></v-img>-->
-                            <v-img
-                              src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-                            ></v-img>
-                          </v-list-item-avatar>
-                        </v-list-item>
-                      </div>
-                      <!-- --------------- -->
-                    </v-list-item-content>
-                  </div>
-                  <v-divider></v-divider>
-                  <div class="expansionViewHeader">
-                    <v-list-group>
-                      <template v-slot:activator>
+                  <!-- ----------- parent task section --------- -->
+                  <div v-if="task.isParent == false">
+                    <div class="expansionViewHeader topItemTaskView">
+                      <v-list-item class="taskViewTitleSection">
                         <v-list-item-icon>
                           <v-icon size="30" color="#2EC973"
                             >mdi-package-variant-closed</v-icon
                           >
                         </v-list-item-icon>
-                        <v-list-item-title class="viewTaskFontColors">
-                          Child Tasks
-                          <span>(4 tasks)</span>
-                        </v-list-item-title>
-                      </template>
-
+                        <v-list-item-title class="viewTaskFontColors"
+                          >Parent Task</v-list-item-title
+                        >
+                      </v-list-item>
                       <v-list-item-content class="parentChildTaskList">
                         <!-- ---------- task list --------- -->
                         <div class="taskViewTaskListContent">
-                          <v-list-item @click.stop="drawer = !drawer">
+                          <v-list-item>
                             <v-list-item-action>
-                              <v-icon size="25" color="#2EC973"
+                              <v-icon
+                                v-if="
+                                  taskObject.parentTask.taskStatus == 'closed'
+                                "
+                                size="25"
+                                color="#2EC973"
                                 >mdi-checkbox-marked-circle</v-icon
                               >
-                              <!-- <v-icon v-else size="30" color="#EDF0F5"
-                        >mdi-checkbox-blank-circle</v-icon
-                              >-->
+                              <v-icon v-else size="30" color="#FFFFFF"
+                                >mdi-checkbox-blank-circle</v-icon
+                              >
                             </v-list-item-action>
                             <v-list-item-content>
-                              <v-list-item-title
-                                >this is the child task</v-list-item-title
-                              >
+                              <v-list-item-title>{{
+                                taskObject.parentTask.taskName
+                              }}</v-list-item-title>
                             </v-list-item-content>
-                            <v-list-item-action>
-                              <v-list-item-sub-title
-                                >12/12/2010</v-list-item-sub-title
+                            <div>
+                              <v-list-item-action>
+                                <v-list-item-sub-title
+                                  :class="dueDateCheck(taskObject.parentTask)"
+                                  >{{
+                                    getProjectDates(
+                                      taskObject.parentTask.taskDueDateAt
+                                    )
+                                  }}</v-list-item-sub-title
+                                >
+                              </v-list-item-action>
+                            </div>
+                            <div>
+                              <v-list-item-avatar size="25">
+                                <v-img
+                                  v-if="
+                                    taskObject.parentTask
+                                      .taskAssigneeProfileImage != null
+                                  "
+                                  :src="
+                                    taskObject.parentTask
+                                      .taskAssigneeProfileImage
+                                  "
+                                ></v-img>
+                                <v-img
+                                  v-else
+                                  src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                                ></v-img>
+                              </v-list-item-avatar>
+                            </div>
+                            <div class="boardTabLinkIcon">
+                              <nuxt-link
+                                :to="
+                                  '/task/' +
+                                    taskObject.parentTask.taskId +
+                                    '/?project=' +
+                                    projectId
+                                "
+                                style="text-decoration: none;"
+                                target="_blank"
                               >
-                            </v-list-item-action>
-                            <v-list-item-avatar size="25">
-                              <!-- <v-img
-                        v-if="task.taskAssigneeProfileImage != null"
-                        :src="task.taskAssigneeProfileImage"
-                              ></v-img>-->
-                              <v-img
-                                src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-                              ></v-img>
-                            </v-list-item-avatar>
-                          </v-list-item>
-                        </div>
-                        <!-- --------------- -->
-                        <!-- ---------- task list --------- -->
-                        <div class="taskViewTaskListContent">
-                          <v-list-item @click.stop="drawer = !drawer">
-                            <v-list-item-action>
-                              <v-icon size="25" color="#2EC973"
-                                >mdi-checkbox-marked-circle</v-icon
-                              >
-                              <!-- <v-icon v-else size="30" color="#EDF0F5"
-                        >mdi-checkbox-blank-circle</v-icon
-                              >-->
-                            </v-list-item-action>
-                            <v-list-item-content>
-                              <v-list-item-title
-                                >this is the child task</v-list-item-title
-                              >
-                            </v-list-item-content>
-                            <v-list-item-action>
-                              <v-list-item-sub-title
-                                >12/12/2010</v-list-item-sub-title
-                              >
-                            </v-list-item-action>
-                            <v-list-item-avatar size="25">
-                              <!-- <v-img
-                        v-if="task.taskAssigneeProfileImage != null"
-                        :src="task.taskAssigneeProfileImage"
-                              ></v-img>-->
-                              <v-img
-                                src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-                              ></v-img>
-                            </v-list-item-avatar>
+                                <v-icon size="20" color="blue"
+                                  >mdi-link-variant</v-icon
+                                >
+                              </nuxt-link>
+                            </div>
                           </v-list-item>
                         </div>
                         <!-- --------------- -->
                       </v-list-item-content>
-                    </v-list-group>
+                    </div>
+                    <v-divider></v-divider>
                   </div>
-                  <v-divider></v-divider>
+                  <!-- -------------- child tasks section ----------- -->
+                  <div v-if="task.isParent == true">
+                    <div class="expansionViewHeader">
+                      <v-list-group>
+                        <template v-slot:activator>
+                          <v-list-item-icon>
+                            <v-icon size="30" color="#2EC973"
+                              >mdi-package-variant-closed</v-icon
+                            >
+                          </v-list-item-icon>
+                          <v-list-item-title class="viewTaskFontColors">
+                            Child Tasks
+                            <span
+                              >({{ taskObject.childTasks.length }} tasks)</span
+                            >
+                          </v-list-item-title>
+                        </template>
+
+                        <v-list-item-content class="parentChildTaskList">
+                          <!-- ---------- task list --------- -->
+                          <div
+                            class="taskViewTaskListContent"
+                            v-for="(childTask, index) in taskObject.childTasks"
+                            :key="index"
+                          >
+                            <v-list-item>
+                              <v-list-item-action>
+                                <v-icon
+                                  v-if="childTask.taskStatus == 'closed'"
+                                  size="25"
+                                  color="#2EC973"
+                                  >mdi-checkbox-marked-circle</v-icon
+                                >
+                                <v-icon v-else size="30" color="#FFFFFF"
+                                  >mdi-checkbox-blank-circle</v-icon
+                                >
+                              </v-list-item-action>
+                              <v-list-item-content>
+                                <v-list-item-title>{{
+                                  childTask.taskName
+                                }}</v-list-item-title>
+                              </v-list-item-content>
+                              <div>
+                                <v-list-item-action>
+                                  <v-list-item-sub-title
+                                    :class="dueDateCheck(childTask)"
+                                    >{{
+                                      getProjectDates(childTask.taskDueDateAt)
+                                    }}</v-list-item-sub-title
+                                  >
+                                </v-list-item-action>
+                              </div>
+                              <div>
+                                <v-list-item-avatar size="25">
+                                  <v-img
+                                    v-if="
+                                      childTask.taskAssigneeProfileImage != null
+                                    "
+                                    :src="childTask.taskAssigneeProfileImage"
+                                  ></v-img>
+                                  <v-img
+                                    v-else
+                                    src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                                  ></v-img>
+                                </v-list-item-avatar>
+                              </div>
+                              <div class="boardTabLinkIcon">
+                                <nuxt-link
+                                  :to="
+                                    '/task/' +
+                                      childTask.taskId +
+                                      '/?project=' +
+                                      projectId
+                                  "
+                                  style="text-decoration: none;"
+                                  target="_blank"
+                                >
+                                  <v-icon size="20" color="blue"
+                                    >mdi-link-variant</v-icon
+                                  >
+                                </nuxt-link>
+                              </div>
+                            </v-list-item>
+                          </div>
+                          <!-- --------------- -->
+                        </v-list-item-content>
+                      </v-list-group>
+                    </div>
+                    <v-divider></v-divider>
+                  </div>
                   <!-- -------------- task type section ------------- -->
                   <div class="expansionViewHeader">
                     <v-list-item class="taskViewTitleSection">
@@ -437,8 +482,8 @@
                         >
                           <!-- <option>Naveen Perera</option> -->
                           <option value disabled
-                            >{{ assignee.firstName }}
-                            {{ assignee.lastName }}</option
+                            >{{ selectedTaskUser.firstName }}
+                            {{ selectedTaskUser.lastName }}</option
                           >
                           <option
                             class="tabListItemsText"
@@ -625,7 +670,7 @@ import { mapState } from 'vuex';
 import { mapGetters } from 'vuex';
 import NavigationDrawer from '~/components/navigationDrawer';
 export default {
-  props: ['task', 'assignee', 'projectId', 'subTasks', 'taskFiles', 'people'],
+  props: ['task', 'projectId', 'subTasks', 'taskFiles', 'people', 'taskObject'],
   components: {
     NavigationDrawer,
   },
@@ -637,11 +682,10 @@ export default {
       sprints: [],
       editTask: true,
       task: {},
+      taskObject: {},
       updatedTask: {},
       taskAssignee: '',
-      //   issueTypes: ['development', 'qa', 'bug', 'operational'],
       taskStatuses: this.task.taskStatus,
-      //   allSprints: [{ sprintId: 'default', sprintName: 'Default' }],
       issueType: this.task.issueType,
       taskStatus: this.task.taskStatus,
       items: [
@@ -761,6 +805,52 @@ export default {
     }
   },
   methods: {
+    dueDateCheck(task) {
+      console.log('check due date color', task);
+      if (task.taskStatus === 'closed') {
+        return 'workLoadTaskDone';
+      } else if (task.taskDueDateAt == null) {
+        return 'workLoadTaskDefault';
+      } else {
+        const dueDate = new Date(task.taskDueDateAt);
+        const dueToUtc = new Date(
+          dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
+        );
+        const dueToUtcDate = new Date(dueToUtc);
+        const now = new Date();
+        console.log('now', now.getTime(), 'DueTime', dueToUtcDate.getTime());
+        if (now.getTime() > dueToUtcDate.getTime()) {
+          console.log('overdue');
+          return 'workLoadTaskOverDue';
+        } else {
+          return 'workLoadTaskHealthy';
+        }
+      }
+    },
+    getProjectDates(date) {
+      const dueDate = new Date(date);
+      const dueToUtc = new Date(
+        dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
+      );
+      const dueToUtcDate = new Date(dueToUtc);
+      const now = new Date();
+      console.log('Today', now.getDate(), 'DueDate', dueToUtcDate.getDate());
+
+      if (date === null || date === '1970-01-01T05:30:00.000+0000') {
+        return 'Add Due Date';
+      } else if (now.getDate() === dueToUtcDate.getDate()) {
+        return 'Today';
+      } else if (now.getDate() - 1 === dueToUtcDate.getDate()) {
+        return 'Yesterday';
+      } else if (now.getDate() + 1 === dueToUtcDate.getDate()) {
+        return 'Tomorrow';
+      } else {
+        let stringDate = date + '';
+        stringDate = stringDate.toString();
+        stringDate = stringDate.slice(0, 10);
+        return stringDate;
+      }
+    },
     getSprintDetails(v) {
       console.log('board list', this.projectSprints);
       this.sprints = [];
@@ -795,6 +885,7 @@ export default {
       projectSprints: (state) => state.sprints.sprint.sprints,
       projectAllTasks: (state) => state.task.allTasks,
       projectId: (state) => state.project.project.projectId,
+      selectedTaskUser: (state) => state.user.selectedTaskUser,
     }),
     ...mapGetters(['getuserCompletionTasks']),
     peopleList() {
@@ -833,14 +924,15 @@ export default {
         this.updatedTask.issueType = value;
       },
     },
-    // selectedSprint: {
-    //   get() {
-    //     return this.task.sprintId;
-    //   },
-    //   set(value) {
-    //     this.updatedTask.sprintId = value;
-    //   }
-    // },
+    selectedSprint: {
+      get() {
+        return this.task.sprintId;
+      },
+      set(sprintId) {
+        console.log('spid', sprintId);
+        this.updatedSprint = sprintId;
+      },
+    },
     taskNote: {
       get() {
         return this.task.taskNote;
