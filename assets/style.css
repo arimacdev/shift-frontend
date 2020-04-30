@@ -1265,7 +1265,7 @@
   width: 70%;
 }
 .tasklistTaskNames {
-  width: 60%;
+  width: 59%;
 }
 
 .workloadFilter {
@@ -1733,7 +1733,7 @@
 }
 .restructuredSubTaskName {
   color: #080848;
-  width: 60% !important;
+  width: 57% !important;
 }
 .restStatusChip {
   /* padding-right: 30px; */

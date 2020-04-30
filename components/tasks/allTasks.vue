@@ -113,7 +113,7 @@
                 taskSelect == 'all'
             "
             @click.stop="drawer = !drawer"
-            @click="selectTask(task)"
+            @click="selectTask(task.parentTask)"
           >
             <v-list-item-action>
               <v-icon
@@ -180,7 +180,7 @@
           >
             <v-list-item
               @click.stop="drawer = !drawer"
-              @click="selectTask(task)"
+              @click="selectTask(childTask)"
             >
               <v-list-item-action>
                 <v-icon
@@ -337,7 +337,7 @@ export default {
       console.log('-----------> changed' + this.taskSelect);
     },
     async selectTask(task) {
-      this.task = task.parentTask;
+      this.task = task;
       this.componentClose = '';
       console.log('selectedTask', task);
       this.$axios
