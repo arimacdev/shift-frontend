@@ -280,6 +280,17 @@
           task.taskName
           }}
         </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+          <!-- <v-btn dark text @click="dialog = false">Save</v-btn> -->
+          <button class :disabled="checkValidation">
+            <v-list-item dark>
+              <div>
+                <v-icon size="30px" color="#FFFFFF">mdi-delete-circle</v-icon>
+              </div>
+            </v-list-item>
+          </button>
+        </v-toolbar-items>
       </v-toolbar>
       <task-dialog
         :task="task"
