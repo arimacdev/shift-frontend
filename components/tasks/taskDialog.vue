@@ -404,6 +404,7 @@
                               label="Board"
                               outlined
                               class="createFormElements"
+                              @change="changeTaskSprint"
                             ></v-select>
                           </v-col>
                         </v-row>
@@ -432,7 +433,15 @@
                           ></v-textarea>
                         </v-list-item-title>
                         <div class="noteUpdateButton">
-                          <v-btn class="ma-2" small rounded depressed color="#0BAFFF" dark>
+                          <v-btn
+                            class="ma-2"
+                            small
+                            rounded
+                            depressed
+                            color="#0BAFFF"
+                            dark
+                            @click="updateTaskNote"
+                          >
                             <v-icon left>mdi-pencil</v-icon>Update note
                           </v-btn>
                         </div>
@@ -493,6 +502,7 @@
                       v-model="taskDueDate"
                       label="Add due date"
                       right
+                      @click="click"
                     />
                   </div>
                   <!-- ----------- Reminder date section --------- -->
@@ -835,6 +845,132 @@ export default {
         console.log("Error updating a status", e);
       }
     },
+    // -------- update sprint ----------
+    async changeTaskSprint() {
+      console.log("onchange sprint", this.updatedSprint);
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}/sprint`,
+          {
+            previousSprint: this.task.sprintId,
+            newSprint: this.updatedSprint
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.$store.dispatch("task/updateSprintOfATask", {
+          taskId: this.task.taskId,
+          sprintId: this.updatedSprint
+        });
+        this.component = "success-popup";
+        this.successMessage = "Sprint successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("update sprint status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error updating a sprint", e);
+      }
+    },
+    // ---------- update task note -----------
+    async updateTaskNote() {
+      console.log("updatedTaskValue ->", this.updatedTask.taskNote);
+      let response;
+
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            taskNotes: this.updatedTask.taskNote,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.$emit("listenChange");
+        this.component = "success-popup";
+        this.successMessage = "Note successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("edit task response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error updating a note", e);
+      }
+    },
+    // ----------- update task dates -----------
+    async updateTaskDates(type) {
+      let dueDate;
+      let remindDate;
+      if (type === "dueDate") {
+        console.log("inside due date");
+        dueDate = new Date(this.updatedTask.taskDueDateAt);
+        const isoDate = new Date(
+          dueDate.getTime() - dueDate.getTimezoneOffset() * 60000
+        ).toISOString();
+        console.log("iso edit due date", isoDate);
+        dueDate = isoDate;
+        remindDate = this.task.taskReminderAt;
+      } else {
+        console.log("inside remind on date");
+        remindDate = new Date(this.updatedTask.taskRemindOnDate);
+        const isoDate = new Date(
+          remindDate.getTime() - remindDate.getTimezoneOffset() * 60000
+        ).toISOString();
+        console.log("iso edit remind date", isoDate);
+        dueDate = this.task.taskDueDateAt;
+        remindDate = isoDate;
+      }
+      console.log("dueDate", dueDate);
+      console.log("remindDate", remindDate);
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            taskDueDate: dueDate,
+            taskRemindOnDate: remindDate,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.$emit("listenChange");
+        this.component = "success-popup";
+        this.successMessage = "Date successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("update task dates response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error updating a status", e);
+      }
+    },
     // ------- popup close ----------
     close() {
       this.component = "";
@@ -844,7 +980,7 @@ export default {
     //   this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
     // },
     click() {
-      console.log("select =========>" + this.issueType);
+      console.log("select =========>" + this.taskDueDate);
       // this.issueType = issueType;
     },
     dueDateCheck(task) {
@@ -1012,13 +1148,31 @@ export default {
         this.updatedTask.taskNote = value;
       }
     },
+    // taskDueDate: {
+    //   get() {
+    //     return this.task.taskDueDateAt;
+    //   },
+    //   set(value) {
+    //     console.log("updated task due ->", value);
+    //     this.updatedTask.taskDueDateAt = value;
+    //   }
+    // },
     taskDueDate: {
       get() {
-        return this.task.taskDueDateAt;
+        if (
+          this.task.taskDueDateAt === null ||
+          this.task.taskDueDateAt === "1970-01-01T05:30:00.000+0000"
+        )
+          return "Add Due Date";
+        let stringDate = this.task.taskDueDateAt + " ";
+        stringDate = stringDate.toString();
+        stringDate = stringDate.slice(0, 16);
+        return stringDate;
       },
       set(value) {
         console.log("updated task due ->", value);
         this.updatedTask.taskDueDateAt = value;
+        // this.updateTaskDates("dueDate");
       }
     },
     taskRemindOnDate: {
