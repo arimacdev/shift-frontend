@@ -38,7 +38,7 @@
             </v-col>
             <v-col sm="2" md="2">
               <!-- <v-select label="Task status" dense dark background-color="#0BAFFF" solo></v-select> -->
-              <div class="taskStatusDropdown">
+              <!-- <div class="taskStatusDropdown">
                 <select
                   v-model="taskStatus"
                   class="viewTaskStatusDropDown"
@@ -53,7 +53,7 @@
                   <option key="deployed" value="deployed">Deployed</option>
                   <option key="closed" value="closed">Closed</option>
                 </select>
-              </div>
+              </div> -->
             </v-col>
             <v-col sm="8" md="8" class="taskViewLinksDiv">
               <a
@@ -919,6 +919,7 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
+            taskStatus: "pending",
             issueType: this.updatedIssue,
             taskType: "project"
           },
@@ -1407,11 +1408,15 @@ export default {
     },
     taskStatus: {
       get() {
-        // if (this.task.taskStatus !== this.issueStatus)
-        //   return this.task.taskStatus;
+        console.log("issueStatus", this.issueStatus);
+        if (this.issueStatus == "") {
+          return this.task.taskStatus;
+        } else {
+          return this.issueStatus;
+        }
         // this.issueStatus = this.task.taskStatus;
-        // return this.issueStatus;
-        return this.task.taskStatus;
+
+        // return this.task.taskStatus;
       },
       set(value) {
         this.updatedTask.taskStatus = value;
@@ -1425,6 +1430,7 @@ export default {
       set(value) {
         this.updatedIssue = value;
         this.issueTypes = value;
+        this.issueStatus = "pending";
         console.log("issue type", this.updatedIssue);
       }
     },
