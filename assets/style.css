@@ -1994,3 +1994,10 @@
   right: 30px;
   bottom: 60px;
 }
+.deleteTaskButton {
+  /* background-color: #ff6161; */
+  margin-top: 8px;
+  margin-bottom: 10px;
+  border-radius: 50%;
+  /* width: 120px; */
+}
