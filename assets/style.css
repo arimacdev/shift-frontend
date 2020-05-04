@@ -1989,3 +1989,8 @@
   bottom: 0;
   right: 40px;
 }
+.allTaskPopupPlacements {
+  position: absolute;
+  right: 30px;
+  bottom: 60px;
+}
