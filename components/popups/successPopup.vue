@@ -8,17 +8,26 @@
           </v-list-item-action>
           <v-list-item-content class="buttonText">
             <v-list-item-title class="popupTitle">Success</v-list-item-title>
-            <v-list-item-subtitle class="popupSubtitle">Successfully completed</v-list-item-subtitle>
+            <v-list-item-subtitle
+              v-if="successMessage != null"
+              class="popupSubtitle"
+            >{{successMessage}}</v-list-item-subtitle>
+            <v-list-item-subtitle v-else class="popupSubtitle">Successfully completed</v-list-item-subtitle>
           </v-list-item-content>
 
           <div>
-            <v-icon size="15" @click class="closeButton" color="red">mdi-close-circle-outline</v-icon>
+            <v-icon size="15" class="closeButton" color="red">mdi-close-circle-outline</v-icon>
           </div>
         </v-list-item>
       </v-card>
     </transition>
   </div>
 </template>
+<script>
+export default {
+  props: ["successMessage"]
+};
+</script>
 
 <style scoped>
 .slide-fade-enter-active {

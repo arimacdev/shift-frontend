@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="taskFormDiv  overflow-y-auto">
+    <div class="taskFormDiv overflow-y-auto">
       <div class="taskAddTitle">
         New task -
         <span>#{{ this.projectAllTasks.length + 1 }}</span>
@@ -18,15 +18,11 @@
             <div
               v-if="$v.taskName.$error && !$v.taskName.required"
               class="errorText"
-            >
-              Task name is required
-            </div>
+            >Task name is required</div>
             <div
               v-if="$v.taskName.$error && !$v.taskName.maxLength"
               class="errorText"
-            >
-              Cannot use more than 100 characters
-            </div>
+            >Cannot use more than 100 characters</div>
           </v-col>
         </v-row>
         <v-row class="mb-12 formRow" no-gutters>
@@ -56,6 +52,7 @@
               background-color="#EDF0F5"
               class="createFormElements"
               @mousedown="getParentTasks"
+              clearable
             ></v-select>
           </v-col>
         </v-row>
@@ -70,6 +67,7 @@
               label="Task type"
               outlined
               class="createFormElements"
+              clearable
             ></v-select>
           </v-col>
           <v-col sm="4" md="4">
@@ -83,6 +81,7 @@
               label="Task status"
               outlined
               class="createFormElements"
+              clearable
             ></v-select>
             <v-select
               v-if="this.taskType == 'qa'"
@@ -94,6 +93,7 @@
               label="Task status"
               outlined
               class="createFormElements"
+              clearable
             ></v-select>
             <v-select
               v-if="this.taskType == 'design'"
@@ -105,6 +105,7 @@
               label="Task status"
               outlined
               class="createFormElements"
+              clearable
             ></v-select>
             <v-select
               v-if="this.taskType == 'bug'"
@@ -116,6 +117,7 @@
               label="Task status"
               outlined
               class="createFormElements"
+              clearable
             ></v-select>
             <v-select
               v-if="this.taskType == 'operational'"
@@ -127,6 +129,7 @@
               label="Task status"
               outlined
               class="createFormElements"
+              clearable
             ></v-select>
             <v-select
               v-if="this.taskType == 'preSales'"
@@ -138,6 +141,7 @@
               label="Task status"
               outlined
               class="createFormElements"
+              clearable
             ></v-select>
             <v-select
               v-if="this.taskType == 'general'"
@@ -149,6 +153,7 @@
               label="Task status"
               outlined
               class="createFormElements"
+              clearable
             ></v-select>
           </v-col>
           <v-col sm="4" md="4">
@@ -161,6 +166,7 @@
               label="Board"
               outlined
               class="createFormElements"
+              clearable
               @mousedown="getSprintDetails"
             ></v-select>
           </v-col>
@@ -180,9 +186,7 @@
               <div
                 v-if="$v.taskDueDate.$error && !$v.taskDueDate.dateCheck"
                 class="errorText errorDiv"
-              >
-                Task due date cannot be past date
-              </div>
+              >Task due date cannot be past date</div>
             </div>
           </v-col>
           <v-col sm="6" md="6">
@@ -201,9 +205,7 @@
                   $v.taskRemindOnDate.$error && !$v.taskRemindOnDate.dateCheck
                 "
                 class="errorText errorDiv"
-              >
-                Reminder date should be before due date
-              </div>
+              >Reminder date should be before due date</div>
             </div>
           </v-col>
         </v-row>
@@ -240,27 +242,19 @@
             <div
               v-if="$v.taskNotes.$error && !$v.taskNotes.maxLength"
               class="errorText"
-            >
-              Cannot use more than 500 characters
-            </div>
+            >Cannot use more than 500 characters</div>
           </v-col>
         </v-row>
         <v-row class="mb-12 formRow groupFormRow" no-gutters>
           <v-col sm="12" md="6" class></v-col>
           <v-col sm="12" md="6" class="buttonGrid">
-            <button
-              :class="addTaskStyling"
-              @click="addTask"
-              :disabled="checkValidation"
-            >
+            <button :class="addTaskStyling" @click="addTask" :disabled="checkValidation">
               <v-list-item dark>
                 <v-list-item-action>
                   <v-icon size="20" color>mdi-calendar-blank-multiple</v-icon>
                 </v-list-item-action>
                 <v-list-item-content class="buttonText">
-                  <v-list-item-title class="bodyWiew"
-                    >Create task</v-list-item-title
-                  >
+                  <v-list-item-title class="bodyWiew">Create task</v-list-item-title>
                 </v-list-item-content>
                 <v-list-item-action>
                   <v-icon>mdi-plus-circle</v-icon>
@@ -280,146 +274,146 @@
 </template>
 
 <script>
-import { required, maxLength } from 'vuelidate/lib/validators';
-import SuccessPopup from '~/components/popups/successPopup';
-import ErrorPopup from '~/components/popups/errorPopup';
-import { mapState } from 'vuex';
+import { required, maxLength } from "vuelidate/lib/validators";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
+import { mapState } from "vuex";
 
-import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
+import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 
-import axios from 'axios';
+import axios from "axios";
 export default {
-  props: ['projectId', 'projectUsers', 'people', 'AllTasks'],
+  props: ["projectId", "projectUsers", "people", "AllTasks"],
   components: {
-    'success-popup': SuccessPopup,
-    'error-popup': ErrorPopup,
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup
   },
 
   data() {
     return {
-      errorMessage: '',
+      errorMessage: "",
       userId: this.$store.state.user.userId,
       files: [],
-      file: '',
-      taskType: 'development',
+      file: "",
+      taskType: "",
       task: {
-        taskName: '',
-        taskAssignee: '',
-        taskStatus: '',
-        taskDueDate: '',
-        taskRemindOnDate: '',
-        taskNotes: '',
+        taskName: "",
+        taskAssignee: "",
+        taskStatus: "",
+        taskDueDate: "",
+        taskRemindOnDate: "",
+        taskNotes: ""
       },
-      component: '',
-      taskAssignee: '',
-      taskStatus: 'pending',
-      taskName: '',
-      data: '',
+      component: "",
+      taskAssignee: "",
+      taskStatus: null,
+      taskName: "",
+      data: "",
       taskDueDate: new Date(),
       taskRemindOnDate: new Date(),
       states: [],
       sprints: [],
       parentTasks: [],
-      parentTask: '',
+      parentTask: "",
       search: null,
       items: [
-        { name: 'Development', id: 'development' },
-        { name: 'QA', id: 'qa' },
-        { name: 'Design', id: 'design' },
-        { name: 'Bug', id: 'bug' },
-        { name: 'Operational', id: 'operational' },
-        { name: 'Pre-sales', id: 'preSales' },
-        { name: 'General', id: 'general' },
+        { name: "Development", id: "development" },
+        { name: "QA", id: "qa" },
+        { name: "Design", id: "design" },
+        { name: "Bug", id: "bug" },
+        { name: "Operational", id: "operational" },
+        { name: "Pre-sales", id: "preSales" },
+        { name: "General", id: "general" }
       ],
       development: [
-        { name: 'Pending', id: 'pending' },
-        { name: 'On hold', id: 'onHold' },
-        { name: 'Open', id: 'cancel' },
-        { name: 'Completed', id: 'completed' },
-        { name: 'Implementing', id: 'implementing' },
-        { name: 'Deployed', id: 'deployed' },
-        { name: 'Closed', id: 'closed' },
+        { name: "Pending", id: "pending" },
+        { name: "On hold", id: "onHold" },
+        { name: "Open", id: "cancel" },
+        { name: "Completed", id: "completed" },
+        { name: "Implementing", id: "implementing" },
+        { name: "Deployed", id: "deployed" },
+        { name: "Closed", id: "closed" }
       ],
       qa: [
-        { name: 'Pending', id: 'pending' },
-        { name: 'Testing', id: 'testing' },
-        { name: 'Review', id: 'review' },
-        { name: 'Closed', id: 'closed' },
+        { name: "Pending", id: "pending" },
+        { name: "Testing", id: "testing" },
+        { name: "Review", id: "review" },
+        { name: "Closed", id: "closed" }
       ],
       design: [
-        { name: 'Pending', id: 'pending' },
-        { name: 'On hold', id: 'onHold' },
-        { name: 'Cancel', id: 'cancel' },
-        { name: 'Fixing', id: 'fixing' },
-        { name: 'Resolved', id: 'resolved' },
-        { name: 'In progress', id: 'inprogress' },
-        { name: 'Completed', id: 'completed' },
-        { name: 'Under review', id: 'underReview' },
-        { name: 'Weiting for approval', id: 'waitingForApproval' },
-        { name: 'Review', id: 'review' },
-        { name: 'Waiting response', id: 'waitingResponse' },
-        { name: 'Rejected', id: 'rejected' },
-        { name: 'Closed', id: 'closed' },
+        { name: "Pending", id: "pending" },
+        { name: "On hold", id: "onHold" },
+        { name: "Cancel", id: "cancel" },
+        { name: "Fixing", id: "fixing" },
+        { name: "Resolved", id: "resolved" },
+        { name: "In progress", id: "inprogress" },
+        { name: "Completed", id: "completed" },
+        { name: "Under review", id: "underReview" },
+        { name: "Weiting for approval", id: "waitingForApproval" },
+        { name: "Review", id: "review" },
+        { name: "Waiting response", id: "waitingResponse" },
+        { name: "Rejected", id: "rejected" },
+        { name: "Closed", id: "closed" }
       ],
       bug: [
-        { name: 'Pending', id: 'pending' },
-        { name: 'On hold', id: 'onHold' },
-        { name: 'Open', id: 'open' },
-        { name: 'Cancel', id: 'cancel' },
-        { name: 'Reopen', id: 'reopen' },
-        { name: 'Fixing', id: 'fixing' },
-        { name: 'Testing', id: 'testing' },
-        { name: 'Resolved', id: 'resolved' },
-        { name: 'Under review', id: 'underReview' },
-        { name: 'Review', id: 'review' },
-        { name: 'Waiting response', id: 'waitingResponse' },
-        { name: 'Closed', id: 'closed' },
+        { name: "Pending", id: "pending" },
+        { name: "On hold", id: "onHold" },
+        { name: "Open", id: "open" },
+        { name: "Cancel", id: "cancel" },
+        { name: "Reopen", id: "reopen" },
+        { name: "Fixing", id: "fixing" },
+        { name: "Testing", id: "testing" },
+        { name: "Resolved", id: "resolved" },
+        { name: "Under review", id: "underReview" },
+        { name: "Review", id: "review" },
+        { name: "Waiting response", id: "waitingResponse" },
+        { name: "Closed", id: "closed" }
       ],
       operational: [
-        { name: 'Pending', id: 'pending' },
-        { name: 'On hold', id: 'onHold' },
-        { name: 'Open', id: 'open' },
-        { name: 'Cancel', id: 'cancel' },
-        { name: 'Resolved', id: 'resolved' },
-        { name: 'In progress', id: 'inprogress' },
-        { name: 'Completed', id: 'completed' },
-        { name: 'Under review', id: 'underReview' },
-        { name: 'Weiting for approval', id: 'waitingForApproval' },
-        { name: 'Discussion', id: 'discussion' },
-        { name: 'Waiting response', id: 'waitingResponse' },
-        { name: 'Ready', id: 'ready' },
-        { name: 'Rejected', id: 'rejected' },
-        { name: 'Closed', id: 'closed' },
+        { name: "Pending", id: "pending" },
+        { name: "On hold", id: "onHold" },
+        { name: "Open", id: "open" },
+        { name: "Cancel", id: "cancel" },
+        { name: "Resolved", id: "resolved" },
+        { name: "In progress", id: "inprogress" },
+        { name: "Completed", id: "completed" },
+        { name: "Under review", id: "underReview" },
+        { name: "Weiting for approval", id: "waitingForApproval" },
+        { name: "Discussion", id: "discussion" },
+        { name: "Waiting response", id: "waitingResponse" },
+        { name: "Ready", id: "ready" },
+        { name: "Rejected", id: "rejected" },
+        { name: "Closed", id: "closed" }
       ],
       preSales: [
-        { name: 'Pending', id: 'pending' },
-        { name: 'On hold', id: 'onHold' },
-        { name: 'Open', id: 'open' },
-        { name: 'Cancel', id: 'cancel' },
-        { name: 'Resolved', id: 'resolved' },
-        { name: 'In progress', id: 'inprogress' },
-        { name: 'Under review', id: 'underReview' },
-        { name: 'Weiting for approval', id: 'waitingForApproval' },
-        { name: 'Discussion', id: 'discussion' },
-        { name: 'Waiting response', id: 'waitingResponse' },
-        { name: 'Rejected', id: 'rejected' },
-        { name: 'Closed', id: 'closed' },
+        { name: "Pending", id: "pending" },
+        { name: "On hold", id: "onHold" },
+        { name: "Open", id: "open" },
+        { name: "Cancel", id: "cancel" },
+        { name: "Resolved", id: "resolved" },
+        { name: "In progress", id: "inprogress" },
+        { name: "Under review", id: "underReview" },
+        { name: "Weiting for approval", id: "waitingForApproval" },
+        { name: "Discussion", id: "discussion" },
+        { name: "Waiting response", id: "waitingResponse" },
+        { name: "Rejected", id: "rejected" },
+        { name: "Closed", id: "closed" }
       ],
       general: [
-        { name: 'Pending', id: 'pending' },
-        { name: 'On hold', id: 'onHold' },
-        { name: 'Open', id: 'open' },
-        { name: 'Cancel', id: 'cancel' },
-        { name: 'In progress', id: 'inprogress' },
-        { name: 'Completed', id: 'completed' },
-        { name: 'Closed', id: 'closed' },
-      ],
+        { name: "Pending", id: "pending" },
+        { name: "On hold", id: "onHold" },
+        { name: "Open", id: "open" },
+        { name: "Cancel", id: "cancel" },
+        { name: "In progress", id: "inprogress" },
+        { name: "Completed", id: "completed" },
+        { name: "Closed", id: "closed" }
+      ]
     };
   },
   validations: {
     taskName: {
       required,
-      maxLength: maxLength(100),
+      maxLength: maxLength(100)
     },
     taskDueDate: {
       dateCheck() {
@@ -428,14 +422,14 @@ export default {
           return true;
         } else {
           const dueToUtc = new Date(
-            dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
+            dueDate.toLocaleString("en-US", { timeZone: "UTC" })
           );
           const dueToUtcDate = new Date(dueToUtc);
           const now = new Date();
           console.log(
-            'now',
+            "now",
             now.getTime(),
-            'DueTime',
+            "DueTime",
             dueToUtcDate.getTime() + 350000000
           );
           if (now.getTime() >= dueToUtcDate.getTime() + 35000000) {
@@ -444,10 +438,10 @@ export default {
             return true;
           }
         }
-      },
+      }
     },
     taskNotes: {
-      maxLength: maxLength(500),
+      maxLength: maxLength(500)
     },
     taskRemindOnDate: {
       dateCheck() {
@@ -456,73 +450,73 @@ export default {
           return true;
         } else {
           const endToUtc = new Date(
-            taskRemindOnDate.toLocaleString('en-US', { timeZone: 'UTC' })
+            taskRemindOnDate.toLocaleString("en-US", { timeZone: "UTC" })
           );
           const endToUtcDate = new Date(endToUtc);
           const taskDueDate = new Date(this.taskDueDate);
           console.log(
-            'start',
+            "start",
             taskDueDate.getTime(),
-            'end',
+            "end",
             endToUtcDate.getTime() + 35000000
           );
           if (taskDueDate.getTime() <= endToUtcDate.getTime()) {
-            console.log('overdue');
+            console.log("overdue");
             return false;
           } else {
             return true;
           }
         }
-      },
-    },
+      }
+    }
   },
   methods: {
     querySelections(v) {
-      console.log('people list', this.people);
+      console.log("people list", this.people);
       this.states = [];
       let projectSearchList = this.people;
       for (let index = 0; index < projectSearchList.length; ++index) {
         let user = projectSearchList[index];
         this.states.push({
-          name: user.assigneeFirstName + ' ' + user.assigneeLastName,
+          name: user.assigneeFirstName + " " + user.assigneeLastName,
           id: user,
-          img: user.assigneeProfileImage,
+          img: user.assigneeProfileImage
         });
       }
-      console.log('nameList', this.states);
+      console.log("nameList", this.states);
       this.loading = true;
     },
     getSprintDetails(v) {
-      console.log('board list', this.projectSprints);
+      console.log("board list", this.projectSprints);
       this.sprints = [];
       let sprintSearchList = this.projectSprints;
       for (let index = 0; index < sprintSearchList.length; ++index) {
         let sprint = sprintSearchList[index];
         this.sprints.push({
           name: sprint.sprintName,
-          id: sprint.sprintId,
+          id: sprint.sprintId
         });
       }
-      console.log('nameList', this.states);
+      console.log("nameList", this.states);
       this.loading = true;
     },
     getParentTasks(v) {
-      console.log('parent task list', this.projectAllTasks);
+      console.log("parent task list", this.projectAllTasks);
       this.parentTasks = [];
       let parentSearchList = this.projectAllTasks;
       this.parentTasks.push({
-        name: 'No parent',
-        id: '',
+        name: "No parent",
+        id: ""
       });
       for (let index = 0; index < parentSearchList.length; ++index) {
         let parent = parentSearchList[index];
         this.parentTasks.push({
           name: parent.parentTask.taskName,
-          id: parent.parentTask.taskId,
+          id: parent.parentTask.taskId
         });
       }
 
-      console.log('nameList', this.states);
+      console.log("nameList", this.states);
       this.loading = true;
     },
     getDueDate() {
@@ -533,7 +527,7 @@ export default {
         const isoDate = new Date(
           startDate.getTime() - startDate.getTimezoneOffset() * 60000
         ).toISOString();
-        console.log('iso due date', isoDate);
+        console.log("iso due date", isoDate);
         return isoDate;
       }
     },
@@ -545,7 +539,7 @@ export default {
         const isoDate = new Date(
           endDate.getTime() - endDate.getTimezoneOffset() * 60000
         ).toISOString();
-        console.log('iso remond on date', isoDate);
+        console.log("iso remond on date", isoDate);
         return isoDate;
       }
     },
@@ -556,7 +550,7 @@ export default {
       this.file = this.$refs.files.files[0];
     },
     close() {
-      this.component = '';
+      this.component = "";
     },
 
     handleSubmit(e) {
@@ -584,20 +578,21 @@ export default {
             taskType: this.taskStatus,
             issueType: this.taskType,
             parentTaskId: this.parentTask,
+            type: "project"
           }
         );
-        this.component = 'success-popup';
+        this.component = "success-popup";
         // window.setTimeout(location.reload(), 8000)
-        console.log('Task adding successful', response);
+        console.log("Task adding successful", response);
 
         let taskId = response.data.taskId;
         if (this.files != null) {
-          console.log('files ------>' + this.files);
+          console.log("files ------>" + this.files);
           for (let index = 0; index < this.files.length; ++index) {
             let formData = new FormData();
-            formData.append('files', this.files[index]);
-            formData.append('type', 'profileImage');
-            formData.append('taskType', 'project');
+            formData.append("files", this.files[index]);
+            formData.append("type", "profileImage");
+            formData.append("taskType", "project");
 
             this.$axios
               .$post(
@@ -605,51 +600,51 @@ export default {
                 formData,
                 {
                   headers: {
-                    'Content-Type': 'multipart/form-data',
-                    user: this.userId,
-                  },
+                    "Content-Type": "multipart/form-data",
+                    user: this.userId
+                  }
                 }
               )
               .then(function(res) {
-                console.log('File upload successful');
+                console.log("File upload successful");
               })
               .catch(function() {
-                console.log('File Upload Failed');
+                console.log("File Upload Failed");
               });
           }
         }
         this.files = null;
         if (this.taskAssignee === this.userId) {
-          console.log('assignee is me', this.taskAssignee, this.userId);
-          this.$store.dispatch('task/fetchTasksMyTasks', this.projectId);
-          this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
+          console.log("assignee is me", this.taskAssignee, this.userId);
+          this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
+          this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         } else {
-          console.log('assignee is NOT me', this.taskAssignee);
-          this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
+          console.log("assignee is NOT me", this.taskAssignee);
+          this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         }
-        (this.taskName = ''),
-          (this.taskAssignee = ''),
-          (this.taskStatus = 'pending'),
+        (this.taskName = ""),
+          (this.taskAssignee = ""),
+          (this.taskStatus = "pending"),
           (this.taskDueDate = new Date()),
           (this.taskRemindOnDate = new Date()),
-          (this.taskNotes = ''),
+          (this.taskNotes = ""),
           (this.files = null);
         this.$v.$reset();
       } catch (e) {
-        this.component = 'error-popup';
+        this.component = "error-popup";
         this.errorMessage = e.response.data;
-        console.log('Error adding a Task', e);
+        console.log("Error adding a Task", e);
         // alert("Error adding a task")
       }
-    },
+    }
   },
   computed: {
     ...mapState({
-      users: (state) => state.user.users,
-      projectId: (state) => state.project.project.projectId,
-      people: (state) => state.task.userCompletionTasks,
-      projectAllTasks: (state) => state.task.allTasks,
-      projectSprints: (state) => state.sprints.sprint.sprints,
+      users: state => state.user.users,
+      projectId: state => state.project.project.projectId,
+      people: state => state.task.userCompletionTasks,
+      projectAllTasks: state => state.task.allTasks,
+      projectSprints: state => state.sprints.sprint.sprints
     }),
     checkValidation: {
       get() {
@@ -661,26 +656,26 @@ export default {
       },
       set(value) {
         this.taskName = value;
-      },
+      }
     },
     addTaskAssignee: {
       get() {
-        console.log('Task assignee -->!', this.taskAssignee);
+        console.log("Task assignee -->!", this.taskAssignee);
         return this.taskAssignee;
       },
       set(value) {
         this.taskAssignee = value;
-      },
+      }
     },
     addTaskStyling: {
       get() {
         if (this.$v.$invalid == true) {
-          return 'addTaskButtonFail';
+          return "addTaskButtonFail";
         } else {
-          return 'addTaskButtonSuccess';
+          return "addTaskButtonSuccess";
         }
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>
