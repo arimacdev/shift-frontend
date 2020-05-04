@@ -291,7 +291,7 @@
                           <v-col sm="6" md="6">
                             <v-select
                               dense
-                              v-if="this.issueType == 'development'"
+                              v-if="this.issueTypes == 'development'"
                               v-model="taskStatus"
                               :items="development"
                               background-color="#EDF0F5"
@@ -303,7 +303,7 @@
                             ></v-select>
                             <v-select
                               dense
-                              v-if="this.issueType == 'qa'"
+                              v-if="this.issueTypes == 'qa'"
                               v-model="taskStatus"
                               :items="qa"
                               background-color="#EDF0F5"
@@ -315,7 +315,7 @@
                             ></v-select>
                             <v-select
                               dense
-                              v-if="this.issueType == 'design'"
+                              v-if="this.issueTypes == 'design'"
                               v-model="taskStatus"
                               :items="design"
                               background-color="#EDF0F5"
@@ -327,7 +327,7 @@
                             ></v-select>
                             <v-select
                               dense
-                              v-if="this.issueType == 'bug'"
+                              v-if="this.issueTypes == 'bug'"
                               v-model="taskStatus"
                               :items="bug"
                               background-color="#EDF0F5"
@@ -339,7 +339,7 @@
                             ></v-select>
                             <v-select
                               dense
-                              v-if="this.issueType == 'operational'"
+                              v-if="this.issueTypes == 'operational'"
                               v-model="taskStatus"
                               :items="operational"
                               background-color="#EDF0F5"
@@ -351,7 +351,7 @@
                             ></v-select>
                             <v-select
                               dense
-                              v-if="this.issueType == 'preSales'"
+                              v-if="this.issueTypes == 'preSales'"
                               v-model="taskStatus"
                               :items="preSales"
                               background-color="#EDF0F5"
@@ -363,7 +363,7 @@
                             ></v-select>
                             <v-select
                               dense
-                              v-if="this.issueType == 'general'"
+                              v-if="this.issueTypes == 'general'"
                               v-model="taskStatus"
                               :items="general"
                               background-color="#EDF0F5"
@@ -614,8 +614,12 @@ export default {
       taskObject: {},
       updatedTask: {},
       taskAssignee: "",
-      // taskStatuses: this.task.taskStatus,
+      updatedIssue: "",
+      updatedStatus: "",
+      issueTypes: "",
+      // taskStatus: this.task.taskStatus,
       // issueType: this.task.issueType,
+
       items: [
         { name: "Development", id: "development" },
         { name: "QA", id: "qa" },
@@ -734,7 +738,8 @@ export default {
   },
   methods: {
     click() {
-      console.log("select =========>" + this.task.issueType);
+      console.log("select =========>" + this.issueType);
+      // this.issueType = issueType;
     },
     dueDateCheck(task) {
       console.log("check due date color", task);
@@ -858,15 +863,19 @@ export default {
         return this.task.taskStatus;
       },
       set(value) {
-        this.updatedTask.taskStatus = value;
+        console.log("task status", value);
+        this.updatedStatus = value;
       }
     },
     issueType: {
       get() {
+        this.issueTypes = this.task.issueType;
         return this.task.issueType;
       },
       set(value) {
-        this.updatedTask.issueType = value;
+        this.updatedIssue = value;
+        this.issueTypes = value;
+        console.log("issue type", this.updatedIssue);
       }
     },
     selectedSprint: {
