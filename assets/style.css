@@ -1984,3 +1984,8 @@
 .taskDialogFormDiv {
   padding-top: 30px;
 }
+.taskPopupPopups {
+  position: fixed;
+  bottom: 0;
+  right: 40px;
+}

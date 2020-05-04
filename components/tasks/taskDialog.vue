@@ -79,11 +79,11 @@
                     v-model="taskName"
                     v-if="editTask == false"
                     :disabled="editTask"
+                    @keyup.enter="saveEditTaskName"
                   />
                 </v-col>
                 <v-col sm="1" md="1" class="taskEditIconCol">
                   <v-icon
-                    v-model="taskName"
                     size="25"
                     color="#424F64"
                     class="editIcon"
@@ -190,7 +190,7 @@
                           </v-list-item-icon>
                           <v-list-item-title class="viewTaskFontColors">
                             Child Tasks
-                            <span>{{ taskObject.childTasks.length }} Task(s)</span>
+                            <span>- {{ taskObject.childTasks.length }}Task(s)</span>
                           </v-list-item-title>
                         </template>
 
@@ -453,7 +453,11 @@
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
                       <v-list-item-title>
-                        <select v-model="taskAssignee" class="rightColumnItemsText">
+                        <select
+                          v-model="taskAssignee"
+                          @change="changeAssignee"
+                          class="rightColumnItemsText"
+                        >
                           <!-- <option>Naveen Perera</option> -->
                           <option value disabled>
                             {{ selectedTaskUser.firstName }}
@@ -591,32 +595,52 @@
         </v-list-item-content>
       </div>
     </div>
+    <div @click="close" class="taskPopupPopups">
+      <component
+        v-bind:is="component"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
+      <!-- <success-popup /> -->
+    </div>
   </v-card>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import { mapGetters } from "vuex";
-import NavigationDrawer from "~/components/navigationDrawer";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
+
 export default {
   props: ["task", "projectId", "subTasks", "taskFiles", "people", "taskObject"],
   components: {
-    NavigationDrawer
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup
   },
   data() {
     return {
       taskId: "",
       projectId: "",
-      userId: "",
+      userId: this.$store.state.user.userId,
       sprints: [],
       editTask: true,
       task: {},
       taskObject: {},
-      updatedTask: {},
-      taskAssignee: "",
       updatedIssue: "",
       updatedStatus: "",
       issueTypes: "",
+      component: "",
+      errorMessage: "",
+      successMessage: "",
+      updatedTask: {
+        taskName: "",
+        taskAssignee: "",
+        taskNotes: "",
+        taskStatus: "",
+        taskRemindOnDate: "",
+        taskDueDate: ""
+      },
       // taskStatus: this.task.taskStatus,
       // issueType: this.task.issueType,
 
@@ -715,28 +739,110 @@ export default {
     };
   },
   async created() {
-    this.taskId = this.$route.params.viewTask;
-    this.projectId = this.$route.query.project;
-    this.userId = this.$store.state.user.userId;
-
-    let taskResponse;
-    try {
-      taskResponse = await this.$axios.$get(
-        `/projects/${this.$route.query.project}/tasks/${this.$route.params.viewTask}`,
-        {
-          headers: {
-            user: this.userId,
-            type: "project"
-          }
-        }
-      );
-      this.task = taskResponse.data;
-      console.log("group get response", this.task);
-    } catch (e) {
-      console.log("Error fetching groups", e);
-    }
+    // this.taskId = this.$route.params.viewTask;
+    // this.projectId = this.$route.query.project;
+    // this.userId = this.$store.state.user.userId;
+    // let taskResponse;
+    // try {
+    //   taskResponse = await this.$axios.$get(
+    //     `/projects/${this.$route.query.project}/tasks/${this.$route.params.viewTask}`,
+    //     {
+    //       headers: {
+    //         user: this.userId,
+    //         type: "project"
+    //       }
+    //     }
+    //   );
+    //   this.task = taskResponse.data;
+    //   console.log("group get response", this.task);
+    // } catch (e) {
+    //   console.log("Error fetching groups", e);
+    // }
   },
   methods: {
+    // ------- update task name -------
+    async saveEditTaskName() {
+      console.log("updatedTaskName ->", this.updatedTask.taskName);
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            taskName: this.updatedTask.taskName,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.component = "success-popup";
+        this.successMessage = "Name successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("UPDATED", this.$store.state.task.allTasks);
+        this.$emit("listenChange");
+        this.editTask = true;
+        console.log("edit task response", response);
+      } catch (e) {
+        console.log("Error updating the name", e);
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.editTask = true;
+      }
+    },
+
+    // ------ update task assignee ---------
+    async changeAssignee() {
+      console.log("assignee changed");
+
+      console.log(
+        "onchange updated assignee ->",
+        this.updatedTask.taskAssignee
+      );
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            taskAssignee: this.updatedTask.taskAssignee,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.$emit("listenChange");
+        this.component = "success-popup";
+        this.successMessage = "Assignee successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error updating a status", e);
+      }
+    },
+    // ------- popup close ----------
+    close() {
+      this.component = "";
+    },
+    // ------ listen change ------
+    // listenChange() {
+    //   this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+    // },
     click() {
       console.log("select =========>" + this.issueType);
       // this.issueType = issueType;
@@ -856,6 +962,16 @@ export default {
       },
       set(name) {
         this.updatedTask.taskName = name;
+      }
+    },
+    taskAssignee: {
+      get() {
+        // return this.assignee.firstName
+        return "";
+      },
+      set(value) {
+        console.log("updated task assignee ->", value);
+        this.updatedTask.taskAssignee = value;
       }
     },
     taskStatus: {
