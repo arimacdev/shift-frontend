@@ -34,6 +34,13 @@ export const mutations = {
   SET_TASK_FILES(state, files) {
     state.taskFiles = files;
   },
+  APPEND_TASK_FILE(state, taskFile) {
+    state.taskFiles.push(taskFile);
+  },
+  REMOVE_TASK_FILE(state, taskFileId) {
+    const index = state.taskFiles.findIndex((i) => i.taskFileId === taskFileId);
+    state.taskFiles.splice(index, 1);
+  },
 };
 
 export const actions = {
@@ -160,6 +167,14 @@ export const actions = {
     } catch (error) {
       console.log('Error fetching data', error);
     }
+  },
+
+  appendTaskFile({ commit }, taskFile) {
+    commit('APPEND_TASK_FILE', taskFile);
+  },
+
+  removeTaskFile({ commit }, taskFileId) {
+    commit('REMOVE_TASK_FILE', taskFileId);
   },
 };
 

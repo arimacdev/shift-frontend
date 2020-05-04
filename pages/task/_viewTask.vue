@@ -566,13 +566,12 @@
                       prepend-icon
                       class
                       chips
-                      multiple
                       dense
                     ></v-file-input>
                   </div>
                   <div class="viewTaskPickerDiv">
                     <div class="fileUploadButton taskViewFileUploadButton">
-                      <v-btn class="ma-2" x-small rounded depressed color="#0BAFFF" dark>
+                      <v-btn class="ma-2" x-small rounded depressed color="#0BAFFF" dark @click="taskFileUpload()">
                         <v-icon left>mdi-upload</v-icon>Upload
                       </v-btn>
                       <v-progress-circular
@@ -610,7 +609,7 @@
                         </v-list-item-subtitle>
                       </v-list-item-content>
                       <v-list-item-action>
-                        <v-icon size="25" color="#FF6161">mdi-delete-circle</v-icon>
+                        <v-icon size="25" color="#FF6161" @click="handleFileDelete(file.taskFileId)">mdi-delete-circle</v-icon>                        
                       </v-list-item-action>
                     </v-list-item>
                   </div>
@@ -649,12 +648,15 @@ export default {
       editTask: true,
       parentTask: {},
       parentProfile: {},
+      updatedTaskDueDate: null,
+      updatedRemindOnDate: null,
       taskAssignee: "",
       task: {},
       updatedTask: {},
       updatedIssue: "",
       updatedStatus: "",
       issueTypes: "",
+      files: [],
       // issueTypes: ['development', 'qa', 'bug', 'operational'],
       // taskStatuses: ['open', 'pending', 'closed'],
       allSprints: [{ sprintId: "default", sprintName: "Default" }],
@@ -832,17 +834,17 @@ export default {
         //   sprintId: this.updatedTask.sprintId
         // });
         this.component = "success-popup";
-        setTimeout(() => {
-          this.close();
-        }, 2000);
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
         console.log("update sprint status response", response);
       } catch (e) {
         console.log("Error updating a sprint", e);
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 2000);
+        // this.errorMessage = e.response.data;
+        // this.component = "error-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
       }
     },
     async changeAssignee() {
@@ -861,17 +863,17 @@ export default {
             }
           }
         );
-        this.component = "success-popup";
-        setTimeout(() => {
-          this.close();
-        }, 2000);
+        // this.component = "success-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
         console.log("update task status response", response);
       } catch (e) {
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 2000);
+        // this.errorMessage = e.response.data;
+        // this.component = "error-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
         console.log("Error updating a status", e);
       }
     },
@@ -891,18 +893,17 @@ export default {
             }
           }
         );
-        // this.$emit("listenChange");
-        this.component = "success-popup";
-        setTimeout(() => {
-          this.close();
-        }, 2000);
+        // this.component = "success-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
         console.log("edit task response", response);
       } catch (e) {
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 2000);
+        // this.errorMessage = e.response.data;
+        // this.component = "error-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
         console.log("Error updating a note", e);
       }
     },
@@ -923,22 +924,21 @@ export default {
             }
           }
         );
-        this.component = "success-popup";
-        setTimeout(() => {
-          this.close();
-        }, 2000);
+        // this.component = "success-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
         console.log("UPDATED", this.$store.state.task.myTasks);
-        this.$emit("listenChange");
         this.editTask = true;
         console.log("edit task response", response);
       } catch (e) {
         console.log("Error updating the name", e);
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 2000);
-        this.editTask = true;
+        // this.errorMessage = e.response.data;
+        // this.component = "error-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
+        // this.editTask = true;
       }
     },
     dueDateCheck(task) {
@@ -1023,6 +1023,59 @@ export default {
       }
       // return [];
     },
+    async updateTaskDates(type) {
+      let dueDate;
+      let remindDate;
+      if (type === "dueDate") {
+        console.log("inside due date");
+        dueDate = new Date(this.updatedTaskDueDate);
+        const isoDate = new Date(
+          dueDate.getTime() - dueDate.getTimezoneOffset() * 60000
+        ).toISOString();
+        console.log("iso edit due date", isoDate);
+        dueDate = isoDate;
+        remindDate = this.task.taskReminderAt;
+      } else {
+        console.log("inside remind on date");
+        remindDate = new Date(this.updatedRemindOnDate);
+        const isoDate = new Date(
+          remindDate.getTime() - remindDate.getTimezoneOffset() * 60000
+        ).toISOString();
+        console.log("iso edit remind date", isoDate);
+        dueDate = this.task.taskDueDateAt;
+        remindDate = isoDate;
+      }
+      console.log("dueDate", dueDate);
+      console.log("remindDate", remindDate);
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            taskDueDate: dueDate,
+            taskRemindOnDate: remindDate,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        // this.component = "success-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
+        console.log("update task dates response", response);
+      } catch (e) {
+        // this.errorMessage = e.response.data;
+        // this.component = "error-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
+        console.log("Error updating a status", e);
+      }
+    },
     getProjectDates(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
@@ -1045,6 +1098,70 @@ export default {
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 10);
         return stringDate;
+      }
+    },
+    async taskFileUpload() {
+      this.uploadLoading = true;
+      let formData = new FormData();
+      formData.append("files", this.files);
+      formData.append("type", "profileImage");
+      formData.append("taskType", "project");
+      this.files = null;
+
+      let fileResponse;
+      try {
+        fileResponse = await this.$axios.$post(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
+          formData,
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.$store.dispatch("task/appendTaskFile", fileResponse.data);
+        this.uploadLoading = false;
+        // this.component = "success-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
+        console.log("file response", this.taskFiles);
+      } catch (e) {
+        console.log("Error adding group file", e);
+        // this.errorMessage = e.response.data;
+        // this.component = "error-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
+        this.uploadLoading = false;
+      }
+    },
+    async handleFileDelete(taskFileId) {
+      let response;
+      try {
+        response = await this.$axios.$delete(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}/upload/${taskFileId}`,
+          {
+            data: {},
+            headers: {
+              user: this.userId,
+              taskType: "project"
+            }
+          }
+        );
+        console.log(response.data);
+        this.$store.dispatch("task/removeTaskFile", taskFileId);
+        this.component = "success-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
+      } catch (e) {
+        // this.errorMessage = e.response.data;
+        // this.component = "error-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
+        console.log("Error deleting task", e);
       }
     }
   },
@@ -1147,20 +1264,26 @@ export default {
     },
     taskDueDate: {
       get() {
-        return this.task.taskDueDateAt;
+        if (this.updatedTaskDueDate == null)
+          this.updatedTaskDueDate = this.task.taskDueDateAt;
+        this.updateTaskDates("dueDate");
+        return this.updatedTaskDueDate;
       },
       set(value) {
-        console.log("updated task due ->", value);
-        this.updatedTask.taskDueDateAt = value;
+        console.log("set updated", value);
+        this.updatedTaskDueDate = value;
       }
     },
     taskRemindOnDate: {
       get() {
-        return this.task.taskReminderAt;
+        if (this.updatedRemindOnDate == null)
+          this.updatedRemindOnDate = this.task.taskReminderAt;
+        this.updateTaskDates("remindOn");
+        return this.updatedRemindOnDate;
       },
       set(value) {
         console.log("updated remind on ->", value);
-        this.updatedTask.taskReminderAt = value;
+        this.updatedRemindOnDate = value;
       }
     }
   }
