@@ -575,10 +575,9 @@ export default {
             taskRemindOnDate: this.getRemindOnDate(),
             taskStatus: this.taskStatus,
             taskNotes: this.taskNotes,
-            taskType: this.taskStatus,
+            taskType: "project",
             issueType: this.taskType,
-            parentTaskId: this.parentTask,
-            type: "project"
+            parentTaskId: this.parentTask
           }
         );
         this.component = "success-popup";

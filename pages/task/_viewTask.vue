@@ -39,7 +39,12 @@
             <v-col sm="2" md="2">
               <!-- <v-select label="Task status" dense dark background-color="#0BAFFF" solo></v-select> -->
               <div class="taskStatusDropdown">
-                <select v-model="taskStatus" class="viewTaskStatusDropDown" :class="statusCheck()" @change="updateStatus">
+                <select
+                  v-model="taskStatus"
+                  class="viewTaskStatusDropDown"
+                  :class="statusCheck()"
+                  @change="updateStatus"
+                >
                   <option key="pending" value="pending">Pending</option>
                   <option key="implementing" value="implementing">Implementing</option>
                   <option key="qa" value="qa">QA</option>
@@ -105,6 +110,7 @@
                     v-model="taskName"
                     v-if="editTask == false"
                     :disabled="editTask"
+                    @keyup.enter="saveEditTaskName"
                   />
                 </v-col>
                 <v-col sm="1" md="1" class="taskEditIconCol">
@@ -468,7 +474,15 @@
                           ></v-textarea>
                         </v-list-item-title>
                         <div class="noteUpdateButton">
-                          <v-btn class="ma-2" small rounded depressed color="#0BAFFF" dark @click="updateTaskNote">
+                          <v-btn
+                            class="ma-2"
+                            small
+                            rounded
+                            depressed
+                            color="#0BAFFF"
+                            dark
+                            @click="updateTaskNote"
+                          >
                             <v-icon left>mdi-pencil</v-icon>Update note
                           </v-btn>
                         </div>
@@ -489,7 +503,11 @@
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
                       <v-list-item-title>
-                        <select v-model="taskAssignee" class="rightColumnItemsText" @change="changeAssignee">
+                        <select
+                          v-model="taskAssignee"
+                          class="rightColumnItemsText"
+                          @change="changeAssignee"
+                        >
                           <!-- <option>Naveen Perera</option> -->
                           <option value disabled>
                             {{
@@ -540,7 +558,7 @@
                   <div class="viewTaskPickerDiv">
                     <VueCtkDateTimePicker
                       color="#3f51b5"
-                      id="duePicker"
+                      id="reminderPicker"
                       class
                       v-model="taskRemindOnDate"
                       label="Add remind date"
@@ -566,12 +584,21 @@
                       prepend-icon
                       class
                       chips
+                      multiple
                       dense
                     ></v-file-input>
                   </div>
                   <div class="viewTaskPickerDiv">
                     <div class="fileUploadButton taskViewFileUploadButton">
-                      <v-btn class="ma-2" x-small rounded depressed color="#0BAFFF" dark @click="taskFileUpload()">
+                      <v-btn
+                        class="ma-2"
+                        x-small
+                        rounded
+                        depressed
+                        color="#0BAFFF"
+                        dark
+                        @click="taskFileUpload()"
+                      >
                         <v-icon left>mdi-upload</v-icon>Upload
                       </v-btn>
                       <v-progress-circular
@@ -584,14 +611,20 @@
                   <!-- ------------- file viewer ------------ -->
                   <div class="filesViewDiv" v-for="(file, index) in fileList" :key="index">
                     <v-list-item>
-                      <v-list-item-action>
+                      <div>
                         <v-icon size="30">mdi-file-document-outline</v-icon>
-                      </v-list-item-action>
+                      </div>
                       <v-list-item-content>
                         <v-list-item-title class="fileTitles">
-                          {{
-                          file.taskFileName
-                          }}
+                          <a
+                            style="text-decoration: none;"
+                            :href="file.taskFileUrl"
+                            target="_blank"
+                          >
+                            {{
+                            file.taskFileName
+                            }}
+                          </a>
                         </v-list-item-title>
                         <v-list-item-subtitle class="fileSubTitles">125.54kB</v-list-item-subtitle>
                       </v-list-item-content>
@@ -608,9 +641,18 @@
                           }}
                         </v-list-item-subtitle>
                       </v-list-item-content>
-                      <v-list-item-action>
-                        <v-icon size="25" color="#FF6161" @click="handleFileDelete(file.taskFileId)">mdi-delete-circle</v-icon>                        
-                      </v-list-item-action>
+                      <div>
+                        <a style="text-decoration: none;" :href="file.taskFileUrl" target="_blank">
+                          <v-icon size="25" color="#0BAFFF">mdi-cloud-download</v-icon>
+                        </a>
+                      </div>
+                      <div>
+                        <v-icon
+                          @click="handleFileDelete(file.taskFileId)"
+                          size="25"
+                          color="#FF6161"
+                        >mdi-delete-circle</v-icon>
+                      </div>
                     </v-list-item>
                   </div>
                 </div>
@@ -628,6 +670,14 @@
         </v-list-item-content>
       </div>
     </div>
+    <div @click="close" class="taskPopupPopups">
+      <component
+        v-bind:is="component"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
+      <!-- <success-popup /> -->
+    </div>
   </div>
 </template>
 
@@ -635,9 +685,13 @@
 import { mapState } from "vuex";
 import { mapGetters } from "vuex";
 import NavigationDrawer from "~/components/navigationDrawer";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
 export default {
   components: {
-    NavigationDrawer
+    NavigationDrawer,
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup
   },
   data() {
     return {
@@ -658,6 +712,9 @@ export default {
       issueTypes: "",
       componentUsers: [],
       files: [],
+      component: "",
+      errorMessage: "",
+      successMessage: "",
       // issueTypes: ['development', 'qa', 'bug', 'operational'],
       // taskStatuses: ['open', 'pending', 'closed'],
       allSprints: [{ sprintId: "default", sprintName: "Default" }],
@@ -814,6 +871,10 @@ export default {
     }
   },
   methods: {
+    // ------- popup close ----------
+    close() {
+      this.component = "";
+    },
     async changeTaskSprint() {
       console.log("onchange sprint", this.updatedTask.sprintId);
       let response;
@@ -835,17 +896,19 @@ export default {
         //   sprintId: this.updatedTask.sprintId
         // });
         this.component = "success-popup";
-        // setTimeout(() => {
-        //   this.close();
-        // }, 2000);
+        this.successMessage = "Sprint successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         console.log("update sprint status response", response);
       } catch (e) {
         console.log("Error updating a sprint", e);
-        // this.errorMessage = e.response.data;
-        // this.component = "error-popup";
-        // setTimeout(() => {
-        //   this.close();
-        // }, 2000);
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error updating a sprint", e);
       }
     },
     async changeAssignee() {
@@ -864,17 +927,18 @@ export default {
             }
           }
         );
-        // this.component = "success-popup";
-        // setTimeout(() => {
-        //   this.close();
-        // }, 2000);
+        this.component = "success-popup";
+        this.successMessage = "Assignee successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         console.log("update task status response", response);
       } catch (e) {
-        // this.errorMessage = e.response.data;
-        // this.component = "error-popup";
-        // setTimeout(() => {
-        //   this.close();
-        // }, 2000);
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         console.log("Error updating a status", e);
       }
     },
@@ -894,17 +958,18 @@ export default {
             }
           }
         );
-        // this.component = "success-popup";
-        // setTimeout(() => {
-        //   this.close();
-        // }, 2000);
+        this.component = "success-popup";
+        this.successMessage = "Note successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         console.log("edit task response", response);
       } catch (e) {
-        // this.errorMessage = e.response.data;
-        // this.component = "error-popup";
-        // setTimeout(() => {
-        //   this.close();
-        // }, 2000);
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         console.log("Error updating a note", e);
       }
     },
@@ -925,21 +990,22 @@ export default {
             }
           }
         );
-        // this.component = "success-popup";
-        // setTimeout(() => {
-        //   this.close();
-        // }, 2000);
+        this.component = "success-popup";
+        this.successMessage = "Name successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         console.log("UPDATED", this.$store.state.task.myTasks);
         this.editTask = true;
         console.log("edit task response", response);
       } catch (e) {
         console.log("Error updating the name", e);
-        // this.errorMessage = e.response.data;
-        // this.component = "error-popup";
-        // setTimeout(() => {
-        //   this.close();
-        // }, 2000);
-        // this.editTask = true;
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.editTask = true;
       }
     },
     dueDateCheck(task) {
@@ -1064,17 +1130,18 @@ export default {
           }
         );
         // this.component = "success-popup";
+        // this.successMessage = "Date successfully updated";
         // setTimeout(() => {
         //   this.close();
-        // }, 2000);
+        // }, 3000);
         console.log("update task dates response", response);
       } catch (e) {
         // this.errorMessage = e.response.data;
         // this.component = "error-popup";
         // setTimeout(() => {
         //   this.close();
-        // }, 2000);
-        console.log("Error updating a status", e);
+        // }, 3000);
+        console.log("Error updating a date", e);
       }
     },
     getProjectDates(date) {
@@ -1102,40 +1169,44 @@ export default {
       }
     },
     async taskFileUpload() {
-      this.uploadLoading = true;
-      let formData = new FormData();
-      formData.append("files", this.files);
-      formData.append("type", "profileImage");
-      formData.append("taskType", "project");
-      this.files = null;
-
-      let fileResponse;
-      try {
-        fileResponse = await this.$axios.$post(
-          `/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
-          formData,
-          {
-            headers: {
-              user: this.userId
-            }
+      if (this.files != null) {
+        for (let index = 0; index < this.files.length; ++index) {
+          this.uploadLoading = true;
+          let formData = new FormData();
+          formData.append("files", this.files[index]);
+          formData.append("type", "profileImage");
+          formData.append("taskType", "project");
+          let fileResponse;
+          try {
+            fileResponse = await this.$axios.$post(
+              `/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
+              formData,
+              {
+                headers: {
+                  user: this.userId
+                }
+              }
+            );
+            this.$store.dispatch("task/appendTaskFile", fileResponse.data);
+            this.uploadLoading = false;
+            this.component = "success-popup";
+            this.successMessage = "File(s) successfully uploaded";
+            setTimeout(() => {
+              this.close();
+            }, 3000);
+            console.log("file response", this.taskFiles);
+          } catch (e) {
+            console.log("Error adding group file", e);
+            this.errorMessage = e.response.data;
+            this.component = "error-popup";
+            setTimeout(() => {
+              this.close();
+            }, 3000);
+            this.uploadLoading = false;
           }
-        );
-        this.$store.dispatch("task/appendTaskFile", fileResponse.data);
-        this.uploadLoading = false;
-        // this.component = "success-popup";
-        // setTimeout(() => {
-        //   this.close();
-        // }, 2000);
-        console.log("file response", this.taskFiles);
-      } catch (e) {
-        console.log("Error adding group file", e);
-        // this.errorMessage = e.response.data;
-        // this.component = "error-popup";
-        // setTimeout(() => {
-        //   this.close();
-        // }, 2000);
-        this.uploadLoading = false;
+        }
       }
+      this.files = null;
     },
     async handleFileDelete(taskFileId) {
       let response;
@@ -1153,15 +1224,16 @@ export default {
         console.log(response.data);
         this.$store.dispatch("task/removeTaskFile", taskFileId);
         this.component = "success-popup";
-        // setTimeout(() => {
-        //   this.close();
-        // }, 2000);
+        this.successMessage = "File successfully deleted";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
       } catch (e) {
-        // this.errorMessage = e.response.data;
-        // this.component = "error-popup";
-        // setTimeout(() => {
-        //   this.close();
-        // }, 2000);
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         console.log("Error deleting task", e);
       }
     },

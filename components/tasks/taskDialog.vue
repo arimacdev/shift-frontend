@@ -404,6 +404,7 @@
                               label="Board"
                               outlined
                               class="createFormElements"
+                              @change="changeTaskSprint"
                             ></v-select>
                           </v-col>
                         </v-row>
@@ -432,7 +433,15 @@
                           ></v-textarea>
                         </v-list-item-title>
                         <div class="noteUpdateButton">
-                          <v-btn class="ma-2" small rounded depressed color="#0BAFFF" dark>
+                          <v-btn
+                            class="ma-2"
+                            small
+                            rounded
+                            depressed
+                            color="#0BAFFF"
+                            dark
+                            @click="updateTaskNote"
+                          >
                             <v-icon left>mdi-pencil</v-icon>Update note
                           </v-btn>
                         </div>
@@ -507,7 +516,7 @@
                   <div class="viewTaskPickerDiv">
                     <VueCtkDateTimePicker
                       color="#3f51b5"
-                      id="duePicker"
+                      id="reminderPicker"
                       class
                       v-model="taskRemindOnDate"
                       label="Add remind date"
@@ -531,15 +540,23 @@
                       outlined
                       prepend-inner-icon="mdi-upload-outline"
                       prepend-icon
+                      multiple
                       class
                       chips
-                      multiple
                       dense
                     ></v-file-input>
                   </div>
                   <div class="viewTaskPickerDiv">
                     <div class="fileUploadButton taskViewFileUploadButton">
-                      <v-btn class="ma-2" x-small rounded depressed color="#0BAFFF" dark>
+                      <v-btn
+                        @click="taskFileUpload()"
+                        class="ma-2"
+                        x-small
+                        rounded
+                        depressed
+                        color="#0BAFFF"
+                        dark
+                      >
                         <v-icon left>mdi-upload</v-icon>Upload
                       </v-btn>
                       <v-progress-circular
@@ -552,14 +569,20 @@
                   <!-- ------------- file viewer ------------ -->
                   <div class="filesViewDiv" v-for="(file, index) in this.taskFiles" :key="index">
                     <v-list-item>
-                      <v-list-item-action>
+                      <div>
                         <v-icon size="30">mdi-file-document-outline</v-icon>
-                      </v-list-item-action>
+                      </div>
                       <v-list-item-content>
                         <v-list-item-title class="fileTitles">
-                          {{
-                          file.taskFileName
-                          }}
+                          <a
+                            style="text-decoration: none;"
+                            :href="file.taskFileUrl"
+                            target="_blank"
+                          >
+                            {{
+                            file.taskFileName
+                            }}
+                          </a>
                         </v-list-item-title>
                         <v-list-item-subtitle class="fileSubTitles">125.54kB</v-list-item-subtitle>
                       </v-list-item-content>
@@ -575,9 +598,18 @@
                           }}
                         </v-list-item-subtitle>
                       </v-list-item-content>
-                      <v-list-item-action>
-                        <v-icon size="25" color="#FF6161">mdi-delete-circle</v-icon>
-                      </v-list-item-action>
+                      <div>
+                        <a style="text-decoration: none;" :href="file.taskFileUrl" target="_blank">
+                          <v-icon size="25" color="#0BAFFF">mdi-cloud-download</v-icon>
+                        </a>
+                      </div>
+                      <div>
+                        <v-icon
+                          @click="handleFileDelete(file.taskFileId)"
+                          size="25"
+                          color="#FF6161"
+                        >mdi-delete-circle</v-icon>
+                      </div>
                     </v-list-item>
                   </div>
                 </div>
@@ -626,6 +658,7 @@ export default {
       sprints: [],
       editTask: true,
       task: {},
+      files: [],
       taskObject: {},
       updatedIssue: "",
       updatedStatus: "",
@@ -633,13 +666,14 @@ export default {
       component: "",
       errorMessage: "",
       successMessage: "",
+      updatedTaskDueDate: null,
+      updatedRemindOnDate: null,
+      uploadLoading: false,
       updatedTask: {
         taskName: "",
         taskAssignee: "",
         taskNotes: "",
-        taskStatus: "",
-        taskRemindOnDate: "",
-        taskDueDate: ""
+        taskStatus: ""
       },
       // taskStatus: this.task.taskStatus,
       // issueType: this.task.issueType,
@@ -738,27 +772,6 @@ export default {
       ]
     };
   },
-  async created() {
-    // this.taskId = this.$route.params.viewTask;
-    // this.projectId = this.$route.query.project;
-    // this.userId = this.$store.state.user.userId;
-    // let taskResponse;
-    // try {
-    //   taskResponse = await this.$axios.$get(
-    //     `/projects/${this.$route.query.project}/tasks/${this.$route.params.viewTask}`,
-    //     {
-    //       headers: {
-    //         user: this.userId,
-    //         type: "project"
-    //       }
-    //     }
-    //   );
-    //   this.task = taskResponse.data;
-    //   console.log("group get response", this.task);
-    // } catch (e) {
-    //   console.log("Error fetching groups", e);
-    // }
-  },
   methods: {
     // ------- update task name -------
     async saveEditTaskName() {
@@ -835,6 +848,203 @@ export default {
         console.log("Error updating a status", e);
       }
     },
+    // -------- update sprint ----------
+    async changeTaskSprint() {
+      console.log("onchange sprint", this.updatedSprint);
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}/sprint`,
+          {
+            previousSprint: this.task.sprintId,
+            newSprint: this.updatedSprint
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.$store.dispatch("task/updateSprintOfATask", {
+          taskId: this.task.taskId,
+          sprintId: this.updatedSprint
+        });
+        this.component = "success-popup";
+        this.successMessage = "Sprint successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("update sprint status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error updating a sprint", e);
+      }
+    },
+    // ---------- update task note -----------
+    async updateTaskNote() {
+      console.log("updatedTaskValue ->", this.updatedTask.taskNote);
+      let response;
+
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            taskNotes: this.updatedTask.taskNote,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.$emit("listenChange");
+        this.component = "success-popup";
+        this.successMessage = "Note successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("edit task response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error updating a note", e);
+      }
+    },
+    // ----------- update task dates -----------
+    async updateTaskDates(type) {
+      let dueDate;
+      let remindDate;
+      if (type === "dueDate") {
+        console.log("inside due date");
+        dueDate = new Date(this.updatedTaskDueDate);
+        const isoDate = new Date(
+          dueDate.getTime() - dueDate.getTimezoneOffset() * 60000
+        ).toISOString();
+        console.log("iso edit due date", isoDate);
+        dueDate = isoDate;
+        remindDate = this.task.taskReminderAt;
+      } else {
+        console.log("inside remind on date");
+        remindDate = new Date(this.updatedRemindOnDate);
+        const isoDate = new Date(
+          remindDate.getTime() - remindDate.getTimezoneOffset() * 60000
+        ).toISOString();
+        console.log("iso edit remind date", isoDate);
+        dueDate = this.task.taskDueDateAt;
+        remindDate = isoDate;
+      }
+      console.log("dueDate", dueDate);
+      console.log("remindDate", remindDate);
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            taskDueDate: dueDate,
+            taskRemindOnDate: remindDate,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        // this.component = "success-popup";
+        // this.successMessage = "Date successfully updated";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 3000);
+        console.log("update task dates response", response);
+      } catch (e) {
+        // this.errorMessage = e.response.data;
+        // this.component = "error-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 3000);
+        console.log("Error updating a status", e);
+      }
+    },
+    // --------- upload task files ----------
+
+    async taskFileUpload() {
+      if (this.files != null) {
+        for (let index = 0; index < this.files.length; ++index) {
+          this.uploadLoading = true;
+          let formData = new FormData();
+          formData.append("files", this.files[index]);
+          formData.append("type", "profileImage");
+          formData.append("taskType", "project");
+          let fileResponse;
+          try {
+            fileResponse = await this.$axios.$post(
+              `/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
+              formData,
+              {
+                headers: {
+                  user: this.userId
+                }
+              }
+            );
+            this.$store.dispatch("task/appendTaskFile", fileResponse.data);
+            this.uploadLoading = false;
+            this.component = "success-popup";
+            this.successMessage = "File(s) successfully uploaded";
+            setTimeout(() => {
+              this.close();
+            }, 3000);
+            console.log("file response", this.taskFiles);
+          } catch (e) {
+            console.log("Error adding group file", e);
+            this.errorMessage = e.response.data;
+            this.component = "error-popup";
+            setTimeout(() => {
+              this.close();
+            }, 3000);
+            this.uploadLoading = false;
+          }
+        }
+      }
+      this.files = null;
+    },
+    // ------------ file remove ---------
+    async handleFileDelete(taskFileId) {
+      let response;
+      try {
+        response = await this.$axios.$delete(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}/upload/${taskFileId}`,
+          {
+            data: {},
+            headers: {
+              user: this.userId,
+              taskType: "project"
+            }
+          }
+        );
+        console.log(response.data);
+        this.$store.dispatch("task/removeTaskFile", taskFileId);
+        this.component = "success-popup";
+        this.successMessage = "File successfully deleted";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error deleting task", e);
+      }
+    },
     // ------- popup close ----------
     close() {
       this.component = "";
@@ -844,7 +1054,7 @@ export default {
     //   this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
     // },
     click() {
-      console.log("select =========>" + this.issueType);
+      console.log("select =========>" + this.taskDueDate);
       // this.issueType = issueType;
     },
     dueDateCheck(task) {
@@ -1012,22 +1222,29 @@ export default {
         this.updatedTask.taskNote = value;
       }
     },
+
     taskDueDate: {
       get() {
-        return this.task.taskDueDateAt;
+        if (this.updatedTaskDueDate == null)
+          this.updatedTaskDueDate = this.task.taskDueDateAt;
+        this.updateTaskDates("dueDate");
+        return this.updatedTaskDueDate;
       },
       set(value) {
-        console.log("updated task due ->", value);
-        this.updatedTask.taskDueDateAt = value;
+        console.log("set updated", value);
+        this.updatedTaskDueDate = value;
       }
     },
     taskRemindOnDate: {
       get() {
-        return this.task.taskReminderAt;
+        if (this.updatedRemindOnDate == null)
+          this.updatedRemindOnDate = this.task.taskReminderAt;
+        this.updateTaskDates("remindOn");
+        return this.updatedRemindOnDate;
       },
       set(value) {
         console.log("updated remind on ->", value);
-        this.updatedTask.taskReminderAt = value;
+        this.updatedRemindOnDate = value;
       }
     }
   }
