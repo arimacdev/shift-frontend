@@ -489,7 +489,7 @@
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
                       <v-list-item-title>
-                        <select v-model="taskAssignee" class="rightColumnItemsText">
+                        <select v-model="taskAssignee" class="rightColumnItemsText" @change="changeAssignee">
                           <!-- <option>Naveen Perera</option> -->
                           <option value disabled>
                             {{
@@ -843,6 +843,36 @@ export default {
         setTimeout(() => {
           this.close();
         }, 2000);
+      }
+    },
+    async changeAssignee() {
+      console.log("onchange updated assignee ->", this.taskAssignee);
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            taskAssignee: this.taskAssignee,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+        console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+        console.log("Error updating a status", e);
       }
     },
     async updateTaskNote() {
