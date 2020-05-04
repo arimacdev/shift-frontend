@@ -39,7 +39,7 @@
             <v-col sm="2" md="2">
               <!-- <v-select label="Task status" dense dark background-color="#0BAFFF" solo></v-select> -->
               <div class="taskStatusDropdown">
-                <select v-model="taskStatus" class="viewTaskStatusDropDown" :class="statusCheck()">
+                <select v-model="taskStatus" class="viewTaskStatusDropDown" :class="statusCheck()" @change="updateStatus">
                   <option key="pending" value="pending">Pending</option>
                   <option key="implementing" value="implementing">Implementing</option>
                   <option key="qa" value="qa">QA</option>
@@ -439,6 +439,7 @@
                               label="Board"
                               outlined
                               class="createFormElements"
+                              @change="changeTaskSprint"
                             ></v-select>
                           </v-col>
                         </v-row>
@@ -467,7 +468,7 @@
                           ></v-textarea>
                         </v-list-item-title>
                         <div class="noteUpdateButton">
-                          <v-btn class="ma-2" small rounded depressed color="#0BAFFF" dark>
+                          <v-btn class="ma-2" small rounded depressed color="#0BAFFF" dark @click="updateTaskNote">
                             <v-icon left>mdi-pencil</v-icon>Update note
                           </v-btn>
                         </div>
@@ -488,11 +489,11 @@
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
                       <v-list-item-title>
-                        <select v-model="taskAssignee" class="rightColumnItemsText">
+                        <select v-model="taskAssignee" class="rightColumnItemsText" @change="changeAssignee">
                           <!-- <option>Naveen Perera</option> -->
                           <option value disabled>
                             {{
-                            this.task.taskAssignee
+                            taskUser
                             }}
                           </option>
                           <option
@@ -780,7 +781,7 @@ export default {
         taskId: this.$route.params.viewTask
       });
     } else {
-      console.log("child tasl");
+      console.log("child task");
       let response = await this.$axios.$get(
         `/projects/${this.$route.query.project}/tasks/${this.task.parentId}`,
         {
@@ -810,6 +811,136 @@ export default {
     }
   },
   methods: {
+    async changeTaskSprint() {
+      console.log("onchange sprint", this.updatedTask.sprintId);
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}/sprint`,
+          {
+            previousSprint: this.task.sprintId,
+            newSprint: this.updatedTask.sprintId
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        // this.$store.dispatch("task/updateSprintOfATask", {
+        //   taskId: this.task.taskId,
+        //   sprintId: this.updatedTask.sprintId
+        // });
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+        console.log("update sprint status response", response);
+      } catch (e) {
+        console.log("Error updating a sprint", e);
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+      }
+    },
+    async changeAssignee() {
+      console.log("onchange updated assignee ->", this.taskAssignee);
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            taskAssignee: this.taskAssignee,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+        console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+        console.log("Error updating a status", e);
+      }
+    },
+    async updateTaskNote() {
+      console.log("updatedTaskValue ->", this.updatedTask.taskNotes);
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            taskNotes: this.updatedTask.taskNote,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        // this.$emit("listenChange");
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+        console.log("edit task response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+        console.log("Error updating a note", e);
+      }
+    },
+    async saveEditTaskName() {
+      console.log("NAMEEEE", this.$store.state.task.myTasks);
+      console.log("updatedTaskName ->", this.updatedTask.taskName);
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            taskName: this.updatedTask.taskName,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+        console.log("UPDATED", this.$store.state.task.myTasks);
+        this.$emit("listenChange");
+        this.editTask = true;
+        console.log("edit task response", response);
+      } catch (e) {
+        console.log("Error updating the name", e);
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+        this.editTask = true;
+      }
+    },
     dueDateCheck(task) {
       console.log("check due date color", task);
       if (task.taskStatus === "closed") {
