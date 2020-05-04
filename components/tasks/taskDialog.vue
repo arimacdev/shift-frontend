@@ -772,27 +772,6 @@ export default {
       ]
     };
   },
-  async created() {
-    // this.taskId = this.$route.params.viewTask;
-    // this.projectId = this.$route.query.project;
-    // this.userId = this.$store.state.user.userId;
-    // let taskResponse;
-    // try {
-    //   taskResponse = await this.$axios.$get(
-    //     `/projects/${this.$route.query.project}/tasks/${this.$route.params.viewTask}`,
-    //     {
-    //       headers: {
-    //         user: this.userId,
-    //         type: "project"
-    //       }
-    //     }
-    //   );
-    //   this.task = taskResponse.data;
-    //   console.log("group get response", this.task);
-    // } catch (e) {
-    //   console.log("Error fetching groups", e);
-    // }
-  },
   methods: {
     // ------- update task name -------
     async saveEditTaskName() {
@@ -980,16 +959,17 @@ export default {
           }
         );
         // this.component = "success-popup";
+        // this.successMessage = "Date successfully updated";
         // setTimeout(() => {
         //   this.close();
-        // }, 2000);
+        // }, 3000);
         console.log("update task dates response", response);
       } catch (e) {
         // this.errorMessage = e.response.data;
         // this.component = "error-popup";
         // setTimeout(() => {
         //   this.close();
-        // }, 2000);
+        // }, 3000);
         console.log("Error updating a status", e);
       }
     },
