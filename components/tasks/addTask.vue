@@ -292,6 +292,7 @@ export default {
   data() {
     return {
       errorMessage: "",
+      successMessage: "",
       userId: this.$store.state.user.userId,
       files: [],
       file: "",
@@ -581,7 +582,10 @@ export default {
           }
         );
         this.component = "success-popup";
-        // window.setTimeout(location.reload(), 8000)
+        this.successMessage = "Task added successfully";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         console.log("Task adding successful", response);
 
         let taskId = response.data.taskId;
@@ -630,10 +634,12 @@ export default {
           (this.files = null);
         this.$v.$reset();
       } catch (e) {
-        this.component = "error-popup";
         this.errorMessage = e.response.data;
-        console.log("Error adding a Task", e);
-        // alert("Error adding a task")
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error updating a status", e);
       }
     }
   },

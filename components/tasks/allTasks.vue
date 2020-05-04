@@ -91,12 +91,13 @@
 
     <div class="restructuredTaskCreate">
       <v-text-field
-        v-model="personalTask"
+        v-model="taskName"
         background-color="#EDF0F5"
         solo
         prepend-inner-icon="mdi-plus-circle"
         label="Add a main task..."
         class
+        @keyup.enter="addTask(null)"
       ></v-text-field>
     </div>
 
@@ -123,11 +124,8 @@
                 v-if="task.parentTask.taskStatus == 'closed'"
                 size="30"
                 color="#2EC973"
-                >mdi-checkbox-marked-circle</v-icon
-              >
-              <v-icon v-else size="30" color="#FFFFFF"
-                >mdi-checkbox-blank-circle</v-icon
-              >
+              >mdi-checkbox-marked-circle</v-icon>
+              <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
             </v-list-item-action>
             <div class="tasklistTaskNames restructuredMainTaskName">
               <div class="body-2">
@@ -138,13 +136,11 @@
             <div
               class="restStatusChip"
               :class="statusCheck(task.parentTask.issueType)"
-            >
-              {{ task.parentTask.issueType }}
-            </div>
+            >{{ task.parentTask.issueType }}</div>
             <v-list-item-content class="updatedDate">
-              <v-list-item-title :class="dueDateCheck(task.parentTask)">
-                {{ getProjectDates(task.parentTask.taskDueDateAt) }}
-              </v-list-item-title>
+              <v-list-item-title
+                :class="dueDateCheck(task.parentTask)"
+              >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</v-list-item-title>
             </v-list-item-content>
             <div>
               <v-list-item-avatar>
@@ -174,14 +170,14 @@
         <!-- -------------- sub task design --------------- -->
         <div class="restructuredSubTaskCreate">
           <v-text-field
-            v-model="personalTask"
+            v-model="taskName"
             background-color="#0BAFFF"
             solo
             dark
             prepend-inner-icon="mdi-plus-circle"
             label="Add a sub task..."
             class
-            @keyup.enter="addParentTask"
+            @keyup.enter="addTask(task.parentTask.taskId)"
           ></v-text-field>
         </div>
         <div v-if="task.childTasks.length !== 0">
@@ -202,11 +198,8 @@
                   v-if="childTask.taskStatus == 'closed'"
                   size="30"
                   color="#2EC973"
-                  >mdi-checkbox-marked-circle</v-icon
-                >
-                <v-icon v-else size="30" color="#FFFFFF"
-                  >mdi-checkbox-blank-circle</v-icon
-                >
+                >mdi-checkbox-marked-circle</v-icon>
+                <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
               </v-list-item-action>
               <div class="tasklistTaskNames restructuredSubTaskName">
                 <div class="body-2">
@@ -217,13 +210,11 @@
               <div
                 class="restStatusChip"
                 :class="statusCheck(childTask.issueType)"
-              >
-                {{ childTask.issueType }}
-              </div>
+              >{{ childTask.issueType }}</div>
               <v-list-item-content class="updatedDate">
-                <v-list-item-title :class="dueDateCheck(childTask)">
-                  {{ getProjectDates(childTask.taskDueDateAt) }}
-                </v-list-item-title>
+                <v-list-item-title
+                  :class="dueDateCheck(childTask)"
+                >{{ getProjectDates(childTask.taskDueDateAt) }}</v-list-item-title>
               </v-list-item-content>
               <div>
                 <v-list-item-avatar>
@@ -279,17 +270,16 @@
     </v-navigation-drawer>
     <!-- ------------ task dialog --------- -->
 
-    <v-dialog
-      v-model="taskDialog"
-      width="90vw"
-      transition="dialog-bottom-transition"
-      ><v-toolbar dark color="primary">
+    <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
+      <v-toolbar dark color="primary">
         <v-btn icon dark @click="taskDialog = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
-        <v-toolbar-title class="font-weight-bold">{{
+        <v-toolbar-title class="font-weight-bold">
+          {{
           task.taskName
-        }}</v-toolbar-title>
+          }}
+        </v-toolbar-title>
       </v-toolbar>
       <task-dialog
         :task="task"
@@ -303,17 +293,26 @@
     </v-dialog>
 
     <!-- --------------- end side bar --------------------- -->
+    <div @click="close" class="allTaskPopupPlacements">
+      <component v-bind:is="component" :errorMessage="errorMessage"></component>
+      <!-- <success-popup /> -->
+    </div>
   </div>
 </template>
 
 <script>
-import TaskSideBar from '~/components/tasks/taskSideBar';
-import TaskDialog from '~/components/tasks/taskDialog';
-import { mapState } from 'vuex';
+import TaskSideBar from "~/components/tasks/taskSideBar";
+import TaskDialog from "~/components/tasks/taskDialog";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
+import { mapState } from "vuex";
 export default {
   // props: ['projectId', 'projectUsers', 'people'],
   data() {
     return {
+      errorMessage: "",
+      successMessage: "",
+      component: "",
       taskDialog: false,
       dateRange: new Date(),
       dialog: false,
@@ -321,23 +320,24 @@ export default {
       sound: true,
       widgets: false,
       states: [],
+      taskName: "",
       items: [
-        { id: 'all', name: 'All' },
-        { id: 'pending', name: 'Pending' },
-        { id: 'implementing', name: 'Implementing' },
-        { id: 'qa', name: 'QA' },
-        { id: 'readyToDeploy', name: 'Ready to deploy' },
-        { id: 'reOpened', name: 'Reopened' },
-        { id: 'deployed', name: 'Deployed' },
-        { id: 'closed', name: 'Closed' },
+        { id: "all", name: "All" },
+        { id: "pending", name: "Pending" },
+        { id: "implementing", name: "Implementing" },
+        { id: "qa", name: "QA" },
+        { id: "readyToDeploy", name: "Ready to deploy" },
+        { id: "reOpened", name: "Reopened" },
+        { id: "deployed", name: "Deployed" },
+        { id: "closed", name: "Closed" }
       ],
       filterOptions: [
-        { id: 'none', name: 'None' },
-        { id: 'assignee', name: 'Assignee' },
-        { id: 'type', name: 'Type' },
-        { id: 'dateRange', name: 'Date Range' },
+        { id: "none", name: "None" },
+        { id: "assignee", name: "Assignee" },
+        { id: "type", name: "Type" },
+        { id: "dateRange", name: "Date Range" }
       ],
-      projects: ['pr1'],
+      projects: ["pr1"],
       drawer: null,
       task: {},
       taskObject: {},
@@ -345,57 +345,112 @@ export default {
       taskFiles: [],
       assignee: {},
       userId: this.$store.state.user.userId,
-      taskSelect: 'all',
-      taskFilter: 'none',
-      componentClose: null,
+      taskSelect: "all",
+      taskFilter: "none",
+      componentClose: null
     };
   },
   components: {
-    'task-side-bar': TaskSideBar,
-    'task-dialog': TaskDialog,
+    "task-side-bar": TaskSideBar,
+    "task-dialog": TaskDialog,
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup
   },
   methods: {
+    // ------- popup close ----------
+    close() {
+      this.component = "";
+    },
+    async addTask(selectedParentTask) {
+      let response;
+      try {
+        response = await this.$axios.$post(
+          `/projects/${this.projectId}/tasks`,
+          {
+            taskName: this.taskName,
+            projectId: this.projectId,
+            taskInitiator: this.userId,
+            taskAssignee: this.userId,
+            taskDueDate: null,
+            taskRemindOnDate: null,
+            taskStatus: null,
+            taskNotes: "",
+            taskType: "project",
+            issueType: "development",
+            parentTaskId: selectedParentTask
+          }
+        );
+        this.component = "success-popup";
+        this.successMessage = "Task added successfully";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Task adding successful", response);
+        if (this.taskAssignee === this.userId) {
+          console.log("assignee is me", this.taskAssignee, this.userId);
+          this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
+          this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        } else {
+          console.log("assignee is NOT me", this.taskAssignee);
+          this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        }
+        (this.taskName = ""),
+          (this.taskAssignee = ""),
+          (this.taskStatus = "pending"),
+          (this.taskDueDate = new Date()),
+          (this.taskRemindOnDate = new Date()),
+          (this.taskNotes = ""),
+          (this.files = null);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error updating a status", e);
+      }
+    },
     clearFilter() {
-      console.log('selected===========> ' + this.taskSelect);
+      console.log("selected===========> " + this.taskSelect);
       this.taskSelect == null;
     },
     querySelections(v) {
-      console.log('people list', this.people);
+      console.log("people list", this.people);
       this.states = [];
       let projectSearchList = this.people;
       for (let index = 0; index < projectSearchList.length; ++index) {
         let user = projectSearchList[index];
         this.states.push({
-          name: user.assigneeFirstName + ' ' + user.assigneeLastName,
+          name: user.assigneeFirstName + " " + user.assigneeLastName,
           id: user,
-          img: user.assigneeProfileImage,
+          img: user.assigneeProfileImage
         });
       }
-      console.log('nameList', this.states);
+      console.log("nameList", this.states);
       this.loading = true;
     },
     listenToChange() {
-      console.log('listened to changes ------->');
-      this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
-      this.$store.dispatch('task/fetchTasksMyTasks', this.projectId);
-      this.$store.dispatch('task/fetchProjectTaskCompletion', this.projectId);
+      console.log("listened to changes ------->");
+      this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+      this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
+      this.$store.dispatch("task/fetchProjectTaskCompletion", this.projectId);
     },
     shrinkSideBar() {
       this.drawer = false;
     },
     taskFilterHandler() {
-      console.log('-----------> changed' + this.taskSelect);
+      console.log("-----------> changed" + this.taskSelect);
     },
     async selectTask(task, taskObject) {
       this.task = task;
       this.taskObject = taskObject;
-      this.componentClose = '';
-      console.log('selectedTask', task);
-      this.$axios.get(`/users/${task.taskAssignee}`).then(async (response) => {
-        console.log('fetched task -->', response.data.data);
+      this.componentClose = "";
+      console.log("selectedTask", task);
+      this.$axios.get(`/users/${task.taskAssignee}`).then(async response => {
+        console.log("fetched task -->", response.data.data);
         this.assignee = response.data.data;
       });
-      this.$store.dispatch('user/setSelectedTaskUser', task.taskAssignee);
+      this.$store.dispatch("user/setSelectedTaskUser", task.taskAssignee);
       let taskFilesResponse;
       try {
         taskFilesResponse = await this.$axios.$get(
@@ -403,90 +458,90 @@ export default {
           {
             headers: {
               user: this.userId,
-              type: 'project',
-            },
+              type: "project"
+            }
           }
         );
-        console.log('files--->', taskFilesResponse.data);
+        console.log("files--->", taskFilesResponse.data);
         this.taskFiles = taskFilesResponse.data;
-        this.$store.dispatch('task/setTaskFiles', taskFilesResponse.data);
+        this.$store.dispatch("task/setTaskFiles", taskFilesResponse.data);
       } catch (error) {
-        console.log('Error fetching data', error);
+        console.log("Error fetching data", error);
       }
     },
     statusCheck(task) {
-      if (task === 'development') {
-        return 'developmentStatus';
-      } else if (task === 'qa') {
-        return 'qaStatus';
-      } else if (task === 'design') {
-        return 'designStatus';
-      } else if (task === 'bug') {
-        return 'bugStatus';
-      } else if (task === 'operational') {
-        return 'operationalStatus';
-      } else if (task === 'preSales') {
-        return 'preSalesStatus';
-      } else if (task === 'general') {
-        return 'generalStatus';
+      if (task === "development") {
+        return "developmentStatus";
+      } else if (task === "qa") {
+        return "qaStatus";
+      } else if (task === "design") {
+        return "designStatus";
+      } else if (task === "bug") {
+        return "bugStatus";
+      } else if (task === "operational") {
+        return "operationalStatus";
+      } else if (task === "preSales") {
+        return "preSalesStatus";
+      } else if (task === "general") {
+        return "generalStatus";
       } else {
-        return 'otherStatus';
+        return "otherStatus";
       }
     },
     dueDateCheck(task) {
-      console.log('check due date color', task);
-      if (task.taskStatus === 'closed') {
-        return 'workLoadTaskDone';
+      console.log("check due date color", task);
+      if (task.taskStatus === "closed") {
+        return "workLoadTaskDone";
       } else if (task.taskDueDateAt == null) {
-        return 'workLoadTaskDefault';
+        return "workLoadTaskDefault";
       } else {
         const dueDate = new Date(task.taskDueDateAt);
         const dueToUtc = new Date(
-          dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
+          dueDate.toLocaleString("en-US", { timeZone: "UTC" })
         );
         const dueToUtcDate = new Date(dueToUtc);
         const now = new Date();
-        console.log('now', now.getTime(), 'DueTime', dueToUtcDate.getTime());
+        console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
         if (now.getTime() > dueToUtcDate.getTime()) {
-          console.log('overdue');
-          return 'workLoadTaskOverDue';
+          console.log("overdue");
+          return "workLoadTaskOverDue";
         } else {
-          return 'workLoadTaskHealthy';
+          return "workLoadTaskHealthy";
         }
       }
     },
     getProjectDates(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
+        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
       );
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
-      console.log('Today', now.getDate(), 'DueDate', dueToUtcDate.getDate());
+      console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
-      if (date === null || date === '1970-01-01T05:30:00.000+0000') {
-        return 'Add Due Date';
+      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
+        return "Add Due Date";
       } else if (now.getDate() === dueToUtcDate.getDate()) {
-        return 'Today';
+        return "Today";
       } else if (now.getDate() - 1 === dueToUtcDate.getDate()) {
-        return 'Yesterday';
+        return "Yesterday";
       } else if (now.getDate() + 1 === dueToUtcDate.getDate()) {
-        return 'Tomorrow';
+        return "Tomorrow";
       } else {
-        let stringDate = date + '';
+        let stringDate = date + "";
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 10);
         return stringDate;
       }
-    },
+    }
   },
   computed: {
     ...mapState({
-      people: (state) => state.task.userCompletionTasks,
-      projectAllTasks: (state) => state.task.allTasks,
-      projectId: (state) => state.project.project.projectId,
-    }),
-  },
+      people: state => state.task.userCompletionTasks,
+      projectAllTasks: state => state.task.allTasks,
+      projectId: state => state.project.project.projectId
+    })
+  }
 };
 </script>
 
