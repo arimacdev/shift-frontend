@@ -609,7 +609,7 @@
                         </v-list-item-subtitle>
                       </v-list-item-content>
                       <v-list-item-action>
-                        <v-icon size="25" color="#FF6161">mdi-delete-circle</v-icon>
+                        <v-icon size="25" color="#FF6161" @click="handleFileDelete(file.taskFileId)">mdi-delete-circle</v-icon>                        
                       </v-list-item-action>
                     </v-list-item>
                   </div>
@@ -1134,6 +1134,34 @@ export default {
         //   this.close();
         // }, 2000);
         this.uploadLoading = false;
+      }
+    },
+    async handleFileDelete(taskFileId) {
+      let response;
+      try {
+        response = await this.$axios.$delete(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}/upload/${taskFileId}`,
+          {
+            data: {},
+            headers: {
+              user: this.userId,
+              taskType: "project"
+            }
+          }
+        );
+        console.log(response.data);
+        this.$store.dispatch("task/removeTaskFile", taskFileId);
+        this.component = "success-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
+      } catch (e) {
+        // this.errorMessage = e.response.data;
+        // this.component = "error-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
+        console.log("Error deleting task", e);
       }
     }
   },

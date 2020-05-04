@@ -37,6 +37,10 @@ export const mutations = {
   APPEND_TASK_FILE(state, taskFile) {
     state.taskFiles.push(taskFile);
   },
+  REMOVE_TASK_FILE(state, taskFileId) {
+    const index = state.taskFiles.findIndex((i) => i.taskFileId === taskFileId);
+    state.taskFiles.splice(index, 1);
+  },
 };
 
 export const actions = {
@@ -167,6 +171,10 @@ export const actions = {
 
   appendTaskFile({ commit }, taskFile) {
     commit('APPEND_TASK_FILE', taskFile);
+  },
+
+  removeTaskFile({ commit }, taskFileId) {
+    commit('REMOVE_TASK_FILE', taskFileId);
   },
 };
 
