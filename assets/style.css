@@ -2001,3 +2001,10 @@
   border-radius: 50%;
   /* width: 120px; */
 }
+.dialogPickerNewText {
+  font-size: 12px;
+  font-weight: 400;
+  color: #576377;
+  padding-left: 3px;
+  margin-top: -100px;
+}

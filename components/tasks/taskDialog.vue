@@ -491,38 +491,63 @@
                       <v-icon size="35" color="#7CDD00">mdi-calendar-blank-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Due Date</v-list-item-subtitle>
+                      <!-- <v-list-item-subtitle class="rightColumnItemsSubTitle">Due Date</v-list-item-subtitle> -->
+                      <datetime type="datetime" v-model="taskDue" zone="local" input-id="dueDate">
+                        <label for="dueDate" slot="before" class="tabListItemsTextDue">
+                          <span class="dialogPickerNewText">Due Date</span>
+                        </label>
+                        <template slot="button-cancel">
+                          <fa :icon="['far', 'times']"></fa>Cancel
+                        </template>
+                        <template slot="button-confirm">
+                          <fa :icon="['fas', 'check-circle']"></fa>
+                          <p>Confirm</p>
+                        </template>
+                      </datetime>
                     </v-list-item-content>
                   </v-list-item>
-                  <div class="viewTaskPickerDiv">
-                    <VueCtkDateTimePicker
+                  <!-- <div class="viewTaskPickerDiv"> <VueCtkDateTimePicker
                       color="#3f51b5"
                       id="duePicker"
                       class
-                      v-model="taskDueDate"
+                      v-model="taskDue"
                       label="Add due date"
                       right
-                    />
-                  </div>
+                  /> </div>-->
                   <!-- ----------- Reminder date section --------- -->
                   <v-list-item>
                     <v-list-item-icon>
                       <v-icon size="35" color="#7CDD00">mdi-clock-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Remind Date</v-list-item-subtitle>
+                      <!-- <v-list-item-subtitle class="rightColumnItemsSubTitle">Remind Date</v-list-item-subtitle> -->
+                      <datetime
+                        type="datetime"
+                        v-model="taskRemindOn"
+                        zone="local"
+                        input-id="remindDate"
+                      >
+                        <label for="remindDate" slot="before" class="tabListItemsTextDue">
+                          <span class="dialogPickerNewText">Remind Date</span>
+                        </label>
+                        <template slot="button-cancel">
+                          <fa :icon="['far', 'times']"></fa>Cancel
+                        </template>
+                        <template slot="button-confirm">
+                          <fa :icon="['fas', 'check-circle']"></fa>
+                          <p>Confirm</p>
+                        </template>
+                      </datetime>
                     </v-list-item-content>
                   </v-list-item>
-                  <div class="viewTaskPickerDiv">
-                    <VueCtkDateTimePicker
+                  <!-- <div class="viewTaskPickerDiv"> <VueCtkDateTimePicker
                       color="#3f51b5"
                       id="reminderPicker"
                       class
                       v-model="taskRemindOnDate"
                       label="Add remind date"
                       right
-                    />
-                  </div>
+                  /></div>-->
                   <v-divider class="datePickerDivider"></v-divider>
                   <!-- ----------- Files section --------- -->
                   <v-list-item>
@@ -668,12 +693,15 @@ export default {
       successMessage: "",
       updatedTaskDueDate: null,
       updatedRemindOnDate: null,
+      // taskDue: this.task.taskDueDateAt,
       uploadLoading: false,
       updatedTask: {
         taskName: "",
         taskAssignee: "",
         taskNotes: "",
-        taskStatus: ""
+        taskStatus: "",
+        taskRemindOnDate: this.task.taskDueDateAt,
+        taskDueDateAt: ""
       },
       // taskStatus: this.task.taskStatus,
       // issueType: this.task.issueType,
@@ -924,7 +952,7 @@ export default {
       let remindDate;
       if (type === "dueDate") {
         console.log("inside due date");
-        dueDate = new Date(this.updatedTaskDueDate);
+        dueDate = new Date(this.updatedTask.taskDueDateAt);
         const isoDate = new Date(
           dueDate.getTime() - dueDate.getTimezoneOffset() * 60000
         ).toISOString();
@@ -933,7 +961,7 @@ export default {
         remindDate = this.task.taskReminderAt;
       } else {
         console.log("inside remind on date");
-        remindDate = new Date(this.updatedRemindOnDate);
+        remindDate = new Date(this.updatedTask.taskRemindOnDate);
         const isoDate = new Date(
           remindDate.getTime() - remindDate.getTimezoneOffset() * 60000
         ).toISOString();
@@ -958,18 +986,18 @@ export default {
             }
           }
         );
-        // this.component = "success-popup";
-        // this.successMessage = "Date successfully updated";
-        // setTimeout(() => {
-        //   this.close();
-        // }, 3000);
+        this.component = "success-popup";
+        this.successMessage = "Date successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         console.log("update task dates response", response);
       } catch (e) {
-        // this.errorMessage = e.response.data;
-        // this.component = "error-popup";
-        // setTimeout(() => {
-        //   this.close();
-        // }, 3000);
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         console.log("Error updating a status", e);
       }
     },
@@ -1223,28 +1251,68 @@ export default {
       }
     },
 
-    taskDueDate: {
+    // taskDueDate: {
+    //   get() {
+    //     if (this.updatedTaskDueDate == null)
+    //       this.updatedTaskDueDate = this.task.taskDueDateAt;
+    //     this.updateTaskDates("dueDate");
+    //     return this.updatedTaskDueDate;
+    //   },
+    //   set(value) {
+    //     console.log("set updated", value);
+    //     this.updatedTaskDueDate = value;
+    //   }
+    // },
+    // taskRemindOnDate: {
+    //   get() {
+    //     if (this.updatedRemindOnDate == null)
+    //       this.updatedRemindOnDate = this.task.taskReminderAt;
+    //     this.updateTaskDates("remindOn");
+    //     return this.updatedRemindOnDate;
+    //   },
+    //   set(value) {
+    //     console.log("updated remind on ->", value);
+    //     this.updatedRemindOnDate = value;
+    //   }
+    // },
+    taskDue: {
       get() {
-        if (this.updatedTaskDueDate == null)
-          this.updatedTaskDueDate = this.task.taskDueDateAt;
-        this.updateTaskDates("dueDate");
-        return this.updatedTaskDueDate;
+        // let stringDate = new Date(this.task.taskDueDateAt);
+        if (
+          this.task.taskDueDateAt === null ||
+          this.task.taskDueDateAt === "1970-01-01T05:30:00.000+0000"
+        )
+          return null;
+        let stringDate = this.task.taskDueDateAt + " ";
+        stringDate = stringDate.toString();
+        stringDate = stringDate.slice(0, 16);
+        return stringDate;
+        // return newDate;
       },
       set(value) {
-        console.log("set updated", value);
-        this.updatedTaskDueDate = value;
+        console.log("updated task due ->", value);
+        this.updatedTask.taskDueDateAt = value;
+        this.updateTaskDates("dueDate");
       }
     },
-    taskRemindOnDate: {
+    taskRemindOn: {
       get() {
-        if (this.updatedRemindOnDate == null)
-          this.updatedRemindOnDate = this.task.taskReminderAt;
-        this.updateTaskDates("remindOn");
-        return this.updatedRemindOnDate;
+        if (
+          this.task.taskReminderAt === null ||
+          this.task.taskDueDateAt === "1970-01-01T05:30:00.000+0000"
+        )
+          return "Add Reminder Date";
+        let stringDate = this.task.taskReminderAt + "";
+        // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
+        // console.log("f---->",formateedDate)
+        stringDate = stringDate.toString();
+        stringDate = stringDate.slice(0, 16);
+        return stringDate;
       },
       set(value) {
-        console.log("updated remind on ->", value);
-        this.updatedRemindOnDate = value;
+        console.log("updated task reminder ->", value);
+        this.updatedTask.taskRemindOnDate = value;
+        this.updateTaskDates("remindOn");
       }
     }
   }
