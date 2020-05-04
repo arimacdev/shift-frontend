@@ -325,7 +325,8 @@
                               item-value="id"
                               label="Task type"
                               outlined
-                              class="createFormElements"                              
+                              class="createFormElements"  
+                              @change="updateIssueType"                            
                             ></v-select>
                           </v-col>
                           <v-col sm="6" md="6">
@@ -911,6 +912,36 @@ export default {
         console.log("Error updating a status", e);
       }
     },
+    async updateIssueType() {
+      console.log("onchange updated status ->");
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            issueType: this.updatedIssue,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+        console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+        console.log("Error updating a status", e);
+      }
+    },
     close() {
       this.component = "";
     },
@@ -930,10 +961,6 @@ export default {
             }
           }
         );
-        // this.$store.dispatch("task/updateSprintOfATask", {
-        //   taskId: this.task.taskId,
-        //   sprintId: this.updatedTask.sprintId
-        // });
         this.component = "success-popup";
         this.successMessage = "Sprint successfully updated";
         setTimeout(() => {
