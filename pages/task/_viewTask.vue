@@ -566,13 +566,12 @@
                       prepend-icon
                       class
                       chips
-                      multiple
                       dense
                     ></v-file-input>
                   </div>
                   <div class="viewTaskPickerDiv">
                     <div class="fileUploadButton taskViewFileUploadButton">
-                      <v-btn class="ma-2" x-small rounded depressed color="#0BAFFF" dark>
+                      <v-btn class="ma-2" x-small rounded depressed color="#0BAFFF" dark @click="taskFileUpload()">
                         <v-icon left>mdi-upload</v-icon>Upload
                       </v-btn>
                       <v-progress-circular
@@ -657,6 +656,7 @@ export default {
       updatedIssue: "",
       updatedStatus: "",
       issueTypes: "",
+      files: [],
       // issueTypes: ['development', 'qa', 'bug', 'operational'],
       // taskStatuses: ['open', 'pending', 'closed'],
       allSprints: [{ sprintId: "default", sprintName: "Default" }],
@@ -834,17 +834,17 @@ export default {
         //   sprintId: this.updatedTask.sprintId
         // });
         this.component = "success-popup";
-        setTimeout(() => {
-          this.close();
-        }, 2000);
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
         console.log("update sprint status response", response);
       } catch (e) {
         console.log("Error updating a sprint", e);
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 2000);
+        // this.errorMessage = e.response.data;
+        // this.component = "error-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
       }
     },
     async changeAssignee() {
@@ -863,17 +863,17 @@ export default {
             }
           }
         );
-        this.component = "success-popup";
-        setTimeout(() => {
-          this.close();
-        }, 2000);
+        // this.component = "success-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
         console.log("update task status response", response);
       } catch (e) {
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 2000);
+        // this.errorMessage = e.response.data;
+        // this.component = "error-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
         console.log("Error updating a status", e);
       }
     },
@@ -893,18 +893,17 @@ export default {
             }
           }
         );
-        // this.$emit("listenChange");
-        this.component = "success-popup";
-        setTimeout(() => {
-          this.close();
-        }, 2000);
+        // this.component = "success-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
         console.log("edit task response", response);
       } catch (e) {
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 2000);
+        // this.errorMessage = e.response.data;
+        // this.component = "error-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
         console.log("Error updating a note", e);
       }
     },
@@ -925,22 +924,21 @@ export default {
             }
           }
         );
-        this.component = "success-popup";
-        setTimeout(() => {
-          this.close();
-        }, 2000);
+        // this.component = "success-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
         console.log("UPDATED", this.$store.state.task.myTasks);
-        this.$emit("listenChange");
         this.editTask = true;
         console.log("edit task response", response);
       } catch (e) {
         console.log("Error updating the name", e);
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 2000);
-        this.editTask = true;
+        // this.errorMessage = e.response.data;
+        // this.component = "error-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
+        // this.editTask = true;
       }
     },
     dueDateCheck(task) {
@@ -1065,9 +1063,9 @@ export default {
           }
         );
         // this.component = "success-popup";
-        setTimeout(() => {
-          this.close();
-        }, 2000);
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
         console.log("update task dates response", response);
       } catch (e) {
         // this.errorMessage = e.response.data;
@@ -1100,6 +1098,42 @@ export default {
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 10);
         return stringDate;
+      }
+    },
+    async taskFileUpload() {
+      this.uploadLoading = true;
+      let formData = new FormData();
+      formData.append("files", this.files);
+      formData.append("type", "profileImage");
+      formData.append("taskType", "project");
+      this.files = null;
+
+      let fileResponse;
+      try {
+        fileResponse = await this.$axios.$post(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
+          formData,
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.$store.dispatch("task/appendTaskFile", fileResponse.data);
+        this.uploadLoading = false;
+        // this.component = "success-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
+        console.log("file response", this.taskFiles);
+      } catch (e) {
+        console.log("Error adding group file", e);
+        // this.errorMessage = e.response.data;
+        // this.component = "error-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
+        this.uploadLoading = false;
       }
     }
   },

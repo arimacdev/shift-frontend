@@ -34,6 +34,9 @@ export const mutations = {
   SET_TASK_FILES(state, files) {
     state.taskFiles = files;
   },
+  APPEND_TASK_FILE(state, taskFile) {
+    state.taskFiles.push(taskFile);
+  },
 };
 
 export const actions = {
@@ -160,6 +163,10 @@ export const actions = {
     } catch (error) {
       console.log('Error fetching data', error);
     }
+  },
+
+  appendTaskFile({ commit }, taskFile) {
+    commit('APPEND_TASK_FILE', taskFile);
   },
 };
 
