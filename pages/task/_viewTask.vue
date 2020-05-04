@@ -598,7 +598,7 @@
                       <v-list-item-content>
                         <v-list-item-title class="fileTitles">
                           {{
-                          taskUser
+                          getUserDetails(file.taskFileCreator)
                           }}
                         </v-list-item-title>
 
@@ -656,6 +656,7 @@ export default {
       updatedIssue: "",
       updatedStatus: "",
       issueTypes: "",
+      componentUsers: [],
       files: [],
       // issueTypes: ['development', 'qa', 'bug', 'operational'],
       // taskStatuses: ['open', 'pending', 'closed'],
@@ -1163,11 +1164,50 @@ export default {
         // }, 2000);
         console.log("Error deleting task", e);
       }
+    },
+
+    getUserDetails(userId) {
+      console.log("checkuser", userId, this.selectedTaskUser.userId);
+
+      if (userId == this.selectedTaskUser.userId) {
+        return (
+          this.selectedTaskUser.firstName + " " + this.selectedTaskUser.lastName
+        );
+      } else if (
+        userId != this.selectedTaskUser.userId &&
+        this.componentUsers.length === 0
+      ) {
+        // this.$store.dispatch("user/setComponentUser", userId);
+        let fileUser;
+        const index = this.componentUsers.findIndex(i => i.userId === userId);
+        if (index === -1) {
+          this.$axios
+            .get(`/users/${userId}`)
+            .then(response => {
+              console.log("component user---->", response.data.data);
+              // this.userList = response.data.data;
+              console.log("another user", response.data.data);
+              this.componentUsers.push(response.data.data);
+              let fileUser = response.data.data;
+              return fileUser.firstName;
+            })
+            .catch(e => {
+              console.log("error", e);
+            });
+        }
+      } else {
+        const index = this.componentUsers.findIndex(i => i.userId === userId);
+        if (index > -1) {
+          const user = this.componentUsers[index];
+          return user.firstName + " " + user.lastName;
+        }
+      }
     }
   },
   computed: {
     ...mapState({
       selectedTaskUser: state => state.user.selectedTaskUser,
+      componentUser: state => state.user.componentUser,
       people: state => state.task.userCompletionTasks,
       projectSprints: state => state.sprints.sprint.sprints,
       taskFiles: state => state.task.taskFiles,
