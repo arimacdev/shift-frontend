@@ -309,7 +309,7 @@
                       <v-list-item-icon>
                         <v-icon size="30" color="#0BAFFF">mdi-checkbox-multiple-blank-outline</v-icon>
                       </v-list-item-icon>
-                      <v-list-item-title class="viewTaskFontColors">Task type</v-list-item-title>
+                      <v-list-item-title class="viewTaskFontColors">Task Type</v-list-item-title>
                     </v-list-item>
                     <v-list-item-content class="parentChildTaskList">
                       <!-- ---------- task list --------- -->
@@ -319,14 +319,14 @@
                             <v-select
                               dense
                               v-model="issueType"
-                              :items="items"
+                              :items="issueTypeList"
                               background-color="#EDF0F5"
                               item-text="name"
                               item-value="id"
                               label="Task type"
                               outlined
-                              class="createFormElements"
-                              @change="click"
+                              class="createFormElements"  
+                              @change="updateIssueType"                            
                             ></v-select>
                           </v-col>
                           <v-col sm="6" md="6">
@@ -341,6 +341,7 @@
                               label="Task status"
                               outlined
                               class="createFormElements"
+                              @change="updateStatus"
                             ></v-select>
                             <v-select
                               dense
@@ -353,6 +354,7 @@
                               label="Task status"
                               outlined
                               class="createFormElements"
+                              @change="updateStatus"
                             ></v-select>
                             <v-select
                               dense
@@ -365,6 +367,7 @@
                               label="Task status"
                               outlined
                               class="createFormElements"
+                              @change="updateStatus"
                             ></v-select>
                             <v-select
                               dense
@@ -377,6 +380,7 @@
                               label="Task status"
                               outlined
                               class="createFormElements"
+                              @change="updateStatus"
                             ></v-select>
                             <v-select
                               dense
@@ -389,6 +393,7 @@
                               label="Task status"
                               outlined
                               class="createFormElements"
+                              @change="updateStatus"
                             ></v-select>
                             <v-select
                               dense
@@ -401,6 +406,7 @@
                               label="Task status"
                               outlined
                               class="createFormElements"
+                              @change="updateStatus"
                             ></v-select>
                             <v-select
                               dense
@@ -413,6 +419,7 @@
                               label="Task status"
                               outlined
                               class="createFormElements"
+                              @change="updateStatus"
                             ></v-select>
                           </v-col>
                         </v-row>
@@ -713,6 +720,7 @@ export default {
       updatedIssue: "",
       updatedStatus: "",
       issueTypes: "",
+      issueStatus: "",
       componentUsers: [],
       files: [],
       component: "",
@@ -723,7 +731,7 @@ export default {
       allSprints: [{ sprintId: "default", sprintName: "Default" }],
       fetchSprintCount: 0,
       fetchFilesCount: 0,
-      items: [
+      issueTypeList: [
         { name: "Development", id: "development" },
         { name: "QA", id: "qa" },
         { name: "Design", id: "design" },
@@ -735,7 +743,7 @@ export default {
       development: [
         { name: "Pending", id: "pending" },
         { name: "On hold", id: "onHold" },
-        { name: "Open", id: "cancel" },
+        { name: "Open", id: "open" },
         { name: "Completed", id: "completed" },
         { name: "Implementing", id: "implementing" },
         { name: "Deployed", id: "deployed" },
@@ -874,7 +882,66 @@ export default {
     }
   },
   methods: {
-    // ------- popup close ----------
+    async updateStatus() {
+      console.log("onchange updated status ->");
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            taskStatus: this.updatedTask.taskStatus,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+        console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+        console.log("Error updating a status", e);
+      }
+    },
+    async updateIssueType() {
+      console.log("onchange updated status ->");
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            issueType: this.updatedIssue,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+        console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+        console.log("Error updating a status", e);
+      }
+    },
     close() {
       this.component = "";
     },
@@ -894,10 +961,6 @@ export default {
             }
           }
         );
-        // this.$store.dispatch("task/updateSprintOfATask", {
-        //   taskId: this.task.taskId,
-        //   sprintId: this.updatedTask.sprintId
-        // });
         this.component = "success-popup";
         this.successMessage = "Sprint successfully updated";
         setTimeout(() => {
@@ -1344,6 +1407,10 @@ export default {
     },
     taskStatus: {
       get() {
+        // if (this.task.taskStatus !== this.issueStatus)
+        //   return this.task.taskStatus;
+        // this.issueStatus = this.task.taskStatus;
+        // return this.issueStatus;
         return this.task.taskStatus;
       },
       set(value) {
