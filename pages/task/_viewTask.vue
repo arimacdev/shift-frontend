@@ -706,7 +706,10 @@ export default {
       updatedRemindOnDate: null,
       taskAssignee: "",
       task: {},
-      updatedTask: {},
+      updatedTaskName: "",
+      updatedTask: {
+        taskName: ""
+      },
       updatedIssue: "",
       updatedStatus: "",
       issueTypes: "",
@@ -974,7 +977,6 @@ export default {
       }
     },
     async saveEditTaskName() {
-      console.log("NAMEEEE", this.$store.state.task.myTasks);
       console.log("updatedTaskName ->", this.updatedTask.taskName);
       let response;
       try {
@@ -1332,7 +1334,9 @@ export default {
 
     taskName: {
       get() {
-        return this.task.taskName;
+        if (this.updatedTask.taskName == "") {
+          return this.task.taskName;
+        } else return this.updatedTask.taskName;
       },
       set(name) {
         this.updatedTask.taskName = name;
