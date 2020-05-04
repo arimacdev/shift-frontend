@@ -468,7 +468,7 @@
                           ></v-textarea>
                         </v-list-item-title>
                         <div class="noteUpdateButton">
-                          <v-btn class="ma-2" small rounded depressed color="#0BAFFF" dark>
+                          <v-btn class="ma-2" small rounded depressed color="#0BAFFF" dark @click="updateTaskNote">
                             <v-icon left>mdi-pencil</v-icon>Update note
                           </v-btn>
                         </div>
@@ -843,6 +843,37 @@ export default {
         setTimeout(() => {
           this.close();
         }, 2000);
+      }
+    },
+    async updateTaskNote() {
+      console.log("updatedTaskValue ->", this.updatedTask.taskNotes);
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            taskNotes: this.updatedTask.taskNote,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        // this.$emit("listenChange");
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+        console.log("edit task response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+        console.log("Error updating a note", e);
       }
     },
     async saveEditTaskName() {
