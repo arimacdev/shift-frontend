@@ -502,7 +502,6 @@
                       v-model="taskDueDate"
                       label="Add due date"
                       right
-                      @click="click"
                     />
                   </div>
                   <!-- ----------- Reminder date section --------- -->
@@ -517,7 +516,7 @@
                   <div class="viewTaskPickerDiv">
                     <VueCtkDateTimePicker
                       color="#3f51b5"
-                      id="duePicker"
+                      id="reminderPicker"
                       class
                       v-model="taskRemindOnDate"
                       label="Add remind date"
@@ -541,15 +540,23 @@
                       outlined
                       prepend-inner-icon="mdi-upload-outline"
                       prepend-icon
+                      multiple
                       class
                       chips
-                      multiple
                       dense
                     ></v-file-input>
                   </div>
                   <div class="viewTaskPickerDiv">
                     <div class="fileUploadButton taskViewFileUploadButton">
-                      <v-btn class="ma-2" x-small rounded depressed color="#0BAFFF" dark>
+                      <v-btn
+                        @click="taskFileUpload()"
+                        class="ma-2"
+                        x-small
+                        rounded
+                        depressed
+                        color="#0BAFFF"
+                        dark
+                      >
                         <v-icon left>mdi-upload</v-icon>Upload
                       </v-btn>
                       <v-progress-circular
@@ -562,14 +569,20 @@
                   <!-- ------------- file viewer ------------ -->
                   <div class="filesViewDiv" v-for="(file, index) in this.taskFiles" :key="index">
                     <v-list-item>
-                      <v-list-item-action>
+                      <div>
                         <v-icon size="30">mdi-file-document-outline</v-icon>
-                      </v-list-item-action>
+                      </div>
                       <v-list-item-content>
                         <v-list-item-title class="fileTitles">
-                          {{
-                          file.taskFileName
-                          }}
+                          <a
+                            style="text-decoration: none;"
+                            :href="file.taskFileUrl"
+                            target="_blank"
+                          >
+                            {{
+                            file.taskFileName
+                            }}
+                          </a>
                         </v-list-item-title>
                         <v-list-item-subtitle class="fileSubTitles">125.54kB</v-list-item-subtitle>
                       </v-list-item-content>
@@ -585,9 +598,18 @@
                           }}
                         </v-list-item-subtitle>
                       </v-list-item-content>
-                      <v-list-item-action>
-                        <v-icon size="25" color="#FF6161">mdi-delete-circle</v-icon>
-                      </v-list-item-action>
+                      <div>
+                        <a style="text-decoration: none;" :href="file.taskFileUrl" target="_blank">
+                          <v-icon size="25" color="#0BAFFF">mdi-cloud-download</v-icon>
+                        </a>
+                      </div>
+                      <div>
+                        <v-icon
+                          @click="handleFileDelete(file.taskFileId)"
+                          size="25"
+                          color="#FF6161"
+                        >mdi-delete-circle</v-icon>
+                      </div>
                     </v-list-item>
                   </div>
                 </div>
@@ -636,6 +658,7 @@ export default {
       sprints: [],
       editTask: true,
       task: {},
+      files: [],
       taskObject: {},
       updatedIssue: "",
       updatedStatus: "",
@@ -643,13 +666,14 @@ export default {
       component: "",
       errorMessage: "",
       successMessage: "",
+      updatedTaskDueDate: null,
+      updatedRemindOnDate: null,
+      uploadLoading: false,
       updatedTask: {
         taskName: "",
         taskAssignee: "",
         taskNotes: "",
-        taskStatus: "",
-        taskRemindOnDate: "",
-        taskDueDate: ""
+        taskStatus: ""
       },
       // taskStatus: this.task.taskStatus,
       // issueType: this.task.issueType,
@@ -921,7 +945,7 @@ export default {
       let remindDate;
       if (type === "dueDate") {
         console.log("inside due date");
-        dueDate = new Date(this.updatedTask.taskDueDateAt);
+        dueDate = new Date(this.updatedTaskDueDate);
         const isoDate = new Date(
           dueDate.getTime() - dueDate.getTimezoneOffset() * 60000
         ).toISOString();
@@ -930,7 +954,7 @@ export default {
         remindDate = this.task.taskReminderAt;
       } else {
         console.log("inside remind on date");
-        remindDate = new Date(this.updatedTask.taskRemindOnDate);
+        remindDate = new Date(this.updatedRemindOnDate);
         const isoDate = new Date(
           remindDate.getTime() - remindDate.getTimezoneOffset() * 60000
         ).toISOString();
@@ -955,20 +979,90 @@ export default {
             }
           }
         );
-        this.$emit("listenChange");
+        // this.component = "success-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
+        console.log("update task dates response", response);
+      } catch (e) {
+        // this.errorMessage = e.response.data;
+        // this.component = "error-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
+        console.log("Error updating a status", e);
+      }
+    },
+    // --------- upload task files ----------
+
+    async taskFileUpload() {
+      if (this.files != null) {
+        for (let index = 0; index < this.files.length; ++index) {
+          this.uploadLoading = true;
+          let formData = new FormData();
+          formData.append("files", this.files[index]);
+          formData.append("type", "profileImage");
+          formData.append("taskType", "project");
+          let fileResponse;
+          try {
+            fileResponse = await this.$axios.$post(
+              `/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
+              formData,
+              {
+                headers: {
+                  user: this.userId
+                }
+              }
+            );
+            this.$store.dispatch("task/appendTaskFile", fileResponse.data);
+            this.uploadLoading = false;
+            this.component = "success-popup";
+            this.successMessage = "File(s) successfully uploaded";
+            setTimeout(() => {
+              this.close();
+            }, 3000);
+            console.log("file response", this.taskFiles);
+          } catch (e) {
+            console.log("Error adding group file", e);
+            this.errorMessage = e.response.data;
+            this.component = "error-popup";
+            setTimeout(() => {
+              this.close();
+            }, 3000);
+            this.uploadLoading = false;
+          }
+        }
+      }
+      this.files = null;
+    },
+    // ------------ file remove ---------
+    async handleFileDelete(taskFileId) {
+      let response;
+      try {
+        response = await this.$axios.$delete(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}/upload/${taskFileId}`,
+          {
+            data: {},
+            headers: {
+              user: this.userId,
+              taskType: "project"
+            }
+          }
+        );
+        console.log(response.data);
+        this.$store.dispatch("task/removeTaskFile", taskFileId);
         this.component = "success-popup";
-        this.successMessage = "Date successfully updated";
+        this.successMessage = "File successfully deleted";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("update task dates response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error updating a status", e);
+        console.log("Error deleting task", e);
       }
     },
     // ------- popup close ----------
@@ -1148,40 +1242,29 @@ export default {
         this.updatedTask.taskNote = value;
       }
     },
-    // taskDueDate: {
-    //   get() {
-    //     return this.task.taskDueDateAt;
-    //   },
-    //   set(value) {
-    //     console.log("updated task due ->", value);
-    //     this.updatedTask.taskDueDateAt = value;
-    //   }
-    // },
+
     taskDueDate: {
       get() {
-        if (
-          this.task.taskDueDateAt === null ||
-          this.task.taskDueDateAt === "1970-01-01T05:30:00.000+0000"
-        )
-          return "Add Due Date";
-        let stringDate = this.task.taskDueDateAt + " ";
-        stringDate = stringDate.toString();
-        stringDate = stringDate.slice(0, 16);
-        return stringDate;
+        if (this.updatedTaskDueDate == null)
+          this.updatedTaskDueDate = this.task.taskDueDateAt;
+        this.updateTaskDates("dueDate");
+        return this.updatedTaskDueDate;
       },
       set(value) {
-        console.log("updated task due ->", value);
-        this.updatedTask.taskDueDateAt = value;
-        // this.updateTaskDates("dueDate");
+        console.log("set updated", value);
+        this.updatedTaskDueDate = value;
       }
     },
     taskRemindOnDate: {
       get() {
-        return this.task.taskReminderAt;
+        if (this.updatedRemindOnDate == null)
+          this.updatedRemindOnDate = this.task.taskReminderAt;
+        this.updateTaskDates("remindOn");
+        return this.updatedRemindOnDate;
       },
       set(value) {
         console.log("updated remind on ->", value);
-        this.updatedTask.taskReminderAt = value;
+        this.updatedRemindOnDate = value;
       }
     }
   }

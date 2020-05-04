@@ -39,7 +39,12 @@
             <v-col sm="2" md="2">
               <!-- <v-select label="Task status" dense dark background-color="#0BAFFF" solo></v-select> -->
               <div class="taskStatusDropdown">
-                <select v-model="taskStatus" class="viewTaskStatusDropDown" :class="statusCheck()" @change="updateStatus">
+                <select
+                  v-model="taskStatus"
+                  class="viewTaskStatusDropDown"
+                  :class="statusCheck()"
+                  @change="updateStatus"
+                >
                   <option key="pending" value="pending">Pending</option>
                   <option key="implementing" value="implementing">Implementing</option>
                   <option key="qa" value="qa">QA</option>
@@ -468,7 +473,15 @@
                           ></v-textarea>
                         </v-list-item-title>
                         <div class="noteUpdateButton">
-                          <v-btn class="ma-2" small rounded depressed color="#0BAFFF" dark @click="updateTaskNote">
+                          <v-btn
+                            class="ma-2"
+                            small
+                            rounded
+                            depressed
+                            color="#0BAFFF"
+                            dark
+                            @click="updateTaskNote"
+                          >
                             <v-icon left>mdi-pencil</v-icon>Update note
                           </v-btn>
                         </div>
@@ -489,7 +502,11 @@
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
                       <v-list-item-title>
-                        <select v-model="taskAssignee" class="rightColumnItemsText" @change="changeAssignee">
+                        <select
+                          v-model="taskAssignee"
+                          class="rightColumnItemsText"
+                          @change="changeAssignee"
+                        >
                           <!-- <option>Naveen Perera</option> -->
                           <option value disabled>
                             {{
@@ -540,7 +557,7 @@
                   <div class="viewTaskPickerDiv">
                     <VueCtkDateTimePicker
                       color="#3f51b5"
-                      id="duePicker"
+                      id="reminderPicker"
                       class
                       v-model="taskRemindOnDate"
                       label="Add remind date"
@@ -566,12 +583,21 @@
                       prepend-icon
                       class
                       chips
+                      multiple
                       dense
                     ></v-file-input>
                   </div>
                   <div class="viewTaskPickerDiv">
                     <div class="fileUploadButton taskViewFileUploadButton">
-                      <v-btn class="ma-2" x-small rounded depressed color="#0BAFFF" dark @click="taskFileUpload()">
+                      <v-btn
+                        class="ma-2"
+                        x-small
+                        rounded
+                        depressed
+                        color="#0BAFFF"
+                        dark
+                        @click="taskFileUpload()"
+                      >
                         <v-icon left>mdi-upload</v-icon>Upload
                       </v-btn>
                       <v-progress-circular
@@ -609,7 +635,11 @@
                         </v-list-item-subtitle>
                       </v-list-item-content>
                       <v-list-item-action>
-                        <v-icon size="25" color="#FF6161" @click="handleFileDelete(file.taskFileId)">mdi-delete-circle</v-icon>                        
+                        <v-icon
+                          size="25"
+                          color="#FF6161"
+                          @click="handleFileDelete(file.taskFileId)"
+                        >mdi-delete-circle</v-icon>
                       </v-list-item-action>
                     </v-list-item>
                   </div>
@@ -1101,40 +1131,44 @@ export default {
       }
     },
     async taskFileUpload() {
-      this.uploadLoading = true;
-      let formData = new FormData();
-      formData.append("files", this.files);
-      formData.append("type", "profileImage");
-      formData.append("taskType", "project");
-      this.files = null;
-
-      let fileResponse;
-      try {
-        fileResponse = await this.$axios.$post(
-          `/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
-          formData,
-          {
-            headers: {
-              user: this.userId
-            }
+      if (this.files != null) {
+        for (let index = 0; index < this.files.length; ++index) {
+          this.uploadLoading = true;
+          let formData = new FormData();
+          formData.append("files", this.files[index]);
+          formData.append("type", "profileImage");
+          formData.append("taskType", "project");
+          let fileResponse;
+          try {
+            fileResponse = await this.$axios.$post(
+              `/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
+              formData,
+              {
+                headers: {
+                  user: this.userId
+                }
+              }
+            );
+            this.$store.dispatch("task/appendTaskFile", fileResponse.data);
+            this.uploadLoading = false;
+            this.component = "success-popup";
+            this.successMessage = "File(s) successfully uploaded";
+            setTimeout(() => {
+              this.close();
+            }, 3000);
+            console.log("file response", this.taskFiles);
+          } catch (e) {
+            console.log("Error adding group file", e);
+            this.errorMessage = e.response.data;
+            this.component = "error-popup";
+            setTimeout(() => {
+              this.close();
+            }, 3000);
+            this.uploadLoading = false;
           }
-        );
-        this.$store.dispatch("task/appendTaskFile", fileResponse.data);
-        this.uploadLoading = false;
-        // this.component = "success-popup";
-        // setTimeout(() => {
-        //   this.close();
-        // }, 2000);
-        console.log("file response", this.taskFiles);
-      } catch (e) {
-        console.log("Error adding group file", e);
-        // this.errorMessage = e.response.data;
-        // this.component = "error-popup";
-        // setTimeout(() => {
-        //   this.close();
-        // }, 2000);
-        this.uploadLoading = false;
+        }
       }
+      this.files = null;
     },
     async handleFileDelete(taskFileId) {
       let response;
