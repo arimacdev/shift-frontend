@@ -649,6 +649,8 @@ export default {
       editTask: true,
       parentTask: {},
       parentProfile: {},
+      updatedTaskDueDate: null,
+      updatedRemindOnDate: null,
       taskAssignee: "",
       task: {},
       updatedTask: {},
@@ -1023,6 +1025,59 @@ export default {
       }
       // return [];
     },
+    async updateTaskDates(type) {
+      let dueDate;
+      let remindDate;
+      if (type === "dueDate") {
+        console.log("inside due date");
+        dueDate = new Date(this.updatedTaskDueDate);
+        const isoDate = new Date(
+          dueDate.getTime() - dueDate.getTimezoneOffset() * 60000
+        ).toISOString();
+        console.log("iso edit due date", isoDate);
+        dueDate = isoDate;
+        remindDate = this.task.taskReminderAt;
+      } else {
+        console.log("inside remind on date");
+        remindDate = new Date(this.updatedRemindOnDate);
+        const isoDate = new Date(
+          remindDate.getTime() - remindDate.getTimezoneOffset() * 60000
+        ).toISOString();
+        console.log("iso edit remind date", isoDate);
+        dueDate = this.task.taskDueDateAt;
+        remindDate = isoDate;
+      }
+      console.log("dueDate", dueDate);
+      console.log("remindDate", remindDate);
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            taskDueDate: dueDate,
+            taskRemindOnDate: remindDate,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        // this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+        console.log("update task dates response", response);
+      } catch (e) {
+        // this.errorMessage = e.response.data;
+        // this.component = "error-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 2000);
+        console.log("Error updating a status", e);
+      }
+    },
     getProjectDates(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
@@ -1147,20 +1202,26 @@ export default {
     },
     taskDueDate: {
       get() {
-        return this.task.taskDueDateAt;
+        if (this.updatedTaskDueDate == null)
+          this.updatedTaskDueDate = this.task.taskDueDateAt;
+        this.updateTaskDates("dueDate");
+        return this.updatedTaskDueDate;
       },
       set(value) {
-        console.log("updated task due ->", value);
-        this.updatedTask.taskDueDateAt = value;
+        console.log("set updated", value);
+        this.updatedTaskDueDate = value;
       }
     },
     taskRemindOnDate: {
       get() {
-        return this.task.taskReminderAt;
+        if (this.updatedRemindOnDate == null)
+          this.updatedRemindOnDate = this.task.taskReminderAt;
+        this.updateTaskDates("remindOn");
+        return this.updatedRemindOnDate;
       },
       set(value) {
         console.log("updated remind on ->", value);
-        this.updatedTask.taskReminderAt = value;
+        this.updatedRemindOnDate = value;
       }
     }
   }
