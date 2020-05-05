@@ -25,40 +25,30 @@
               </div>
             </v-col>
             <v-col sm="8" md="8" class="taskViewLinksDiv">
-              <a
-                :href="'http://localhost:3000/projects/' + this.projectId"
+              <nuxt-link
+                :to="'/projects/'  +  this.projectId"
                 style="text-decoration: none;"
                 target="_blank"
               >
                 <v-icon size="22" color="#0083E2">mdi-folder-outline</v-icon>Project
-              </a>
-              /
-              <a
+              </nuxt-link>/
+              <nuxt-link
                 v-if="task.isParent == false"
-                :href="
-                  'http://localhost:3000/task/' +
-                    this.taskObject.parentTask.taskId +
-                    '/?project=' +
-                    this.projectId
-                "
-                style="text-decoration: none;"
                 target="_blank"
+                :to="'/task/' +    this.taskObject.parentTask.taskId + '/?project=' +  this.projectId"
+                style="text-decoration: none;"
               >
                 <v-icon size="22" color="#0083E2">mdi-calendar-check</v-icon>Parent Task
-              </a>
+              </nuxt-link>
               <span v-if="task.isParent == false">/</span>
-              <a
-                :href="
-                  'http://localhost:3000/task/' +
-                    this.task.taskId +
-                    '/?project=' +
-                    this.projectId
-                "
-                style="text-decoration: none;"
+
+              <nuxt-link
+                :to="'/task/' +  this.task.taskId + '/?project=' +  this.projectId"
                 target="_blank"
+                style="text-decoration: none; color: #B9B9B9"
               >
-                <v-icon size="22" color="#0083E2">mdi-calendar-check-outline</v-icon>Current Task
-              </a>
+                <v-icon size="22" color="#B9B9B9">mdi-calendar-check-outline</v-icon>Current Task
+              </nuxt-link>
             </v-col>
           </v-row>
           <v-row class="mb-12" no-gutters>
@@ -83,12 +73,18 @@
                   />
                 </v-col>
                 <v-col sm="1" md="1" class="taskEditIconCol">
-                  <v-icon
-                    size="25"
-                    color="#424F64"
-                    class="editIcon"
-                    @click="EditTaskName"
-                  >mdi-pencil-circle</v-icon>
+                  <v-tooltip left>
+                    <template v-slot:activator="{ on }">
+                      <v-icon
+                        v-on="on"
+                        size="25"
+                        color="#424F64"
+                        class="editIcon"
+                        @click="EditTaskName"
+                      >mdi-pencil-circle</v-icon>
+                    </template>
+                    <span>Edit task name</span>
+                  </v-tooltip>
                 </v-col>
               </v-row>
               <v-divider class="nameRangeDevider"></v-divider>
@@ -190,7 +186,7 @@
                           </v-list-item-icon>
                           <v-list-item-title class="viewTaskFontColors">
                             Child Tasks
-                            <span>- {{ taskObject.childTasks.length }}Task(s)</span>
+                            <span>- {{ taskObject.childTasks.length }} Task(s)</span>
                           </v-list-item-title>
                         </template>
 
@@ -503,18 +499,29 @@
                     </v-list-item-icon>
                     <v-list-item-content>
                       <!-- <v-list-item-subtitle class="rightColumnItemsSubTitle">Due Date</v-list-item-subtitle> -->
-                      <datetime type="datetime" v-model="taskDue" zone="local" input-id="dueDate">
-                        <label for="dueDate" slot="before" class="tabListItemsTextDue">
-                          <span class="dialogPickerNewText">Due Date</span>
-                        </label>
-                        <template slot="button-cancel">
-                          <fa :icon="['far', 'times']"></fa>Cancel
+                      <v-tooltip left>
+                        <template v-slot:activator="{ on }">
+                          <datetime
+                            v-on="on"
+                            type="datetime"
+                            v-model="taskDue"
+                            zone="local"
+                            input-id="dueDate"
+                          >
+                            <label for="dueDate" slot="before" class="tabListItemsTextDue">
+                              <span class="dialogPickerNewText">Due Date</span>
+                            </label>
+                            <template slot="button-cancel">
+                              <fa :icon="['far', 'times']"></fa>Cancel
+                            </template>
+                            <template slot="button-confirm">
+                              <fa :icon="['fas', 'check-circle']"></fa>
+                              <p>Confirm</p>
+                            </template>
+                          </datetime>
                         </template>
-                        <template slot="button-confirm">
-                          <fa :icon="['fas', 'check-circle']"></fa>
-                          <p>Confirm</p>
-                        </template>
-                      </datetime>
+                        <span>Update due date</span>
+                      </v-tooltip>
                     </v-list-item-content>
                   </v-list-item>
                   <!-- <div class="viewTaskPickerDiv"> <VueCtkDateTimePicker
@@ -532,23 +539,29 @@
                     </v-list-item-icon>
                     <v-list-item-content>
                       <!-- <v-list-item-subtitle class="rightColumnItemsSubTitle">Remind Date</v-list-item-subtitle> -->
-                      <datetime
-                        type="datetime"
-                        v-model="taskRemindOn"
-                        zone="local"
-                        input-id="remindDate"
-                      >
-                        <label for="remindDate" slot="before" class="tabListItemsTextDue">
-                          <span class="dialogPickerNewText">Remind Date</span>
-                        </label>
-                        <template slot="button-cancel">
-                          <fa :icon="['far', 'times']"></fa>Cancel
+                      <v-tooltip left>
+                        <template v-slot:activator="{ on }">
+                          <datetime
+                            v-on="on"
+                            type="datetime"
+                            v-model="taskRemindOn"
+                            zone="local"
+                            input-id="remindDate"
+                          >
+                            <label for="remindDate" slot="before" class="tabListItemsTextDue">
+                              <span class="dialogPickerNewText">Remind Date</span>
+                            </label>
+                            <template slot="button-cancel">
+                              <fa :icon="['far', 'times']"></fa>Cancel
+                            </template>
+                            <template slot="button-confirm">
+                              <fa :icon="['fas', 'check-circle']"></fa>
+                              <p>Confirm</p>
+                            </template>
+                          </datetime>
                         </template>
-                        <template slot="button-confirm">
-                          <fa :icon="['fas', 'check-circle']"></fa>
-                          <p>Confirm</p>
-                        </template>
-                      </datetime>
+                        <span>Update remind date</span>
+                      </v-tooltip>
                     </v-list-item-content>
                   </v-list-item>
                   <!-- <div class="viewTaskPickerDiv"> <VueCtkDateTimePicker

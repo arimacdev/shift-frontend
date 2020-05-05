@@ -18,14 +18,61 @@
             this.taskId
             }}
           </v-list-item-title>
-          <v-list-item-title class="font-weight-bold">
-            {{
-            this.task.taskAssignee
-            }}
-          </v-list-item-title>
+          <v-list-item-action class="viewTaskDelete">
+            <v-tooltip left>
+              <template v-slot:activator="{ on }">
+                <v-icon
+                  size="30px"
+                  v-on="on"
+                  @click="taskDeleteDialog = true"
+                  color="#FFFFFF"
+                >mdi-delete-circle</v-icon>
+              </template>
+              <span>Delete task</span>
+            </v-tooltip>
+          </v-list-item-action>
         </div>
       </div>
     </v-toolbar>
+    <!-- --------------------- delete task popup --------------- -->
+
+    <v-dialog v-model="taskDeleteDialog" max-width="380">
+      <v-card>
+        <div class="popupConfirmHeadline">
+          <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
+          <br />
+          <span class="alertPopupTitle">Delete Task</span>
+          <br />
+          <span class="alertPopupText">
+            You're about to permanantly delete this task, its comments and
+            attachments, and all of its data. If you're not sure, you can
+            cancel this action.
+          </span>
+        </div>
+
+        <div class="popupBottom">
+          <v-card-actions>
+            <v-spacer></v-spacer>
+
+            <v-btn color="success" width="100px" @click="taskDeleteDialog = false">Cancel</v-btn>
+            <v-spacer></v-spacer>
+            <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
+            <v-btn
+              color="error"
+              width="100px"
+              @click="
+                      taskDeleteDialog = false;
+                      taskDialog = false;
+                      deleteTask();
+                    "
+            >Delete</v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </div>
+      </v-card>
+    </v-dialog>
+
+    <!-- ---------------------- end popup ------------------ -->
     <div class="viewTaskContent overflow-y-auto">
       <div class="taskRestFormDiv">
         <form>
@@ -53,43 +100,28 @@
                   <option key="deployed" value="deployed">Deployed</option>
                   <option key="closed" value="closed">Closed</option>
                 </select>
-              </div> -->
+              </div>-->
             </v-col>
             <v-col sm="8" md="8" class="taskViewLinksDiv">
-              <a
-                :href="'http://localhost:3000/projects/' + this.projectId"
-                style="text-decoration: none;"
-                target="_blank"
-              >
+              <nuxt-link :to="'/projects/'  +  this.projectId" style="text-decoration: none;">
                 <v-icon size="22" color="#0083E2">mdi-folder-outline</v-icon>Project
-              </a>
-              /
-              <a
+              </nuxt-link>/
+              <nuxt-link
                 v-if="this.task.isParent == false"
-                :href="
-                  'http://localhost:3000/task/' +
-                    this.parentTask.taskId +
-                    '/?project=' +
-                    this.projectId
-                "
+                :to="'/task/' +   this.parentTask.taskId + '/?project=' +  this.projectId"
                 style="text-decoration: none;"
-                target="_blank"
               >
                 <v-icon size="22" color="#0083E2">mdi-calendar-check</v-icon>Parent Task
-              </a>
+              </nuxt-link>
               <span v-if="this.task.isParent == false">/</span>
-              <a
-                :href="
-                  'http://localhost:3000/task/' +
-                    this.task.taskId +
-                    '/?project=' +
-                    this.projectId
-                "
-                style="text-decoration: none;"
-                target="_blank"
+
+              <nuxt-link
+                :to="'/task/' +  this.task.taskId + '/?project=' +  this.projectId"
+                style="text-decoration: none; color: #B9B9B9"
+                class="currentTaskColor"
               >
-                <v-icon size="22" color="#0083E2">mdi-calendar-check-outline</v-icon>Current Task
-              </a>
+                <v-icon size="22" color="#B9B9B9">mdi-calendar-check-outline</v-icon>Current Task
+              </nuxt-link>
             </v-col>
           </v-row>
           <v-row class="mb-12" no-gutters>
@@ -114,12 +146,18 @@
                   />
                 </v-col>
                 <v-col sm="1" md="1" class="taskEditIconCol">
-                  <v-icon
-                    size="25"
-                    color="#424F64"
-                    class="editIcon"
-                    @click="EditTaskName"
-                  >mdi-pencil-circle</v-icon>
+                  <v-tooltip left>
+                    <template v-slot:activator="{ on }">
+                      <v-icon
+                        v-on="on"
+                        size="25"
+                        color="#424F64"
+                        class="editIcon"
+                        @click="EditTaskName"
+                      >mdi-pencil-circle</v-icon>
+                    </template>
+                    <span>Edit task name</span>
+                  </v-tooltip>
                 </v-col>
               </v-row>
               <v-divider class="nameRangeDevider"></v-divider>
@@ -325,8 +363,8 @@
                               item-value="id"
                               label="Task type"
                               outlined
-                              class="createFormElements"  
-                              @change="updateIssueType"                            
+                              class="createFormElements"
+                              @change="updateIssueType"
                             ></v-select>
                           </v-col>
                           <v-col sm="6" md="6">
@@ -702,6 +740,7 @@ export default {
   },
   data() {
     return {
+      taskDeleteDialog: false,
       taskId: "",
       projectId: "",
       userId: "",
@@ -882,6 +921,34 @@ export default {
     }
   },
   methods: {
+    async deleteTask() {
+      let response;
+      try {
+        response = await this.$axios.$delete(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            data: {},
+            headers: {
+              user: this.userId,
+              type: "project"
+            }
+          }
+        );
+        // this.component = 'success-popup'
+        this.$emit("listenChange");
+        this.$emit("shrinkSideBar");
+        window.location.href = "/projects/" + this.projectId;
+
+        console.log(response.data);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error creating project", e);
+      }
+    },
     async updateStatus() {
       console.log("onchange updated status ->");
       let response;
