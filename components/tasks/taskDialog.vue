@@ -1039,7 +1039,7 @@ export default {
         ).toISOString();
         console.log("iso edit due date", isoDate);
         dueDate = isoDate;
-        remindDate = this.task.taskReminderAt;
+        remindDate = this.updatedTask.taskRemindOnDate;
       } else {
         console.log("inside remind on date");
         remindDate = new Date(this.updatedTask.taskRemindOnDate);
@@ -1047,7 +1047,7 @@ export default {
           remindDate.getTime() - remindDate.getTimezoneOffset() * 60000
         ).toISOString();
         console.log("iso edit remind date", isoDate);
-        dueDate = this.task.taskDueDateAt;
+        dueDate = this.updatedTask.taskDueDateAt;
         remindDate = isoDate;
       }
       console.log("dueDate", dueDate);
