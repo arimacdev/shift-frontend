@@ -5,9 +5,13 @@ export const state = () => ({
   projectTaskCompletion: {},
   taskFiles: [],
   childTasks: [],
+  selectedTask: {},
 });
 
 export const mutations = {
+  SET_SELECTED_TASK(state, task) {
+    state.selectedTask = task;
+  },
   SET_ALL_TASKS(state, event) {
     state.allTasks = event;
   },
@@ -44,21 +48,19 @@ export const mutations = {
     const index = state.allTasks.findIndex(
       (i) => i.parentTask.taskId == taskId
     );
-    console.log('update task', index);
     if (index > -1) {
       const task = state.allTasks[index];
       const parentTask = task.parentTask;
-      console.log('update task', task);
-
       parentTask.taskName = taskName;
-      console.log('update task', task);
-
       state.allTasks.splice(index, 1, task);
     }
   },
 };
 
 export const actions = {
+  setSelectedTask({ commit }, task) {
+    commit('SET_SELECTED_TASK', task);
+  },
   updateTask({ commit }, { taskId, taskName }) {
     console.log('update task', taskId, taskName);
     commit('UPDATE_TASK', { taskId, taskName });
