@@ -279,7 +279,7 @@
         </v-btn>
         <v-toolbar-title class="font-weight-bold">
           {{
-          task.taskName
+          selectedTask.taskName
           }}
         </v-toolbar-title>
         <v-spacer></v-spacer>
@@ -538,6 +538,7 @@ export default {
     },
     async selectTask(task, taskObject) {
       this.task = task;
+      this.$store.dispatch("task/setSelectedTask", task);
       this.taskObject = taskObject;
       this.componentClose = "";
       console.log("selectedTask", task);
@@ -634,7 +635,8 @@ export default {
     ...mapState({
       people: state => state.task.userCompletionTasks,
       projectAllTasks: state => state.task.allTasks,
-      projectId: state => state.project.project.projectId
+      projectId: state => state.project.project.projectId,
+      selectedTask: state => state.task.selectedTask
     }),
 
     taskName: {
