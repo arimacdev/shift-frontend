@@ -950,16 +950,17 @@ export default {
           }
         );
         this.component = "success-popup";
+        this.successMessage = "Status successfully updated";
         setTimeout(() => {
           this.close();
-        }, 2000);
+        }, 3000);
         console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
           this.close();
-        }, 2000);
+        }, 3000);
         console.log("Error updating a status", e);
       }
     },
@@ -981,16 +982,17 @@ export default {
           }
         );
         this.component = "success-popup";
+        this.successMessage = "Status successfully updated";
         setTimeout(() => {
           this.close();
-        }, 2000);
+        }, 3000);
         console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
           this.close();
-        }, 2000);
+        }, 3000);
         console.log("Error updating a status", e);
       }
     },
