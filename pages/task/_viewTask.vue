@@ -107,9 +107,10 @@
 
               <nuxt-link
                 :to="'/task/' +  this.task.taskId + '/?project=' +  this.projectId"
-                style="text-decoration: none;"
+                style="text-decoration: none; color: #B9B9B9"
+                class="currentTaskColor"
               >
-                <v-icon size="22" color="#0083E2">mdi-calendar-check-outline</v-icon>Current Task
+                <v-icon size="22" color="#B9B9B9">mdi-calendar-check-outline</v-icon>Current Task
               </nuxt-link>
             </v-col>
           </v-row>
