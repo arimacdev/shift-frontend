@@ -84,23 +84,7 @@
               </div>
             </v-col>
             <v-col sm="2" md="2">
-              <!-- <v-select label="Task status" dense dark background-color="#0BAFFF" solo></v-select> -->
-              <!-- <div class="taskStatusDropdown">
-                <select
-                  v-model="taskStatus"
-                  class="viewTaskStatusDropDown"
-                  :class="statusCheck()"
-                  @change="updateStatus"
-                >
-                  <option key="pending" value="pending">Pending</option>
-                  <option key="implementing" value="implementing">Implementing</option>
-                  <option key="qa" value="qa">QA</option>
-                  <option key="readyToDeploy" value="readyToDeploy">Ready to Deploy</option>
-                  <option key="reOpened" value="reOpened">Re-Opened</option>
-                  <option key="deployed" value="deployed">Deployed</option>
-                  <option key="closed" value="closed">Closed</option>
-                </select>
-              </div>-->
+              <div class="taskStatusDropdown">{{this.task.taskStatus }}</div>
             </v-col>
             <v-col sm="8" md="8" class="taskViewLinksDiv">
               <nuxt-link :to="'/projects/'  +  this.projectId" style="text-decoration: none;">

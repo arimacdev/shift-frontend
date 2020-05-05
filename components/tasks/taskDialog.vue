@@ -12,17 +12,9 @@
             </v-col>
             <v-col sm="2" md="2">
               <!-- <v-select label="Task status" dense dark background-color="#0BAFFF" solo></v-select> -->
-              <div class="taskStatusDropdown">
-                <select v-model="taskStatus" class="viewTaskStatusDropDown" :class="statusCheck()">
-                  <option key="pending" value="pending">Pending</option>
-                  <option key="implementing" value="implementing">Implementing</option>
-                  <option key="qa" value="qa">QA</option>
-                  <option key="readyToDeploy" value="readyToDeploy">Ready to Deploy</option>
-                  <option key="reOpened" value="reOpened">Re-Opened</option>
-                  <option key="deployed" value="deployed">Deployed</option>
-                  <option key="closed" value="closed">Closed</option>
-                </select>
-              </div>
+              <div
+                class="taskStatusDropdown"
+              >{{task.taskStatus.charAt(0).toUpperCase()+ task.taskStatus.slice(1)}}</div>
             </v-col>
             <v-col sm="8" md="8" class="taskViewLinksDiv">
               <nuxt-link
@@ -336,7 +328,6 @@
                               outlined
                               class="createFormElements"
                               @change="updateStatus"
-
                             ></v-select>
                             <v-select
                               dense
@@ -350,7 +341,6 @@
                               outlined
                               class="createFormElements"
                               @change="updateStatus"
-
                             ></v-select>
                             <v-select
                               dense
@@ -364,7 +354,6 @@
                               outlined
                               class="createFormElements"
                               @change="updateStatus"
-
                             ></v-select>
                             <v-select
                               dense
@@ -378,7 +367,6 @@
                               outlined
                               class="createFormElements"
                               @change="updateStatus"
-
                             ></v-select>
                           </v-col>
                         </v-row>
@@ -844,16 +832,17 @@ export default {
           }
         );
         this.component = "success-popup";
+        this.successMessage = "Type successfully updated";
         setTimeout(() => {
           this.close();
-        }, 2000);
+        }, 3000);
         console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
           this.close();
-        }, 2000);
+        }, 3000);
         console.log("Error updating a status", e);
       }
     },
@@ -874,16 +863,17 @@ export default {
           }
         );
         this.component = "success-popup";
+        this.successMessage = "Status successfully updated";
         setTimeout(() => {
           this.close();
-        }, 2000);
+        }, 3000);
         console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
           this.close();
-        }, 2000);
+        }, 3000);
         console.log("Error updating a status", e);
       }
     },
@@ -1360,30 +1350,6 @@ export default {
       }
     },
 
-    // taskDueDate: {
-    //   get() {
-    //     if (this.updatedTaskDueDate == null)
-    //       this.updatedTaskDueDate = this.task.taskDueDateAt;
-    //     this.updateTaskDates("dueDate");
-    //     return this.updatedTaskDueDate;
-    //   },
-    //   set(value) {
-    //     console.log("set updated", value);
-    //     this.updatedTaskDueDate = value;
-    //   }
-    // },
-    // taskRemindOnDate: {
-    //   get() {
-    //     if (this.updatedRemindOnDate == null)
-    //       this.updatedRemindOnDate = this.task.taskReminderAt;
-    //     this.updateTaskDates("remindOn");
-    //     return this.updatedRemindOnDate;
-    //   },
-    //   set(value) {
-    //     console.log("updated remind on ->", value);
-    //     this.updatedRemindOnDate = value;
-    //   }
-    // },
     taskDue: {
       get() {
         // let stringDate = new Date(this.task.taskDueDateAt);

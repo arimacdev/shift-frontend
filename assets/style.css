@@ -504,6 +504,14 @@
 }
 .taskStatusDropdown {
   text-align-last: center;
+  height: 35px;
+  padding-top: 5px;
+  border-radius: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-style: none;
+  background-color: #0bafff;
+  color: #ffffff;
 }
 
 .textAreaSideBar {
