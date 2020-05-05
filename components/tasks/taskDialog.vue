@@ -278,14 +278,14 @@
                             <v-select
                               dense
                               v-model="issueType"
-                              :items="items"
+                              :items="issueTypeList"
                               background-color="#EDF0F5"
                               item-text="name"
                               item-value="id"
                               label="Task type"
                               outlined
                               class="createFormElements"
-                              @change="click"
+                              @change="updateIssueType"
                             ></v-select>
                           </v-col>
                           <v-col sm="6" md="6">
@@ -300,6 +300,7 @@
                               label="Task status"
                               outlined
                               class="createFormElements"
+                              @change="updateStatus"
                             ></v-select>
                             <v-select
                               dense
@@ -312,6 +313,7 @@
                               label="Task status"
                               outlined
                               class="createFormElements"
+                              @change="updateStatus"
                             ></v-select>
                             <v-select
                               dense
@@ -324,6 +326,7 @@
                               label="Task status"
                               outlined
                               class="createFormElements"
+                              @change="updateStatus"
                             ></v-select>
                             <v-select
                               dense
@@ -336,6 +339,8 @@
                               label="Task status"
                               outlined
                               class="createFormElements"
+                              @change="updateStatus"
+
                             ></v-select>
                             <v-select
                               dense
@@ -348,6 +353,8 @@
                               label="Task status"
                               outlined
                               class="createFormElements"
+                              @change="updateStatus"
+
                             ></v-select>
                             <v-select
                               dense
@@ -360,6 +367,8 @@
                               label="Task status"
                               outlined
                               class="createFormElements"
+                              @change="updateStatus"
+
                             ></v-select>
                             <v-select
                               dense
@@ -372,6 +381,8 @@
                               label="Task status"
                               outlined
                               class="createFormElements"
+                              @change="updateStatus"
+
                             ></v-select>
                           </v-col>
                         </v-row>
@@ -670,7 +681,7 @@ import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 
 export default {
-  props: ["task", "projectId", "subTasks", "taskFiles", "people", "taskObject"],
+  props: ["task", "projectId", "people", "taskObject"],
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup
@@ -695,6 +706,7 @@ export default {
       updatedRemindOnDate: null,
       // taskDue: this.task.taskDueDateAt,
       uploadLoading: false,
+      taskAssignee: "",
       updatedTask: {
         taskName: "",
         taskAssignee: "",
@@ -706,7 +718,7 @@ export default {
       // taskStatus: this.task.taskStatus,
       // issueType: this.task.issueType,
 
-      items: [
+      issueTypeList: [
         { name: "Development", id: "development" },
         { name: "QA", id: "qa" },
         { name: "Design", id: "design" },
@@ -801,6 +813,67 @@ export default {
     };
   },
   methods: {
+    async updateIssueType() {
+      console.log("onchange updated status ->");
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            taskStatus: "pending",
+            issueType: this.updatedIssue,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+        console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+        console.log("Error updating a status", e);
+      }
+    },
+    async updateStatus() {
+      console.log("onchange updated status ->");
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            taskStatus: this.updatedStatus,
+            taskType: "project"
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+        console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 2000);
+        console.log("Error updating a status", e);
+      }
+    },
     async saveEditTaskName() {
       console.log("updatedTaskName ->", this.updatedTask.taskName);
       let response;
@@ -846,17 +919,12 @@ export default {
     // ------ update task assignee ---------
     async changeAssignee() {
       console.log("assignee changed");
-
-      console.log(
-        "onchange updated assignee ->",
-        this.updatedTask.taskAssignee
-      );
       let response;
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            taskAssignee: this.updatedTask.taskAssignee,
+            taskAssignee: this.taskAssignee,
             taskType: "project"
           },
           {
@@ -865,9 +933,9 @@ export default {
             }
           }
         );
-        this.$emit("listenChange");
         this.component = "success-popup";
         this.successMessage = "Assignee successfully updated";
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -898,10 +966,11 @@ export default {
             }
           }
         );
-        this.$store.dispatch("task/updateSprintOfATask", {
-          taskId: this.task.taskId,
-          sprintId: this.updatedSprint
-        });
+        //REMOVED DUE TO TASK REFRESH ON CLOSE
+        // this.$store.dispatch("task/updateSprintOfATask", {
+        //   taskId: this.task.taskId,
+        //   sprintId: this.updatedSprint
+        // });
         this.component = "success-popup";
         this.successMessage = "Sprint successfully updated";
         setTimeout(() => {
@@ -935,7 +1004,6 @@ export default {
             }
           }
         );
-        this.$emit("listenChange");
         this.component = "success-popup";
         this.successMessage = "Note successfully updated";
         setTimeout(() => {
@@ -1215,16 +1283,16 @@ export default {
         this.updatedTask.taskName = name;
       }
     },
-    taskAssignee: {
-      get() {
-        // return this.assignee.firstName
-        return "";
-      },
-      set(value) {
-        console.log("updated task assignee ->", value);
-        this.updatedTask.taskAssignee = value;
-      }
-    },
+    // taskAssignee: {
+    //   get() {
+    //     // return this.assignee.firstName
+    //     return "";
+    //   },
+    //   set(value) {
+    //     console.log("updated task assignee ->", value);
+    //     this.updatedTask.taskAssignee = value;
+    //   }
+    // },
     taskStatus: {
       get() {
         return this.task.taskStatus;
@@ -1233,6 +1301,21 @@ export default {
         console.log("task status", value);
         this.updatedStatus = value;
       }
+
+      // get() {
+      //   console.log("issueStatus", this.issueStatus);
+      //   if (this.issueStatus == "") {
+      //     return this.task.taskStatus;
+      //   } else {
+      //     return this.issueStatus;
+      //   }
+      //   // this.issueStatus = this.task.taskStatus;
+
+      //   // return this.task.taskStatus;
+      // },
+      // set(value) {
+      //   this.updatedTask.taskStatus = value;
+      // }
     },
     issueType: {
       get() {
