@@ -504,7 +504,7 @@
                             </template>
                             <template slot="button-confirm">
                               <fa :icon="['fas', 'check-circle']"></fa>
-                              <p>Confirm</p>
+                              <p @click="clickToPrint">Confirm</p>
                             </template>
                           </datetime>
                         </template>
@@ -814,6 +814,9 @@ export default {
     };
   },
   methods: {
+    clickToPrint() {
+      console.log("==============> clicked!!!!");
+    },
     // ------------- update issue type ----------
     async updateIssueType() {
       console.log("onchange updated status ->");
