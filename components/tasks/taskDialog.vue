@@ -25,40 +25,30 @@
               </div>
             </v-col>
             <v-col sm="8" md="8" class="taskViewLinksDiv">
-              <a
-                :href="'http://localhost:3000/projects/' + this.projectId"
+              <nuxt-link
+                :to="'/projects/'  +  this.projectId"
                 style="text-decoration: none;"
                 target="_blank"
               >
                 <v-icon size="22" color="#0083E2">mdi-folder-outline</v-icon>Project
-              </a>
-              /
-              <a
+              </nuxt-link>/
+              <nuxt-link
                 v-if="task.isParent == false"
-                :href="
-                  'http://localhost:3000/task/' +
-                    this.taskObject.parentTask.taskId +
-                    '/?project=' +
-                    this.projectId
-                "
-                style="text-decoration: none;"
                 target="_blank"
+                :to="'/task/' +    this.taskObject.parentTask.taskId + '/?project=' +  this.projectId"
+                style="text-decoration: none;"
               >
                 <v-icon size="22" color="#0083E2">mdi-calendar-check</v-icon>Parent Task
-              </a>
+              </nuxt-link>
               <span v-if="task.isParent == false">/</span>
-              <a
-                :href="
-                  'http://localhost:3000/task/' +
-                    this.task.taskId +
-                    '/?project=' +
-                    this.projectId
-                "
-                style="text-decoration: none;"
+
+              <nuxt-link
+                :to="'/task/' +  this.task.taskId + '/?project=' +  this.projectId"
                 target="_blank"
+                style="text-decoration: none;"
               >
                 <v-icon size="22" color="#0083E2">mdi-calendar-check-outline</v-icon>Current Task
-              </a>
+              </nuxt-link>
             </v-col>
           </v-row>
           <v-row class="mb-12" no-gutters>
@@ -190,7 +180,7 @@
                           </v-list-item-icon>
                           <v-list-item-title class="viewTaskFontColors">
                             Child Tasks
-                            <span>- {{ taskObject.childTasks.length }}Task(s)</span>
+                            <span>- {{ taskObject.childTasks.length }} Task(s)</span>
                           </v-list-item-title>
                         </template>
 
