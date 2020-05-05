@@ -98,6 +98,7 @@
         label="Add a main task..."
         class
         @keyup.enter="addTask(null)"
+        clearable
       ></v-text-field>
     </div>
 
@@ -178,6 +179,7 @@
             label="Add a sub task..."
             class
             @keyup.enter="addTask(task.parentTask.taskId)"
+            clearable
           ></v-text-field>
         </div>
         <div v-if="task.childTasks.length !== 0">
@@ -376,7 +378,10 @@ export default {
       sound: true,
       widgets: false,
       states: [],
-      taskName: "",
+      updatedTask: {
+        taskName: ""
+      },
+
       items: [
         { id: "all", name: "All" },
         { id: "pending", name: "Pending" },
@@ -450,7 +455,7 @@ export default {
         response = await this.$axios.$post(
           `/projects/${this.projectId}/tasks`,
           {
-            taskName: this.taskName,
+            taskName: this.updatedTask.taskName,
             projectId: this.projectId,
             taskInitiator: this.userId,
             taskAssignee: this.userId,
@@ -463,6 +468,7 @@ export default {
             parentTaskId: selectedParentTask
           }
         );
+        this.taskName = "";
         this.component = "success-popup";
         this.successMessage = "Task added successfully";
         setTimeout(() => {
@@ -623,7 +629,16 @@ export default {
       people: state => state.task.userCompletionTasks,
       projectAllTasks: state => state.task.allTasks,
       projectId: state => state.project.project.projectId
-    })
+    }),
+
+    taskName: {
+      get() {
+        return null;
+      },
+      set(value) {
+        this.updatedTask.taskName = value;
+      }
+    }
   }
 };
 </script>
