@@ -1276,12 +1276,6 @@ export default {
     },
 
     taskName: {
-      // get() {
-      //   return this.task.taskName;
-      // },
-      // set(name) {
-      //   this.updatedTask.taskName = name;
-      // }
       get() {
         if (this.updatedTask.taskName == "") {
           return this.task.taskName;
@@ -1309,6 +1303,9 @@ export default {
         this.updatedIssue = value;
         this.issueTypes = value;
         console.log("issue type", this.updatedIssue);
+        // if (this.task.issueType != this.updatedIssue) {
+        //   this.updatedStatus = "pending";
+        // }
       }
     },
     selectedSprint: {
@@ -1332,7 +1329,6 @@ export default {
 
     taskDue: {
       get() {
-        // let stringDate = new Date(this.task.taskDueDateAt);
         if (
           this.task.taskDueDateAt === null ||
           this.task.taskDueDateAt === "1970-01-01T05:30:00.000+0000"
@@ -1342,7 +1338,6 @@ export default {
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 16);
         return stringDate;
-        // return newDate;
       },
       set(value) {
         console.log("updated task due ->", value);
@@ -1358,8 +1353,6 @@ export default {
         )
           return "Add Reminder Date";
         let stringDate = this.task.taskReminderAt + "";
-        // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
-        // console.log("f---->",formateedDate)
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 16);
         return stringDate;
