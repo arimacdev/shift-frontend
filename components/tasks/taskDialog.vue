@@ -814,6 +814,7 @@ export default {
     };
   },
   methods: {
+    // ------------- update issue type ----------
     async updateIssueType() {
       console.log("onchange updated status ->");
       let response;
@@ -846,6 +847,7 @@ export default {
         console.log("Error updating a status", e);
       }
     },
+    // ------------- update task status ----------
     async updateStatus() {
       console.log("onchange updated status ->");
       let response;
@@ -1286,16 +1288,6 @@ export default {
         this.updatedTask.taskName = name;
       }
     },
-    // taskAssignee: {
-    //   get() {
-    //     // return this.assignee.firstName
-    //     return "";
-    //   },
-    //   set(value) {
-    //     console.log("updated task assignee ->", value);
-    //     this.updatedTask.taskAssignee = value;
-    //   }
-    // },
     taskStatus: {
       get() {
         return this.task.taskStatus;
@@ -1304,21 +1296,6 @@ export default {
         console.log("task status", value);
         this.updatedStatus = value;
       }
-
-      // get() {
-      //   console.log("issueStatus", this.issueStatus);
-      //   if (this.issueStatus == "") {
-      //     return this.task.taskStatus;
-      //   } else {
-      //     return this.issueStatus;
-      //   }
-      //   // this.issueStatus = this.task.taskStatus;
-
-      //   // return this.task.taskStatus;
-      // },
-      // set(value) {
-      //   this.updatedTask.taskStatus = value;
-      // }
     },
     issueType: {
       get() {
