@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 export const state = () => ({
   allTasks: [],
   myTasks: [],
@@ -41,9 +39,30 @@ export const mutations = {
     const index = state.taskFiles.findIndex((i) => i.taskFileId === taskFileId);
     state.taskFiles.splice(index, 1);
   },
+  UPDATE_TASK(state, { taskId, taskName }) {
+    console.log('update task', taskId, taskName);
+    const index = state.allTasks.findIndex(
+      (i) => i.parentTask.taskId == taskId
+    );
+    console.log('update task', index);
+    if (index > -1) {
+      const task = state.allTasks[index];
+      const parentTask = task.parentTask;
+      console.log('update task', task);
+
+      parentTask.taskName = taskName;
+      console.log('update task', task);
+
+      state.allTasks.splice(index, 1, task);
+    }
+  },
 };
 
 export const actions = {
+  updateTask({ commit }, { taskId, taskName }) {
+    console.log('update task', taskId, taskName);
+    commit('UPDATE_TASK', { taskId, taskName });
+  },
   fetchChildren({ commit, rootState }, { projectId, taskId }) {
     const userId = rootState.user.userId;
     this.$axios

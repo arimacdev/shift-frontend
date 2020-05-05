@@ -801,7 +801,6 @@ export default {
     };
   },
   methods: {
-    // ------- update task name -------
     async saveEditTaskName() {
       console.log("updatedTaskName ->", this.updatedTask.taskName);
       let response;
@@ -820,11 +819,17 @@ export default {
         );
         this.component = "success-popup";
         this.successMessage = "Name successfully updated";
+        if (this.task.isParent) {
+          this.$store.dispatch("task/updateTask", {
+            taskId: this.task.taskId,
+            taskName: this.updatedTask.taskName
+          });
+        } else {
+          this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        }
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("UPDATED", this.$store.state.task.allTasks);
-        this.$emit("listenChange");
         this.editTask = true;
         console.log("edit task response", response);
       } catch (e) {
@@ -1195,8 +1200,16 @@ export default {
     },
 
     taskName: {
+      // get() {
+      //   return this.task.taskName;
+      // },
+      // set(name) {
+      //   this.updatedTask.taskName = name;
+      // }
       get() {
-        return this.task.taskName;
+        if (this.updatedTask.taskName == "") {
+          return this.task.taskName;
+        } else return this.updatedTask.taskName;
       },
       set(name) {
         this.updatedTask.taskName = name;
