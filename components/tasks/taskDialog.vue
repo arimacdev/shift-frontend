@@ -488,18 +488,29 @@
                     </v-list-item-icon>
                     <v-list-item-content>
                       <!-- <v-list-item-subtitle class="rightColumnItemsSubTitle">Due Date</v-list-item-subtitle> -->
-                      <datetime type="datetime" v-model="taskDue" zone="local" input-id="dueDate">
-                        <label for="dueDate" slot="before" class="tabListItemsTextDue">
-                          <span class="dialogPickerNewText">Due Date</span>
-                        </label>
-                        <template slot="button-cancel">
-                          <fa :icon="['far', 'times']"></fa>Cancel
+                      <v-tooltip left>
+                        <template v-slot:activator="{ on }">
+                          <datetime
+                            v-on="on"
+                            type="datetime"
+                            v-model="taskDue"
+                            zone="local"
+                            input-id="dueDate"
+                          >
+                            <label for="dueDate" slot="before" class="tabListItemsTextDue">
+                              <span class="dialogPickerNewText">Due Date</span>
+                            </label>
+                            <template slot="button-cancel">
+                              <fa :icon="['far', 'times']"></fa>Cancel
+                            </template>
+                            <template slot="button-confirm">
+                              <fa :icon="['fas', 'check-circle']"></fa>
+                              <p>Confirm</p>
+                            </template>
+                          </datetime>
                         </template>
-                        <template slot="button-confirm">
-                          <fa :icon="['fas', 'check-circle']"></fa>
-                          <p>Confirm</p>
-                        </template>
-                      </datetime>
+                        <span>Update due date</span>
+                      </v-tooltip>
                     </v-list-item-content>
                   </v-list-item>
                   <!-- <div class="viewTaskPickerDiv"> <VueCtkDateTimePicker
@@ -517,23 +528,29 @@
                     </v-list-item-icon>
                     <v-list-item-content>
                       <!-- <v-list-item-subtitle class="rightColumnItemsSubTitle">Remind Date</v-list-item-subtitle> -->
-                      <datetime
-                        type="datetime"
-                        v-model="taskRemindOn"
-                        zone="local"
-                        input-id="remindDate"
-                      >
-                        <label for="remindDate" slot="before" class="tabListItemsTextDue">
-                          <span class="dialogPickerNewText">Remind Date</span>
-                        </label>
-                        <template slot="button-cancel">
-                          <fa :icon="['far', 'times']"></fa>Cancel
+                      <v-tooltip left>
+                        <template v-slot:activator="{ on }">
+                          <datetime
+                            v-on="on"
+                            type="datetime"
+                            v-model="taskRemindOn"
+                            zone="local"
+                            input-id="remindDate"
+                          >
+                            <label for="remindDate" slot="before" class="tabListItemsTextDue">
+                              <span class="dialogPickerNewText">Remind Date</span>
+                            </label>
+                            <template slot="button-cancel">
+                              <fa :icon="['far', 'times']"></fa>Cancel
+                            </template>
+                            <template slot="button-confirm">
+                              <fa :icon="['fas', 'check-circle']"></fa>
+                              <p>Confirm</p>
+                            </template>
+                          </datetime>
                         </template>
-                        <template slot="button-confirm">
-                          <fa :icon="['fas', 'check-circle']"></fa>
-                          <p>Confirm</p>
-                        </template>
-                      </datetime>
+                        <span>Update remind date</span>
+                      </v-tooltip>
                     </v-list-item-content>
                   </v-list-item>
                   <!-- <div class="viewTaskPickerDiv"> <VueCtkDateTimePicker
