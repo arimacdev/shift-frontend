@@ -19,7 +19,17 @@
             }}
           </v-list-item-title>
           <v-list-item-action class="viewTaskDelete">
-            <v-icon size="30px" @click="taskDeleteDialog = true" color="#FFFFFF">mdi-delete-circle</v-icon>
+            <v-tooltip left>
+              <template v-slot:activator="{ on }">
+                <v-icon
+                  size="30px"
+                  v-on="on"
+                  @click="taskDeleteDialog = true"
+                  color="#FFFFFF"
+                >mdi-delete-circle</v-icon>
+              </template>
+              <span>Delete task</span>
+            </v-tooltip>
           </v-list-item-action>
         </div>
       </div>
@@ -136,12 +146,18 @@
                   />
                 </v-col>
                 <v-col sm="1" md="1" class="taskEditIconCol">
-                  <v-icon
-                    size="25"
-                    color="#424F64"
-                    class="editIcon"
-                    @click="EditTaskName"
-                  >mdi-pencil-circle</v-icon>
+                  <v-tooltip left>
+                    <template v-slot:activator="{ on }">
+                      <v-icon
+                        v-on="on"
+                        size="25"
+                        color="#424F64"
+                        class="editIcon"
+                        @click="EditTaskName"
+                      >mdi-pencil-circle</v-icon>
+                    </template>
+                    <span>Edit task name</span>
+                  </v-tooltip>
                 </v-col>
               </v-row>
               <v-divider class="nameRangeDevider"></v-divider>

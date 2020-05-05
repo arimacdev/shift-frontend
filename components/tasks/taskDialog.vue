@@ -73,12 +73,18 @@
                   />
                 </v-col>
                 <v-col sm="1" md="1" class="taskEditIconCol">
-                  <v-icon
-                    size="25"
-                    color="#424F64"
-                    class="editIcon"
-                    @click="EditTaskName"
-                  >mdi-pencil-circle</v-icon>
+                  <v-tooltip left>
+                    <template v-slot:activator="{ on }">
+                      <v-icon
+                        v-on="on"
+                        size="25"
+                        color="#424F64"
+                        class="editIcon"
+                        @click="EditTaskName"
+                      >mdi-pencil-circle</v-icon>
+                    </template>
+                    <span>Edit task name</span>
+                  </v-tooltip>
                 </v-col>
               </v-row>
               <v-divider class="nameRangeDevider"></v-divider>

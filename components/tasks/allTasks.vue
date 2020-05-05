@@ -288,11 +288,17 @@
           <button class :disabled="checkValidation">
             <v-list-item dark>
               <div>
-                <v-icon
-                  size="30px"
-                  @click="taskDeleteDialog = true"
-                  color="#FFFFFF"
-                >mdi-delete-circle</v-icon>
+                <v-tooltip left>
+                  <template v-slot:activator="{ on }">
+                    <v-icon
+                      v-on="on"
+                      size="30px"
+                      @click="taskDeleteDialog = true"
+                      color="#FFFFFF"
+                    >mdi-delete-circle</v-icon>
+                  </template>
+                  <span>Delete task</span>
+                </v-tooltip>
               </div>
             </v-list-item>
           </button>
