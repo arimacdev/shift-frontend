@@ -3,13 +3,13 @@
     <v-row justify class>
       <v-dialog v-model="dialog" persistent max-width="350">
         <template v-slot:activator="{ on }">
-          <div v-on="on" class="addParentButton">
+          <div v-on="on" class="addChildButton">
             <v-list-item class="addParentButtonBody" v-on:click="component='add-task'" dark>
               <v-list-item-action>
-                <v-icon size="15" color>mdi-account-outline</v-icon>
+                <v-icon size="15" color>mdi-account-supervisor-outline</v-icon>
               </v-list-item-action>
               <v-list-item-content class="buttonText">
-                <v-list-item-title class>Add Parent</v-list-item-title>
+                <v-list-item-title class>Add Child</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </div>
@@ -17,8 +17,8 @@
         <v-card class="addUserPopup">
           <v-form v-model="isValid" ref="form">
             <div class="popupFormContent">
-              <v-icon class size="60" color="deep-orange lighten-1">mdi-account-outline</v-icon>
-              <v-card-text class="deletePopupTitle">Add parent task</v-card-text>
+              <v-icon class size="60" color="deep-orange lighten-1">mdi-account-supervisor-outline</v-icon>
+              <v-card-text class="deletePopupTitle">Add child task</v-card-text>
               <v-card-actions>
                 <v-select
                   class="popupFormGroupElement"
@@ -26,7 +26,7 @@
                   :items="parentTasks"
                   item-text="name"
                   item-value="id"
-                  label="Parent task"
+                  label="Child task"
                   outlined
                   :rules="assigneeRules"
                   @mousedown="getParentTasks"

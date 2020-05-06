@@ -2025,7 +2025,13 @@
   background-color: #5f5f5f;
 }
 .addParentButton {
-  background-color: #0bafff;
+  background-color: #2ec973;
+  border-radius: 5px;
+  height: 30px;
+  float: right;
+}
+.addChildButton {
+  background-color: #0083e2;
   border-radius: 5px;
   height: 30px;
   float: right;
@@ -2035,4 +2041,12 @@
 }
 .buttonFloat {
   float: right;
+}
+.secondaryId {
+  font-size: 16px !important;
+}
+.addParentButtonRow {
+}
+.addParentText {
+  margin-left: -20px !important;
 }

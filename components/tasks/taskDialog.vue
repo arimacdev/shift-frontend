@@ -7,7 +7,7 @@
             <v-col sm="2" md="2">
               <div class="taskViewTitle">
                 Task -
-                <span>{{this.task.secondaryTaskId}}</span>
+                <span class="secondaryId">#{{this.task.secondaryTaskId}}</span>
               </div>
             </v-col>
             <v-col sm="2" md="2">
@@ -88,6 +88,18 @@
             <v-row class="mb-12" no-gutters>
               <v-col sm="8" md="8">
                 <div class="leftSideColumn">
+                  <v-row class="addParentButtonRow" no-gutters>
+                    <v-col sm="6" md="6" no-gutters></v-col>
+                    <v-col sm="3" md="3" no-gutters>
+                      <add-parent-task
+                        v-if="taskObject.childTasks.length == 0 && task.isParent == true"
+                        taskId="this.task.taskId"
+                      />
+                    </v-col>
+                    <v-col sm="3" md="3" no-gutters>
+                      <add-child-task v-if=" task.isParent == true" />
+                    </v-col>
+                  </v-row>
                   <!-- ----------- parent task section --------- -->
                   <div v-if="task.isParent == false">
                     <div class="expansionViewHeader topItemTaskView">
@@ -680,12 +692,16 @@ import { mapState } from "vuex";
 import { mapGetters } from "vuex";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
+import AddParentTask from "~/components/tasks/addParentTask";
+import AddChildTask from "~/components/tasks/addChildTask";
 
 export default {
   props: ["task", "projectId", "people", "taskObject"],
   components: {
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
+    "add-parent-task": AddParentTask,
+    "add-child-task": AddChildTask
   },
   data() {
     return {
