@@ -59,12 +59,33 @@ export const mutations = {
 
 export const actions = {
   setSelectedTask({ commit }, task) {
+    console.log('selected->>>', task);
     commit('SET_SELECTED_TASK', task);
   },
+  async setCurrentTask({ commit, rootState }, { projectId, taskId }) {
+    const userId = rootState.user.userId;
+    let taskResponse;
+    try {
+      taskResponse = await this.$axios.$get(
+        `/projects/${projectId}/tasks/${taskId}`,
+        {
+          headers: {
+            user: userId,
+          },
+        }
+      );
+      commit('SET_SELECTED_TASK', taskResponse.data);
+      console.log('Selected Task get response', taskResponse.data);
+    } catch (e) {
+      console.log('Error fetching task', e);
+    }
+  },
+
   updateTask({ commit }, { taskId, taskName }) {
     console.log('update task', taskId, taskName);
     commit('UPDATE_TASK', { taskId, taskName });
   },
+
   fetchChildren({ commit, rootState }, { projectId, taskId }) {
     const userId = rootState.user.userId;
     this.$axios

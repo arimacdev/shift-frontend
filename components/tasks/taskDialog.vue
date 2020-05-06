@@ -7,14 +7,14 @@
             <v-col sm="2" md="2">
               <div class="taskViewTitle">
                 Task -
-                <span class="secondaryId">#{{this.task.secondaryTaskId}}</span>
+                <span class="secondaryId">#{{selectedTask.secondaryTaskId}}</span>
               </div>
             </v-col>
             <v-col sm="2" md="2">
               <!-- <v-select label="Task status" dense dark background-color="#0BAFFF" solo></v-select> -->
               <div
                 class="taskStatusDropdown"
-              >{{task.taskStatus.charAt(0).toUpperCase()+ task.taskStatus.slice(1)}}</div>
+              >{{selectedTask.taskStatus.charAt(0).toUpperCase()+ selectedTask.taskStatus.slice(1)}}</div>
             </v-col>
             <v-col sm="8" md="8" class="taskViewLinksDiv">
               <nuxt-link
@@ -25,17 +25,17 @@
                 <v-icon size="22" color="#0083E2">mdi-folder-outline</v-icon>Project
               </nuxt-link>/
               <nuxt-link
-                v-if="task.isParent == false"
+                v-if="selectedTask.isParent == false"
                 target="_blank"
                 :to="'/task/' +    this.taskObject.parentTask.taskId + '/?project=' +  this.projectId"
                 style="text-decoration: none;"
               >
                 <v-icon size="22" color="#0083E2">mdi-calendar-check</v-icon>Parent Task
               </nuxt-link>
-              <span v-if="task.isParent == false">/</span>
+              <span v-if="selectedTask.isParent == false">/</span>
 
               <nuxt-link
-                :to="'/task/' +  this.task.taskId + '/?project=' +  this.projectId"
+                :to="'/task/' +  selectedTask.taskId + '/?project=' +  this.projectId"
                 target="_blank"
                 style="text-decoration: none; color: #B9B9B9"
               >
@@ -92,16 +92,19 @@
                     <v-col sm="6" md="6" no-gutters></v-col>
                     <v-col sm="3" md="3" no-gutters>
                       <add-parent-task
-                        v-if="taskObject.childTasks.length == 0 && task.isParent == true"
-                        taskId="this.task.taskId"
+                        v-if="taskObject.childTasks.length == 0 && selectedTask.isParent == true"
+                        :taskId="selectedTask.taskId"
                       />
                     </v-col>
                     <v-col sm="3" md="3" no-gutters>
-                      <add-child-task :taskId="this.task.taskId" v-if=" task.isParent == true" />
+                      <add-child-task
+                        v-if=" selectedTask.isParent == true"
+                        :taskId="selectedTask.taskId"
+                      />
                     </v-col>
                   </v-row>
                   <!-- ----------- parent task section --------- -->
-                  <div v-if="task.isParent == false">
+                  <div v-if="selectedTask.isParent == false">
                     <div class="expansionViewHeader topItemTaskView">
                       <v-list-item class="taskViewTitleSection">
                         <v-list-item-icon>
@@ -181,7 +184,7 @@
                     <v-divider></v-divider>
                   </div>
                   <!-- -------------- child tasks section ----------- -->
-                  <div v-if="task.isParent == true">
+                  <div v-if="selectedTask.isParent == true">
                     <div class="expansionViewHeader">
                       <v-list-group>
                         <template v-slot:activator>
@@ -720,7 +723,7 @@ import AddParentTask from "~/components/tasks/addParentTask";
 import AddChildTask from "~/components/tasks/addChildTask";
 
 export default {
-  props: ["task", "projectId", "people", "taskObject"],
+  props: ["projectId", "people", "taskObject"],
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
@@ -734,7 +737,7 @@ export default {
       userId: this.$store.state.user.userId,
       sprints: [],
       editTask: true,
-      task: {},
+      // task: {},
       files: [],
       taskObject: {},
       updatedIssue: "",
@@ -753,7 +756,7 @@ export default {
         taskAssignee: "",
         taskNotes: "",
         taskStatus: "",
-        taskRemindOnDate: this.task.taskDueDateAt,
+        taskRemindOnDate: "",
         taskDueDateAt: ""
       },
       // taskStatus: this.task.taskStatus,
@@ -863,7 +866,7 @@ export default {
       let response;
       try {
         response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
           {
             taskStatus: this.taskStatus,
             issueType: this.updatedIssue
@@ -895,7 +898,7 @@ export default {
       let response;
       try {
         response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
           {
             taskStatus: this.updatedStatus
           },
@@ -925,7 +928,7 @@ export default {
       let response;
       try {
         response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
           {
             taskName: this.updatedTask.taskName
           },
@@ -937,9 +940,9 @@ export default {
         );
         this.component = "success-popup";
         this.successMessage = "Name successfully updated";
-        if (this.task.isParent) {
+        if (this.selectedTask.isParent) {
           this.$store.dispatch("task/updateTask", {
-            taskId: this.task.taskId,
+            taskId: this.selectedTask.taskId,
             taskName: this.updatedTask.taskName
           });
         } else {
@@ -967,7 +970,7 @@ export default {
       let response;
       try {
         response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
           {
             taskAssignee: this.taskAssignee
           },
@@ -999,9 +1002,9 @@ export default {
       let response;
       try {
         response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.task.taskId}/sprint`,
+          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}/sprint`,
           {
-            previousSprint: this.task.sprintId,
+            previousSprint: this.selectedTask.sprintId,
             newSprint: this.updatedSprint
           },
           {
@@ -1037,7 +1040,7 @@ export default {
 
       try {
         response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
           {
             taskNotes: this.updatedTask.taskNote
           },
@@ -1096,7 +1099,7 @@ export default {
       let response;
       try {
         response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
           {
             taskDueDate: dueDate,
             taskRemindOnDate: remindDate
@@ -1135,7 +1138,7 @@ export default {
           let fileResponse;
           try {
             fileResponse = await this.$axios.$post(
-              `/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
+              `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}/upload`,
               formData,
               {
                 headers: {
@@ -1169,7 +1172,7 @@ export default {
       let response;
       try {
         response = await this.$axios.$delete(
-          `/projects/${this.projectId}/tasks/${this.task.taskId}/upload/${taskFileId}`,
+          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}/upload/${taskFileId}`,
           {
             data: {},
             headers: {
@@ -1266,7 +1269,7 @@ export default {
       this.loading = true;
     },
     isTaskAssignee(taskAssignee) {
-      if (taskAssignee.assigneeId == this.task.taskAssignee) {
+      if (taskAssignee.assigneeId == this.selectedTask.taskAssignee) {
         return true;
       } else {
         return false;
@@ -1284,7 +1287,7 @@ export default {
       if (Object.keys(this.selectedTaskUser).length === 0) {
         this.$store.dispatch(
           "user/setSelectedTaskUser",
-          this.task.taskAssignee
+          this.selectedTask.taskAssignee
         );
         return "";
       } else {
@@ -1299,7 +1302,8 @@ export default {
       projectAllTasks: state => state.task.allTasks,
       projectId: state => state.project.project.projectId,
       selectedTaskUser: state => state.user.selectedTaskUser,
-      taskFiles: state => state.task.taskFiles
+      taskFiles: state => state.task.taskFiles,
+      selectedTask: state => state.task.selectedTask
     }),
     ...mapGetters(["getuserCompletionTasks"]),
     peopleList() {
@@ -1317,7 +1321,7 @@ export default {
     taskName: {
       get() {
         if (this.updatedTask.taskName == "") {
-          return this.task.taskName;
+          return this.selectedTask.taskName;
         } else return this.updatedTask.taskName;
       },
       set(name) {
@@ -1326,7 +1330,7 @@ export default {
     },
     taskStatus: {
       get() {
-        return this.task.taskStatus;
+        return this.selectedTask.taskStatus;
       },
       set(value) {
         console.log("task status", value);
@@ -1335,8 +1339,8 @@ export default {
     },
     issueType: {
       get() {
-        this.issueTypes = this.task.issueType;
-        return this.task.issueType;
+        this.issueTypes = this.selectedTask.issueType;
+        return this.selectedTask.issueType;
       },
       set(value) {
         this.updatedIssue = value;
@@ -1350,7 +1354,7 @@ export default {
     selectedSprint: {
       get() {
         this.getSprintDetails();
-        return this.task.sprintId;
+        return this.selectedTask.sprintId;
       },
       set(sprintId) {
         console.log("spid", sprintId);
@@ -1359,7 +1363,7 @@ export default {
     },
     taskNote: {
       get() {
-        return this.task.taskNote;
+        return this.selectedTask.taskNote;
       },
       set(value) {
         this.updatedTask.taskNote = value;
@@ -1369,11 +1373,11 @@ export default {
     taskDue: {
       get() {
         if (
-          this.task.taskDueDateAt === null ||
-          this.task.taskDueDateAt === "1970-01-01T05:30:00.000+0000"
+          this.selectedTask.taskDueDateAt === null ||
+          this.selectedTask.taskDueDateAt === "1970-01-01T05:30:00.000+0000"
         )
           return null;
-        let stringDate = this.task.taskDueDateAt + " ";
+        let stringDate = this.selectedTask.taskDueDateAt + " ";
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 16);
         return stringDate;
@@ -1386,11 +1390,11 @@ export default {
     taskRemindOn: {
       get() {
         if (
-          this.task.taskReminderAt === null ||
-          this.task.taskDueDateAt === "1970-01-01T05:30:00.000+0000"
+          this.selectedTask.taskReminderAt === null ||
+          this.selectedTask.taskDueDateAt === "1970-01-01T05:30:00.000+0000"
         )
           return "Add Reminder Date";
-        let stringDate = this.task.taskReminderAt + "";
+        let stringDate = this.selectedTask.taskReminderAt + "";
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 16);
         return stringDate;

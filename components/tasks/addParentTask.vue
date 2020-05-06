@@ -137,10 +137,9 @@ export default {
       let response;
       try {
         response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.taskId}/sprint`,
+          `/projects/${this.projectId}/tasks/${this.taskId}/parent/transition`,
           {
-            previousSprint: this.task.sprintId,
-            newSprint: this.updatedSprint
+            newParent: this.parentTask
           },
           {
             headers: {
@@ -149,18 +148,23 @@ export default {
           }
         );
         this.component = "success-popup";
-        this.successMessage = "parent task added successfully";
+        this.successMessage = "Parent Task Added Successfully";
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$store.dispatch("task/setCurrentTask", {
+          projectId: this.projectId,
+          taskId: this.taskId
+        });
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("update app parent response", response);
+        console.log("update parent task", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error updating a sprint", e);
+        console.log("Error Adding parent task", e);
       }
     }
   },

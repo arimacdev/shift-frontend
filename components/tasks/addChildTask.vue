@@ -82,11 +82,11 @@ export default {
   },
   data() {
     return {
+      parentTask: "",
       parentTasks: [],
       errorMessage: "",
       isValid: true,
       userId: this.$store.state.user.userId,
-
       assigneeRules: [value => !!value || "Assignee is required!"],
       isShow: false,
       selected: false,
@@ -97,7 +97,9 @@ export default {
       select: null,
       states: [],
       component: "",
-      success: ""
+      success: "",
+      newTask: this.task,
+      newTaskId: this.taskId
     };
   },
   watch: {
@@ -133,14 +135,14 @@ export default {
     },
 
     async changeHandler() {
-      console.log("onchange sprint", this.parentTask);
+      // console.log("onchange sprint", this.newTask);
+      console.log("onchange parent Task----->", this.parentTask, this.taskId);
       let response;
       try {
         response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.taskId}/sprint`,
+          `/projects/${this.projectId}/tasks/${this.parentTask}/parent/transition`,
           {
-            previousSprint: this.task.sprintId,
-            newSprint: this.updatedSprint
+            newParent: this.taskId
           },
           {
             headers: {
@@ -149,18 +151,23 @@ export default {
           }
         );
         this.component = "success-popup";
-        this.successMessage = "parent task added successfully";
+        this.successMessage = "Child Task Added successfully";
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$store.dispatch("task/setCurrentTask", {
+          projectId: this.projectId,
+          taskId: this.taskId
+        });
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("update app parent response", response);
+        console.log("update parent task", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error updating a sprint", e);
+        console.log("Error Adding Child Tasks", e);
       }
     }
   },
