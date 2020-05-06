@@ -6,12 +6,14 @@
       </div>
       <div class="boardTaskList overflow-y-auto">
         <div v-for="(task, index) in projectAllTasks" :key="index">
-          <div class="boardTaskListItem">
+          <div class="bottomPadding"></div>
+          <div class="boardTaskListItem boardItemPadding">
             <!-- -------- load parent tasks (default board) ------------ -->
             <v-list-item
               v-if="task.parentTask.sprintId == 'default'"
               @click="selectTask(task.parentTask, task); taskDialog = true;"
             >
+              <div class="bluePart"></div>
               <!-- @click.stop="drawer = !drawer" -->
               <v-list-item-action>
                 <v-icon
@@ -55,7 +57,12 @@
             </v-list-item>
           </div>
           <!-- -------------- load child tasks (default board) ----------- -->
-          <div v-for="(childTask, index) in task.childTasks" :key="index" class="boardTaskListItem">
+
+          <div
+            v-for="(childTask, index) in task.childTasks"
+            :key="index"
+            class="boardTaskChildListItem"
+          >
             <v-list-item
               v-if="childTask.sprintId == 'default'"
               @click="selectTask(childTask, task);  taskDialog = true;"
@@ -114,11 +121,13 @@
               <div class="boardTaskList overflow-y-auto">
                 <!-- -------- load parent tasks (project boards) ------------ -->
                 <div v-for="(task, index) in projectAllTasks" :key="index">
+                  <div class="bottomPadding"></div>
                   <div class="boardTaskListItem">
                     <v-list-item
                       v-if="task.parentTask.sprintId == projectSprint.sprintId"
                       @click="selectTask(task.parentTask, task); taskDialog = true;"
                     >
+                      <div class="bluePart"></div>
                       <!-- @click.stop="drawer = !drawer" -->
                       <v-list-item-action>
                         <v-icon

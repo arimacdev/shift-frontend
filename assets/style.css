@@ -1550,10 +1550,18 @@
 }
 .boardTaskListItem {
   background-color: #ffffff;
-  margin-top: 10px;
+  margin-top: 5px;
   margin-left: 10px;
   margin-right: 10px;
   border-radius: 3px;
+  overflow: hidden;
+}
+.boardTaskChildListItem {
+  background-color: #ffffff;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 3px;
+  margin-top: 5px;
 }
 .boardSprintSection {
   width: 65%;
@@ -2058,4 +2066,23 @@
 }
 .addParentText {
   margin-left: -20px !important;
+}
+.bluePart {
+  position: absolute;
+  top: -25px;
+  right: -25px;
+  width: 50px;
+  height: 50px;
+  transform: rotate(45deg);
+  background: #0bafff;
+}
+.boardItemPadding {
+  /* margin-top: 10px; */
+}
+.boardSprintItemPadding {
+  /* margin-bottom: 10px; */
+}
+.bottomPadding {
+  height: 5px;
+  width: 10px;
 }

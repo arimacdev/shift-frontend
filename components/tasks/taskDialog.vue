@@ -1064,9 +1064,15 @@ export default {
     },
     // ----------- update task dates -----------
     async updateTaskDates(type) {
+      console.log(
+        "task due updated ---------> " + this.updatedTask.taskDueDateAt
+      );
+      console.log(
+        "task remind updated ---------> " + this.updatedTask.taskRemindOnDate
+      );
       let dueDate;
       let remindDate;
-      if (type === "dueDate") {
+      if (type === "dueDate" && this.updatedTask.taskDueDateAt != "") {
         console.log("inside due date");
         dueDate = new Date(this.updatedTask.taskDueDateAt);
         const isoDate = new Date(
@@ -1075,7 +1081,7 @@ export default {
         console.log("iso edit due date", isoDate);
         dueDate = isoDate;
         remindDate = this.updatedTask.taskRemindOnDate;
-      } else {
+      } else if (this.updatedTask.taskRemindOnDate != "") {
         console.log("inside remind on date");
         remindDate = new Date(this.updatedTask.taskRemindOnDate);
         const isoDate = new Date(
