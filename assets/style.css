@@ -1718,10 +1718,17 @@
 }
 
 .restructuredMainTaskList {
-  background-color: #080848 !important;
+  border: 2px #e5e5e5 solid;
+  margin-top: 30px;
+  background-color: #ffffff;
+}
+.backPannelAllTask {
+  background-color: #edf0f5;
+  padding-bottom: 20px;
+  border-radius: 5px;
 }
 .restructuredMainTaskName {
-  color: #ffffff;
+  color: #131111;
 }
 .restructuredMainTaskCode {
   font-weight: 600;
@@ -1731,12 +1738,14 @@
   margin-bottom: -20px;
 }
 .restructuredSubTaskList {
-  background-color: #edf0f5;
+  background-color: #ffffff;
   margin-left: 30px;
+  margin-right: 30px;
   margin-bottom: 10px;
 }
 .restructuredSubTaskCreate {
-  margin-left: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
   margin-bottom: -20px;
 }
 .restructuredSubTaskName {
