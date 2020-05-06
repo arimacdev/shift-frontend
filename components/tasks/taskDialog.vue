@@ -7,7 +7,7 @@
             <v-col sm="2" md="2">
               <div class="taskViewTitle">
                 Task -
-                <span>#42</span>
+                <span>{{this.task.secondaryTaskId}}</span>
               </div>
             </v-col>
             <v-col sm="2" md="2">
