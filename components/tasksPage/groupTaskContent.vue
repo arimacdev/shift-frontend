@@ -14,72 +14,141 @@
             label="All"
             solo
           ></v-select>
-
           <v-text-field
             v-model="groupTask"
             solo
             prepend-inner-icon="mdi-plus-circle"
             label="Add a new task"
             class="addPersonalTaskTextBox"
-            @keyup.enter="addGroupTask"
+            @keyup.enter="addGroupTask(null)"
           ></v-text-field>
-
           <!-- -------- loop task list here ----------- -->
-          <div class="taskPageContentScroll overflow-y-auto">
-            <div class="taskList" v-for="(groupTask, index) in groupTasks" :key="index">
-              <v-list-item
-                v-if="groupTask.taskStatus == taskSelect"
-                @click.stop="drawer = !drawer"
-                @click="selectGroupTask(groupTask)"
-              >
-                <v-list-item-action>
-                  <v-icon
-                    v-if="groupTask.taskStatus == 'closed'"
-                    size="30"
-                    color="#2EC973"
-                  >mdi-checkbox-marked-circle</v-icon>
-                  <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
-                </v-list-item-action>
-                <div class="tasklistTaskNames">
-                  <div class="body-2">{{ groupTask.taskName }}</div>
-                </div>
-                <v-list-item-content class="updatedDate">
-                  <v-list-item-title class="body-2">{{ getTaskDueDate(groupTask.taskDueDateAt) }}</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
+          <div v-for="(task, index) in groupTasks" :key="index">
+            <div class="backPannelAllTask">
+              <div class="taskList restructuredMainTaskList">
+                <v-list-item
+                  @click="
+              selectGroupTask(task.parentTask, task);
+              taskDialog = true;
+            "
+                >
+                  <!-- @click.stop="drawer = !drawer" -->
+                  <v-list-item-action>
+                    <v-icon
+                      v-if="task.parentTask.taskStatus == 'closed'"
+                      size="30"
+                      color="#2EC973"
+                    >mdi-checkbox-marked-circle</v-icon>
+                    <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                  </v-list-item-action>
+                  <div class="tasklistTaskNames restructuredMainTaskName">
+                    <div class="body-2">
+                      <span class="restructuredMainTaskCode">{{task.parentTask.secondaryTaskId}}</span>
+                      {{ task.parentTask.taskName }}
+                    </div>
+                  </div>
+                  <v-list-item-content class="updatedDate">
+                    <v-list-item-title
+                      :class="dueDateCheck(task.parentTask)"
+                    >{{ getTaskDueDate(task.parentTask.taskDueDateAt) }}</v-list-item-title>
+                  </v-list-item-content>
+                  <div>
+                    <v-list-item-avatar>
+                      <v-img
+                        v-if="task.parentTask.taskAssigneeProfileImage != null"
+                        :src="task.parentTask.taskAssigneeProfileImage"
+                      ></v-img>
+                      <v-img
+                        v-else
+                        src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                      ></v-img>
+                    </v-list-item-avatar>
+                  </div>
+                  <div class="boardTabLinkIcon">
+                    <nuxt-link
+                      :to="
+                  '/task/' + task.parentTask.taskId + '/?project=' + projectId
+                "
+                      style="text-decoration: none;"
+                    >
+                      <v-icon color="blue">mdi-link-variant</v-icon>
+                    </nuxt-link>
+                  </div>
+                </v-list-item>
+              </div>
 
-              <v-list-item
-                v-if="taskSelect == 'all' || taskSelect == null"
-                @click.stop="drawer = !drawer"
-                @click="selectGroupTask(groupTask)"
-              >
-                <v-list-item-action>
-                  <v-icon
-                    v-if="groupTask.taskStatus == 'closed'"
-                    size="30"
-                    color="#2EC973"
-                  >mdi-checkbox-marked-circle</v-icon>
-                  <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
-                </v-list-item-action>
-                <div class="tasklistTaskNames">
-                  <div class="body-2">{{ groupTask.taskName }}</div>
+              <!-- -------------- sub task design --------------- -->
+              <div class="restructuredSubTaskCreate">
+                <v-text-field
+                  v-model="groupTask"
+                  background-color="#0BAFFF"
+                  solo
+                  dark
+                  prepend-inner-icon="mdi-plus-circle"
+                  label="Add a sub task..."
+                  class
+                  @keyup.enter="addGroupTask(task.parentTask.taskId)"
+                  clearable
+                ></v-text-field>
+              </div>
+              <div v-if="task.childTasks.length !== 0">
+                <div
+                  v-for="(childTask, index) in task.childTasks"
+                  :key="index"
+                  class="taskList restructuredSubTaskList"
+                >
+                  <v-list-item
+                    @click="
+                selectGroupTask(childTask, task);
+                taskDialog = true;
+              "
+                  >
+                    <!-- @click.stop="drawer = !drawer" -->
+                    <v-list-item-action>
+                      <v-icon
+                        v-if="childTask.taskStatus == 'closed'"
+                        size="30"
+                        color="#2EC973"
+                      >mdi-checkbox-marked-circle</v-icon>
+                      <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                    </v-list-item-action>
+                    <div class="tasklistTaskNames restructuredSubTaskName">
+                      <div class="body-2">
+                        <span class="restructuredMainTaskCode">{{childTask.secondaryTaskId}}</span>
+                        {{ childTask.taskName }}
+                      </div>
+                    </div>
+
+                    <v-list-item-content class="updatedDate">
+                      <v-list-item-title
+                        :class="dueDateCheck(childTask)"
+                      >{{ getTaskDueDate(childTask.taskDueDateAt) }}</v-list-item-title>
+                    </v-list-item-content>
+                    <div>
+                      <v-list-item-avatar>
+                        <v-img
+                          v-if="childTask.taskAssigneeProfileImage != null"
+                          :src="childTask.taskAssigneeProfileImage"
+                        ></v-img>
+                        <v-img
+                          v-else
+                          src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                        ></v-img>
+                      </v-list-item-avatar>
+                    </div>
+                    <div class="boardTabLinkIcon">
+                      <nuxt-link
+                        :to="'/task/' + childTask.taskId + '/?project=' + projectId"
+                        style="text-decoration: none;"
+                      >
+                        <v-icon color="blue">mdi-link-variant</v-icon>
+                      </nuxt-link>
+                    </div>
+                  </v-list-item>
                 </div>
-                <v-list-item-content class="updatedDate">
-                  <v-list-item-title
-                    :class="dueDateCheck(groupTask)"
-                  >{{ getTaskDueDate(groupTask.taskDueDateAt) }}</v-list-item-title>
-                </v-list-item-content>
-                <v-list-item-avatar>
-                  <v-img
-                    v-if="groupTask.taskAssigneeProfileImage != null"
-                    :src="groupTask.taskAssigneeProfileImage"
-                  ></v-img>
-                  <v-img
-                    v-else
-                    src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-                  ></v-img>
-                </v-list-item-avatar>
-              </v-list-item>
+              </div>
+
+              <!-- -------------- end sub task design -------------- -->
             </div>
           </div>
         </div>
@@ -109,6 +178,90 @@
       />
     </v-navigation-drawer>
     <!-- --------------- end side bar --------------------- -->
+    <!-- ------------ task dialog --------- -->
+
+    <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
+      <v-toolbar dark color="primary">
+        <v-btn icon dark @click="taskDialog = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <v-toolbar-title class="font-weight-bold">
+          {{
+          this.task.taskName
+          }}
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+          <button class :disabled="checkValidation">
+            <v-list-item dark>
+              <div>
+                <v-tooltip left>
+                  <template v-slot:activator="{ on }">
+                    <v-icon
+                      v-on="on"
+                      size="30px"
+                      @click="taskDeleteDialog = true"
+                      color="#FFFFFF"
+                    >mdi-delete-circle</v-icon>
+                  </template>
+                  <span>Delete task</span>
+                </v-tooltip>
+              </div>
+            </v-list-item>
+          </button>
+        </v-toolbar-items>
+      </v-toolbar>
+      <task-dialog
+        :task="task"
+        :projectId="projectId"
+        :subTasks="subTasks"
+        :taskFiles="taskFiles"
+        :projectUsers="projectUsers"
+        :componentClose="componentClose"
+        :taskObject="taskObject"
+      />
+    </v-dialog>
+
+    <!-- --------------------- delete task popup --------------- -->
+
+    <v-dialog v-model="taskDeleteDialog" max-width="380">
+      <v-card>
+        <div class="popupConfirmHeadline">
+          <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
+          <br />
+          <span class="alertPopupTitle">Delete Task</span>
+          <br />
+          <span class="alertPopupText">
+            You're about to permanantly delete this task, its comments and
+            attachments, and all of its data. If you're not sure, you can
+            cancel this action.
+          </span>
+        </div>
+
+        <div class="popupBottom">
+          <v-card-actions>
+            <v-spacer></v-spacer>
+
+            <v-btn color="success" width="100px" @click="taskDeleteDialog = false">Cancel</v-btn>
+            <v-spacer></v-spacer>
+            <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
+            <v-btn
+              color="error"
+              width="100px"
+              @click="
+                      taskDeleteDialog = false;
+                      taskDialog = false;
+                      deleteTask();
+                    "
+            >Delete</v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </div>
+      </v-card>
+    </v-dialog>
+
+    <!-- ---------------------- end popup ------------------ -->
+
     <div @click="close">
       <component v-bind:is="component" :errorMessage="errorMessage"></component>
       <!-- <success-popup /> -->
@@ -120,6 +273,7 @@
 import GroupSideDrawer from "~/components/tasksPage/groupSideDrawer";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
+import TaskDialog from "~/components/tasksPage/groupTaskDialog";
 import axios from "axios";
 import { mapState } from "vuex";
 
@@ -128,11 +282,16 @@ export default {
   components: {
     "group-side-drawer": GroupSideDrawer,
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
+    "task-dialog": TaskDialog
   },
   data() {
     return {
+      taskObject: {},
+      taskDialog: false,
+      taskDeleteDialog: false,
       errorMessage: "",
+      successMessage: "",
       component: "",
       drawer: null,
       userId: this.$store.state.user.userId,
@@ -156,6 +315,32 @@ export default {
   // },
 
   methods: {
+    async deleteTask() {
+      let response;
+      try {
+        response = await this.$axios.$delete(
+          `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}`,
+          {
+            data: {},
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        // this.component = 'success-popup'
+        this.$emit("listenChange");
+        this.$emit("shrinkSideBar");
+
+        console.log(response.data);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error creating project", e);
+      }
+    },
     close() {
       this.component = "";
     },
@@ -188,8 +373,9 @@ export default {
       console.log("shrink side bar");
       this.drawer = false;
     },
-    async selectGroupTask(groupTask) {
+    async selectGroupTask(groupTask, taskObject) {
       this.task = groupTask;
+      this.taskObject = taskObject;
       console.log("selectedTask", groupTask);
       this.$axios
         .get(`/users/${this.task.taskAssignee}`)
@@ -199,25 +385,13 @@ export default {
           //if task fetch is successful,
           let subTaskResponse;
           try {
-            subTaskResponse = await this.$axios.$get(
-              `/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/subtask?userId=${this.userId}`,
-              {
-                headers: {
-                  type: "taskGroup"
-                }
-              }
-            );
-            console.log("subtasks--->", subTaskResponse.data);
-            this.subTasks = subTaskResponse.data;
-            //get files related to task
             let taskFilesResponse;
             try {
               taskFilesResponse = await this.$axios.$get(
-                `/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}/files`,
+                `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}/files`,
                 {
                   headers: {
-                    user: this.userId,
-                    type: "taskGroup"
+                    user: this.userId
                   }
                 }
               );
@@ -234,14 +408,19 @@ export default {
           console.log("error", e);
         });
     },
-    async addGroupTask() {
+    async addGroupTask(selectedParentTask) {
       console.log("add group task");
       this.$store.dispatch("groups/groupTask/addTaskToGroup", {
         taskName: this.groupTask,
-        taskGroupId: this.group.taskGroupId
+        taskGroupId: this.group.taskGroupId,
+        parentTaskId: selectedParentTask
       });
       this.groupTask = "";
-      this.$store.dispatch("groups/groupPeople/fetchGroupPeople", {
+      // this.$store.dispatch("groups/groupPeople/fetchGroupPeople", {
+      //   taskGroupId: this.group.taskGroupId,
+      //   userId: this.userId
+      // });
+      this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
         taskGroupId: this.group.taskGroupId,
         userId: this.userId
       });

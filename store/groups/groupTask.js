@@ -46,7 +46,7 @@ export const actions = {
     let getGroupTaskResponse;
     try {
       getGroupTaskResponse = await this.$axios.$get(
-        `/projects/${taskGroupId}/tasks?userId=${userId}`,
+        `/taskgroup/${taskGroupId}/tasks?userId=${userId}`,
         {
           headers: {
             user: user,
@@ -63,30 +63,31 @@ export const actions = {
 
   async addTaskToGroup(
     { commit, rootState, state, dispatch },
-    { taskName, taskGroupId }
+    { taskName, taskGroupId, parentTaskId }
   ) {
     const userId = rootState.user.userId;
     let response;
     try {
-      response = await this.$axios.$post(`/projects/${taskGroupId}/tasks`, {
+      response = await this.$axios.$post(`/taskgroup/${taskGroupId}/task`, {
         taskName: taskName,
-        projectId: taskGroupId,
+        taskGroupId: taskGroupId,
         taskInitiator: userId,
         taskDueDate: null,
         taskRemindOnDate: null,
+        parentTaskId: parentTaskId,
       });
       const newGroup = response.data;
       console.log('group tasks', state.groupTasks.length == 0);
-      if (state.groupTasks.length !== 0) {
-        newGroup.taskAssigneeProfileImage =
-          state.groupTasks[0].taskAssigneeProfileImage;
-        commit('ADD_GROUP_TASK', newGroup);
-      } else {
-        dispatch('fetchGroupTasks', {
-          taskGroupId: taskGroupId,
-          userId: userId,
-        });
-      }
+      // if (state.groupTasks.length !== 0) {
+      //   newGroup.taskAssigneeProfileImage =
+      //     state.groupTasks[0].taskAssigneeProfileImage;
+      //   commit('ADD_GROUP_TASK', newGroup);
+      // } else {
+      //   dispatch('fetchGroupTasks', {
+      //     taskGroupId: taskGroupId,
+      //     userId: userId,
+      //   });
+      // }
 
       console.log('Added Task to Group Successfully!', response.data);
     } catch (e) {

@@ -16,32 +16,6 @@
                 class="taskStatusDropdown"
               >{{task.taskStatus.charAt(0).toUpperCase()+ task.taskStatus.slice(1)}}</div>
             </v-col>
-            <v-col sm="8" md="8" class="taskViewLinksDiv">
-              <nuxt-link
-                :to="'/projects/'  +  this.projectId"
-                style="text-decoration: none;"
-                target="_blank"
-              >
-                <v-icon size="22" color="#0083E2">mdi-folder-outline</v-icon>Project
-              </nuxt-link>/
-              <nuxt-link
-                v-if="task.isParent == false"
-                target="_blank"
-                :to="'/task/' +    this.taskObject.parentTask.taskId + '/?project=' +  this.projectId"
-                style="text-decoration: none;"
-              >
-                <v-icon size="22" color="#0083E2">mdi-calendar-check</v-icon>Parent Task
-              </nuxt-link>
-              <span v-if="task.isParent == false">/</span>
-
-              <nuxt-link
-                :to="'/task/' +  this.task.taskId + '/?project=' +  this.projectId"
-                target="_blank"
-                style="text-decoration: none; color: #B9B9B9"
-              >
-                <v-icon size="22" color="#B9B9B9">mdi-calendar-check-outline</v-icon>Current Task
-              </nuxt-link>
-            </v-col>
           </v-row>
           <v-row class="mb-12" no-gutters>
             <v-col sm="12" md="12" class="formRowNameRange">
@@ -61,7 +35,7 @@
                     v-model="taskName"
                     v-if="editTask == false"
                     :disabled="editTask"
-                    @keyup.enter="saveEditTaskName"
+                    @keyup.enter="updateTaskName"
                   />
                 </v-col>
                 <v-col sm="1" md="1" class="taskEditIconCol">
@@ -82,7 +56,8 @@
               <v-divider class="nameRangeDevider"></v-divider>
             </v-col>
           </v-row>
-
+          <!-- {{this.taskFiles}} -->
+          <!-- {{taskObject}} -->
           <!-- --------------- body row ------------ -->
           <div class="formRowTaskDetailsBody">
             <v-row class="mb-12" no-gutters>
@@ -92,16 +67,16 @@
                     <v-col sm="6" md="6" no-gutters></v-col>
                     <v-col sm="3" md="3" no-gutters>
                       <add-parent-task
-                        v-if="taskObject.childTasks.length == 0 && task.isParent == true"
+                        v-if="taskObject.childTasks.length == 0 && task.parent == true"
                         taskId="this.task.taskId"
                       />
                     </v-col>
                     <v-col sm="3" md="3" no-gutters>
-                      <add-child-task :taskId="this.task.taskId" v-if=" task.isParent == true" />
+                      <add-child-task :taskId="this.task.taskId" v-if=" task.parent == true" />
                     </v-col>
                   </v-row>
                   <!-- ----------- parent task section --------- -->
-                  <div v-if="task.isParent == false">
+                  <div v-if="task.parent == false">
                     <div class="expansionViewHeader topItemTaskView">
                       <v-list-item class="taskViewTitleSection">
                         <v-list-item-icon>
@@ -160,7 +135,7 @@
                               </v-list-item-avatar>
                             </div>
                             <div class="boardTabLinkIcon">
-                              <nuxt-link
+                              <!-- <nuxt-link
                                 :to="
                                   '/task/' +
                                     taskObject.parentTask.taskId +
@@ -171,7 +146,7 @@
                                 target="_blank"
                               >
                                 <v-icon size="20" color="blue">mdi-link-variant</v-icon>
-                              </nuxt-link>
+                              </nuxt-link>-->
                             </div>
                           </v-list-item>
                         </div>
@@ -181,7 +156,7 @@
                     <v-divider></v-divider>
                   </div>
                   <!-- -------------- child tasks section ----------- -->
-                  <div v-if="task.isParent == true">
+                  <div v-if="task.parent == true">
                     <div class="expansionViewHeader">
                       <v-list-group>
                         <template v-slot:activator>
@@ -241,7 +216,7 @@
                                 </v-list-item-avatar>
                               </div>
                               <div class="boardTabLinkIcon">
-                                <nuxt-link
+                                <!-- <nuxt-link
                                   :to="
                                     '/task/' +
                                       childTask.taskId +
@@ -252,7 +227,7 @@
                                   target="_blank"
                                 >
                                   <v-icon size="20" color="blue">mdi-link-variant</v-icon>
-                                </nuxt-link>
+                                </nuxt-link>-->
                               </div>
                             </v-list-item>
                           </div>
@@ -268,7 +243,7 @@
                       <v-list-item-icon>
                         <v-icon size="30" color="#0BAFFF">mdi-checkbox-multiple-blank-outline</v-icon>
                       </v-list-item-icon>
-                      <v-list-item-title class="viewTaskFontColors">Task type</v-list-item-title>
+                      <v-list-item-title class="viewTaskFontColors">Task status</v-list-item-title>
                     </v-list-item>
                     <v-list-item-content class="parentChildTaskList">
                       <!-- ---------- task list --------- -->
@@ -277,108 +252,15 @@
                           <v-col sm="6" md="6">
                             <v-select
                               dense
-                              v-model="issueType"
-                              :items="issueTypeList"
-                              background-color="#EDF0F5"
-                              item-text="name"
-                              item-value="id"
-                              label="Task type"
-                              outlined
-                              class="createFormElements"
-                              @change="updateIssueType"
-                            ></v-select>
-                          </v-col>
-                          <v-col sm="6" md="6">
-                            <v-select
-                              dense
-                              v-if="this.issueTypes == 'development'"
                               v-model="taskStatus"
-                              :items="development"
+                              :items="status"
                               background-color="#EDF0F5"
                               item-text="name"
                               item-value="id"
                               label="Task status"
                               outlined
                               class="createFormElements"
-                              @change="updateStatus"
-                            ></v-select>
-                            <v-select
-                              dense
-                              v-if="this.issueTypes == 'qa'"
-                              v-model="taskStatus"
-                              :items="qa"
-                              background-color="#EDF0F5"
-                              item-text="name"
-                              item-value="id"
-                              label="Task status"
-                              outlined
-                              class="createFormElements"
-                              @change="updateStatus"
-                            ></v-select>
-                            <v-select
-                              dense
-                              v-if="this.issueTypes == 'design'"
-                              v-model="taskStatus"
-                              :items="design"
-                              background-color="#EDF0F5"
-                              item-text="name"
-                              item-value="id"
-                              label="Task status"
-                              outlined
-                              class="createFormElements"
-                              @change="updateStatus"
-                            ></v-select>
-                            <v-select
-                              dense
-                              v-if="this.issueTypes == 'bug'"
-                              v-model="taskStatus"
-                              :items="bug"
-                              background-color="#EDF0F5"
-                              item-text="name"
-                              item-value="id"
-                              label="Task status"
-                              outlined
-                              class="createFormElements"
-                              @change="updateStatus"
-                            ></v-select>
-                            <v-select
-                              dense
-                              v-if="this.issueTypes == 'operational'"
-                              v-model="taskStatus"
-                              :items="operational"
-                              background-color="#EDF0F5"
-                              item-text="name"
-                              item-value="id"
-                              label="Task status"
-                              outlined
-                              class="createFormElements"
-                              @change="updateStatus"
-                            ></v-select>
-                            <v-select
-                              dense
-                              v-if="this.issueTypes == 'preSales'"
-                              v-model="taskStatus"
-                              :items="preSales"
-                              background-color="#EDF0F5"
-                              item-text="name"
-                              item-value="id"
-                              label="Task status"
-                              outlined
-                              class="createFormElements"
-                              @change="updateStatus"
-                            ></v-select>
-                            <v-select
-                              dense
-                              v-if="this.issueTypes == 'general'"
-                              v-model="taskStatus"
-                              :items="general"
-                              background-color="#EDF0F5"
-                              item-text="name"
-                              item-value="id"
-                              label="Task status"
-                              outlined
-                              class="createFormElements"
-                              @change="updateStatus"
+                              @change="updateTaskStatus"
                             ></v-select>
                           </v-col>
                         </v-row>
@@ -388,38 +270,6 @@
                   </div>
                   <v-divider></v-divider>
 
-                  <!-- -------------- project board section ------------- -->
-                  <div class="expansionViewHeader">
-                    <v-list-item class="taskViewTitleSection">
-                      <v-list-item-icon>
-                        <v-icon size="30" color="#6FCD17">mdi-animation-outline</v-icon>
-                      </v-list-item-icon>
-                      <v-list-item-title class="viewTaskFontColors">Board</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item-content class="parentChildTaskList">
-                      <!-- ---------- task list --------- -->
-                      <div class="taskViewTaskListPadding">
-                        <v-row class="mb-12" no-gutters>
-                          <v-col sm="12" md="12">
-                            <v-select
-                              dense
-                              v-model="selectedSprint"
-                              :items="sprints"
-                              background-color="#EDF0F5"
-                              item-text="name"
-                              item-value="id"
-                              label="Board"
-                              outlined
-                              class="createFormElements"
-                              @change="changeTaskSprint"
-                            ></v-select>
-                          </v-col>
-                        </v-row>
-                      </div>
-                      <!-- --------------- -->
-                    </v-list-item-content>
-                  </div>
-                  <v-divider></v-divider>
                   <!-- -------------- notes section ------------- -->
                   <div class="expansionViewHeader">
                     <v-list-item class="taskViewTitleSection">
@@ -474,10 +324,10 @@
                           @change="changeAssignee"
                           class="rightColumnItemsText"
                         >
-                          <!-- <option>Naveen Perera</option> -->
                           <option value disabled>
-                            {{ selectedTaskUser.firstName }}
-                            {{ selectedTaskUser.lastName }}
+                            {{this.task.taskAssignee}}
+                            <!-- {{ selectedTaskUser.firstName }}
+                            {{ selectedTaskUser.lastName }}-->
                           </option>
                           <option
                             class="tabListItemsText"
@@ -498,7 +348,6 @@
                       <v-icon size="35" color="#7CDD00">mdi-calendar-blank-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                      <!-- <v-list-item-subtitle class="rightColumnItemsSubTitle">Due Date</v-list-item-subtitle> -->
                       <v-tooltip left>
                         <template v-slot:activator="{ on }">
                           <datetime
@@ -536,21 +385,13 @@
                       </v-tooltip>
                     </v-list-item-action>
                   </v-list-item>
-                  <!-- <div class="viewTaskPickerDiv"> <VueCtkDateTimePicker
-                      color="#3f51b5"
-                      id="duePicker"
-                      class
-                      v-model="taskDue"
-                      label="Add due date"
-                      right
-                  /> </div>-->
+
                   <!-- ----------- Reminder date section --------- -->
                   <v-list-item>
                     <v-list-item-icon>
                       <v-icon size="35" color="#7CDD00">mdi-clock-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                      <!-- <v-list-item-subtitle class="rightColumnItemsSubTitle">Remind Date</v-list-item-subtitle> -->
                       <v-tooltip left>
                         <template v-slot:activator="{ on }">
                           <datetime
@@ -588,14 +429,7 @@
                       </v-tooltip>
                     </v-list-item-action>
                   </v-list-item>
-                  <!-- <div class="viewTaskPickerDiv"> <VueCtkDateTimePicker
-                      color="#3f51b5"
-                      id="reminderPicker"
-                      class
-                      v-model="taskRemindOnDate"
-                      label="Add remind date"
-                      right
-                  /></div>-->
+
                   <v-divider class="datePickerDivider"></v-divider>
                   <!-- ----------- Files section --------- -->
                   <v-list-item>
@@ -720,7 +554,7 @@ import AddParentTask from "~/components/tasks/addParentTask";
 import AddChildTask from "~/components/tasks/addChildTask";
 
 export default {
-  props: ["task", "projectId", "people", "taskObject"],
+  props: ["task", "projectId", "people", "taskObject", "taskFiles"],
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
@@ -759,96 +593,8 @@ export default {
       // taskStatus: this.task.taskStatus,
       // issueType: this.task.issueType,
 
-      issueTypeList: [
-        { name: "Development", id: "development" },
-        { name: "QA", id: "qa" },
-        { name: "Design", id: "design" },
-        { name: "Bug", id: "bug" },
-        { name: "Operational", id: "operational" },
-        { name: "Pre-sales", id: "preSales" },
-        { name: "General", id: "general" }
-      ],
-      development: [
-        { name: "Pending", id: "pending" },
-        { name: "On hold", id: "onHold" },
-        { name: "Open", id: "cancel" },
-        { name: "Completed", id: "completed" },
-        { name: "Implementing", id: "implementing" },
-        { name: "Deployed", id: "deployed" },
-        { name: "Closed", id: "closed" }
-      ],
-      qa: [
-        { name: "Pending", id: "pending" },
-        { name: "Testing", id: "testing" },
-        { name: "Review", id: "review" },
-        { name: "Closed", id: "closed" }
-      ],
-      design: [
-        { name: "Pending", id: "pending" },
-        { name: "On hold", id: "onHold" },
-        { name: "Cancel", id: "cancel" },
-        { name: "Fixing", id: "fixing" },
-        { name: "Resolved", id: "resolved" },
-        { name: "In progress", id: "inprogress" },
-        { name: "Completed", id: "completed" },
-        { name: "Under review", id: "underReview" },
-        { name: "Weiting for approval", id: "waitingForApproval" },
-        { name: "Review", id: "review" },
-        { name: "Waiting response", id: "waitingResponse" },
-        { name: "Rejected", id: "rejected" },
-        { name: "Closed", id: "closed" }
-      ],
-      bug: [
-        { name: "Pending", id: "pending" },
-        { name: "On hold", id: "onHold" },
+      status: [
         { name: "Open", id: "open" },
-        { name: "Cancel", id: "cancel" },
-        { name: "Reopened", id: "reopened" },
-        { name: "Fixing", id: "fixing" },
-        { name: "Testing", id: "testing" },
-        { name: "Resolved", id: "resolved" },
-        { name: "Under review", id: "underReview" },
-        { name: "Review", id: "review" },
-        { name: "Waiting response", id: "waitingResponse" },
-        { name: "Closed", id: "closed" }
-      ],
-      operational: [
-        { name: "Pending", id: "pending" },
-        { name: "On hold", id: "onHold" },
-        { name: "Open", id: "open" },
-        { name: "Cancel", id: "cancel" },
-        { name: "Resolved", id: "resolved" },
-        { name: "In progress", id: "inprogress" },
-        { name: "Completed", id: "completed" },
-        { name: "Under review", id: "underReview" },
-        { name: "Weiting for approval", id: "waitingForApproval" },
-        { name: "Discussion", id: "discussion" },
-        { name: "Waiting response", id: "waitingResponse" },
-        { name: "Ready", id: "ready" },
-        { name: "Rejected", id: "rejected" },
-        { name: "Closed", id: "closed" }
-      ],
-      preSales: [
-        { name: "Pending", id: "pending" },
-        { name: "On hold", id: "onHold" },
-        { name: "Open", id: "open" },
-        { name: "Cancel", id: "cancel" },
-        { name: "Resolved", id: "resolved" },
-        { name: "In progress", id: "inprogress" },
-        { name: "Under review", id: "underReview" },
-        { name: "Weiting for approval", id: "waitingForApproval" },
-        { name: "Discussion", id: "discussion" },
-        { name: "Waiting response", id: "waitingResponse" },
-        { name: "Rejected", id: "rejected" },
-        { name: "Closed", id: "closed" }
-      ],
-      general: [
-        { name: "Pending", id: "pending" },
-        { name: "On hold", id: "onHold" },
-        { name: "Open", id: "open" },
-        { name: "Cancel", id: "cancel" },
-        { name: "In progress", id: "inprogress" },
-        { name: "Completed", id: "completed" },
         { name: "Closed", id: "closed" }
       ]
     };
@@ -857,45 +603,13 @@ export default {
     clickToPrint() {
       console.log("==============> clicked!!!!");
     },
-    // ------------- update issue type ----------
-    async updateIssueType() {
-      console.log("onchange updated status ->");
-      let response;
-      try {
-        response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
-          {
-            taskStatus: this.taskStatus,
-            issueType: this.updatedIssue
-          },
-          {
-            headers: {
-              user: this.userId
-            }
-          }
-        );
-        this.component = "success-popup";
-        this.successMessage = "Type successfully updated";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        console.log("update task status response", response);
-      } catch (e) {
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        console.log("Error updating a status", e);
-      }
-    },
     // ------------- update task status ----------
-    async updateStatus() {
+    async updateTaskStatus() {
       console.log("onchange updated status ->");
       let response;
       try {
         response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}`,
           {
             taskStatus: this.updatedStatus
           },
@@ -920,12 +634,12 @@ export default {
         console.log("Error updating a status", e);
       }
     },
-    async saveEditTaskName() {
+    async updateTaskName() {
       console.log("updatedTaskName ->", this.updatedTask.taskName);
       let response;
       try {
         response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}`,
           {
             taskName: this.updatedTask.taskName
           },
@@ -937,14 +651,11 @@ export default {
         );
         this.component = "success-popup";
         this.successMessage = "Name successfully updated";
-        if (this.task.isParent) {
-          this.$store.dispatch("task/updateTask", {
-            taskId: this.task.taskId,
-            taskName: this.updatedTask.taskName
-          });
-        } else {
-          this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
-        }
+        this.$store.dispatch("groups/groupTask/updateGroupTask", {
+          taskId: this.task.taskId,
+          type: "taskName",
+          value: this.updatedTask.taskName
+        });
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -967,7 +678,7 @@ export default {
       let response;
       try {
         response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}`,
           {
             taskAssignee: this.taskAssignee
           },
@@ -993,43 +704,6 @@ export default {
         console.log("Error updating a status", e);
       }
     },
-    // -------- update sprint ----------
-    async changeTaskSprint() {
-      console.log("onchange sprint", this.updatedSprint);
-      let response;
-      try {
-        response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.task.taskId}/sprint`,
-          {
-            previousSprint: this.task.sprintId,
-            newSprint: this.updatedSprint
-          },
-          {
-            headers: {
-              user: this.userId
-            }
-          }
-        );
-        //REMOVED DUE TO TASK REFRESH ON CLOSE
-        // this.$store.dispatch("task/updateSprintOfATask", {
-        //   taskId: this.task.taskId,
-        //   sprintId: this.updatedSprint
-        // });
-        this.component = "success-popup";
-        this.successMessage = "Sprint successfully updated";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        console.log("update sprint status response", response);
-      } catch (e) {
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        console.log("Error updating a sprint", e);
-      }
-    },
     // ---------- update task note -----------
     async updateTaskNote() {
       console.log("updatedTaskValue ->", this.updatedTask.taskNote);
@@ -1037,7 +711,7 @@ export default {
 
       try {
         response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}`,
           {
             taskNotes: this.updatedTask.taskNote
           },
@@ -1096,7 +770,7 @@ export default {
       let response;
       try {
         response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}`,
           {
             taskDueDate: dueDate,
             taskRemindOnDate: remindDate
@@ -1135,7 +809,7 @@ export default {
           let fileResponse;
           try {
             fileResponse = await this.$axios.$post(
-              `/projects/${this.projectId}/tasks/${this.task.taskId}/upload`,
+              `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}/upload`,
               formData,
               {
                 headers: {
@@ -1169,7 +843,7 @@ export default {
       let response;
       try {
         response = await this.$axios.$delete(
-          `/projects/${this.projectId}/tasks/${this.task.taskId}/upload/${taskFileId}`,
+          `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}/upload/${taskFileId}`,
           {
             data: {},
             headers: {
@@ -1251,20 +925,7 @@ export default {
         return stringDate;
       }
     },
-    getSprintDetails(v) {
-      console.log("board list", this.projectSprints);
-      this.sprints = [];
-      let sprintSearchList = this.projectSprints;
-      for (let index = 0; index < sprintSearchList.length; ++index) {
-        let sprint = sprintSearchList[index];
-        this.sprints.push({
-          name: sprint.sprintName,
-          id: sprint.sprintId
-        });
-      }
-      console.log("nameList", this.states);
-      this.loading = true;
-    },
+
     isTaskAssignee(taskAssignee) {
       if (taskAssignee.assigneeId == this.task.taskAssignee) {
         return true;
@@ -1280,39 +941,38 @@ export default {
     }
   },
   computed: {
-    taskUser() {
-      if (Object.keys(this.selectedTaskUser).length === 0) {
-        this.$store.dispatch(
-          "user/setSelectedTaskUser",
-          this.task.taskAssignee
-        );
-        return "";
-      } else {
-        return (
-          this.selectedTaskUser.firstName + " " + this.selectedTaskUser.lastName
-        );
-      }
-    },
+    // taskUser() {
+    //   if (Object.keys(this.selectedTaskUser).length === 0) {
+    //     this.$store.dispatch(
+    //       "user/setSelectedTaskUser",
+    //       this.task.taskAssignee
+    //     );
+    //     return "";
+    //   } else {
+    //     return (
+    //       this.selectedTaskUser.firstName + " " + this.selectedTaskUser.lastName
+    //     );
+    //   }
+    // },
     ...mapState({
       people: state => state.task.userCompletionTasks,
       projectSprints: state => state.sprints.sprint.sprints,
       projectAllTasks: state => state.task.allTasks,
       projectId: state => state.project.project.projectId,
-      selectedTaskUser: state => state.user.selectedTaskUser,
-      taskFiles: state => state.task.taskFiles
+      selectedTaskUser: state => state.user.selectedTaskUser
     }),
     ...mapGetters(["getuserCompletionTasks"]),
-    peopleList() {
-      console.log("people list", this.people);
-      if (this.people.length == 0) {
-        this.$store.dispatch(
-          "task/fetchProjectUserCompletionTasks",
-          this.$route.query.project
-        );
-      } else {
-        return this.people;
-      }
-    },
+    // peopleList() {
+    //   console.log("people list", this.people);
+    //   if (this.people.length == 0) {
+    //     this.$store.dispatch(
+    //       "task/fetchProjectUserCompletionTasks",
+    //       this.$route.query.project
+    //     );
+    //   } else {
+    //     return this.people;
+    //   }
+    // },
 
     taskName: {
       get() {
@@ -1333,30 +993,7 @@ export default {
         this.updatedStatus = value;
       }
     },
-    issueType: {
-      get() {
-        this.issueTypes = this.task.issueType;
-        return this.task.issueType;
-      },
-      set(value) {
-        this.updatedIssue = value;
-        this.issueTypes = value;
-        console.log("issue type", this.updatedIssue);
-        // if (this.task.issueType != this.updatedIssue) {
-        //   this.updatedStatus = "pending";
-        // }
-      }
-    },
-    selectedSprint: {
-      get() {
-        this.getSprintDetails();
-        return this.task.sprintId;
-      },
-      set(sprintId) {
-        console.log("spid", sprintId);
-        this.updatedSprint = sprintId;
-      }
-    },
+
     taskNote: {
       get() {
         return this.task.taskNote;
