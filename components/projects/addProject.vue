@@ -92,7 +92,24 @@
             v-model.trim="projectTimeLine"
           ></v-text-field>
         </v-col>
-        <v-col sm="6" md="6"></v-col>
+        <v-col sm="6" md="6">
+          <v-text-field
+            label="Project Alias (Enter a short name)*"
+            outlined
+            class="createFormElements"
+            counter="6"
+            max-
+            v-model.trim="$v.alias.$model"
+          ></v-text-field>
+          <div
+            v-if="$v.alias.$error && !$v.alias.required"
+            class="errorText"
+          >Project alias is required</div>
+          <div
+            v-if="$v.alias.$error && !$v.alias.maxLength"
+            class="errorText"
+          >Cannot use more than 6 characters</div>
+        </v-col>
       </v-row>
       <v-row class="mb-12 formRow" no-gutters>
         <v-col sm="12" md="6" class></v-col>
@@ -163,17 +180,20 @@ export default {
           projectName: this.projectName,
           clientId: this.client,
           projectStartDate: this.getStartDate(),
-          projectEndDate: this.getEndDate()
+          projectEndDate: this.getEndDate(),
+          projectAlias: this.alias.toUpperCase()
         });
 
         (this.projectName = ""),
           (this.clientId = ""),
           (this.client = ""),
+          (this.alias = ""),
           this.$v.$reset();
 
         console.log("project added successfully", response);
         this.component = "success-popup";
-        window.setTimeout(location.reload(), 8000);
+        window.location.href = "/projects/" + response.data.projectId;
+        // window.setTimeout(location.reload(), 8000);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
@@ -198,6 +218,7 @@ export default {
       errorMessage: "",
       userId: this.$store.state.user.userId,
       projectName: "",
+      alias: "",
       client: "",
       // startDate: new Date().toISOString().split('.')[0],
       startDate: new Date(),
@@ -211,6 +232,10 @@ export default {
     projectName: {
       required,
       maxLength: maxLength(49)
+    },
+    alias: {
+      required,
+      maxLength: maxLength(6)
     },
     client: {
       required
