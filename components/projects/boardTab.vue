@@ -10,27 +10,26 @@
             <!-- -------- load parent tasks (default board) ------------ -->
             <v-list-item
               v-if="task.parentTask.sprintId == 'default'"
-              @click.stop="drawer = !drawer"
-              @click="selectTask(task.parentTask)"
+              @click="selectTask(task.parentTask, task); taskDialog = true;"
             >
+              <!-- @click.stop="drawer = !drawer" -->
               <v-list-item-action>
                 <v-icon
                   v-if="task.parentTask.taskStatus == 'closed'"
                   size="25"
                   color="#2EC973"
-                  >mdi-checkbox-marked-circle</v-icon
-                >
-                <v-icon v-else size="30" color="#EDF0F5"
-                  >mdi-checkbox-blank-circle</v-icon
-                >
+                >mdi-checkbox-marked-circle</v-icon>
+                <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
               </v-list-item-action>
               <v-list-item-content>
-                <v-list-item-title>{{
+                <v-list-item-title>
+                  {{
                   task.parentTask.taskName
-                }}</v-list-item-title>
-                <div :class="dueDateCheck(task.parentTask)">
-                  {{ getProjectDates(task.parentTask.taskDueDateAt) }}
-                </div>
+                  }}
+                </v-list-item-title>
+                <div
+                  :class="dueDateCheck(task.parentTask)"
+                >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</div>
               </v-list-item-content>
               <v-list-item-avatar size="25">
                 <v-img
@@ -50,40 +49,29 @@
                   style="text-decoration: none;"
                   target="_blank"
                 >
-                  <v-icon size="15" color="blue"
-                    >mdi-link-variant</v-icon
-                  ></nuxt-link
-                >
+                  <v-icon size="15" color="blue">mdi-link-variant</v-icon>
+                </nuxt-link>
               </div>
             </v-list-item>
           </div>
           <!-- -------------- load child tasks (default board) ----------- -->
-          <div
-            v-for="(childTask, index) in task.childTasks"
-            :key="index"
-            class="boardTaskListItem"
-          >
+          <div v-for="(childTask, index) in task.childTasks" :key="index" class="boardTaskListItem">
             <v-list-item
               v-if="childTask.sprintId == 'default'"
-              @click.stop="drawer = !drawer"
-              @click="selectTask(childTask)"
+              @click="selectTask(childTask, task);  taskDialog = true;"
             >
+              <!-- @click.stop="drawer = !drawer" -->
               <v-list-item-action>
                 <v-icon
                   v-if="childTask.taskStatus == 'closed'"
                   size="25"
                   color="#2EC973"
-                  >mdi-checkbox-marked-circle</v-icon
-                >
-                <v-icon v-else size="30" color="#EDF0F5"
-                  >mdi-checkbox-blank-circle</v-icon
-                >
+                >mdi-checkbox-marked-circle</v-icon>
+                <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
               </v-list-item-action>
               <v-list-item-content>
                 <v-list-item-title>{{ childTask.taskName }}</v-list-item-title>
-                <div :class="dueDateCheck(childTask)">
-                  {{ getProjectDates(childTask.taskDueDateAt) }}
-                </div>
+                <div :class="dueDateCheck(childTask)">{{ getProjectDates(childTask.taskDueDateAt) }}</div>
               </v-list-item-content>
               <v-list-item-avatar size="25">
                 <v-img
@@ -101,10 +89,8 @@
                   style="text-decoration: none;"
                   target="_blank"
                 >
-                  <v-icon size="15" color="blue"
-                    >mdi-link-variant</v-icon
-                  ></nuxt-link
-                >
+                  <v-icon size="15" color="blue">mdi-link-variant</v-icon>
+                </nuxt-link>
               </div>
             </v-list-item>
           </div>
@@ -114,20 +100,16 @@
     <div class>
       <div class="boardBodyDiv">
         <div class="scrolling-wrapper">
-          <div
-            class="card"
-            v-for="(projectSprint, index) in projectSprints"
-            :key="index"
-          >
+          <div class="card" v-for="(projectSprint, index) in projectSprints" :key="index">
             <div class="actualBoard" v-if="projectSprint.sprintId != 'default'">
               <div class="sprintTitle">
                 <!-- <span>Default Board</span> -->
-                <v-list-item-title>
-                  {{ projectSprint.sprintName }}
-                </v-list-item-title>
-                <v-list-item-subtitle>{{
+                <v-list-item-title>{{ projectSprint.sprintName }}</v-list-item-title>
+                <v-list-item-subtitle>
+                  {{
                   projectSprint.sprintDescription
-                }}</v-list-item-subtitle>
+                  }}
+                </v-list-item-subtitle>
               </div>
               <div class="boardTaskList overflow-y-auto">
                 <!-- -------- load parent tasks (project boards) ------------ -->
@@ -135,27 +117,26 @@
                   <div class="boardTaskListItem">
                     <v-list-item
                       v-if="task.parentTask.sprintId == projectSprint.sprintId"
-                      @click.stop="drawer = !drawer"
-                      @click="selectTask(task.parentTask)"
+                      @click="selectTask(task.parentTask, task); taskDialog = true;"
                     >
+                      <!-- @click.stop="drawer = !drawer" -->
                       <v-list-item-action>
                         <v-icon
                           v-if="task.parentTask.taskStatus == 'closed'"
                           size="25"
                           color="#2EC973"
-                          >mdi-checkbox-marked-circle</v-icon
-                        >
-                        <v-icon v-else size="30" color="#EDF0F5"
-                          >mdi-checkbox-blank-circle</v-icon
-                        >
+                        >mdi-checkbox-marked-circle</v-icon>
+                        <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                       </v-list-item-action>
                       <v-list-item-content>
-                        <v-list-item-title>{{
+                        <v-list-item-title>
+                          {{
                           task.parentTask.taskName
-                        }}</v-list-item-title>
-                        <div :class="dueDateCheck(task.parentTask)">
-                          {{ getProjectDates(task.parentTask.taskDueDateAt) }}
-                        </div>
+                          }}
+                        </v-list-item-title>
+                        <div
+                          :class="dueDateCheck(task.parentTask)"
+                        >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</div>
                       </v-list-item-content>
                       <v-list-item-avatar size="25">
                         <v-img
@@ -180,10 +161,8 @@
                           style="text-decoration: none;"
                           target="_blank"
                         >
-                          <v-icon size="15" color="blue"
-                            >mdi-link-variant</v-icon
-                          ></nuxt-link
-                        >
+                          <v-icon size="15" color="blue">mdi-link-variant</v-icon>
+                        </nuxt-link>
                       </div>
                     </v-list-item>
                   </div>
@@ -195,27 +174,26 @@
                   >
                     <v-list-item
                       v-if="childTask.sprintId == projectSprint.sprintId"
-                      @click.stop="drawer = !drawer"
-                      @click="selectTask(childTask)"
+                      @click="selectTask(childTask, task); taskDialog = true;"
                     >
+                      <!-- @click.stop="drawer = !drawer" -->
                       <v-list-item-action>
                         <v-icon
                           v-if="childTask.taskStatus == 'closed'"
                           size="25"
                           color="#2EC973"
-                          >mdi-checkbox-marked-circle</v-icon
-                        >
-                        <v-icon v-else size="30" color="#EDF0F5"
-                          >mdi-checkbox-blank-circle</v-icon
-                        >
+                        >mdi-checkbox-marked-circle</v-icon>
+                        <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                       </v-list-item-action>
                       <v-list-item-content>
-                        <v-list-item-title>{{
+                        <v-list-item-title>
+                          {{
                           childTask.taskName
-                        }}</v-list-item-title>
-                        <div :class="dueDateCheck(childTask)">
-                          {{ getProjectDates(childTask.taskDueDateAt) }}
-                        </div>
+                          }}
+                        </v-list-item-title>
+                        <div
+                          :class="dueDateCheck(childTask)"
+                        >{{ getProjectDates(childTask.taskDueDateAt) }}</div>
                       </v-list-item-content>
                       <v-list-item-avatar size="25">
                         <v-img
@@ -238,10 +216,8 @@
                           style="text-decoration: none;"
                           target="_blank"
                         >
-                          <v-icon size="15" color="blue"
-                            >mdi-link-variant</v-icon
-                          ></nuxt-link
-                        >
+                          <v-icon size="15" color="blue">mdi-link-variant</v-icon>
+                        </nuxt-link>
                       </div>
                     </v-list-item>
                   </div>
@@ -278,53 +254,183 @@
         @shrinkSideBar="shrinkSideBar"
       />
     </v-navigation-drawer>
+    <!-- ------------ task dialog --------- -->
+
+    <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
+      <v-toolbar dark color="primary">
+        <v-btn icon dark @click="taskDialog = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <v-toolbar-title class="font-weight-bold">
+          {{
+          task.taskName
+          }}
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+          <!-- <v-btn dark text @click="dialog = false">Save</v-btn> -->
+          <button class :disabled="checkValidation">
+            <v-list-item dark>
+              <div>
+                <v-tooltip left>
+                  <template v-slot:activator="{ on }">
+                    <v-icon
+                      v-on="on"
+                      size="30px"
+                      @click="taskDeleteDialog = true"
+                      color="#FFFFFF"
+                    >mdi-delete-circle</v-icon>
+                  </template>
+                  <span>Delete task</span>
+                </v-tooltip>
+              </div>
+            </v-list-item>
+          </button>
+        </v-toolbar-items>
+      </v-toolbar>
+      <task-dialog
+        :task="task"
+        :projectId="projectId"
+        :taskFiles="taskFiles"
+        :componentClose="componentClose"
+        :taskObject="taskObject"
+      />
+    </v-dialog>
+    <!-- --------------------- delete task popup --------------- -->
+
+    <v-dialog v-model="taskDeleteDialog" max-width="380">
+      <v-card>
+        <div class="popupConfirmHeadline">
+          <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
+          <br />
+          <span class="alertPopupTitle">Delete Task</span>
+          <br />
+          <span class="alertPopupText">
+            You're about to permanantly delete this task, its comments and
+            attachments, and all of its data. If you're not sure, you can
+            cancel this action.
+          </span>
+        </div>
+
+        <div class="popupBottom">
+          <v-card-actions>
+            <v-spacer></v-spacer>
+
+            <v-btn color="success" width="100px" @click="taskDeleteDialog = false">Cancel</v-btn>
+            <v-spacer></v-spacer>
+            <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
+            <v-btn
+              color="error"
+              width="100px"
+              @click="
+                      taskDeleteDialog = false;
+                      taskDialog = false;
+                      deleteTask();
+                    "
+            >Delete</v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </div>
+        <!-- <div @click="close" class="allTaskPopupPlacements">
+          <component v-bind:is="component" :errorMessage="errorMessage"></component>
+          <success-popup />
+        </div>-->
+      </v-card>
+    </v-dialog>
+
+    <!-- ---------------------- end popup ------------------ -->
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import TaskSideBar from '~/components/tasks/taskSideBar';
-import AddSprint from '~/components/projects/addSprint';
+import { mapState } from "vuex";
+import TaskSideBar from "~/components/tasks/taskSideBar";
+import AddSprint from "~/components/projects/addSprint";
+import TaskDialog from "~/components/tasks/taskDialog";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
 export default {
   components: {
-    'task-side-bar': TaskSideBar,
-    'add-sprint': AddSprint,
+    "task-side-bar": TaskSideBar,
+    "add-sprint": AddSprint,
+    "task-dialog": TaskDialog,
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup
   },
   data() {
     return {
+      errorMessage: "",
+      successMessage: "",
+      component: "",
       drawer: null,
+      taskObject: {},
+      taskDialog: false,
+      taskDeleteDialog: false,
       task: {},
       subTasks: [],
       taskFiles: [],
       assignee: {},
       userId: this.$store.state.user.userId,
-      taskSelect: null,
+      taskSelect: null
     };
   },
   computed: {
     ...mapState({
-      projectAllTasks: (state) => state.task.allTasks,
-      projectSprints: (state) => state.sprints.sprint.sprints,
-      projectId: (state) => state.project.project.projectId,
+      projectAllTasks: state => state.task.allTasks,
+      projectSprints: state => state.sprints.sprint.sprints,
+      projectId: state => state.project.project.projectId,
+      selectedTask: state => state.task.selectedTask
       // people: (state) => state.
-    }),
+    })
   },
   methods: {
+    // ------- popup close ----------
+    close() {
+      this.component = "";
+    },
+    async deleteTask() {
+      let response;
+      try {
+        response = await this.$axios.$delete(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            data: {},
+            headers: {
+              user: this.userId,
+              type: "project"
+            }
+          }
+        );
+        // this.component = 'success-popup'
+        this.$emit("listenChange");
+        this.$emit("shrinkSideBar");
+
+        console.log(response.data);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error creating project", e);
+      }
+    },
     listenChange() {
-      this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
+      this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
     },
     shrinkSideBar() {
       this.drawer = false;
     },
-    async selectTask(task) {
-      console.log('selectedTask sprint', task.sprintId);
+    async selectTask(task, taskObject) {
+      this.taskObject = taskObject;
+      console.log("selectedTask sprint", task.sprintId);
       //  if(task.sprintId !== "default")
       this.task = task;
-      console.log('selectedTask', task);
+      console.log("selectedTask", task);
       this.$axios
         .get(`/users/${this.task.taskAssignee}`)
-        .then(async (response) => {
-          console.log('fetched task -->', response.data.data);
+        .then(async response => {
+          console.log("fetched task -->", response.data.data);
           this.assignee = response.data.data;
           //if task fetch is successful,
           let subTaskResponse;
@@ -333,11 +439,12 @@ export default {
               `/projects/${this.projectId}/tasks/${task.taskId}/subtask?userId=${this.userId}`,
               {
                 headers: {
-                  type: 'project',
-                },
+                  type: "project"
+                }
               }
             );
-            console.log('subtasks--->', subTaskResponse.data);
+            this.$store.dispatch("user/setSelectedTaskUser", task.taskAssignee);
+            console.log("subtasks--->", subTaskResponse.data);
             this.subTasks = subTaskResponse.data;
             //get files related to task
             let taskFilesResponse;
@@ -347,69 +454,69 @@ export default {
                 {
                   headers: {
                     user: this.userId,
-                    type: 'project',
-                  },
+                    type: "project"
+                  }
                 }
               );
-              console.log('files--->', taskFilesResponse.data);
+              console.log("files--->", taskFilesResponse.data);
               this.taskFiles = taskFilesResponse.data;
             } catch (error) {
-              console.log('Error fetching data', error);
+              console.log("Error fetching data", error);
             }
           } catch (error) {
-            console.log('Error fetching data', error);
+            console.log("Error fetching data", error);
           }
         })
-        .catch((e) => {
-          console.log('error', e);
+        .catch(e => {
+          console.log("error", e);
         });
     },
     dueDateCheck(task) {
-      console.log('check due date color', task);
-      if (task.taskStatus === 'closed') {
-        return 'boardTaskDone';
+      console.log("check due date color", task);
+      if (task.taskStatus === "closed") {
+        return "boardTaskDone";
       } else if (task.taskDueDateAt == null) {
-        return 'boardTaskDefault';
+        return "boardTaskDefault";
       } else {
         const dueDate = new Date(task.taskDueDateAt);
         const dueToUtc = new Date(
-          dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
+          dueDate.toLocaleString("en-US", { timeZone: "UTC" })
         );
         const dueToUtcDate = new Date(dueToUtc);
         const now = new Date();
-        console.log('now', now.getTime(), 'DueTime', dueToUtcDate.getTime());
+        console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
         if (now.getTime() > dueToUtcDate.getTime()) {
-          console.log('overdue');
-          return 'boardTaskOverDue';
+          console.log("overdue");
+          return "boardTaskOverDue";
         } else {
-          return 'boardTaskHealthy';
+          return "boardTaskHealthy";
         }
       }
     },
     getProjectDates(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
+        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
       );
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
-      console.log('Today', now.getDate(), 'DueDate', dueToUtcDate.getDate());
+      console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
-      if (date === null || date === '1970-01-01T05:30:00.000+0000') {
-        return 'Add Due Date';
+      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
+        return "Add Due Date";
       } else if (now.getDate() === dueToUtcDate.getDate()) {
-        return 'Today';
+        return "Today";
       } else if (now.getDate() - 1 === dueToUtcDate.getDate()) {
-        return 'Yesterday';
+        return "Yesterday";
       } else if (now.getDate() + 1 === dueToUtcDate.getDate()) {
-        return 'Tomorrow';
+        return "Tomorrow";
       } else {
-        let stringDate = date + '';
+        let stringDate = date + "";
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 10);
         return stringDate;
       }
-    },
-  },
+    }
+  }
 };
 </script>

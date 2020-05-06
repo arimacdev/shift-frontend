@@ -523,6 +523,18 @@
                         <span>Update due date</span>
                       </v-tooltip>
                     </v-list-item-content>
+                    <v-list-item-action>
+                      <v-tooltip left>
+                        <template v-slot:activator="{ on }">
+                          <v-btn v-on="on" icon color="deep-orange">
+                            <v-icon
+                              @click="updateTaskDates('dueDate')"
+                            >mdi-checkbox-marked-circle-outline</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Select date and click to update</span>
+                      </v-tooltip>
+                    </v-list-item-action>
                   </v-list-item>
                   <!-- <div class="viewTaskPickerDiv"> <VueCtkDateTimePicker
                       color="#3f51b5"
@@ -563,6 +575,18 @@
                         <span>Update remind date</span>
                       </v-tooltip>
                     </v-list-item-content>
+                    <v-list-item-action>
+                      <v-tooltip left>
+                        <template v-slot:activator="{ on }">
+                          <v-btn v-on="on" icon color="deep-orange">
+                            <v-icon
+                              @click="updateTaskDates('remindOn')"
+                            >mdi-checkbox-marked-circle-outline</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Select date and click to update</span>
+                      </v-tooltip>
+                    </v-list-item-action>
                   </v-list-item>
                   <!-- <div class="viewTaskPickerDiv"> <VueCtkDateTimePicker
                       color="#3f51b5"
@@ -1351,7 +1375,6 @@ export default {
       set(value) {
         console.log("updated task due ->", value);
         this.updatedTask.taskDueDateAt = value;
-        this.updateTaskDates("dueDate");
       }
     },
     taskRemindOn: {
@@ -1369,7 +1392,6 @@ export default {
       set(value) {
         console.log("updated task reminder ->", value);
         this.updatedTask.taskRemindOnDate = value;
-        this.updateTaskDates("remindOn");
       }
     }
   }

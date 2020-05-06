@@ -130,7 +130,7 @@
             </v-list-item-action>
             <div class="tasklistTaskNames restructuredMainTaskName">
               <div class="body-2">
-                <!-- <span class="restructuredMainTaskCode">MRI - #1</span> -->
+                <span class="restructuredMainTaskCode">{{task.parentTask.secondaryTaskId}}</span>
                 {{ task.parentTask.taskName }}
               </div>
             </div>
@@ -205,7 +205,7 @@
               </v-list-item-action>
               <div class="tasklistTaskNames restructuredSubTaskName">
                 <div class="body-2">
-                  <!-- <span class="restructuredMainTaskCode">MRI - #1</span> -->
+                  <span class="restructuredMainTaskCode">{{childTask.secondaryTaskId}}</span>
                   {{ childTask.taskName }}
                 </div>
               </div>
