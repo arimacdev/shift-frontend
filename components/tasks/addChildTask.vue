@@ -117,11 +117,13 @@ export default {
       this.parentTasks = [];
       let parentSearchList = this.projectAllTasks;
       for (let index = 0; index < parentSearchList.length; ++index) {
-        let parent = parentSearchList[index];
-        this.parentTasks.push({
-          name: parent.parentTask.taskName,
-          id: parent.parentTask.taskId
-        });
+        let task = parentSearchList[index];
+        if (task.childTasks.length == 0) {
+          this.parentTasks.push({
+            name: task.parentTask.taskName,
+            id: task.parentTask.taskId
+          });
+        }
       }
 
       console.log("nameList", this.states);
