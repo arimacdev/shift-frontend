@@ -971,7 +971,7 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            taskStatus: "pending",
+            taskStatus: this.taskStatus,
             issueType: this.updatedIssue,
             taskType: "project"
           },
