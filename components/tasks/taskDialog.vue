@@ -93,11 +93,11 @@
                     <v-col sm="3" md="3" no-gutters>
                       <add-parent-task
                         v-if="taskObject.childTasks.length == 0 && task.isParent == true"
-                        taskId="this.task.taskId"
+                        :taskId="task.taskId"
                       />
                     </v-col>
                     <v-col sm="3" md="3" no-gutters>
-                      <add-child-task v-if=" task.isParent == true" />
+                      <add-child-task v-if=" task.isParent == true" :taskId="task.taskId" />
                     </v-col>
                   </v-row>
                   <!-- ----------- parent task section --------- -->
@@ -734,7 +734,7 @@ export default {
       userId: this.$store.state.user.userId,
       sprints: [],
       editTask: true,
-      task: {},
+      // task: {},
       files: [],
       taskObject: {},
       updatedIssue: "",
