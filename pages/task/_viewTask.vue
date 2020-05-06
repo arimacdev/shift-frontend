@@ -869,7 +869,7 @@ export default {
       console.log("Error fetching task", e);
     }
     if (this.task.isParent) {
-      console.log("parent tasl");
+      console.log("parent task");
       this.$store.dispatch("task/fetchChildren", {
         projectId: this.$route.query.project,
         taskId: this.$route.params.viewTask

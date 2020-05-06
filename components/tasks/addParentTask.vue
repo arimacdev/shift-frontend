@@ -150,6 +150,10 @@ export default {
         this.component = "success-popup";
         this.successMessage = "Parent Task Added Successfully";
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$store.dispatch("task/setCurrentTask", {
+          projectId: this.projectId,
+          taskId: this.taskId
+        });
         setTimeout(() => {
           this.close();
         }, 3000);
