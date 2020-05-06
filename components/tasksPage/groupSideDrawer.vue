@@ -523,8 +523,7 @@ export default {
           {
             data: {},
             headers: {
-              user: this.userId,
-              taskType: "taskGroup"
+              user: this.userId
             }
           }
         );
@@ -568,8 +567,7 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}`,
           {
-            taskAssignee: this.updatedTask.taskAssignee,
-            taskType: "taskGroup"
+            taskAssignee: this.updatedTask.taskAssignee
           },
           {
             headers: {
@@ -644,8 +642,7 @@ export default {
             {
               taskId: this.task.taskId,
               subtaskName: this.newSubTask.subtaskName,
-              subTaskCreator: this.userId,
-              taskType: "taskGroup"
+              subTaskCreator: this.userId
             }
           );
           this.newSubTask.subtaskName = "";
@@ -678,8 +675,7 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}`,
           {
-            taskNotes: this.updatedTask.taskNotes,
-            taskType: "taskGroup"
+            taskNotes: this.updatedTask.taskNotes
           },
           {
             headers: {
@@ -713,8 +709,7 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}`,
           {
-            taskName: this.updatedTask.taskName,
-            taskType: "taskGroup"
+            taskName: this.updatedTask.taskName
           },
           {
             headers: {
@@ -751,8 +746,7 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}`,
           {
-            taskStatus: this.updatedTask.taskStatus,
-            taskType: "taskGroup"
+            taskStatus: this.updatedTask.taskStatus
           },
           {
             headers: {
@@ -813,8 +807,7 @@ export default {
           `/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}`,
           {
             taskDueDate: dueDate,
-            taskRemindOnDate: remindDate,
-            taskType: "taskGroup"
+            taskRemindOnDate: remindDate
           },
           {
             headers: {
@@ -851,8 +844,7 @@ export default {
             {
               subTaskEditor: this.userId,
               subtaskName: editsubtask.subtaskName,
-              subtaskStatus: editsubtask.subtaskStatus,
-              taskType: "taskGroup"
+              subtaskStatus: editsubtask.subtaskStatus
             },
             {
               headers: {

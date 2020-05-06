@@ -233,8 +233,7 @@ export default {
           taskName: this.personalTask,
           taskAssignee: this.userId,
           taskDueDate: null,
-          taskRemindOnDate: null,
-          taskType: "personal"
+          taskRemindOnDate: null
         });
         this.personalTask = "";
         console.log(response);

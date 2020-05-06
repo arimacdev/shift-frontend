@@ -857,8 +857,7 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            taskStatus: this.updatedStatus,
-            taskType: "project"
+            taskStatus: this.updatedStatus
           },
           {
             headers: {
@@ -888,8 +887,7 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            taskName: this.updatedTask.taskName,
-            taskType: "project"
+            taskName: this.updatedTask.taskName
           },
           {
             headers: {
@@ -931,8 +929,7 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            taskAssignee: this.taskAssignee,
-            taskType: "project"
+            taskAssignee: this.taskAssignee
           },
           {
             headers: {
@@ -1002,8 +999,7 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            taskNotes: this.updatedTask.taskNote,
-            taskType: "project"
+            taskNotes: this.updatedTask.taskNote
           },
           {
             headers: {
@@ -1057,8 +1053,7 @@ export default {
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
             taskDueDate: dueDate,
-            taskRemindOnDate: remindDate,
-            taskType: "project"
+            taskRemindOnDate: remindDate
           },
           {
             headers: {
@@ -1132,8 +1127,7 @@ export default {
           {
             data: {},
             headers: {
-              user: this.userId,
-              taskType: "project"
+              user: this.userId
             }
           }
         );

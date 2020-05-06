@@ -74,7 +74,6 @@ export const actions = {
         taskInitiator: userId,
         taskDueDate: null,
         taskRemindOnDate: null,
-        taskType: 'taskGroup',
       });
       const newGroup = response.data;
       console.log('group tasks', state.groupTasks.length == 0);
