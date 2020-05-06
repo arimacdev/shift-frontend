@@ -469,7 +469,6 @@ export default {
             taskRemindOnDate: "",
             taskStatus: null,
             taskNotes: "",
-            taskType: "project",
             issueType: "development",
             parentTaskId: selectedParentTask
           }

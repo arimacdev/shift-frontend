@@ -577,7 +577,6 @@ export default {
             taskRemindOnDate: this.getRemindOnDate(),
             taskStatus: this.taskStatus,
             taskNotes: this.taskNotes,
-            taskType: "project",
             issueType: this.taskType,
             parentTaskId: this.parentTask,
             sprintId: this.taskBoard
@@ -597,7 +596,6 @@ export default {
             let formData = new FormData();
             formData.append("files", this.files[index]);
             formData.append("type", "profileImage");
-            formData.append("taskType", "project");
 
             this.$axios
               .$post(
