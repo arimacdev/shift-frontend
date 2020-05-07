@@ -14,7 +14,7 @@ export const actions = {
   fetchAllPersonalTasks({ commit, rootState }) {
     const userId = rootState.user.userId;
     this.$axios
-      .get(`/non-project/tasks/personal/${userId}`)
+      .get(`/non-project/tasks/personal/user/${userId}`)
       .then((response) => {
         console.log('All Personal Tasks are Fetched', response.data.data);
         commit('SET__PERSONAL_TASKS', response.data.data);

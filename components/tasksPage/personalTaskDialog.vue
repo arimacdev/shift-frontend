@@ -4,14 +4,8 @@
       <div class="taskDialogFormDiv">
         <form>
           <v-row class="mb-12 formRowSpec" no-gutters>
+            <v-col sm="2" md="2"></v-col>
             <v-col sm="2" md="2">
-              <!-- <div class="taskViewTitle">
-                Task -
-                <span class="secondaryId">#{{this.task.secondaryTaskId}}</span>
-              </div>-->
-            </v-col>
-            <v-col sm="2" md="2">
-              <!-- <v-select label="Task status" dense dark background-color="#0BAFFF" solo></v-select> -->
               <div
                 class="taskStatusDropdown"
               >{{task.taskStatus.charAt(0).toUpperCase()+ task.taskStatus.slice(1)}}</div>
@@ -63,180 +57,6 @@
             <v-row class="mb-12" no-gutters>
               <v-col sm="8" md="8">
                 <div class="leftSideColumn">
-                  <v-row class="addParentButtonRow" no-gutters>
-                    <v-col sm="6" md="6" no-gutters></v-col>
-                    <v-col sm="3" md="3" no-gutters>
-                      <add-parent-task
-                        v-if="taskObject.childTasks.length == 0 && task.parent == true"
-                        taskId="this.task.taskId"
-                      />
-                    </v-col>
-                    <v-col sm="3" md="3" no-gutters>
-                      <add-child-task :taskId="this.task.taskId" v-if=" task.parent == true" />
-                    </v-col>
-                  </v-row>
-                  <!-- ----------- parent task section --------- -->
-                  <div v-if="task.parent == false">
-                    <div class="expansionViewHeader topItemTaskView">
-                      <v-list-item class="taskViewTitleSection">
-                        <v-list-item-icon>
-                          <v-icon size="30" color="#2EC973">mdi-package-variant-closed</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-title class="viewTaskFontColors">Parent Task</v-list-item-title>
-                      </v-list-item>
-                      <v-list-item-content class="parentChildTaskList">
-                        <!-- ---------- task list --------- -->
-                        <div class="taskViewTaskListContent">
-                          <v-list-item>
-                            <v-list-item-action>
-                              <v-icon
-                                v-if="
-                                  taskObject.parentTask.taskStatus == 'closed'
-                                "
-                                size="25"
-                                color="#2EC973"
-                              >mdi-checkbox-marked-circle</v-icon>
-                              <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
-                            </v-list-item-action>
-                            <v-list-item-content>
-                              <v-list-item-title>
-                                {{
-                                taskObject.parentTask.taskName
-                                }}
-                              </v-list-item-title>
-                            </v-list-item-content>
-                            <div>
-                              <v-list-item-action>
-                                <v-list-item-sub-title :class="dueDateCheck(taskObject.parentTask)">
-                                  {{
-                                  getProjectDates(
-                                  taskObject.parentTask.taskDueDateAt
-                                  )
-                                  }}
-                                </v-list-item-sub-title>
-                              </v-list-item-action>
-                            </div>
-                            <div>
-                              <v-list-item-avatar size="25">
-                                <v-img
-                                  v-if="
-                                    taskObject.parentTask
-                                      .taskAssigneeProfileImage != null
-                                  "
-                                  :src="
-                                    taskObject.parentTask
-                                      .taskAssigneeProfileImage
-                                  "
-                                ></v-img>
-                                <v-img
-                                  v-else
-                                  src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-                                ></v-img>
-                              </v-list-item-avatar>
-                            </div>
-                            <div class="boardTabLinkIcon">
-                              <!-- <nuxt-link
-                                :to="
-                                  '/task/' +
-                                    taskObject.parentTask.taskId +
-                                    '/?project=' +
-                                    projectId
-                                "
-                                style="text-decoration: none;"
-                                target="_blank"
-                              >
-                                <v-icon size="20" color="blue">mdi-link-variant</v-icon>
-                              </nuxt-link>-->
-                            </div>
-                          </v-list-item>
-                        </div>
-                        <!-- --------------- -->
-                      </v-list-item-content>
-                    </div>
-                    <v-divider></v-divider>
-                  </div>
-                  <!-- -------------- child tasks section ----------- -->
-                  <div v-if="task.parent == true">
-                    <div class="expansionViewHeader">
-                      <v-list-group>
-                        <template v-slot:activator>
-                          <v-list-item-icon>
-                            <v-icon size="30" color="#2EC973">mdi-package-variant-closed</v-icon>
-                          </v-list-item-icon>
-                          <v-list-item-title class="viewTaskFontColors">
-                            Child Tasks
-                            <span>- {{ taskObject.childTasks.length }} Task(s)</span>
-                          </v-list-item-title>
-                        </template>
-
-                        <v-list-item-content class="parentChildTaskList">
-                          <!-- ---------- task list --------- -->
-                          <div
-                            class="taskViewTaskListContent"
-                            v-for="(childTask, index) in taskObject.childTasks"
-                            :key="index"
-                          >
-                            <v-list-item>
-                              <v-list-item-action>
-                                <v-icon
-                                  v-if="childTask.taskStatus == 'closed'"
-                                  size="25"
-                                  color="#2EC973"
-                                >mdi-checkbox-marked-circle</v-icon>
-                                <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
-                              </v-list-item-action>
-                              <v-list-item-content>
-                                <v-list-item-title>
-                                  {{
-                                  childTask.taskName
-                                  }}
-                                </v-list-item-title>
-                              </v-list-item-content>
-                              <div>
-                                <v-list-item-action>
-                                  <v-list-item-sub-title :class="dueDateCheck(childTask)">
-                                    {{
-                                    getProjectDates(childTask.taskDueDateAt)
-                                    }}
-                                  </v-list-item-sub-title>
-                                </v-list-item-action>
-                              </div>
-                              <div>
-                                <v-list-item-avatar size="25">
-                                  <v-img
-                                    v-if="
-                                      childTask.taskAssigneeProfileImage != null
-                                    "
-                                    :src="childTask.taskAssigneeProfileImage"
-                                  ></v-img>
-                                  <v-img
-                                    v-else
-                                    src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-                                  ></v-img>
-                                </v-list-item-avatar>
-                              </div>
-                              <div class="boardTabLinkIcon">
-                                <!-- <nuxt-link
-                                  :to="
-                                    '/task/' +
-                                      childTask.taskId +
-                                      '/?project=' +
-                                      projectId
-                                  "
-                                  style="text-decoration: none;"
-                                  target="_blank"
-                                >
-                                  <v-icon size="20" color="blue">mdi-link-variant</v-icon>
-                                </nuxt-link>-->
-                              </div>
-                            </v-list-item>
-                          </div>
-                          <!-- --------------- -->
-                        </v-list-item-content>
-                      </v-list-group>
-                    </div>
-                    <v-divider></v-divider>
-                  </div>
                   <!-- -------------- task type section ------------- -->
                   <div class="expansionViewHeader">
                     <v-list-item class="taskViewTitleSection">
@@ -311,37 +131,6 @@
               <!-- ------------------ right side column ------------- -->
               <v-col sm="4" md="4">
                 <div class="rightSideColumn">
-                  <!-- --------- assignee section ---------- -->
-                  <v-list-item>
-                    <v-list-item-icon>
-                      <v-icon size="35" color="#02C1D4">mdi-account-arrow-left-outline</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
-                      <v-list-item-title>
-                        <select
-                          v-model="taskAssignee"
-                          @change="changeAssignee"
-                          class="rightColumnItemsText"
-                        >
-                          <option value disabled>
-                            {{this.task.taskAssignee}}
-                            <!-- {{ selectedTaskUser.firstName }}
-                            {{ selectedTaskUser.lastName }}-->
-                          </option>
-                          <option
-                            class="tabListItemsText"
-                            v-for="(taskAssignee, index) in peopleList"
-                            :key="index"
-                            :value="taskAssignee.assigneeId"
-                          >
-                            {{ taskAssignee.assigneeFirstName }}
-                            {{ taskAssignee.assigneeLastName }}
-                          </option>
-                        </select>
-                      </v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
                   <!-- ----------- Due date section --------- -->
                   <v-list-item>
                     <v-list-item-icon>
@@ -609,7 +398,7 @@ export default {
       let response;
       try {
         response = await this.$axios.$put(
-          `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}`,
+          `/non-project/tasks/personal/${this.task.taskId}`,
           {
             taskStatus: this.updatedStatus
           },
@@ -619,6 +408,7 @@ export default {
             }
           }
         );
+        this.$store.dispatch("personalTasks/fetchAllPersonalTasks");
         this.component = "success-popup";
         this.successMessage = "Status successfully updated";
         setTimeout(() => {
@@ -639,7 +429,7 @@ export default {
       let response;
       try {
         response = await this.$axios.$put(
-          `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}`,
+          `/non-project/tasks/personal/${this.task.taskId}`,
           {
             taskName: this.updatedTask.taskName
           },
@@ -651,11 +441,7 @@ export default {
         );
         this.component = "success-popup";
         this.successMessage = "Name successfully updated";
-        this.$store.dispatch("groups/groupTask/updateGroupTask", {
-          taskId: this.task.taskId,
-          type: "taskName",
-          value: this.updatedTask.taskName
-        });
+        this.$store.dispatch("personalTasks/fetchAllPersonalTasks");
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -672,38 +458,6 @@ export default {
       }
     },
 
-    // ------ update task assignee ---------
-    async changeAssignee() {
-      console.log("assignee changed");
-      let response;
-      try {
-        response = await this.$axios.$put(
-          `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}`,
-          {
-            taskAssignee: this.taskAssignee
-          },
-          {
-            headers: {
-              user: this.userId
-            }
-          }
-        );
-        this.component = "success-popup";
-        this.successMessage = "Assignee successfully updated";
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        console.log("update task status response", response);
-      } catch (e) {
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        console.log("Error updating a status", e);
-      }
-    },
     // ---------- update task note -----------
     async updateTaskNote() {
       console.log("updatedTaskValue ->", this.updatedTask.taskNote);
@@ -711,7 +465,7 @@ export default {
 
       try {
         response = await this.$axios.$put(
-          `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}`,
+          `/non-project/tasks/personal/${this.task.taskId}`,
           {
             taskNotes: this.updatedTask.taskNote
           },
@@ -770,7 +524,7 @@ export default {
       let response;
       try {
         response = await this.$axios.$put(
-          `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}`,
+          `/non-project/tasks/personal/${this.task.taskId}`,
           {
             taskDueDate: dueDate,
             taskRemindOnDate: remindDate
@@ -781,6 +535,7 @@ export default {
             }
           }
         );
+        this.$store.dispatch("personalTasks/fetchAllPersonalTasks");
         this.component = "success-popup";
         this.successMessage = "Date successfully updated";
         setTimeout(() => {
@@ -809,7 +564,7 @@ export default {
           let fileResponse;
           try {
             fileResponse = await this.$axios.$post(
-              `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}/upload`,
+              `/personal/tasks/${this.task.taskId}/upload`,
               formData,
               {
                 headers: {
@@ -843,7 +598,7 @@ export default {
       let response;
       try {
         response = await this.$axios.$delete(
-          `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}/upload/${taskFileId}`,
+          `/non-project/tasks/personal/${this.task.taskId}/files/${taskFileId}`,
           {
             data: {},
             headers: {

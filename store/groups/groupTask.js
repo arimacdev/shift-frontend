@@ -78,16 +78,16 @@ export const actions = {
       });
       const newGroup = response.data;
       console.log('group tasks', state.groupTasks.length == 0);
-      // if (state.groupTasks.length !== 0) {
-      //   newGroup.taskAssigneeProfileImage =
-      //     state.groupTasks[0].taskAssigneeProfileImage;
-      //   commit('ADD_GROUP_TASK', newGroup);
-      // } else {
-      //   dispatch('fetchGroupTasks', {
-      //     taskGroupId: taskGroupId,
-      //     userId: userId,
-      //   });
-      // }
+      if (state.groupTasks.length !== 0) {
+        newGroup.taskAssigneeProfileImage =
+          state.groupTasks[0].taskAssigneeProfileImage;
+        commit('ADD_GROUP_TASK', newGroup);
+      } else {
+        dispatch('fetchGroupTasks', {
+          taskGroupId: taskGroupId,
+          userId: userId,
+        });
+      }
 
       console.log('Added Task to Group Successfully!', response.data);
     } catch (e) {
@@ -96,7 +96,7 @@ export const actions = {
   },
 
   updateGroupTask({ commit }, { taskId, type, value }) {
-    console.log('taskId', taskId, ' task name', value);
+    // console.log('taskId', taskId, ' task name', value);
     commit('UPDATE_GROUP_TASK', {
       taskId: taskId,
       type: type,
