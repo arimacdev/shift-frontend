@@ -12,7 +12,6 @@
           >
             <!-- -------- load parent tasks (default board) ------------ -->
             <v-list-item @click="selectTask(task.parentTask, task); taskDialog = true;">
-              <div class="bluePart"></div>
               <!-- @click.stop="drawer = !drawer" -->
               <v-list-item-action>
                 <v-icon
@@ -53,6 +52,7 @@
                   <v-icon size="15" color="blue">mdi-link-variant</v-icon>
                 </nuxt-link>
               </div>
+              <div class="bluePart"></div>
             </v-list-item>
           </div>
           <!-- -------------- load child tasks (default board) ----------- -->
@@ -122,7 +122,6 @@
                     class="boardTaskListItem"
                   >
                     <v-list-item @click="selectTask(task.parentTask, task); taskDialog = true;">
-                      <div class="bluePart"></div>
                       <!-- @click.stop="drawer = !drawer" -->
                       <v-list-item-action>
                         <v-icon
@@ -168,6 +167,7 @@
                           <v-icon size="15" color="blue">mdi-link-variant</v-icon>
                         </nuxt-link>
                       </div>
+                      <div class="bluePart"></div>
                     </v-list-item>
                   </div>
                   <!-- -------- load child tasks (project boards) ------------ -->
