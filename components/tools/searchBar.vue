@@ -42,6 +42,7 @@ export default {
     onSelectProject() {
       if (this.select !== undefined) {
         this.$emit("selectSearched", this.select);
+        window.location.href = "/projects/" + this.select.projectId;
       }
     },
     querySelections(v) {
