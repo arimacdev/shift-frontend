@@ -836,7 +836,10 @@ export default {
                 }
               }
             );
-            // this.$store.dispatch("task/appendTaskFile", fileResponse.data);
+            this.$store.dispatch(
+              "groups/groupTask/appendTaskFile",
+              fileResponse.data
+            );
             this.uploadLoading = false;
             this.component = "success-popup";
             this.successMessage = "File(s) successfully uploaded";
@@ -871,7 +874,8 @@ export default {
           }
         );
         console.log(response.data);
-        this.$store.dispatch("task/removeTaskFile", taskFileId);
+        // this.$store.dispatch("task/removeTaskFile", taskFileId);
+        this.$store.dispatch("groups/groupTask/deleteTaskFile", taskFileId);
         this.component = "success-popup";
         this.successMessage = "File successfully deleted";
         setTimeout(() => {
