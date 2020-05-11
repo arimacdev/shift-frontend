@@ -922,6 +922,7 @@ export default {
             }
           }
         );
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.component = "success-popup";
         this.successMessage = "Type successfully updated";
         setTimeout(() => {
@@ -953,6 +954,7 @@ export default {
             }
           }
         );
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.component = "success-popup";
         this.successMessage = "Status successfully updated";
         setTimeout(() => {
@@ -1058,11 +1060,7 @@ export default {
             }
           }
         );
-        //REMOVED DUE TO TASK REFRESH ON CLOSE
-        // this.$store.dispatch("task/updateSprintOfATask", {
-        //   taskId: this.task.taskId,
-        //   sprintId: this.updatedSprint
-        // });
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.component = "success-popup";
         this.successMessage = "Sprint successfully updated";
         setTimeout(() => {
@@ -1375,7 +1373,11 @@ export default {
     },
     taskStatus: {
       get() {
-        return this.selectedTask.taskStatus;
+        if (this.updatedStatus == "") {
+          return this.selectedTask.taskStatus;
+        } else {
+          return this.updatedStatus;
+        }
       },
       set(value) {
         console.log("task status", value);

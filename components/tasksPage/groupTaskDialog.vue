@@ -622,7 +622,7 @@ import AddParentTask from "~/components/tasks/addParentTask";
 import AddChildTask from "~/components/tasks/addChildTask";
 
 export default {
-  props: ["task", "projectId", "people", "taskObject", "taskFiles"],
+  props: ["task", "projectId", "people", "taskObject"],
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
@@ -1088,7 +1088,8 @@ export default {
       projectAllTasks: state => state.task.allTasks,
       projectId: state => state.project.project.projectId,
       selectedTaskUser: state => state.user.selectedTaskUser,
-      groupPeople: state => state.groups.groupPeople.groupPeople
+      groupPeople: state => state.groups.groupPeople.groupPeople,
+      taskFiles: state => state.groups.groupTask.groupTaskFiles
     }),
     ...mapGetters(["getuserCompletionTasks"]),
     // peopleList() {
