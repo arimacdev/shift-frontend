@@ -215,6 +215,7 @@
         :projectUsers="projectUsers"
         :componentClose="componentClose"
         :taskObject="taskObject"
+        :taskFiles="taskFiles"
         @taskDialogClosing="taskDialogClosing()"
       />
     </v-dialog>
@@ -334,7 +335,7 @@ export default {
                 }
               );
               console.log("files--->", taskFilesResponse.data);
-              // this.taskFiles = taskFilesResponse.data;
+              this.taskFiles = taskFilesResponse.data;
               this.$store.dispatch(
                 "groups/groupTask/setGroupTaskFiles",
                 taskFilesResponse.data
