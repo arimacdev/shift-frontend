@@ -15,7 +15,7 @@ export const mutations = {
     // const task = state.groupTasks.find(element => element.taskId = taskId);
     console.log('updateTask', taskId, type, value);
     const prevTasks = state.groupTasks;
-    const index = prevTasks.findIndex((i) => i.taskId === taskId);
+    const index = prevTasks.findIndex((i) => i.parentTask.taskId === taskId);
     const updateTask = prevTasks[index];
     updateTask[type] = value;
     console.log('index updated task', index, updateTask);
@@ -42,6 +42,7 @@ export const mutations = {
 
 export const actions = {
   async fetchGroupTasks({ commit, rootState }, { taskGroupId, userId }) {
+    console.log('fetchGroupTasks', taskGroupId, userId);
     const user = rootState.user.userId;
     let getGroupTaskResponse;
     try {
@@ -96,7 +97,7 @@ export const actions = {
   },
 
   updateGroupTask({ commit }, { taskId, type, value }) {
-    // console.log('taskId', taskId, ' task name', value);
+    console.log('taskId', taskId, ' task name', value);
     commit('UPDATE_GROUP_TASK', {
       taskId: taskId,
       type: type,

@@ -621,17 +621,21 @@ export default {
         );
         this.component = "success-popup";
         this.successMessage = "Status successfully updated";
+        this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
+          taskGroupId: this.task.taskGroupId,
+          userId: this.userId
+        });
         setTimeout(() => {
           this.close();
         }, 3000);
         console.log("update task status response", response);
       } catch (e) {
+        console.log("Error updating a status", e);
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error updating a status", e);
       }
     },
     async updateTaskName() {
@@ -651,10 +655,14 @@ export default {
         );
         this.component = "success-popup";
         this.successMessage = "Name successfully updated";
-        this.$store.dispatch("groups/groupTask/updateGroupTask", {
-          taskId: this.task.taskId,
-          type: "taskName",
-          value: this.updatedTask.taskName
+        // this.$store.dispatch("groups/groupTask/updateGroupTask", {
+        //   taskId: this.task.taskId,
+        //   type: "taskName",
+        //   value: this.updatedTask.taskName
+        // });
+        this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
+          taskGroupId: this.task.taskGroupId,
+          userId: this.userId
         });
         setTimeout(() => {
           this.close();
@@ -690,7 +698,10 @@ export default {
         );
         this.component = "success-popup";
         this.successMessage = "Assignee successfully updated";
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
+          taskGroupId: this.task.taskGroupId,
+          userId: this.userId
+        });
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -723,6 +734,10 @@ export default {
         );
         this.component = "success-popup";
         this.successMessage = "Note successfully updated";
+        this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
+          taskGroupId: this.task.taskGroupId,
+          userId: this.userId
+        });
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -783,6 +798,10 @@ export default {
         );
         this.component = "success-popup";
         this.successMessage = "Date successfully updated";
+        this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
+          taskGroupId: this.task.taskGroupId,
+          userId: this.userId
+        });
         setTimeout(() => {
           this.close();
         }, 3000);
