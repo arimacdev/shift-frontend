@@ -260,7 +260,7 @@
     <div v-else class="taskListViewContent overflow-y-auto">
       <div v-if="this.filterList == ''" class="filterTitleDiv headline">No items to show</div>
       <div v-for="(task, index) in filterList" :key="index">
-        <div class="taskList restructuredMainTaskList">
+        <div class="taskList" :class="filterStyles(task.isParent)">
           <nuxt-link
             :to="
                   '/task/' + task.taskId + '/?project=' + projectId
@@ -278,7 +278,11 @@
                   size="30"
                   color="#2EC973"
                 >mdi-checkbox-marked-circle</v-icon>
-                <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                <v-icon
+                  v-else
+                  size="30"
+                  :color="checkBoxColor(task.isParent)"
+                >mdi-checkbox-blank-circle</v-icon>
               </v-list-item-action>
               <div class="tasklistTaskNames restructuredMainTaskName">
                 <div class="body-2">
@@ -337,7 +341,6 @@
     <!-- ------------ task dialog --------- -->
 
     <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition" persistent>
-     
       <task-dialog
         :task="task"
         :projectId="projectId"
@@ -460,6 +463,20 @@ export default {
     "error-popup": ErrorPopup
   },
   methods: {
+    filterStyles(isParent) {
+      if (isParent == true) {
+        return "restructuredMainTaskFilterList";
+      } else {
+        return "restructuredChildTaskFilterList";
+      }
+    },
+    checkBoxColor(isParent) {
+      if (isParent == true) {
+        return "#EDF0F5";
+      } else {
+        return "#FFFFFF";
+      }
+    },
     taskDialogClosing() {
       console.log("Task Dialog Closing");
       this.taskDialog = false;
