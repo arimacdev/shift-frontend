@@ -1730,10 +1730,21 @@
   margin-top: 30px;
   background-color: #ffffff;
 }
+.restructuredMyTaskList {
+  border: 2px #e5e5e5 solid;
+  margin-top: 30px;
+  background-color: #edf0f5;
+}
 .backPannelAllTask {
   background-color: #edf0f5;
   padding-bottom: 20px;
   border-radius: 5px;
+}
+.restructuredMySubTaskList {
+  background-color: #edf0f5;
+  margin-left: 30px;
+  margin-right: 30px;
+  margin-bottom: 10px;
 }
 .restructuredMainTaskName {
   color: #131111;
@@ -1755,6 +1766,10 @@
   padding-left: 30px;
   padding-right: 30px;
   margin-bottom: -20px;
+}
+.restructuredMySubTaskCreate {
+  padding-left: 30px;
+  padding-right: 30px;
 }
 .restructuredSubTaskName {
   color: #080848;
