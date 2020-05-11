@@ -178,7 +178,7 @@
     <!-- --------------- end side bar --------------------- -->
     <!-- ------------ task dialog --------- -->
 
-    <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
+    <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition" persistent>
       <!-- <v-toolbar dark color="primary">
         <v-btn icon dark @click="taskDialog = false">
           <v-icon>mdi-close</v-icon>
@@ -404,6 +404,10 @@ export default {
               this.$store.dispatch(
                 "groups/groupTask/setGroupTaskFiles",
                 taskFilesResponse.data
+              );
+              this.$store.dispatch(
+                "user/setSelectedTaskUser",
+                this.task.taskAssignee
               );
             } catch (error) {
               console.log("Error fetching data", error);
