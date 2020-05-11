@@ -260,7 +260,7 @@
     <div v-else class="taskListViewContent overflow-y-auto">
       <div v-if="this.filterList == ''" class="filterTitleDiv headline">No items to show</div>
       <div v-for="(task, index) in filterList" :key="index">
-        <div class="taskList restructuredMainTaskList">
+        <div class="taskList" :class="filterStyle(task.isParent)">
           <nuxt-link
             :to="
                   '/task/' + task.taskId + '/?project=' + projectId
@@ -337,7 +337,6 @@
     <!-- ------------ task dialog --------- -->
 
     <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition" persistent>
-     
       <task-dialog
         :task="task"
         :projectId="projectId"
@@ -460,9 +459,12 @@ export default {
     "error-popup": ErrorPopup
   },
   methods: {
-    taskDialogClosing() {
-      console.log("Task Dialog Closing");
-      this.taskDialog = false;
+    filterStyle(parent) {
+      if (parent == true) {
+        return "restructuredMainTaskFilterList";
+      } else {
+        return null;
+      }
     },
     async filterTasks(filterType, assignee, from, to, issueType) {
       console.log(

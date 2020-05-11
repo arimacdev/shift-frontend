@@ -6,14 +6,14 @@
         <!-- ------------------------- group task content ------------------- -->
 
         <div class="taskFilter-tasksPage">
-          <v-select
+          <!-- <v-select
             v-model="taskSelect"
             :items="items"
             item-text="name"
             item-value="id"
             label="All"
             solo
-          ></v-select>
+          ></v-select>-->
           <v-text-field
             v-model="groupTask"
             solo

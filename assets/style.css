@@ -1388,7 +1388,7 @@
 }
 
 .taskFilter-tasksPage {
-  margin-top: 20px;
+  margin-top: 50px;
   margin-left: 10px;
   margin-right: 10px;
 }
@@ -1728,6 +1728,11 @@
 .restructuredMainTaskList {
   border: 2px #e5e5e5 solid;
   margin-top: 30px;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+.restructuredMainTaskFilterList {
+  border: 2px #e5e5e5 solid;
   background-color: #ffffff;
   overflow: hidden;
 }
