@@ -2086,3 +2086,10 @@
   height: 5px;
   width: 10px;
 }
+.upperListItem {
+  margin-left: -20px !important;
+  padding-left: 20px !important;
+}
+.innerListItem {
+  margin-right: 10px;
+}
