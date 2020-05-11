@@ -1,35 +1,31 @@
 <template>
   <v-card width="100vw">
-     <v-toolbar dark color="primary">
-        <v-btn icon dark @click="taskDialogClosing()">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-        <v-toolbar-title class="font-weight-bold">
-          {{
-          taskName
-          }}
-        </v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-          <!-- <v-btn dark text @click="dialog = false">Save</v-btn> -->
-          <button class :disabled="checkValidation">
-            <v-list-item dark>
-              <div>
-                <v-tooltip left>
-                  <template v-slot:activator="{ on }">
-                    <v-icon
-                      v-on="on"
-                      size="30px"
-                      color="#FFFFFF"
-                    >mdi-delete-circle</v-icon>
-                  </template>
-                  <span>Delete task</span>
-                </v-tooltip>
-              </div>
-            </v-list-item>
-          </button>
-        </v-toolbar-items>
-      </v-toolbar>
+    <v-toolbar dark color="primary">
+      <v-btn icon dark @click="taskDialogClosing()">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+      <v-toolbar-title class="font-weight-bold">
+        {{
+        taskName
+        }}
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items>
+        <!-- <v-btn dark text @click="dialog = false">Save</v-btn> -->
+        <button class :disabled="checkValidation">
+          <v-list-item dark>
+            <div>
+              <v-tooltip left>
+                <template v-slot:activator="{ on }">
+                  <v-icon v-on="on" size="30px" color="#FFFFFF">mdi-delete-circle</v-icon>
+                </template>
+                <span>Delete task</span>
+              </v-tooltip>
+            </div>
+          </v-list-item>
+        </button>
+      </v-toolbar-items>
+    </v-toolbar>
     <div class="viewDialogTaskContent overflow-y-auto">
       <div class="taskDialogFormDiv">
         <form>
@@ -41,15 +37,9 @@
               </div>
             </v-col>
             <v-col sm="2" md="2">
-          
+              <div class="taskStatusDropdown">{{taskStatus}}</div>
             </v-col>
-               <v-col sm="2" md="2">
-              <div
-                class="taskStatusDropdown"
-              >
-              {{taskStatus}}
-              </div>
-
+            <v-col sm="2" md="2">
               <!-- {{task.taskStatus.charAt(0).toUpperCase()+ task.taskStatus.slice(1)}} -->
             </v-col>
             <v-col sm="8" md="8" class="taskViewLinksDiv">
@@ -819,7 +809,7 @@ export default {
       development: [
         { name: "Pending", id: "pending" },
         { name: "On hold", id: "onHold" },
-        { name: "Open", id: "cancel" },
+        { name: "Open", id: "open" },
         { name: "Completed", id: "completed" },
         { name: "Implementing", id: "implementing" },
         { name: "Deployed", id: "deployed" },
