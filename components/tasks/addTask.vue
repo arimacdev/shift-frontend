@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="taskFormDiv overflow-y-auto">
-      <div class="taskAddTitle">
+      <!-- <div class="taskAddTitle">
         New task -
         <span>#{{ this.projectAllTasks.length + 1 }}</span>
-      </div>
+      </div>-->
       <form @submit.prevent="handleSubmit">
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="12" md="12">
@@ -163,7 +163,7 @@
               item-text="name"
               background-color="#EDF0F5"
               item-value="id"
-              label="Board"
+              label="Sprint"
               outlined
               class="createFormElements"
               clearable
