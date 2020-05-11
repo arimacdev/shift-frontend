@@ -284,6 +284,7 @@
                   ></v-img>
                 </v-list-item-avatar>
               </div>
+              <div v-if="task.isParent == true" class="bluePart"></div>
             </v-list-item>
           </nuxt-link>
         </div>
