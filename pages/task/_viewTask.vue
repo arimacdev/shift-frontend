@@ -15,7 +15,7 @@
         <div class="content-div">
           <v-list-item-title class="font-weight-bold">
             {{
-            this.task.taskName
+            this.taskName
             }}
           </v-list-item-title>
           <v-list-item-action class="viewTaskDelete">
