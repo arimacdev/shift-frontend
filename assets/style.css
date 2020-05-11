@@ -1729,6 +1729,7 @@
   border: 2px #e5e5e5 solid;
   margin-top: 30px;
   background-color: #ffffff;
+  overflow: hidden;
 }
 .restructuredMyTaskList {
   border: 2px #cdcfd2 solid;
