@@ -164,11 +164,8 @@
           <!-- -------------- sub task design --------------- -->
 
           <div v-if="task.childTasks.length !== 0">
-            <div
-              v-for="(childTask, index) in task.childTasks"
-              :key="index"
-              class="taskList restructuredMySubTaskList"
-            >
+            <!-- restructuredMySubTaskList -->
+            <div v-for="(childTask, index) in task.childTasks" :key="index" class="taskList">
               <v-list-item class="upperListItem" v-if="childTask.taskAssignee == userId">
                 <v-list-item
                   class="innerListItem"
