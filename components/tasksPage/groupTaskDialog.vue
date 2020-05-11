@@ -1,48 +1,43 @@
 <template>
   <v-card width="100vw">
-       <v-toolbar dark color="primary">
-        <v-btn icon dark @click="closeTaskDialog()">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-        <v-toolbar-title class="font-weight-bold">
-          {{
-          taskName
-          }}
-        </v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-          <button class :disabled="checkValidation">
-            <v-list-item dark>
-              <div>
-                <v-tooltip left>
-                  <template v-slot:activator="{ on }">
-                    <v-icon
-                      v-on="on"
-                      size="30px"
-                      @click="taskDeleteDialog = true"
-                      color="#FFFFFF"
-                    >mdi-delete-circle</v-icon>
-                  </template>
-                  <span>Delete task</span>
-                </v-tooltip>
-              </div>
-            </v-list-item>
-          </button>
-        </v-toolbar-items>
-      </v-toolbar>
+    <v-toolbar dark color="primary">
+      <v-btn icon dark @click="closeTaskDialog()">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+      <v-toolbar-title class="font-weight-bold">
+        {{
+        taskName
+        }}
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items>
+        <button class :disabled="checkValidation">
+          <v-list-item dark>
+            <div>
+              <v-tooltip left>
+                <template v-slot:activator="{ on }">
+                  <v-icon
+                    v-on="on"
+                    size="30px"
+                    @click="taskDeleteDialog = true"
+                    color="#FFFFFF"
+                  >mdi-delete-circle</v-icon>
+                </template>
+                <span>Delete task</span>
+              </v-tooltip>
+            </div>
+          </v-list-item>
+        </button>
+      </v-toolbar-items>
+    </v-toolbar>
     <div class="viewDialogTaskContent overflow-y-auto">
       <div class="taskDialogFormDiv">
         <form>
           <v-row class="mb-12 formRowSpec" no-gutters>
-            <v-col sm="2" md="2">
-            </v-col>
+            <v-col sm="2" md="2"></v-col>
             <v-col sm="2" md="2">
               <!-- <v-select label="Task status" dense dark background-color="#0BAFFF" solo></v-select> -->
-              <div
-                class="taskStatusDropdown"
-              >
-              {{taskStatus}}
-              </div>
+              <div class="taskStatusDropdown">{{taskStatus}}</div>
 
               <!-- {{task.taskStatus.charAt(0).toUpperCase()+ task.taskStatus.slice(1)}} -->
             </v-col>
@@ -567,6 +562,46 @@
         </v-list-item-content>
       </div>
     </div>
+
+    <!-- --------------------- delete task popup --------------- -->
+
+    <v-dialog v-model="taskDeleteDialog" max-width="380">
+      <v-card>
+        <div class="popupConfirmHeadline">
+          <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
+          <br />
+          <span class="alertPopupTitle">Delete Task</span>
+          <br />
+          <span class="alertPopupText">
+            You're about to permanantly delete this task, its comments and
+            attachments, and all of its data. If you're not sure, you can
+            cancel this action.
+          </span>
+        </div>
+
+        <div class="popupBottom">
+          <v-card-actions>
+            <v-spacer></v-spacer>
+
+            <v-btn color="success" width="100px" @click="taskDeleteDialog = false">Cancel</v-btn>
+            <v-spacer></v-spacer>
+            <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
+            <v-btn
+              color="error"
+              width="100px"
+              @click="
+                      taskDeleteDialog = false;
+                      taskDialog = false;
+                      deleteTask();
+                    "
+            >Delete</v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </div>
+      </v-card>
+    </v-dialog>
+
+    <!-- ---------------------- end popup ------------------ -->
     <div @click="close" class="taskPopupPopups">
       <component
         v-bind:is="component"
@@ -596,6 +631,7 @@ export default {
   },
   data() {
     return {
+      taskDeleteDialog: false,
       taskId: "",
       projectId: "",
       userId: this.$store.state.user.userId,
@@ -633,6 +669,33 @@ export default {
     };
   },
   methods: {
+    async deleteTask() {
+      let response;
+      try {
+        response = await this.$axios.$delete(
+          `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}`,
+          {
+            data: {},
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        // this.component = 'success-popup'
+        this.$emit("listenChange");
+        this.$emit("shrinkSideBar");
+        this.closeTaskDialog();
+
+        console.log(response.data);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error creating project", e);
+      }
+    },
     closeTaskDialog() {
       this.$emit("taskDialogClosing");
       Object.assign(this.$data, this.$options.data.apply(this));
