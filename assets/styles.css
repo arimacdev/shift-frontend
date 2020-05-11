@@ -1,20 +1,20 @@
-.heading{
-    width: 100%;
-    background-color: red;
+.heading {
+  width: 100%;
+  background-color: red;
 }
-.createTask{
-    background-color: #0BAFFF;
-    border-radius: 5px;
-    width: 69%;
-    float: left;
+.createTask {
+  background-color: #0bafff;
+  border-radius: 5px;
+  width: 69%;
+  float: left;
 }
-.completedTasks{
-    background-color: #2EC973;
-    border-radius: 5px;
-    width: 29%;
-    float: right;
+.completedTasks {
+  background-color: #2ec973;
+  border-radius: 5px;
+  width: 29%;
+  float: right;
 }
 
 .color {
-    background-color: #1e367e;
+  background-color: #1e367e;
 }
