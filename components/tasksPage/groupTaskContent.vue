@@ -215,7 +215,6 @@
         :task="task"
         :projectId="projectId"
         :subTasks="subTasks"
-        :taskFiles="taskFiles"
         :projectUsers="projectUsers"
         :componentClose="componentClose"
         :taskObject="taskObject"
@@ -396,7 +395,11 @@ export default {
                 }
               );
               console.log("files--->", taskFilesResponse.data);
-              this.taskFiles = taskFilesResponse.data;
+              // this.taskFiles = taskFilesResponse.data;
+              this.$store.dispatch(
+                "groups/groupTask/setGroupTaskFiles",
+                taskFilesResponse.data
+              );
             } catch (error) {
               console.log("Error fetching data", error);
             }

@@ -554,7 +554,7 @@ import AddParentTask from "~/components/tasks/addParentTask";
 import AddChildTask from "~/components/tasks/addChildTask";
 
 export default {
-  props: ["task", "projectId", "people", "taskObject", "taskFiles"],
+  props: ["task", "projectId", "people", "taskObject"],
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
@@ -836,7 +836,7 @@ export default {
                 }
               }
             );
-            this.$store.dispatch("task/appendTaskFile", fileResponse.data);
+            // this.$store.dispatch("task/appendTaskFile", fileResponse.data);
             this.uploadLoading = false;
             this.component = "success-popup";
             this.successMessage = "File(s) successfully uploaded";
@@ -978,7 +978,8 @@ export default {
       projectSprints: state => state.sprints.sprint.sprints,
       projectAllTasks: state => state.task.allTasks,
       projectId: state => state.project.project.projectId,
-      selectedTaskUser: state => state.user.selectedTaskUser
+      selectedTaskUser: state => state.user.selectedTaskUser,
+      taskFiles: state => state.groups.groupTask.groupTaskFiles
     }),
     ...mapGetters(["getuserCompletionTasks"]),
     // peopleList() {
@@ -997,7 +998,9 @@ export default {
       get() {
         if (this.updatedTask.taskName == "") {
           return this.task.taskName;
-        } else return this.updatedTask.taskName;
+        } else {
+          return this.updatedTask.taskName;
+        }
       },
       set(name) {
         this.updatedTask.taskName = name;

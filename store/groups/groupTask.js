@@ -1,5 +1,6 @@
 export const state = () => ({
   groupTasks: [],
+  groupTaskFiles: [],
 });
 
 export const mutations = {
@@ -9,6 +10,10 @@ export const mutations = {
 
   ADD_GROUP_TASK(state, groupTask) {
     state.groupTasks.push(groupTask);
+  },
+
+  SET_GROUP_TASK_FILES(state, groupTaskFiles) {
+    state.groupTaskFiles = groupTaskFiles;
   },
 
   UPDATE_GROUP_TASK(state, { taskId, type, value }) {
@@ -60,6 +65,10 @@ export const actions = {
     } catch (e) {
       console.log('Error fetching group tasks', e);
     }
+  },
+
+  setGroupTaskFiles({ commit }, taskFiles) {
+    commit('SET_GROUP_TASK_FILES', taskFiles);
   },
 
   async addTaskToGroup(
