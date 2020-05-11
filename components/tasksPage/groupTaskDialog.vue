@@ -364,7 +364,7 @@
                           </option>
                           <option
                             class="tabListItemsText"
-                            v-for="(taskAssignee, index) in completionTasks"
+                            v-for="(taskAssignee, index) in groupPeople"
                             :key="index"
                             :value="taskAssignee.assigneeId"
                           >
@@ -1002,17 +1002,22 @@ export default {
   },
   computed: {
     taskUser() {
-      if (Object.keys(this.selectedTaskUser).length === 0) {
-        this.$store.dispatch(
-          "user/setSelectedTaskUser",
-          this.task.taskAssignee
-        );
-        return "";
-      } else {
-        return (
-          this.selectedTaskUser.firstName + " " + this.selectedTaskUser.lastName
-        );
-      }
+      // if (Object.keys(this.selectedTaskUser).length === 0) {
+      //   this.$store.dispatch(
+      //     "user/setSelectedTaskUser",
+      //     this.task.taskAssignee
+      //   );
+      //   return "";
+      // }
+      // //  else if (this.taskAssignee) {
+      // //   console.log("assignee>>>");
+      // //   return "good";
+      // // }
+      // else {
+      return (
+        this.selectedTaskUser.firstName + " " + this.selectedTaskUser.lastName
+      );
+      // }
     },
     ...mapState({
       people: state => state.task.userCompletionTasks,
@@ -1020,7 +1025,7 @@ export default {
       projectAllTasks: state => state.task.allTasks,
       projectId: state => state.project.project.projectId,
       selectedTaskUser: state => state.user.selectedTaskUser,
-      completionTasks: state => state.groups.groupPeople.groupPeople
+      groupPeople: state => state.groups.groupPeople.groupPeople
     }),
     ...mapGetters(["getuserCompletionTasks"]),
     // peopleList() {
