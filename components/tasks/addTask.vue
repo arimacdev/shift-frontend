@@ -341,7 +341,7 @@ export default {
       development: [
         { name: "Pending", id: "pending" },
         { name: "On hold", id: "onHold" },
-        { name: "Open", id: "cancel" },
+        { name: "Open", id: "open" },
         { name: "Completed", id: "completed" },
         { name: "Implementing", id: "implementing" },
         { name: "Deployed", id: "deployed" },
