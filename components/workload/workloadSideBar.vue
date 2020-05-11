@@ -19,7 +19,7 @@
         </v-list-item>
       </div>
       <div>
-        <v-list-group>
+        <!-- <v-list-group>
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon size="30" color="#2EC973">mdi-package-variant-closed</v-icon>
@@ -31,7 +31,6 @@
               >Sub Tasks</v-list-item-title>
             </v-list-item-content>
           </template>
-          <!-- ----------- loop following list item -------- -->
           <div>
             <v-list-item class="subTaskItem" v-for="(subTask, index) in subTasks" :key="index">
               <div class="workloadCheckBox">
@@ -44,21 +43,19 @@
               </div>
               <v-list-item-content>
                 <v-list-item-title class="subTaskListName">
-                  <!-- <input class="subTaskListNameContent" v-model="subTask.subtaskName" type="text" disabled/> -->
-                  <textarea
+                 <textarea
                     type="text"
                     disabled
                     class="selectedTaskTitle selectedsubTaskTitle"
                     :placeholder="subTask.subtaskName"
                   ></textarea>
 
-                  <!-- <span>{{subtask.subtaskName}}</span> -->
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </div>
         </v-list-group>
-        <v-divider></v-divider>
+        <v-divider></v-divider>-->
 
         <v-list-item-group class="tabListItems">
           <v-list-item>
@@ -69,7 +66,15 @@
               <v-list-item-title class="tabListItemsText itemGroupTitles">Due Date</v-list-item-title>
             </div>
             <v-list-item-content>
-              <v-list-item-title class="tabListItemsText itemGroupDate">{{getDueDate(taskDue)}}</v-list-item-title>
+              <v-list-item-title
+                v-if="getDueDate(taskDue) === null"
+                class="tabListItemsText itemGroupDate"
+              >No due date</v-list-item-title>
+
+              <v-list-item-title
+                v-else
+                class="tabListItemsText itemGroupDate"
+              >{{getDueDate(taskDue)}}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
@@ -142,6 +147,7 @@ export default {
       let stringDate = date + " ";
       stringDate = stringDate.toString();
       stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 16);
+      console.log("strin date ========> " + stringDate);
       return stringDate;
     }
   },
