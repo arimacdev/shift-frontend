@@ -7,9 +7,7 @@
         <div class="name-div">
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title class="font-weight-medium"
-                >Projects</v-list-item-title
-              >
+              <v-list-item-title class="font-weight-medium">Projects</v-list-item-title>
             </v-list-item-content>
 
             <v-list-item-icon v-if="user_org_role === 'SUPER_ADMIN'">
@@ -27,11 +25,8 @@
           <v-list-item-title
             v-if="this.newProject == true"
             class="font-weight-bold"
-            >Select a project</v-list-item-title
-          >
-          <v-list-item-title v-else class="font-weight-bold">
-            {{ this.project.projectName }}
-          </v-list-item-title>
+          >Select a project</v-list-item-title>
+          <v-list-item-title v-else class="font-weight-bold">{{ this.fetchProject.projectName }}</v-list-item-title>
         </div>
       </div>
     </v-toolbar>
@@ -43,10 +38,7 @@
           <div class="listView overflow-y-auto">
             <!-- --------------- Pre sales loop ----------- -->
             <v-divider class="mx-4"></v-divider>
-            <v-toolbar-title
-              class="grey--text text--darken-2 font-weight-bold titles"
-              >Presales</v-toolbar-title
-            >
+            <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Presales</v-toolbar-title>
 
             <div
               v-for="(project, index) in getProjects('presales')"
@@ -67,39 +59,30 @@
                 :to="project.projectId"
               >
                 <v-list-item-action>
-                  <v-icon size="20" color="deep-orange lighten-1"
-                    >mdi-folder-outline</v-icon
-                  >
+                  <v-icon size="20" color="deep-orange lighten-1">mdi-folder-outline</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
-                  <v-list-item-title class="body-2">
-                    {{ project.projectName }}
-                  </v-list-item-title>
+                  <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
                   <v-list-item-subtitle
                     v-if="project.projectStatus == 'presalesPD'"
                     class="projectSubtitle"
-                    >(Project discovery)</v-list-item-subtitle
-                  >
+                  >(Project discovery)</v-list-item-subtitle>
                   <v-list-item-subtitle
                     v-if="project.projectStatus == 'preSalesQS'"
                     class="projectSubtitle"
-                    >(Quotation submission)</v-list-item-subtitle
-                  >
+                  >(Quotation submission)</v-list-item-subtitle>
                   <v-list-item-subtitle
                     v-if="project.projectStatus == 'preSalesN'"
                     class="projectSubtitle"
-                    >(Negotiation)</v-list-item-subtitle
-                  >
+                  >(Negotiation)</v-list-item-subtitle>
                   <v-list-item-subtitle
                     v-if="project.projectStatus == 'preSalesC'"
                     class="projectSubtitle"
-                    >(Confirm)</v-list-item-subtitle
-                  >
+                  >(Confirm)</v-list-item-subtitle>
                   <v-list-item-subtitle
                     v-if="project.projectStatus == 'preSalesL'"
                     class="projectSubtitle"
-                    >(Lost)</v-list-item-subtitle
-                  >
+                  >(Lost)</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
 
@@ -109,10 +92,7 @@
             <v-divider class="mx-4"></v-divider>
 
             <!-- --------------- ongoing  ----------- -->
-            <v-toolbar-title
-              class="grey--text text--darken-2 font-weight-bold titles"
-              >Ongoing</v-toolbar-title
-            >
+            <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Ongoing</v-toolbar-title>
 
             <div
               v-for="(project, index) in getProjects('ongoing')"
@@ -125,9 +105,7 @@
                   <v-icon size="20" color="#FFC212">mdi-folder-outline</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
-                  <v-list-item-title class="body-2">
-                    {{ project.projectName }}
-                  </v-list-item-title>
+                  <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
               <!-- <v-divider class="mx-4"></v-divider> -->
@@ -135,10 +113,7 @@
 
             <!-- --------------- Support  ----------- -->
             <v-divider class="mx-4"></v-divider>
-            <v-toolbar-title
-              class="grey--text text--darken-2 font-weight-bold titles"
-              >Support</v-toolbar-title
-            >
+            <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Support</v-toolbar-title>
 
             <div
               v-for="(project, index) in getProjects('support')"
@@ -151,9 +126,7 @@
                   <v-icon size="20" color="#ED5ED1">mdi-folder-outline</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
-                  <v-list-item-title class="body-2">
-                    {{ project.projectName }}
-                  </v-list-item-title>
+                  <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
               <!-- <v-divider class="mx-4"></v-divider> -->
@@ -161,10 +134,7 @@
 
             <!-- --------------- Finished  ----------- -->
             <v-divider class="mx-4"></v-divider>
-            <v-toolbar-title
-              class="grey--text text--darken-2 font-weight-bold titles"
-              >Finished</v-toolbar-title
-            >
+            <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Finished</v-toolbar-title>
 
             <div
               v-for="(project, index) in getProjects('finished')"
@@ -177,9 +147,7 @@
                   <v-icon size="20" color="#0BAFFF">mdi-folder-outline</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
-                  <v-list-item-title class="body-2">
-                    {{ project.projectName }}
-                  </v-list-item-title>
+                  <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
               <!-- <v-divider class="mx-4"></v-divider>
@@ -198,36 +166,33 @@
           "
           v-bind:is="component"
           :name="name"
+          :project="project"
           @refreshSelectedTab="refreshSelectedTab"
         ></component>
-        <component
-          v-else-if="this.component == 'add-project'"
-          v-bind:is="component"
-          :name="name"
-        ></component>
+        <component v-else-if="this.component == 'add-project'" v-bind:is="component" :name="name"></component>
       </keep-alive>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import NavigationDrawer from '~/components/navigationDrawer';
-import Logo from '~/components/Logo.vue';
-import VuetifyLogo from '~/components/VuetifyLogo.vue';
-import TabViews from '~/components/projects/tabViews';
-import SearchBar from '~/components/tools/searchBar';
-import AddProject from '~/components/projects/addProject';
+import { mapState } from "vuex";
+import NavigationDrawer from "~/components/navigationDrawer";
+import Logo from "~/components/Logo.vue";
+import VuetifyLogo from "~/components/VuetifyLogo.vue";
+import TabViews from "~/components/projects/tabViews";
+import SearchBar from "~/components/tools/searchBar";
+import AddProject from "~/components/projects/addProject";
 export default {
   components: {
     NavigationDrawer,
-    'tab-views': TabViews,
-    'search-bar': SearchBar,
-    'add-project': AddProject,
+    "tab-views": TabViews,
+    "search-bar": SearchBar,
+    "add-project": AddProject
   },
   data() {
     return {
-      component: 'tab-views',
+      component: "tab-views",
       project: {},
       taskLog: [],
       Alltasks: [],
@@ -244,59 +209,59 @@ export default {
       looped: false,
       projectSprint: {},
       newProject: false,
-      projectDisplayName: '',
+      projectDisplayName: ""
     };
   },
 
   created() {
-    this.$store.dispatch('project/fetchAllProjects');
-    this.$store.dispatch('user/setAllUsers');
+    this.$store.dispatch("project/fetchAllProjects");
+    this.$store.dispatch("user/setAllUsers");
 
-    this.$store.dispatch('project/fetchProject', this.$route.params.projects);
+    this.$store.dispatch("project/fetchProject", this.$route.params.projects);
     switch (this.selectedTab) {
-      case 'task':
+      case "task":
         this.$store.dispatch(
-          'task/fetchTasksAllTasks',
+          "task/fetchTasksAllTasks",
           this.$route.params.projects
         );
         this.$store.dispatch(
-          'task/fetchTasksMyTasks',
+          "task/fetchTasksMyTasks",
           this.$route.params.projects
         );
         this.$store.dispatch(
-          'task/fetchProjectUserCompletionTasks',
+          "task/fetchProjectUserCompletionTasks",
           this.$route.params.projects
         );
         this.$store.dispatch(
-          'sprints/sprint/fetchAllProjectSprints',
-          this.$route.params.projects
-        );
-        break;
-      case 'people':
-        this.$store.dispatch(
-          'task/fetchProjectUserCompletionTasks',
+          "sprints/sprint/fetchAllProjectSprints",
           this.$route.params.projects
         );
         break;
-      case 'project':
+      case "people":
         this.$store.dispatch(
-          'task/fetchProjectTaskCompletion',
+          "task/fetchProjectUserCompletionTasks",
           this.$route.params.projects
         );
         break;
-      case 'board':
+      case "project":
         this.$store.dispatch(
-          'sprints/sprint/fetchAllProjectSprints',
-          this.$route.params.projects
-        );
-        this.$store.dispatch(
-          'task/fetchTasksAllTasks',
+          "task/fetchProjectTaskCompletion",
           this.$route.params.projects
         );
         break;
-      case 'files':
+      case "board":
         this.$store.dispatch(
-          'project/fetchAllProjectFiles',
+          "sprints/sprint/fetchAllProjectSprints",
+          this.$route.params.projects
+        );
+        this.$store.dispatch(
+          "task/fetchTasksAllTasks",
+          this.$route.params.projects
+        );
+        break;
+      case "files":
+        this.$store.dispatch(
+          "project/fetchAllProjectFiles",
           this.$route.params.projects
         );
         break;
@@ -305,22 +270,22 @@ export default {
 
   methods: {
     getProjectName(name) {
-      return name.replace(/\s+/g, '-').toLowerCase();
+      return name.replace(/\s+/g, "-").toLowerCase();
     },
     getProjects(type) {
       const projectsAll = this.allProjects;
       if (this.looped === false) {
-        console.log('run loop inside');
+        console.log("run loop inside");
         for (let i = 0; i < projectsAll.length; i++) {
           let projectType = projectsAll[i].projectStatus;
           switch (projectType) {
-            case 'ongoing':
+            case "ongoing":
               this.ongoingArray.push(projectsAll[i]);
               break;
-            case 'support':
+            case "support":
               this.supportArray.push(projectsAll[i]);
               break;
-            case 'finished':
+            case "finished":
               this.finishedArray.push(projectsAll[i]);
               break;
             default:
@@ -331,15 +296,15 @@ export default {
         }
       }
       switch (type) {
-        case 'ongoing':
+        case "ongoing":
           return this.ongoingArray;
           break;
-        case 'support':
+        case "support":
           return this.supportArray;
           break;
-        case 'finished':
+        case "finished":
           return this.finishedArray;
-        case 'presales':
+        case "presales":
           return this.preSalesArray;
       }
     },
@@ -348,49 +313,49 @@ export default {
     },
     refreshSelectedTab(tab) {
       switch (tab) {
-        case 'people':
+        case "people":
           this.$store.dispatch(
-            'task/fetchProjectUserCompletionTasks',
+            "task/fetchProjectUserCompletionTasks",
             this.$route.params.projects
           );
           break;
-        case 'task':
+        case "task":
           this.$store.dispatch(
-            'task/fetchTasksAllTasks',
+            "task/fetchTasksAllTasks",
             this.$route.params.projects
           );
           this.$store.dispatch(
-            'task/fetchTasksMyTasks',
+            "task/fetchTasksMyTasks",
             this.$route.params.projects
           );
           this.$store.dispatch(
-            'task/fetchProjectUserCompletionTasks',
+            "task/fetchProjectUserCompletionTasks",
             this.$route.params.projects
           );
           this.$store.dispatch(
-            'sprints/sprint/fetchAllProjectSprints',
-            this.$route.params.projects
-          );
-          break;
-        case 'project':
-          this.$store.dispatch(
-            'task/fetchProjectTaskCompletion',
+            "sprints/sprint/fetchAllProjectSprints",
             this.$route.params.projects
           );
           break;
-        case 'board':
+        case "project":
           this.$store.dispatch(
-            'sprints/sprint/fetchAllProjectSprints',
-            this.$route.params.projects
-          );
-          this.$store.dispatch(
-            'task/fetchTasksAllTasks',
+            "task/fetchProjectTaskCompletion",
             this.$route.params.projects
           );
           break;
-        case 'files':
+        case "board":
           this.$store.dispatch(
-            'project/fetchAllProjectFiles',
+            "sprints/sprint/fetchAllProjectSprints",
+            this.$route.params.projects
+          );
+          this.$store.dispatch(
+            "task/fetchTasksAllTasks",
+            this.$route.params.projects
+          );
+          break;
+        case "files":
+          this.$store.dispatch(
+            "project/fetchAllProjectFiles",
             this.$route.params.projects
           );
           break;
@@ -400,64 +365,65 @@ export default {
       this.newProject = false;
       this.project = project;
       this.projectDisplayName = this.project.projectId;
-      console.log('selected project ---------->', project, this.selectedTab);
-      this.$store.dispatch('project/fetchProject', this.$route.params.projects);
+      console.log("selected project ---------->", project, this.selectedTab);
+      this.$store.dispatch("project/fetchProject", this.$route.params.projects);
       switch (this.selectedTab) {
-        case 'task':
+        case "task":
           this.$store.dispatch(
-            'task/fetchTasksAllTasks',
+            "task/fetchTasksAllTasks",
             this.$route.params.projects
           );
           this.$store.dispatch(
-            'task/fetchTasksMyTasks',
+            "task/fetchTasksMyTasks",
             this.$route.params.projects
           );
           this.$store.dispatch(
-            'task/fetchProjectUserCompletionTasks',
+            "task/fetchProjectUserCompletionTasks",
             this.$route.params.projects
           );
           this.$store.dispatch(
-            'sprints/sprint/fetchAllProjectSprints',
-            this.$route.params.projects
-          );
-          break;
-        case 'people':
-          this.$store.dispatch(
-            'task/fetchProjectUserCompletionTasks',
+            "sprints/sprint/fetchAllProjectSprints",
             this.$route.params.projects
           );
           break;
-        case 'project':
+        case "people":
           this.$store.dispatch(
-            'task/fetchProjectTaskCompletion',
+            "task/fetchProjectUserCompletionTasks",
             this.$route.params.projects
           );
           break;
-        case 'board':
+        case "project":
           this.$store.dispatch(
-            'sprints/sprint/fetchAllProjectSprints',
-            this.$route.params.projects
-          );
-          this.$store.dispatch(
-            'task/fetchTasksAllTasks',
+            "task/fetchProjectTaskCompletion",
             this.$route.params.projects
           );
           break;
-        case 'files':
+        case "board":
           this.$store.dispatch(
-            'project/fetchAllProjectFiles',
+            "sprints/sprint/fetchAllProjectSprints",
+            this.$route.params.projects
+          );
+          this.$store.dispatch(
+            "task/fetchTasksAllTasks",
+            this.$route.params.projects
+          );
+          break;
+        case "files":
+          this.$store.dispatch(
+            "project/fetchAllProjectFiles",
             this.$route.params.projects
           );
           break;
       }
-    },
+    }
   },
   computed: {
     ...mapState({
-      allProjects: (state) => state.project.projects,
-      organizationalRole: (state) => state.user.organizationalRole,
-      selectedTab: (state) => state.tab.selectedTab,
-    }),
-  },
+      allProjects: state => state.project.projects,
+      organizationalRole: state => state.user.organizationalRole,
+      selectedTab: state => state.tab.selectedTab,
+      fetchProject: state => state.project.project
+    })
+  }
 };
 </script>
