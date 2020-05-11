@@ -9,6 +9,8 @@
                 Task -
                 <span class="secondaryId">#{{this.task.secondaryTaskId}}</span>
               </div>-->
+
+              <v-btn @click="clicked">sdad</v-btn>
             </v-col>
             <v-col sm="2" md="2">
               <!-- <v-select label="Task status" dense dark background-color="#0BAFFF" solo></v-select> -->
@@ -603,6 +605,9 @@ export default {
     };
   },
   methods: {
+    clicked() {
+      console.log("==============> clicked!!!!");
+    },
     clickToPrint() {
       console.log("==============> clicked!!!!");
     },

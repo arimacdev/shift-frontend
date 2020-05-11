@@ -110,48 +110,51 @@
       <div v-for="(task, index) in projectAllTasks" :key="index">
         <div class="backPannelAllTask">
           <div class="taskList restructuredMainTaskList">
-            <v-list-item
-              @click="
+            <v-list-item class="upperListItem">
+              <v-list-item
+                class="innerListItem"
+                @click="
               selectTask(task.parentTask, task);
               taskDialog = true;
             "
-            >
-              <!-- @click.stop="drawer = !drawer" -->
-              <v-list-item-action>
-                <v-icon
-                  v-if="task.parentTask.taskStatus == 'closed'"
-                  size="30"
-                  color="#2EC973"
-                >mdi-checkbox-marked-circle</v-icon>
-                <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
-              </v-list-item-action>
-              <div class="tasklistTaskNames restructuredMainTaskName">
-                <div class="body-2">
-                  <span class="restructuredMainTaskCode">{{task.parentTask.secondaryTaskId}}</span>
-                  {{ task.parentTask.taskName }}
+              >
+                <!-- @click.stop="drawer = !drawer" -->
+                <v-list-item-action>
+                  <v-icon
+                    v-if="task.parentTask.taskStatus == 'closed'"
+                    size="30"
+                    color="#2EC973"
+                  >mdi-checkbox-marked-circle</v-icon>
+                  <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                </v-list-item-action>
+                <div class="tasklistTaskNames restructuredMainTaskName">
+                  <div class="body-2">
+                    <span class="restructuredMainTaskCode">{{task.parentTask.secondaryTaskId}}</span>
+                    {{ task.parentTask.taskName }}
+                  </div>
                 </div>
-              </div>
-              <div
-                class="restStatusChip"
-                :class="statusCheck(task.parentTask.issueType)"
-              >{{ task.parentTask.issueType }}</div>
-              <v-list-item-content class="updatedDate">
-                <v-list-item-title
-                  :class="dueDateCheck(task.parentTask)"
-                >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</v-list-item-title>
-              </v-list-item-content>
-              <div>
-                <v-list-item-avatar>
-                  <v-img
-                    v-if="task.parentTask.taskAssigneeProfileImage != null"
-                    :src="task.parentTask.taskAssigneeProfileImage"
-                  ></v-img>
-                  <v-img
-                    v-else
-                    src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-                  ></v-img>
-                </v-list-item-avatar>
-              </div>
+                <div
+                  class="restStatusChip"
+                  :class="statusCheck(task.parentTask.issueType)"
+                >{{ task.parentTask.issueType }}</div>
+                <v-list-item-content class="updatedDate">
+                  <v-list-item-title
+                    :class="dueDateCheck(task.parentTask)"
+                  >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</v-list-item-title>
+                </v-list-item-content>
+                <div>
+                  <v-list-item-avatar>
+                    <v-img
+                      v-if="task.parentTask.taskAssigneeProfileImage != null"
+                      :src="task.parentTask.taskAssigneeProfileImage"
+                    ></v-img>
+                    <v-img
+                      v-else
+                      src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                    ></v-img>
+                  </v-list-item-avatar>
+                </div>
+              </v-list-item>
               <div class="boardTabLinkIcon">
                 <nuxt-link
                   :to="
@@ -185,48 +188,51 @@
               :key="index"
               class="taskList restructuredSubTaskList"
             >
-              <v-list-item
-                @click="
+              <v-list-item class="upperListItem">
+                <v-list-item
+                  class="innerListItem"
+                  @click="
                 selectTask(childTask, task);
                 taskDialog = true;
               "
-              >
-                <!-- @click.stop="drawer = !drawer" -->
-                <v-list-item-action>
-                  <v-icon
-                    v-if="childTask.taskStatus == 'closed'"
-                    size="30"
-                    color="#2EC973"
-                  >mdi-checkbox-marked-circle</v-icon>
-                  <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
-                </v-list-item-action>
-                <div class="tasklistTaskNames restructuredSubTaskName">
-                  <div class="body-2">
-                    <span class="restructuredMainTaskCode">{{childTask.secondaryTaskId}}</span>
-                    {{ childTask.taskName }}
+                >
+                  <!-- @click.stop="drawer = !drawer" -->
+                  <v-list-item-action>
+                    <v-icon
+                      v-if="childTask.taskStatus == 'closed'"
+                      size="30"
+                      color="#2EC973"
+                    >mdi-checkbox-marked-circle</v-icon>
+                    <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                  </v-list-item-action>
+                  <div class="tasklistTaskNames restructuredSubTaskName">
+                    <div class="body-2">
+                      <span class="restructuredMainTaskCode">{{childTask.secondaryTaskId}}</span>
+                      {{ childTask.taskName }}
+                    </div>
                   </div>
-                </div>
-                <div
-                  class="restStatusChip"
-                  :class="statusCheck(childTask.issueType)"
-                >{{ childTask.issueType }}</div>
-                <v-list-item-content class="updatedDate">
-                  <v-list-item-title
-                    :class="dueDateCheck(childTask)"
-                  >{{ getProjectDates(childTask.taskDueDateAt) }}</v-list-item-title>
-                </v-list-item-content>
-                <div>
-                  <v-list-item-avatar>
-                    <v-img
-                      v-if="childTask.taskAssigneeProfileImage != null"
-                      :src="childTask.taskAssigneeProfileImage"
-                    ></v-img>
-                    <v-img
-                      v-else
-                      src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-                    ></v-img>
-                  </v-list-item-avatar>
-                </div>
+                  <div
+                    class="restStatusChip"
+                    :class="statusCheck(childTask.issueType)"
+                  >{{ childTask.issueType }}</div>
+                  <v-list-item-content class="updatedDate">
+                    <v-list-item-title
+                      :class="dueDateCheck(childTask)"
+                    >{{ getProjectDates(childTask.taskDueDateAt) }}</v-list-item-title>
+                  </v-list-item-content>
+                  <div>
+                    <v-list-item-avatar>
+                      <v-img
+                        v-if="childTask.taskAssigneeProfileImage != null"
+                        :src="childTask.taskAssigneeProfileImage"
+                      ></v-img>
+                      <v-img
+                        v-else
+                        src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                      ></v-img>
+                    </v-list-item-avatar>
+                  </div>
+                </v-list-item>
                 <div class="boardTabLinkIcon">
                   <nuxt-link
                     :to="'/task/' + childTask.taskId + '/?project=' + projectId"
