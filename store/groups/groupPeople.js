@@ -14,7 +14,7 @@ export const actions = {
     let getCompletionTaskResponse;
     try {
       getCompletionTaskResponse = await this.$axios.$get(
-        `taskgroup/${taskGroupId}/tasks/user?userId=${userId}`,
+        `taskgroup/${taskGroupId}/tasks/${userId}/completion/details`,
         {
           headers: {
             user: user,
