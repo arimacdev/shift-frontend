@@ -40,7 +40,11 @@
               <!-- <v-select label="Task status" dense dark background-color="#0BAFFF" solo></v-select> -->
               <div
                 class="taskStatusDropdown"
-              >{{task.taskStatus.charAt(0).toUpperCase()+ task.taskStatus.slice(1)}}</div>
+              >
+              {{taskStatus}}
+              </div>
+
+              <!-- {{task.taskStatus.charAt(0).toUpperCase()+ task.taskStatus.slice(1)}} -->
             </v-col>
           </v-row>
           <v-row class="mb-12" no-gutters>
@@ -1038,12 +1042,14 @@ export default {
         } else return this.updatedTask.taskName;
       },
       set(name) {
-        this.updatedTask.taskName = name;
+        if (this) this.updatedTask.taskName = name;
       }
     },
     taskStatus: {
       get() {
-        return this.task.taskStatus;
+        if (this.updatedStatus == "") {
+          return this.task.taskStatus;
+        } else return this.updatedStatus;
       },
       set(value) {
         console.log("task status", value);
