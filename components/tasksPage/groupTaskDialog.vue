@@ -324,14 +324,17 @@
                           @change="changeAssignee"
                           class="rightColumnItemsText"
                         >
-                          <option value disabled>
+                          <!-- <option value disabled>
                             {{this.task.taskAssignee}}
-                            <!-- {{ selectedTaskUser.firstName }}
-                            {{ selectedTaskUser.lastName }}-->
+                          </option>-->
+                          <option value disabled>
+                            {{
+                            taskUser
+                            }}
                           </option>
                           <option
                             class="tabListItemsText"
-                            v-for="(taskAssignee, index) in peopleList"
+                            v-for="(taskAssignee, index) in completionTasks"
                             :key="index"
                             :value="taskAssignee.assigneeId"
                           >
@@ -491,7 +494,7 @@
                             }}
                           </a>
                         </v-list-item-title>
-                        <v-list-item-subtitle class="fileSubTitles">125.54kB</v-list-item-subtitle>
+                        <!-- <v-list-item-subtitle class="fileSubTitles">125.54kB</v-list-item-subtitle> -->
                       </v-list-item-content>
                       <v-list-item-content>
                         <v-list-item-title class="fileTitles">
@@ -554,7 +557,7 @@ import AddParentTask from "~/components/tasks/addParentTask";
 import AddChildTask from "~/components/tasks/addChildTask";
 
 export default {
-  props: ["task", "projectId", "people", "taskObject"],
+  props: ["task", "projectId", "people", "taskObject", "taskFiles"],
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
@@ -964,26 +967,26 @@ export default {
     }
   },
   computed: {
-    // taskUser() {
-    //   if (Object.keys(this.selectedTaskUser).length === 0) {
-    //     this.$store.dispatch(
-    //       "user/setSelectedTaskUser",
-    //       this.task.taskAssignee
-    //     );
-    //     return "";
-    //   } else {
-    //     return (
-    //       this.selectedTaskUser.firstName + " " + this.selectedTaskUser.lastName
-    //     );
-    //   }
-    // },
+    taskUser() {
+      if (Object.keys(this.selectedTaskUser).length === 0) {
+        this.$store.dispatch(
+          "user/setSelectedTaskUser",
+          this.task.taskAssignee
+        );
+        return "";
+      } else {
+        return (
+          this.selectedTaskUser.firstName + " " + this.selectedTaskUser.lastName
+        );
+      }
+    },
     ...mapState({
       people: state => state.task.userCompletionTasks,
       projectSprints: state => state.sprints.sprint.sprints,
       projectAllTasks: state => state.task.allTasks,
       projectId: state => state.project.project.projectId,
       selectedTaskUser: state => state.user.selectedTaskUser,
-      taskFiles: state => state.groups.groupTask.groupTaskFiles
+      completionTasks: state => state.groups.groupPeople.groupPeople
     }),
     ...mapGetters(["getuserCompletionTasks"]),
     // peopleList() {
@@ -1002,9 +1005,7 @@ export default {
       get() {
         if (this.updatedTask.taskName == "") {
           return this.task.taskName;
-        } else {
-          return this.updatedTask.taskName;
-        }
+        } else return this.updatedTask.taskName;
       },
       set(name) {
         this.updatedTask.taskName = name;
