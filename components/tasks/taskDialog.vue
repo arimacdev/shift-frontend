@@ -6,7 +6,7 @@
         </v-btn>
         <v-toolbar-title class="font-weight-bold">
           {{
-          this.selectedTask.taskName
+          taskName
           }}
         </v-toolbar-title>
         <v-spacer></v-spacer>
@@ -41,10 +41,16 @@
               </div>
             </v-col>
             <v-col sm="2" md="2">
-              <!-- <v-select label="Task status" dense dark background-color="#0BAFFF" solo></v-select> -->
+          
+            </v-col>
+               <v-col sm="2" md="2">
               <div
                 class="taskStatusDropdown"
-              >{{selectedTask.taskStatus.charAt(0).toUpperCase()+ selectedTask.taskStatus.slice(1)}}</div>
+              >
+              {{taskStatus}}
+              </div>
+
+              <!-- {{task.taskStatus.charAt(0).toUpperCase()+ task.taskStatus.slice(1)}} -->
             </v-col>
             <v-col sm="8" md="8" class="taskViewLinksDiv">
               <nuxt-link
