@@ -279,6 +279,7 @@
                         <v-row class="mb-12" no-gutters>
                           <v-col sm="6" md="6">
                             <v-select
+                              :menu-props="{ maxHeight: '500' }"
                               dense
                               v-model="issueType"
                               :items="issueTypeList"
@@ -293,6 +294,7 @@
                           </v-col>
                           <v-col sm="6" md="6">
                             <v-select
+                              :menu-props="{ maxHeight: '500' }"
                               dense
                               v-if="this.issueTypes == 'development'"
                               v-model="taskStatus"
@@ -306,6 +308,7 @@
                               @change="updateStatus"
                             ></v-select>
                             <v-select
+                              :menu-props="{ maxHeight: '500' }"
                               dense
                               v-if="this.issueTypes == 'qa'"
                               v-model="taskStatus"
@@ -319,6 +322,7 @@
                               @change="updateStatus"
                             ></v-select>
                             <v-select
+                              :menu-props="{ maxHeight: '500' }"
                               dense
                               v-if="this.issueTypes == 'design'"
                               v-model="taskStatus"
@@ -332,6 +336,7 @@
                               @change="updateStatus"
                             ></v-select>
                             <v-select
+                              :menu-props="{ maxHeight: '500' }"
                               dense
                               v-if="this.issueTypes == 'bug'"
                               v-model="taskStatus"
@@ -345,6 +350,7 @@
                               @change="updateStatus"
                             ></v-select>
                             <v-select
+                              :menu-props="{ maxHeight: '500' }"
                               dense
                               v-if="this.issueTypes == 'operational'"
                               v-model="taskStatus"
@@ -358,6 +364,7 @@
                               @change="updateStatus"
                             ></v-select>
                             <v-select
+                              :menu-props="{ maxHeight: '500' }"
                               dense
                               v-if="this.issueTypes == 'preSales'"
                               v-model="taskStatus"
@@ -371,6 +378,7 @@
                               @change="updateStatus"
                             ></v-select>
                             <v-select
+                              :menu-props="{ maxHeight: '500' }"
                               dense
                               v-if="this.issueTypes == 'general'"
                               v-model="taskStatus"
@@ -405,6 +413,7 @@
                         <v-row class="mb-12" no-gutters>
                           <v-col sm="12" md="12">
                             <v-select
+                              :menu-props="{ maxHeight: '500' }"
                               dense
                               v-model="selectedSprint"
                               :items="sprints"

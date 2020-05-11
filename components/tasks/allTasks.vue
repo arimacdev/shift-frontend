@@ -14,6 +14,8 @@
         <div class="filterTitleDiv">Filter by:</div>
         <div class="filterDropdownDiv">
           <v-select
+            flat
+            background-color="#CDCFD2"
             dense
             v-model="taskFilter"
             :items="filterOptions"
@@ -29,6 +31,8 @@
         <!-- ---------- filter options ------------- -->
         <div class="filterOptionDiv">
           <v-select
+            flat
+            background-color="#EDF0F5"
             dense
             v-if="this.taskFilter == 'assignee'"
             v-model="taskAssigneeFilter"
@@ -43,6 +47,8 @@
           ></v-select>
 
           <v-select
+            flat
+            background-color="#EDF0F5"
             dense
             v-model="taskSelect"
             v-if="this.taskFilter == 'issueType'"
