@@ -1083,6 +1083,7 @@ export default {
             }
           }
         );
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.component = "success-popup";
         this.successMessage = "Note successfully updated";
         setTimeout(() => {
@@ -1143,6 +1144,7 @@ export default {
             }
           }
         );
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.component = "success-popup";
         this.successMessage = "Date successfully updated";
         setTimeout(() => {
@@ -1391,6 +1393,7 @@ export default {
     selectedSprint: {
       get() {
         this.getSprintDetails();
+        console.log("sprintId", this.selectedTask);
         return this.selectedTask.sprintId;
       },
       set(sprintId) {

@@ -13,8 +13,9 @@ export const mutations = {
     if (state.selectedTask.taskId === task.taskId) {
       state.selectedTask = {};
       state.selectedTask = task;
+    } else {
+      state.selectedTask = task;
     }
-    state.selectedTask = task;
   },
   SET_ALL_TASKS(state, event) {
     state.allTasks = event;
