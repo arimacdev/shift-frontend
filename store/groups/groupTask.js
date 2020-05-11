@@ -16,6 +16,19 @@ export const mutations = {
     state.groupTaskFiles = groupTaskFiles;
   },
 
+  APPEND_TASK_FILE(state, taskFile) {
+    state.groupTaskFiles.push(taskFile);
+  },
+
+  DELETE_TASK_FILE(state, taskFileId) {
+    const index = state.groupTaskFiles.findIndex(
+      (i) => i.taskFileId === taskFileId
+    );
+    if (index > -1) {
+      state.groupTaskFiles.splice(index, 1);
+    }
+  },
+
   UPDATE_GROUP_TASK(state, { taskId, type, value }) {
     // const task = state.groupTasks.find(element => element.taskId = taskId);
     console.log('updateTask', taskId, type, value);
@@ -69,6 +82,14 @@ export const actions = {
 
   setGroupTaskFiles({ commit }, taskFiles) {
     commit('SET_GROUP_TASK_FILES', taskFiles);
+  },
+
+  appendTaskFile({ commit }, taskFile) {
+    commit('APPEND_TASK_FILE', taskFile);
+  },
+
+  deleteTaskFile({ commit }, taskFileId) {
+    commit('DELETE_TASK_FILE', taskFileId);
   },
 
   async addTaskToGroup(
