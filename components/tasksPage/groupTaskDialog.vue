@@ -1,16 +1,40 @@
 <template>
   <v-card width="100vw">
+       <v-toolbar dark color="primary">
+        <v-btn icon dark @click="closeTaskDialog()">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <v-toolbar-title class="font-weight-bold">
+          {{
+          taskName
+          }}
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+          <button class :disabled="checkValidation">
+            <v-list-item dark>
+              <div>
+                <v-tooltip left>
+                  <template v-slot:activator="{ on }">
+                    <v-icon
+                      v-on="on"
+                      size="30px"
+                      @click="taskDeleteDialog = true"
+                      color="#FFFFFF"
+                    >mdi-delete-circle</v-icon>
+                  </template>
+                  <span>Delete task</span>
+                </v-tooltip>
+              </div>
+            </v-list-item>
+          </button>
+        </v-toolbar-items>
+      </v-toolbar>
     <div class="viewDialogTaskContent overflow-y-auto">
       <div class="taskDialogFormDiv">
         <form>
           <v-row class="mb-12 formRowSpec" no-gutters>
             <v-col sm="2" md="2">
-              <!-- <div class="taskViewTitle">
-                Task -
-                <span class="secondaryId">#{{this.task.secondaryTaskId}}</span>
-              </div>-->
-
-              <v-btn @click="clicked">sdad</v-btn>
             </v-col>
             <v-col sm="2" md="2">
               <!-- <v-select label="Task status" dense dark background-color="#0BAFFF" solo></v-select> -->
@@ -605,8 +629,9 @@ export default {
     };
   },
   methods: {
-    clicked() {
-      console.log("==============> clicked!!!!");
+    closeTaskDialog() {
+      this.$emit("taskDialogClosing");
+      Object.assign(this.$data, this.$options.data.apply(this));
     },
     clickToPrint() {
       console.log("==============> clicked!!!!");

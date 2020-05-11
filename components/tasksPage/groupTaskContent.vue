@@ -28,9 +28,7 @@
               <div class="taskList restructuredMainTaskList">
                 <v-list-item
                   @click="
-              selectGroupTask(task.parentTask, task);
-              taskDialog = true;
-            "
+              selectGroupTask(task.parentTask, task);"
                 >
                   <!-- @click.stop="drawer = !drawer" -->
                   <v-list-item-action>
@@ -181,7 +179,7 @@
     <!-- ------------ task dialog --------- -->
 
     <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
-      <v-toolbar dark color="primary">
+      <!-- <v-toolbar dark color="primary">
         <v-btn icon dark @click="taskDialog = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
@@ -210,14 +208,15 @@
             </v-list-item>
           </button>
         </v-toolbar-items>
-      </v-toolbar>
-      <task-dialog
+      </v-toolbar> -->
+      <task-dialog ref="taskDialog"
         :task="task"
         :projectId="projectId"
         :subTasks="subTasks"
         :projectUsers="projectUsers"
         :componentClose="componentClose"
         :taskObject="taskObject"
+        @taskDialogClosing="taskDialogClosing()"
       />
     </v-dialog>
 
@@ -314,6 +313,9 @@ export default {
   // },
 
   methods: {
+    taskDialogClosing() {
+      this.taskDialog = false;
+    },
     async deleteTask() {
       let response;
       try {
@@ -373,6 +375,9 @@ export default {
       this.drawer = false;
     },
     async selectGroupTask(groupTask, taskObject) {
+      this.taskDialog = true;
+      // this.$refs.taskDialog.clicked();
+
       this.task = groupTask;
       this.taskObject = taskObject;
       console.log("selectedTask", groupTask);
