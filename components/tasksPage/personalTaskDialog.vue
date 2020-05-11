@@ -375,7 +375,7 @@ export default {
         taskName: "",
         taskAssignee: "",
         taskNotes: "",
-        taskStatus: "",
+        // taskStatus: "",
         taskRemindOnDate: this.task.taskDueDateAt,
         taskDueDateAt: ""
       },

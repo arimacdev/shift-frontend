@@ -31,7 +31,7 @@
           <v-select
             dense
             v-if="this.taskFilter == 'assignee'"
-            v-model="addTaskAssignee"
+            v-model="taskAssigneeFilter"
             :items="states"
             item-text="name"
             item-value="id.assigneeId"
@@ -39,21 +39,23 @@
             solo
             class="createFormElements"
             @mousedown="querySelections"
+            @change="filterTasks('assignee', taskAssigneeFilter, '', '', '')"
           ></v-select>
 
           <v-select
             dense
             v-model="taskSelect"
-            v-if="this.taskFilter == 'type'"
+            v-if="this.taskFilter == 'issueType'"
             :items="items"
             item-text="name"
             item-value="id"
             label="Select type"
             class="createFormElements"
             solo
+            @change="filterTasks('issueType', '', '', '', taskSelect)"
           ></v-select>
           <VueCtkDateTimePicker
-            v-if="this.taskFilter == 'dateRange'"
+            v-if="this.taskFilter == 'dueDate'"
             :no-value-to-custom-elem="false"
             color="#3f51b5"
             v-model="dateRange"
@@ -66,7 +68,8 @@
         </div>
         <!-- ----------- filter assignee button ---------- -->
         <div class="filterSubmitButton">
-          <v-btn
+          <!-- <v-btn
+            @click="filterTasks('assignee', taskAssigneeFilter, '', '', '')"
             v-if="this.taskFilter == 'assignee'"
             dark
             width="100%"
@@ -74,14 +77,15 @@
             color="#080848"
           >
             <v-icon color="#FFFFFF">mdi-filter-outline</v-icon>Filter
-          </v-btn>
+          </v-btn>-->
           <!-- ------------- filter dateRange button ---------------- -->
           <v-btn
-            v-else-if="this.taskFilter == 'dateRange'"
+            v-if="this.taskFilter == 'dueDate'"
             dark
             width="100%"
             height="45px"
             color="#080848"
+            @click="filterTasks('dueDate', '', dateRange.start, dateRange.end, '')"
           >
             <v-icon color="#FFFFFF">mdi-filter-outline</v-icon>Filter
           </v-btn>
@@ -89,7 +93,7 @@
       </div>
     </div>
 
-    <div class="restructuredTaskCreate">
+    <div v-if="this.taskFilter == 'none'" class="restructuredTaskCreate">
       <v-text-field
         v-model="taskName"
         background-color="#EDF0F5"
@@ -101,20 +105,12 @@
         clearable
       ></v-text-field>
     </div>
-
-    <div class="taskListViewContent overflow-y-auto">
+    <div v-if="this.taskFilter == 'none'" class="taskListViewContent overflow-y-auto">
       <!-- ------ start task filter list ------- -->
       <div v-for="(task, index) in projectAllTasks" :key="index">
         <div class="backPannelAllTask">
           <div class="taskList restructuredMainTaskList">
             <v-list-item
-              v-if="
-              task.taskStatus == taskSelect ||
-                taskFilter == 'none' ||
-                taskFilter == 'assignee' ||
-                taskFilter == 'dateRange' ||
-                taskSelect == 'all'
-            "
               @click="
               selectTask(task.parentTask, task);
               taskDialog = true;
@@ -244,6 +240,59 @@
           </div>
 
           <!-- -------------- end sub task design -------------- -->
+        </div>
+      </div>
+    </div>
+    <!-- -------------- filter list -------------- -->
+    <div v-else class="taskListViewContent overflow-y-auto">
+      <div v-if="this.filterList == ''" class="filterTitleDiv headline">No items to show</div>
+      <div v-for="(task, index) in filterList" :key="index">
+        <div class="taskList restructuredMainTaskList">
+          <nuxt-link
+            :to="
+                  '/task/' + task.taskId + '/?project=' + projectId
+                "
+            style="text-decoration: none;"
+            target="_blank"
+          >
+            <v-list-item @click="
+              selectTask(task, task);
+            ">
+              <!-- @click.stop="drawer = !drawer" -->
+              <v-list-item-action>
+                <v-icon
+                  v-if="task.taskStatus == 'closed'"
+                  size="30"
+                  color="#2EC973"
+                >mdi-checkbox-marked-circle</v-icon>
+                <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+              </v-list-item-action>
+              <div class="tasklistTaskNames restructuredMainTaskName">
+                <div class="body-2">
+                  <span class="restructuredMainTaskCode">{{task.secondaryTaskId}}</span>
+                  {{ task.taskName }}
+                </div>
+              </div>
+              <div class="restStatusChip" :class="statusCheck(task.issueType)">{{ task.issueType }}</div>
+              <v-list-item-content class="updatedDate">
+                <v-list-item-title
+                  :class="dueDateCheck(task)"
+                >{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
+              </v-list-item-content>
+              <div>
+                <v-list-item-avatar>
+                  <v-img
+                    v-if="task.taskAssigneeProfileImage != null"
+                    :src="task.taskAssigneeProfileImage"
+                  ></v-img>
+                  <v-img
+                    v-else
+                    src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                  ></v-img>
+                </v-list-item-avatar>
+              </div>
+            </v-list-item>
+          </nuxt-link>
         </div>
       </div>
     </div>
@@ -386,25 +435,26 @@ export default {
       sound: true,
       widgets: false,
       states: [],
+      filterList: {},
+      taskAssigneeFilter: "",
       updatedTask: {
         taskName: ""
       },
 
       items: [
-        { id: "all", name: "All" },
-        { id: "pending", name: "Pending" },
-        { id: "implementing", name: "Implementing" },
-        { id: "qa", name: "QA" },
-        { id: "readyToDeploy", name: "Ready to deploy" },
-        { id: "reOpened", name: "Reopened" },
-        { id: "deployed", name: "Deployed" },
-        { id: "closed", name: "Closed" }
+        { name: "Development", id: "development" },
+        { name: "QA", id: "qa" },
+        { name: "Design", id: "design" },
+        { name: "Bug", id: "bug" },
+        { name: "Operational", id: "operational" },
+        { name: "Pre-sales", id: "preSales" },
+        { name: "General", id: "general" }
       ],
       filterOptions: [
         { id: "none", name: "None" },
         { id: "assignee", name: "Assignee" },
-        { id: "type", name: "Type" },
-        { id: "dateRange", name: "Date Range" }
+        { id: "issueType", name: "Task type" },
+        { id: "dueDate", name: "Date Range" }
       ],
       projects: ["pr1"],
       drawer: null,
@@ -426,6 +476,36 @@ export default {
     "error-popup": ErrorPopup
   },
   methods: {
+    async filterTasks(filterType, assignee, from, to, issueType) {
+      console.log(
+        "filter options " + filterType,
+        assignee,
+        from,
+        to,
+        issueType
+      );
+      let response;
+      try {
+        response = await this.$axios.$get(
+          `/projects/${this.projectId}/tasks/filter`,
+          {
+            data: {},
+            headers: {
+              user: this.userId,
+              filterType: filterType,
+              assignee: assignee,
+              issueType: issueType,
+              from: from.slice(0, 10),
+              to: to.slice(0, 10)
+            }
+          }
+        );
+        this.filterList = response.data;
+        console.log("filter response: " + response.data);
+      } catch (e) {
+        console.log("Error filter task", e);
+      }
+    },
     async deleteTask() {
       let response;
       try {
