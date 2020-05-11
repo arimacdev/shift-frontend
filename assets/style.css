@@ -1734,6 +1734,7 @@
   border: 2px #cdcfd2 solid;
   /* margin-top: 30px; */
   background-color: #edf0f5;
+  overflow: hidden;
 }
 .backPannelAllTask {
   background-color: #edf0f5;
@@ -2086,6 +2087,15 @@
   position: absolute;
   top: -25px;
   right: -25px;
+  width: 50px;
+  height: 50px;
+  transform: rotate(45deg);
+  background: #0bafff;
+}
+.bluePartMyTask {
+  position: absolute;
+  top: -25px;
+  right: -55px;
   width: 50px;
   height: 50px;
   transform: rotate(45deg);

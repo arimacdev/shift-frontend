@@ -147,6 +147,7 @@
                     ></v-img>
                   </v-list-item-avatar>
                 </div>
+                <div class="bluePartMyTask"></div>
               </v-list-item>
               <div class="boardTabLinkIcon">
                 <nuxt-link
