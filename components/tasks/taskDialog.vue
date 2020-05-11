@@ -1,5 +1,35 @@
 <template>
   <v-card width="100vw">
+     <v-toolbar dark color="primary">
+        <v-btn icon dark @click="taskDialogClosing()">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <v-toolbar-title class="font-weight-bold">
+          {{
+          this.selectedTask.taskName
+          }}
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+          <!-- <v-btn dark text @click="dialog = false">Save</v-btn> -->
+          <button class :disabled="checkValidation">
+            <v-list-item dark>
+              <div>
+                <v-tooltip left>
+                  <template v-slot:activator="{ on }">
+                    <v-icon
+                      v-on="on"
+                      size="30px"
+                      color="#FFFFFF"
+                    >mdi-delete-circle</v-icon>
+                  </template>
+                  <span>Delete task</span>
+                </v-tooltip>
+              </div>
+            </v-list-item>
+          </button>
+        </v-toolbar-items>
+      </v-toolbar>
     <div class="viewDialogTaskContent overflow-y-auto">
       <div class="taskDialogFormDiv">
         <form>
@@ -866,10 +896,10 @@ export default {
     };
   },
   methods: {
-    clickToPrint() {
-      console.log("==============> clicked!!!!");
+    taskDialogClosing() {
+      this.$emit("taskDialogClosing");
+      Object.assign(this.$data, this.$options.data.apply(this));
     },
-    // ------------- update issue type ----------
     async updateIssueType() {
       console.log("onchange updated status ->");
       let response;

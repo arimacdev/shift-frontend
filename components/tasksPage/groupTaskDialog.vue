@@ -98,7 +98,7 @@
                     <v-col sm="3" md="3" no-gutters>
                       <add-parent-task
                         v-if="taskObject.childTasks.length == 0 && task.parent == true"
-                        taskId="this.task.taskId"
+                        :taskId="this.task.taskId"
                       />
                     </v-col>
                     <v-col sm="3" md="3" no-gutters>
