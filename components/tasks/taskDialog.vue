@@ -914,7 +914,7 @@ export default {
         // this.component = 'success-popup'
         this.$emit("listenChange");
         this.$emit("shrinkSideBar");
-        this.taskDialogClosing();
+        taskDialogClosing();
         console.log(response.data);
       } catch (e) {
         this.errorMessage = e.response.data;
@@ -1466,15 +1466,18 @@ export default {
     issueType: {
       get() {
         this.issueTypes = this.selectedTask.issueType;
-        return this.selectedTask.issueType;
+        // return this.selectedTask.issueType;
+
+        if (this.updatedIssue == "") {
+          return this.selectedTask.issueType;
+        } else {
+          return this.updatedIssue;
+        }
       },
       set(value) {
         this.updatedIssue = value;
         this.issueTypes = value;
         console.log("issue type", this.updatedIssue);
-        // if (this.task.issueType != this.updatedIssue) {
-        //   this.updatedStatus = "pending";
-        // }
       }
     },
     selectedSprint: {
