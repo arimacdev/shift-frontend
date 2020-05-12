@@ -8,7 +8,6 @@
         {{
         taskName
         }}
-        {{this.updatedIssue}}
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
@@ -1533,6 +1532,7 @@ export default {
           this.updatedTaskDueDate = this.selectedTask.taskDueDateAt;
 
         return this.updatedTaskDueDate;
+        // return this.selectedTask.taskDueDateAt;
       },
       set(value) {
         console.log("set updated", value);
@@ -1547,6 +1547,7 @@ export default {
           this.updatedRemindOnDate == "1970-01-01T05:30:00.000+0000"
         )
           this.updatedRemindOnDate = this.selectedTask.taskReminderAt;
+        // return this.selectedTask.taskReminderAt;
         return this.updatedRemindOnDate;
       },
       set(value) {
