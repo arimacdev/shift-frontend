@@ -17,7 +17,12 @@
             <div>
               <v-tooltip left>
                 <template v-slot:activator="{ on }">
-                  <v-icon v-on="on" size="30px" color="#FFFFFF">mdi-delete-circle</v-icon>
+                  <v-icon
+                    v-on="on"
+                    @click="taskDeleteDialog = true"
+                    size="30px"
+                    color="#FFFFFF"
+                  >mdi-delete-circle</v-icon>
                 </template>
                 <span>Delete task</span>
               </v-tooltip>
@@ -691,6 +696,45 @@
         </form>
       </div>
     </div>
+    <!-- --------------------- delete task popup --------------- -->
+
+    <v-dialog v-model="taskDeleteDialog" max-width="380">
+      <v-card>
+        <div class="popupConfirmHeadline">
+          <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
+          <br />
+          <span class="alertPopupTitle">Delete Task</span>
+          <br />
+          <span class="alertPopupText">
+            You're about to permanantly delete this task, its comments and
+            attachments, and all of its data. If you're not sure, you can
+            cancel this action.
+          </span>
+        </div>
+
+        <div class="popupBottom">
+          <v-card-actions>
+            <v-spacer></v-spacer>
+
+            <v-btn color="success" width="100px" @click="taskDeleteDialog = false">Cancel</v-btn>
+            <v-spacer></v-spacer>
+            <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
+            <v-btn
+              color="error"
+              width="100px"
+              @click="
+                      taskDeleteDialog = false;
+                      taskDialog = false;
+                      deleteTask();
+                    "
+            >Delete</v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </div>
+      </v-card>
+    </v-dialog>
+
+    <!-- ---------------------- end popup ------------------ -->
 
     <div class="RestTaskLogDiv">
       <div class="RestTaskLogTitle">
@@ -730,6 +774,7 @@ export default {
     return {
       taskId: "",
       projectId: "",
+      taskDeleteDialog: false,
       userId: this.$store.state.user.userId,
       sprints: [],
       editTask: true,
@@ -853,6 +898,33 @@ export default {
     };
   },
   methods: {
+    async deleteTask() {
+      let response;
+      try {
+        response = await this.$axios.$delete(
+          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
+          {
+            data: {},
+            headers: {
+              user: this.userId,
+              type: "project"
+            }
+          }
+        );
+        // this.component = 'success-popup'
+        this.$emit("listenChange");
+        this.$emit("shrinkSideBar");
+        this.taskDialogClosing();
+        console.log(response.data);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error creating project", e);
+      }
+    },
     taskDialogClosing() {
       this.$emit("taskDialogClosing");
       Object.assign(this.$data, this.$options.data.apply(this));
