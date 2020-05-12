@@ -80,7 +80,7 @@
             <v-col sm="2" md="2">
               <div class="taskViewTitle">
                 Task -
-                <span class="secondaryId"></span>
+                <span class="secondaryId">#{{this.task.secondaryTaskId}}</span>
               </div>
             </v-col>
             <v-col sm="2" md="2">
@@ -153,22 +153,21 @@
             <v-row class="mb-12" no-gutters>
               <v-col sm="8" md="8">
                 <div class="leftSideColumn">
-                   <v-row class="addParentButtonRow" no-gutters>
+                  <v-row class="addParentButtonRow" no-gutters>
                     <v-col sm="6" md="6" no-gutters></v-col>
-                     <v-col sm="3" md="3" no-gutters>
+                    <v-col sm="3" md="3" no-gutters>
                       <add-parent-task
                         v-if="this.children.length == 0 && this.selectedTask.isParent == true"
                         :taskId="this.selectedTask.taskId"
                       />
-                    </v-col> 
+                    </v-col>
                     <v-col sm="3" md="3" no-gutters>
                       <add-child-task
                         v-if=" this.selectedTask.isParent == true"
                         :taskId="this.selectedTask.taskId"
                       />
-                    </v-col> 
+                    </v-col>
                   </v-row>
-              
 
                   <!-- ----------- parent task section --------- -->
                   <div v-if="this.selectedTask.isParent == false">
