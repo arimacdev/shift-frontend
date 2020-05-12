@@ -158,13 +158,13 @@
                     <v-col sm="3" md="3" no-gutters>
                       <add-parent-task
                         v-if="this.children.length == 0 && this.selectedTask.isParent == true"
-                        :taskId="this.selectedTask.taskId"
+                        :taskId="this.selectedTask.taskId" :projectId="this.projectId"
                       />
                     </v-col>
                     <v-col sm="3" md="3" no-gutters>
                       <add-child-task
                         v-if=" this.selectedTask.isParent == true"
-                        :taskId="this.selectedTask.taskId"
+                        :taskId="this.selectedTask.taskId"  :projectId="this.projectId"
                       />
                     </v-col>
                   </v-row>
@@ -242,7 +242,7 @@
                     <v-divider></v-divider>
                   </div>
                   <!-- -------------- child tasks section ----------- -->
-                  <div v-if="this.selectedTask.isParent == true">
+                  <div v-if="this.selectedTask.isParent">
                     <div class="expansionViewHeader">
                       <v-list-group>
                         <template v-slot:activator>

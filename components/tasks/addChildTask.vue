@@ -79,7 +79,7 @@ import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import { mapState } from "vuex";
 export default {
-  props: ["taskId"],
+  props: ["taskId", "projectId"],
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup
@@ -168,6 +168,10 @@ export default {
           projectId: this.projectId,
           taskId: this.taskId
         });
+        this.$store.dispatch("task/fetchChildren", {
+          projectId: this.projectId,
+          taskId: this.taskId
+        });
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -192,8 +196,7 @@ export default {
       }
     },
     ...mapState({
-      projectAllTasks: state => state.task.allTasks,
-      projectId: state => state.project.project.projectId
+      projectAllTasks: state => state.task.allTasks
     })
   }
 };
