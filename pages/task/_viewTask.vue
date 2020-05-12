@@ -170,7 +170,7 @@
                   </v-row>
 
                   <!-- ----------- parent task section --------- -->
-                  <div v-if="this.selectedTask.isParent == false">
+                  <div v-if="!this.selectedTask.isParent">
                     <div class="expansionViewHeader topItemTaskView">
                       <v-list-item class="taskViewTitleSection">
                         <v-list-item-icon>
@@ -211,8 +211,8 @@
                             <div>
                               <v-list-item-avatar size="25">
                                 <v-img
-                                  v-if="this.parentProfile.profileImage != null"
-                                  :src="this.parentProfile.profileImage"
+                                  v-if="this.parentTaskUser.profileImage != null"
+                                  :src="this.parentTaskUser.profileImage"
                                 ></v-img>
                                 <v-img
                                   v-else
@@ -721,7 +721,7 @@ export default {
       userId: "",
       sprints: [],
       editTask: true,
-      parentTask: {},
+      // parentTask: {},
       parentProfile: {},
       updatedTaskDueDate: null,
       updatedRemindOnDate: null,
@@ -868,32 +868,26 @@ export default {
       });
     } else {
       console.log("child task");
-      let response = await this.$axios.$get(
-        `/projects/${this.$route.query.project}/tasks/${this.task.parentId}`,
-        {
-          headers: {
-            user: this.userId,
-            type: "project"
-          }
-        }
-      );
-      this.parentTask = response.data;
-      console.log("Parent Task get response", response.data);
-      let userResponse;
-      try {
-        userResponse = await this.$axios.$get(
-          `/users/${response.data.taskAssignee}`,
-          {
-            headers: {
-              user: this.userId
-            }
-          }
-        );
-        console.log("fetch parent task profile", userResponse.data);
-        this.parentProfile = userResponse.data;
-      } catch (e) {
-        console.log("Error fetching parent task profile", e);
-      }
+      this.$store.dispatch("task/fetchParentTask", {
+        projectId: this.$route.query.project,
+        taskId: this.task.parentId
+      });
+      // console.log("parent", this.parentTask.taskAssignee);
+      // let userResponse;
+      // try {
+      //   userResponse = await this.$axios.$get(
+      //     `/users/${this.parentTask.taskAssignee}`,
+      //     {
+      //       headers: {
+      //         user: this.userId
+      //       }
+      //     }
+      //   );
+      //   console.log("fetch parent task profile", userResponse.data);
+      //   this.parentProfile = userResponse.data;
+      // } catch (e) {
+      //   console.log("Error fetching parent task profile", e);
+      // }
     }
   },
   methods: {
@@ -1383,11 +1377,13 @@ export default {
     ...mapState({
       selectedTask: state => state.task.selectedTask,
       selectedTaskUser: state => state.user.selectedTaskUser,
+      parentTaskUser: state => state.user.parentTaskUser,
       componentUser: state => state.user.componentUser,
       people: state => state.task.userCompletionTasks,
       projectSprints: state => state.sprints.sprint.sprints,
       taskFiles: state => state.task.taskFiles,
-      children: state => state.task.childTasks
+      children: state => state.task.childTasks,
+      parentTask: state => state.task.parentTask
     }),
     ...mapGetters(["getuserCompletionTasks"]),
 
