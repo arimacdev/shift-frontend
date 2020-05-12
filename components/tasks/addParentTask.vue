@@ -170,6 +170,10 @@ export default {
           projectId: this.projectId,
           taskId: this.taskId
         });
+        this.$store.dispatch("task/fetchParentTask", {
+          projectId: this.projectId,
+          taskId: this.taskId
+        });
         setTimeout(() => {
           this.close();
         }, 3000);
