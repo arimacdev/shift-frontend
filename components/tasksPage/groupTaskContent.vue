@@ -15,6 +15,7 @@
             solo
           ></v-select>
           <v-text-field
+            v-if="taskSelect == 'all'"
             v-model="groupTask"
             solo
             prepend-inner-icon="mdi-plus-circle"
@@ -24,7 +25,7 @@
           ></v-text-field>
           <!-- -------- loop task list here ----------- -->
           <div v-for="(task, index) in groupTasks" :key="index">
-            <div class="backPannelAllTask">
+            <div class="backPannelAllTask" v-if="taskSelect == 'all'">
               <div class="taskList restructuredMainTaskList">
                 <v-list-item @click="
               selectGroupTask(task.parentTask, task);">
@@ -248,13 +249,13 @@ export default {
       taskObject: {},
       taskDialog: false,
       taskDeleteDialog: false,
+      taskSelect: "all",
       errorMessage: "",
       successMessage: "",
       component: "",
       drawer: null,
       userId: this.$store.state.user.userId,
       personalTask: "",
-      taskSelect: null,
       groupTask: "",
       task: {},
       assignee: {},
