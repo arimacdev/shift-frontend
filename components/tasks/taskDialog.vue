@@ -783,6 +783,7 @@ export default {
       taskObject: {},
       updatedIssue: "",
       updatedStatus: "",
+      updatedSprint: "",
       issueTypes: "",
       component: "",
       errorMessage: "",
@@ -1483,8 +1484,12 @@ export default {
     selectedSprint: {
       get() {
         this.getSprintDetails();
+        if (this.updatedSprint == "") {
+          return this.selectedTask.sprintId;
+        } else {
+          return this.updatedSprint;
+        }
         console.log("sprintId", this.selectedTask);
-        return this.selectedTask.sprintId;
       },
       set(sprintId) {
         console.log("spid", sprintId);
