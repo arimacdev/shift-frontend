@@ -123,7 +123,10 @@ export default {
       let parentSearchList = this.projectAllTasks;
       for (let index = 0; index < parentSearchList.length; ++index) {
         let task = parentSearchList[index];
-        if (task.childTasks.length == 0) {
+        if (
+          task.childTasks.length == 0 &&
+          task.parentTask.taskId != this.taskId
+        ) {
           this.parentTasks.push({
             name: task.parentTask.taskName,
             id: task.parentTask.taskId
