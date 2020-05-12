@@ -87,7 +87,7 @@ export default {
       isValid: true,
       userId: this.$store.state.user.userId,
 
-      assigneeRules: [value => !!value || "Assignee is required!"],
+      assigneeRules: [value => !!value || "Parent task is required!"],
       isShow: false,
       selected: false,
       dialog: false,
