@@ -1532,7 +1532,6 @@ export default {
           this.updatedTaskDueDate = this.selectedTask.taskDueDateAt;
 
         return this.updatedTaskDueDate;
-        // return this.selectedTask.taskDueDateAt;
       },
       set(value) {
         console.log("set updated", value);

@@ -1499,11 +1499,12 @@
 }
 .defaultBoard {
   width: 30%;
-  height: 77vh;
+  height: 73vh;
   background-color: #edf0f5;
   position: absolute;
   left: 20px;
   border-radius: 5px;
+  margin-top: 20px;
 }
 .actualBoard {
   width: 300px;
