@@ -62,11 +62,15 @@
           </v-form>
         </v-card>
       </v-dialog>
+      <div @click="close" class="parentChildPopup">
+        <component
+          v-bind:is="component"
+          :successMessage="successMessage"
+          :errorMessage="errorMessage"
+        ></component>
+        <!-- <success-popup /> -->
+      </div>
     </v-row>
-    <div @click="close">
-      <component v-bind:is="component" :success="success" :errorMessage="errorMessage"></component>
-    </div>
-    <!--  <success-popup /> -->
   </div>
 </template>
 
@@ -85,6 +89,7 @@ export default {
       parentTask: "",
       parentTasks: [],
       errorMessage: "",
+      successMessage: "",
       isValid: true,
       userId: this.$store.state.user.userId,
       assigneeRules: [value => !!value || "Child task is required!"],
@@ -152,6 +157,7 @@ export default {
             }
           }
         );
+        this.dialog = false;
         this.component = "success-popup";
         this.successMessage = "Child Task Added successfully";
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
