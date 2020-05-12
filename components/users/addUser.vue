@@ -103,7 +103,7 @@
         <v-col sm="12" md="6" class></v-col>
         <v-col sm="12" md="6" class="buttonGrid">
           <button class="submitButtonEdit addUserSubmit">
-            <v-list-item @click.once="postData()" dark>
+            <v-list-item @click="postData()" dark>
               <v-list-item-action>
                 <v-icon size="20" color>mdi-account-outline</v-icon>
               </v-list-item-action>
@@ -117,7 +117,11 @@
       </v-row>
     </form>
     <div @click="close">
-      <component v-bind:is="component" :errorMessage="errorMessage"></component>
+      <component
+        v-bind:is="component"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
     </div>
     <!-- <success-popup /> -->
   </div>
@@ -161,14 +165,20 @@ export default {
           (this.password = ""),
           (this.confirmPassword = ""),
           this.$v.$reset();
-        //    alert("User created successfully!")
         this.component = "success-popup";
+        this.successMessage = "User successfully created";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         window.setTimeout(location.reload(), 8000);
       } catch (e) {
         console.log("Error creating user", e);
         this.errorMessage = e.response.data;
         this.component = "error-popup";
-        //   alert("Error creating user!")
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error creating project", e);
       }
     },
     handleSubmit(e) {
@@ -185,6 +195,7 @@ export default {
   },
   data() {
     return {
+      successMessage: "",
       errorMessage: "",
       userName: "",
       firstName: "",
