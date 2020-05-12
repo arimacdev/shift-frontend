@@ -153,38 +153,25 @@
             <v-row class="mb-12" no-gutters>
               <v-col sm="8" md="8">
                 <div class="leftSideColumn">
-                  <!-- <div v-if="!this.task.isParent" class="expansionViewHeader topItemTaskView">
-                    <v-list-item class="taskViewTitleSection">
-                      <v-list-item-icon>
-                        <v-icon size="30" color="#2EC973">mdi-package-variant-closed</v-icon>
-                      </v-list-item-icon>
-                      <v-list-item-title class="viewTaskFontColors">Parent Task</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item-content class="parentChildTaskList">
-                      <div class="taskViewTaskListContent">
-                        <v-list-item @click.stop="drawer = !drawer">
-                          <v-list-item-action>
-                            <v-icon size="25" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
-                          </v-list-item-action>
-                          <v-list-item-content>
-                            <v-list-item-title>{{this.parentTask.taskName}}</v-list-item-title>
-                          </v-list-item-content>
-                          <v-list-item-action>
-                            <v-list-item-sub-title>{{getProjectDates(this.parentTask.taskDueDateAt)}}</v-list-item-sub-title>
-                          </v-list-item-action>
-                          <v-list-item-avatar size="25">
-                            
-                            <v-img
-                              :src="this.parentProfile.profileImage"
-                            ></v-img>
-                          </v-list-item-avatar>
-                        </v-list-item>
-                      </div>
-                    </v-list-item-content>
-                  </div>-->
+                   <v-row class="addParentButtonRow" no-gutters>
+                    <v-col sm="6" md="6" no-gutters></v-col>
+                     <v-col sm="3" md="3" no-gutters>
+                      <add-parent-task
+                        v-if="this.children.length == 0 && this.selectedTask.isParent == true"
+                        :taskId="this.selectedTask.taskId"
+                      />
+                    </v-col> 
+                    <v-col sm="3" md="3" no-gutters>
+                      <add-child-task
+                        v-if=" this.selectedTask.isParent == true"
+                        :taskId="this.selectedTask.taskId"
+                      />
+                    </v-col> 
+                  </v-row>
+              
 
                   <!-- ----------- parent task section --------- -->
-                  <div v-if="this.task.isParent == false">
+                  <div v-if="this.selectedTask.isParent == false">
                     <div class="expansionViewHeader topItemTaskView">
                       <v-list-item class="taskViewTitleSection">
                         <v-list-item-icon>
@@ -256,7 +243,7 @@
                     <v-divider></v-divider>
                   </div>
                   <!-- -------------- child tasks section ----------- -->
-                  <div v-if="this.task.isParent == true">
+                  <div v-if="this.selectedTask.isParent == true">
                     <div class="expansionViewHeader">
                       <v-list-group>
                         <template v-slot:activator>
@@ -713,14 +700,19 @@
 <script>
 import { mapState } from "vuex";
 import { mapGetters } from "vuex";
+import AddParentTask from "~/components/tasks/addParentTask";
+import AddChildTask from "~/components/tasks/addChildTask";
 import NavigationDrawer from "~/components/navigationDrawer";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
+
 export default {
   components: {
     NavigationDrawer,
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
+    "add-parent-task": AddParentTask,
+    "add-child-task": AddChildTask
   },
   data() {
     return {
@@ -864,6 +856,7 @@ export default {
         }
       );
       this.task = taskResponse.data;
+      this.$store.dispatch("task/setSelectedTask", taskResponse.data);
       console.log("Selected Task get response", this.task);
     } catch (e) {
       console.log("Error fetching task", e);
@@ -918,7 +911,6 @@ export default {
             }
           }
         );
-        // this.component = 'success-popup'
         this.$emit("listenChange");
         this.$emit("shrinkSideBar");
         window.location.href = "/projects/" + this.projectId;
@@ -1390,6 +1382,7 @@ export default {
   },
   computed: {
     ...mapState({
+      selectedTask: state => state.task.selectedTask,
       selectedTaskUser: state => state.user.selectedTaskUser,
       componentUser: state => state.user.componentUser,
       people: state => state.task.userCompletionTasks,

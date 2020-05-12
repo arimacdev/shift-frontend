@@ -444,6 +444,22 @@
                         <v-row class="mb-12" no-gutters>
                           <v-col sm="12" md="12">
                             <v-select
+                              v-if=" selectedTask.isParent == true"
+                              :menu-props="{ maxHeight: '500' }"
+                              dense
+                              v-model="selectedSprint"
+                              :items="sprints"
+                              background-color="#EDF0F5"
+                              item-text="name"
+                              item-value="id"
+                              label="Board"
+                              outlined
+                              class="createFormElements"
+                              @change="changeTaskSprint"
+                            ></v-select>
+                            <v-select
+                              v-else
+                              disabled
                               :menu-props="{ maxHeight: '500' }"
                               dense
                               v-model="selectedSprint"
@@ -783,6 +799,7 @@ export default {
       taskObject: {},
       updatedIssue: "",
       updatedStatus: "",
+      updatedSprint: "",
       issueTypes: "",
       component: "",
       errorMessage: "",
@@ -1465,12 +1482,14 @@ export default {
     },
     issueType: {
       get() {
-        this.issueTypes = this.selectedTask.issueType;
+        // this.issueTypes = this.selectedTask.issueType;
         // return this.selectedTask.issueType;
 
         if (this.updatedIssue == "") {
+          this.issueTypes = this.selectedTask.issueType;
           return this.selectedTask.issueType;
         } else {
+          this.issueTypes = this.updatedIssue;
           return this.updatedIssue;
         }
       },
@@ -1483,8 +1502,12 @@ export default {
     selectedSprint: {
       get() {
         this.getSprintDetails();
+        if (this.updatedSprint == "") {
+          return this.selectedTask.sprintId;
+        } else {
+          return this.updatedSprint;
+        }
         console.log("sprintId", this.selectedTask);
-        return this.selectedTask.sprintId;
       },
       set(sprintId) {
         console.log("spid", sprintId);
@@ -1509,6 +1532,7 @@ export default {
           this.updatedTaskDueDate = this.selectedTask.taskDueDateAt;
 
         return this.updatedTaskDueDate;
+        // return this.selectedTask.taskDueDateAt;
       },
       set(value) {
         console.log("set updated", value);
@@ -1523,6 +1547,7 @@ export default {
           this.updatedRemindOnDate == "1970-01-01T05:30:00.000+0000"
         )
           this.updatedRemindOnDate = this.selectedTask.taskReminderAt;
+        // return this.selectedTask.taskReminderAt;
         return this.updatedRemindOnDate;
       },
       set(value) {

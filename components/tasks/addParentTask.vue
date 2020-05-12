@@ -80,6 +80,17 @@ export default {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup
   },
+  created() {
+    console.log("alltasks", this.projectAllTasks);
+    console.log("alltasks", this.projectAllTasks.length);
+    if (this.projectAllTasks.length === 0) {
+      console.log("alltasks");
+      this.$store.dispatch(
+        "task/fetchTasksAllTasks",
+        this.$route.query.project
+      );
+    }
+  },
   data() {
     return {
       parentTasks: [],
@@ -87,7 +98,7 @@ export default {
       isValid: true,
       userId: this.$store.state.user.userId,
 
-      assigneeRules: [value => !!value || "Assignee is required!"],
+      assigneeRules: [value => !!value || "Parent task is required!"],
       isShow: false,
       selected: false,
       dialog: false,
