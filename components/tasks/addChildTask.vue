@@ -87,7 +87,7 @@ export default {
       errorMessage: "",
       isValid: true,
       userId: this.$store.state.user.userId,
-      assigneeRules: [value => !!value || "Assignee is required!"],
+      assigneeRules: [value => !!value || "Child task is required!"],
       isShow: false,
       selected: false,
       dialog: false,

@@ -317,38 +317,7 @@
     </v-navigation-drawer>
     <!-- ------------ task dialog --------- -->
 
-    <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
-      <v-toolbar dark color="primary">
-        <v-btn icon dark @click="taskDialog = false">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-        <v-toolbar-title class="font-weight-bold">
-          {{
-          selectedTask.taskName
-          }}
-        </v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-          <!-- <v-btn dark text @click="dialog = false">Save</v-btn> -->
-          <button class :disabled="checkValidation">
-            <v-list-item dark>
-              <div>
-                <v-tooltip left>
-                  <template v-slot:activator="{ on }">
-                    <v-icon
-                      v-on="on"
-                      size="30px"
-                      @click="taskDeleteDialog = true"
-                      color="#FFFFFF"
-                    >mdi-delete-circle</v-icon>
-                  </template>
-                  <span>Delete task</span>
-                </v-tooltip>
-              </div>
-            </v-list-item>
-          </button>
-        </v-toolbar-items>
-      </v-toolbar>
+    <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition" persistent>
       <task-dialog
         :task="task"
         :projectId="projectId"
@@ -357,48 +326,9 @@
         :projectUsers="projectUsers"
         :componentClose="componentClose"
         :taskObject="taskObject"
+        @taskDialogClosing="taskDialogClosing()"
       />
     </v-dialog>
-
-    <!-- --------------------- delete task popup --------------- -->
-
-    <v-dialog v-model="taskDeleteDialog" max-width="380">
-      <v-card>
-        <div class="popupConfirmHeadline">
-          <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
-          <br />
-          <span class="alertPopupTitle">Delete Task</span>
-          <br />
-          <span class="alertPopupText">
-            You're about to permanantly delete this task, its comments and
-            attachments, and all of its data. If you're not sure, you can
-            cancel this action.
-          </span>
-        </div>
-
-        <div class="popupBottom">
-          <v-card-actions>
-            <v-spacer></v-spacer>
-
-            <v-btn color="success" width="100px" @click="taskDeleteDialog = false">Cancel</v-btn>
-            <v-spacer></v-spacer>
-            <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
-            <v-btn
-              color="error"
-              width="100px"
-              @click="
-                      taskDeleteDialog = false;
-                      taskDialog = false;
-                      deleteTask();
-                    "
-            >Delete</v-btn>
-            <v-spacer></v-spacer>
-          </v-card-actions>
-        </div>
-      </v-card>
-    </v-dialog>
-
-    <!-- ---------------------- end popup ------------------ -->
 
     <!-- --------------- end side bar --------------------- -->
     <div @click="close" class="allTaskPopupPlacements">
@@ -469,6 +399,10 @@ export default {
     "error-popup": ErrorPopup
   },
   methods: {
+    taskDialogClosing() {
+      console.log("Task Dialog Closing");
+      this.taskDialog = false;
+    },
     filterStyles(isParent) {
       if (isParent == true) {
         return "restructuredMainTaskFilterList";
