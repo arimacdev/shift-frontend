@@ -871,7 +871,7 @@ export default {
       console.log("child task");
       this.$store.dispatch("task/fetchParentTask", {
         projectId: this.$route.query.project,
-        taskId: this.$route.params.viewTask
+        taskId: this.task.parentId
       });
       // console.log("parent", this.parentTask.taskAssignee);
       // let userResponse;
