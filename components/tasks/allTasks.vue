@@ -14,6 +14,8 @@
         <div class="filterTitleDiv">Filter by:</div>
         <div class="filterDropdownDiv">
           <v-select
+            flat
+            background-color="#CDCFD2"
             dense
             v-model="taskFilter"
             :items="filterOptions"
@@ -29,6 +31,8 @@
         <!-- ---------- filter options ------------- -->
         <div class="filterOptionDiv">
           <v-select
+            flat
+            background-color="#EDF0F5"
             dense
             v-if="this.taskFilter == 'assignee'"
             v-model="taskAssigneeFilter"
@@ -43,6 +47,8 @@
           ></v-select>
 
           <v-select
+            flat
+            background-color="#EDF0F5"
             dense
             v-model="taskSelect"
             v-if="this.taskFilter == 'issueType'"
@@ -154,6 +160,7 @@
                     ></v-img>
                   </v-list-item-avatar>
                 </div>
+                <div class="bluePartMyTask"></div>
               </v-list-item>
               <div class="boardTabLinkIcon">
                 <nuxt-link
@@ -253,7 +260,7 @@
     <div v-else class="taskListViewContent overflow-y-auto">
       <div v-if="this.filterList == ''" class="filterTitleDiv headline">No items to show</div>
       <div v-for="(task, index) in filterList" :key="index">
-        <div class="taskList restructuredMainTaskList">
+        <div class="taskList" :class="filterStyles(task.isParent)">
           <nuxt-link
             :to="
                   '/task/' + task.taskId + '/?project=' + projectId
@@ -271,7 +278,11 @@
                   size="30"
                   color="#2EC973"
                 >mdi-checkbox-marked-circle</v-icon>
-                <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                <v-icon
+                  v-else
+                  size="30"
+                  :color="checkBoxColor(task.isParent)"
+                >mdi-checkbox-blank-circle</v-icon>
               </v-list-item-action>
               <div class="tasklistTaskNames restructuredMainTaskName">
                 <div class="body-2">
@@ -297,6 +308,7 @@
                   ></v-img>
                 </v-list-item-avatar>
               </div>
+              <div v-if="task.isParent == true" class="bluePart"></div>
             </v-list-item>
           </nuxt-link>
         </div>
@@ -329,38 +341,7 @@
     </v-navigation-drawer>
     <!-- ------------ task dialog --------- -->
 
-    <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
-      <v-toolbar dark color="primary">
-        <v-btn icon dark @click="taskDialog = false">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-        <v-toolbar-title class="font-weight-bold">
-          {{
-          selectedTask.taskName
-          }}
-        </v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-          <!-- <v-btn dark text @click="dialog = false">Save</v-btn> -->
-          <button class :disabled="checkValidation">
-            <v-list-item dark>
-              <div>
-                <v-tooltip left>
-                  <template v-slot:activator="{ on }">
-                    <v-icon
-                      v-on="on"
-                      size="30px"
-                      @click="taskDeleteDialog = true"
-                      color="#FFFFFF"
-                    >mdi-delete-circle</v-icon>
-                  </template>
-                  <span>Delete task</span>
-                </v-tooltip>
-              </div>
-            </v-list-item>
-          </button>
-        </v-toolbar-items>
-      </v-toolbar>
+    <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition" persistent>
       <task-dialog
         :task="task"
         :projectId="projectId"
@@ -369,6 +350,7 @@
         :projectUsers="projectUsers"
         :componentClose="componentClose"
         :taskObject="taskObject"
+        @taskDialogClosing="taskDialogClosing()"
       />
     </v-dialog>
 
@@ -482,6 +464,24 @@ export default {
     "error-popup": ErrorPopup
   },
   methods: {
+    filterStyles(isParent) {
+      if (isParent == true) {
+        return "restructuredMainTaskFilterList";
+      } else {
+        return "restructuredChildTaskFilterList";
+      }
+    },
+    checkBoxColor(isParent) {
+      if (isParent == true) {
+        return "#EDF0F5";
+      } else {
+        return "#FFFFFF";
+      }
+    },
+    taskDialogClosing() {
+      console.log("Task Dialog Closing");
+      this.taskDialog = false;
+    },
     async filterTasks(filterType, assignee, from, to, issueType) {
       console.log(
         "filter options " + filterType,

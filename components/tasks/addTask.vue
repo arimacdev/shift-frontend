@@ -28,6 +28,7 @@
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="12" md="12">
             <v-select
+              :menu-props="{ maxHeight: '500' }"
               v-model="addTaskAssignee"
               :items="states"
               item-text="name"
@@ -43,6 +44,7 @@
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="12" md="12">
             <v-select
+              :menu-props="{ maxHeight: '500' }"
               v-model="parentTask"
               :items="parentTasks"
               item-text="name"
@@ -66,12 +68,14 @@
               item-value="id"
               label="Task type"
               outlined
+              :menu-props="{ maxHeight: '500' }"
               class="createFormElements"
               clearable
             ></v-select>
           </v-col>
           <v-col sm="4" md="4">
             <v-select
+              :menu-props="{ maxHeight: '500' }"
               v-if="this.taskType == 'development'"
               v-model="taskStatus"
               :items="development"
@@ -84,6 +88,7 @@
               clearable
             ></v-select>
             <v-select
+              :menu-props="{ maxHeight: '500' }"
               v-if="this.taskType == 'qa'"
               v-model="taskStatus"
               :items="qa"
@@ -96,6 +101,7 @@
               clearable
             ></v-select>
             <v-select
+              :menu-props="{ maxHeight: '500' }"
               v-if="this.taskType == 'design'"
               v-model="taskStatus"
               :items="design"
@@ -108,6 +114,7 @@
               clearable
             ></v-select>
             <v-select
+              :menu-props="{ maxHeight: '500' }"
               v-if="this.taskType == 'bug'"
               v-model="taskStatus"
               :items="bug"
@@ -120,6 +127,7 @@
               clearable
             ></v-select>
             <v-select
+              :menu-props="{ maxHeight: '500' }"
               v-if="this.taskType == 'operational'"
               v-model="taskStatus"
               :items="operational"
@@ -132,6 +140,7 @@
               clearable
             ></v-select>
             <v-select
+              :menu-props="{ maxHeight: '500' }"
               v-if="this.taskType == 'preSales'"
               v-model="taskStatus"
               :items="preSales"
@@ -144,6 +153,7 @@
               clearable
             ></v-select>
             <v-select
+              :menu-props="{ maxHeight: '500' }"
               v-if="this.taskType == 'general'"
               v-model="taskStatus"
               :items="general"
@@ -158,6 +168,7 @@
           </v-col>
           <v-col sm="4" md="4">
             <v-select
+              :menu-props="{ maxHeight: '500' }"
               v-model="taskBoard"
               :items="sprints"
               item-text="name"
@@ -330,7 +341,7 @@ export default {
       development: [
         { name: "Pending", id: "pending" },
         { name: "On hold", id: "onHold" },
-        { name: "Open", id: "cancel" },
+        { name: "Open", id: "open" },
         { name: "Completed", id: "completed" },
         { name: "Implementing", id: "implementing" },
         { name: "Deployed", id: "deployed" },

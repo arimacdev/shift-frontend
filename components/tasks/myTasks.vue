@@ -14,6 +14,8 @@
         <div class="filterTitleDiv">Filter by:</div>
         <div class="filterDropdownDiv">
           <v-select
+            flat
+            background-color="#CDCFD2"
             dense
             v-model="taskFilter"
             :items="filterOptions"
@@ -29,6 +31,8 @@
         <!-- ---------- filter options ------------- -->
         <div class="filterOptionDiv">
           <v-select
+            flat
+            background-color="#EDF0F5"
             dense
             v-model="taskSelect"
             v-if="this.taskFilter == 'issueType'"
@@ -143,6 +147,7 @@
                     ></v-img>
                   </v-list-item-avatar>
                 </div>
+                <div class="bluePartMyTask"></div>
               </v-list-item>
               <div class="boardTabLinkIcon">
                 <nuxt-link
@@ -160,11 +165,8 @@
           <!-- -------------- sub task design --------------- -->
 
           <div v-if="task.childTasks.length !== 0">
-            <div
-              v-for="(childTask, index) in task.childTasks"
-              :key="index"
-              class="taskList restructuredMySubTaskList"
-            >
+            <!-- restructuredMySubTaskList -->
+            <div v-for="(childTask, index) in task.childTasks" :key="index" class="taskList">
               <v-list-item class="upperListItem" v-if="childTask.taskAssignee == userId">
                 <v-list-item
                   class="innerListItem"
@@ -182,7 +184,7 @@
                     >mdi-checkbox-marked-circle</v-icon>
                     <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
                   </v-list-item-action>
-                  <div class="tasklistTaskNames restructuredSubTaskName">
+                  <div class="tasklistTaskNames restructuredMainTaskName">
                     <div class="body-2">
                       <span class="restructuredMainTaskCode">{{childTask.secondaryTaskId}}</span>
                       {{ childTask.taskName }}
@@ -230,7 +232,11 @@
     <div v-else class="taskListViewContent overflow-y-auto">
       <div v-if="this.filterList == ''" class="filterTitleDiv headline">No items to show</div>
       <div v-for="(task, index) in filterList" :key="index">
-        <div class="taskList restructuredMainTaskList" v-if="task.taskAssignee == userId">
+        <div
+          class="taskList"
+          :class="filterStyles(task.isParent)"
+          v-if="task.taskAssignee == userId"
+        >
           <nuxt-link
             :to="
                   '/task/' + task.taskId + '/?project=' + projectId
@@ -248,7 +254,11 @@
                   size="30"
                   color="#2EC973"
                 >mdi-checkbox-marked-circle</v-icon>
-                <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                <v-icon
+                  v-else
+                  size="30"
+                  :color="checkBoxColor(task.isParent)"
+                >mdi-checkbox-blank-circle</v-icon>
               </v-list-item-action>
               <div class="tasklistTaskNames restructuredMainTaskName">
                 <div class="body-2">
@@ -274,6 +284,7 @@
                   ></v-img>
                 </v-list-item-avatar>
               </div>
+              <div v-if="task.isParent == true" class="bluePart"></div>
             </v-list-item>
           </nuxt-link>
         </div>
@@ -306,38 +317,7 @@
     </v-navigation-drawer>
     <!-- ------------ task dialog --------- -->
 
-    <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
-      <v-toolbar dark color="primary">
-        <v-btn icon dark @click="taskDialog = false">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-        <v-toolbar-title class="font-weight-bold">
-          {{
-          selectedTask.taskName
-          }}
-        </v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-          <!-- <v-btn dark text @click="dialog = false">Save</v-btn> -->
-          <button class :disabled="checkValidation">
-            <v-list-item dark>
-              <div>
-                <v-tooltip left>
-                  <template v-slot:activator="{ on }">
-                    <v-icon
-                      v-on="on"
-                      size="30px"
-                      @click="taskDeleteDialog = true"
-                      color="#FFFFFF"
-                    >mdi-delete-circle</v-icon>
-                  </template>
-                  <span>Delete task</span>
-                </v-tooltip>
-              </div>
-            </v-list-item>
-          </button>
-        </v-toolbar-items>
-      </v-toolbar>
+    <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition" persistent>
       <task-dialog
         :task="task"
         :projectId="projectId"
@@ -346,48 +326,9 @@
         :projectUsers="projectUsers"
         :componentClose="componentClose"
         :taskObject="taskObject"
+        @taskDialogClosing="taskDialogClosing()"
       />
     </v-dialog>
-
-    <!-- --------------------- delete task popup --------------- -->
-
-    <v-dialog v-model="taskDeleteDialog" max-width="380">
-      <v-card>
-        <div class="popupConfirmHeadline">
-          <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
-          <br />
-          <span class="alertPopupTitle">Delete Task</span>
-          <br />
-          <span class="alertPopupText">
-            You're about to permanantly delete this task, its comments and
-            attachments, and all of its data. If you're not sure, you can
-            cancel this action.
-          </span>
-        </div>
-
-        <div class="popupBottom">
-          <v-card-actions>
-            <v-spacer></v-spacer>
-
-            <v-btn color="success" width="100px" @click="taskDeleteDialog = false">Cancel</v-btn>
-            <v-spacer></v-spacer>
-            <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
-            <v-btn
-              color="error"
-              width="100px"
-              @click="
-                      taskDeleteDialog = false;
-                      taskDialog = false;
-                      deleteTask();
-                    "
-            >Delete</v-btn>
-            <v-spacer></v-spacer>
-          </v-card-actions>
-        </div>
-      </v-card>
-    </v-dialog>
-
-    <!-- ---------------------- end popup ------------------ -->
 
     <!-- --------------- end side bar --------------------- -->
     <div @click="close" class="allTaskPopupPlacements">
@@ -458,6 +399,24 @@ export default {
     "error-popup": ErrorPopup
   },
   methods: {
+    taskDialogClosing() {
+      console.log("Task Dialog Closing");
+      this.taskDialog = false;
+    },
+    filterStyles(isParent) {
+      if (isParent == true) {
+        return "restructuredMainTaskFilterList";
+      } else {
+        return "restructuredChildTaskFilterList";
+      }
+    },
+    checkBoxColor(isParent) {
+      if (isParent == true) {
+        return "#EDF0F5";
+      } else {
+        return "#FFFFFF";
+      }
+    },
     async filterTasks(filterType, assignee, from, to, issueType) {
       console.log(
         "filter options " + filterType,

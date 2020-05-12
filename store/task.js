@@ -10,7 +10,12 @@ export const state = () => ({
 
 export const mutations = {
   SET_SELECTED_TASK(state, task) {
-    state.selectedTask = task;
+    if (state.selectedTask.taskId === task.taskId) {
+      state.selectedTask = {};
+      state.selectedTask = task;
+    } else {
+      state.selectedTask = task;
+    }
   },
   SET_ALL_TASKS(state, event) {
     state.allTasks = event;
