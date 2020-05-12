@@ -931,7 +931,7 @@ export default {
         // this.component = 'success-popup'
         this.$emit("listenChange");
         this.$emit("shrinkSideBar");
-        taskDialogClosing();
+        this.taskDialogClosing();
         console.log(response.data);
       } catch (e) {
         this.errorMessage = e.response.data;
