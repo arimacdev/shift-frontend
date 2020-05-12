@@ -1482,13 +1482,14 @@ export default {
     },
     issueType: {
       get() {
-        console.log("issueType", this.selectedTask);
-        this.issueTypes = this.selectedTask.issueType;
+        // this.issueTypes = this.selectedTask.issueType;
         // return this.selectedTask.issueType;
 
         if (this.updatedIssue == "") {
+          this.issueTypes = this.selectedTask.issueType;
           return this.selectedTask.issueType;
         } else {
+          this.issueTypes = this.updatedIssue;
           return this.updatedIssue;
         }
       },
