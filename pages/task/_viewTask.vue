@@ -168,8 +168,10 @@
                       />
                     </v-col> 
                   </v-row>
-              <!-- ----------- parent task section --------- -->
-                  <div v-if="this.task.isParent == false">
+              
+
+                  <!-- ----------- parent task section --------- -->
+                  <div v-if="this.selectedTask.isParent == false">
                     <div class="expansionViewHeader topItemTaskView">
                       <v-list-item class="taskViewTitleSection">
                         <v-list-item-icon>
@@ -241,7 +243,7 @@
                     <v-divider></v-divider>
                   </div>
                   <!-- -------------- child tasks section ----------- -->
-                  <div v-if="this.task.isParent == true">
+                  <div v-if="this.selectedTask.isParent == true">
                     <div class="expansionViewHeader">
                       <v-list-group>
                         <template v-slot:activator>
