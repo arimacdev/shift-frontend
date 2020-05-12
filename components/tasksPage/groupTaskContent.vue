@@ -15,7 +15,7 @@
             solo
           ></v-select>
           <v-text-field
-            v-model="groupTask"
+            v-model="addNewTask"
             solo
             prepend-inner-icon="mdi-plus-circle"
             label="Add a new task"
@@ -29,14 +29,14 @@
                 <v-list-item @click="
               selectGroupTask(task.parentTask, task);">
                   <!-- @click.stop="drawer = !drawer" -->
-                  <v-list-item-action>
+                  <!-- <v-list-item-action>
                     <v-icon
                       v-if="task.parentTask.taskStatus == 'closed'"
                       size="30"
                       color="#2EC973"
                     >mdi-checkbox-marked-circle</v-icon>
                     <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
-                  </v-list-item-action>
+                  </v-list-item-action> -->
                   <div class="tasklistTaskNames restructuredMainTaskName">
                     <div class="body-2">
                       <span class="restructuredMainTaskCode">{{task.parentTask.secondaryTaskId}}</span>
@@ -256,6 +256,7 @@ export default {
       personalTask: "",
       taskSelect: null,
       groupTask: "",
+      addNewTask: "",
       task: {},
       assignee: {},
       subTasks: [],
@@ -358,19 +359,15 @@ export default {
     async addGroupTask(selectedParentTask) {
       console.log("add group task");
       this.$store.dispatch("groups/groupTask/addTaskToGroup", {
-        taskName: this.groupTask,
+        taskName: this.addNewTask,
         taskGroupId: this.group.taskGroupId,
         parentTaskId: selectedParentTask
       });
-      this.groupTask = "";
-      // this.$store.dispatch("groups/groupPeople/fetchGroupPeople", {
+      this.addNewTask = "";
+      // this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
       //   taskGroupId: this.group.taskGroupId,
       //   userId: this.userId
       // });
-      this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
-        taskGroupId: this.group.taskGroupId,
-        userId: this.userId
-      });
     },
     getTaskDueDate(date) {
       const dueDate = new Date(date);

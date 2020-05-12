@@ -108,17 +108,17 @@ export const actions = {
         parentTaskId: parentTaskId,
       });
       const newGroup = response.data;
-      console.log('group tasks', state.groupTasks.length == 0);
-      if (state.groupTasks.length !== 0) {
-        newGroup.taskAssigneeProfileImage =
-          state.groupTasks[0].taskAssigneeProfileImage;
-        commit('ADD_GROUP_TASK', newGroup);
-      } else {
-        dispatch('fetchGroupTasks', {
-          taskGroupId: taskGroupId,
-          userId: userId,
-        });
-      }
+      // console.log('group tasks', state.groupTasks.length == 0);
+      // if (state.groupTasks.length !== 0) {
+      //   newGroup.taskAssigneeProfileImage =
+      //     state.groupTasks[0].taskAssigneeProfileImage;
+      // commit('ADD_GROUP_TASK', newGroup);
+      // } else {
+      dispatch('fetchGroupTasks', {
+        taskGroupId: taskGroupId,
+        userId: userId,
+      });
+      // }
 
       console.log('Added Task to Group Successfully!', response.data);
     } catch (e) {
