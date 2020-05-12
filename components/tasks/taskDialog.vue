@@ -8,6 +8,7 @@
         {{
         taskName
         }}
+        {{this.updatedIssue}}
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
@@ -1482,12 +1483,14 @@ export default {
     },
     issueType: {
       get() {
-        this.issueTypes = this.selectedTask.issueType;
+        // this.issueTypes = this.selectedTask.issueType;
         // return this.selectedTask.issueType;
 
         if (this.updatedIssue == "") {
+          this.issueTypes = this.selectedTask.issueType;
           return this.selectedTask.issueType;
         } else {
+          this.issueTypes = this.updatedIssue;
           return this.updatedIssue;
         }
       },
