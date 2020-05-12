@@ -124,13 +124,13 @@
                     <v-col sm="3" md="3" no-gutters>
                       <add-parent-task
                         v-if="taskObject.childTasks.length == 0 && selectedTask.isParent == true"
-                        :taskId="selectedTask.taskId"
+                        :taskId="this.selectedTask.taskId" :projectId="this.projectId"
                       />
                     </v-col>
                     <v-col sm="3" md="3" no-gutters>
                       <add-child-task
                         v-if=" selectedTask.isParent == true"
-                        :taskId="selectedTask.taskId"
+                        :taskId="selectedTask.taskId"  :projectId="this.projectId"
                       />
                     </v-col>
                   </v-row>
@@ -932,6 +932,7 @@ export default {
         this.$emit("listenChange");
         this.$emit("shrinkSideBar");
         this.taskDialogClosing();
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         console.log(response.data);
       } catch (e) {
         this.errorMessage = e.response.data;

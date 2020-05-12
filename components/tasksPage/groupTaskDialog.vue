@@ -685,7 +685,10 @@ export default {
         this.$emit("listenChange");
         this.$emit("shrinkSideBar");
         this.closeTaskDialog();
-
+        this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
+          taskGroupId: this.task.taskGroupId,
+          userId: this.userId
+        });
         console.log(response.data);
       } catch (e) {
         this.errorMessage = e.response.data;
