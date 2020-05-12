@@ -444,6 +444,22 @@
                         <v-row class="mb-12" no-gutters>
                           <v-col sm="12" md="12">
                             <v-select
+                              v-if=" selectedTask.isParent == true"
+                              :menu-props="{ maxHeight: '500' }"
+                              dense
+                              v-model="selectedSprint"
+                              :items="sprints"
+                              background-color="#EDF0F5"
+                              item-text="name"
+                              item-value="id"
+                              label="Board"
+                              outlined
+                              class="createFormElements"
+                              @change="changeTaskSprint"
+                            ></v-select>
+                            <v-select
+                              v-else
+                              disabled
                               :menu-props="{ maxHeight: '500' }"
                               dense
                               v-model="selectedSprint"
