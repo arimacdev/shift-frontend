@@ -5,6 +5,7 @@ export const state = () => ({
   users: [],
   selectedTaskUser: {},
   componentUser: {},
+  parentTaskUser: {},
 });
 
 export const mutations = {
@@ -22,6 +23,9 @@ export const mutations = {
   },
   SET_TASK_USER(state, user) {
     state.selectedTaskUser = user;
+  },
+  SET_PARENT_TASK_USER(state, user) {
+    state.parentTaskUser = user;
   },
   SET_COMPONENT_USER_DETAILS(state, user) {
     state.componentUser = user;
@@ -57,6 +61,23 @@ export const actions = {
       });
       commit('SET_TASK_USER', userResponse.data);
       console.log('fetch task user from store', userResponse.data);
+    } catch (e) {
+      console.log('Error fetching user from store', e);
+    }
+  },
+
+  async fetchParentTaskUser({ commit, rootState }, userId) {
+    console.log('fetchParentTaskUser', userId);
+    const user = rootState.user.userId;
+    let userResponse;
+    try {
+      userResponse = await this.$axios.$get(`/users/${userId}`, {
+        headers: {
+          user: user,
+        },
+      });
+      commit('SET_PARENT_TASK_USER', userResponse.data);
+      console.log('fetch parent task user from store', userResponse.data);
     } catch (e) {
       console.log('Error fetching user from store', e);
     }
