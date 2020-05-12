@@ -80,6 +80,17 @@ export default {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup
   },
+  created() {
+    console.log("alltasks", this.projectAllTasks);
+    console.log("alltasks", this.projectAllTasks.length);
+    if (this.projectAllTasks.length === 0) {
+      console.log("alltasks");
+      this.$store.dispatch(
+        "task/fetchTasksAllTasks",
+        this.$route.query.project
+      );
+    }
+  },
   data() {
     return {
       parentTasks: [],

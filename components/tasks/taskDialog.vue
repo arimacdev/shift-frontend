@@ -1393,6 +1393,7 @@ export default {
     },
     issueType: {
       get() {
+        console.log("issueType", this.selectedTask);
         this.issueTypes = this.selectedTask.issueType;
         return this.selectedTask.issueType;
       },
@@ -1434,6 +1435,7 @@ export default {
           this.updatedTaskDueDate = this.selectedTask.taskDueDateAt;
 
         return this.updatedTaskDueDate;
+        // return this.selectedTask.taskDueDateAt;
       },
       set(value) {
         console.log("set updated", value);
@@ -1448,6 +1450,7 @@ export default {
           this.updatedRemindOnDate == "1970-01-01T05:30:00.000+0000"
         )
           this.updatedRemindOnDate = this.selectedTask.taskReminderAt;
+        // return this.selectedTask.taskReminderAt;
         return this.updatedRemindOnDate;
       },
       set(value) {
