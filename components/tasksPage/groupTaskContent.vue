@@ -14,14 +14,16 @@
             label="All"
             solo
           ></v-select>
-          <v-text-field
-            v-model="addNewTask"
-            solo
-            prepend-inner-icon="mdi-plus-circle"
-            label="Add a new task"
-            class="addPersonalTaskTextBox"
-            @keyup.enter="addGroupTask(null)"
-          ></v-text-field>
+          <v-form v-model="isValid" onsubmit="return false" ref="form">
+            <v-text-field
+              v-model="addNewTask"
+              solo
+              prepend-inner-icon="mdi-plus-circle"
+              label="Add a new task"
+              class="addPersonalTaskTextBox"
+              @keyup.enter="addGroupTask(null)"
+            ></v-text-field>
+          </v-form>
           <!-- -------- loop task list here ----------- -->
           <div v-for="(task, index) in groupTasks" :key="index">
             <div class="backPannelAllTask" v-if="taskSelect == 'all'">

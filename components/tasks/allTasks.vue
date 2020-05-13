@@ -100,16 +100,18 @@
     </div>
 
     <div v-if="this.taskFilter == 'none'" class="restructuredTaskCreate">
-      <v-text-field
-        v-model="taskName"
-        background-color="#EDF0F5"
-        solo
-        prepend-inner-icon="mdi-plus-circle"
-        label="Add a main task..."
-        class
-        @keyup.enter="addTask(null)"
-        clearable
-      ></v-text-field>
+      <v-form v-model="isValid" onsubmit="return false" ref="form">
+        <v-text-field
+          v-model="taskName"
+          background-color="#EDF0F5"
+          solo
+          prepend-inner-icon="mdi-plus-circle"
+          label="Add a main task..."
+          class
+          @keyup.enter="addTask(null)"
+          clearable
+        ></v-text-field>
+      </v-form>
     </div>
     <div v-if="this.taskFilter == 'none'" class="taskListViewContent overflow-y-auto">
       <!-- ------ start task filter list ------- -->
@@ -561,7 +563,8 @@ export default {
             parentTaskId: selectedParentTask
           }
         );
-        this.taskName = "";
+        // this.taskName = "";
+        this.$refs.form.reset();
         this.component = "success-popup";
         this.successMessage = "Task added successfully";
         setTimeout(() => {
@@ -576,8 +579,8 @@ export default {
           console.log("assignee is NOT me", this.taskAssignee);
           this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         }
-        (this.taskName = ""),
-          (this.taskAssignee = ""),
+        // (this.taskName = ""),
+        (this.taskAssignee = ""),
           (this.taskStatus = "pending"),
           (this.taskDueDate = new Date()),
           (this.taskRemindOnDate = new Date()),
