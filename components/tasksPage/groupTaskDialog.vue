@@ -618,8 +618,8 @@ import { mapState } from "vuex";
 import { mapGetters } from "vuex";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
-import AddParentTask from "~/components/tasks/addParentTask";
-import AddChildTask from "~/components/tasks/addChildTask";
+import AddParentTask from "~/components/tasksPage/addParentTask";
+import AddChildTask from "~/components/tasksPage/addChildTask";
 
 export default {
   props: ["task", "projectId", "people", "taskObject"],
