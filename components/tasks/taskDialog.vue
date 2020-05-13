@@ -124,13 +124,15 @@
                     <v-col sm="3" md="3" no-gutters>
                       <add-parent-task
                         v-if="taskObject.childTasks.length == 0 && selectedTask.isParent == true"
-                        :taskId="this.selectedTask.taskId" :projectId="this.projectId"
+                        :taskId="this.selectedTask.taskId"
+                        :projectId="this.projectId"
                       />
                     </v-col>
                     <v-col sm="3" md="3" no-gutters>
                       <add-child-task
                         v-if=" selectedTask.isParent == true"
-                        :taskId="selectedTask.taskId"  :projectId="this.projectId"
+                        :taskId="selectedTask.taskId"
+                        :projectId="this.projectId"
                       />
                     </v-col>
                   </v-row>
@@ -677,7 +679,11 @@
                             }}
                           </a>
                         </v-list-item-title>
-                        <v-list-item-subtitle class="fileSubTitles">125.54kB</v-list-item-subtitle>
+                        <v-list-item-subtitle class="fileSubTitles">
+                          {{
+                          file.taskFileSize/1000
+                          }}KB
+                        </v-list-item-subtitle>
                       </v-list-item-content>
                       <v-list-item-content>
                         <v-list-item-title class="fileTitles">
