@@ -82,12 +82,12 @@
                       />
                     </v-col>
                   </v-row>
-                  <!-- <v-row class="mb-12 formRow projectDrawer" no-gutters>
+                  <v-row class="mb-12 formRow projectDrawer" no-gutters>
                     <v-col sm="12" md="12">
                       <div class="editProjectLabels">Project alias*</div>
-                      <input maxlength="51" placeholder="Project name" class="formElements" />
+                      <input maxlength="51" placeholder="Project name" class="formElements" v-model="projectAlias"/>
                     </v-col>
-                  </v-row>-->
+                  </v-row>
 
                   <v-row class="mb-12 formRow projectDrawer" no-gutters>
                     <v-col sm="12" md="12">
@@ -411,7 +411,8 @@ export default {
         clientId: "",
         projectStartDate: "",
         projectEndDate: "",
-        projectStatus: ""
+        projectStatus: "",
+        projectAlias: ""
       },
       drawer: null,
       prName: "project",
@@ -430,6 +431,14 @@ export default {
       },
       set(value) {
         this.updateProject.projectName = value;
+      }
+    },
+    projectAlias: {
+      get() {
+        return this.fetchProject.projectAlias;
+      },
+      set(value) {
+        this.updateProject.projectAlias = value;
       }
     },
     clientId: {
@@ -504,7 +513,8 @@ export default {
             clientId: this.updateProject.clientId,
             projectStartDate: this.updateProject.projectStartDate,
             projectEndDate: this.updateProject.projectEndDate,
-            projectStatus: this.updateProject.projectStatus
+            projectStatus: this.updateProject.projectStatus,
+            projectAlias: this.updateProject.projectAlias
           }
         );
         console.log("project edit response ----------> ", response);
