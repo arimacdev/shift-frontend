@@ -257,44 +257,14 @@
     </v-navigation-drawer>
     <!-- ------------ task dialog --------- -->
 
-    <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
-      <v-toolbar dark color="primary">
-        <v-btn icon dark @click="taskDialog = false">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-        <v-toolbar-title class="font-weight-bold">
-          {{
-          task.taskName
-          }}
-        </v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-          <!-- <v-btn dark text @click="dialog = false">Save</v-btn> -->
-          <button class :disabled="checkValidation">
-            <v-list-item dark>
-              <div>
-                <v-tooltip left>
-                  <template v-slot:activator="{ on }">
-                    <v-icon
-                      v-on="on"
-                      size="30px"
-                      @click="taskDeleteDialog = true"
-                      color="#FFFFFF"
-                    >mdi-delete-circle</v-icon>
-                  </template>
-                  <span>Delete task</span>
-                </v-tooltip>
-              </div>
-            </v-list-item>
-          </button>
-        </v-toolbar-items>
-      </v-toolbar>
+    <v-dialog persistent v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
       <task-dialog
         :task="task"
         :projectId="projectId"
         :taskFiles="taskFiles"
         :componentClose="componentClose"
         :taskObject="taskObject"
+        @taskDialogClosing="taskDialogClosing()"
       />
     </v-dialog>
     <!-- --------------------- delete task popup --------------- -->
@@ -385,6 +355,10 @@ export default {
     })
   },
   methods: {
+    taskDialogClosing() {
+      console.log("Task Dialog Closing");
+      this.taskDialog = false;
+    },
     // ------- popup close ----------
     close() {
       this.component = "";

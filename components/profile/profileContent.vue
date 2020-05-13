@@ -184,7 +184,11 @@
     </div>
 
     <div @click="close">
-      <component v-bind:is="component" :errorMessage="errorMessage"></component>
+      <component
+        v-bind:is="component"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
     </div>
     <!-- <success-popup /> -->
   </div>
@@ -218,6 +222,7 @@ export default {
       uploadLoading: false,
       files: [],
       errorMessage: "",
+      successMessage: "",
       userName: this.user.userName,
       firstName: this.user.firstName,
       lastName: this.user.lastName,
@@ -341,12 +346,17 @@ export default {
         });
         //  location.reload();
         this.component = "success-popup";
-        // window.setTimeout(location.reload(), 8000)
+        this.successMessage = "Profile successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         console.log(response.message);
       } catch (e) {
-        console.log("Error edit user", e);
         this.errorMessage = e.response.data;
         this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         // alert("Error updating user!")
       }
     },

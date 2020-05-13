@@ -85,7 +85,11 @@
       </v-row>
     </form>
     <div @click="close">
-      <component v-bind:is="component" :errorMessage="errorMessage"></component>
+      <component
+        v-bind:is="component"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
     </div>
     <!-- <success-popup /> -->
   </div>
@@ -114,6 +118,7 @@ export default {
 
   data: function() {
     return {
+      successMessage: "",
       userId: this.userData
     };
   },
@@ -128,11 +133,18 @@ export default {
           email: this.userData.email
         });
         this.component = "success-popup";
-        // window.setTimeout(location.reload(), 8000)
+        this.successMessage = "User successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
       } catch (e) {
         console.log("Error edit user", e);
-        this.component = "error-popup";
+        console.log("Error creating user", e);
         this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         //   alert("Error updating user!")
       }
     },
@@ -153,7 +165,8 @@ export default {
       password: "",
       confirmPassword: "",
       component: "",
-      errorMessage: ""
+      errorMessage: "",
+      successMessage: ""
     };
   },
   validations: {

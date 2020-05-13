@@ -63,10 +63,14 @@
         </v-card>
       </v-dialog>
     </v-row>
-    <div @click="close">
-      <component v-bind:is="component" :success="success" :errorMessage="errorMessage"></component>
+    <div @click="close" class="parentChildPopup">
+      <component
+        v-bind:is="component"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
+      <!-- <success-popup /> -->
     </div>
-    <!--  <success-popup /> -->
   </div>
 </template>
 
@@ -75,7 +79,7 @@ import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import { mapState } from "vuex";
 export default {
-  props: ["taskId"],
+  props: ["taskId", "projectId"],
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup
@@ -97,7 +101,7 @@ export default {
       errorMessage: "",
       isValid: true,
       userId: this.$store.state.user.userId,
-
+      successMessage: "",
       assigneeRules: [value => !!value || "Parent task is required!"],
       isShow: false,
       selected: false,
@@ -127,10 +131,12 @@ export default {
       let parentSearchList = this.projectAllTasks;
       for (let index = 0; index < parentSearchList.length; ++index) {
         let parent = parentSearchList[index];
-        this.parentTasks.push({
-          name: parent.parentTask.taskName,
-          id: parent.parentTask.taskId
-        });
+        if (parent.parentTask.taskId != this.taskId) {
+          this.parentTasks.push({
+            name: parent.parentTask.taskName,
+            id: parent.parentTask.taskId
+          });
+        }
       }
 
       console.log("nameList", this.states);
@@ -158,10 +164,15 @@ export default {
             }
           }
         );
+        this.dialog = false;
         this.component = "success-popup";
         this.successMessage = "Parent Task Added Successfully";
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.$store.dispatch("task/setCurrentTask", {
+          projectId: this.projectId,
+          taskId: this.taskId
+        });
+        this.$store.dispatch("task/fetchParentTask", {
           projectId: this.projectId,
           taskId: this.taskId
         });
@@ -189,8 +200,7 @@ export default {
       }
     },
     ...mapState({
-      projectAllTasks: state => state.task.allTasks,
-      projectId: state => state.project.project.projectId
+      projectAllTasks: state => state.task.allTasks
     })
   }
 };

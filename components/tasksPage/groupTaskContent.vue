@@ -15,7 +15,7 @@
             solo
           ></v-select>
           <v-text-field
-            v-model="groupTask"
+            v-model="addNewTask"
             solo
             prepend-inner-icon="mdi-plus-circle"
             label="Add a new task"
@@ -24,19 +24,19 @@
           ></v-text-field>
           <!-- -------- loop task list here ----------- -->
           <div v-for="(task, index) in groupTasks" :key="index">
-            <div class="backPannelAllTask">
+            <div class="backPannelAllTask" v-if="taskSelect == 'all'">
               <div class="taskList restructuredMainTaskList">
                 <v-list-item @click="
               selectGroupTask(task.parentTask, task);">
                   <!-- @click.stop="drawer = !drawer" -->
-                  <v-list-item-action>
+                  <!-- <v-list-item-action>
                     <v-icon
                       v-if="task.parentTask.taskStatus == 'closed'"
                       size="30"
                       color="#2EC973"
                     >mdi-checkbox-marked-circle</v-icon>
                     <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
-                  </v-list-item-action>
+                  </v-list-item-action>-->
                   <div class="tasklistTaskNames restructuredMainTaskName">
                     <div class="body-2">
                       <span class="restructuredMainTaskCode">{{task.parentTask.secondaryTaskId}}</span>
@@ -60,7 +60,7 @@
                       ></v-img>
                     </v-list-item-avatar>
                   </div>
-                  <div class="boardTabLinkIcon">
+                  <!-- <div class="boardTabLinkIcon">
                     <nuxt-link
                       :to="
                   '/task/' + task.parentTask.taskId + '/?project=' + projectId
@@ -69,14 +69,14 @@
                     >
                       <v-icon color="blue">mdi-link-variant</v-icon>
                     </nuxt-link>
-                  </div>
+                  </div>-->
                 </v-list-item>
               </div>
 
               <!-- -------------- sub task design --------------- -->
               <div class="restructuredSubTaskCreate">
                 <v-text-field
-                  v-model="groupTask"
+                  v-model="addNewTask"
                   background-color="#0BAFFF"
                   solo
                   dark
@@ -132,14 +132,14 @@
                         ></v-img>
                       </v-list-item-avatar>
                     </div>
-                    <div class="boardTabLinkIcon">
+                    <!-- <div class="boardTabLinkIcon">
                       <nuxt-link
                         :to="'/task/' + childTask.taskId + '/?project=' + projectId"
                         style="text-decoration: none;"
                       >
                         <v-icon color="blue">mdi-link-variant</v-icon>
                       </nuxt-link>
-                    </div>
+                    </div>-->
                   </v-list-item>
                 </div>
               </div>
@@ -248,14 +248,15 @@ export default {
       taskObject: {},
       taskDialog: false,
       taskDeleteDialog: false,
+      taskSelect: "all",
       errorMessage: "",
       successMessage: "",
       component: "",
       drawer: null,
       userId: this.$store.state.user.userId,
       personalTask: "",
-      taskSelect: null,
       groupTask: "",
+      updatedTaskName: "",
       task: {},
       assignee: {},
       subTasks: [],
@@ -358,19 +359,15 @@ export default {
     async addGroupTask(selectedParentTask) {
       console.log("add group task");
       this.$store.dispatch("groups/groupTask/addTaskToGroup", {
-        taskName: this.groupTask,
+        taskName: this.updatedTaskName,
         taskGroupId: this.group.taskGroupId,
         parentTaskId: selectedParentTask
       });
-      this.groupTask = "";
-      // this.$store.dispatch("groups/groupPeople/fetchGroupPeople", {
+      this.updatedTaskName = "";
+      // this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
       //   taskGroupId: this.group.taskGroupId,
       //   userId: this.userId
       // });
-      this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
-        taskGroupId: this.group.taskGroupId,
-        userId: this.userId
-      });
     },
     getTaskDueDate(date) {
       const dueDate = new Date(date);
@@ -401,7 +398,15 @@ export default {
     ...mapState({
       groupTasks: state => state.groups.groupTask.groupTasks,
       groupPeople: state => state.groups.groupPeople.groupPeople
-    })
+    }),
+    addNewTask: {
+      get() {
+        return null;
+      },
+      set(value) {
+        this.updatedTaskName = value;
+      }
+    }
   }
 };
 </script>

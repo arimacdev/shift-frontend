@@ -124,13 +124,15 @@
                     <v-col sm="3" md="3" no-gutters>
                       <add-parent-task
                         v-if="taskObject.childTasks.length == 0 && selectedTask.isParent == true"
-                        :taskId="selectedTask.taskId"
+                        :taskId="this.selectedTask.taskId"
+                        :projectId="this.projectId"
                       />
                     </v-col>
                     <v-col sm="3" md="3" no-gutters>
                       <add-child-task
                         v-if=" selectedTask.isParent == true"
                         :taskId="selectedTask.taskId"
+                        :projectId="this.projectId"
                       />
                     </v-col>
                   </v-row>
@@ -568,6 +570,7 @@
                       v-model="taskDueDate"
                       label="Add due date"
                       right
+                      :max-date="this.getMaxDueDate()"
                     />
                   </div>
                   <div class="pickerButtonDiv">
@@ -596,11 +599,12 @@
                   <div class="viewTaskPickerDiv">
                     <VueCtkDateTimePicker
                       color="#3f51b5"
-                      id="duePicker"
+                      id="remindPicker"
                       class
                       v-model="taskRemindOnDate"
                       label="Add remind date"
                       right
+                      :max-date="this.getMaxRemindDate()"
                     />
                   </div>
                   <div class="pickerButtonDiv">
@@ -677,7 +681,11 @@
                             }}
                           </a>
                         </v-list-item-title>
-                        <v-list-item-subtitle class="fileSubTitles">125.54kB</v-list-item-subtitle>
+                        <v-list-item-subtitle class="fileSubTitles">
+                          {{
+                          file.taskFileSize/1000
+                          }}KB
+                        </v-list-item-subtitle>
                       </v-list-item-content>
                       <v-list-item-content>
                         <v-list-item-title class="fileTitles">
@@ -788,6 +796,7 @@ export default {
   },
   data() {
     return {
+      maxdate: "2020-05-11 12:17",
       taskId: "",
       projectId: "",
       taskDeleteDialog: false,
@@ -915,6 +924,26 @@ export default {
     };
   },
   methods: {
+    getMaxDueDate() {
+      let stringDate = this.fetchProject.projectEndDate + "";
+      stringDate = stringDate.toString();
+      stringDate = stringDate.slice(0, 10) + " " + "23:59";
+      console.log("max date : " + stringDate);
+      return stringDate;
+    },
+    getMaxRemindDate() {
+      let stringDate = this.updatedTaskDueDate + "";
+      stringDate = stringDate.toString();
+      stringDate = stringDate.slice(0, 10);
+
+      console.log("max date : " + this.updatedTaskDueDate);
+      if (this.updatedTaskDueDate === null) {
+        return "2020-01-01 23:59";
+      } else {
+        return stringDate + " " + "23:59";
+      }
+    },
+
     async deleteTask() {
       let response;
       try {
@@ -931,7 +960,8 @@ export default {
         // this.component = 'success-popup'
         this.$emit("listenChange");
         this.$emit("shrinkSideBar");
-        taskDialogClosing();
+        this.taskDialogClosing();
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         console.log(response.data);
       } catch (e) {
         this.errorMessage = e.response.data;
@@ -1442,7 +1472,8 @@ export default {
       projectId: state => state.project.project.projectId,
       selectedTaskUser: state => state.user.selectedTaskUser,
       taskFiles: state => state.task.taskFiles,
-      selectedTask: state => state.task.selectedTask
+      selectedTask: state => state.task.selectedTask,
+      fetchProject: state => state.project.project
     }),
     ...mapGetters(["getuserCompletionTasks"]),
     peopleList() {
@@ -1532,7 +1563,6 @@ export default {
           this.updatedTaskDueDate = this.selectedTask.taskDueDateAt;
 
         return this.updatedTaskDueDate;
-        // return this.selectedTask.taskDueDateAt;
       },
       set(value) {
         console.log("set updated", value);

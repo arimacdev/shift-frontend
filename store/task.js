@@ -6,6 +6,7 @@ export const state = () => ({
   taskFiles: [],
   childTasks: [],
   selectedTask: {},
+  parentTask: {},
 });
 
 export const mutations = {
@@ -22,6 +23,9 @@ export const mutations = {
   },
   SET_CHILD_TASKS(state, children) {
     state.childTasks = children;
+  },
+  SET_PARENT_TASK(state, task) {
+    state.parentTask = task;
   },
   SET_MY_TASKS(state, event) {
     state.myTasks = event;
@@ -89,6 +93,31 @@ export const actions = {
   updateTask({ commit }, { taskId, taskName }) {
     console.log('update task', taskId, taskName);
     commit('UPDATE_TASK', { taskId, taskName });
+  },
+
+  async fetchParentTask(
+    { commit, rootState, dispatch },
+    { projectId, taskId }
+  ) {
+    const userId = rootState.user.userId;
+    let taskResponse;
+    try {
+      taskResponse = await this.$axios.$get(
+        `/projects/${projectId}/tasks/${taskId}`,
+        {
+          headers: {
+            user: userId,
+          },
+        }
+      );
+      commit('SET_PARENT_TASK', taskResponse.data);
+      console.log('fetchParentTask', taskResponse.data);
+      dispatch('user/fetchParentTaskUser', taskResponse.data.taskAssignee, {
+        root: true,
+      });
+    } catch (e) {
+      console.log('Error fetching task', e);
+    }
   },
 
   fetchChildren({ commit, rootState }, { projectId, taskId }) {

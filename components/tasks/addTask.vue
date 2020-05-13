@@ -193,6 +193,7 @@
                 v-model="$v.taskDueDate.$model"
                 label="Task due date and time"
                 input-size="lg"
+                :max-date="this.getMaxDueDate()"
               />
               <div
                 v-if="$v.taskDueDate.$error && !$v.taskDueDate.dateCheck"
@@ -210,6 +211,7 @@
                 v-model="$v.taskRemindOnDate.$model"
                 label="Reminder"
                 input-size="lg"
+                :max-date="this.getMaxDueDate()"
               />
               <div
                 v-if="
@@ -484,6 +486,13 @@ export default {
     }
   },
   methods: {
+    getMaxDueDate() {
+      let stringDate = this.fetchProject.projectEndDate + "";
+      stringDate = stringDate.toString();
+      stringDate = stringDate.slice(0, 10) + " " + "23:59";
+      console.log("max date : " + stringDate);
+      return stringDate;
+    },
     querySelections(v) {
       console.log("people list", this.people);
       this.states = [];
@@ -660,7 +669,8 @@ export default {
       projectId: state => state.project.project.projectId,
       people: state => state.task.userCompletionTasks,
       projectAllTasks: state => state.task.allTasks,
-      projectSprints: state => state.sprints.sprint.sprints
+      projectSprints: state => state.sprints.sprint.sprints,
+      fetchProject: state => state.project.project
     }),
     checkValidation: {
       get() {

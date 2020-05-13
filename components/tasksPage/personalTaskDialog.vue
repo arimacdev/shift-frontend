@@ -280,7 +280,11 @@
                             }}
                           </a>
                         </v-list-item-title>
-                        <v-list-item-subtitle class="fileSubTitles">125.54kB</v-list-item-subtitle>
+                        <v-list-item-subtitle class="fileSubTitles">
+                          {{
+                          file.taskFileSize/1000
+                          }}KB
+                        </v-list-item-subtitle>
                       </v-list-item-content>
                       <v-list-item-content>
                         <v-list-item-title class="fileTitles">

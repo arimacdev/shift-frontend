@@ -1499,11 +1499,12 @@
 }
 .defaultBoard {
   width: 30%;
-  height: 77vh;
+  height: 73vh;
   background-color: #edf0f5;
   position: absolute;
   left: 20px;
   border-radius: 5px;
+  margin-top: 20px;
 }
 .actualBoard {
   width: 300px;
@@ -2131,4 +2132,10 @@
   right: 20px;
   margin-top: -40px;
   /* top: -15px; */
+}
+.parentChildPopup {
+  z-index: 1000;
+  position: fixed;
+  bottom: 0;
+  right: 40px;
 }

@@ -519,7 +519,11 @@
                             }}
                           </a>
                         </v-list-item-title>
-                        <!-- <v-list-item-subtitle class="fileSubTitles">125.54kB</v-list-item-subtitle> -->
+                        <v-list-item-subtitle class="fileSubTitles">
+                          {{
+                          file.taskFileSize/1000
+                          }}KB
+                        </v-list-item-subtitle>
                       </v-list-item-content>
                       <v-list-item-content>
                         <v-list-item-title class="fileTitles">
@@ -685,7 +689,10 @@ export default {
         this.$emit("listenChange");
         this.$emit("shrinkSideBar");
         this.closeTaskDialog();
-
+        this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
+          taskGroupId: this.task.taskGroupId,
+          userId: this.userId
+        });
         console.log(response.data);
       } catch (e) {
         this.errorMessage = e.response.data;
