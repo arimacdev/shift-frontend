@@ -1,5 +1,35 @@
 <template>
   <v-card width="100vw">
+    <v-toolbar dark color="primary">
+        <v-btn icon dark @click="taskDialogClosing()">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <v-toolbar-title class="font-weight-bold">
+          {{
+          this.task.taskName
+          }}
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+          <button class :disabled="checkValidation">
+            <v-list-item dark>
+              <div>
+                <v-tooltip left>
+                  <template v-slot:activator="{ on }">
+                    <v-icon
+                      v-on="on"
+                      size="30px"
+                      @click="taskDeleteDialog = true"
+                      color="#FFFFFF"
+                    >mdi-delete-circle</v-icon>
+                  </template>
+                  <span>Delete task</span>
+                </v-tooltip>
+              </div>
+            </v-list-item>
+          </button>
+        </v-toolbar-items>
+      </v-toolbar>
     <div class="viewDialogTaskContent overflow-y-auto">
       <div class="taskDialogFormDiv">
         <form>
@@ -347,7 +377,7 @@ import AddParentTask from "~/components/tasks/addParentTask";
 import AddChildTask from "~/components/tasks/addChildTask";
 
 export default {
-  props: ["task", "projectId", "people", "taskObject", "taskFiles"],
+  props: ["task", "projectId", "people", "taskObject"],
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
@@ -372,7 +402,6 @@ export default {
       successMessage: "",
       updatedTaskDueDate: null,
       updatedRemindOnDate: null,
-      // taskDue: this.task.taskDueDateAt,
       uploadLoading: false,
       taskAssignee: "",
       updatedTask: {
@@ -383,8 +412,6 @@ export default {
         taskRemindOnDate: this.task.taskDueDateAt,
         taskDueDateAt: ""
       },
-      // taskStatus: this.task.taskStatus,
-      // issueType: this.task.issueType,
 
       status: [
         { name: "Open", id: "open" },
@@ -393,10 +420,10 @@ export default {
     };
   },
   methods: {
-    clickToPrint() {
-      console.log("==============> clicked!!!!");
+    taskDialogClosing() {
+      this.$emit("taskDialogClosing");
+      Object.assign(this.$data, this.$options.data.apply(this));
     },
-    // ------------- update task status ----------
     async updateTaskStatus() {
       console.log("onchange updated status ->");
       let response;
@@ -576,7 +603,10 @@ export default {
                 }
               }
             );
-            this.$store.dispatch("task/appendTaskFile", fileResponse.data);
+            this.$store.dispatch(
+              "personalTasks/addPersonalTaskFile",
+              fileResponse.data
+            );
             this.uploadLoading = false;
             this.component = "success-popup";
             this.successMessage = "File(s) successfully uploaded";
@@ -611,7 +641,7 @@ export default {
           }
         );
         console.log(response.data);
-        this.$store.dispatch("task/removeTaskFile", taskFileId);
+        this.$store.dispatch("personalTasks/removeTaskFile", taskFileId);
         this.component = "success-popup";
         this.successMessage = "File successfully deleted";
         setTimeout(() => {
@@ -718,7 +748,8 @@ export default {
       projectSprints: state => state.sprints.sprint.sprints,
       projectAllTasks: state => state.task.allTasks,
       projectId: state => state.project.project.projectId,
-      selectedTaskUser: state => state.user.selectedTaskUser
+      selectedTaskUser: state => state.user.selectedTaskUser,
+      taskFiles: state => state.personalTasks.personalTaskFiles
     }),
     ...mapGetters(["getuserCompletionTasks"]),
     // peopleList() {
