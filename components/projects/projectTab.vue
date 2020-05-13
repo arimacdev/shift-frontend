@@ -82,6 +82,12 @@
                       />
                     </v-col>
                   </v-row>
+                  <!-- <v-row class="mb-12 formRow projectDrawer" no-gutters>
+                    <v-col sm="12" md="12">
+                      <div class="editProjectLabels">Project alias*</div>
+                      <input maxlength="51" placeholder="Project name" class="formElements" />
+                    </v-col>
+                  </v-row>-->
 
                   <v-row class="mb-12 formRow projectDrawer" no-gutters>
                     <v-col sm="12" md="12">
