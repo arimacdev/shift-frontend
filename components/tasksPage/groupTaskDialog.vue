@@ -94,10 +94,15 @@
                       <add-parent-task
                         v-if="taskObject.childTasks.length == 0 && task.parent == true"
                         :taskId="this.task.taskId"
+                        :groupId="this.task.taskGroupId"
                       />
                     </v-col>
                     <v-col sm="3" md="3" no-gutters>
-                      <add-child-task :taskId="this.task.taskId" v-if=" task.parent == true" />
+                      <add-child-task
+                        :groupId="this.task.taskGroupId"
+                        :taskId="this.task.taskId"
+                        v-if=" task.parent == true"
+                      />
                     </v-col>
                   </v-row>
                   <!-- ----------- parent task section --------- -->
@@ -528,7 +533,9 @@
                       <v-list-item-content>
                         <v-list-item-title class="fileTitles">
                           {{
-                          taskUser
+                          file.firstName
+                          }} {{
+                          file.lastName
                           }}
                         </v-list-item-title>
                         <v-list-item-subtitle class="fileSubTitles">
@@ -622,8 +629,8 @@ import { mapState } from "vuex";
 import { mapGetters } from "vuex";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
-import AddParentTask from "~/components/tasks/addParentTask";
-import AddChildTask from "~/components/tasks/addChildTask";
+import AddParentTask from "~/components/tasksPage/addParentTask";
+import AddChildTask from "~/components/tasksPage/addChildTask";
 
 export default {
   props: ["task", "projectId", "people", "taskObject"],

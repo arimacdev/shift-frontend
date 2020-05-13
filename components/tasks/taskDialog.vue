@@ -690,7 +690,9 @@
                       <v-list-item-content>
                         <v-list-item-title class="fileTitles">
                           {{
-                          taskUser
+                          file.firstName
+                          }} {{
+                          file.lastName
                           }}
                         </v-list-item-title>
                         <v-list-item-subtitle class="fileSubTitles">
@@ -936,12 +938,12 @@ export default {
       stringDate = stringDate.toString();
       stringDate = stringDate.slice(0, 10);
 
-      console.log("max date : " + this.updatedTaskDueDate);
-      if (this.updatedTaskDueDate === null) {
-        return "2020-01-01 23:59";
-      } else {
-        return stringDate + " " + "23:59";
-      }
+      // console.log("max date : " + this.updatedTaskDueDate);
+      // if (this.updatedTaskDueDate === null) {
+      //   return "2020-01-01 23:59";
+      // } else {
+      return stringDate + " " + "23:59";
+      // }
     },
 
     async deleteTask() {

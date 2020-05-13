@@ -3,13 +3,13 @@
     <v-row justify class>
       <v-dialog v-model="dialog" persistent max-width="350">
         <template v-slot:activator="{ on }">
-          <div v-on="on" class="addChildButton">
+          <div v-on="on" class="addParentButton">
             <v-list-item class="addParentButtonBody" v-on:click="component='add-task'" dark>
               <v-list-item-action>
-                <v-icon size="15" color>mdi-account-supervisor-outline</v-icon>
+                <v-icon size="15" color>mdi-account-outline</v-icon>
               </v-list-item-action>
               <v-list-item-content class="buttonText">
-                <v-list-item-title class>Add Child</v-list-item-title>
+                <v-list-item-title class>Add Parent</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </div>
@@ -17,8 +17,9 @@
         <v-card class="addUserPopup">
           <v-form v-model="isValid" ref="form">
             <div class="popupFormContent">
-              <v-icon class size="60" color="deep-orange lighten-1">mdi-account-supervisor-outline</v-icon>
-              <v-card-text class="deletePopupTitle">Add child task</v-card-text>
+              <v-icon class size="60" color="deep-orange lighten-1">mdi-account-outline</v-icon>
+              <v-card-text class="deletePopupTitle">Add parent task</v-card-text>
+
               <v-card-actions>
                 <v-select
                   class="popupFormGroupElement"
@@ -26,7 +27,7 @@
                   :items="parentTasks"
                   item-text="name"
                   item-value="id"
-                  label="Child task"
+                  label="Parent task"
                   outlined
                   :rules="assigneeRules"
                   @mousedown="getParentTasks"
@@ -62,15 +63,15 @@
           </v-form>
         </v-card>
       </v-dialog>
-      <div @click="close" class="parentChildPopup">
-        <component
-          v-bind:is="component"
-          :successMessage="successMessage"
-          :errorMessage="errorMessage"
-        ></component>
-        <!-- <success-popup /> -->
-      </div>
     </v-row>
+    <div @click="close" class="parentChildPopup">
+      <component
+        v-bind:is="component"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
+      <!-- <success-popup /> -->
+    </div>
   </div>
 </template>
 
@@ -84,15 +85,25 @@ export default {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup
   },
+  created() {
+    console.log("alltasks", this.groupAllTasks);
+    console.log("alltasks", this.groupAllTasks.length);
+    if (this.groupAllTasks.length === 0) {
+      // console.log("alltasks");
+      // this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
+      //   taskGroupId: this.groupId,
+      //   userId: this.userId
+      // });
+    }
+  },
   data() {
     return {
-      parentTask: "",
       parentTasks: [],
       errorMessage: "",
-      successMessage: "",
       isValid: true,
       userId: this.$store.state.user.userId,
-      assigneeRules: [value => !!value || "Child task is required!"],
+      successMessage: "",
+      assigneeRules: [value => !!value || "Parent task is required!"],
       isShow: false,
       selected: false,
       dialog: false,
@@ -102,9 +113,7 @@ export default {
       select: null,
       states: [],
       component: "",
-      success: "",
-      newTask: this.task,
-      newTaskId: this.taskId
+      success: ""
     };
   },
   watch: {
@@ -122,14 +131,11 @@ export default {
       this.parentTasks = [];
       let parentSearchList = this.groupAllTasks;
       for (let index = 0; index < parentSearchList.length; ++index) {
-        let task = parentSearchList[index];
-        if (
-          task.childTasks.length == 0 &&
-          task.parentTask.taskId != this.taskId
-        ) {
+        let parent = parentSearchList[index];
+        if (parent.parentTask.taskId != this.taskId) {
           this.parentTasks.push({
-            name: task.parentTask.taskName,
-            id: task.parentTask.taskId
+            name: parent.parentTask.taskName,
+            id: parent.parentTask.taskId
           });
         }
       }
@@ -145,14 +151,13 @@ export default {
     },
 
     async changeHandler() {
-      // console.log("onchange sprint", this.newTask);
-      console.log("onchange parent Task----->", this.parentTask, this.taskId);
+      console.log("onchange task", this.parentTask);
       let response;
       try {
         response = await this.$axios.$put(
-          `/taskgroup/${this.groupId}/tasks/${this.parentTask}/parent/transition`,
+          `/taskgroup/${this.groupId}/tasks/${this.taskId}/parent/transition`,
           {
-            newParent: this.taskId
+            newParent: this.parentTask
           },
           {
             headers: {
@@ -162,13 +167,13 @@ export default {
         );
         this.dialog = false;
         this.component = "success-popup";
-        this.successMessage = "Child Task Added successfully";
+        this.successMessage = "Parent Task Added Successfully";
         // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         // this.$store.dispatch("task/setCurrentTask", {
         //   projectId: this.projectId,
         //   taskId: this.taskId
         // });
-        // this.$store.dispatch("task/fetchChildren", {
+        // this.$store.dispatch("task/fetchParentTask", {
         //   projectId: this.projectId,
         //   taskId: this.taskId
         // });
@@ -182,7 +187,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error Adding Child Tasks", e);
+        console.log("Error Adding parent task", e);
       }
     }
   },
