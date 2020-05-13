@@ -364,6 +364,7 @@ export default {
         parentTaskId: selectedParentTask
       });
       this.updatedTaskName = "";
+      this.$refs.form.reset();
       // this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
       //   taskGroupId: this.group.taskGroupId,
       //   userId: this.userId

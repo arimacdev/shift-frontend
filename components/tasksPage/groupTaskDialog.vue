@@ -94,10 +94,15 @@
                       <add-parent-task
                         v-if="taskObject.childTasks.length == 0 && task.parent == true"
                         :taskId="this.task.taskId"
+                        :groupId="this.task.taskGroupId"
                       />
                     </v-col>
                     <v-col sm="3" md="3" no-gutters>
-                      <add-child-task :taskId="this.task.taskId" v-if=" task.parent == true" />
+                      <add-child-task
+                        :groupId="this.task.taskGroupId"
+                        :taskId="this.task.taskId"
+                        v-if=" task.parent == true"
+                      />
                     </v-col>
                   </v-row>
                   <!-- ----------- parent task section --------- -->

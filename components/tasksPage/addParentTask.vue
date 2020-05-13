@@ -19,6 +19,7 @@
             <div class="popupFormContent">
               <v-icon class size="60" color="deep-orange lighten-1">mdi-account-outline</v-icon>
               <v-card-text class="deletePopupTitle">Add parent task</v-card-text>
+
               <v-card-actions>
                 <v-select
                   class="popupFormGroupElement"
@@ -79,7 +80,7 @@ import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import { mapState } from "vuex";
 export default {
-  props: ["taskId", "projectId"],
+  props: ["taskId", "groupId"],
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup
@@ -88,11 +89,11 @@ export default {
     console.log("alltasks", this.groupAllTasks);
     console.log("alltasks", this.groupAllTasks.length);
     if (this.groupAllTasks.length === 0) {
-      console.log("alltasks");
-      this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
-        taskGroupId: this.group.taskGroupId,
-        userId: this.userId
-      });
+      // console.log("alltasks");
+      // this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
+      //   taskGroupId: this.groupId,
+      //   userId: this.userId
+      // });
     }
   },
   data() {
@@ -150,11 +151,11 @@ export default {
     },
 
     async changeHandler() {
-      console.log("onchange sprint", this.parentTask);
+      console.log("onchange task", this.parentTask);
       let response;
       try {
         response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.taskId}/parent/transition`,
+          `/taskgroup/${this.groupId}/tasks/${this.taskId}/parent/transition`,
           {
             newParent: this.parentTask
           },
@@ -167,15 +168,15 @@ export default {
         this.dialog = false;
         this.component = "success-popup";
         this.successMessage = "Parent Task Added Successfully";
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
-        this.$store.dispatch("task/setCurrentTask", {
-          projectId: this.projectId,
-          taskId: this.taskId
-        });
-        this.$store.dispatch("task/fetchParentTask", {
-          projectId: this.projectId,
-          taskId: this.taskId
-        });
+        // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        // this.$store.dispatch("task/setCurrentTask", {
+        //   projectId: this.projectId,
+        //   taskId: this.taskId
+        // });
+        // this.$store.dispatch("task/fetchParentTask", {
+        //   projectId: this.projectId,
+        //   taskId: this.taskId
+        // });
         setTimeout(() => {
           this.close();
         }, 3000);

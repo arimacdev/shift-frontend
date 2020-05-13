@@ -79,7 +79,7 @@ import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import { mapState } from "vuex";
 export default {
-  props: ["taskId", "projectId"],
+  props: ["taskId", "groupId"],
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup
@@ -118,9 +118,9 @@ export default {
       this.component = "";
     },
     getParentTasks(v) {
-      console.log("parent task list", this.projectAllTasks);
+      console.log("parent task list", this.groupAllTasks);
       this.parentTasks = [];
-      let parentSearchList = this.projectAllTasks;
+      let parentSearchList = this.groupAllTasks;
       for (let index = 0; index < parentSearchList.length; ++index) {
         let task = parentSearchList[index];
         if (
@@ -150,7 +150,7 @@ export default {
       let response;
       try {
         response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.parentTask}/parent/transition`,
+          `/taskgroup/${this.groupId}/tasks/${this.parentTask}/parent/transition`,
           {
             newParent: this.taskId
           },
@@ -163,15 +163,15 @@ export default {
         this.dialog = false;
         this.component = "success-popup";
         this.successMessage = "Child Task Added successfully";
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
-        this.$store.dispatch("task/setCurrentTask", {
-          projectId: this.projectId,
-          taskId: this.taskId
-        });
-        this.$store.dispatch("task/fetchChildren", {
-          projectId: this.projectId,
-          taskId: this.taskId
-        });
+        // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        // this.$store.dispatch("task/setCurrentTask", {
+        //   projectId: this.projectId,
+        //   taskId: this.taskId
+        // });
+        // this.$store.dispatch("task/fetchChildren", {
+        //   projectId: this.projectId,
+        //   taskId: this.taskId
+        // });
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -196,7 +196,7 @@ export default {
       }
     },
     ...mapState({
-      projectAllTasks: state => state.task.allTasks
+      groupAllTasks: state => state.groups.groupTask.groupTasks
     })
   }
 };
