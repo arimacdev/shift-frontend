@@ -373,7 +373,11 @@
     </v-container>
 
     <div @click="close" class="popupBox">
-      <component v-bind:is="component" :errorMessage="errorMessage"></component>
+      <component
+        v-bind:is="component"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
     </div>
     <!-- <div class="popupBox">
         <success-popup />
@@ -392,6 +396,7 @@ export default {
   },
   data() {
     return {
+      successMessage: "",
       errorMessage: "",
       userId: this.$store.state.user.userId,
       projectDialog: false,
@@ -511,9 +516,17 @@ export default {
           this.$store.dispatch("project/fetchAllProjects");
         }
         this.component = "success-popup";
+        this.successMessage = "Project successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        location.reload();
       } catch (e) {
-        this.component = "error-popup";
         this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         console.log("Error updating a project", e);
       }
     },
