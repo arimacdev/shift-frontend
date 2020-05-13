@@ -1732,6 +1732,16 @@
   background-color: #ffffff;
   overflow: hidden;
 }
+.restructuredGroupMainTaskFilterList {
+  background-color: #edf0f5;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.parentOwerflow {
+  border: 2px #cdcfd2 solid;
+  overflow: hidden;
+}
 .restructuredChildTaskFilterList {
 }
 .restructuredMainTaskFilterList {
