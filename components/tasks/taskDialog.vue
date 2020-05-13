@@ -938,12 +938,12 @@ export default {
       stringDate = stringDate.toString();
       stringDate = stringDate.slice(0, 10);
 
-      console.log("max date : " + this.updatedTaskDueDate);
-      if (this.updatedTaskDueDate === null) {
-        return "2020-01-01 23:59";
-      } else {
-        return stringDate + " " + "23:59";
-      }
+      // console.log("max date : " + this.updatedTaskDueDate);
+      // if (this.updatedTaskDueDate === null) {
+      //   return "2020-01-01 23:59";
+      // } else {
+      return stringDate + " " + "23:59";
+      // }
     },
 
     async deleteTask() {
