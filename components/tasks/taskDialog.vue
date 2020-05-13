@@ -226,7 +226,7 @@
                           </v-list-item-icon>
                           <v-list-item-title class="viewTaskFontColors">
                             Child Tasks
-                            <span>- {{ taskObject.childTasks.length }} Task(s)</span>
+                            <span>- {{ children.length }} Task(s)</span>
                           </v-list-item-title>
                         </template>
 
@@ -234,7 +234,7 @@
                           <!-- ---------- task list --------- -->
                           <div
                             class="taskViewTaskListContent"
-                            v-for="(childTask, index) in taskObject.childTasks"
+                            v-for="(childTask, index) in children"
                             :key="index"
                           >
                             <v-list-item>
@@ -1468,6 +1468,7 @@ export default {
       }
     },
     ...mapState({
+      children: state => state.task.childTasks,
       people: state => state.task.userCompletionTasks,
       projectSprints: state => state.sprints.sprint.sprints,
       projectAllTasks: state => state.task.allTasks,

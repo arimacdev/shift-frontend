@@ -637,6 +637,13 @@ export default {
         this.assignee = response.data.data;
       });
       this.$store.dispatch("user/setSelectedTaskUser", task.taskAssignee);
+      if (this.task.isParent) {
+        console.log("parent task");
+        this.$store.dispatch("task/fetchChildren", {
+          projectId: this.projectId,
+          taskId: this.task.taskId
+        });
+      }
       let taskFilesResponse;
       try {
         taskFilesResponse = await this.$axios.$get(
