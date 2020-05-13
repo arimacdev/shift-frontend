@@ -107,12 +107,28 @@
             <div class="actualBoard" v-if="projectSprint.sprintId != 'default'">
               <div class="sprintTitle">
                 <!-- <span>Default Board</span> -->
+
                 <v-list-item-title>{{ projectSprint.sprintName }}</v-list-item-title>
                 <v-list-item-subtitle>
                   {{
                   projectSprint.sprintDescription
                   }}
                 </v-list-item-subtitle>
+                <div class="sprintUpdateButton">
+                  <v-tooltip left>
+                    <template v-slot:activator="{ on }">
+                      <span v-on="on">
+                        <update-sprint
+                          :projectId="projectId"
+                          :sprintId="projectSprint.sprintId"
+                          :sprintName="projectSprint.sprintName"
+                          :description="projectSprint.sprintDescription"
+                        />
+                      </span>
+                    </template>
+                    <span>Edit sprint details</span>
+                  </v-tooltip>
+                </div>
               </div>
               <div class="boardTaskList overflow-y-auto">
                 <!-- -------- load parent tasks (project boards) ------------ -->
@@ -317,6 +333,7 @@
 import { mapState } from "vuex";
 import TaskSideBar from "~/components/tasks/taskSideBar";
 import AddSprint from "~/components/projects/addSprint";
+import UpdateSprint from "~/components/projects/updateSprint";
 import TaskDialog from "~/components/tasks/taskDialog";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
@@ -326,7 +343,8 @@ export default {
     "add-sprint": AddSprint,
     "task-dialog": TaskDialog,
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
+    "update-sprint": UpdateSprint
   },
   data() {
     return {

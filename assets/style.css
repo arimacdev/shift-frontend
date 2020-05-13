@@ -1669,8 +1669,14 @@
   position: absolute;
   right: 300px;
   bottom: 60px;
+  z-index: 10000;
 }
-
+.updateSprintPopup {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 10000;
+}
 .datetimePickerRange {
   background-color: #e5e5e5;
   width: 200px;
@@ -2148,4 +2154,10 @@
   position: fixed;
   bottom: 0;
   right: 40px;
+}
+
+.sprintUpdateButton {
+  position: relative;
+  top: -60px;
+  margin-left: 250px;
 }

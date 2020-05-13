@@ -94,7 +94,12 @@
       </v-dialog>
     </v-row>
     <div @click="close">
-      <component v-bind:is="component" :success="success" :errorMessage="errorMessage"></component>
+      <component
+        v-bind:is="component"
+        :success="success"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
     </div>
     <!--  <success-popup /> -->
   </div>
@@ -114,6 +119,7 @@ export default {
   data() {
     return {
       errorMessage: "",
+      successMessage: "",
       isValid: true,
       userId: this.$store.state.user.userId,
       addUser: {
@@ -171,12 +177,19 @@ export default {
         this.addUser.assigneeJobRole = "";
         this.selected = false;
         this.component = "success-popup";
+        this.successMessage = "User successfully added";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         this.success = response.message;
         this.$refs.form.reset();
       } catch (e) {
         console.log("Error adding a User", e);
         this.errorMessage = e.response.data;
         this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
       }
     },
     querySelections(v) {
