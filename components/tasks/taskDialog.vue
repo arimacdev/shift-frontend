@@ -114,6 +114,7 @@
             </v-col>
           </v-row>
 
+          {{this.updatedTaskDueDate }} / {{this.selectedTask.taskDueDateAt}}
           <!-- --------------- body row ------------ -->
           <div class="formRowTaskDetailsBody">
             <v-row class="mb-12" no-gutters>
