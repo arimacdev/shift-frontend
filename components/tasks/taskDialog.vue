@@ -604,7 +604,7 @@
                       v-model="taskRemindOnDate"
                       label="Add remind date"
                       right
-                      :max-date="this.getMaxRemindDate()"
+                      :max-date="this.getMaxDueDate()"
                     />
                   </div>
                   <div class="pickerButtonDiv">
@@ -938,9 +938,9 @@ export default {
       stringDate = stringDate.toString();
       stringDate = stringDate.slice(0, 10);
 
-      // console.log("max date : " + this.updatedTaskDueDate);
-      // if (this.updatedTaskDueDate === null) {
-      //   return "2020-01-01 23:59";
+      // console.log("max date : " + stringDate);
+      // if (stringDate === undefined) {
+      //   return null;
       // } else {
       return stringDate + " " + "23:59";
       // }
@@ -1436,7 +1436,7 @@ export default {
           id: sprint.sprintId
         });
       }
-      console.log("nameList", this.states);
+      // console.log("nameList", this.states);
       this.loading = true;
     },
     isTaskAssignee(taskAssignee) {
