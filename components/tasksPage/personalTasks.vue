@@ -111,49 +111,14 @@
     <!-- ------------ task dialog --------- -->
 
     <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
-      
-      <task-dialog :task="task" :subTasks="subTasks" persistent @taskDialogClosing="taskDialogClosing"/>
+      <task-dialog
+        :task="task"
+        :subTasks="subTasks"
+        persistent
+        @taskDialogClosing="taskDialogClosing"
+      />
     </v-dialog>
 
-    <!-- --------------------- delete task popup --------------- -->
-
-    <v-dialog v-model="taskDeleteDialog" max-width="380">
-      <v-card>
-        <div class="popupConfirmHeadline">
-          <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
-          <br />
-          <span class="alertPopupTitle">Delete Task</span>
-          <br />
-          <span class="alertPopupText">
-            You're about to permanantly delete this task, its comments and
-            attachments, and all of its data. If you're not sure, you can
-            cancel this action.
-          </span>
-        </div>
-
-        <div class="popupBottom">
-          <v-card-actions>
-            <v-spacer></v-spacer>
-
-            <v-btn color="success" width="100px" @click="taskDeleteDialog = false">Cancel</v-btn>
-            <v-spacer></v-spacer>
-            <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
-            <v-btn
-              color="error"
-              width="100px"
-              @click="
-                      taskDeleteDialog = false;
-                      taskDialog = false;
-                      deleteTask();
-                    "
-            >Delete</v-btn>
-            <v-spacer></v-spacer>
-          </v-card-actions>
-        </div>
-      </v-card>
-    </v-dialog>
-
-    <!-- ---------------------- end popup ------------------ -->
     <div @click="close">
       <component v-bind:is="component" :errorMessage="errorMessage"></component>
       <!-- <success-popup /> -->
@@ -209,31 +174,7 @@ export default {
     taskDialogClosing() {
       this.taskDialog = false;
     },
-    async deleteTask() {
-      let response;
-      try {
-        response = await this.$axios.$delete(
-          `/non-project/tasks/personal/${this.task.taskId}`,
-          {
-            data: {},
-            headers: {
-              user: this.userId
-            }
-          }
-        );
-        this.$store.dispatch("personalTasks/fetchAllPersonalTasks");
-        this.$emit("shrinkSideBar");
-        console.log(response.data);
-      } catch (e) {
-        console.log("Error deleting task", e);
 
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 2000);
-      }
-    },
     dueDateCheck(task) {
       console.log("check due date color", task);
       if (task.taskStatus === "closed") {
