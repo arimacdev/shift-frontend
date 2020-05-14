@@ -85,7 +85,12 @@
                   <v-row class="mb-12 formRow projectDrawer" no-gutters>
                     <v-col sm="12" md="12">
                       <div class="editProjectLabels">Project alias*</div>
-                      <input maxlength="51" placeholder="Project name" class="formElements" v-model="projectAlias"/>
+                      <input
+                        maxlength="6"
+                        placeholder="Project alias"
+                        class="formElements"
+                        v-model="projectAlias"
+                      />
                     </v-col>
                   </v-row>
 
@@ -564,6 +569,10 @@ export default {
         );
         location.reload();
         this.component = "success-popup";
+        this.successMessage = "Project successfully deleted";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         console.log(response.data);
       } catch (e) {
         this.component = "error-popup";
