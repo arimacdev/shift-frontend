@@ -564,7 +564,7 @@
                       <v-list-item-title>
                         {{
                         getProjectDisplayDates(
-                        this.updatedTask.taskDueDateAt
+                        this.selectedTask.taskDueDateAt
                         )
                         }}
                       </v-list-item-title>
@@ -616,12 +616,12 @@
                       <v-icon size="35" color="#7CDD00">mdi-clock-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Due Date</v-list-item-subtitle>
+                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Remind Date</v-list-item-subtitle>
 
                       <v-list-item-title>
                         {{
                         getProjectDisplayDates(
-                        this.updatedTask.taskRemindOnDate
+                        this.selectedTask.taskReminderAt
                         )
                         }}
                       </v-list-item-title>
@@ -638,12 +638,7 @@
                         <label for="remindDate" slot="before" class="tabListItemsTextDue">
                           <!-- <span class="dialogPickerNewText">Remind Date</span> -->
                         </label>
-                        <label
-                          v-if="this.selectedTask.taskReminderAt == null"
-                          for="remindDate"
-                          slot="after"
-                          class
-                        >
+                        <label for="remindDate" slot="after" class>
                           <v-icon>mdi-pencil-plus</v-icon>
                         </label>
                         <template slot="button-cancel">
@@ -1004,7 +999,7 @@ export default {
       const now = new Date();
       console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
-      if (date === "" || date === "1970-01-01T05:30:00.000+0000") {
+      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
         return "Add Task Date";
       } else if (now.getDate() === dueToUtcDate.getDate()) {
         return "Today";
@@ -1015,7 +1010,7 @@ export default {
       } else {
         let stringDate = date + "";
         stringDate = stringDate.toString();
-        stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(12, 16);
+        stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 16);
         return stringDate;
       }
     },

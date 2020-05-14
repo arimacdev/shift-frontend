@@ -382,16 +382,27 @@
                       <v-icon size="35" color="#7CDD00">mdi-calendar-blank-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                      <datetime type="datetime" v-model="taskDue" zone="local" input-id="dueDate">
+                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Due Date</v-list-item-subtitle>
+                      <v-list-item-title>
+                        {{
+                        getProjectDisplayDates(
+                        this.task.taskDueDateAt
+                        )
+                        }}
+                      </v-list-item-title>
+                    </v-list-item-content>
+                    <v-list-item-action>
+                      <datetime
+                        hidden
+                        type="datetime"
+                        v-model="taskDue"
+                        zone="local"
+                        input-id="dueDate"
+                      >
                         <label for="dueDate" slot="before" class="tabListItemsTextDue">
-                          <span class="dialogPickerNewText">Due Date</span>
+                          <!-- <span class="dialogPickerNewText">Due Date</span> -->
                         </label>
-                        <label
-                          v-if="this.task.taskDueDateAt == null"
-                          for="dueDate"
-                          slot="after"
-                          class
-                        >
+                        <label for="dueDate" slot="after" class>
                           <v-icon>mdi-pencil-plus</v-icon>
                         </label>
                         <template slot="button-cancel">
@@ -402,14 +413,8 @@
                           <p @click="clickToPrint">Confirm</p>
                         </template>
                       </datetime>
-                      <div v-if="this.task.taskDueDateAt == null" class="dateCoverPannel">
-                        {{
-                        getProjectDisplayDates(
-                        this.updatedTask.taskDueDateAt
-                        )
-                        }}
-                      </div>
-                    </v-list-item-content>
+                    </v-list-item-action>
+
                     <v-list-item-action>
                       <v-tooltip left>
                         <template v-slot:activator="{ on }">
@@ -430,22 +435,28 @@
                       <v-icon size="35" color="#7CDD00">mdi-clock-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
+                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Remind Date</v-list-item-subtitle>
+
+                      <v-list-item-title>
+                        {{
+                        getProjectDisplayDates(
+                        this.task.taskReminderAt
+                        )
+                        }}
+                      </v-list-item-title>
+                    </v-list-item-content>
+                    <v-list-item-action>
                       <datetime
+                        hidden
                         type="datetime"
                         v-model="taskRemindOn"
                         zone="local"
                         input-id="remindDate"
-                        :max-datetime="this.task.taskDueDateAt"
                       >
                         <label for="remindDate" slot="before" class="tabListItemsTextDue">
-                          <span class="dialogPickerNewText">Remind Date</span>
+                          <!-- <span class="dialogPickerNewText">Remind Date</span> -->
                         </label>
-                        <label
-                          v-if="this.task.taskReminderAt == null"
-                          for="remindDate"
-                          slot="after"
-                          class
-                        >
+                        <label for="remindDate" slot="after" class>
                           <v-icon>mdi-pencil-plus</v-icon>
                         </label>
                         <template slot="button-cancel">
@@ -456,14 +467,7 @@
                           <p>Confirm</p>
                         </template>
                       </datetime>
-                      <div v-if="this.task.taskReminderAt == null" class="dateCoverPannel">
-                        {{
-                        getProjectDisplayDates(
-                        this.updatedTask.taskRemindOnDate
-                        )
-                        }}
-                      </div>
-                    </v-list-item-content>
+                    </v-list-item-action>
                     <v-list-item-action>
                       <v-tooltip left>
                         <template v-slot:activator="{ on }">
@@ -1086,7 +1090,7 @@ export default {
       const now = new Date();
       console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
-      if (date === "" || date === "1970-01-01T05:30:00.000+0000") {
+      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
         return "Add Task Date";
       } else if (now.getDate() === dueToUtcDate.getDate()) {
         return "Today";
@@ -1097,7 +1101,7 @@ export default {
       } else {
         let stringDate = date + "";
         stringDate = stringDate.toString();
-        stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(12, 16);
+        stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 16);
         return stringDate;
       }
     },
