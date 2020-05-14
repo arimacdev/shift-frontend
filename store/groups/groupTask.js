@@ -2,11 +2,16 @@ export const state = () => ({
   groupTasks: [],
   groupTaskFiles: [],
   selectedGroupTask: {},
+  children: [],
 });
 
 export const mutations = {
   SET_GROUP_TASKS(state, groupTasks) {
     state.groupTasks = groupTasks;
+  },
+
+  SET_CHILD_TASKS(state, children) {
+    state.children = children;
   },
 
   ADD_GROUP_TASK(state, groupTask) {
@@ -173,6 +178,25 @@ export const actions = {
     } catch (e) {
       console.log('Error fetching task', e);
     }
+  },
+  fetchChildren({ commit, rootState }, { taskGroupId, taskId }) {
+    const userId = rootState.user.userId;
+    this.$axios
+      .get(`taskgroup/${taskGroupId}/tasks/${taskId}/children`, {
+        headers: {
+          user: userId,
+        },
+      })
+      .then((response) => {
+        console.log(
+          'CHILD TASKS ARE RETRIEVED SUCCESSFULLY-->',
+          response.data.data
+        );
+        commit('SET_CHILD_TASKS', response.data.data);
+      })
+      .catch((e) => {
+        console.log('error retrieving children', e);
+      });
   },
 };
 

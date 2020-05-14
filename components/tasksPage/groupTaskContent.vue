@@ -471,6 +471,13 @@ export default {
                 "groups/groupTask/addSelectedGroupTask",
                 groupTask
               );
+              if (this.task.isParent) {
+                console.log("isparent");
+                this.$store.dispatch("groups/groupTask/fetchChildren", {
+                  taskGroupId: this.task.taskGroupId,
+                  taskId: this.task.taskId
+                });
+              }
             } catch (error) {
               console.log("Error fetching data", error);
             }

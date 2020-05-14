@@ -92,7 +92,7 @@
                     <v-col sm="6" md="6" no-gutters></v-col>
                     <v-col sm="3" md="3" no-gutters>
                       <add-parent-task
-                        v-if="taskObject.childTasks.length == 0 && selectedTaskGroupTask.parent == true"
+                        v-if="taskObject.childTasks.length == 0 && selectedTaskGroupTask.isParent == true"
                         :taskId="this.task.taskId"
                         :groupId="this.task.taskGroupId"
                       />
@@ -101,12 +101,12 @@
                       <add-child-task
                         :groupId="this.task.taskGroupId"
                         :taskId="this.task.taskId"
-                        v-if=" task.parent == true"
+                        v-if=" task.isParent == true"
                       />
                     </v-col>
                   </v-row>
                   <!-- ----------- parent task section --------- -->
-                  <div v-if="!selectedTaskGroupTask.parent">
+                  <div v-if="selectedTaskGroupTask.isParent == false">
                     <div class="expansionViewHeader topItemTaskView">
                       <v-list-item class="taskViewTitleSection">
                         <v-list-item-icon>
@@ -186,7 +186,7 @@
                     <v-divider></v-divider>
                   </div>
                   <!-- -------------- child tasks section ----------- -->
-                  <div v-if="task.parent == true">
+                  <div v-if="selectedTaskGroupTask.isParent == true">
                     <div class="expansionViewHeader">
                       <v-list-group>
                         <template v-slot:activator>
@@ -195,7 +195,7 @@
                           </v-list-item-icon>
                           <v-list-item-title class="viewTaskFontColors">
                             Child Tasks
-                            <span>- {{ taskObject.childTasks.length }} Task(s)</span>
+                            <span>- {{ children.length }} Task(s)</span>
                           </v-list-item-title>
                         </template>
 
@@ -203,7 +203,7 @@
                           <!-- ---------- task list --------- -->
                           <div
                             class="taskViewTaskListContent"
-                            v-for="(childTask, index) in taskObject.childTasks"
+                            v-for="(childTask, index) in children"
                             :key="index"
                           >
                             <v-list-item>
@@ -1143,7 +1143,8 @@ export default {
       selectedTaskUser: state => state.user.selectedTaskUser,
       groupPeople: state => state.groups.groupPeople.groupPeople,
       taskFiles: state => state.groups.groupTask.groupTaskFiles,
-      selectedTaskGroupTask: state => state.groups.groupTask.selectedGroupTask
+      selectedTaskGroupTask: state => state.groups.groupTask.selectedGroupTask,
+      children: state => state.groups.groupTask.children
     }),
     ...mapGetters(["getuserCompletionTasks"]),
     // peopleList() {
