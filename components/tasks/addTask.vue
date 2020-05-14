@@ -309,7 +309,7 @@ export default {
       userId: this.$store.state.user.userId,
       files: [],
       file: "",
-      taskType: "development",
+      taskType: "general",
       task: {
         taskName: "",
         taskAssignee: "",
@@ -319,7 +319,7 @@ export default {
         taskNotes: ""
       },
       component: "",
-      issueType: "development",
+      issueType: "general",
       taskAssignee: "",
       taskStatus: "pending",
       taskName: "",

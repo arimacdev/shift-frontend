@@ -1,6 +1,18 @@
 export const state = () => ({
   groupTasks: [],
   groupTaskFiles: [],
+  selectedGroupTask: {},
+  children: [],
+  parentTask: {
+    taskId: '',
+    taskName: '',
+    taskAssignee: '',
+    taskGroupId: '',
+    taskStatus: '',
+    taskDueDateAt: '',
+    taskAssigneeProfileImage: '',
+    isParent: true,
+  },
 });
 
 export const mutations = {
@@ -8,8 +20,16 @@ export const mutations = {
     state.groupTasks = groupTasks;
   },
 
+  SET_CHILD_TASKS(state, children) {
+    state.children = children;
+  },
+
   ADD_GROUP_TASK(state, groupTask) {
     state.groupTasks.push(groupTask);
+  },
+
+  ADD_SELECTED_TASK(state, task) {
+    state.selectedGroupTask = task;
   },
 
   SET_GROUP_TASK_FILES(state, groupTaskFiles) {
@@ -27,6 +47,21 @@ export const mutations = {
     if (index > -1) {
       state.groupTaskFiles.splice(index, 1);
     }
+  },
+
+  ADD_PARENT_TASK(state, taskId) {
+    console.log('parenttaskiD', taskId);
+
+    console.log('parent', state.groupTasks);
+    for (let index = 0; index < state.groupTasks.length; index++) {
+      const parentTask = state.groupTasks[index];
+      console.log('parent', parentTask.parentTask);
+
+      if (parentTask.parentTask.taskId === taskId) {
+        state.parentTask = parentTask.parentTask;
+      }
+    }
+    console.log('parent!', state.parentTask);
   },
 
   UPDATE_GROUP_TASK(state, { taskId, type, value }) {
@@ -145,6 +180,52 @@ export const actions = {
 
   removeTaskFromTaskGroup({ commit }, taskId) {
     commit('REMOVE_TASK', taskId);
+  },
+
+  addSelectedGroupTask({ commit }, taskGroupTask) {
+    commit('ADD_SELECTED_TASK', taskGroupTask);
+  },
+
+  async setCurrentTask({ commit, rootState }, { taskGroupId, taskId }) {
+    const userId = rootState.user.userId;
+    let taskResponse;
+    try {
+      taskResponse = await this.$axios.$get(
+        `/taskgroup/${taskGroupId}/tasks/${taskId}`,
+        {
+          headers: {
+            user: userId,
+          },
+        }
+      );
+      commit('ADD_SELECTED_TASK', taskResponse.data);
+      console.log('Selected Task get response', taskResponse.data);
+    } catch (e) {
+      console.log('Error fetching task', e);
+    }
+  },
+  fetchChildren({ commit, rootState }, { taskGroupId, taskId }) {
+    const userId = rootState.user.userId;
+    this.$axios
+      .get(`taskgroup/${taskGroupId}/tasks/${taskId}/children`, {
+        headers: {
+          user: userId,
+        },
+      })
+      .then((response) => {
+        console.log(
+          'CHILD TASKS ARE RETRIEVED SUCCESSFULLY-->',
+          response.data.data
+        );
+        commit('SET_CHILD_TASKS', response.data.data);
+      })
+      .catch((e) => {
+        console.log('error retrieving children', e);
+      });
+  },
+
+  addParentTask({ commit }, taskId) {
+    commit('ADD_PARENT_TASK', taskId);
   },
 };
 

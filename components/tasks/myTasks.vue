@@ -361,6 +361,7 @@ export default {
       states: [],
       filterList: {},
       taskAssigneeFilter: "",
+      taskName: "",
       updatedTask: {
         taskName: ""
       },
@@ -484,7 +485,7 @@ export default {
         response = await this.$axios.$post(
           `/projects/${this.projectId}/tasks`,
           {
-            taskName: this.updatedTask.taskName,
+            taskName: this.taskName,
             projectId: this.projectId,
             taskInitiator: this.userId,
             taskAssignee: this.userId,
@@ -659,16 +660,16 @@ export default {
       projectAllTasks: state => state.task.allTasks,
       projectId: state => state.project.project.projectId,
       selectedTask: state => state.task.selectedTask
-    }),
+    })
 
-    taskName: {
-      get() {
-        return null;
-      },
-      set(value) {
-        this.updatedTask.taskName = value;
-      }
-    }
+    // taskName: {
+    //   get() {
+    //     return null;
+    //   },
+    //   set(value) {
+    //     this.updatedTask.taskName = value;
+    //   }
+    // }
   }
 };
 </script>

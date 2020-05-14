@@ -163,15 +163,25 @@ export default {
         this.dialog = false;
         this.component = "success-popup";
         this.successMessage = "Child Task Added successfully";
+
+        this.$store.dispatch("groups/groupTask/setCurrentTask", {
+          taskGroupId: this.groupId,
+          taskId: this.taskId
+        });
+        this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
+          taskGroupId: this.groupId,
+          userId: this.userId
+        });
+
         // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         // this.$store.dispatch("task/setCurrentTask", {
         //   projectId: this.projectId,
         //   taskId: this.taskId
         // });
-        // this.$store.dispatch("task/fetchChildren", {
-        //   projectId: this.projectId,
-        //   taskId: this.taskId
-        // });
+        this.$store.dispatch("groups/groupTask/fetchChildren", {
+          taskGroupId: this.groupId,
+          taskId: this.taskId
+        });
         setTimeout(() => {
           this.close();
         }, 3000);

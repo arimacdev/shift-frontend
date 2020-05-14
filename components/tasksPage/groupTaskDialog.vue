@@ -92,7 +92,7 @@
                     <v-col sm="6" md="6" no-gutters></v-col>
                     <v-col sm="3" md="3" no-gutters>
                       <add-parent-task
-                        v-if="taskObject.childTasks.length == 0 && task.parent == true"
+                        v-if="taskObject.childTasks.length == 0 && selectedTaskGroupTask.isParent == true"
                         :taskId="this.task.taskId"
                         :groupId="this.task.taskGroupId"
                       />
@@ -101,12 +101,12 @@
                       <add-child-task
                         :groupId="this.task.taskGroupId"
                         :taskId="this.task.taskId"
-                        v-if=" task.parent == true"
+                        v-if=" task.isParent == true"
                       />
                     </v-col>
                   </v-row>
                   <!-- ----------- parent task section --------- -->
-                  <div v-if="task.parent == false">
+                  <div v-if="selectedTaskGroupTask.isParent == false">
                     <div class="expansionViewHeader topItemTaskView">
                       <v-list-item class="taskViewTitleSection">
                         <v-list-item-icon>
@@ -121,7 +121,7 @@
                             <v-list-item-action>
                               <v-icon
                                 v-if="
-                                  taskObject.parentTask.taskStatus == 'closed'
+                                  parent.taskStatus == 'closed'
                                 "
                                 size="25"
                                 color="#2EC973"
@@ -131,16 +131,16 @@
                             <v-list-item-content>
                               <v-list-item-title>
                                 {{
-                                taskObject.parentTask.taskName
+                                parent.taskName
                                 }}
                               </v-list-item-title>
                             </v-list-item-content>
                             <div>
                               <v-list-item-action>
-                                <v-list-item-sub-title :class="dueDateCheck(taskObject.parentTask)">
+                                <v-list-item-sub-title :class="dueDateCheck(parent)">
                                   {{
                                   getProjectDates(
-                                  taskObject.parentTask.taskDueDateAt
+                                  parent.taskDueDateAt
                                   )
                                   }}
                                 </v-list-item-sub-title>
@@ -150,11 +150,11 @@
                               <v-list-item-avatar size="25">
                                 <v-img
                                   v-if="
-                                    taskObject.parentTask
+                                    parent
                                       .taskAssigneeProfileImage != null
                                   "
                                   :src="
-                                    taskObject.parentTask
+                                    parent
                                       .taskAssigneeProfileImage
                                   "
                                 ></v-img>
@@ -186,7 +186,7 @@
                     <v-divider></v-divider>
                   </div>
                   <!-- -------------- child tasks section ----------- -->
-                  <div v-if="task.parent == true">
+                  <div v-if="selectedTaskGroupTask.isParent == true">
                     <div class="expansionViewHeader">
                       <v-list-group>
                         <template v-slot:activator>
@@ -195,7 +195,7 @@
                           </v-list-item-icon>
                           <v-list-item-title class="viewTaskFontColors">
                             Child Tasks
-                            <span>- {{ taskObject.childTasks.length }} Task(s)</span>
+                            <span>- {{ children.length }} Task(s)</span>
                           </v-list-item-title>
                         </template>
 
@@ -203,7 +203,7 @@
                           <!-- ---------- task list --------- -->
                           <div
                             class="taskViewTaskListContent"
-                            v-for="(childTask, index) in taskObject.childTasks"
+                            v-for="(childTask, index) in children"
                             :key="index"
                           >
                             <v-list-item>
@@ -376,35 +376,45 @@
                     </v-list-item-content>
                   </v-list-item>
                   <!-- ----------- Due date section --------- -->
+
                   <v-list-item>
                     <v-list-item-icon>
                       <v-icon size="35" color="#7CDD00">mdi-calendar-blank-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                      <v-tooltip left>
-                        <template v-slot:activator="{ on }">
-                          <datetime
-                            v-on="on"
-                            type="datetime"
-                            v-model="taskDue"
-                            zone="local"
-                            input-id="dueDate"
-                          >
-                            <label for="dueDate" slot="before" class="tabListItemsTextDue">
-                              <span class="dialogPickerNewText">Due Date</span>
-                            </label>
-                            <template slot="button-cancel">
-                              <fa :icon="['far', 'times']"></fa>Cancel
-                            </template>
-                            <template slot="button-confirm">
-                              <fa :icon="['fas', 'check-circle']"></fa>
-                              <p @click="clickToPrint">Confirm</p>
-                            </template>
-                          </datetime>
-                        </template>
-                        <span>Update due date</span>
-                      </v-tooltip>
+                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Due Date</v-list-item-subtitle>
+                      <v-list-item-title>
+                        {{
+                        getProjectDisplayDates(
+                        this.task.taskDueDateAt
+                        )
+                        }}
+                      </v-list-item-title>
                     </v-list-item-content>
+                    <v-list-item-action>
+                      <datetime
+                        hidden
+                        type="datetime"
+                        v-model="taskDue"
+                        zone="local"
+                        input-id="dueDate"
+                      >
+                        <label for="dueDate" slot="before" class="tabListItemsTextDue">
+                          <!-- <span class="dialogPickerNewText">Due Date</span> -->
+                        </label>
+                        <label for="dueDate" slot="after" class>
+                          <v-icon>mdi-pencil-plus</v-icon>
+                        </label>
+                        <template slot="button-cancel">
+                          <fa :icon="['far', 'times']"></fa>Cancel
+                        </template>
+                        <template slot="button-confirm">
+                          <fa :icon="['fas', 'check-circle']"></fa>
+                          <p @click="clickToPrint">Confirm</p>
+                        </template>
+                      </datetime>
+                    </v-list-item-action>
+
                     <v-list-item-action>
                       <v-tooltip left>
                         <template v-slot:activator="{ on }">
@@ -425,30 +435,39 @@
                       <v-icon size="35" color="#7CDD00">mdi-clock-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                      <v-tooltip left>
-                        <template v-slot:activator="{ on }">
-                          <datetime
-                            v-on="on"
-                            type="datetime"
-                            v-model="taskRemindOn"
-                            zone="local"
-                            input-id="remindDate"
-                          >
-                            <label for="remindDate" slot="before" class="tabListItemsTextDue">
-                              <span class="dialogPickerNewText">Remind Date</span>
-                            </label>
-                            <template slot="button-cancel">
-                              <fa :icon="['far', 'times']"></fa>Cancel
-                            </template>
-                            <template slot="button-confirm">
-                              <fa :icon="['fas', 'check-circle']"></fa>
-                              <p>Confirm</p>
-                            </template>
-                          </datetime>
-                        </template>
-                        <span>Update remind date</span>
-                      </v-tooltip>
+                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Remind Date</v-list-item-subtitle>
+
+                      <v-list-item-title>
+                        {{
+                        getProjectDisplayDates(
+                        this.task.taskReminderAt
+                        )
+                        }}
+                      </v-list-item-title>
                     </v-list-item-content>
+                    <v-list-item-action>
+                      <datetime
+                        hidden
+                        type="datetime"
+                        v-model="taskRemindOn"
+                        zone="local"
+                        input-id="remindDate"
+                      >
+                        <label for="remindDate" slot="before" class="tabListItemsTextDue">
+                          <!-- <span class="dialogPickerNewText">Remind Date</span> -->
+                        </label>
+                        <label for="remindDate" slot="after" class>
+                          <v-icon>mdi-pencil-plus</v-icon>
+                        </label>
+                        <template slot="button-cancel">
+                          <fa :icon="['far', 'times']"></fa>Cancel
+                        </template>
+                        <template slot="button-confirm">
+                          <fa :icon="['fas', 'check-circle']"></fa>
+                          <p>Confirm</p>
+                        </template>
+                      </datetime>
+                    </v-list-item-action>
                     <v-list-item-action>
                       <v-tooltip left>
                         <template v-slot:activator="{ on }">
@@ -667,7 +686,7 @@ export default {
         taskAssignee: "",
         taskNotes: "",
         taskStatus: "",
-        taskRemindOnDate: this.task.taskDueDateAt,
+        taskRemindOnDate: "",
         taskDueDateAt: ""
       },
       // taskStatus: this.task.taskStatus,
@@ -1062,6 +1081,30 @@ export default {
         return stringDate;
       }
     },
+    getProjectDisplayDates(date) {
+      const dueDate = new Date(date);
+      const dueToUtc = new Date(
+        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+      );
+      const dueToUtcDate = new Date(dueToUtc);
+      const now = new Date();
+      console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
+
+      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
+        return "Add Task Date";
+      } else if (now.getDate() === dueToUtcDate.getDate()) {
+        return "Today";
+      } else if (now.getDate() - 1 === dueToUtcDate.getDate()) {
+        return "Yesterday";
+      } else if (now.getDate() + 1 === dueToUtcDate.getDate()) {
+        return "Tomorrow";
+      } else {
+        let stringDate = date + "";
+        stringDate = stringDate.toString();
+        stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 16);
+        return stringDate;
+      }
+    },
 
     isTaskAssignee(taskAssignee) {
       if (taskAssignee.assigneeId == this.task.taskAssignee) {
@@ -1103,7 +1146,10 @@ export default {
       projectId: state => state.project.project.projectId,
       selectedTaskUser: state => state.user.selectedTaskUser,
       groupPeople: state => state.groups.groupPeople.groupPeople,
-      taskFiles: state => state.groups.groupTask.groupTaskFiles
+      taskFiles: state => state.groups.groupTask.groupTaskFiles,
+      selectedTaskGroupTask: state => state.groups.groupTask.selectedGroupTask,
+      children: state => state.groups.groupTask.children,
+      parent: state => state.groups.groupTask.parentTask
     }),
     ...mapGetters(["getuserCompletionTasks"]),
     // peopleList() {
