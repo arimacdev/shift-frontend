@@ -403,6 +403,13 @@
                         </template>
                       </datetime>
                     </v-list-item-content>
+                    <div v-if="this.task.taskDueDateAt == null" class="dateCoverPannel">
+                      {{
+                      getProjectDisplayDates(
+                      this.task.taskDueDateAt
+                      )
+                      }}
+                    </div>
                     <v-list-item-action>
                       <v-tooltip left>
                         <template v-slot:activator="{ on }">
@@ -416,13 +423,6 @@
                       </v-tooltip>
                     </v-list-item-action>
                   </v-list-item>
-                  <div v-if="this.task.taskDueDateAt == null" class="dateCoverPannel">
-                    {{
-                    getProjectDisplayDates(
-                    this.task.taskDueDateAt
-                    )
-                    }}
-                  </div>
 
                   <!-- ----------- Reminder date section --------- -->
                   <v-list-item>
@@ -435,6 +435,7 @@
                         v-model="taskRemindOn"
                         zone="local"
                         input-id="remindDate"
+                        :max-datetime="this.task.taskDueDateAt"
                       >
                         <label for="remindDate" slot="before" class="tabListItemsTextDue">
                           <span class="dialogPickerNewText">Remind Date</span>
@@ -456,6 +457,13 @@
                         </template>
                       </datetime>
                     </v-list-item-content>
+                    <div v-if="this.task.taskReminderAt == null" class="dateCoverPannel">
+                      {{
+                      getProjectDisplayDates(
+                      this.task.taskReminderAt
+                      )
+                      }}
+                    </div>
                     <v-list-item-action>
                       <v-tooltip left>
                         <template v-slot:activator="{ on }">
@@ -469,13 +477,6 @@
                       </v-tooltip>
                     </v-list-item-action>
                   </v-list-item>
-                  <div v-if="this.task.taskReminderAt == null" class="dateCoverPannel">
-                    {{
-                    getProjectDisplayDates(
-                    this.task.taskReminderAt
-                    )
-                    }}
-                  </div>
 
                   <v-divider class="datePickerDivider"></v-divider>
                   <!-- ----------- Files section --------- -->

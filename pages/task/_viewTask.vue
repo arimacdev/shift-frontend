@@ -120,7 +120,7 @@
                     :disabled="editTask"
                   />
                   <input
-                    maxlength="49"
+                    maxlength="100"
                     type="text"
                     class="viewTaskTitleEdit"
                     v-model="taskName"
@@ -158,13 +158,15 @@
                     <v-col sm="3" md="3" no-gutters>
                       <add-parent-task
                         v-if="this.children.length == 0 && this.selectedTask.isParent == true"
-                        :taskId="this.selectedTask.taskId" :projectId="this.projectId"
+                        :taskId="this.selectedTask.taskId"
+                        :projectId="this.projectId"
                       />
                     </v-col>
                     <v-col sm="3" md="3" no-gutters>
                       <add-child-task
                         v-if=" this.selectedTask.isParent == true"
-                        :taskId="this.selectedTask.taskId"  :projectId="this.projectId"
+                        :taskId="this.selectedTask.taskId"
+                        :projectId="this.projectId"
                       />
                     </v-col>
                   </v-row>
