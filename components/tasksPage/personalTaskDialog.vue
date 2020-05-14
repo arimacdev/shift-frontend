@@ -6,7 +6,7 @@
       </v-btn>
       <v-toolbar-title class="font-weight-bold">
         {{
-        this.task.taskName
+        this.taskName
         }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
