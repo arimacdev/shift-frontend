@@ -64,6 +64,17 @@ export const mutations = {
     console.log('parent!', state.parentTask);
   },
 
+  UPDATE_SELECTED_DATE(state, { type, date }) {
+    console.log('selectedtask', type, date);
+
+    const selectedGroupTask = state.selectedGroupTask;
+    if (type == 'dueDate') selectedGroupTask.taskDueDateAt = date;
+    else selectedGroupTask.taskReminderAt = date;
+    console.log('selectedtask', selectedGroupTask);
+    state.selectedGroupTask = selectedGroupTask;
+    console.log('selectedtask', state.selectedGroupTask);
+  },
+
   UPDATE_GROUP_TASK(state, { taskId, type, value }) {
     // const task = state.groupTasks.find(element => element.taskId = taskId);
     console.log('updateTask', taskId, type, value);
@@ -113,6 +124,10 @@ export const actions = {
     } catch (e) {
       console.log('Error fetching group tasks', e);
     }
+  },
+
+  updateProjectDates({ commit }, { type, date }) {
+    commit('UPDATE_SELECTED_DATE', { type, date });
   },
 
   setGroupTaskFiles({ commit }, taskFiles) {

@@ -904,6 +904,10 @@ export default {
         console.log("iso edit due date", isoDate);
         dueDate = isoDate;
         remindDate = this.updatedTask.taskRemindOnDate;
+        this.$store.dispatch("groups/groupTask/updateProjectDates", {
+          type: "dueDate",
+          date: dueDate
+        });
       } else if (this.updatedTask.taskRemindOnDate != "") {
         console.log("inside remind on date");
         remindDate = new Date(this.updatedTask.taskRemindOnDate);
@@ -913,6 +917,10 @@ export default {
         console.log("iso edit remind date", isoDate);
         dueDate = this.updatedTask.taskDueDateAt;
         remindDate = isoDate;
+        this.$store.dispatch("groups/groupTask/updateProjectDates", {
+          type: "remindDate",
+          date: remindDate
+        });
       }
       console.log("dueDate", dueDate);
       console.log("remindDate", remindDate);
@@ -932,6 +940,10 @@ export default {
         );
         this.component = "success-popup";
         this.successMessage = "Date successfully updated";
+        // this.$store.dispatch("groups/groupTask/updateProjectDates", {
+        //   type: dueDate,
+        //   date: remindDate
+        // });
         this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
           taskGroupId: this.task.taskGroupId,
           userId: this.userId
