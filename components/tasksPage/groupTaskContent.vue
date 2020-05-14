@@ -467,6 +467,10 @@ export default {
                 "user/setSelectedTaskUser",
                 this.task.taskAssignee
               );
+              this.$store.dispatch(
+                "groups/groupTask/addSelectedGroupTask",
+                groupTask
+              );
             } catch (error) {
               console.log("Error fetching data", error);
             }

@@ -92,7 +92,7 @@
                     <v-col sm="6" md="6" no-gutters></v-col>
                     <v-col sm="3" md="3" no-gutters>
                       <add-parent-task
-                        v-if="taskObject.childTasks.length == 0 && task.parent == true"
+                        v-if="taskObject.childTasks.length == 0 && selectedTaskGroupTask.parent == true"
                         :taskId="this.task.taskId"
                         :groupId="this.task.taskGroupId"
                       />
@@ -106,7 +106,7 @@
                     </v-col>
                   </v-row>
                   <!-- ----------- parent task section --------- -->
-                  <div v-if="task.parent == false">
+                  <div v-if="!selectedTaskGroupTask.parent">
                     <div class="expansionViewHeader topItemTaskView">
                       <v-list-item class="taskViewTitleSection">
                         <v-list-item-icon>
@@ -1142,7 +1142,8 @@ export default {
       projectId: state => state.project.project.projectId,
       selectedTaskUser: state => state.user.selectedTaskUser,
       groupPeople: state => state.groups.groupPeople.groupPeople,
-      taskFiles: state => state.groups.groupTask.groupTaskFiles
+      taskFiles: state => state.groups.groupTask.groupTaskFiles,
+      selectedTaskGroupTask: state => state.groups.groupTask.selectedGroupTask
     }),
     ...mapGetters(["getuserCompletionTasks"]),
     // peopleList() {

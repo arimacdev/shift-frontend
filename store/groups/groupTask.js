@@ -1,6 +1,7 @@
 export const state = () => ({
   groupTasks: [],
   groupTaskFiles: [],
+  selectedGroupTask: {},
 });
 
 export const mutations = {
@@ -10,6 +11,10 @@ export const mutations = {
 
   ADD_GROUP_TASK(state, groupTask) {
     state.groupTasks.push(groupTask);
+  },
+
+  ADD_SELECTED_TASK(state, task) {
+    state.selectedGroupTask = task;
   },
 
   SET_GROUP_TASK_FILES(state, groupTaskFiles) {
@@ -145,6 +150,29 @@ export const actions = {
 
   removeTaskFromTaskGroup({ commit }, taskId) {
     commit('REMOVE_TASK', taskId);
+  },
+
+  addSelectedGroupTask({ commit }, taskGroupTask) {
+    commit('ADD_SELECTED_TASK', taskGroupTask);
+  },
+
+  async setCurrentTask({ commit, rootState }, { taskGroupId, taskId }) {
+    const userId = rootState.user.userId;
+    let taskResponse;
+    try {
+      taskResponse = await this.$axios.$get(
+        `/taskgroup/${taskGroupId}/tasks/${taskId}`,
+        {
+          headers: {
+            user: userId,
+          },
+        }
+      );
+      commit('ADD_SELECTED_TASK', taskResponse.data);
+      console.log('Selected Task get response', taskResponse.data);
+    } catch (e) {
+      console.log('Error fetching task', e);
+    }
   },
 };
 
