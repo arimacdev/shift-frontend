@@ -180,6 +180,13 @@
                           <p @click="clickToPrint">Confirm</p>
                         </template>
                       </datetime>
+                      <div v-if="this.task.taskDueDateAt == null" class="dateCoverPannel">
+                        {{
+                        getProjectDisplayDates(
+                        this.updatedTask.taskDueDateAt
+                        )
+                        }}
+                      </div>
                     </v-list-item-content>
                     <v-list-item-action>
                       <v-tooltip left>
@@ -194,13 +201,6 @@
                       </v-tooltip>
                     </v-list-item-action>
                   </v-list-item>
-                  <div v-if="this.task.taskDueDateAt == null" class="dateCoverPannel">
-                    {{
-                    getProjectDisplayDates(
-                    this.task.taskDueDateAt
-                    )
-                    }}
-                  </div>
 
                   <!-- ----------- Reminder date section --------- -->
                   <v-list-item>
@@ -233,6 +233,13 @@
                           <p>Confirm</p>
                         </template>
                       </datetime>
+                      <div v-if="this.task.taskReminderAt == null" class="dateCoverPannel">
+                        {{
+                        getProjectDisplayDates(
+                        this.updatedTask.taskRemindOnDate
+                        )
+                        }}
+                      </div>
                     </v-list-item-content>
                     <v-list-item-action>
                       <v-tooltip left>
@@ -247,13 +254,6 @@
                       </v-tooltip>
                     </v-list-item-action>
                   </v-list-item>
-                  <div v-if="this.task.taskReminderAt == null" class="dateCoverPannel">
-                    {{
-                    getProjectDisplayDates(
-                    this.task.taskReminderAt
-                    )
-                    }}
-                  </div>
 
                   <v-divider class="datePickerDivider"></v-divider>
                   <!-- ----------- Files section --------- -->
@@ -455,7 +455,7 @@ export default {
         taskAssignee: "",
         taskNotes: "",
         // taskStatus: "",
-        taskRemindOnDate: this.task.taskDueDateAt,
+        taskRemindOnDate: "",
         taskDueDateAt: ""
       },
 
@@ -475,7 +475,7 @@ export default {
       const now = new Date();
       console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
-      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
+      if (date === "" || date === "1970-01-01T05:30:00.000+0000") {
         return "Add Task Date";
       } else if (now.getDate() === dueToUtcDate.getDate()) {
         return "Today";

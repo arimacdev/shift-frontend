@@ -586,7 +586,15 @@
                           <p @click="clickToPrint">Confirm</p>
                         </template>
                       </datetime>
+                      <div v-if="this.selectedTask.taskDueDateAt == null" class="dateCoverPannel">
+                        {{
+                        getProjectDisplayDates(
+                        this.updatedTask.taskDueDateAt
+                        )
+                        }}
+                      </div>
                     </v-list-item-content>
+
                     <v-list-item-action>
                       <v-tooltip left>
                         <template v-slot:activator="{ on }">
@@ -600,13 +608,6 @@
                       </v-tooltip>
                     </v-list-item-action>
                   </v-list-item>
-                  <div v-if="this.selectedTask.taskDueDateAt == null" class="dateCoverPannel">
-                    {{
-                    getProjectDisplayDates(
-                    this.selectedTask.taskDueDateAt
-                    )
-                    }}
-                  </div>
 
                   <!-- ----------- Reminder date section --------- -->
 
@@ -642,6 +643,13 @@
                           <p>Confirm</p>
                         </template>
                       </datetime>
+                      <div v-if="this.selectedTask.taskReminderAt == null" class="dateCoverPannel">
+                        {{
+                        getProjectDisplayDates(
+                        this.updatedTask.taskRemindOnDate
+                        )
+                        }}
+                      </div>
                     </v-list-item-content>
                     <v-list-item-action>
                       <v-tooltip left>
@@ -656,13 +664,6 @@
                       </v-tooltip>
                     </v-list-item-action>
                   </v-list-item>
-                  <div v-if="this.selectedTask.taskReminderAt == null" class="dateCoverPannel">
-                    {{
-                    getProjectDisplayDates(
-                    this.selectedTask.taskReminderAt
-                    )
-                    }}
-                  </div>
 
                   <v-divider class="datePickerDivider"></v-divider>
                   <!-- ----------- Files section --------- -->
@@ -999,7 +1000,7 @@ export default {
       const now = new Date();
       console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
-      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
+      if (date === "" || date === "1970-01-01T05:30:00.000+0000") {
         return "Add Task Date";
       } else if (now.getDate() === dueToUtcDate.getDate()) {
         return "Today";
@@ -1250,67 +1251,7 @@ export default {
         console.log("Error updating a note", e);
       }
     },
-    // ----------- update task dates -----------
-    // async updateTaskDates(type) {
-    //   console.log(
-    //     "task due updated ---------> " + this.updatedTask.taskDueDateAt
-    //   );
-    //   console.log(
-    //     "task remind updated ---------> " + this.updatedTask.taskRemindOnDate
-    //   );
-    //   let dueDate;
-    //   let remindDate;
-    //   if (type === "dueDate" && this.updatedTask.taskDueDateAt != "") {
-    //     console.log("inside due date");
-    //     dueDate = new Date(this.updatedTask.taskDueDateAt);
-    //     const isoDate = new Date(
-    //       dueDate.getTime() - dueDate.getTimezoneOffset() * 60000
-    //     ).toISOString();
-    //     console.log("iso edit due date", isoDate);
-    //     dueDate = isoDate;
-    //     remindDate = this.updatedTask.taskRemindOnDate;
-    //   } else if (this.updatedTask.taskRemindOnDate != "") {
-    //     console.log("inside remind on date");
-    //     remindDate = new Date(this.updatedTask.taskRemindOnDate);
-    //     const isoDate = new Date(
-    //       remindDate.getTime() - remindDate.getTimezoneOffset() * 60000
-    //     ).toISOString();
-    //     console.log("iso edit remind date", isoDate);
-    //     dueDate = this.updatedTask.taskDueDateAt;
-    //     remindDate = isoDate;
-    //   }
-    //   console.log("dueDate", dueDate);
-    //   console.log("remindDate", remindDate);
-    //   let response;
-    //   try {
-    //     response = await this.$axios.$put(
-    //       `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
-    //       {
-    //         taskDueDate: dueDate,
-    //         taskRemindOnDate: remindDate
-    //       },
-    //       {
-    //         headers: {
-    //           user: this.userId
-    //         }
-    //       }
-    //     );
-    //     this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
-    //     this.component = "success-popup";
-    //     this.successMessage = "Date successfully updated";
-    //     setTimeout(() => {
-    //       this.close();
-    //     }, 3000);
-    //     console.log("update task dates response", response);
-    //   } catch (e) {
-    //     this.errorMessage = e.response.data;
-    //     this.component = "error-popup";
-    //     setTimeout(() => {
-    //       this.close();
-    //     }, 3000);
-    //     console.log("Error updating a status", e);
-    //   }
-    // },
+
     async updateTaskDates(type) {
       let dueDate;
       let remindDate;

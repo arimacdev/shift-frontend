@@ -79,14 +79,14 @@
               <!-- -------------- sub task design --------------- -->
               <div class="restructuredSubTaskCreate">
                 <v-text-field
-                  v-model="addNewTask"
+                  v-model="subTaskName"
                   background-color="#0BAFFF"
                   solo
                   dark
                   prepend-inner-icon="mdi-plus-circle"
                   label="Add a sub task..."
                   class
-                  @keyup.enter="addGroupTask(task.parentTask.taskId)"
+                  @keyup.enter="addGroupSubTask(subTaskName, task.parentTask.taskId)"
                   clearable
                 ></v-text-field>
               </div>
@@ -503,10 +503,15 @@ export default {
       });
       this.updatedTaskName = "";
       this.$refs.form.reset();
-      // this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
-      //   taskGroupId: this.group.taskGroupId,
-      //   userId: this.userId
-      // });
+    },
+    async addGroupSubTask(subTaskName, selectedParentTask) {
+      console.log("add group task");
+      this.$store.dispatch("groups/groupTask/addTaskToGroup", {
+        taskName: subTaskName,
+        taskGroupId: this.group.taskGroupId,
+        parentTaskId: selectedParentTask
+      });
+      this.subTaskName = "";
     },
     getTaskDueDate(date) {
       const dueDate = new Date(date);
