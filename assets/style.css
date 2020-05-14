@@ -1912,7 +1912,7 @@
   background: #0bafff;
 }
 .taskViewLinksDiv {
-  text-align: right;
+  text-align: right !important;
 }
 .viewTaskTitle {
   color: #424f64 !important;
