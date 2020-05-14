@@ -255,9 +255,9 @@ export default {
 
   created: function() {
     const authCode = this.$route.query.code;
-    console.log("SLACK CODE", authCode);
+    // console.log("SLACK CODE", authCode);
     if (authCode !== undefined) {
-      console.log("Slack Auth code present");
+      // console.log("Slack Auth code present");
       axios({
         method: "post",
         url: "https://slack.com/api/oauth.v2.access",
@@ -271,9 +271,9 @@ export default {
         }
       })
         .then(async resp => {
-          console.log("Slack Token Response", resp.data);
+          // console.log("Slack Token Response", resp.data);
           const slackId = resp.data.authed_user.id;
-          console.log("User Slack Id", slackId);
+          // console.log("User Slack Id", slackId);
           let response;
           try {
             response = await this.$axios.$put(
@@ -326,11 +326,11 @@ export default {
         );
         location.reload();
         if (status === true) {
-          console.log("cuurent status--> Ture", status);
+          // console.log("cuurent status--> Ture", status);
           // this.enableNotification = true;
           this.disableNotification = false;
         } else {
-          console.log("cuurent status--> False", status);
+          // console.log("cuurent status--> False", status);
           // this.disableNotification = true;
           this.enableNotification = false;
         }
@@ -409,37 +409,6 @@ export default {
         this.errorMessage = e.response.data;
         this.uploadLoading = false;
       }
-      //  this.uploadLoading = true
-      //  try{
-      // let formData = new FormData();
-      // formData.append('files', this.files);
-      // formData.append('type', 'profileImage')
-
-      // await this.$axios.$post(`/user/profile/upload`,
-      //     formData,
-      //     {
-      //       headers: {
-      //           'Content-Type': 'multipart/form-data',
-      //           'user': this.userId
-      //       }
-      //     }
-      //   ).then(function(res){
-      //      this.component = 'success-popup'
-      //     console.log('File upload successful', res.data);
-      //     this.uploadLoading = false
-      //   location.reload();
-      //   })
-      //   .catch(function(){
-      //     this.component = 'error-popup'
-      //     console.log('File Upload Failed');
-      //     this.uploadLoading = false
-      //   });
-      //  } catch (e){
-      //    console.log(e)
-      //     this.component = 'error-popup'
-      //     console.log('File Upload Failed: ' + e);
-      //     this.uploadLoading = false
-      //  }
     },
     handleFileUploads(e) {
       try {

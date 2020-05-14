@@ -78,14 +78,6 @@ export default {
   methods: {
     setTaskTab(tabType) {
       this.component = tabType;
-      //         this.$axios.get (`users/project/${this.projectId}`)
-      //         .then (response => {
-      //         console.log("project users", response.data.data)
-      //         this.projectUsers = response.data.data;
-      //         })
-      //         .catch (e => {
-      //         console.log("error", e)
-      //         })
     }
   }
 };

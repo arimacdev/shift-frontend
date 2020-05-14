@@ -85,10 +85,10 @@ export default {
     "error-popup": ErrorPopup
   },
   created() {
-    console.log("alltasks", this.projectAllTasks);
-    console.log("alltasks", this.projectAllTasks.length);
+    // console.log("alltasks", this.projectAllTasks);
+    // console.log("alltasks", this.projectAllTasks.length);
     if (this.projectAllTasks.length === 0) {
-      console.log("alltasks");
+      // console.log("alltasks");
       this.$store.dispatch(
         "task/fetchTasksAllTasks",
         this.$route.query.project
@@ -126,7 +126,7 @@ export default {
       this.component = "";
     },
     getParentTasks(v) {
-      console.log("parent task list", this.projectAllTasks);
+      // console.log("parent task list", this.projectAllTasks);
       this.parentTasks = [];
       let parentSearchList = this.projectAllTasks;
       for (let index = 0; index < parentSearchList.length; ++index) {
@@ -139,7 +139,7 @@ export default {
         }
       }
 
-      console.log("nameList", this.states);
+      // console.log("nameList", this.states);
       this.loading = true;
     },
     onSelectedUser() {
@@ -150,7 +150,7 @@ export default {
     },
 
     async changeHandler() {
-      console.log("onchange sprint", this.parentTask);
+      // console.log("onchange sprint", this.parentTask);
       let response;
       try {
         response = await this.$axios.$put(

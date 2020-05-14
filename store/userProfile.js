@@ -13,15 +13,15 @@ export const mutations = {
 export const actions = {
   fetchProfilePicture({ commit, rootState }) {
     const userId = rootState.user.userId;
-    console.log('Call user profile', rootState.user.userId);
+    // console.log('Call user profile', rootState.user.userId);
     this.$axios
       .get(`users/${userId}`)
       .then((res) => {
-        console.log('state data --->', res.data.data);
+        // console.log('state data --->', res.data.data);
         commit('SET_PROFILE_PICTURE', res.data.data);
       })
       .catch((error) => {
-        console.log('Error fetching user data');
+        // console.log('Error fetching user data');
       });
   },
 };

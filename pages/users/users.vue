@@ -101,6 +101,9 @@ export default {
       name: users[0].userId
     };
   },
+  created() {
+    this.$store.dispatch("project/clearProject");
+  },
 
   methods: {
     viewSearchComponent(data) {

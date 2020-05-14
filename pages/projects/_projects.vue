@@ -275,7 +275,7 @@ export default {
     getProjects(type) {
       const projectsAll = this.allProjects;
       if (this.looped === false) {
-        console.log("run loop inside");
+        // console.log("run loop inside");
         for (let i = 0; i < projectsAll.length; i++) {
           let projectType = projectsAll[i].projectStatus;
           switch (projectType) {
@@ -365,7 +365,7 @@ export default {
       this.newProject = false;
       this.project = project;
       this.projectDisplayName = this.project.projectId;
-      console.log("selected project ---------->", project, this.selectedTab);
+      // console.log("selected project ---------->", project, this.selectedTab);
       this.$store.dispatch("project/fetchProject", this.$route.params.projects);
       switch (this.selectedTab) {
         case "task":

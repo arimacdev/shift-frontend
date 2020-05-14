@@ -11,17 +11,17 @@ export const mutations = {
     state.sprints = sprints;
   },
   UPDATE_SPRINT(state, { sprintId, sprintName, sprintDescription }) {
-    console.log('update', state.sprints);
+    // console.log('update', state.sprints);
     const index = state.sprints.findIndex((i) => i.sprintId === sprintId);
-    console.log('update', index);
+    // console.log('update', index);
 
     const updateSprint = state.sprints[index];
     updateSprint.sprintName = sprintName;
     updateSprint.sprintDescription = sprintDescription;
-    console.log('update', updateSprint);
+    // console.log('update', updateSprint);
 
     state.sprints.splice(index, 1, updateSprint);
-    console.log('update', state.sprints);
+    // console.log('update', state.sprints);
   },
 };
 
@@ -41,7 +41,7 @@ export const actions = {
         sprintName: 'Default',
       };
       commit('APPEND_SPRINT', defaultSprint);
-      console.log('fetch all sprints response from store', sprintResponse.data);
+      // console.log('fetch all sprints response from store', sprintResponse.data);
     } catch (e) {
       console.log('Error fetching sprints from store', e);
     }
@@ -52,7 +52,7 @@ export const actions = {
   },
 
   updateProjectSprint({ commit }, { sprintId, sprintName, sprintDescription }) {
-    console.log('update', sprintId, sprintName, sprintDescription);
+    // console.log('update', sprintId, sprintName, sprintDescription);
     commit('UPDATE_SPRINT', { sprintId, sprintName, sprintDescription });
   },
 };

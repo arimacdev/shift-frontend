@@ -61,6 +61,7 @@ export default {
 
   created() {
     this.$store.dispatch("workload/fetchAllTaskLoadUsers");
+    this.$store.dispatch("project/clearProject");
   },
 
   watch: {

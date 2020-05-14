@@ -161,7 +161,7 @@ export default {
       const isoDate = new Date(
         startDate.getTime() - startDate.getTimezoneOffset() * 60000
       ).toISOString();
-      console.log("iso Start date", isoDate);
+      // console.log("iso Start date", isoDate);
       return isoDate;
     },
     getEndDate() {
@@ -169,7 +169,7 @@ export default {
       const isoDate = new Date(
         endDate.getTime() - endDate.getTimezoneOffset() * 60000
       ).toISOString();
-      console.log("iso end date", isoDate);
+      // console.log("iso end date", isoDate);
       return isoDate;
     },
     async postData() {
@@ -252,14 +252,14 @@ export default {
           );
           const dueToUtcDate = new Date(dueToUtc);
           const now = new Date();
-          console.log(
-            "now",
-            now.getTime(),
-            "DueTime",
-            dueToUtcDate.getTime() + 350000000
-          );
+          // console.log(
+          //   "now",
+          //   now.getTime(),
+          //   "DueTime",
+          //   dueToUtcDate.getTime() + 350000000
+          // );
           if (now.getTime() >= dueToUtcDate.getTime() + 35000000) {
-            console.log("overdue");
+            // console.log("overdue");
             return false;
           } else {
             return true;
@@ -279,14 +279,14 @@ export default {
           );
           const endToUtcDate = new Date(endToUtc);
           const startDate = new Date(this.startDate);
-          console.log(
-            "start",
-            startDate.getTime(),
-            "end",
-            endToUtcDate.getTime() + 35000000
-          );
+          // console.log(
+          //   "start",
+          //   startDate.getTime(),
+          //   "end",
+          //   endToUtcDate.getTime() + 35000000
+          // );
           if (startDate.getTime() >= endToUtcDate.getTime() + 35000000) {
-            console.log("overdue");
+            // console.log("overdue");
             return false;
           } else {
             return true;

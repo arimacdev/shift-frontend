@@ -401,7 +401,7 @@ export default {
   },
   methods: {
     taskDialogClosing() {
-      console.log("Task Dialog Closing");
+      // console.log("Task Dialog Closing");
       this.taskDialog = false;
     },
     filterStyles(isParent) {
@@ -419,13 +419,13 @@ export default {
       }
     },
     async filterTasks(filterType, assignee, from, to, issueType) {
-      console.log(
-        "filter options " + filterType,
-        assignee,
-        from,
-        to,
-        issueType
-      );
+      // console.log(
+      //   "filter options " + filterType,
+      //   assignee,
+      //   from,
+      //   to,
+      //   issueType
+      // );
       let response;
       try {
         response = await this.$axios.$get(
@@ -443,9 +443,9 @@ export default {
           }
         );
         this.filterList = response.data;
-        console.log("filter response: " + response.data);
+        // console.log("filter response: " + response.data);
       } catch (e) {
-        console.log("Error filter task", e);
+        // console.log("Error filter task", e);
       }
     },
     async deleteTask() {
@@ -465,14 +465,14 @@ export default {
         this.$emit("listenChange");
         this.$emit("shrinkSideBar");
 
-        console.log(response.data);
+        // console.log(response.data);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error creating project", e);
+        // console.log("Error creating project", e);
       }
     },
     // ------- popup close ----------
@@ -503,13 +503,13 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Task adding successful", response);
+        // console.log("Task adding successful", response);
         if (this.taskAssignee === this.userId) {
-          console.log("assignee is me", this.taskAssignee, this.userId);
+          // console.log("assignee is me", this.taskAssignee, this.userId);
           this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
           this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         } else {
-          console.log("assignee is NOT me", this.taskAssignee);
+          // console.log("assignee is NOT me", this.taskAssignee);
           this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         }
         (this.taskName = ""),
@@ -525,7 +525,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error updating a status", e);
+        // console.log("Error updating a status", e);
       }
     },
     clearFilter() {
@@ -533,7 +533,7 @@ export default {
       this.taskSelect == null;
     },
     querySelections(v) {
-      console.log("people list", this.people);
+      // console.log("people list", this.people);
       this.states = [];
       let projectSearchList = this.people;
       for (let index = 0; index < projectSearchList.length; ++index) {
@@ -544,11 +544,11 @@ export default {
           img: user.assigneeProfileImage
         });
       }
-      console.log("nameList", this.states);
+      // console.log("nameList", this.states);
       this.loading = true;
     },
     listenToChange() {
-      console.log("listened to changes ------->");
+      // console.log("listened to changes ------->");
       this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
       this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
       this.$store.dispatch("task/fetchProjectTaskCompletion", this.projectId);
@@ -557,16 +557,16 @@ export default {
       this.drawer = false;
     },
     taskFilterHandler() {
-      console.log("-----------> changed" + this.taskSelect);
+      // console.log("-----------> changed" + this.taskSelect);
     },
     async selectTask(task, taskObject) {
       this.task = task;
       this.$store.dispatch("task/setSelectedTask", task);
       this.taskObject = taskObject;
       this.componentClose = "";
-      console.log("selectedTask", task);
+      // console.log("selectedTask", task);
       this.$axios.get(`/users/${task.taskAssignee}`).then(async response => {
-        console.log("fetched task -->", response.data.data);
+        // console.log("fetched task -->", response.data.data);
         this.assignee = response.data.data;
       });
       this.$store.dispatch("user/setSelectedTaskUser", task.taskAssignee);
@@ -581,11 +581,11 @@ export default {
             }
           }
         );
-        console.log("files--->", taskFilesResponse.data);
+        // console.log("files--->", taskFilesResponse.data);
         this.taskFiles = taskFilesResponse.data;
         this.$store.dispatch("task/setTaskFiles", taskFilesResponse.data);
       } catch (error) {
-        console.log("Error fetching data", error);
+        // console.log("Error fetching data", error);
       }
     },
     statusCheck(task) {
@@ -608,7 +608,7 @@ export default {
       }
     },
     dueDateCheck(task) {
-      console.log("check due date color", task);
+      // console.log("check due date color", task);
       if (task.taskStatus === "closed") {
         return "workLoadTaskDone";
       } else if (task.taskDueDateAt == null) {
@@ -620,9 +620,9 @@ export default {
         );
         const dueToUtcDate = new Date(dueToUtc);
         const now = new Date();
-        console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
+        // console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
         if (now.getTime() > dueToUtcDate.getTime()) {
-          console.log("overdue");
+          // console.log("overdue");
           return "workLoadTaskOverDue";
         } else {
           return "workLoadTaskHealthy";
@@ -636,7 +636,7 @@ export default {
       );
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
-      console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
+      // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
         return "Add Due Date";

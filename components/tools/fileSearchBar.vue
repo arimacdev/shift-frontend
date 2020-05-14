@@ -41,7 +41,7 @@ export default {
   methods: {
     onSelectProjectFile() {
       if (this.select !== undefined) {
-        console.log("selected file: " + this.select);
+        // console.log("selected file: " + this.select);
         window.open(this.select, "_blank");
       }
       this.select = "";

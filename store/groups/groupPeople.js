@@ -22,7 +22,7 @@ export const actions = {
           },
         }
       );
-      console.log('group people response', getCompletionTaskResponse.data);
+      // console.log('group people response', getCompletionTaskResponse.data);
       commit('SET_GROUP_PEOPLE', getCompletionTaskResponse.data);
     } catch (e) {
       console.log('Error fetching group people', e);

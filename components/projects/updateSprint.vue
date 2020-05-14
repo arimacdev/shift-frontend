@@ -179,8 +179,6 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        // this.$store.dispatch("sprints/sprint/addProjectSprint", response.data);
-        // console.log("Sprint Added", response.data);
       } catch (e) {
         console.log("Error adding a group", e);
         this.errorMessage = e.response.data;
@@ -191,11 +189,7 @@ export default {
       }
     }
   },
-  computed: {
-    //     dateRangeText () {
-    //   return this.dates.join(' - ')
-    // }
-  }
+  computed: {}
 };
 </script>
 

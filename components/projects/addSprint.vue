@@ -43,32 +43,6 @@
                   clearable
                   hide-details="auto"
                 ></v-text-field>
-                <!-- <v-dialog
-        ref="dialog"
-        v-model="modal"
-        :return-value.sync="date"
-        persistent
-        width="290px"
-      >
-        <template v-slot:activator="{ on }">
-          <v-text-field
-           v-model="dateRangeText" 
-           label="Date range*" 
-           readonly
-           outlined=""
-           class=""
-            v-on="on"
-            clearable=""
-            :rules="dateRangeRules" hide-details="auto"
-            
-          ></v-text-field>
-        </template>
-         <v-date-picker v-model="dates" range>
-          <v-spacer></v-spacer>
-          <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-          <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
-        </v-date-picker>
-                </v-dialog>-->
               </div>
             </div>
 

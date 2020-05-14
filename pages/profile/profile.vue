@@ -43,10 +43,13 @@ export default {
   async asyncData({ $axios, store }) {
     let userId = store.state.user.userId;
     const { data: user } = await $axios.$get(`/users/${userId}`);
-    console.log(user);
+    // console.log(user);
     return {
       user: user
     };
+  },
+  created() {
+    this.$store.dispatch("project/clearProject");
   },
 
   methods: {

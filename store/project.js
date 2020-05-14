@@ -9,6 +9,9 @@ export const mutations = {
   SET_PROJECT(state, project) {
     state.project = project;
   },
+  CLEAR_PROJECT(state) {
+    state.project = {};
+  },
   FETCH_ALL_PROJECTS(state, projects) {
     state.projects = projects;
   },
@@ -39,10 +42,14 @@ export const actions = {
         },
       });
       commit('SET_PROJECT', projectResponse.data);
-      console.log('fetch project response from store', projectResponse.data);
+      // console.log('fetch project response from store', projectResponse.data);
     } catch (e) {
       console.log('Error fetching fetchProject', e);
     }
+  },
+
+  clearProject({ commit }) {
+    commit('CLEAR_PROJECT');
   },
 
   async fetchAllProjects({ commit, rootState }) {
@@ -55,12 +62,12 @@ export const actions = {
         },
       });
       commit('FETCH_ALL_PROJECTS', projectResponse.data);
-      console.log(
-        'fetch all project response from store',
-        projectResponse.data
-      );
+      // console.log(
+      //   'fetch all project response from store',
+      //   projectResponse.data
+      // );
     } catch (e) {
-      console.log('Error fetching projects from store', e);
+      // console.log('Error fetching projects from store', e);
     }
   },
 
@@ -76,7 +83,7 @@ export const actions = {
           },
         }
       );
-      console.log('project files--->', projectFilesResponse.data);
+      // console.log('project files--->', projectFilesResponse.data);
       commit('FETCH_ALL_PROJECTS_FILES', projectFilesResponse.data);
     } catch (error) {
       console.log('Error fetching data', error);

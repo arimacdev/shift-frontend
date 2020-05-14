@@ -50,22 +50,22 @@ export const mutations = {
   },
 
   ADD_PARENT_TASK(state, taskId) {
-    console.log('parenttaskiD', taskId);
+    // console.log('parenttaskiD', taskId);
 
-    console.log('parent', state.groupTasks);
+    // console.log('parent', state.groupTasks);
     for (let index = 0; index < state.groupTasks.length; index++) {
       const parentTask = state.groupTasks[index];
-      console.log('parent', parentTask.parentTask);
+      // console.log('parent', parentTask.parentTask);
 
       if (parentTask.parentTask.taskId === taskId) {
         state.parentTask = parentTask.parentTask;
       }
     }
-    console.log('parent!', state.parentTask);
+    // console.log('parent!', state.parentTask);
   },
 
   UPDATE_SELECTED_DATE(state, { type, date }) {
-    console.log('selectedtask', type, date);
+    // console.log('selectedtask', type, date);
 
     const selectedGroupTask = state.selectedGroupTask;
     if (type == 'dueDate') {
@@ -73,43 +73,43 @@ export const mutations = {
     } else {
       selectedGroupTask.taskReminderAt = date;
     }
-    console.log('selectedtask', selectedGroupTask);
+    // console.log('selectedtask', selectedGroupTask);
     state.selectedGroupTask = selectedGroupTask;
-    console.log('selectedtask', state.selectedGroupTask);
+    // console.log('selectedtask', state.selectedGroupTask);
   },
 
   UPDATE_GROUP_TASK(state, { taskId, type, value }) {
     // const task = state.groupTasks.find(element => element.taskId = taskId);
-    console.log('updateTask', taskId, type, value);
+    // console.log('updateTask', taskId, type, value);
     const prevTasks = state.groupTasks;
     const index = prevTasks.findIndex((i) => i.parentTask.taskId === taskId);
     const updateTask = prevTasks[index];
     updateTask[type] = value;
-    console.log('index updated task', index, updateTask);
+    // console.log('index updated task', index, updateTask);
     state.groupTasks.splice(index, 1, updateTask);
   },
 
   UPDATE_GROUP_TASK_DATES(state, { taskId, dueDate, remindDate }) {
-    console.log('updateTask dates', taskId, dueDate, remindDate);
+    // console.log('updateTask dates', taskId, dueDate, remindDate);
     const prevTasks = state.groupTasks;
     const index = prevTasks.findIndex((i) => i.taskId === taskId);
     const updateTask = prevTasks[index];
     updateTask.taskDueDateAt = dueDate;
     updateTask.taskReminderAt = remindDate;
-    console.log('index updated task', index, updateTask);
+    // console.log('index updated task', index, updateTask);
     state.groupTasks.splice(index, 1, updateTask);
   },
 
   REMOVE_TASK(state, taskId) {
     const index = state.groupTasks.findIndex((i) => i.taskId === taskId);
-    console.log('index remove', index, taskId);
+    // console.log('index remove', index, taskId);
     state.groupTasks.splice(index, 1);
   },
 };
 
 export const actions = {
   async fetchGroupTasks({ commit, rootState }, { taskGroupId, userId }) {
-    console.log('fetchGroupTasks', taskGroupId, userId);
+    // console.log('fetchGroupTasks', taskGroupId, userId);
     const user = rootState.user.userId;
     let getGroupTaskResponse;
     try {
@@ -122,7 +122,7 @@ export const actions = {
           },
         }
       );
-      console.log('group task get response', getGroupTaskResponse.data);
+      // console.log('group task get response', getGroupTaskResponse.data);
       commit('SET_GROUP_TASKS', getGroupTaskResponse.data);
     } catch (e) {
       console.log('Error fetching group tasks', e);
@@ -173,7 +173,7 @@ export const actions = {
       });
       // }
 
-      console.log('Added Task to Group Successfully!', response.data);
+      // console.log('Added Task to Group Successfully!', response.data);
     } catch (e) {
       console.log('Error adding a group task', e);
     }
@@ -217,7 +217,7 @@ export const actions = {
         }
       );
       commit('ADD_SELECTED_TASK', taskResponse.data);
-      console.log('Selected Task get response', taskResponse.data);
+      // console.log('Selected Task get response', taskResponse.data);
     } catch (e) {
       console.log('Error fetching task', e);
     }
@@ -231,10 +231,10 @@ export const actions = {
         },
       })
       .then((response) => {
-        console.log(
-          'CHILD TASKS ARE RETRIEVED SUCCESSFULLY-->',
-          response.data.data
-        );
+        // console.log(
+        //   'CHILD TASKS ARE RETRIEVED SUCCESSFULLY-->',
+        //   response.data.data
+        // );
         commit('SET_CHILD_TASKS', response.data.data);
       })
       .catch((e) => {

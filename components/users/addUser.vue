@@ -172,13 +172,13 @@ export default {
         }, 3000);
         window.setTimeout(location.reload(), 8000);
       } catch (e) {
-        console.log("Error creating user", e);
+        // console.log("Error creating user", e);
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error creating project", e);
+        // console.log("Error creating project", e);
       }
     },
     handleSubmit(e) {

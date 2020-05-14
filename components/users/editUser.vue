@@ -138,8 +138,8 @@ export default {
           this.close();
         }, 3000);
       } catch (e) {
-        console.log("Error edit user", e);
-        console.log("Error creating user", e);
+        // console.log("Error edit user", e);
+        // console.log("Error creating user", e);
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {

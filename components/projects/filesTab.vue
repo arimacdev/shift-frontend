@@ -176,7 +176,7 @@ export default {
   methods: {
     selectFile(projectFileId) {
       this.fileId = projectFileId;
-      console.log("file Id " + this.fileId);
+      // console.log("file Id " + this.fileId);
     },
     downloadFile(projectFileUrl) {
       axios({
@@ -215,7 +215,7 @@ export default {
             }
           })
           .then(res => {
-            console.log("resp", res.data);
+            // console.log("resp", res.data);
             this.uploadLoading = false;
             this.visible = false;
             this.component = "success-popup";
@@ -224,7 +224,7 @@ export default {
             uploadedFile.lastName = this.userProfile.lastName;
             console.log("File upload successful", res.data);
             this.$store.dispatch("project/addProjectFile", res.data);
-            console.log("File upload successful", res);
+            // console.log("File upload successful", res);
           })
           .catch(err => {
             this.uploadLoading = false;
@@ -237,7 +237,7 @@ export default {
       this.files = null;
     },
     async removeFiles() {
-      console.log("projectFile " + this.fileId);
+      // console.log("projectFile " + this.fileId);
       this.taskDialog = false;
       let response;
       try {

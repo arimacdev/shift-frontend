@@ -973,7 +973,7 @@ export default {
       let stringDate = this.fetchProject.projectEndDate + "";
       stringDate = stringDate.toString();
       stringDate = stringDate.slice(0, 10) + " " + "23:59";
-      console.log("max date : " + stringDate);
+      // console.log("max date : " + stringDate);
       return stringDate;
     },
     getMaxRemindDate() {
@@ -996,7 +996,7 @@ export default {
       );
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
-      console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
+      // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
         return "Add Task Date";
@@ -1026,14 +1026,14 @@ export default {
         this.$emit("shrinkSideBar");
         this.taskDialogClosing();
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
-        console.log(response.data);
+        // console.log(response.data);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error creating project", e);
+        // console.log("Error creating project", e);
       }
     },
     taskDialogClosing() {
@@ -1041,7 +1041,7 @@ export default {
       Object.assign(this.$data, this.$options.data.apply(this));
     },
     async updateIssueType() {
-      console.log("onchange updated status ->");
+      // console.log("onchange updated status ->");
       let response;
       try {
         response = await this.$axios.$put(
@@ -1061,7 +1061,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("update task status response", response);
+        // console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
@@ -1073,7 +1073,7 @@ export default {
     },
     // ------------- update task status ----------
     async updateStatus() {
-      console.log("onchange updated status ->");
+      // console.log("onchange updated status ->");
       let response;
       try {
         response = await this.$axios.$put(
@@ -1093,18 +1093,18 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("update task status response", response);
+        // console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error updating a status", e);
+        // console.log("Error updating a status", e);
       }
     },
     async saveEditTaskName() {
-      console.log("updatedTaskName ->", this.updatedTask.taskName);
+      // console.log("updatedTaskName ->", this.updatedTask.taskName);
       let response;
       try {
         response = await this.$axios.$put(
@@ -1166,7 +1166,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("update task status response", response);
+        // console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
@@ -1178,7 +1178,7 @@ export default {
     },
     // -------- update sprint ----------
     async changeTaskSprint() {
-      console.log("onchange sprint", this.updatedSprint);
+      // console.log("onchange sprint", this.updatedSprint);
       let response;
       try {
         response = await this.$axios.$put(
@@ -1199,19 +1199,19 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("update sprint status response", response);
+        // console.log("update sprint status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error updating a sprint", e);
+        // console.log("Error updating a sprint", e);
       }
     },
     // ---------- update task note -----------
     async updateTaskNote() {
-      console.log("updatedTaskValue ->", this.updatedTask.taskNote);
+      // console.log("updatedTaskValue ->", this.updatedTask.taskNote);
       let response;
 
       try {
@@ -1232,14 +1232,14 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("edit task response", response);
+        // console.log("edit task response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error updating a note", e);
+        // console.log("Error updating a note", e);
       }
     },
 
@@ -1248,12 +1248,12 @@ export default {
       let remindDate;
       let changedDate = {};
       if (type === "dueDate" && this.updatedTask.taskDueDateAt != "") {
-        console.log("inside due date");
+        // console.log("inside due date");
         dueDate = new Date(this.updatedTask.taskDueDateAt);
         const isoDate = new Date(
           dueDate.getTime() - dueDate.getTimezoneOffset() * 60000
         ).toISOString();
-        console.log("iso edit due date", isoDate);
+        // console.log("iso edit due date", isoDate);
         dueDate = isoDate;
         remindDate = this.updatedTask.taskRemindOnDate;
         changedDate = {
@@ -1264,12 +1264,12 @@ export default {
           date: dueDate
         });
       } else if (this.updatedTask.taskRemindOnDate != "") {
-        console.log("inside remind on date");
+        // console.log("inside remind on date");
         remindDate = new Date(this.updatedTask.taskRemindOnDate);
         const isoDate = new Date(
           remindDate.getTime() - remindDate.getTimezoneOffset() * 60000
         ).toISOString();
-        console.log("iso edit remind date", isoDate);
+        // console.log("iso edit remind date", isoDate);
         dueDate = this.updatedTask.taskDueDateAt;
         remindDate = isoDate;
         changedDate = {
@@ -1280,8 +1280,8 @@ export default {
           date: remindDate
         });
       }
-      console.log("dueDate", dueDate);
-      console.log("remindDate", remindDate);
+      // console.log("dueDate", dueDate);
+      // console.log("remindDate", remindDate);
       let response;
       try {
         response = await this.$axios.$put(
@@ -1300,14 +1300,14 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("update task dates response", response);
+        // console.log("update task dates response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error updating a date", e);
+        // console.log("Error updating a date", e);
       }
     },
     // --------- upload task files ----------
@@ -1338,9 +1338,9 @@ export default {
             setTimeout(() => {
               this.close();
             }, 3000);
-            console.log("file response", this.taskFiles);
+            // console.log("file response", this.taskFiles);
           } catch (e) {
-            console.log("Error adding group file", e);
+            // console.log("Error adding group file", e);
             this.errorMessage = e.response.data;
             this.component = "error-popup";
             setTimeout(() => {
@@ -1365,7 +1365,7 @@ export default {
             }
           }
         );
-        console.log(response.data);
+        // console.log(response.data);
         this.$store.dispatch("task/removeTaskFile", taskFileId);
         this.component = "success-popup";
         this.successMessage = "File successfully deleted";
@@ -1378,7 +1378,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error deleting task", e);
+        // console.log("Error deleting task", e);
       }
     },
     // ------- popup close ----------
@@ -1390,11 +1390,11 @@ export default {
     //   this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
     // },
     click() {
-      console.log("select =========>" + this.taskDueDate);
+      // console.log("select =========>" + this.taskDueDate);
       // this.issueType = issueType;
     },
     dueDateCheck(task) {
-      console.log("check due date color", task);
+      // console.log("check due date color", task);
       if (task.taskStatus === "closed") {
         return "workLoadTaskDone";
       } else if (task.taskDueDateAt == null) {
@@ -1406,9 +1406,9 @@ export default {
         );
         const dueToUtcDate = new Date(dueToUtc);
         const now = new Date();
-        console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
+        // console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
         if (now.getTime() > dueToUtcDate.getTime()) {
-          console.log("overdue");
+          // console.log("overdue");
           return "workLoadTaskOverDue";
         } else {
           return "workLoadTaskHealthy";
@@ -1422,7 +1422,7 @@ export default {
       );
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
-      console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
+      // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
         return "Add Due Date";
@@ -1440,7 +1440,7 @@ export default {
       }
     },
     getSprintDetails(v) {
-      console.log("board list", this.projectSprints);
+      // console.log("board list", this.projectSprints);
       this.sprints = [];
       let sprintSearchList = this.projectSprints;
       for (let index = 0; index < sprintSearchList.length; ++index) {
@@ -1494,7 +1494,7 @@ export default {
     }),
     ...mapGetters(["getuserCompletionTasks"]),
     peopleList() {
-      console.log("people list", this.people);
+      // console.log("people list", this.people);
       if (this.people.length == 0) {
         this.$store.dispatch(
           "task/fetchProjectUserCompletionTasks",
@@ -1524,7 +1524,7 @@ export default {
         }
       },
       set(value) {
-        console.log("task status", value);
+        // console.log("task status", value);
         this.updatedStatus = value;
       }
     },
@@ -1544,7 +1544,7 @@ export default {
       set(value) {
         this.updatedIssue = value;
         this.issueTypes = value;
-        console.log("issue type", this.updatedIssue);
+        // console.log("issue type", this.updatedIssue);
       }
     },
     selectedSprint: {
@@ -1555,10 +1555,10 @@ export default {
         } else {
           return this.updatedSprint;
         }
-        console.log("sprintId", this.selectedTask);
+        // console.log("sprintId", this.selectedTask);
       },
       set(sprintId) {
-        console.log("spid", sprintId);
+        // console.log("spid", sprintId);
         this.updatedSprint = sprintId;
       }
     },
@@ -1584,7 +1584,7 @@ export default {
         return stringDate;
       },
       set(value) {
-        console.log("updated task due ->", value);
+        // console.log("updated task due ->", value);
         this.updatedTask.taskDueDateAt = value;
       }
     },
@@ -1601,7 +1601,7 @@ export default {
         return stringDate;
       },
       set(value) {
-        console.log("updated task reminder ->", value);
+        // console.log("updated task reminder ->", value);
         this.updatedTask.taskRemindOnDate = value;
       }
     }

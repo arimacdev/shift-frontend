@@ -35,7 +35,7 @@ export const mutations = {
 export const actions = {
   async setAllUsers({ commit, rootState }) {
     const user = rootState.user.userId;
-    console.log('set users from the store');
+    // console.log('set users from the store');
     let userResponse;
     try {
       userResponse = await this.$axios.$get(`users`, {
@@ -44,7 +44,7 @@ export const actions = {
         },
       });
       commit('SET_USERS', userResponse.data);
-      console.log('fetch all user response from store', userResponse.data);
+      // console.log('fetch all user response from store', userResponse.data);
     } catch (e) {
       console.log('Error fetching user from store', e);
     }
@@ -60,14 +60,14 @@ export const actions = {
         },
       });
       commit('SET_TASK_USER', userResponse.data);
-      console.log('fetch task user from store', userResponse.data);
+      // console.log('fetch task user from store', userResponse.data);
     } catch (e) {
       console.log('Error fetching user from store', e);
     }
   },
 
   async fetchParentTaskUser({ commit, rootState }, userId) {
-    console.log('fetchParentTaskUser', userId);
+    // console.log('fetchParentTaskUser', userId);
     const user = rootState.user.userId;
     let userResponse;
     try {
@@ -77,7 +77,7 @@ export const actions = {
         },
       });
       commit('SET_PARENT_TASK_USER', userResponse.data);
-      console.log('fetch parent task user from store', userResponse.data);
+      // console.log('fetch parent task user from store', userResponse.data);
     } catch (e) {
       console.log('Error fetching user from store', e);
     }
@@ -93,7 +93,7 @@ export const actions = {
         },
       });
       commit('SET_COMPONENT_USER_DETAILS', userResponse.data);
-      console.log('fetch component user from store', userResponse.data);
+      // console.log('fetch component user from store', userResponse.data);
     } catch (e) {
       console.log('Error fetching component user from store', e);
     }
