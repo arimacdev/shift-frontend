@@ -9,6 +9,9 @@ export const mutations = {
   SET_PROJECT(state, project) {
     state.project = project;
   },
+  CLEAR_PROJECT(state) {
+    state.project = {};
+  },
   FETCH_ALL_PROJECTS(state, projects) {
     state.projects = projects;
   },
@@ -43,6 +46,10 @@ export const actions = {
     } catch (e) {
       console.log('Error fetching fetchProject', e);
     }
+  },
+
+  clearProject({ commit }) {
+    commit('CLEAR_PROJECT');
   },
 
   async fetchAllProjects({ commit, rootState }) {
