@@ -114,7 +114,6 @@
       <task-dialog
         :task="task"
         :subTasks="subTasks"
-        persistent
         @taskDialogClosing="taskDialogClosing"
       />
     </v-dialog>
@@ -216,6 +215,7 @@ export default {
         .catch(e => {
           console.log("error", e);
         });
+      this.$store.dispatch("personalTasks/setSelectedTask", personalTask);
       this.$store.dispatch(
         "personalTasks/fetchAllPersonalTaskFiles",
         this.task.taskId
