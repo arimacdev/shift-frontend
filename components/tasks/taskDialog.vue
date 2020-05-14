@@ -1000,12 +1000,6 @@ export default {
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
         return "Add Task Date";
-      } else if (now.getDate() === dueToUtcDate.getDate()) {
-        return "Today";
-      } else if (now.getDate() - 1 === dueToUtcDate.getDate()) {
-        return "Yesterday";
-      } else if (now.getDate() + 1 === dueToUtcDate.getDate()) {
-        return "Tomorrow";
       } else {
         let stringDate = date + "";
         stringDate = stringDate.toString();
