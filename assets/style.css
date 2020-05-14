@@ -2165,9 +2165,9 @@
 .dateCoverPannel {
   width: 173px;
   height: 30px;
+  margin-top: 13px;
+  margin-left: -5px;
   position: absolute;
-  margin-left: 80px;
-  margin-top: -35px;
   padding-left: 10px;
   background-color: #ffffff;
 }
