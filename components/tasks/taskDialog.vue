@@ -1290,6 +1290,10 @@ export default {
           }
         );
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$store.dispatch("task/updateProjectDates", {
+          dueDate: dueDate,
+          remindDate: remindDate
+        });
         this.component = "success-popup";
         this.successMessage = "Date successfully updated";
         setTimeout(() => {
