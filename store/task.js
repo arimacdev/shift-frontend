@@ -64,13 +64,27 @@ export const mutations = {
       state.allTasks.splice(index, 1, task);
     }
   },
-  UPDATE_SELECTED_DATE(state, { dueDate, remindDate }) {
-    console.log('selectedtask', dueDate);
-    console.log('selectedtask', remindDate);
+  // UPDATE_SELECTED_DATE(state, { type, date }) {
+  //   console.log('selectedtask', dueDate);
+  //   console.log('selectedtask', remindDate);
+
+  //   const selectedTask = state.selectedTask;
+  //   selectedTask.taskDueDateAt = dueDate;
+  //   selectedTask.taskReminderAt = remindDate;
+  //   console.log('selectedtask', selectedTask);
+  //   state.selectedTask = selectedTask;
+  //   console.log('selectedtask', state.selectedTask);
+  // },
+
+  UPDATE_SELECTED_DATE(state, { type, date }) {
+    console.log('selectedtask', type, date);
 
     const selectedTask = state.selectedTask;
-    selectedTask.taskDueDateAt = dueDate;
-    selectedTask.taskReminderAt = remindDate;
+    if (type == 'dueDate') {
+      selectedTask.taskDueDateAt = date;
+    } else {
+      selectedTask.taskReminderAt = date;
+    }
     console.log('selectedtask', selectedTask);
     state.selectedTask = selectedTask;
     console.log('selectedtask', state.selectedTask);
@@ -106,8 +120,8 @@ export const actions = {
     commit('UPDATE_TASK', { taskId, taskName });
   },
 
-  updateProjectDates({ commit }, { dueDate, remindDate }) {
-    commit('UPDATE_SELECTED_DATE', { dueDate, remindDate });
+  updateProjectDates({ commit }, { type, date }) {
+    commit('UPDATE_SELECTED_DATE', { type, date });
   },
 
   async fetchParentTask(
