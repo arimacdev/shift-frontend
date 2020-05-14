@@ -70,7 +70,7 @@ export const mutations = {
 
     const selectedTask = state.selectedTask;
     selectedTask.taskDueDateAt = dueDate;
-    selectedTask.remindDate = remindDate;
+    selectedTask.taskReminderAt = remindDate;
     console.log('selectedtask', selectedTask);
     state.selectedTask = selectedTask;
     console.log('selectedtask', state.selectedTask);
