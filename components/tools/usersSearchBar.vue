@@ -1,74 +1,75 @@
 <template>
-    <v-autocomplete
-          v-model="select"
-          :loading="loading"
-          :items="states"
-           item-text="name"
-          item-value="id"
-          :search-input.sync="search"
-          cache-items
-          class="mx-4 searchBar"
-          flat
-          hide-no-data
-          hide-details
-          append-icon
-          prepend-inner-icon="mdi-magnify"
-          label="Search Here"
-          outlined
-          @change="onSelectedUser()"
-        ></v-autocomplete>
+  <v-autocomplete
+    v-model="select"
+    :loading="loading"
+    :items="states"
+    item-text="name"
+    item-value="id"
+    :search-input.sync="search"
+    cache-items
+    class="mx-4 searchBar"
+    flat
+    hide-no-data
+    hide-details
+    append-icon
+    prepend-inner-icon="mdi-magnify"
+    label="Search Here"
+    outlined
+    clearable
+    @change="onSelectedUser()"
+  ></v-autocomplete>
 </template>
 
 <script>
-
 export default {
-   props: ["users"],
-    data () {
-      return {
-        loading: false,
-        items: [],
-        search: null,
-        select: null,
-        states: [
-          
-        ],
+  props: ["users"],
+  data() {
+    return {
+      loading: false,
+      items: [],
+      search: null,
+      select: null,
+      states: []
+    };
+  },
+
+  watch: {
+    search(val) {
+      val && val !== this.select && this.querySelections(val);
+    }
+  },
+  methods: {
+    onSelectedUser() {
+      if (this.select !== undefined) {
+        this.$emit("searchSelected", this.select);
+        // console.log("selected user",this.select)
       }
     },
-   
-    watch: {
-      search (val) {
-        val && val !== this.select && this.querySelections(val)
-      },
-    },
-    methods: {
-      onSelectedUser(){
-        if(this.select !== undefined){
-        this.$emit('searchSelected', this.select);
-        // console.log("selected user",this.select)
-        }
-      },
-      querySelections (v) {
-        let projectSearchList = this.users;
-        for (let index = 0; index < projectSearchList.length; ++index) {
-            let user = projectSearchList[index];
-            this.states.push({name: user.firstName + " " + user.lastName, id: user});
-        }
-        // console.log("usersList", this.users, "nameList", this.states)
-        this.loading = true
-        setTimeout(() => {
-          this.items = this.states.filter(e => {
-            return (e || '').toLowerCase().indexOf((v || '').toLowerCase()) > -1
-          })
-          this.loading = false
-        })
-        this.loading = false
-      },
-    },
+    querySelections(v) {
+      let projectSearchList = this.users;
+      for (let index = 0; index < projectSearchList.length; ++index) {
+        let user = projectSearchList[index];
+        this.states.push({
+          name: user.firstName + " " + user.lastName,
+          id: user
+        });
+      }
+      // console.log("usersList", this.users, "nameList", this.states)
+      this.loading = true;
+      setTimeout(() => {
+        this.items = this.states.filter(e => {
+          return (e || "").toLowerCase().indexOf((v || "").toLowerCase()) > -1;
+        });
+        this.loading = false;
+      });
+      this.loading = false;
+    }
   }
+};
 </script>
 
 <style scoped>
-.searchBar{
-  background-color: #EDF0F5 !important;
+.searchBar {
+  background-color: #edf0f5 !important;
 }
 </style>
