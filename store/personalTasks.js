@@ -3,11 +3,29 @@ import axios from 'axios';
 export const state = () => ({
   personalTasks: [],
   personalTaskFiles: [],
+  selectedTask: {},
 });
 
 export const mutations = {
   SET__PERSONAL_TASKS(state, personalTasks) {
     state.personalTasks = personalTasks;
+  },
+  SET_SELECTED_TASK(state, selectedTask) {
+    console.log('thistask', selectedTask);
+    state.selectedTask = selectedTask;
+  },
+  UPDATE_SELECTED_DATE(state, { type, date }) {
+    console.log('selectedtask', type, date);
+
+    const selectedTask = state.selectedTask;
+    if (type == 'dueDate') {
+      selectedTask.taskDueDateAt = date;
+    } else {
+      selectedTask.taskReminderAt = date;
+    }
+    console.log('selectedtask', selectedTask);
+    state.selectedTask = selectedTask;
+    console.log('selectedtask', state.selectedTask);
   },
   ADD_FILES_TO_PERSONAL_TASKS(state, files) {
     state.personalTaskFiles = files;
@@ -24,6 +42,12 @@ export const mutations = {
 };
 
 export const actions = {
+  setSelectedTask({ commit }, task) {
+    commit('SET_SELECTED_TASK', task);
+  },
+  updateProjectDates({ commit }, { type, date }) {
+    commit('UPDATE_SELECTED_DATE', { type, date });
+  },
   fetchAllPersonalTasks({ commit, rootState }) {
     const userId = rootState.user.userId;
     this.$axios

@@ -64,17 +64,6 @@ export const mutations = {
       state.allTasks.splice(index, 1, task);
     }
   },
-  // UPDATE_SELECTED_DATE(state, { type, date }) {
-  //   console.log('selectedtask', dueDate);
-  //   console.log('selectedtask', remindDate);
-
-  //   const selectedTask = state.selectedTask;
-  //   selectedTask.taskDueDateAt = dueDate;
-  //   selectedTask.taskReminderAt = remindDate;
-  //   console.log('selectedtask', selectedTask);
-  //   state.selectedTask = selectedTask;
-  //   console.log('selectedtask', state.selectedTask);
-  // },
 
   UPDATE_SELECTED_DATE(state, { type, date }) {
     // console.log('selectedtask', type, date);

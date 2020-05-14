@@ -170,7 +170,7 @@
                       <v-list-item-title>
                         {{
                         getProjectDisplayDates(
-                        this.task.taskDueDateAt
+                        this.selectedTask.taskDueDateAt
                         )
                         }}
                       </v-list-item-title>
@@ -224,7 +224,7 @@
                       <v-list-item-title>
                         {{
                         getProjectDisplayDates(
-                        this.task.taskReminderAt
+                        this.selectedTask.taskReminderAt
                         )
                         }}
                       </v-list-item-title>
@@ -236,7 +236,7 @@
                         v-model="taskRemindOn"
                         zone="local"
                         input-id="remindDate"
-                        :max-datetime="this.task.taskDueDateAt"
+                        :max-datetime="this.selectedTask.taskDueDateAt"
                       >
                         <label for="remindDate" slot="before" class="tabListItemsTextDue">
                           <!-- <span class="dialogPickerNewText">Remind Date</span> -->
@@ -500,7 +500,7 @@ export default {
       let response;
       try {
         response = await this.$axios.$delete(
-          `/non-project/tasks/personal/${this.task.taskId}`,
+          `/non-project/tasks/personal/${this.selectedTask.taskId}`,
           {
             data: {},
             headers: {
@@ -531,7 +531,7 @@ export default {
       let response;
       try {
         response = await this.$axios.$put(
-          `/non-project/tasks/personal/${this.task.taskId}`,
+          `/non-project/tasks/personal/${this.selectedTask.taskId}`,
           {
             taskStatus: this.updatedStatus
           },
@@ -562,7 +562,7 @@ export default {
       let response;
       try {
         response = await this.$axios.$put(
-          `/non-project/tasks/personal/${this.task.taskId}`,
+          `/non-project/tasks/personal/${this.selectedTask.taskId}`,
           {
             taskName: this.updatedTask.taskName
           },
@@ -598,7 +598,7 @@ export default {
 
       try {
         response = await this.$axios.$put(
-          `/non-project/tasks/personal/${this.task.taskId}`,
+          `/non-project/tasks/personal/${this.selectedTask.taskId}`,
           {
             taskNotes: this.updatedTask.taskNote
           },
@@ -610,6 +610,7 @@ export default {
         );
         this.component = "success-popup";
         this.successMessage = "Note successfully updated";
+        this.$store.dispatch("personalTasks/fetchAllPersonalTasks");
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -633,6 +634,7 @@ export default {
       );
       let dueDate;
       let remindDate;
+      let changedDate = {};
       if (type === "dueDate" && this.updatedTask.taskDueDateAt != "") {
         console.log("inside due date");
         dueDate = new Date(this.updatedTask.taskDueDateAt);
@@ -641,7 +643,14 @@ export default {
         ).toISOString();
         console.log("iso edit due date", isoDate);
         dueDate = isoDate;
+        changedDate = {
+          taskDueDate: dueDate
+        };
         remindDate = this.updatedTask.taskRemindOnDate;
+        this.$store.dispatch("personalTasks/updateProjectDates", {
+          type: "dueDate",
+          date: dueDate
+        });
       } else if (this.updatedTask.taskRemindOnDate != "") {
         console.log("inside remind on date");
         remindDate = new Date(this.updatedTask.taskRemindOnDate);
@@ -651,23 +660,28 @@ export default {
         console.log("iso edit remind date", isoDate);
         dueDate = this.updatedTask.taskDueDateAt;
         remindDate = isoDate;
+        changedDate = {
+          taskRemindOnDate: remindDate
+        };
+        this.$store.dispatch("personalTasks/updateProjectDates", {
+          type: "remindDate",
+          date: remindDate
+        });
       }
       console.log("dueDate", dueDate);
       console.log("remindDate", remindDate);
       let response;
       try {
         response = await this.$axios.$put(
-          `/non-project/tasks/personal/${this.task.taskId}`,
-          {
-            taskDueDate: dueDate,
-            taskRemindOnDate: remindDate
-          },
+          `/non-project/tasks/personal/${this.selectedTask.taskId}`,
+          changedDate,
           {
             headers: {
               user: this.userId
             }
           }
         );
+        //remove
         this.$store.dispatch("personalTasks/fetchAllPersonalTasks");
         this.component = "success-popup";
         this.successMessage = "Date successfully updated";
@@ -697,7 +711,7 @@ export default {
           let fileResponse;
           try {
             fileResponse = await this.$axios.$post(
-              `/personal/tasks/${this.task.taskId}/upload`,
+              `/personal/tasks/${this.selectedTask.taskId}/upload`,
               formData,
               {
                 headers: {
@@ -734,7 +748,7 @@ export default {
       let response;
       try {
         response = await this.$axios.$delete(
-          `/non-project/tasks/personal/${this.task.taskId}/files/${taskFileId}`,
+          `/non-project/tasks/personal/${this.selectedTask.taskId}/files/${taskFileId}`,
           {
             data: {},
             headers: {
@@ -818,7 +832,7 @@ export default {
     },
 
     isTaskAssignee(taskAssignee) {
-      if (taskAssignee.assigneeId == this.task.taskAssignee) {
+      if (taskAssignee.assigneeId == this.selectedTask.taskAssignee) {
         return true;
       } else {
         return false;
@@ -836,7 +850,7 @@ export default {
     //   if (Object.keys(this.selectedTaskUser).length === 0) {
     //     this.$store.dispatch(
     //       "user/setSelectedTaskUser",
-    //       this.task.taskAssignee
+    //       this.selectedTask.taskAssignee
     //     );
     //     return "";
     //   } else {
@@ -850,7 +864,7 @@ export default {
       projectSprints: state => state.sprints.sprint.sprints,
       projectAllTasks: state => state.task.allTasks,
       projectId: state => state.project.project.projectId,
-      selectedTaskUser: state => state.user.selectedTaskUser,
+      selectedTask: state => state.personalTasks.selectedTask,
       taskFiles: state => state.personalTasks.personalTaskFiles
     }),
     ...mapGetters(["getuserCompletionTasks"]),
@@ -869,7 +883,7 @@ export default {
     taskName: {
       get() {
         if (this.updatedTask.taskName == "") {
-          return this.task.taskName;
+          return this.selectedTask.taskName;
         } else return this.updatedTask.taskName;
       },
       set(name) {
@@ -878,7 +892,7 @@ export default {
     },
     taskStatus: {
       get() {
-        return this.task.taskStatus;
+        return this.selectedTask.taskStatus;
       },
       set(value) {
         console.log("task status", value);
@@ -888,7 +902,7 @@ export default {
 
     taskNote: {
       get() {
-        return this.task.taskNote;
+        return this.selectedTask.taskNote;
       },
       set(value) {
         this.updatedTask.taskNote = value;
@@ -898,11 +912,13 @@ export default {
     taskDue: {
       get() {
         if (
-          this.task.taskDueDateAt === null ||
-          this.task.taskDueDateAt === "1970-01-01T05:30:00.000+0000"
+          this.selectedTask.taskDueDateAt === null ||
+          this.selectedTask.taskDueDateAt === "1970-01-01T05:30:00.000+0000"
         )
           return null;
-        let stringDate = this.task.taskDueDateAt + " ";
+        // if (this.updatedTask.taskDueDateAt !== "")
+        //   return this.updatedTask.taskDueDateAt;
+        let stringDate = this.selectedTask.taskDueDateAt + " ";
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 16);
         return stringDate;
@@ -915,17 +931,17 @@ export default {
     taskRemindOn: {
       get() {
         if (
-          this.task.taskReminderAt === null ||
-          this.task.taskDueDateAt === "1970-01-01T05:30:00.000+0000"
+          this.selectedTask.taskReminderAt === null ||
+          this.selectedTask.taskDueDateAt === "1970-01-01T05:30:00.000+0000"
         )
           return "Add Reminder Date";
-        let stringDate = this.task.taskReminderAt + "";
+        let stringDate = this.selectedTask.taskReminderAt + "";
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 16);
         return stringDate;
       },
       set(value) {
-        console.log("updated task reminder ->", value);
+        console.log("updated selectedTask reminder ->", value);
         this.updatedTask.taskRemindOnDate = value;
       }
     }
