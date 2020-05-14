@@ -9,6 +9,9 @@ import NavigationDrawer from "~/components/navigationDrawer";
 export default {
   components: {
     NavigationDrawer
+  },
+  created() {
+    this.$store.dispatch("project/clearProject");
   }
 };
 </script>

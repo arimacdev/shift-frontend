@@ -129,7 +129,9 @@ export default {
   },
   async created() {
     this.$store.dispatch("groups/group/fetchMyGroups");
+    this.$store.dispatch("project/clearProject");
   },
+
   computed: {
     ...mapState({
       groups: state => state.groups.group.myGroups

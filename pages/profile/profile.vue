@@ -48,6 +48,9 @@ export default {
       user: user
     };
   },
+  created() {
+    this.$store.dispatch("project/clearProject");
+  },
 
   methods: {
     selectProject(userData) {
