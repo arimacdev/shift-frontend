@@ -895,6 +895,7 @@ export default {
       );
       let dueDate;
       let remindDate;
+      let changedDate = {};
       if (type === "dueDate" && this.updatedTask.taskDueDateAt != "") {
         console.log("inside due date");
         dueDate = new Date(this.updatedTask.taskDueDateAt);
@@ -904,6 +905,13 @@ export default {
         console.log("iso edit due date", isoDate);
         dueDate = isoDate;
         remindDate = this.updatedTask.taskRemindOnDate;
+        this.$store.dispatch("groups/groupTask/updateProjectDates", {
+          type: "dueDate",
+          date: dueDate
+        });
+        changedDate = {
+          taskDueDate: dueDate
+        };
       } else if (this.updatedTask.taskRemindOnDate != "") {
         console.log("inside remind on date");
         remindDate = new Date(this.updatedTask.taskRemindOnDate);
@@ -913,6 +921,13 @@ export default {
         console.log("iso edit remind date", isoDate);
         dueDate = this.updatedTask.taskDueDateAt;
         remindDate = isoDate;
+        this.$store.dispatch("groups/groupTask/updateProjectDates", {
+          type: "remindDate",
+          date: remindDate
+        });
+        changedDate = {
+          taskRemindOnDate: remindDate
+        };
       }
       console.log("dueDate", dueDate);
       console.log("remindDate", remindDate);
@@ -920,10 +935,7 @@ export default {
       try {
         response = await this.$axios.$put(
           `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}`,
-          {
-            taskDueDate: dueDate,
-            taskRemindOnDate: remindDate
-          },
+          changedDate,
           {
             headers: {
               user: this.userId
@@ -932,6 +944,10 @@ export default {
         );
         this.component = "success-popup";
         this.successMessage = "Date successfully updated";
+        // this.$store.dispatch("groups/groupTask/updateProjectDates", {
+        //   type: dueDate,
+        //   date: remindDate
+        // });
         this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
           taskGroupId: this.task.taskGroupId,
           userId: this.userId
@@ -1093,12 +1109,6 @@ export default {
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
         return "Add Task Date";
-      } else if (now.getDate() === dueToUtcDate.getDate()) {
-        return "Today";
-      } else if (now.getDate() - 1 === dueToUtcDate.getDate()) {
-        return "Yesterday";
-      } else if (now.getDate() + 1 === dueToUtcDate.getDate()) {
-        return "Tomorrow";
       } else {
         let stringDate = date + "";
         stringDate = stringDate.toString();
