@@ -95,7 +95,8 @@
                 :to="'/task/' +   this.parentTask.taskId + '/?project=' +  this.projectId"
                 style="text-decoration: none;"
               >
-                <v-icon size="22" color="#0083E2">mdi-calendar-check</v-icon>Parent Task
+                <v-icon size="22" color="#0083E2">mdi-calendar-check</v-icon>
+                {{this.parentTask.secondaryTaskId}}
               </nuxt-link>
               <span v-if="this.task.isParent == false">/</span>
 
@@ -104,7 +105,8 @@
                 style="text-decoration: none; color: #B9B9B9"
                 class="currentTaskColor"
               >
-                <v-icon size="22" color="#B9B9B9">mdi-calendar-check-outline</v-icon>Current Task
+                <v-icon size="22" color="#B9B9B9">mdi-calendar-check-outline</v-icon>
+                {{this.task.secondaryTaskId}}
               </nuxt-link>
             </v-col>
           </v-row>

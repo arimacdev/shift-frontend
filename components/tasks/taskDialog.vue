@@ -44,9 +44,6 @@
             <v-col sm="2" md="2">
               <div class="taskStatusDropdown">{{taskStatus}}</div>
             </v-col>
-            <v-col sm="2" md="2">
-              <!-- {{task.taskStatus.charAt(0).toUpperCase()+ task.taskStatus.slice(1)}} -->
-            </v-col>
             <v-col sm="8" md="8" class="taskViewLinksDiv">
               <nuxt-link
                 :to="'/projects/'  +  this.projectId"
@@ -61,7 +58,8 @@
                 :to="'/task/' +    this.taskObject.parentTask.taskId + '/?project=' +  this.projectId"
                 style="text-decoration: none;"
               >
-                <v-icon size="22" color="#0083E2">mdi-calendar-check</v-icon>Parent Task
+                <v-icon size="22" color="#0083E2">mdi-calendar-check</v-icon>
+                {{this.taskObject.parentTask.secondaryTaskId}}
               </nuxt-link>
               <span v-if="selectedTask.isParent == false">/</span>
 
@@ -70,7 +68,8 @@
                 target="_blank"
                 style="text-decoration: none; color: #B9B9B9"
               >
-                <v-icon size="22" color="#B9B9B9">mdi-calendar-check-outline</v-icon>Current Task
+                <v-icon size="22" color="#B9B9B9">mdi-calendar-check-outline</v-icon>
+                {{selectedTask.secondaryTaskId}}
               </nuxt-link>
             </v-col>
           </v-row>
@@ -1054,7 +1053,6 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
           {
-            taskStatus: this.taskStatus,
             issueType: this.updatedIssue
           },
           {
@@ -1290,6 +1288,10 @@ export default {
           }
         );
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$store.dispatch("task/updateProjectDates", {
+          dueDate: dueDate,
+          remindDate: remindDate
+        });
         this.component = "success-popup";
         this.successMessage = "Date successfully updated";
         setTimeout(() => {
