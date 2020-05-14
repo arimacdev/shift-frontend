@@ -895,6 +895,7 @@ export default {
       );
       let dueDate;
       let remindDate;
+      let changedDate = {};
       if (type === "dueDate" && this.updatedTask.taskDueDateAt != "") {
         console.log("inside due date");
         dueDate = new Date(this.updatedTask.taskDueDateAt);
@@ -908,6 +909,9 @@ export default {
           type: "dueDate",
           date: dueDate
         });
+        changedDate = {
+          taskDueDate: dueDate
+        };
       } else if (this.updatedTask.taskRemindOnDate != "") {
         console.log("inside remind on date");
         remindDate = new Date(this.updatedTask.taskRemindOnDate);
@@ -921,6 +925,9 @@ export default {
           type: "remindDate",
           date: remindDate
         });
+        changedDate = {
+          taskRemindOnDate: remindDate
+        };
       }
       console.log("dueDate", dueDate);
       console.log("remindDate", remindDate);
@@ -928,10 +935,7 @@ export default {
       try {
         response = await this.$axios.$put(
           `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}`,
-          {
-            taskDueDate: dueDate,
-            taskRemindOnDate: remindDate
-          },
+          changedDate,
           {
             headers: {
               user: this.userId
