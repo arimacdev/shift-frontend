@@ -177,6 +177,8 @@ export default {
           taskGroupId: this.groupId,
           userId: this.userId
         });
+        this.$store.dispatch("groups/groupTask/addParentTask", this.taskId);
+
         // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         // this.$store.dispatch("task/setCurrentTask", {
         //   projectId: this.projectId,

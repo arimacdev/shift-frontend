@@ -477,6 +477,11 @@ export default {
                   taskGroupId: this.task.taskGroupId,
                   taskId: this.task.taskId
                 });
+              } else {
+                this.$store.dispatch(
+                  "groups/groupTask/addParentTask",
+                  this.task.parentId
+                );
               }
             } catch (error) {
               console.log("Error fetching data", error);

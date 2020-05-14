@@ -3,6 +3,16 @@ export const state = () => ({
   groupTaskFiles: [],
   selectedGroupTask: {},
   children: [],
+  parentTask: {
+    taskId: '',
+    taskName: '',
+    taskAssignee: '',
+    taskGroupId: '',
+    taskStatus: '',
+    taskDueDateAt: '',
+    taskAssigneeProfileImage: '',
+    isParent: true,
+  },
 });
 
 export const mutations = {
@@ -37,6 +47,26 @@ export const mutations = {
     if (index > -1) {
       state.groupTaskFiles.splice(index, 1);
     }
+  },
+
+  ADD_PARENT_TASK(state, taskId) {
+    console.log('parenttaskiD', taskId);
+
+    console.log('parent', state.groupTasks);
+    for (let index = 0; index < state.groupTasks.length; index++) {
+      const parentTask = state.groupTasks[index];
+      console.log('parent', parentTask.parentTask);
+
+      if (parentTask.parentTask.taskId === taskId) {
+        state.parentTask = parentTask.parentTask;
+      }
+    }
+    console.log('parent!', state.parentTask);
+
+    // const index = state.groupTasks.findIndex((i) => i.taskId === taskId);
+    // console.log('parent', index);
+    // const parent = state.groupTasks[index];
+    // state.parent = parent;
   },
 
   UPDATE_GROUP_TASK(state, { taskId, type, value }) {
@@ -197,6 +227,10 @@ export const actions = {
       .catch((e) => {
         console.log('error retrieving children', e);
       });
+  },
+
+  addParentTask({ commit }, taskId) {
+    commit('ADD_PARENT_TASK', taskId);
   },
 };
 
