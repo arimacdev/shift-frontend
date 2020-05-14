@@ -35,7 +35,7 @@ export const actions = {
         },
       })
       .then((response) => {
-        console.log('All My Groups Retieved', response.data.data);
+        // console.log('All My Groups Retieved', response.data.data);
         commit('SET_MY_GROUPS', response.data.data);
       })
       .catch((e) => {
@@ -51,7 +51,7 @@ export const actions = {
         taskGroupName: groupName,
         taskGroupCreator: userId,
       });
-      console.log('Group Added', response.data);
+      // console.log('Group Added', response.data);
       commit('ADD_MY_GROUP', response.data);
     } catch (e) {
       console.log('Error adding a group', e);

@@ -139,7 +139,7 @@ export default {
   props: ["task", "projectId"],
   methods: {
     fetchSubtasks() {
-      console.log("fetch sub task");
+      // console.log("fetch sub task");
     },
 
     getDueDate(date) {
@@ -147,7 +147,7 @@ export default {
       let stringDate = date + " ";
       stringDate = stringDate.toString();
       stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 16);
-      console.log("strin date ========> " + stringDate);
+      // console.log("strin date ========> " + stringDate);
       return stringDate;
     }
   },

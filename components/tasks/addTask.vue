@@ -441,12 +441,12 @@ export default {
           );
           const dueToUtcDate = new Date(dueToUtc);
           const now = new Date();
-          console.log(
-            "now",
-            now.getTime(),
-            "DueTime",
-            dueToUtcDate.getTime() + 350000000
-          );
+          // console.log(
+          //   "now",
+          //   now.getTime(),
+          //   "DueTime",
+          //   dueToUtcDate.getTime() + 350000000
+          // );
           if (now.getTime() >= dueToUtcDate.getTime() + 35000000) {
             return false;
           } else {
@@ -469,14 +469,14 @@ export default {
           );
           const endToUtcDate = new Date(endToUtc);
           const taskDueDate = new Date(this.taskDueDate);
-          console.log(
-            "start",
-            taskDueDate.getTime(),
-            "end",
-            endToUtcDate.getTime() + 35000000
-          );
+          // console.log(
+          //   "start",
+          //   taskDueDate.getTime(),
+          //   "end",
+          //   endToUtcDate.getTime() + 35000000
+          // );
           if (taskDueDate.getTime() <= endToUtcDate.getTime()) {
-            console.log("overdue");
+            // console.log("overdue");
             return false;
           } else {
             return true;
@@ -490,11 +490,11 @@ export default {
       let stringDate = this.fetchProject.projectEndDate + "";
       stringDate = stringDate.toString();
       stringDate = stringDate.slice(0, 10) + " " + "23:59";
-      console.log("max date : " + stringDate);
+      // console.log("max date : " + stringDate);
       return stringDate;
     },
     querySelections(v) {
-      console.log("people list", this.people);
+      // console.log("people list", this.people);
       this.states = [];
       let projectSearchList = this.people;
       for (let index = 0; index < projectSearchList.length; ++index) {
@@ -505,11 +505,11 @@ export default {
           img: user.assigneeProfileImage
         });
       }
-      console.log("nameList", this.states);
+      // console.log("nameList", this.states);
       this.loading = true;
     },
     getSprintDetails(v) {
-      console.log("board list", this.projectSprints);
+      // console.log("board list", this.projectSprints);
       this.sprints = [];
       let sprintSearchList = this.projectSprints;
       for (let index = 0; index < sprintSearchList.length; ++index) {
@@ -519,11 +519,11 @@ export default {
           id: sprint.sprintId
         });
       }
-      console.log("nameList", this.states);
+      // console.log("nameList", this.states);
       this.loading = true;
     },
     getParentTasks(v) {
-      console.log("parent task list", this.projectAllTasks);
+      // console.log("parent task list", this.projectAllTasks);
       this.parentTasks = [];
       let parentSearchList = this.projectAllTasks;
       this.parentTasks.push({
@@ -538,7 +538,7 @@ export default {
         });
       }
 
-      console.log("nameList", this.states);
+      // console.log("nameList", this.states);
       this.loading = true;
     },
     getDueDate() {
@@ -549,7 +549,7 @@ export default {
         const isoDate = new Date(
           startDate.getTime() - startDate.getTimezoneOffset() * 60000
         ).toISOString();
-        console.log("iso due date", isoDate);
+        // console.log("iso due date", isoDate);
         return isoDate;
       }
     },
@@ -561,7 +561,7 @@ export default {
         const isoDate = new Date(
           endDate.getTime() - endDate.getTimezoneOffset() * 60000
         ).toISOString();
-        console.log("iso remond on date", isoDate);
+        // console.log("iso remond on date", isoDate);
         return isoDate;
       }
     },
@@ -611,7 +611,7 @@ export default {
 
         let taskId = response.data.taskId;
         if (this.files != null) {
-          console.log("files ------>" + this.files);
+          // console.log("files ------>" + this.files);
           for (let index = 0; index < this.files.length; ++index) {
             let formData = new FormData();
             formData.append("files", this.files[index]);
@@ -638,11 +638,11 @@ export default {
         }
         this.files = null;
         if (this.taskAssignee === this.userId) {
-          console.log("assignee is me", this.taskAssignee, this.userId);
+          // console.log("assignee is me", this.taskAssignee, this.userId);
           this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
           this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         } else {
-          console.log("assignee is NOT me", this.taskAssignee);
+          // console.log("assignee is NOT me", this.taskAssignee);
           this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         }
         (this.taskName = ""),
@@ -686,7 +686,7 @@ export default {
     },
     addTaskAssignee: {
       get() {
-        console.log("Task assignee -->!", this.taskAssignee);
+        // console.log("Task assignee -->!", this.taskAssignee);
         return this.taskAssignee;
       },
       set(value) {

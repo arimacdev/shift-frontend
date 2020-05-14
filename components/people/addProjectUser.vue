@@ -21,13 +21,6 @@
               <v-icon class size="60" color="deep-orange lighten-1">mdi-account-plus</v-icon>
               <v-card-text class="deletePopupTitle">Add member to project</v-card-text>
               <v-card-actions>
-                <!-- <select v-model="addUser.assigneeId" class="formElements popupFormElement">
-              <option disabled value="" >Assignee</option>
-              <option v-for="(user, index) in users" :key="index" :value="user.userId">
-                {{user.firstName}} {{user.lastName}}
-              </option>
-                </select>-->
-
                 <v-autocomplete
                   filled
                   label="Select user*"
@@ -155,12 +148,9 @@ export default {
     onSelectedUser() {
       if (this.select !== undefined) {
         this.$emit("searchSelected", this.select);
-        // console.log("selected user",this.select)
       }
     },
     async changeHandler() {
-      // this.dialog = false;
-
       let assigneeProjectRoleId = this.getProjectRole();
       this.addUser.assigneeProjectRole = assigneeProjectRoleId;
       let response;
@@ -202,7 +192,6 @@ export default {
           img: user.profileImage
         });
       }
-      // console.log("usersList", this.users, "nameList", this.states)
       this.loading = true;
       setTimeout(() => {
         this.items = this.states.filter(e => {
@@ -213,7 +202,6 @@ export default {
       this.loading = false;
     },
     getProjectRole() {
-      console.log("getProjectRole", this.selected);
       if (this.selected == true) {
         return 2;
       } else {

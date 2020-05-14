@@ -143,9 +143,9 @@ export default {
           taskGroupId: this.group.taskGroupId,
           userId: this.userId
         });
-        console.log(response);
+        // console.log(response);
       } catch (e) {
-        console.log("Error adding a group", e);
+        // console.log("Error adding a group", e);
         this.errorMessage = e.response.data;
         this.component = "error-popup";
       }
@@ -177,7 +177,7 @@ export default {
           img: user.profileImage
         });
       }
-      console.log("usersList", this.users, "nameList", this.states);
+      // console.log("usersList", this.users, "nameList", this.states);
       this.loading = true;
       setTimeout(() => {
         this.items = this.states.filter(e => {
@@ -188,7 +188,7 @@ export default {
       this.loading = false;
     },
     getProjectRole() {
-      console.log("getProjectRole", this.selected);
+      // console.log("getProjectRole", this.selected);
       if (this.selected == true) {
         return 2;
       } else {

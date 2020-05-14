@@ -377,7 +377,7 @@ export default {
   },
   methods: {
     taskDialogClosing() {
-      console.log("Task Dialog Closing");
+      // console.log("Task Dialog Closing");
       this.taskDialog = false;
     },
     // ------- popup close ----------
@@ -419,15 +419,15 @@ export default {
     },
     async selectTask(task, taskObject) {
       this.taskObject = taskObject;
-      console.log("selectedTask sprint", task.sprintId);
+      // console.log("selectedTask sprint", task.sprintId);
       //  if(task.sprintId !== "default")
       this.task = task;
       this.$store.dispatch("task/setSelectedTask", task);
-      console.log("selectedTask", task);
+      // console.log("selectedTask", task);
       this.$axios
         .get(`/users/${this.task.taskAssignee}`)
         .then(async response => {
-          console.log("fetched task -->", response.data.data);
+          // console.log("fetched task -->", response.data.data);
           this.assignee = response.data.data;
           //if task fetch is successful,
           let subTaskResponse;
@@ -441,7 +441,7 @@ export default {
               }
             );
             this.$store.dispatch("user/setSelectedTaskUser", task.taskAssignee);
-            console.log("subtasks--->", subTaskResponse.data);
+            // console.log("subtasks--->", subTaskResponse.data);
             this.subTasks = subTaskResponse.data;
             //get files related to task
             let taskFilesResponse;
@@ -455,7 +455,7 @@ export default {
                   }
                 }
               );
-              console.log("files--->", taskFilesResponse.data);
+              // console.log("files--->", taskFilesResponse.data);
               this.taskFiles = taskFilesResponse.data;
             } catch (error) {
               console.log("Error fetching data", error);
@@ -469,7 +469,7 @@ export default {
         });
     },
     dueDateCheck(task) {
-      console.log("check due date color", task);
+      // console.log("check due date color", task);
       if (task.taskStatus === "closed") {
         return "boardTaskDone";
       } else if (task.taskDueDateAt == null) {
@@ -481,9 +481,9 @@ export default {
         );
         const dueToUtcDate = new Date(dueToUtc);
         const now = new Date();
-        console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
+        // console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
         if (now.getTime() > dueToUtcDate.getTime()) {
-          console.log("overdue");
+          // console.log("overdue");
           return "boardTaskOverDue";
         } else {
           return "boardTaskHealthy";
@@ -497,7 +497,7 @@ export default {
       );
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
-      console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
+      // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
         return "Add Due Date";

@@ -148,12 +148,12 @@ export default {
   },
   methods: {
     applyFilter() {
-      console.log("start WF", this.dateRange.start);
-      console.log("end WF", this.dateRange.end);
+      // console.log("start WF", this.dateRange.start);
+      // console.log("end WF", this.dateRange.end);
       const startDate = this.dateRange.start;
       const endDate = this.dateRange.end;
       if (startDate != null && endDate != null) {
-        console.log("selected both");
+        // console.log("selected both");
         let start = new Date(startDate);
         let end = new Date(endDate);
         const filterStart = new Date(
@@ -162,9 +162,9 @@ export default {
         const filterEnd = new Date(
           end.getTime() - end.getTimezoneOffset() * 60000
         ).toISOString();
-        console.log("filterStart", filterStart);
-        console.log("filterEnd", filterEnd);
-        console.log("selectedUser", this.selectedUser);
+        // console.log("filterStart", filterStart);
+        // console.log("filterEnd", filterEnd);
+        // console.log("selectedUser", this.selectedUser);
         this.$store.dispatch("workload/fetchAllWorkloadTasks", {
           userId: this.selectedUser,
           from: filterStart,
@@ -185,17 +185,17 @@ export default {
       });
     },
     showDates() {
-      console.log("fire event-----------");
-      console.log("iso Start date", this.getStartDate());
-      console.log("end WF", this.dateRange.end);
-      console.log("iso end date", this.getEndDate());
+      // console.log("fire event-----------");
+      // console.log("iso Start date", this.getStartDate());
+      // console.log("end WF", this.dateRange.end);
+      // console.log("iso end date", this.getEndDate());
     },
     getStartDate() {
       const startDate = new Date(this.dateRange.start);
       const isoDate = new Date(
         startDate.getTime() - startDate.getTimezoneOffset() * 60000
       ).toISOString();
-      console.log("iso Start date", isoDate);
+      // console.log("iso Start date", isoDate);
       return isoDate;
     },
     getEndDate() {
@@ -206,7 +206,7 @@ export default {
       const isoDate = new Date(
         endDate.getTime() - endDate.getTimezoneOffset() * 60000
       ).toISOString();
-      console.log("iso end date", isoDate);
+      // console.log("iso end date", isoDate);
       return isoDate;
     },
     selectTask(task, projectId) {
@@ -224,7 +224,7 @@ export default {
       );
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
-      console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
+      // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
         return "Add Due Date";
@@ -242,7 +242,7 @@ export default {
       }
     },
     dueDateCheck(task) {
-      console.log("check due date color", task);
+      // console.log("check due date color", task);
       if (task.taskStatus === "closed") {
         return "workLoadTaskDone";
       } else if (task.dueDate == null) {
@@ -255,15 +255,15 @@ export default {
         const dueToUtcDate = new Date(dueToUtc);
         const now = new Date();
         const today = dueToUtcDate.toDateString() === now.toDateString();
-        console.log("isToday--->", today);
+        // console.log("isToday--->", today);
         console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
         if (now.getTime() > dueToUtcDate.getTime()) {
-          console.log("overdue");
+          // console.log("overdue");
           return "workLoadTaskOverDue";
         } else if (today) {
           /// This is where I check
           return "workLoadTaskOverDue";
-          console.log("this is Today--->", today);
+          // console.log("this is Today--->", today);
         }
         {
           return "workLoadTaskHealthy";
@@ -277,18 +277,18 @@ export default {
     }),
     getDateRange: {
       get() {
-        console.log("get date range---->");
+        // console.log("get date range---->");
         return new Date();
       },
       set(value) {
         const startDate = value.start;
         const endDate = value.end;
-        console.log("set date range start --->", startDate);
-        console.log("set date range end --->", endDate);
+        // console.log("set date range start --->", startDate);
+        // console.log("set date range end --->", endDate);
         this.filterStart = value.start;
         this.filterEnd = value.end;
         if (startDate != null && endDate != null) {
-          console.log("Go Ahead!");
+          // console.log("Go Ahead!");
         }
       }
     }
@@ -296,23 +296,4 @@ export default {
 };
 </script>
 
-// console.log("due date wf", task.dueDate); // const dueDate = new
-Date(task.dueDate); // console.log("due date --->", dueDate) // var
-timeZoneFromDB = -5.30; // var tzDifference = timeZoneFromDB * 60 +
-dueDate.getTimezoneOffset(); // var offsetTime = new Date(dueDate.getTime() +
-tzDifference * 60 * 1000); // console.log("offsettime", offsetTime) // var noq1
-= new Date(); // var now_utc = new Date(noq1.getUTCFullYear(),
-noq1.getUTCMonth(), noq1.getUTCDate(), noq1.getUTCHours(), noq1.getUTCMinutes(),
-noq1.getUTCSeconds()); // const new_date = new Date((now_utc * 1) +
-(330*60*1000)) // console.log("now date", noq1) // console.log("newdate",
-new_date, new_date.getTime()) // const AsiaCol = new
-Date(dueDate.toLocaleString("en-US", {timeZone: "UTC"})); // const AsiaColDate =
-new Date(AsiaCol); // console.log("ASIA",AsiaCol) // const isoDateqq = new
-Date(dueDate.getTime() - (dueDate.getTimezoneOffset() * 60000)).toISOString();
-// console.log("qq", isoDateqq); // const isoDate = dueDate.toUTCString(); //
-const isoDateS = dueDate.toISOString(); // console.log("due date iso", isoDate,
-isoDateS); // const now = new Date().toLocaleString("en-US", {timeZone:
-"Asia/Colombo"}); // const slNow = new Date(now); // console.log("duedate-->",
-dueDate, "now", slNow); // const isounix = Date.parse(isoDateS) //
-console.log("unix", isounix) // console.log("SLTime", slNow.getTime(),
-"DueTime", AsiaColDate.getTime());
+

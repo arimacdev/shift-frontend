@@ -95,22 +95,12 @@ export default {
       projectRoleRules: [value => !!value || "Project role is required!"]
     };
   },
-  // created(){
-  //     this.$axios.get (`users/project/${this.projectId}`)
-  //         .then (response => {
-  //         console.log("project users", response.data)
-  //         this.projectUsers = response.data.data;
-  //         })
-  //         .catch (e => {
-  //         console.log("error", e)
-  //     })
-  // },
   methods: {
     close() {
       this.component = "";
     },
     async changeHandler() {
-      console.log(this.isAdmin, this.jobRole);
+      // console.log(this.isAdmin, this.jobRole);
       this.dialog = false;
       let roleIdValue;
       if (this.isAdmin) {
@@ -120,7 +110,7 @@ export default {
       }
       let response;
       try {
-        console.log("edituser", this.editUser);
+        // console.log("edituser", this.editUser);
         response = await this.$axios.$put(
           `/projects/${this.projectId}/users/${this.editUser.assigneeId}`,
           {
@@ -139,7 +129,7 @@ export default {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
       }
-      console.log(response);
+      // console.log(response);
     }
   },
   computed: {

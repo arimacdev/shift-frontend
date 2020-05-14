@@ -102,7 +102,7 @@ export default {
   async asyncData({ $axios, app, store }) {
     let userId = store.state.user.userId;
     const { data: users } = await $axios.$get("/users");
-    console.log("users list", users);
+    // console.log("users list", users);
     return {
       users: users
     };
@@ -129,20 +129,6 @@ export default {
   },
   async created() {
     this.$store.dispatch("groups/group/fetchMyGroups");
-    //  const user = this.$store.state.user.userId;
-    //   let getGroupResponse;
-    //   try {
-    //       getGroupResponse = await this.$axios.$get('/taskgroup',
-    //       {
-    //           headers : {
-    //               user: user
-    //           }
-    //       })
-    //       this.groups = getGroupResponse.data
-    //       console.log("group get response", this.groups);
-    //   } catch(e) {
-    //       console.log("Error fetching groups",e);
-    //   }
   },
   computed: {
     ...mapState({
@@ -177,54 +163,13 @@ export default {
         taskGroupId: this.group.taskGroupId,
         userId: this.userId
       });
-      //  const user = this.$store.state.user.userId;
-      // let getGroupTaskResponse;
-      // try {
-      //     getGroupTaskResponse = await this.$axios.$get(`/projects/${this.group.taskGroupId}/tasks?userId=${this.userId}`,
-      //     {
-      //         headers : {
-      //             user: user,
-      //             type: 'taskGroup'
-      //         }
-      //     })
-      //     this.groupTasks = getGroupTaskResponse.data
-      //     console.log("group task get response", this.groupTasks);
-      // } catch(e) {
-      //     console.log("Error fetching group tasks",e);
-      // }
-
-      //     let getCompletionTaskResponse;
-      //     try {
-      //         getCompletionTaskResponse = await this.$axios.$get(`projects/${this.group.taskGroupId}/tasks/${this.userId}/completion/details`,
-      //         {
-      //             headers : {
-      //                 user: user,
-      //                 type: 'taskGroup'
-      //             }
-      //         })
-      //         this.completionTasks = getCompletionTaskResponse.data
-      //         console.log(" task completion get response", this.groupTasks);
-      //     } catch(e) {
-      //         console.log("Error fetching completion tasks",e);
-      //     }
     },
 
     async addGroup() {
       console.log("add group");
       this.$store.dispatch("groups/group/addGroup", this.groupName);
-      //   let response;
-      //     try{
-      //     response = await this.$axios.$post(`/taskgroup`,
-      //     {
-      //       taskGroupName: this.groupName,
-      //       taskGroupCreator: this.userId,
-      //     }
-      //   )
+
       this.groupName = "";
-      //   console.log(response);
-      //  } catch(e){
-      //     console.log("Error adding a group", e);
-      //  }
     }
   }
 };

@@ -141,20 +141,10 @@ export default {
       progress: this.progress
     };
   },
-  // created(){
-  //     console.log("projectId", this.projectId)
-  //     this.$axios.get (`/projects/${this.projectId}/tasks/138bbb3d-02ed-4d72-9a03-7e8cdfe89eff/completion/details`)
-  //             .then (response => {
-  //             console.log("project users List", response.data)
-  //             this.userList = response.data.data;
-  //             })
-  //             .catch (e => {
-  //             console.log("error", e)
-  //             })
-  // },
+
   methods: {
     fetchUsers() {
-      console.log("projectId", this.projectId);
+      // console.log("projectId", this.projectId);
     }
   },
   computed: {

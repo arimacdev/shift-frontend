@@ -29,7 +29,7 @@ export const actions = {
     this.$axios
       .get(`/non-project/tasks/personal/user/${userId}`)
       .then((response) => {
-        console.log('All Personal Tasks are Fetched', response.data.data);
+        // console.log('All Personal Tasks are Fetched', response.data.data);
         commit('SET__PERSONAL_TASKS', response.data.data);
       })
       .catch((e) => {
@@ -49,7 +49,7 @@ export const actions = {
             },
           }
         );
-        console.log('files--->', taskFilesResponse.data);
+        // console.log('files--->', taskFilesResponse.data);
         commit('ADD_FILES_TO_PERSONAL_TASKS', taskFilesResponse.data);
       } catch (error) {
         console.log('Error fetching data', error);

@@ -108,7 +108,7 @@ export default {
           name: this.groupName
         });
       } catch (e) {
-        console.log("Error edit user", e);
+        // console.log("Error edit user", e);
         this.errorMessage = e.response.data;
         this.component = "error-popup";
       }
@@ -130,7 +130,7 @@ export default {
           "groups/group/removeGroup",
           this.group.taskGroupId
         );
-        console.log("delete group", response);
+        // console.log("delete group", response);
       } catch (e) {
         this.component = "error-popup";
         this.errorMessage = e.response.data;

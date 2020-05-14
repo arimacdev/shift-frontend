@@ -48,7 +48,7 @@ export default {
       } catch (e) {
         console.log("Error blocking user", e);
       }
-      console.log(response);
+      // console.log(response);
     }
   }
 };

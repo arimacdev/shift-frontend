@@ -108,18 +108,7 @@ export default {
           break;
       }
     },
-    onSelectProject() {
-      //      this.$axios.get(`projects/${this.project.projectId}/tasks/completion`, {
-      //    headers: {
-      //     user: this.userId,
-      //  }
-      //    .then (response => {
-      //  this.taskCompletion = response.data.data;
-      // })
-      // .catch (e => {
-      //  console.log("error", e)
-      // })
-    } // })
+    onSelectProject() {}
   }
 };
 </script>

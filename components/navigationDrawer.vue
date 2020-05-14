@@ -123,7 +123,7 @@ export default {
       organizationalRole: state => state.user.organizationalRole
     }),
     profileImage() {
-      console.log("profile image", this.profilePic);
+      // console.log("profile image", this.profilePic);
     }
   },
 

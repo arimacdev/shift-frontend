@@ -522,7 +522,7 @@ export default {
             projectAlias: this.updateProject.projectAlias
           }
         );
-        console.log("project edit response ----------> ", response);
+        // console.log("project edit response ----------> ", response);
         this.$store.dispatch(
           "project/fetchProject",
           this.fetchProject.projectId
@@ -531,9 +531,9 @@ export default {
           this.updateProject.projectStatus === "" ||
           this.updateProject.projectStatus === this.fetchProject.projectStatus
         ) {
-          console.log("i won't fetch");
+          // console.log("i won't fetch");
         } else {
-          console.log("i will fetch");
+          // console.log("i will fetch");
           this.$store.dispatch("project/fetchAllProjects");
         }
         this.component = "success-popup";
@@ -555,7 +555,7 @@ export default {
       this.component = "";
     },
     async deleteData() {
-      console.log(this.fetchProject.projectId);
+      // console.log(this.fetchProject.projectId);
       let response;
       try {
         response = await this.$axios.$delete(
@@ -581,16 +581,16 @@ export default {
       }
     },
     getProjectDates(date, type) {
-      console.log(date);
+      // console.log(date);
       let stringDate = new Date(date);
-      console.log(stringDate);
+      // console.log(stringDate);
       let formateedDate =
         stringDate.getFullYear() +
         "-" +
         stringDate.getMonth() +
         "-" +
         stringDate.getDate();
-      console.log("formateedDate for date", formateedDate);
+      // console.log("formateedDate for date", formateedDate);
       if (type === "startDate") {
         this.startDate = formateedDate;
       } else {
@@ -629,7 +629,7 @@ export default {
       stringDate = stringDate.slice(0, 10);
       let startDate = new Date(stringDate);
       let days = parseInt((now - startDate) / (1000 * 60 * 60 * 24), 10);
-      console.log("days", days);
+      // console.log("days", days);
       if (days < 0) return "0 Days";
       let months;
       let weeks;

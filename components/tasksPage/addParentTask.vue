@@ -86,8 +86,8 @@ export default {
     "error-popup": ErrorPopup
   },
   created() {
-    console.log("alltasks", this.groupAllTasks);
-    console.log("alltasks", this.groupAllTasks.length);
+    // console.log("alltasks", this.groupAllTasks);
+    // console.log("alltasks", this.groupAllTasks.length);
     if (this.groupAllTasks.length === 0) {
       // console.log("alltasks");
       // this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
@@ -127,7 +127,7 @@ export default {
       this.component = "";
     },
     getParentTasks(v) {
-      console.log("parent task list", this.groupAllTasks);
+      // console.log("parent task list", this.groupAllTasks);
       this.parentTasks = [];
       let parentSearchList = this.groupAllTasks;
       for (let index = 0; index < parentSearchList.length; ++index) {
@@ -140,7 +140,7 @@ export default {
         }
       }
 
-      console.log("nameList", this.states);
+      // console.log("nameList", this.states);
       this.loading = true;
     },
     onSelectedUser() {
@@ -151,7 +151,7 @@ export default {
     },
 
     async changeHandler() {
-      console.log("onchange task", this.parentTask);
+      // console.log("onchange task", this.parentTask);
       let response;
       try {
         response = await this.$axios.$put(
@@ -179,19 +179,10 @@ export default {
         });
         this.$store.dispatch("groups/groupTask/addParentTask", this.taskId);
 
-        // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
-        // this.$store.dispatch("task/setCurrentTask", {
-        //   projectId: this.projectId,
-        //   taskId: this.taskId
-        // });
-        // this.$store.dispatch("task/fetchParentTask", {
-        //   projectId: this.projectId,
-        //   taskId: this.taskId
-        // });
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("update parent task", response);
+        // console.log("update parent task", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";

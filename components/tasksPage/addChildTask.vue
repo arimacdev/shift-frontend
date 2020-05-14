@@ -118,7 +118,7 @@ export default {
       this.component = "";
     },
     getParentTasks(v) {
-      console.log("parent task list", this.groupAllTasks);
+      // console.log("parent task list", this.groupAllTasks);
       this.parentTasks = [];
       let parentSearchList = this.groupAllTasks;
       for (let index = 0; index < parentSearchList.length; ++index) {
@@ -134,7 +134,7 @@ export default {
         }
       }
 
-      console.log("nameList", this.states);
+      // console.log("nameList", this.states);
       this.loading = true;
     },
     onSelectedUser() {
@@ -146,7 +146,7 @@ export default {
 
     async changeHandler() {
       // console.log("onchange sprint", this.newTask);
-      console.log("onchange parent Task----->", this.parentTask, this.taskId);
+      // console.log("onchange parent Task----->", this.parentTask, this.taskId);
       let response;
       try {
         response = await this.$axios.$put(
@@ -185,7 +185,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("update parent task", response);
+        // console.log("update parent task", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";

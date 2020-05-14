@@ -77,7 +77,7 @@ export const mutations = {
   // },
 
   UPDATE_SELECTED_DATE(state, { type, date }) {
-    console.log('selectedtask', type, date);
+    // console.log('selectedtask', type, date);
 
     const selectedTask = state.selectedTask;
     if (type == 'dueDate') {
@@ -85,7 +85,7 @@ export const mutations = {
     } else {
       selectedTask.taskReminderAt = date;
     }
-    console.log('selectedtask', selectedTask);
+    // console.log('selectedtask', selectedTask);
     state.selectedTask = selectedTask;
     console.log('selectedtask', state.selectedTask);
   },
@@ -93,7 +93,7 @@ export const mutations = {
 
 export const actions = {
   setSelectedTask({ commit }, task) {
-    console.log('selected->>>', task);
+    // console.log('selected->>>', task);
     commit('SET_SELECTED_TASK', task);
   },
   async setCurrentTask({ commit, rootState }, { projectId, taskId }) {
@@ -109,14 +109,14 @@ export const actions = {
         }
       );
       commit('SET_SELECTED_TASK', taskResponse.data);
-      console.log('Selected Task get response', taskResponse.data);
+      // console.log('Selected Task get response', taskResponse.data);
     } catch (e) {
       console.log('Error fetching task', e);
     }
   },
 
   updateTask({ commit }, { taskId, taskName }) {
-    console.log('update task', taskId, taskName);
+    // console.log('update task', taskId, taskName);
     commit('UPDATE_TASK', { taskId, taskName });
   },
 
@@ -140,7 +140,7 @@ export const actions = {
         }
       );
       commit('SET_PARENT_TASK', taskResponse.data);
-      console.log('fetchParentTask', taskResponse.data);
+      // console.log('fetchParentTask', taskResponse.data);
       dispatch('user/fetchParentTaskUser', taskResponse.data.taskAssignee, {
         root: true,
       });
@@ -158,10 +158,10 @@ export const actions = {
         },
       })
       .then((response) => {
-        console.log(
-          'CHILD TASKS ARE RETRIEVED SUCCESSFULLY-->',
-          response.data.data
-        );
+        // console.log(
+        //   'CHILD TASKS ARE RETRIEVED SUCCESSFULLY-->',
+        //   response.data.data
+        // );
         commit('SET_CHILD_TASKS', response.data.data);
       })
       .catch((e) => {
@@ -177,10 +177,10 @@ export const actions = {
         },
       })
       .then((response) => {
-        console.log(
-          'ALL TASKS ARE RETRIEVED SUCCESSFULLY-->',
-          response.data.data
-        );
+        // console.log(
+        //   'ALL TASKS ARE RETRIEVED SUCCESSFULLY-->',
+        //   response.data.data
+        // );
         commit('SET_ALL_TASKS', response.data.data);
       })
       .catch((e) => {
@@ -193,10 +193,10 @@ export const actions = {
     this.$axios
       .get(`projects/${projectId}/tasks/user?userId=${userId}`)
       .then((response) => {
-        console.log(
-          'MY TASKS ARE RETRIEVED SUCCESSFULLY-->',
-          response.data.data
-        );
+        // console.log(
+        //   'MY TASKS ARE RETRIEVED SUCCESSFULLY-->',
+        //   response.data.data
+        // );
         commit('SET_MY_TASKS', response.data.data);
       })
       .catch((e) => {
@@ -214,7 +214,7 @@ export const actions = {
         },
       })
       .then((response) => {
-        console.log('Completion details -->', response.data.data);
+        // console.log('Completion details -->', response.data.data);
         commit('SET_USER_TASK_COMPLETION', response.data.data);
       })
       .catch((e) => {
@@ -233,10 +233,10 @@ export const actions = {
         },
       })
       .then((response) => {
-        console.log(
-          'project task completion from store -->',
-          response.data.data
-        );
+        // console.log(
+        //   'project task completion from store -->',
+        //   response.data.data
+        // );
         commit('SET_PROJECT_TASK_COMPLETION', response.data.data);
       })
       .catch((e) => {
@@ -245,12 +245,12 @@ export const actions = {
   },
 
   updateSprintOfATask({ commit }, { taskId, sprintId }) {
-    console.log('update sprint', sprintId, taskId);
+    // console.log('update sprint', sprintId, taskId);
     commit('UPDATE_TASK_SPRINT', { taskId, sprintId });
   },
 
   setTaskFiles({ commit }, taskFiles) {
-    console.log('taskFiles', taskFiles);
+    // console.log('taskFiles', taskFiles);
     commit('SET_TASK_FILES', taskFiles);
   },
 
@@ -267,7 +267,7 @@ export const actions = {
           },
         }
       );
-      console.log('store files--->', taskFilesResponse.data);
+      // console.log('store files--->', taskFilesResponse.data);
       commit('SET_TASK_FILES', taskFilesResponse.data);
     } catch (error) {
       console.log('Error fetching data', error);

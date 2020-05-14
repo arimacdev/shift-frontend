@@ -176,7 +176,7 @@ export default {
     },
 
     dueDateCheck(task) {
-      console.log("check due date color", task);
+      // console.log("check due date color", task);
       if (task.taskStatus === "closed") {
         return "workLoadTaskDone";
       } else if (
@@ -191,9 +191,9 @@ export default {
         );
         const dueToUtcDate = new Date(dueToUtc);
         const now = new Date();
-        console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
+        // console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
         if (now.getTime() > dueToUtcDate.getTime()) {
-          console.log("overdue");
+          // console.log("overdue");
           return "workLoadTaskOverDue";
         } else {
           return "workLoadTaskHealthy";
@@ -201,20 +201,20 @@ export default {
       }
     },
     shrinkSideBar() {
-      console.log("shrink side bar");
+      // console.log("shrink side bar");
       this.drawer = false;
     },
     async selectPersonalTask(personalTask) {
       this.task = personalTask;
-      console.log("selectedTask", personalTask);
+      // console.log("selectedTask", personalTask);
       this.$axios
         .get(`/users/${this.task.taskAssignee}`)
         .then(async response => {
-          console.log("fetched task -->", response.data.data);
+          // console.log("fetched task -->", response.data.data);
           this.assignee = response.data.data;
         })
         .catch(e => {
-          console.log("error", e);
+          // console.log("error", e);
         });
       this.$store.dispatch(
         "personalTasks/fetchAllPersonalTaskFiles",
@@ -222,7 +222,7 @@ export default {
       );
     },
     async addPersonalTask() {
-      console.log("add personal task");
+      // console.log("add personal task");
       let response;
       try {
         response = await this.$axios.$post(`/non-project/tasks/personal`, {
@@ -232,14 +232,14 @@ export default {
           taskRemindOnDate: null
         });
         this.personalTask = "";
-        console.log(response);
+        // console.log(response);
         this.$store.dispatch("personalTasks/fetchAllPersonalTasks");
         this.component = "success-popup";
         setTimeout(() => {
           this.close();
         }, 2000);
       } catch (e) {
-        console.log("Error adding a subTask", e);
+        // console.log("Error adding a subTask", e);
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -254,7 +254,7 @@ export default {
       );
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
-      console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
+      // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
         return "Add Due Date";
