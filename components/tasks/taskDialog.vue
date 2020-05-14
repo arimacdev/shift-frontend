@@ -119,7 +119,7 @@
             <v-row class="mb-12" no-gutters>
               <v-col sm="8" md="8">
                 <div class="leftSideColumn">
-                  <v-row class="addParentButtonRow" no-gutters>
+                  <v-row v-if="projectAllTasks.length != 1" class="addParentButtonRow" no-gutters>
                     <v-col sm="6" md="6" no-gutters></v-col>
                     <v-col sm="3" md="3" no-gutters>
                       <add-parent-task
@@ -1625,38 +1625,6 @@ export default {
         this.updatedTask.taskNote = value;
       }
     },
-
-    // taskDueDate: {
-    //   get() {
-    //     if (
-    //       this.updatedTaskDueDate == null ||
-    //       this.updatedTaskDueDate == "1970-01-01T05:30:00.000+0000"
-    //     )
-    //       this.updatedTaskDueDate = this.selectedTask.taskDueDateAt;
-
-    //     return this.updatedTaskDueDate;
-    //   },
-    //   set(value) {
-    //     console.log("set updated", value);
-    //     this.updatedTaskDueDate = value;
-    //   }
-    // },
-
-    // taskRemindOnDate: {
-    //   get() {
-    //     if (
-    //       this.updatedRemindOnDate == null ||
-    //       this.updatedRemindOnDate == "1970-01-01T05:30:00.000+0000"
-    //     )
-    //       this.updatedRemindOnDate = this.selectedTask.taskReminderAt;
-    //     // return this.selectedTask.taskReminderAt;
-    //     return this.updatedRemindOnDate;
-    //   },
-    //   set(value) {
-    //     console.log("updated remind on ->", value);
-    //     this.updatedRemindOnDate = value;
-    //   }
-    // }
 
     taskDue: {
       get() {
