@@ -1251,67 +1251,7 @@ export default {
         console.log("Error updating a note", e);
       }
     },
-    // ----------- update task dates -----------
-    // async updateTaskDates(type) {
-    //   console.log(
-    //     "task due updated ---------> " + this.updatedTask.taskDueDateAt
-    //   );
-    //   console.log(
-    //     "task remind updated ---------> " + this.updatedTask.taskRemindOnDate
-    //   );
-    //   let dueDate;
-    //   let remindDate;
-    //   if (type === "dueDate" && this.updatedTask.taskDueDateAt != "") {
-    //     console.log("inside due date");
-    //     dueDate = new Date(this.updatedTask.taskDueDateAt);
-    //     const isoDate = new Date(
-    //       dueDate.getTime() - dueDate.getTimezoneOffset() * 60000
-    //     ).toISOString();
-    //     console.log("iso edit due date", isoDate);
-    //     dueDate = isoDate;
-    //     remindDate = this.updatedTask.taskRemindOnDate;
-    //   } else if (this.updatedTask.taskRemindOnDate != "") {
-    //     console.log("inside remind on date");
-    //     remindDate = new Date(this.updatedTask.taskRemindOnDate);
-    //     const isoDate = new Date(
-    //       remindDate.getTime() - remindDate.getTimezoneOffset() * 60000
-    //     ).toISOString();
-    //     console.log("iso edit remind date", isoDate);
-    //     dueDate = this.updatedTask.taskDueDateAt;
-    //     remindDate = isoDate;
-    //   }
-    //   console.log("dueDate", dueDate);
-    //   console.log("remindDate", remindDate);
-    //   let response;
-    //   try {
-    //     response = await this.$axios.$put(
-    //       `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
-    //       {
-    //         taskDueDate: dueDate,
-    //         taskRemindOnDate: remindDate
-    //       },
-    //       {
-    //         headers: {
-    //           user: this.userId
-    //         }
-    //       }
-    //     );
-    //     this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
-    //     this.component = "success-popup";
-    //     this.successMessage = "Date successfully updated";
-    //     setTimeout(() => {
-    //       this.close();
-    //     }, 3000);
-    //     console.log("update task dates response", response);
-    //   } catch (e) {
-    //     this.errorMessage = e.response.data;
-    //     this.component = "error-popup";
-    //     setTimeout(() => {
-    //       this.close();
-    //     }, 3000);
-    //     console.log("Error updating a status", e);
-    //   }
-    // },
+
     async updateTaskDates(type) {
       let dueDate;
       let remindDate;

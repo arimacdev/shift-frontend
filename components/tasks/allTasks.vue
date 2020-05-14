@@ -180,14 +180,14 @@
           <!-- -------------- sub task design --------------- -->
           <div class="restructuredSubTaskCreate">
             <v-text-field
-              v-model="taskName"
+              v-model="subTaskName"
               background-color="#0BAFFF"
               solo
               dark
               prepend-inner-icon="mdi-plus-circle"
               label="Add a sub task..."
               class
-              @keyup.enter="addTask(task.parentTask.taskId, task.parentTask.issueType)"
+              @keyup.enter="addSubTask(subTaskName, task.parentTask.taskId, task.parentTask.issueType)"
               clearable
             ></v-text-field>
           </div>
@@ -563,29 +563,47 @@ export default {
             parentTaskId: selectedParentTask
           }
         );
-        // this.taskName = "";
         this.$refs.form.reset();
         this.component = "success-popup";
         this.successMessage = "Task added successfully";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Task adding successful", response);
-        if (this.taskAssignee === this.userId) {
-          console.log("assignee is me", this.taskAssignee, this.userId);
-          this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
-          this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
-        } else {
-          console.log("assignee is NOT me", this.taskAssignee);
-          this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
-        }
-        // (this.taskName = ""),
-        (this.taskAssignee = ""),
-          (this.taskStatus = "pending"),
-          (this.taskDueDate = new Date()),
-          (this.taskRemindOnDate = new Date()),
-          (this.taskNotes = ""),
-          (this.files = null);
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error updating a status", e);
+      }
+    },
+    async addSubTask(subTaskName, selectedParentTask, issueType) {
+      let response;
+      try {
+        response = await this.$axios.$post(
+          `/projects/${this.projectId}/tasks`,
+          {
+            taskName: subTaskName,
+            projectId: this.projectId,
+            taskInitiator: this.userId,
+            taskAssignee: this.userId,
+            taskDueDate: "",
+            taskRemindOnDate: "",
+            taskStatus: null,
+            taskNotes: "",
+            issueType: issueType,
+            parentTaskId: selectedParentTask
+          }
+        );
+        this.subTaskName = "";
+        this.component = "success-popup";
+        this.successMessage = "Task added successfully";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
