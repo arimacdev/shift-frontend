@@ -108,14 +108,6 @@
           <div class="card" v-for="(projectSprint, index) in projectSprints" :key="index">
             <div class="actualBoard" v-if="projectSprint.sprintId != 'default'">
               <div class="sprintTitle">
-                <!-- <span>Default Board</span> -->
-
-                <v-list-item-title>{{ projectSprint.sprintName }}</v-list-item-title>
-                <v-list-item-subtitle>
-                  {{
-                  projectSprint.sprintDescription
-                  }}
-                </v-list-item-subtitle>
                 <div class="sprintUpdateButton">
                   <v-tooltip left>
                     <template v-slot:activator="{ on }">
@@ -131,7 +123,16 @@
                     <span>Edit sprint details</span>
                   </v-tooltip>
                 </div>
+                <div class="sprintTitleName">
+                  <v-list-item-title>{{ projectSprint.sprintName }}</v-list-item-title>
+                  <v-list-item-subtitle>
+                    {{
+                    projectSprint.sprintDescription
+                    }}
+                  </v-list-item-subtitle>
+                </div>
               </div>
+
               <div class="boardTaskList overflow-y-auto">
                 <!-- -------- load parent tasks (project boards) ------------ -->
                 <div v-for="(task, index) in projectAllTasks" :key="index">

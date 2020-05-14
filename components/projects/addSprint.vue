@@ -36,12 +36,11 @@
               <div class="sprintDateRangePicker">
                 <v-text-field
                   v-model="sprintDescription"
-                  label="Sprint description*"
+                  label="Sprint description"
                   outlined
                   class
                   v-on="on"
                   clearable
-                  :rules="sprintDescriptionRules"
                   hide-details="auto"
                 ></v-text-field>
                 <!-- <v-dialog
