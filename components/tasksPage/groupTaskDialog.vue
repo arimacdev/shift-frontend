@@ -452,6 +452,7 @@
                         v-model="taskRemindOn"
                         zone="local"
                         input-id="remindDate"
+                        :max-datetime="this.task.taskDueDateAt"
                       >
                         <label for="remindDate" slot="before" class="tabListItemsTextDue">
                           <!-- <span class="dialogPickerNewText">Remind Date</span> -->
