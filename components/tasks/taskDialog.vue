@@ -603,7 +603,7 @@
                   <div v-if="this.selectedTask.taskDueDateAt == null" class="dateCoverPannel">
                     {{
                     getProjectDisplayDates(
-                    this.selectedTask.taskDueDateAt
+                    this.updatedTask.taskDueDateAt
                     )
                     }}
                   </div>
@@ -659,7 +659,7 @@
                   <div v-if="this.selectedTask.taskReminderAt == null" class="dateCoverPannel">
                     {{
                     getProjectDisplayDates(
-                    this.selectedTask.taskReminderAt
+                    this.updatedTask.taskRemindOnDate
                     )
                     }}
                   </div>
@@ -999,7 +999,7 @@ export default {
       const now = new Date();
       console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
-      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
+      if (date === "" || date === "1970-01-01T05:30:00.000+0000") {
         return "Add Task Date";
       } else if (now.getDate() === dueToUtcDate.getDate()) {
         return "Today";
