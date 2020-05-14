@@ -560,7 +560,18 @@
                       <v-icon size="35" color="#7CDD00">mdi-calendar-blank-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
+                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Due Date</v-list-item-subtitle>
+                      <v-list-item-title>
+                        {{
+                        getProjectDisplayDates(
+                        this.updatedTask.taskDueDateAt
+                        )
+                        }}
+                      </v-list-item-title>
+                    </v-list-item-content>
+                    <v-list-item-action>
                       <datetime
+                        hidden
                         type="datetime"
                         v-model="taskDue"
                         :max-datetime="this.fetchProject.projectEndDate"
@@ -568,14 +579,9 @@
                         input-id="dueDate"
                       >
                         <label for="dueDate" slot="before" class="tabListItemsTextDue">
-                          <span class="dialogPickerNewText">Due Date</span>
+                          <!-- <span class="dialogPickerNewText">Due Date</span> -->
                         </label>
-                        <label
-                          v-if="this.selectedTask.taskDueDateAt == null"
-                          for="dueDate"
-                          slot="after"
-                          class
-                        >
+                        <label for="dueDate" slot="after" class>
                           <v-icon>mdi-pencil-plus</v-icon>
                         </label>
                         <template slot="button-cancel">
@@ -586,14 +592,7 @@
                           <p @click="clickToPrint">Confirm</p>
                         </template>
                       </datetime>
-                      <div v-if="this.selectedTask.taskDueDateAt == null" class="dateCoverPannel">
-                        {{
-                        getProjectDisplayDates(
-                        this.updatedTask.taskDueDateAt
-                        )
-                        }}
-                      </div>
-                    </v-list-item-content>
+                    </v-list-item-action>
 
                     <v-list-item-action>
                       <v-tooltip left>
@@ -617,7 +616,19 @@
                       <v-icon size="35" color="#7CDD00">mdi-clock-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
+                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Due Date</v-list-item-subtitle>
+
+                      <v-list-item-title>
+                        {{
+                        getProjectDisplayDates(
+                        this.updatedTask.taskRemindOnDate
+                        )
+                        }}
+                      </v-list-item-title>
+                    </v-list-item-content>
+                    <v-list-item-action>
                       <datetime
+                        hidden
                         type="datetime"
                         v-model="taskRemindOn"
                         zone="local"
@@ -625,7 +636,7 @@
                         :max-datetime="this.selectedTask.taskDueDateAt"
                       >
                         <label for="remindDate" slot="before" class="tabListItemsTextDue">
-                          <span class="dialogPickerNewText">Remind Date</span>
+                          <!-- <span class="dialogPickerNewText">Remind Date</span> -->
                         </label>
                         <label
                           v-if="this.selectedTask.taskReminderAt == null"
@@ -643,14 +654,7 @@
                           <p>Confirm</p>
                         </template>
                       </datetime>
-                      <div v-if="this.selectedTask.taskReminderAt == null" class="dateCoverPannel">
-                        {{
-                        getProjectDisplayDates(
-                        this.updatedTask.taskRemindOnDate
-                        )
-                        }}
-                      </div>
-                    </v-list-item-content>
+                    </v-list-item-action>
                     <v-list-item-action>
                       <v-tooltip left>
                         <template v-slot:activator="{ on }">
