@@ -162,7 +162,7 @@
                             <v-list-item-content>
                               <v-list-item-title>
                                 {{
-                                taskObject.parentTask.taskName
+                                parentTask.taskName
                                 }}
                               </v-list-item-title>
                             </v-list-item-content>
@@ -1486,7 +1486,8 @@ export default {
       selectedTaskUser: state => state.user.selectedTaskUser,
       taskFiles: state => state.task.taskFiles,
       selectedTask: state => state.task.selectedTask,
-      fetchProject: state => state.project.project
+      fetchProject: state => state.project.project,
+      parentTask: state => state.task.parentTask
     }),
     ...mapGetters(["getuserCompletionTasks"]),
     peopleList() {

@@ -62,11 +62,6 @@ export const mutations = {
       }
     }
     console.log('parent!', state.parentTask);
-
-    // const index = state.groupTasks.findIndex((i) => i.taskId === taskId);
-    // console.log('parent', index);
-    // const parent = state.groupTasks[index];
-    // state.parent = parent;
   },
 
   UPDATE_GROUP_TASK(state, { taskId, type, value }) {

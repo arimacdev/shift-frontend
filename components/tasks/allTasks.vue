@@ -662,6 +662,10 @@ export default {
           taskId: this.task.taskId
         });
       }
+      this.$store.dispatch("task/fetchParentTask", {
+        projectId: this.projectId,
+        taskId: this.task.parentId
+      });
       let taskFilesResponse;
       try {
         taskFilesResponse = await this.$axios.$get(

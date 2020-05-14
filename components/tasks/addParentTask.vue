@@ -174,7 +174,7 @@ export default {
         });
         this.$store.dispatch("task/fetchParentTask", {
           projectId: this.projectId,
-          taskId: this.taskId
+          taskId: this.parentTask
         });
         setTimeout(() => {
           this.close();
