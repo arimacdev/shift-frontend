@@ -121,7 +121,7 @@
                             <v-list-item-action>
                               <v-icon
                                 v-if="
-                                  taskObject.parentTask.taskStatus == 'closed'
+                                  parent.taskStatus == 'closed'
                                 "
                                 size="25"
                                 color="#2EC973"
@@ -131,16 +131,16 @@
                             <v-list-item-content>
                               <v-list-item-title>
                                 {{
-                                taskObject.parentTask.taskName
+                                parent.taskName
                                 }}
                               </v-list-item-title>
                             </v-list-item-content>
                             <div>
                               <v-list-item-action>
-                                <v-list-item-sub-title :class="dueDateCheck(taskObject.parentTask)">
+                                <v-list-item-sub-title :class="dueDateCheck(parent)">
                                   {{
                                   getProjectDates(
-                                  taskObject.parentTask.taskDueDateAt
+                                  parent.taskDueDateAt
                                   )
                                   }}
                                 </v-list-item-sub-title>
@@ -150,11 +150,11 @@
                               <v-list-item-avatar size="25">
                                 <v-img
                                   v-if="
-                                    taskObject.parentTask
+                                    parent
                                       .taskAssigneeProfileImage != null
                                   "
                                   :src="
-                                    taskObject.parentTask
+                                    parent
                                       .taskAssigneeProfileImage
                                   "
                                 ></v-img>
@@ -1144,7 +1144,8 @@ export default {
       groupPeople: state => state.groups.groupPeople.groupPeople,
       taskFiles: state => state.groups.groupTask.groupTaskFiles,
       selectedTaskGroupTask: state => state.groups.groupTask.selectedGroupTask,
-      children: state => state.groups.groupTask.children
+      children: state => state.groups.groupTask.children,
+      parent: state => state.groups.groupTask.parentTask
     }),
     ...mapGetters(["getuserCompletionTasks"]),
     // peopleList() {
