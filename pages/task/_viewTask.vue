@@ -153,7 +153,7 @@
             <v-row class="mb-12" no-gutters>
               <v-col sm="8" md="8">
                 <div class="leftSideColumn">
-                  <v-row class="addParentButtonRow" no-gutters>
+                  <v-row v-if="projectAllTasks.length != 1" class="addParentButtonRow" no-gutters>
                     <v-col sm="6" md="6" no-gutters></v-col>
                     <v-col sm="3" md="3" no-gutters>
                       <add-parent-task

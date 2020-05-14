@@ -108,7 +108,7 @@
           prepend-inner-icon="mdi-plus-circle"
           label="Add a main task..."
           class
-          @keyup.enter="addTask(null)"
+          @keyup.enter="addTask(null, 'general')"
           clearable
         ></v-text-field>
       </v-form>
@@ -187,7 +187,7 @@
               prepend-inner-icon="mdi-plus-circle"
               label="Add a sub task..."
               class
-              @keyup.enter="addTask(task.parentTask.taskId)"
+              @keyup.enter="addTask(task.parentTask.taskId, task.parentTask.issueType)"
               clearable
             ></v-text-field>
           </div>
@@ -545,7 +545,7 @@ export default {
     close() {
       this.component = "";
     },
-    async addTask(selectedParentTask) {
+    async addTask(selectedParentTask, issueType) {
       let response;
       try {
         response = await this.$axios.$post(
@@ -559,7 +559,7 @@ export default {
             taskRemindOnDate: "",
             taskStatus: null,
             taskNotes: "",
-            issueType: "development",
+            issueType: issueType,
             parentTaskId: selectedParentTask
           }
         );
