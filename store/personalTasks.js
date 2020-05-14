@@ -59,7 +59,7 @@ export const actions = {
     }
   },
 
-  addPersonalTaskFile({ commi }, file) {
+  addPersonalTaskFile({ commit }, file) {
     commit('APPEND_FILE', file);
   },
 
