@@ -136,7 +136,7 @@ export const actions = {
         commit('SET_CHILD_TASKS', response.data.data);
       })
       .catch((e) => {
-        console.log('error', e);
+        console.log('error retrieving children', e);
       });
   },
   fetchTasksAllTasks({ commit, rootState }, projectId) {

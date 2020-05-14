@@ -111,78 +111,14 @@
     <!-- ------------ task dialog --------- -->
 
     <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
-      <v-toolbar dark color="primary">
-        <v-btn icon dark @click="taskDialog = false">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-        <v-toolbar-title class="font-weight-bold">
-          {{
-          this.task.taskName
-          }}
-        </v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-          <button class :disabled="checkValidation">
-            <v-list-item dark>
-              <div>
-                <v-tooltip left>
-                  <template v-slot:activator="{ on }">
-                    <v-icon
-                      v-on="on"
-                      size="30px"
-                      @click="taskDeleteDialog = true"
-                      color="#FFFFFF"
-                    >mdi-delete-circle</v-icon>
-                  </template>
-                  <span>Delete task</span>
-                </v-tooltip>
-              </div>
-            </v-list-item>
-          </button>
-        </v-toolbar-items>
-      </v-toolbar>
-      <task-dialog :task="task" :subTasks="subTasks" :taskFiles="taskFiles" />
+      <task-dialog
+        :task="task"
+        :subTasks="subTasks"
+        persistent
+        @taskDialogClosing="taskDialogClosing"
+      />
     </v-dialog>
 
-    <!-- --------------------- delete task popup --------------- -->
-
-    <v-dialog v-model="taskDeleteDialog" max-width="380">
-      <v-card>
-        <div class="popupConfirmHeadline">
-          <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
-          <br />
-          <span class="alertPopupTitle">Delete Task</span>
-          <br />
-          <span class="alertPopupText">
-            You're about to permanantly delete this task, its comments and
-            attachments, and all of its data. If you're not sure, you can
-            cancel this action.
-          </span>
-        </div>
-
-        <div class="popupBottom">
-          <v-card-actions>
-            <v-spacer></v-spacer>
-
-            <v-btn color="success" width="100px" @click="taskDeleteDialog = false">Cancel</v-btn>
-            <v-spacer></v-spacer>
-            <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
-            <v-btn
-              color="error"
-              width="100px"
-              @click="
-                      taskDeleteDialog = false;
-                      taskDialog = false;
-                      deleteTask();
-                    "
-            >Delete</v-btn>
-            <v-spacer></v-spacer>
-          </v-card-actions>
-        </div>
-      </v-card>
-    </v-dialog>
-
-    <!-- ---------------------- end popup ------------------ -->
     <div @click="close">
       <component v-bind:is="component" :errorMessage="errorMessage"></component>
       <!-- <success-popup /> -->
@@ -235,31 +171,10 @@ export default {
     close() {
       this.component = "";
     },
-    async deleteTask() {
-      let response;
-      try {
-        response = await this.$axios.$delete(
-          `/non-project/tasks/personal/${this.task.taskId}`,
-          {
-            data: {},
-            headers: {
-              user: this.userId
-            }
-          }
-        );
-        this.$store.dispatch("personalTasks/fetchAllPersonalTasks");
-        this.$emit("shrinkSideBar");
-        console.log(response.data);
-      } catch (e) {
-        console.log("Error deleting task", e);
-
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 2000);
-      }
+    taskDialogClosing() {
+      this.taskDialog = false;
     },
+
     dueDateCheck(task) {
       console.log("check due date color", task);
       if (task.taskStatus === "closed") {
@@ -297,37 +212,14 @@ export default {
         .then(async response => {
           console.log("fetched task -->", response.data.data);
           this.assignee = response.data.data;
-          //if task fetch is successful,
-          let subTaskResponse;
-          try {
-            // subTaskResponse = await this.$axios.$get(
-            //   `/non-project/tasks/personal/${this.task.taskId}/subtask?userId=${this.userId}`
-            // );
-            // console.log("subtasks--->", subTaskResponse.data);
-            // this.subTasks = subTaskResponse.data;
-            //get files related to task
-            let taskFilesResponse;
-            try {
-              taskFilesResponse = await this.$axios.$get(
-                `/non-project/tasks/personal/${this.task.taskId}/files`,
-                {
-                  headers: {
-                    user: this.userId
-                  }
-                }
-              );
-              console.log("files--->", taskFilesResponse.data);
-              this.taskFiles = taskFilesResponse.data;
-            } catch (error) {
-              console.log("Error fetching data", error);
-            }
-          } catch (error) {
-            console.log("Error fetching data", error);
-          }
         })
         .catch(e => {
           console.log("error", e);
         });
+      this.$store.dispatch(
+        "personalTasks/fetchAllPersonalTaskFiles",
+        this.task.taskId
+      );
     },
     async addPersonalTask() {
       console.log("add personal task");

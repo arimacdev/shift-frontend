@@ -82,6 +82,12 @@
                       />
                     </v-col>
                   </v-row>
+                  <v-row class="mb-12 formRow projectDrawer" no-gutters>
+                    <v-col sm="12" md="12">
+                      <div class="editProjectLabels">Project alias*</div>
+                      <input maxlength="51" placeholder="Project name" class="formElements" v-model="projectAlias"/>
+                    </v-col>
+                  </v-row>
 
                   <v-row class="mb-12 formRow projectDrawer" no-gutters>
                     <v-col sm="12" md="12">
@@ -373,7 +379,11 @@
     </v-container>
 
     <div @click="close" class="popupBox">
-      <component v-bind:is="component" :errorMessage="errorMessage"></component>
+      <component
+        v-bind:is="component"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
     </div>
     <!-- <div class="popupBox">
         <success-popup />
@@ -392,6 +402,7 @@ export default {
   },
   data() {
     return {
+      successMessage: "",
       errorMessage: "",
       userId: this.$store.state.user.userId,
       projectDialog: false,
@@ -400,7 +411,8 @@ export default {
         clientId: "",
         projectStartDate: "",
         projectEndDate: "",
-        projectStatus: ""
+        projectStatus: "",
+        projectAlias: ""
       },
       drawer: null,
       prName: "project",
@@ -419,6 +431,14 @@ export default {
       },
       set(value) {
         this.updateProject.projectName = value;
+      }
+    },
+    projectAlias: {
+      get() {
+        return this.fetchProject.projectAlias;
+      },
+      set(value) {
+        this.updateProject.projectAlias = value;
       }
     },
     clientId: {
@@ -493,7 +513,8 @@ export default {
             clientId: this.updateProject.clientId,
             projectStartDate: this.updateProject.projectStartDate,
             projectEndDate: this.updateProject.projectEndDate,
-            projectStatus: this.updateProject.projectStatus
+            projectStatus: this.updateProject.projectStatus,
+            projectAlias: this.updateProject.projectAlias
           }
         );
         console.log("project edit response ----------> ", response);
@@ -511,9 +532,17 @@ export default {
           this.$store.dispatch("project/fetchAllProjects");
         }
         this.component = "success-popup";
+        this.successMessage = "Project successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        location.reload();
       } catch (e) {
-        this.component = "error-popup";
         this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         console.log("Error updating a project", e);
       }
     },

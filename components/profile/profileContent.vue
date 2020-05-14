@@ -21,12 +21,13 @@
               prepend-icon
               class="createFormElements"
               chips
+              @change="setVisible()"
             ></v-file-input>
           </template>
           <div class="pictureUploadButton">
             <v-btn
+              :disabled="disableButton"
               :loading="loading"
-              :disabled="loading"
               color="#0BAFFF"
               class="ma-2 white--text"
               @click="submit()"
@@ -217,6 +218,7 @@ export default {
   // },
   data() {
     return {
+      disableButton: true,
       switch1: true,
       switch2: false,
       uploadLoading: false,
@@ -301,6 +303,11 @@ export default {
   },
 
   methods: {
+    setVisible() {
+      console.log("DISABLED!");
+
+      this.disableButton = false;
+    },
     async changeNotificationStatus(status) {
       let response;
       try {
@@ -344,7 +351,6 @@ export default {
           email: this.user.email,
           password: this.user.password
         });
-        //  location.reload();
         this.component = "success-popup";
         this.successMessage = "Profile successfully updated";
         setTimeout(() => {
@@ -393,6 +399,7 @@ export default {
         );
         this.uploadLoading = false;
         this.component = "success-popup";
+        this.successMessage = "Profile successfully updated";
         console.log("group people response", this.taskFiles);
         location.reload();
       } catch (e) {

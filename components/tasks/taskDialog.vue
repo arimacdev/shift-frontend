@@ -86,7 +86,7 @@
                     :disabled="editTask"
                   />
                   <input
-                    maxlength="49"
+                    maxlength="100"
                     type="text"
                     class="viewTaskTitleEdit"
                     v-model="taskName"
@@ -226,7 +226,7 @@
                           </v-list-item-icon>
                           <v-list-item-title class="viewTaskFontColors">
                             Child Tasks
-                            <span>- {{ taskObject.childTasks.length }} Task(s)</span>
+                            <span>- {{ children.length }} Task(s)</span>
                           </v-list-item-title>
                         </template>
 
@@ -234,7 +234,7 @@
                           <!-- ---------- task list --------- -->
                           <div
                             class="taskViewTaskListContent"
-                            v-for="(childTask, index) in taskObject.childTasks"
+                            v-for="(childTask, index) in children"
                             :key="index"
                           >
                             <v-list-item>
@@ -604,7 +604,7 @@
                       v-model="taskRemindOnDate"
                       label="Add remind date"
                       right
-                      :max-date="this.getMaxRemindDate()"
+                      :max-date="this.getMaxDueDate()"
                     />
                   </div>
                   <div class="pickerButtonDiv">
@@ -938,9 +938,9 @@ export default {
       stringDate = stringDate.toString();
       stringDate = stringDate.slice(0, 10);
 
-      // console.log("max date : " + this.updatedTaskDueDate);
-      // if (this.updatedTaskDueDate === null) {
-      //   return "2020-01-01 23:59";
+      // console.log("max date : " + stringDate);
+      // if (stringDate === undefined) {
+      //   return null;
       // } else {
       return stringDate + " " + "23:59";
       // }
@@ -1436,7 +1436,7 @@ export default {
           id: sprint.sprintId
         });
       }
-      console.log("nameList", this.states);
+      // console.log("nameList", this.states);
       this.loading = true;
     },
     isTaskAssignee(taskAssignee) {
@@ -1468,6 +1468,7 @@ export default {
       }
     },
     ...mapState({
+      children: state => state.task.childTasks,
       people: state => state.task.userCompletionTasks,
       projectSprints: state => state.sprints.sprint.sprints,
       projectAllTasks: state => state.task.allTasks,

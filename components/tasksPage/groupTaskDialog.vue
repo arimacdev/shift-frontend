@@ -54,7 +54,7 @@
                     :disabled="editTask"
                   />
                   <input
-                    maxlength="49"
+                    maxlength="100"
                     type="text"
                     class="viewTaskTitleEdit"
                     v-model="taskName"

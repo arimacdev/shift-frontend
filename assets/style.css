@@ -1648,6 +1648,7 @@
   background-color: #2ec973;
   width: 230px;
   height: 60px;
+  margin-top: 40px;
   padding-top: 5px;
   border-radius: 5px;
 }
@@ -1669,8 +1670,14 @@
   position: absolute;
   right: 300px;
   bottom: 60px;
+  z-index: 10000;
 }
-
+.updateSprintPopup {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 10000;
+}
 .datetimePickerRange {
   background-color: #e5e5e5;
   width: 200px;
@@ -1730,6 +1737,16 @@
   border: 2px #e5e5e5 solid;
   margin-top: 30px;
   background-color: #ffffff;
+  overflow: hidden;
+}
+.restructuredGroupMainTaskFilterList {
+  background-color: #edf0f5;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.parentOwerflow {
+  border: 2px #cdcfd2 solid;
   overflow: hidden;
 }
 .restructuredChildTaskFilterList {
@@ -2138,4 +2155,10 @@
   position: fixed;
   bottom: 0;
   right: 40px;
+}
+
+.sprintUpdateButton {
+  position: relative;
+  top: -60px;
+  margin-left: 250px;
 }
