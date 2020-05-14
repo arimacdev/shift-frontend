@@ -10,6 +10,19 @@ export const mutations = {
   FETCH_ALL_SPRINTS(state, sprints) {
     state.sprints = sprints;
   },
+  UPDATE_SPRINT(state, { sprintId, sprintName, sprintDescription }) {
+    console.log('update', state.sprints);
+    const index = state.sprints.findIndex((i) => i.sprintId === sprintId);
+    console.log('update', index);
+
+    const updateSprint = state.sprints[index];
+    updateSprint.sprintName = sprintName;
+    updateSprint.sprintDescription = sprintDescription;
+    console.log('update', updateSprint);
+
+    state.sprints.splice(index, 1, updateSprint);
+    console.log('update', state.sprints);
+  },
 };
 
 export const actions = {
@@ -36,5 +49,10 @@ export const actions = {
 
   addProjectSprint({ commit }, sprint) {
     commit('APPEND_SPRINT', sprint);
+  },
+
+  updateProjectSprint({ commit }, { sprintId, sprintName, sprintDescription }) {
+    console.log('update', sprintId, sprintName, sprintDescription);
+    commit('UPDATE_SPRINT', { sprintId, sprintName, sprintDescription });
   },
 };

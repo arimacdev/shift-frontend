@@ -168,7 +168,13 @@ export default {
             }
           }
         );
+        this.$store.dispatch("sprints/sprint/updateProjectSprint", {
+          sprintId: this.sprintId,
+          sprintName: this.sprintName,
+          sprintDescription: this.sprintDescription
+        });
         this.$refs.form.reset();
+
         this.component = "success-popup";
         this.successMessage = "Sprint successfully updated";
         setTimeout(() => {
