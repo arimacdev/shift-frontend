@@ -403,13 +403,6 @@
                         </template>
                       </datetime>
                     </v-list-item-content>
-                    <div v-if="this.task.taskDueDateAt == null" class="dateCoverPannel">
-                      {{
-                      getProjectDisplayDates(
-                      this.task.taskDueDateAt
-                      )
-                      }}
-                    </div>
                     <v-list-item-action>
                       <v-tooltip left>
                         <template v-slot:activator="{ on }">
@@ -423,6 +416,13 @@
                       </v-tooltip>
                     </v-list-item-action>
                   </v-list-item>
+                  <div v-if="this.task.taskDueDateAt == null" class="dateCoverPannel">
+                    {{
+                    getProjectDisplayDates(
+                    this.task.taskDueDateAt
+                    )
+                    }}
+                  </div>
 
                   <!-- ----------- Reminder date section --------- -->
                   <v-list-item>
@@ -457,13 +457,6 @@
                         </template>
                       </datetime>
                     </v-list-item-content>
-                    <div v-if="this.task.taskReminderAt == null" class="dateCoverPannel">
-                      {{
-                      getProjectDisplayDates(
-                      this.task.taskReminderAt
-                      )
-                      }}
-                    </div>
                     <v-list-item-action>
                       <v-tooltip left>
                         <template v-slot:activator="{ on }">
@@ -477,6 +470,13 @@
                       </v-tooltip>
                     </v-list-item-action>
                   </v-list-item>
+                  <div v-if="this.task.taskReminderAt == null" class="dateCoverPannel">
+                    {{
+                    getProjectDisplayDates(
+                    this.task.taskReminderAt
+                    )
+                    }}
+                  </div>
 
                   <v-divider class="datePickerDivider"></v-divider>
                   <!-- ----------- Files section --------- -->
@@ -1087,7 +1087,7 @@ export default {
       console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "Add Due Date";
+        return "Add Task Date";
       } else if (now.getDate() === dueToUtcDate.getDate()) {
         return "Today";
       } else if (now.getDate() - 1 === dueToUtcDate.getDate()) {
