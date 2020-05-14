@@ -586,13 +586,6 @@
                           <p @click="clickToPrint">Confirm</p>
                         </template>
                       </datetime>
-                      <div v-if="this.selectedTask.taskDueDateAt == null" class="dateCoverPannel">
-                        {{
-                        getProjectDisplayDates(
-                        this.updatedTask.taskDueDateAt
-                        )
-                        }}
-                      </div>
                     </v-list-item-content>
 
                     <v-list-item-action>
@@ -608,6 +601,13 @@
                       </v-tooltip>
                     </v-list-item-action>
                   </v-list-item>
+                  <div v-if="this.selectedTask.taskDueDateAt == null" class="dateCoverPannel">
+                    {{
+                    getProjectDisplayDates(
+                    this.updatedTask.taskDueDateAt
+                    )
+                    }}
+                  </div>
 
                   <!-- ----------- Reminder date section --------- -->
 
@@ -631,7 +631,6 @@
                           v-if="this.selectedTask.taskReminderAt == null"
                           for="remindDate"
                           slot="after"
-                          class
                         >
                           <v-icon>mdi-pencil-plus</v-icon>
                         </label>
@@ -643,13 +642,6 @@
                           <p>Confirm</p>
                         </template>
                       </datetime>
-                      <div v-if="this.selectedTask.taskReminderAt == null" class="dateCoverPannel">
-                        {{
-                        getProjectDisplayDates(
-                        this.updatedTask.taskRemindOnDate
-                        )
-                        }}
-                      </div>
                     </v-list-item-content>
                     <v-list-item-action>
                       <v-tooltip left>
@@ -664,6 +656,13 @@
                       </v-tooltip>
                     </v-list-item-action>
                   </v-list-item>
+                  <div v-if="this.selectedTask.taskReminderAt == null" class="dateCoverPannel">
+                    {{
+                    getProjectDisplayDates(
+                    this.updatedTask.taskRemindOnDate
+                    )
+                    }}
+                  </div>
 
                   <v-divider class="datePickerDivider"></v-divider>
                   <!-- ----------- Files section --------- -->
