@@ -1536,9 +1536,13 @@
   color: #ffffff;
   font-size: 16px;
   text-align: center;
-  padding-top: 15px;
+  /* padding-top: -60px !important; */
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
+}
+.sprintTitleName {
+  /* background-color: red; */
+  margin-top: -20px;
 }
 .boardTaskList {
   height: 85%;
@@ -2159,7 +2163,7 @@
 
 .sprintUpdateButton {
   position: relative;
-  top: -60px;
+  /* top: 30px; */
   margin-left: 250px;
 }
 .dateCoverPannel {
