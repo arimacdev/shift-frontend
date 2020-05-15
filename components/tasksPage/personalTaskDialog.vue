@@ -485,7 +485,7 @@ export default {
       );
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
-      console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
+      // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
         return "Add Task Date";
@@ -510,7 +510,7 @@ export default {
         );
         this.$store.dispatch("personalTasks/fetchAllPersonalTasks");
         this.$emit("shrinkSideBar");
-        console.log(response.data);
+        // console.log(response.data);
         this.taskDialogClosing();
       } catch (e) {
         console.log("Error deleting task", e);
@@ -523,11 +523,11 @@ export default {
       }
     },
     taskDialogClosing() {
-      this.$emit("taskDialogClosing");
+      // this.$emit("taskDialogClosing");
       Object.assign(this.$data, this.$options.data.apply(this));
     },
     async updateTaskStatus() {
-      console.log("onchange updated status ->");
+      // console.log("onchange updated status ->");
       let response;
       try {
         response = await this.$axios.$put(
@@ -547,7 +547,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("update task status response", response);
+        // console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
@@ -579,7 +579,7 @@ export default {
           this.close();
         }, 3000);
         this.editTask = true;
-        console.log("edit task response", response);
+        // console.log("edit task response", response);
       } catch (e) {
         console.log("Error updating the name", e);
         this.errorMessage = e.response.data;
@@ -614,7 +614,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("edit task response", response);
+        // console.log("edit task response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
@@ -626,22 +626,16 @@ export default {
     },
     // ----------- update task dates -----------
     async updateTaskDates(type) {
-      console.log(
-        "task due updated ---------> " + this.updatedTask.taskDueDateAt
-      );
-      console.log(
-        "task remind updated ---------> " + this.updatedTask.taskRemindOnDate
-      );
       let dueDate;
       let remindDate;
       let changedDate = {};
       if (type === "dueDate" && this.updatedTask.taskDueDateAt != "") {
-        console.log("inside due date");
+        // console.log("inside due date");
         dueDate = new Date(this.updatedTask.taskDueDateAt);
         const isoDate = new Date(
           dueDate.getTime() - dueDate.getTimezoneOffset() * 60000
         ).toISOString();
-        console.log("iso edit due date", isoDate);
+        // console.log("iso edit due date", isoDate);
         dueDate = isoDate;
         changedDate = {
           taskDueDate: dueDate
@@ -652,12 +646,12 @@ export default {
           date: dueDate
         });
       } else if (this.updatedTask.taskRemindOnDate != "") {
-        console.log("inside remind on date");
+        // console.log("inside remind on date");
         remindDate = new Date(this.updatedTask.taskRemindOnDate);
         const isoDate = new Date(
           remindDate.getTime() - remindDate.getTimezoneOffset() * 60000
         ).toISOString();
-        console.log("iso edit remind date", isoDate);
+        // console.log("iso edit remind date", isoDate);
         dueDate = this.updatedTask.taskDueDateAt;
         remindDate = isoDate;
         changedDate = {
@@ -668,8 +662,8 @@ export default {
           date: remindDate
         });
       }
-      console.log("dueDate", dueDate);
-      console.log("remindDate", remindDate);
+      // console.log("dueDate", dueDate);
+      // console.log("remindDate", remindDate);
       let response;
       try {
         response = await this.$axios.$put(
@@ -688,7 +682,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("update task dates response", response);
+        // console.log("update task dates response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
@@ -729,7 +723,7 @@ export default {
             setTimeout(() => {
               this.close();
             }, 3000);
-            console.log("file response", this.taskFiles);
+            // console.log("file response", this.taskFiles);
           } catch (e) {
             console.log("Error adding group file", e);
             this.errorMessage = e.response.data;
@@ -756,7 +750,7 @@ export default {
             }
           }
         );
-        console.log(response.data);
+        // console.log(response.data);
         this.$store.dispatch("personalTasks/removeTaskFile", taskFileId);
         this.component = "success-popup";
         this.successMessage = "File successfully deleted";
@@ -781,11 +775,11 @@ export default {
     //   this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
     // },
     click() {
-      console.log("select =========>" + this.taskDueDate);
+      // console.log("select =========>" + this.taskDueDate);
       // this.issueType = issueType;
     },
     dueDateCheck(task) {
-      console.log("check due date color", task);
+      // console.log("check due date color", task);
       if (task.taskStatus === "closed") {
         return "workLoadTaskDone";
       } else if (task.taskDueDateAt == null) {
@@ -797,9 +791,9 @@ export default {
         );
         const dueToUtcDate = new Date(dueToUtc);
         const now = new Date();
-        console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
+        // console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
         if (now.getTime() > dueToUtcDate.getTime()) {
-          console.log("overdue");
+          // console.log("overdue");
           return "workLoadTaskOverDue";
         } else {
           return "workLoadTaskHealthy";
@@ -813,7 +807,7 @@ export default {
       );
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
-      console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
+      // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
         return "Add Due Date";
@@ -846,19 +840,6 @@ export default {
     }
   },
   computed: {
-    // taskUser() {
-    //   if (Object.keys(this.selectedTaskUser).length === 0) {
-    //     this.$store.dispatch(
-    //       "user/setSelectedTaskUser",
-    //       this.selectedTask.taskAssignee
-    //     );
-    //     return "";
-    //   } else {
-    //     return (
-    //       this.selectedTaskUser.firstName + " " + this.selectedTaskUser.lastName
-    //     );
-    //   }
-    // },
     ...mapState({
       people: state => state.task.userCompletionTasks,
       projectSprints: state => state.sprints.sprint.sprints,
@@ -868,17 +849,6 @@ export default {
       taskFiles: state => state.personalTasks.personalTaskFiles
     }),
     ...mapGetters(["getuserCompletionTasks"]),
-    // peopleList() {
-    //   console.log("people list", this.people);
-    //   if (this.people.length == 0) {
-    //     this.$store.dispatch(
-    //       "task/fetchProjectUserCompletionTasks",
-    //       this.$route.query.project
-    //     );
-    //   } else {
-    //     return this.people;
-    //   }
-    // },
 
     taskName: {
       get() {
@@ -895,7 +865,7 @@ export default {
         return this.selectedTask.taskStatus;
       },
       set(value) {
-        console.log("task status", value);
+        // console.log("task status", value);
         this.updatedStatus = value;
       }
     },
@@ -916,15 +886,13 @@ export default {
           this.selectedTask.taskDueDateAt === "1970-01-01T05:30:00.000+0000"
         )
           return null;
-        // if (this.updatedTask.taskDueDateAt !== "")
-        //   return this.updatedTask.taskDueDateAt;
         let stringDate = this.selectedTask.taskDueDateAt + " ";
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 16);
         return stringDate;
       },
       set(value) {
-        console.log("updated task due ->", value);
+        // console.log("updated task due ->", value);
         this.updatedTask.taskDueDateAt = value;
       }
     },
@@ -941,7 +909,7 @@ export default {
         return stringDate;
       },
       set(value) {
-        console.log("updated selectedTask reminder ->", value);
+        // console.log("updated selectedTask reminder ->", value);
         this.updatedTask.taskRemindOnDate = value;
       }
     }
