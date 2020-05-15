@@ -122,7 +122,7 @@
                     <v-col sm="6" md="6" no-gutters></v-col>
                     <v-col sm="3" md="3" no-gutters>
                       <add-parent-task
-                        v-if="taskObject.childTasks.length == 0 && selectedTask.isParent == true"
+                        v-if="taskObject.childTasks.length == 0 && selectedTask.isParent == true && children.length == 0"
                         :taskId="this.selectedTask.taskId"
                         :projectId="this.projectId"
                       />
