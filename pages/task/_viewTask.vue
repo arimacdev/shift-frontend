@@ -1210,37 +1210,48 @@ export default {
       // return [];
     },
     async updateTaskDates(type) {
+      console.log("triggered");
       let dueDate;
       let remindDate;
-      if (type === "dueDate") {
-        // console.log("inside due date");
+      let changedDate = {};
+      console.log(
+        "dates ========> " +
+          this.updatedTaskDueDate +
+          "/" +
+          this.updatedRemindOnDate
+      );
+      if (type === "dueDate" && this.updatedTaskDueDate != null) {
         dueDate = new Date(this.updatedTaskDueDate);
         const isoDate = new Date(
           dueDate.getTime() - dueDate.getTimezoneOffset() * 60000
         ).toISOString();
-        // console.log("iso edit due date", isoDate);
         dueDate = isoDate;
-        remindDate = this.task.taskReminderAt;
-      } else {
-        // console.log("inside remind on date");
+        changedDate = {
+          taskDueDate: dueDate
+        };
+        this.$store.dispatch("task/updateProjectDates", {
+          type: "dueDate",
+          date: dueDate
+        });
+      } else if (type === "remindOn" && this.updatedRemindOnDate != null) {
         remindDate = new Date(this.updatedRemindOnDate);
         const isoDate = new Date(
           remindDate.getTime() - remindDate.getTimezoneOffset() * 60000
         ).toISOString();
-        // console.log("iso edit remind date", isoDate);
-        dueDate = this.task.taskDueDateAt;
         remindDate = isoDate;
+        changedDate = {
+          taskRemindOnDate: remindDate
+        };
+        this.$store.dispatch("task/updateProjectDates", {
+          type: "remindDate",
+          date: remindDate
+        });
       }
-      // console.log("dueDate", dueDate);
-      // console.log("remindDate", remindDate);
       let response;
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
-          {
-            taskDueDate: dueDate,
-            taskRemindOnDate: remindDate
-          },
+          changedDate,
           {
             headers: {
               user: this.userId
@@ -1519,7 +1530,10 @@ export default {
     },
     taskDueDate: {
       get() {
-        if (this.updatedTaskDueDate == null)
+        if (
+          this.updatedTaskDueDate == null ||
+          this.updatedTaskDueDate === "1970-01-01T05:30:00.000+0000"
+        )
           this.updatedTaskDueDate = this.task.taskDueDateAt;
         this.updateTaskDates("dueDate");
         return this.updatedTaskDueDate;
@@ -1531,7 +1545,10 @@ export default {
     },
     taskRemindOnDate: {
       get() {
-        if (this.updatedRemindOnDate == null)
+        if (
+          this.updatedRemindOnDate == null ||
+          this.updatedRemindOnDate === "1970-01-01T05:30:00.000+0000"
+        )
           this.updatedRemindOnDate = this.task.taskReminderAt;
         this.updateTaskDates("remindOn");
         return this.updatedRemindOnDate;
