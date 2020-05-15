@@ -151,7 +151,7 @@
                             <v-list-item-action>
                               <v-icon
                                 v-if="
-                                  parent.taskStatus == 'closed'
+                                  taskObject.parentTask.taskStatus == 'closed'
                                 "
                                 size="25"
                                 color="#2EC973"
@@ -161,16 +161,16 @@
                             <v-list-item-content>
                               <v-list-item-title>
                                 {{
-                                parent.taskName
+                                taskObject.parentTask.taskName
                                 }}
                               </v-list-item-title>
                             </v-list-item-content>
                             <div>
                               <v-list-item-action>
-                                <v-list-item-sub-title :class="dueDateCheck(parent)">
+                                <v-list-item-sub-title :class="dueDateCheck(taskObject.parentTask)">
                                   {{
                                   getProjectDates(
-                                  parent.taskDueDateAt
+                                  taskObject.parentTask.taskDueDateAt
                                   )
                                   }}
                                 </v-list-item-sub-title>
@@ -180,11 +180,11 @@
                               <v-list-item-avatar size="25">
                                 <v-img
                                   v-if="
-                                    parent
+                                    taskObject.parentTask
                                       .taskAssigneeProfileImage != null
                                   "
                                   :src="
-                                    parent
+                                    taskObject.parentTask
                                       .taskAssigneeProfileImage
                                   "
                                 ></v-img>
@@ -198,7 +198,7 @@
                               <nuxt-link
                                 :to="
                                   '/task/' +
-                                    parent.taskId +
+                                    taskObject.parentTask.taskId +
                                     '/?project=' +
                                     projectId
                                 "
@@ -575,12 +575,12 @@
                         v-model="taskDue"
                         :max-datetime="this.fetchProject.projectEndDate"
                         zone="local"
-                        input-id="dueDate"
+                        input-id="dueDateSprint"
                       >
                         <label for="dueDate" slot="before" class="tabListItemsTextDue">
                           <!-- <span class="dialogPickerNewText">Due Date</span> -->
                         </label>
-                        <label for="dueDate" slot="after" class>
+                        <label for="dueDateSprint" slot="after" class>
                           <v-icon>mdi-pencil-plus</v-icon>
                         </label>
                         <template slot="button-cancel">
@@ -631,13 +631,13 @@
                         type="datetime"
                         v-model="taskRemindOn"
                         zone="local"
-                        input-id="remindDate"
+                        input-id="remindDateSprint"
                         :max-datetime="this.selectedTask.taskDueDateAt"
                       >
                         <label for="remindDate" slot="before" class="tabListItemsTextDue">
                           <!-- <span class="dialogPickerNewText">Remind Date</span> -->
                         </label>
-                        <label for="remindDate" slot="after" class>
+                        <label for="remindDateSprint" slot="after" class>
                           <v-icon>mdi-pencil-plus</v-icon>
                         </label>
                         <template slot="button-cancel">
@@ -1482,7 +1482,6 @@ export default {
       }
     },
     ...mapState({
-      parent: state => state.task.parentTask,
       children: state => state.task.childTasks,
       people: state => state.task.userCompletionTasks,
       projectSprints: state => state.sprints.sprint.sprints,

@@ -11,93 +11,92 @@
             class="boardTaskListItem boardItemPadding"
           >
             <!-- -------- load parent tasks (default board) ------------ -->
-            <nuxt-link
-              :to="
+
+            <v-list-item @click="selectTask(task.parentTask, task); taskDialog = true ">
+              <!-- @click.stop="drawer = !drawer" -->
+              <v-list-item-action>
+                <v-icon
+                  v-if="task.parentTask.taskStatus == 'closed'"
+                  size="25"
+                  color="#2EC973"
+                >mdi-checkbox-marked-circle</v-icon>
+                <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{
+                  task.parentTask.taskName
+                  }}
+                </v-list-item-title>
+                <div
+                  :class="dueDateCheck(task.parentTask)"
+                >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</div>
+              </v-list-item-content>
+              <v-list-item-avatar size="25">
+                <v-img
+                  v-if="task.parentTask.taskAssigneeProfileImage != null"
+                  :src="task.parentTask.taskAssigneeProfileImage"
+                ></v-img>
+                <v-img
+                  v-else
+                  src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                ></v-img>
+              </v-list-item-avatar>
+              <div class="boardTabLinkIcon">
+                <nuxt-link
+                  :to="
                     '/task/' + task.parentTask.taskId + '/?project=' + projectId
                   "
-              style="text-decoration: none;"
-              target="_blank"
-            >
-              <v-list-item @click="selectTask(task.parentTask, task); ">
-                <!-- @click.stop="drawer = !drawer" -->
-                <v-list-item-action>
-                  <v-icon
-                    v-if="task.parentTask.taskStatus == 'closed'"
-                    size="25"
-                    color="#2EC973"
-                  >mdi-checkbox-marked-circle</v-icon>
-                  <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
-                </v-list-item-action>
-                <v-list-item-content>
-                  <v-list-item-title>
-                    {{
-                    task.parentTask.taskName
-                    }}
-                  </v-list-item-title>
-                  <div
-                    :class="dueDateCheck(task.parentTask)"
-                  >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</div>
-                </v-list-item-content>
-                <v-list-item-avatar size="25">
-                  <v-img
-                    v-if="task.parentTask.taskAssigneeProfileImage != null"
-                    :src="task.parentTask.taskAssigneeProfileImage"
-                  ></v-img>
-                  <v-img
-                    v-else
-                    src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-                  ></v-img>
-                </v-list-item-avatar>
-                <div class="boardTabLinkIcon">
-                  <!-- <v-icon size="15" color="blue">mdi-link-variant</v-icon> -->
-                </div>
-                <div class="bluePart"></div>
-              </v-list-item>
-            </nuxt-link>
+                  style="text-decoration: none;"
+                  target="_blank"
+                >
+                  <v-icon size="15" color="blue">mdi-link-variant</v-icon>
+                </nuxt-link>
+              </div>
+              <div class="bluePart"></div>
+            </v-list-item>
           </div>
           <!-- -------------- load child tasks (default board) ----------- -->
 
           <div v-for="(childTask, index) in task.childTasks" :key="index">
-            <nuxt-link
-              :to="'/task/' + childTask.taskId + '/?project=' + projectId"
-              style="text-decoration: none;"
-              target="_blank"
+            <v-list-item
+              v-if="childTask.sprintId == 'default'"
+              class="boardTaskChildListItem"
+              @click="selectTask(childTask, task);  taskDialog = true"
             >
-              <v-list-item
-                v-if="childTask.sprintId == 'default'"
-                class="boardTaskChildListItem"
-                @click="selectTask(childTask, task);  "
-              >
-                <!-- @click.stop="drawer = !drawer" -->
-                <v-list-item-action>
-                  <v-icon
-                    v-if="childTask.taskStatus == 'closed'"
-                    size="25"
-                    color="#2EC973"
-                  >mdi-checkbox-marked-circle</v-icon>
-                  <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
-                </v-list-item-action>
-                <v-list-item-content>
-                  <v-list-item-title>{{ childTask.taskName }}</v-list-item-title>
-                  <div
-                    :class="dueDateCheck(childTask)"
-                  >{{ getProjectDates(childTask.taskDueDateAt) }}</div>
-                </v-list-item-content>
-                <v-list-item-avatar size="25">
-                  <v-img
-                    v-if="childTask.taskAssigneeProfileImage != null"
-                    :src="childTask.taskAssigneeProfileImage"
-                  ></v-img>
-                  <v-img
-                    v-else
-                    src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-                  ></v-img>
-                </v-list-item-avatar>
-                <div class="boardTabLinkIcon">
-                  <!-- <v-icon size="15" color="blue">mdi-link-variant</v-icon> -->
-                </div>
-              </v-list-item>
-            </nuxt-link>
+              <!-- @click.stop="drawer = !drawer" -->
+              <v-list-item-action>
+                <v-icon
+                  v-if="childTask.taskStatus == 'closed'"
+                  size="25"
+                  color="#2EC973"
+                >mdi-checkbox-marked-circle</v-icon>
+                <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>{{ childTask.taskName }}</v-list-item-title>
+                <div :class="dueDateCheck(childTask)">{{ getProjectDates(childTask.taskDueDateAt) }}</div>
+              </v-list-item-content>
+              <v-list-item-avatar size="25">
+                <v-img
+                  v-if="childTask.taskAssigneeProfileImage != null"
+                  :src="childTask.taskAssigneeProfileImage"
+                ></v-img>
+                <v-img
+                  v-else
+                  src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                ></v-img>
+              </v-list-item-avatar>
+              <div class="boardTabLinkIcon">
+                <nuxt-link
+                  :to="'/task/' + childTask.taskId + '/?project=' + projectId"
+                  style="text-decoration: none;"
+                  target="_blank"
+                >
+                  <v-icon size="15" color="blue">mdi-link-variant</v-icon>
+                </nuxt-link>
+              </div>
+            </v-list-item>
           </div>
         </div>
       </div>
@@ -337,7 +336,7 @@ import { mapState } from "vuex";
 import TaskSideBar from "~/components/tasks/taskSideBar";
 import AddSprint from "~/components/projects/addSprint";
 import UpdateSprint from "~/components/projects/updateSprint";
-import TaskDialog from "~/components/tasks/taskDialog";
+import TaskDialog from "~/components/tasks/sprintTaskDialog";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 export default {
