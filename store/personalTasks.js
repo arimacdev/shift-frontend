@@ -11,11 +11,11 @@ export const mutations = {
     state.personalTasks = personalTasks;
   },
   SET_SELECTED_TASK(state, selectedTask) {
-    console.log('thistask', selectedTask);
+    // console.log('thistask', selectedTask);
     state.selectedTask = selectedTask;
   },
   UPDATE_SELECTED_DATE(state, { type, date }) {
-    console.log('selectedtask', type, date);
+    // console.log('selectedtask', type, date);
 
     const selectedTask = state.selectedTask;
     if (type == 'dueDate') {
@@ -23,9 +23,9 @@ export const mutations = {
     } else {
       selectedTask.taskReminderAt = date;
     }
-    console.log('selectedtask', selectedTask);
+    // console.log('selectedtask', selectedTask);
     state.selectedTask = selectedTask;
-    console.log('selectedtask', state.selectedTask);
+    // console.log('selectedtask', state.selectedTask);
   },
   ADD_FILES_TO_PERSONAL_TASKS(state, files) {
     state.personalTaskFiles = files;
