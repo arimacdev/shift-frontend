@@ -110,12 +110,8 @@
     <!-- --------------- end side bar --------------------- -->
     <!-- ------------ task dialog --------- -->
 
-    <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
-      <task-dialog
-        :task="task"
-        :subTasks="subTasks"
-        @taskDialogClosing="taskDialogClosing"
-      />
+    <v-dialog v-model="taskDialog" persistent width="90vw" transition="dialog-bottom-transition">
+      <task-dialog :task="task" :subTasks="subTasks" @taskDialogClosing="taskDialogClosing" />
     </v-dialog>
 
     <div @click="close">
