@@ -40,7 +40,7 @@
         </VueCtkDateTimePicker>
       </v-list-item-action>
     </div>
-    <div class="workloadContentDiv myWorkloadBody overflow-y-auto">
+    <div class="workloadContentDiv">
       <v-expansion-panels v-model="panel" :disabled="disabled" multiple dark>
         <!-- -------------- loop this pannel for every project ---------- -->
         <v-expansion-panel
@@ -59,8 +59,8 @@
           </v-expansion-panel-header>
           <v-expansion-panel-header
             v-else-if="project.total == 0"
-            class="projectDetailsPannelHeader"
-            color="#ACACAC"
+            class="projectDetailsEmptyPannelHeader"
+            color="#EDF0F5"
           >
             {{ project.projectName }} - {{ project.completed }}/{{
             project.total
@@ -111,7 +111,7 @@
 
       <!-- -------------- start side bar ----------------- -->
 
-      <v-navigation-drawer
+      <!-- <v-navigation-drawer
         v-model="drawer"
         absolute
         temporary
@@ -121,7 +121,7 @@
         color="#FFFFFF"
       >
         <task-side-bar :task="task" :projectId="projectId" />
-      </v-navigation-drawer>
+      </v-navigation-drawer>-->
       <!-- --------------- end side bar --------------------- -->
     </div>
     <!-- {{getStartDate()}} -->
@@ -228,11 +228,23 @@ export default {
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
         return "Add Due Date";
-      } else if (now.getDate() === dueToUtcDate.getDate()) {
+      } else if (
+        now.getDate() === dueToUtcDate.getDate() &&
+        now.getMonth() === dueToUtcDate.getMonth() &&
+        now.getFullYear() === dueToUtcDate.getFullYear()
+      ) {
         return "Today";
-      } else if (now.getDate() - 1 === dueToUtcDate.getDate()) {
+      } else if (
+        now.getDate() - 1 === dueToUtcDate.getDate() &&
+        now.getMonth() - 1 === dueToUtcDate.getMonth() &&
+        now.getFullYear() - 1 === dueToUtcDate.getFullYear()
+      ) {
         return "Yesterday";
-      } else if (now.getDate() + 1 === dueToUtcDate.getDate()) {
+      } else if (
+        now.getDate() + 1 === dueToUtcDate.getDate() &&
+        now.getMonth() + 1 === dueToUtcDate.getMonth() &&
+        now.getFullYear() + 1 === dueToUtcDate.getFullYear()
+      ) {
         return "Tomorrow";
       } else {
         let stringDate = date + "";

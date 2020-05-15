@@ -1174,6 +1174,7 @@
   height: 60px !important;
 }
 .workloadContentDiv {
+  margin-top: 40px !important;
 }
 
 .projectDetailsPannels {
@@ -1182,6 +1183,9 @@
 }
 .projectDetailsPannelHeader {
   color: #ffffff;
+}
+.projectDetailsEmptyPannelHeader {
+  color: #576377;
 }
 .projectDetailsPannelContent {
   padding-top: 10px;
@@ -1276,12 +1280,6 @@
   width: 59%;
 }
 
-.workloadFilter {
-  position: absolute;
-  right: 30px;
-  top: 80px;
-  /* z-index: 1000; */
-}
 .filterIcon {
   margin-right: -15px !important;
   padding-top: 5px !important;
@@ -2174,4 +2172,39 @@
   position: absolute;
   padding-left: 10px;
   background-color: #ffffff;
+}
+
+/* ----------------- workload restructure ------------ */
+
+.workloadTypeSection {
+  width: 100%;
+  height: 60px;
+  background-color: #0b0b53;
+  margin-top: -20px;
+  margin-bottom: 40px;
+  color: #ffffff;
+  padding-left: 20px;
+  padding-top: 12px;
+  position: fixed;
+  z-index: 1000;
+}
+
+.workloadV2Body {
+  padding: 30px;
+}
+
+.myWorkloadV2Content {
+  margin-top: 100px;
+}
+.workloadFilter {
+  /* background-color: #ffffff; */
+  position: absolute;
+  right: 30px;
+  top: 130px;
+  margin-bottom: 50px;
+  /* z-index: 1000; */
+}
+.filterDivider {
+  margin-bottom: 20px;
+  margin-top: -20px;
 }
