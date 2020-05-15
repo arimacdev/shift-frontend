@@ -151,7 +151,7 @@
                             <v-list-item-action>
                               <v-icon
                                 v-if="
-                                  taskObject.parentTask.taskStatus == 'closed'
+                                  parent.taskStatus == 'closed'
                                 "
                                 size="25"
                                 color="#2EC973"
@@ -161,16 +161,16 @@
                             <v-list-item-content>
                               <v-list-item-title>
                                 {{
-                                taskObject.parentTask.taskName
+                                parent.taskName
                                 }}
                               </v-list-item-title>
                             </v-list-item-content>
                             <div>
                               <v-list-item-action>
-                                <v-list-item-sub-title :class="dueDateCheck(taskObject.parentTask)">
+                                <v-list-item-sub-title :class="dueDateCheck(parent)">
                                   {{
                                   getProjectDates(
-                                  taskObject.parentTask.taskDueDateAt
+                                  parent.taskDueDateAt
                                   )
                                   }}
                                 </v-list-item-sub-title>
@@ -180,11 +180,11 @@
                               <v-list-item-avatar size="25">
                                 <v-img
                                   v-if="
-                                    taskObject.parentTask
+                                    parent
                                       .taskAssigneeProfileImage != null
                                   "
                                   :src="
-                                    taskObject.parentTask
+                                    parent
                                       .taskAssigneeProfileImage
                                   "
                                 ></v-img>
@@ -198,7 +198,7 @@
                               <nuxt-link
                                 :to="
                                   '/task/' +
-                                    taskObject.parentTask.taskId +
+                                    parent.taskId +
                                     '/?project=' +
                                     projectId
                                 "
@@ -1482,6 +1482,7 @@ export default {
       }
     },
     ...mapState({
+      parent: state => state.task.parentTask,
       children: state => state.task.childTasks,
       people: state => state.task.userCompletionTasks,
       projectSprints: state => state.sprints.sprint.sprints,
