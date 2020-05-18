@@ -2211,6 +2211,7 @@
 .orgWorkloadTopTabs {
   margin-top: 30px;
   margin-left: -25px;
+  height: 90vh;
 }
 .tabHeaders {
   font-size: 12px;
@@ -2219,7 +2220,7 @@
 .searchTabLeftBar {
   background-color: #edf0f5;
   margin-left: -20px;
-  margin-top: -13px;
+  /* margin-top: -13px; */
   padding: 20px;
   height: 80vh;
 }
@@ -2228,4 +2229,27 @@
   font-weight: bold;
   color: #576377;
   padding-bottom: 20px !important;
+}
+.dateTimePickerFilter {
+  position: absolute;
+  width: 30%;
+}
+.bottomColFilter {
+  margin-top: 45px;
+}
+.toolBarFilter {
+  z-index: 100;
+}
+.col1 {
+  width: 35%;
+  float: left;
+  padding-left: 10px;
+}
+.col2 {
+  width: 65%;
+  float: right;
+}
+.filterOrderWorkload {
+  margin-top: 25px !important;
+  margin-bottom: -20px !important;
 }

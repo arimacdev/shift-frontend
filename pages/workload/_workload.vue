@@ -3,7 +3,7 @@
     <div class="top-nav">
       <navigation-drawer :user="user" />
 
-      <v-toolbar app color dark fixed :clipped-left="clipped" class="tool-bar">
+      <v-toolbar app color dark fixed :clipped-left="clipped" class="toolBarFilter tool-bar">
         <div class="title-div">
           <div class="name-div">
             <v-list-item>

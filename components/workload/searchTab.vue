@@ -1,13 +1,13 @@
 <template>
   <div>
     <v-row>
-      <v-col md="4">
-        <div class="searchTabLeftBar">
+      <div class="col1">
+        <div class="searchTabLeftBar overflow-y-auto">
           <span class="containsText">Contains Text</span>
 
           <v-text-field outlined solo flat background-color="#FFFFFF"></v-text-field>
           <v-row align="center">
-            <v-col cols="12">
+            <v-col md="12">
               <v-autocomplete
                 v-model="assignee"
                 :items="assigneeArray"
@@ -18,7 +18,7 @@
                 outlined
                 dense
                 chips
-                background-color="#EDF0F5"
+                background-color="#FFFFFF"
                 small-chips
                 label="Assignee"
                 multiple
@@ -44,7 +44,7 @@
                 outlined
                 dense
                 chips
-                background-color="#EDF0F5"
+                background-color="#FFFFFF"
                 small-chips
                 label="Project"
                 multiple
@@ -68,7 +68,7 @@
                 outlined
                 dense
                 chips
-                background-color="#EDF0F5"
+                background-color="#FFFFFF"
                 small-chips
                 label="Task Type"
                 multiple
@@ -83,15 +83,84 @@
                   </v-list-item>
                 </template>
               </v-autocomplete>
+              <v-autocomplete
+                v-model="taskStatus"
+                :items="taskStatusArray"
+                item-text="name"
+                item-value="id"
+                flat
+                outlined
+                dense
+                chips
+                background-color="#FFFFFF"
+                small-chips
+                label="Task Status"
+                multiple
+                clearable
+              >
+                <template v-slot:no-data>
+                  <v-list-item>
+                    <v-list-item-title>
+                      Filter by
+                      <strong>Status</strong>
+                    </v-list-item-title>
+                  </v-list-item>
+                </template>
+              </v-autocomplete>
+              <VueCtkDateTimePicker
+                :no-value-to-custom-elem="false"
+                color="#3f51b5"
+                v-model="dateRange"
+                label="Date Range"
+                range
+                left
+                noButton
+                autoClose
+              ></VueCtkDateTimePicker>
+              <v-autocomplete
+                class="filterOrderWorkload"
+                v-model="orderBy"
+                :items="orderByArray"
+                item-text="name"
+                item-value="id"
+                flat
+                outlined
+                dense
+                chips
+                background-color="#FFFFFF"
+                small-chips
+                label="Order By"
+                multiple
+                clearable
+              >
+                <template v-slot:no-data>
+                  <v-list-item>
+                    <v-list-item-title>
+                      Filter
+                      <strong>Order By</strong>
+                    </v-list-item-title>
+                  </v-list-item>
+                </template>
+              </v-autocomplete>
+              <v-radio-group v-model="radioGroup">
+                <v-row>
+                  <v-col md="6">
+                    <v-radio label="Ascending" value="asc"></v-radio>
+                  </v-col>
+                  <v-col md="6">
+                    <v-radio label="Decending" value="des"></v-radio>
+                  </v-col>
+                </v-row>
+              </v-radio-group>
             </v-col>
           </v-row>
         </div>
-      </v-col>
-      <v-col md="8">
+      </div>
+      <div class="col2">
         <div
           class="searchTabRightBar"
-        >{{this.filterAssignee}} {{this.filterProject}} {{ this.filterType}}</div>
-      </v-col>
+        >{{this.filterAssignee}} {{this.filterProject}} {{ this.filterType}} {{ this.filterStatus}} {{this.radioGroup}}</div>
+      </div>
     </v-row>
   </div>
 </template>
@@ -106,10 +175,14 @@ export default {
     filterAssignee: [],
     filterProject: [],
     filterType: [],
+    filterStatus: [],
+    filterOrderBy: [],
     searchAssignee: null,
     selectAssignee: null,
     searchProject: null,
     selectProject: null,
+    dateRange: new Date(),
+    radioGroup: "asc",
     taskTypeArray: [
       { name: "Development", id: "development" },
       { name: "QA", id: "qa" },
@@ -118,6 +191,36 @@ export default {
       { name: "Operational", id: "operational" },
       { name: "Pre-sales", id: "preSales" },
       { name: "General", id: "general" }
+    ],
+    orderByArray: [
+      { name: "Assignee", id: "assignee" },
+      { name: "Projects", id: "projects" },
+      { name: "Type", id: "type" },
+      { name: "Status", id: "status" },
+      { name: "Date", id: "date" }
+    ],
+    taskStatusArray: [
+      { name: "Pending", id: "pending" },
+      { name: "On hold", id: "onHold" },
+      { name: "Open", id: "open" },
+      { name: "Cancel", id: "cancel" },
+      { name: "ReOpened", id: "reOpened" },
+      { name: "Fixing", id: "fixing" },
+      { name: "Testing", id: "testing" },
+      { name: "Resolved", id: "resolved" },
+      { name: "In progress", id: "inprogress" },
+      { name: "Completed", id: "completed" },
+      { name: "Implementing", id: "implementing" },
+      { name: "Under review", id: "underReview" },
+      { name: "Weiting for approval", id: "waitingForApproval" },
+      { name: "Review", id: "review" },
+      { name: "Discussion", id: "discussion" },
+      { name: "Waiting response", id: "waitingResponse" },
+      { name: "Ready", id: "ready" },
+      { name: "Deployed", id: "deployed" },
+      { name: "Fixed", id: "fixed" },
+      { name: "Rejected", id: "rejected" },
+      { name: "Closed", id: "closed" }
     ]
   }),
   watch: {
@@ -176,6 +279,12 @@ export default {
       get() {},
       set(value) {
         this.filterType = value;
+      }
+    },
+    taskStatus: {
+      get() {},
+      set(value) {
+        this.filterStatus = value;
       }
     }
   }
