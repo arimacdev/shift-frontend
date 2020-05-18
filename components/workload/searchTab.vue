@@ -152,6 +152,11 @@
                   </v-col>
                 </v-row>
               </v-radio-group>
+              <v-row>
+                <v-col md="12">
+                  <div class="filterSearchBtn">Search</div>
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
         </div>

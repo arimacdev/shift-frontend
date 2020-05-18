@@ -2212,6 +2212,8 @@
   margin-top: 30px;
   margin-left: -25px;
   height: 90vh;
+  width: 100%;
+  position: fixed !important;
 }
 .tabHeaders {
   font-size: 12px;
@@ -2222,7 +2224,9 @@
   margin-left: -20px;
   /* margin-top: -13px; */
   padding: 20px;
+  padding-left: 25px;
   height: 80vh;
+  padding-bottom: 100px;
 }
 .containsText {
   font-size: 15px;
@@ -2252,4 +2256,17 @@
 .filterOrderWorkload {
   margin-top: 25px !important;
   margin-bottom: -20px !important;
+}
+.WorkloadTabsContents {
+  padding-top: 80px;
+  width: 100%;
+}
+.filterSearchBtn {
+  background-color: #080848;
+  color: #ffffff;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-weight: bold;
+  border-radius: 5px;
 }
