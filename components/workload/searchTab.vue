@@ -130,7 +130,6 @@
                 background-color="#FFFFFF"
                 small-chips
                 label="Order By"
-                multiple
                 clearable
               >
                 <template v-slot:no-data>
