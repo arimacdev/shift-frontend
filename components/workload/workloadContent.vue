@@ -12,6 +12,7 @@
           right
           noButton
           autoClose
+          clearable
         >
           <!-- <button>Clear Filters</button> -->
           <button type="button" class="rangePickerButton">
@@ -95,12 +96,15 @@
                   <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
-                  <!-- <v-list-item-title class="workloadTaskName">{{task.taskName}}</v-list-item-title> -->
                   <div class="workloadTaskName">{{ task.taskName }}</div>
                 </v-list-item-content>
-                <v-list-item-content>
+                <!-- <v-list-item-action>
+                  <div class="workloadTaskName">{{ task.taskName }}</div>
+                </v-list-item-action>-->
+
+                <v-list-item-action>
                   <v-list-item-title :class="dueDateCheck(task)">{{ getDueDate(task.dueDate) }}</v-list-item-title>
-                </v-list-item-content>
+                </v-list-item-action>
               </v-list-item>
             </div>
 
@@ -153,7 +157,7 @@ export default {
     getProjects(type) {
       const projectsAll = this.workloadTasks;
       if (this.looped === false) {
-        // console.log("run loop inside");
+        console.log("run loop inside: " + projectsAll);
         for (let i = 0; i < projectsAll.length; i++) {
           let taskCount = projectsAll[i].total;
           switch (taskCount) {
@@ -234,6 +238,7 @@ export default {
       return isoDate;
     },
     selectTask(task, projectId) {
+      console.log("FETCHED TASK: ", task);
       this.task = task;
       this.projectId = projectId;
       this.$store.dispatch("subtask/fetchSubTasks", {

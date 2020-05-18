@@ -34,7 +34,7 @@ export const actions = {
       );
       commit('SET_TASKLOAD_USERS', taskLoadResponse.data);
       console.log('workload response from store', taskLoadResponse.data);
-    } catch {
+    } catch (e) {
       console.log('Error fetching fetchAllTaskLoadUsers', e);
     }
   },
