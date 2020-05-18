@@ -2208,3 +2208,24 @@
   margin-bottom: 20px;
   margin-top: -20px;
 }
+.orgWorkloadTopTabs {
+  margin-top: 30px;
+  margin-left: -25px;
+}
+.tabHeaders {
+  font-size: 12px;
+  font-weight: bold;
+}
+.searchTabLeftBar {
+  background-color: #edf0f5;
+  margin-left: -20px;
+  margin-top: -13px;
+  padding: 20px;
+  height: 80vh;
+}
+.containsText {
+  font-size: 15px;
+  font-weight: bold;
+  color: #576377;
+  padding-bottom: 20px !important;
+}
