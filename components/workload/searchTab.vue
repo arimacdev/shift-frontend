@@ -161,9 +161,12 @@
         </div>
       </div>
       <div class="col2">
-        <div
-          class="searchTabRightBar"
-        >{{this.filterAssignee}} {{this.filterProject}} {{ this.filterType}} {{ this.filterStatus}} {{this.radioGroup}}</div>
+        <!-- {{this.filterAssignee}} {{this.filterProject}} {{ this.filterType}} {{ this.filterStatus}} {{this.radioGroup}} -->
+        <div class="searchTabRightBar overflow-y-auto">
+          <div class="defaultFilterBackground">
+            <v-icon size="150" color="#EDF0F5">mdi-magnify</v-icon>
+          </div>
+        </div>
       </div>
     </v-row>
   </div>

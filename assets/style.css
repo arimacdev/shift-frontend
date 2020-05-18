@@ -2270,3 +2270,7 @@
   font-weight: bold;
   border-radius: 5px;
 }
+.defaultFilterBackground {
+  text-align: center;
+  padding-top: 20%;
+}
