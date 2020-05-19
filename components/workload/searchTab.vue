@@ -238,58 +238,63 @@
           </div>
           <div v-else>
             <!-- {{this.filterResult}} -->
-            <div v-for="(task, index) in this.orderedTaskList()" :key="index">
-              <span>fsfd</span>
-              <div class="taskList restructuredWorkloadTaskFilterList">
-                <nuxt-link
-                  :to="
+            <div v-for="(entityTasks, entity, index) in this.orderedTaskList()" :key="index">
+              <!-- <span> {{entityTasks}} || {{entity}} || {{index}}</span> -->
+              <span v-if="filterOrderBy === 'taskDueDateAt' && entity == null">No Due Date</span>
+              <span>{{entity}}</span>
+
+              <div v-for="(task, index) in entityTasks" :key="index">
+                <div class="taskList restructuredWorkloadTaskFilterList">
+                  <nuxt-link
+                    :to="
                   '/task/' + task.taskId + '/?project=' + projectId
                 "
-                  style="text-decoration: none;"
-                  target="_blank"
-                >
-                  <v-list-item @click="
+                    style="text-decoration: none;"
+                    target="_blank"
+                  >
+                    <v-list-item @click="
               selectTask(task, task);
             ">
-                    <!-- @click.stop="drawer = !drawer" -->
-                    <v-list-item-action>
-                      <v-icon
-                        v-if="task.taskStatus == 'closed'"
-                        size="30"
-                        color="#2EC973"
-                      >mdi-checkbox-marked-circle</v-icon>
-                      <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
-                    </v-list-item-action>
-                    <div class="tasklistTaskNames restructuredMainTaskName">
-                      <div class="body-2">
-                        <span class="restructuredMainTaskCode">{{task.secondaryTaskId}}</span>
-                        {{ task.taskName }}
+                      <!-- @click.stop="drawer = !drawer" -->
+                      <v-list-item-action>
+                        <v-icon
+                          v-if="task.taskStatus == 'closed'"
+                          size="30"
+                          color="#2EC973"
+                        >mdi-checkbox-marked-circle</v-icon>
+                        <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                      </v-list-item-action>
+                      <div class="tasklistTaskNames restructuredMainTaskName">
+                        <div class="body-2">
+                          <span class="restructuredMainTaskCode">{{task.secondaryTaskId}}</span>
+                          {{ task.taskName }}
+                        </div>
                       </div>
-                    </div>
-                    <!-- <div
+                      <!-- <div
                       class="restStatusChip"
                       :class="statusCheck(task.issueType)"
-                    >{{ task.issueType }}</div>-->
-                    <v-list-item-content class="updatedDate">
-                      <v-list-item-title
-                        :class="dueDateCheck(task)"
-                      >{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
-                    </v-list-item-content>
-                    <div>
-                      <v-list-item-avatar>
-                        <v-img
-                          v-if="task.taskAssigneeProfileImage != null"
-                          :src="task.taskAssigneeProfileImage"
-                        ></v-img>
-                        <v-img
-                          v-else
-                          src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-                        ></v-img>
-                      </v-list-item-avatar>
-                    </div>
-                    <div v-if="task.isParent == true" class="bluePart"></div>
-                  </v-list-item>
-                </nuxt-link>
+                      >{{ task.issueType }}</div>-->
+                      <v-list-item-content class="updatedDate">
+                        <v-list-item-title
+                          :class="dueDateCheck(task)"
+                        >{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
+                      </v-list-item-content>
+                      <div>
+                        <v-list-item-avatar>
+                          <v-img
+                            v-if="task.taskAssigneeProfileImage != null"
+                            :src="task.taskAssigneeProfileImage"
+                          ></v-img>
+                          <v-img
+                            v-else
+                            src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                          ></v-img>
+                        </v-list-item-avatar>
+                      </div>
+                      <div v-if="task.isParent == true" class="bluePart"></div>
+                    </v-list-item>
+                  </nuxt-link>
+                </div>
               </div>
             </div>
           </div>
@@ -384,7 +389,18 @@ export default {
   methods: {
     orderedTaskList() {
       const taskList = this.filterResult;
-      return taskList;
+      const name = "projectName";
+      const orderedList = taskList.reduce((accumilate, current) => {
+        accumilate[current[this.filterOrderBy]] = (
+          accumilate[current[this.filterOrderBy]] || []
+        ).concat(current);
+        return accumilate;
+      }, {});
+      console.log("taskList", taskList);
+      console.log("taskListOrder", orderedList);
+
+      // return taskList;
+      return orderedList;
     },
     jqlSearch() {
       // filterAssignee: [],
@@ -491,7 +507,7 @@ export default {
             }
           }
         );
-        console.log("tasks--->", taskFilterResponse.data);
+        // console.log("tasks--->", taskFilterResponse.data);
         this.filterResult = taskFilterResponse.data;
       } catch (error) {
         console.log("Error fetching data", error);
