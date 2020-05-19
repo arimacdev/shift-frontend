@@ -2186,7 +2186,7 @@
   padding-left: 20px;
   padding-top: 12px;
   position: fixed;
-  z-index: 1000;
+  /* z-index: 1000; */
 }
 
 .workloadV2Body {
@@ -2251,7 +2251,7 @@
   margin-top: 45px;
 }
 .toolBarFilter {
-  z-index: 100;
+  /* z-index: 100; */
 }
 .col1 {
   width: 35%;
@@ -2290,4 +2290,21 @@
 .restructuredWorkloadTaskFilterList {
   background-color: #edf0f5;
   overflow: hidden;
+}
+.templateText {
+  font-size: 15px;
+  font-weight: bold;
+  color: #576377;
+}
+.saveTemplateBody {
+  padding-left: 40px;
+  padding-right: 40px;
+  color: #576377;
+}
+.spacerTemplate {
+  width: 20px;
+}
+.asdasdad {
+  position: absolute;
+  z-index: 100000;
 }

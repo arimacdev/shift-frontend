@@ -219,6 +219,8 @@
                         :filterProject="filterProject"
                         :filterType="filterType"
                         :filterStatus="filterStatus"
+                        :from="from"
+                        :to="to"
                       />
                     </v-col>
                   </v-row>
@@ -325,6 +327,8 @@ export default {
     selectAssignee: null,
     searchProject: null,
     selectProject: null,
+    from: "",
+    to: "",
     dateRange: new Date(),
     radioGroup: "ASC",
     taskName: "",
@@ -429,6 +433,8 @@ export default {
           this.dateRange.start !== undefined &&
           this.dateRange.end !== undefined
         ) {
+          this.from = this.dateRange.start;
+          this.to = this.dateRange.end;
           const startDate = new Date(this.dateRange.start);
           const isoStartDate = new Date(
             startDate.getTime() - startDate.getTimezoneOffset() * 60000

@@ -1,18 +1,64 @@
 <template>
-  <div class="text-center">
-    <v-dialog v-model="dialog" width="500">
+  <div class="text-center adasd">
+    <v-dialog v-model="dialog" width="600">
       <template v-slot:activator="{ on }">
         <v-btn width="100%" color="#2EC973" dark v-on="on">Save current filter as a template</v-btn>
       </template>
 
-      <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>Privacy Policy</v-card-title>
-
-        <v-card-text>{{this.filterAssignee}}</v-card-text>
-        <v-card-text>{{this.filterProject}}</v-card-text>
-        <v-card-text>{{this.filterType}}</v-card-text>
-        <v-card-text>{{this.filterStatus}}</v-card-text>
-
+      <v-card class="asdasdad">
+        <v-card-title class="grey lighten-2" primary-title>Save filteration as a template</v-card-title>
+        <div class="saveTemplateBody">
+          <v-row>
+            <v-col>
+              <div class="templateText">Assignee:</div>
+              <span v-for="(assignee, index) in this.filterAssignee" :key="index">
+                {{assignee.name}}
+                &nbsp;&nbsp;
+              </span>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <div class="templateText">Project:</div>
+              <span v-for="(project, index) in this.filterProject" :key="index">
+                {{project.name}}
+                &nbsp;&nbsp;
+              </span>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <div class="templateText">Type:</div>
+              <span v-for="(type, index) in this.filterType" :key="index">
+                {{type.name}}
+                &nbsp;&nbsp;
+              </span>
+            </v-col>
+            <v-col>
+              <div class="templateText">Status:</div>
+              <span v-for="(status, index) in this.filterStatus" :key="index">
+                {{status.name}}
+                &nbsp;&nbsp;
+              </span>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <div class="templateText">From:</div>
+              <span>
+                {{this.from}}
+                &nbsp;&nbsp;
+              </span>
+            </v-col>
+            <v-col>
+              <div class="templateText">To:</div>
+              <span>
+                {{this.to}}
+                &nbsp;&nbsp;
+              </span>
+            </v-col>
+          </v-row>
+        </div>
         <v-divider></v-divider>
 
         <v-card-actions>
@@ -25,7 +71,14 @@
 </template>
 <script>
 export default {
-  props: ["filterAssignee", "filterProject", "filterType", "filterStatus"],
+  props: [
+    "filterAssignee",
+    "filterProject",
+    "filterType",
+    "filterStatus",
+    "from",
+    "to"
+  ],
   data() {
     return {
       dialog: false
