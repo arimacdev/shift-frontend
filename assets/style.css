@@ -2287,3 +2287,7 @@
 .calanderTabContent {
   width: 80vw;
 }
+.restructuredWorkloadTaskFilterList {
+  background-color: #edf0f5;
+  overflow: hidden;
+}

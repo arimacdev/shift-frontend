@@ -180,8 +180,62 @@
           <div v-if="this.filterResult == ''" class="defaultFilterBackground">
             <v-icon size="150" color="#EDF0F5">mdi-magnify</v-icon>
           </div>
-          <!-- {{this.filterResult}} -->
-          <div v-else></div>
+          <div v-else>
+            <!-- {{this.filterResult}} -->
+            <div v-for="(task, index) in this.filterResult" :key="index">
+              <div class="taskList restructuredWorkloadTaskFilterList">
+                <nuxt-link
+                  :to="
+                  '/task/' + task.taskId + '/?project=' + projectId
+                "
+                  style="text-decoration: none;"
+                  target="_blank"
+                >
+                  <v-list-item @click="
+              selectTask(task, task);
+            ">
+                    <!-- @click.stop="drawer = !drawer" -->
+                    <v-list-item-action>
+                      <v-icon
+                        v-if="task.taskStatus == 'closed'"
+                        size="30"
+                        color="#2EC973"
+                      >mdi-checkbox-marked-circle</v-icon>
+                      <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                    </v-list-item-action>
+                    <div class="tasklistTaskNames restructuredMainTaskName">
+                      <div class="body-2">
+                        <span class="restructuredMainTaskCode">{{task.secondaryTaskId}}</span>
+                        {{ task.taskName }}
+                      </div>
+                    </div>
+                    <!-- <div
+                      class="restStatusChip"
+                      :class="statusCheck(task.issueType)"
+                    >{{ task.issueType }}</div>-->
+                    <v-list-item-content class="updatedDate">
+                      <v-list-item-title
+                        :class="dueDateCheck(task)"
+                      >{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
+                    </v-list-item-content>
+                    <div>
+                      <v-list-item-avatar>
+                        <v-img
+                          v-if="task.taskAssigneeProfileImage != null"
+                          :src="task.taskAssigneeProfileImage"
+                        ></v-img>
+                        <v-img
+                          v-else
+                          src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                        ></v-img>
+                      </v-list-item-avatar>
+                    </div>
+                    <div v-if="task.isParent == true" class="bluePart"></div>
+                  </v-list-item>
+                </nuxt-link>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </v-row>
@@ -423,6 +477,90 @@ export default {
           name: project.projectName,
           id: project.projectId
         });
+      }
+    },
+    statusCheck(task) {
+      if (task === "development") {
+        return "developmentStatus";
+      } else if (task === "qa") {
+        return "qaStatus";
+      } else if (task === "design") {
+        return "designStatus";
+      } else if (task === "bug") {
+        return "bugStatus";
+      } else if (task === "operational") {
+        return "operationalStatus";
+      } else if (task === "preSales") {
+        return "preSalesStatus";
+      } else if (task === "general") {
+        return "generalStatus";
+      } else {
+        return "otherStatus";
+      }
+    },
+    dueDateCheck(task) {
+      // console.log("check due date color", task);
+      if (task.taskStatus === "closed") {
+        return "workLoadTaskDone";
+      } else if (task.dueDate == null) {
+        return "workLoadTaskDefault";
+      } else {
+        const dueDate = new Date(task.dueDate);
+        const dueToUtc = new Date(
+          dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+        );
+        const dueToUtcDate = new Date(dueToUtc);
+        const now = new Date();
+        const today = dueToUtcDate.toDateString() === now.toDateString();
+        // console.log("isToday--->", today);
+        // console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
+        if (now.getTime() > dueToUtcDate.getTime()) {
+          // console.log("overdue");
+          return "workLoadTaskOverDue";
+        } else if (today) {
+          /// This is where I check
+          return "workLoadTaskOverDue";
+          // console.log("this is Today--->", today);
+        }
+        {
+          return "workLoadTaskHealthy";
+        }
+      }
+    },
+    getProjectDates(date) {
+      const dueDate = new Date(date);
+      const dueToUtc = new Date(
+        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+      );
+      const dueToUtcDate = new Date(dueToUtc);
+      const now = new Date();
+      // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
+
+      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
+        return "Add Due Date";
+      } else if (
+        now.getDate() === dueToUtcDate.getDate() &&
+        now.getMonth() === dueToUtcDate.getMonth() &&
+        now.getFullYear() === dueToUtcDate.getFullYear()
+      ) {
+        return "Today";
+      } else if (
+        now.getDate() - 1 === dueToUtcDate.getDate() &&
+        now.getMonth() - 1 === dueToUtcDate.getMonth() &&
+        now.getFullYear() - 1 === dueToUtcDate.getFullYear()
+      ) {
+        return "Yesterday";
+      } else if (
+        now.getDate() + 1 === dueToUtcDate.getDate() &&
+        now.getMonth() + 1 === dueToUtcDate.getMonth() &&
+        now.getFullYear() + 1 === dueToUtcDate.getFullYear()
+      ) {
+        return "Tomorrow";
+      } else {
+        let stringDate = date + "";
+        stringDate = stringDate.toString();
+        stringDate = stringDate.slice(0, 10);
+        return stringDate;
       }
     }
   },
