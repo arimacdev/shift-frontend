@@ -212,6 +212,16 @@
                       <v-btn width="100%" color="primary">Go</v-btn>
                     </v-col>
                   </v-row>
+                  <v-row>
+                    <v-col>
+                      <save-template
+                        :filterAssignee="filterAssignee"
+                        :filterProject="filterProject"
+                        :filterType="filterType"
+                        :filterStatus="filterStatus"
+                      />
+                    </v-col>
+                  </v-row>
                 </v-col>
               </v-row>
             </v-col>
@@ -287,7 +297,11 @@
 </template>
 <script>
 import { mapState } from "vuex";
+import SaveTemplate from "~/components/workload/saveTemplate";
 export default {
+  components: {
+    "save-template": SaveTemplate
+  },
   data: () => ({
     items: ["foo", "bar", "fizz", "buzz"],
     value: null,
