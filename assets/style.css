@@ -2310,3 +2310,12 @@
   margin-bottom: 20px !important;
   margin-top: 20px;
 }
+.calanderCol1 {
+  width: 25%;
+  float: left;
+  padding-left: 10px;
+}
+.calanderCol2 {
+  width: 75%;
+  float: right;
+}

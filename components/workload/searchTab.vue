@@ -543,7 +543,6 @@ export default {
     clearName() {
       this.taskNameQuery = "";
       this.jqlQuery = "";
-      console.log("TRIGGERRED: " + this.taskNameQuery);
     },
     loadAssignee(v) {
       let AssigneeSearchList = this.users;
