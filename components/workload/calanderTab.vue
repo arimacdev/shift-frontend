@@ -216,6 +216,7 @@
               </v-sheet>
             </v-col>
           </v-row>
+          {{this.filterResult}}
         </div>
       </div>
     </v-row>
@@ -512,6 +513,7 @@ export default {
           }
         );
         // console.log("tasks--->", taskFilterResponse.data);
+        this.loadTasks();
         this.filterResult = taskFilterResponse.data;
       } catch (error) {
         console.log("Error fetching data", error);
@@ -536,6 +538,15 @@ export default {
     clearName() {
       this.taskNameQuery = "";
       this.jqlQuery = "";
+    },
+    loadTasks(v) {
+      let taskSearchList = this.filterResult;
+      for (let index = 0; index < taskSearchList.length; ++index) {
+        let task = taskSearchList[index].taskName;
+        this.names.push({
+          task
+        });
+      }
     },
     loadAssignee(v) {
       let AssigneeSearchList = this.users;
