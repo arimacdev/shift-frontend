@@ -5,7 +5,15 @@
         <div class="searchTabLeftBar overflow-y-auto">
           <span class="containsText">Contains Text</span>
 
-          <v-text-field v-model="taskName" outlined solo flat background-color="#FFFFFF"></v-text-field>
+          <v-text-field
+            clearable
+            @click:clear="clearName()"
+            v-model="taskName"
+            outlined
+            solo
+            flat
+            background-color="#FFFFFF"
+          ></v-text-field>
           <v-row align="center">
             <v-col md="12">
               <v-autocomplete
@@ -332,7 +340,8 @@ export default {
       }
 
       if (this.taskName != "") {
-        this.taskNameQuery = 'taskName LIKE "%' + this.taskName + '%"  AND ';
+        this.taskNameQuery =
+          'taskName LIKE "%25' + this.taskName + '%25"  AND ';
       }
 
       let filterQuery =
@@ -345,7 +354,6 @@ export default {
 
       this.jqlQuery = filterQuery.slice(0, -5) + this.orderByQuery;
       console.log("QUERY:  " + encodeURI(this.jqlQuery));
-      console.log("QUERY:  " + this.jqlQuery);
       this.getFilterResponse();
     },
     async getFilterResponse() {
@@ -389,6 +397,11 @@ export default {
     clearOrderBy() {
       this.orderByQuery = "";
       this.jqlQuery = "";
+    },
+    clearName() {
+      this.taskNameQuery = "";
+      this.jqlQuery = "";
+      console.log("TRIGGERRED: " + this.taskNameQuery);
     },
     loadAssignee(v) {
       let AssigneeSearchList = this.users;
