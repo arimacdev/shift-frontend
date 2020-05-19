@@ -169,9 +169,10 @@
       <div class="col2">
         <!-- {{this.filterAssignee}} {{this.filterProject}} {{ this.filterType}} {{ this.filterStatus}} {{this.radioGroup}} -->
         <div class="searchTabRightBar overflow-y-auto">
-          <div class="defaultFilterBackground">
+          <div v-if="this.filterResult == ''" class="defaultFilterBackground">
             <v-icon size="150" color="#EDF0F5">mdi-magnify</v-icon>
           </div>
+          <div v-else>{{this.filterResult}}</div>
         </div>
       </div>
     </v-row>
@@ -197,6 +198,7 @@ export default {
     filterProject: [],
     filterType: [],
     filterStatus: [],
+    filterResult: [],
     filterOrderBy: "projectName",
     searchAssignee: null,
     selectAssignee: null,
@@ -330,7 +332,7 @@ export default {
       }
 
       if (this.taskName != "") {
-        this.taskNameQuery = "taskName LIKE '%" + this.taskName + "%'";
+        this.taskNameQuery = 'taskName LIKE "%' + this.taskName + '%"  AND ';
       }
 
       let filterQuery =
@@ -341,8 +343,27 @@ export default {
         this.dateQuery +
         this.taskNameQuery;
 
-      this.jqlQuery = filterQuery.slice(0, -4) + this.orderByQuery;
+      this.jqlQuery = filterQuery.slice(0, -5) + this.orderByQuery;
+      console.log("QUERY:  " + encodeURI(this.jqlQuery));
       console.log("QUERY:  " + this.jqlQuery);
+      this.getFilterResponse();
+    },
+    async getFilterResponse() {
+      let taskFilterResponse;
+      try {
+        taskFilterResponse = await this.$axios.$get(
+          `/projects/workload/filter?query=${this.jqlQuery}`,
+          {
+            headers: {
+              user: this.$store.state.user.userId
+            }
+          }
+        );
+        console.log("tasks--->", taskFilterResponse.data);
+        this.filterResult = taskFilterResponse.data;
+      } catch (error) {
+        console.log("Error fetching data", error);
+      }
     },
 
     clearAssignee() {
@@ -366,7 +387,6 @@ export default {
       this.jqlQuery = "";
     },
     clearOrderBy() {
-      console.log("TRIGERED: ");
       this.orderByQuery = "";
       this.jqlQuery = "";
     },
