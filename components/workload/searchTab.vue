@@ -174,6 +174,56 @@
                   <div @click="jqlSearch()" class="filterSearchBtn">Search</div>
                 </v-col>
               </v-row>
+
+              <v-row>
+                <v-col md="12">
+                  <span class="containsText">Filter templates</span>
+                  <v-row>
+                    <v-col md="8">
+                      <v-autocomplete
+                        v-model="assignee"
+                        return-object
+                        :items="assigneeArray"
+                        item-text="name"
+                        item-value="id"
+                        :search-input.sync="searchAssignee"
+                        flat
+                        solo
+                        dense
+                        chips
+                        background-color="#FFFFFF"
+                        small-chips
+                        label="Saved Templates"
+                        multiple
+                        clearable
+                        :clear-icon-cb="clearAssignee()"
+                      >
+                        <template v-slot:no-data>
+                          <v-list-item>
+                            <v-list-item-title>
+                              Filter by
+                              <strong>Saved templates</strong>
+                            </v-list-item-title>
+                          </v-list-item>
+                        </template>
+                      </v-autocomplete>
+                    </v-col>
+                    <v-col md="4">
+                      <v-btn width="100%" color="primary">Go</v-btn>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col>
+                      <save-template
+                        :filterAssignee="filterAssignee"
+                        :filterProject="filterProject"
+                        :filterType="filterType"
+                        :filterStatus="filterStatus"
+                      />
+                    </v-col>
+                  </v-row>
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
         </div>
@@ -248,7 +298,11 @@
 </template>
 <script>
 import { mapState } from "vuex";
+import SaveTemplate from "~/components/workload/saveTemplate";
 export default {
+  components: {
+    "save-template": SaveTemplate
+  },
   data: () => ({
     items: ["foo", "bar", "fizz", "buzz"],
     value: null,
