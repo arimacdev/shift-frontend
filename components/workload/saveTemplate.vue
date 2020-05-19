@@ -58,6 +58,12 @@
               </span>
             </v-col>
           </v-row>
+          <v-row>
+            <v-col>
+              <div class="templateText">Choose a name for the template:</div>
+              <v-text-field solo background-color="#EDF0F5" dense flat></v-text-field>
+            </v-col>
+          </v-row>
         </div>
         <v-divider></v-divider>
 
