@@ -2269,8 +2269,12 @@
   padding-bottom: 20px;
   font-weight: bold;
   border-radius: 5px;
+  cursor: pointer;
 }
 .defaultFilterBackground {
   text-align: center;
   padding-top: 20%;
+}
+.calanderTabContent {
+  width: 80vw;
 }

@@ -33,7 +33,7 @@ export const actions = {
         }
       );
       commit('SET_TASKLOAD_USERS', taskLoadResponse.data);
-      console.log('workload response from store', taskLoadResponse.data);
+      // console.log('workload response from store', taskLoadResponse.data);
     } catch (e) {
       console.log('Error fetching fetchAllTaskLoadUsers', e);
     }
@@ -54,7 +54,7 @@ export const actions = {
         }
       );
       commit('SET_WORKLOAD_TASKS', workloadTasks.data);
-      console.log('workload tasks response from store', workloadTasks.data);
+      // console.log('workload tasks response from store', workloadTasks.data);
     } catch {
       console.log('Error fetching fetchAllWorkloadTasks', e);
     }

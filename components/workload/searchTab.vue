@@ -23,6 +23,7 @@
                 label="Assignee"
                 multiple
                 clearable
+                :clear-icon-cb="clearAssignee()"
               >
                 <template v-slot:no-data>
                   <v-list-item>
@@ -49,6 +50,7 @@
                 label="Project"
                 multiple
                 clearable
+                :clear-icon-cb="clearProject()"
               >
                 <template v-slot:no-data>
                   <v-list-item>
@@ -73,6 +75,7 @@
                 label="Task Type"
                 multiple
                 clearable
+                :clear-icon-cb="clearType()"
               >
                 <template v-slot:no-data>
                   <v-list-item>
@@ -97,6 +100,7 @@
                 label="Task Status"
                 multiple
                 clearable
+                :clear-icon-cb="clearStatus()"
               >
                 <template v-slot:no-data>
                   <v-list-item>
@@ -131,6 +135,7 @@
                 small-chips
                 label="Order By"
                 clearable
+                :clear-icon-cb="clearOrderBy()"
               >
                 <template v-slot:no-data>
                   <v-list-item>
@@ -153,7 +158,7 @@
               </v-radio-group>
               <v-row>
                 <v-col md="12">
-                  <div class="filterSearchBtn">Search</div>
+                  <div @click="jqlSearch()" class="filterSearchBtn">Search</div>
                 </v-col>
               </v-row>
             </v-col>
@@ -177,6 +182,12 @@ export default {
   data: () => ({
     items: ["foo", "bar", "fizz", "buzz"],
     value: null,
+    jqlQuery: "",
+    assigneeQuery: "",
+    projectQuery: "",
+    typeQuery: "",
+    statusQuery: "",
+    orderByQuery: "",
     assigneeArray: [],
     projectArray: [],
     filterAssignee: [],
@@ -239,6 +250,52 @@ export default {
     }
   },
   methods: {
+    jqlSearch() {
+      // filterAssignee: [],
+      // filterProject: [],
+      // filterType: [],
+      // filterStatus: [],
+      // filterOrderBy: [],
+
+      if (this.filterAssignee.length != 0) {
+        let assigneeList = "";
+        for (let i = 0; i < this.filterAssignee.length; i++) {
+          assigneeList = assigneeList + "'" + this.filterAssignee[i] + "'";
+          if (i < this.filterAssignee.length - 1) {
+            assigneeList = assigneeList + ",";
+          }
+        }
+        this.assigneeQuery = "taskAssignee IN " + "(" + assigneeList + ") AND";
+      }
+      if (this.filterProject.length != 0) {
+        let projectList = "";
+        for (let i = 0; i < this.filterProject.length; i++) {
+          projectList = projectList + "'" + this.filterProject[i] + "'";
+          if (i < this.filterAssignee.length - 1) {
+            projectList = projectList + ",";
+          }
+        }
+        this.projectQuery = " projectId IN " + "(" + projectList + ")  AND";
+      }
+
+      this.jqlQuery = this.assigneeQuery + " " + this.projectQuery;
+      console.log(this.jqlQuery);
+    },
+    clearAssignee() {
+      this.assigneeQuery = "";
+    },
+    clearProject() {
+      this.projectQuery = "";
+    },
+    clearType() {
+      this.typeQuery = "";
+    },
+    clearStatus() {
+      this.statusQuery = "";
+    },
+    clearOrderBy() {
+      this.orderByQuery = "";
+    },
     loadAssignee(v) {
       let AssigneeSearchList = this.users;
       for (let index = 0; index < AssigneeSearchList.length; ++index) {

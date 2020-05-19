@@ -157,7 +157,7 @@ export default {
     getProjects(type) {
       const projectsAll = this.workloadTasks;
       if (this.looped === false) {
-        console.log("run loop inside: " + projectsAll);
+        // console.log("run loop inside: " + projectsAll);
         for (let i = 0; i < projectsAll.length; i++) {
           let taskCount = projectsAll[i].total;
           switch (taskCount) {
@@ -238,7 +238,7 @@ export default {
       return isoDate;
     },
     selectTask(task, projectId) {
-      console.log("FETCHED TASK: ", task);
+      // console.log("FETCHED TASK: ", task);
       this.task = task;
       this.projectId = projectId;
       this.$store.dispatch("subtask/fetchSubTasks", {
@@ -297,7 +297,7 @@ export default {
         const now = new Date();
         const today = dueToUtcDate.toDateString() === now.toDateString();
         // console.log("isToday--->", today);
-        console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
+        // console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
         if (now.getTime() > dueToUtcDate.getTime()) {
           // console.log("overdue");
           return "workLoadTaskOverDue";

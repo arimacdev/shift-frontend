@@ -1,3 +1,3 @@
 <template>
-  <h1>Hi i'm calander</h1>
+  <h1>HI i'm calander</h1>
 </template>
