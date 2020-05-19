@@ -5,7 +5,7 @@
         <div class="searchTabLeftBar overflow-y-auto">
           <span class="containsText">Contains Text</span>
 
-          <v-text-field outlined solo flat background-color="#FFFFFF"></v-text-field>
+          <v-text-field v-model="taskName" outlined solo flat background-color="#FFFFFF"></v-text-field>
           <v-row align="center">
             <v-col md="12">
               <v-autocomplete
@@ -75,7 +75,7 @@
                 label="Task Type"
                 multiple
                 clearable
-                :clear-icon-cb="clearType()"
+                @click:clear="clearType()"
               >
                 <template v-slot:no-data>
                   <v-list-item>
@@ -100,7 +100,7 @@
                 label="Task Status"
                 multiple
                 clearable
-                :clear-icon-cb="clearStatus()"
+                @click:clear="clearStatus()"
               >
                 <template v-slot:no-data>
                   <v-list-item>
@@ -120,6 +120,7 @@
                 left
                 noButton
                 autoClose
+                :clear-icon-cb="clearDate()"
               ></VueCtkDateTimePicker>
               <v-autocomplete
                 class="filterOrderWorkload"
@@ -135,7 +136,7 @@
                 small-chips
                 label="Order By"
                 clearable
-                :clear-icon-cb="clearOrderBy()"
+                @click:clear="clearOrderBy()"
               >
                 <template v-slot:no-data>
                   <v-list-item>
@@ -149,10 +150,10 @@
               <v-radio-group v-model="radioGroup">
                 <v-row>
                   <v-col md="6">
-                    <v-radio label="Ascending" value="asc"></v-radio>
+                    <v-radio label="Ascending" value="ASC"></v-radio>
                   </v-col>
                   <v-col md="6">
-                    <v-radio label="Decending" value="des"></v-radio>
+                    <v-radio label="Decending" value="DESC"></v-radio>
                   </v-col>
                 </v-row>
               </v-radio-group>
@@ -188,19 +189,22 @@ export default {
     typeQuery: "",
     statusQuery: "",
     orderByQuery: "",
+    dateQuery: "",
+    taskNameQuery: "",
     assigneeArray: [],
     projectArray: [],
     filterAssignee: [],
     filterProject: [],
     filterType: [],
     filterStatus: [],
-    filterOrderBy: [],
+    filterOrderBy: "projectName",
     searchAssignee: null,
     selectAssignee: null,
     searchProject: null,
     selectProject: null,
     dateRange: new Date(),
-    radioGroup: "asc",
+    radioGroup: "ASC",
+    taskName: "",
     taskTypeArray: [
       { name: "Development", id: "development" },
       { name: "QA", id: "qa" },
@@ -211,11 +215,11 @@ export default {
       { name: "General", id: "general" }
     ],
     orderByArray: [
-      { name: "Assignee", id: "assignee" },
-      { name: "Projects", id: "projects" },
-      { name: "Type", id: "type" },
+      { name: "Assignee", id: "taskAssignee" },
+      { name: "Projects", id: "projectName" },
+      { name: "Type", id: "issueType" },
       { name: "Status", id: "status" },
-      { name: "Date", id: "date" }
+      { name: "Date", id: "taskDueDateAt" }
     ],
     taskStatusArray: [
       { name: "Pending", id: "pending" },
@@ -260,41 +264,111 @@ export default {
       if (this.filterAssignee.length != 0) {
         let assigneeList = "";
         for (let i = 0; i < this.filterAssignee.length; i++) {
-          assigneeList = assigneeList + "'" + this.filterAssignee[i] + "'";
+          assigneeList = assigneeList + '"' + this.filterAssignee[i] + '"';
           if (i < this.filterAssignee.length - 1) {
             assigneeList = assigneeList + ",";
           }
         }
-        this.assigneeQuery = "taskAssignee IN " + "(" + assigneeList + ") AND";
+        this.assigneeQuery = "taskAssignee IN " + "(" + assigneeList + ") AND ";
       }
       if (this.filterProject.length != 0) {
         let projectList = "";
         for (let i = 0; i < this.filterProject.length; i++) {
-          projectList = projectList + "'" + this.filterProject[i] + "'";
-          if (i < this.filterAssignee.length - 1) {
+          projectList = projectList + '"' + this.filterProject[i] + '"';
+          if (i < this.filterProject.length - 1) {
             projectList = projectList + ",";
           }
         }
-        this.projectQuery = " projectId IN " + "(" + projectList + ")  AND";
+        this.projectQuery = "projectId IN " + "(" + projectList + ")  AND ";
+      }
+      if (this.filterType.length != 0) {
+        let typeList = "";
+        for (let i = 0; i < this.filterType.length; i++) {
+          typeList = typeList + '"' + this.filterType[i] + '"';
+          if (i < this.filterType.length - 1) {
+            typeList = typeList + ",";
+          }
+        }
+        this.typeQuery = "issueType IN " + "(" + typeList + ")  AND ";
+      }
+      if (this.filterStatus.length != 0) {
+        let statusList = "";
+        for (let i = 0; i < this.filterStatus.length; i++) {
+          statusList = statusList + '"' + this.filterStatus[i] + '"';
+          if (i < this.filterStatus.length - 1) {
+            statusList = statusList + ",";
+          }
+        }
+        this.statusQuery = "taskStatus IN " + "(" + statusList + ")  AND ";
+      }
+      if (this.dateRange != null) {
+        if (
+          this.dateRange.start !== undefined &&
+          this.dateRange.end !== undefined
+        ) {
+          const startDate = new Date(this.dateRange.start);
+          const isoStartDate = new Date(
+            startDate.getTime() - startDate.getTimezoneOffset() * 60000
+          ).toISOString();
+
+          const endDate = new Date(this.dateRange.end);
+          const isoEndDate = new Date(
+            endDate.getTime() - endDate.getTimezoneOffset() * 60000
+          ).toISOString();
+
+          this.dateQuery =
+            'taskDueDateAt BETWEEN "' +
+            isoStartDate +
+            '" AND "' +
+            isoEndDate +
+            '" AND ';
+        }
+      }
+      if (this.filterOrderBy != "" && this.filterOrderBy != undefined) {
+        this.orderByQuery =
+          "ORDER BY " + this.filterOrderBy + " " + this.radioGroup;
       }
 
-      this.jqlQuery = this.assigneeQuery + " " + this.projectQuery;
-      console.log(this.jqlQuery);
+      if (this.taskName != "") {
+        this.taskNameQuery = "taskName LIKE '%" + this.taskName + "%'";
+      }
+
+      let filterQuery =
+        this.assigneeQuery +
+        this.projectQuery +
+        this.typeQuery +
+        this.statusQuery +
+        this.dateQuery +
+        this.taskNameQuery;
+
+      this.jqlQuery = filterQuery.slice(0, -4) + this.orderByQuery;
+      console.log("QUERY:  " + this.jqlQuery);
     },
+
     clearAssignee() {
       this.assigneeQuery = "";
+      this.jqlQuery = "";
     },
     clearProject() {
       this.projectQuery = "";
+      this.jqlQuery = "";
     },
     clearType() {
       this.typeQuery = "";
+      this.jqlQuery = "";
     },
     clearStatus() {
       this.statusQuery = "";
+      this.jqlQuery = "";
+    },
+    clearDate() {
+      this.dateQuery = "";
+      this.jqlQuery = "";
     },
     clearOrderBy() {
+      console.log("TRIGERED: ");
       this.orderByQuery = "";
+      this.jqlQuery = "";
     },
     loadAssignee(v) {
       let AssigneeSearchList = this.users;
@@ -349,6 +423,12 @@ export default {
       get() {},
       set(value) {
         this.filterStatus = value;
+      }
+    },
+    orderBy: {
+      get() {},
+      set(value) {
+        this.filterOrderBy = value;
       }
     }
   }

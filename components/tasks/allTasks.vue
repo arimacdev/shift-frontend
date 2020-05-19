@@ -485,13 +485,13 @@ export default {
       this.taskDialog = false;
     },
     async filterTasks(filterType, assignee, from, to, issueType) {
-      // console.log(
-      //   "filter options " + filterType,
-      //   assignee,
-      //   from,
-      //   to,
-      //   issueType
-      // );
+      console.log(
+        "filter options " + filterType,
+        assignee,
+        from,
+        to,
+        issueType
+      );
       let response;
       try {
         response = await this.$axios.$get(

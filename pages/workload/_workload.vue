@@ -139,6 +139,10 @@ export default {
     ...mapState({
       taskWorkLoadUsers: state => state.workload.taskWorkLoadUsers
     })
+  },
+  created() {
+    this.$store.dispatch("project/fetchAllProjects");
+    this.$store.dispatch("user/setAllUsers");
   }
 };
 </script>
