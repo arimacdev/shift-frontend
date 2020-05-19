@@ -253,9 +253,7 @@
                     style="text-decoration: none;"
                     target="_blank"
                   >
-                    <v-list-item @click="
-              selectTask(task, task);
-            ">
+                    <v-list-item>
                       <!-- @click.stop="drawer = !drawer" -->
                       <v-list-item-action>
                         <v-icon
