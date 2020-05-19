@@ -18,6 +18,7 @@
             <v-col md="12">
               <v-autocomplete
                 v-model="assignee"
+                return-object
                 :items="assigneeArray"
                 item-text="name"
                 item-value="id"
@@ -45,6 +46,7 @@
 
               <v-autocomplete
                 v-model="project"
+                return-object
                 :items="projectArray"
                 item-text="name"
                 item-value="id"
@@ -71,6 +73,7 @@
               </v-autocomplete>
               <v-autocomplete
                 v-model="taskType"
+                return-object
                 :items="taskTypeArray"
                 item-text="name"
                 item-value="id"
@@ -96,6 +99,7 @@
               </v-autocomplete>
               <v-autocomplete
                 v-model="taskStatus"
+                return-object
                 :items="taskStatusArray"
                 item-text="name"
                 item-value="id"
@@ -283,7 +287,7 @@ export default {
       { name: "Assignee", id: "taskAssignee" },
       { name: "Projects", id: "projectName" },
       { name: "Type", id: "issueType" },
-      { name: "Status", id: "status" },
+      { name: "Status", id: "taskStatus" },
       { name: "Date", id: "taskDueDateAt" }
     ],
     taskStatusArray: [
@@ -329,7 +333,7 @@ export default {
       if (this.filterAssignee.length != 0) {
         let assigneeList = "";
         for (let i = 0; i < this.filterAssignee.length; i++) {
-          assigneeList = assigneeList + '"' + this.filterAssignee[i] + '"';
+          assigneeList = assigneeList + '"' + this.filterAssignee[i].id + '"';
           if (i < this.filterAssignee.length - 1) {
             assigneeList = assigneeList + ",";
           }
@@ -339,7 +343,7 @@ export default {
       if (this.filterProject.length != 0) {
         let projectList = "";
         for (let i = 0; i < this.filterProject.length; i++) {
-          projectList = projectList + '"' + this.filterProject[i] + '"';
+          projectList = projectList + '"' + this.filterProject[i].id + '"';
           if (i < this.filterProject.length - 1) {
             projectList = projectList + ",";
           }
@@ -349,7 +353,7 @@ export default {
       if (this.filterType.length != 0) {
         let typeList = "";
         for (let i = 0; i < this.filterType.length; i++) {
-          typeList = typeList + '"' + this.filterType[i] + '"';
+          typeList = typeList + '"' + this.filterType[i].id + '"';
           if (i < this.filterType.length - 1) {
             typeList = typeList + ",";
           }
@@ -359,7 +363,7 @@ export default {
       if (this.filterStatus.length != 0) {
         let statusList = "";
         for (let i = 0; i < this.filterStatus.length; i++) {
-          statusList = statusList + '"' + this.filterStatus[i] + '"';
+          statusList = statusList + '"' + this.filterStatus[i].id + '"';
           if (i < this.filterStatus.length - 1) {
             statusList = statusList + ",";
           }
