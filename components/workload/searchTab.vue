@@ -159,7 +159,7 @@
                   </v-list-item>
                 </template>
               </v-autocomplete>
-              <v-radio-group v-model="radioGroup">
+              <v-radio-group v-model="filterOrderSequence">
                 <v-row>
                   <v-col md="6">
                     <v-radio label="Ascending" value="ASC"></v-radio>
@@ -231,14 +231,15 @@
         </div>
       </div>
       <div class="col2">
-        <!-- {{this.filterAssignee}} {{this.filterProject}} {{ this.filterType}} {{ this.filterStatus}} {{this.radioGroup}} -->
+        <!-- {{this.filterAssignee}} {{this.filterProject}} {{ this.filterType}} {{ this.filterStatus}} {{this.filterOrderSequence}} -->
         <div class="searchTabRightBar overflow-y-auto">
           <div v-if="this.filterResult == ''" class="defaultFilterBackground">
             <v-icon size="150" color="#EDF0F5">mdi-magnify</v-icon>
           </div>
           <div v-else>
             <!-- {{this.filterResult}} -->
-            <div v-for="(task, index) in this.filterResult" :key="index">
+            <div v-for="(task, index) in this.orderedTaskList()" :key="index">
+              <span> fsfd</span>
               <div class="taskList restructuredWorkloadTaskFilterList">
                 <nuxt-link
                   :to="
@@ -330,7 +331,7 @@ export default {
     from: "",
     to: "",
     dateRange: new Date(),
-    radioGroup: "ASC",
+    filterOrderSequence: "ASC",
     taskName: "",
     taskTypeArray: [
       { name: "Development", id: "development" },
@@ -381,6 +382,10 @@ export default {
     }
   },
   methods: {
+    orderedTaskList() {
+      const taskList = this.filterResult;
+      return taskList;
+    },
     jqlSearch() {
       // filterAssignee: [],
       // filterProject: [],
@@ -455,7 +460,7 @@ export default {
       }
       if (this.filterOrderBy != "" && this.filterOrderBy != undefined) {
         this.orderByQuery =
-          "ORDER BY " + this.filterOrderBy + " " + this.radioGroup;
+          "ORDER BY " + this.filterOrderBy + " " + this.filterOrderSequence;
       }
 
       if (this.taskName != "") {
