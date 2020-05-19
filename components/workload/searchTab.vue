@@ -239,7 +239,7 @@
           <div v-else>
             <!-- {{this.filterResult}} -->
             <div v-for="(task, index) in this.orderedTaskList()" :key="index">
-              <span> fsfd</span>
+              <span>fsfd</span>
               <div class="taskList restructuredWorkloadTaskFilterList">
                 <nuxt-link
                   :to="

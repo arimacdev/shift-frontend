@@ -63,7 +63,8 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="dialog = false">I accept</v-btn>
+          <v-btn color="#FF6161" dark text @click="dialog = false">Cancel</v-btn>
+          <v-btn color="#2EC973" dark text @click="dialog = false">OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
