@@ -236,9 +236,15 @@
           </div>
           <div v-else>
             <!-- {{this.filterResult}} -->
-            <div v-for="(task, index) in this.orderedTaskList()" :key="index">
-              <span> fsfd</span>
-              <div class="taskList restructuredWorkloadTaskFilterList">
+            <div v-for="(entityTasks, entity, index) in this.orderedTaskList()" :key="index">
+              <!-- <span> {{entityTasks}} || {{entity}} || {{index}}</span> -->
+              <span v-if="filterOrderBy === 'taskDueDateAt' && entity == null">No Due Date</span>
+              <span> {{entity}} </span>
+
+
+              <div v-for="(task, index) in entityTasks" :key="index">
+
+                  <div class="taskList restructuredWorkloadTaskFilterList">
                 <nuxt-link
                   :to="
                   '/task/' + task.taskId + '/?project=' + projectId
@@ -289,6 +295,13 @@
                   </v-list-item>
                 </nuxt-link>
               </div>
+
+
+              </div>
+              
+              
+
+              
             </div>
           </div>
         </div>
@@ -380,7 +393,18 @@ export default {
   methods: {
     orderedTaskList() {
       const taskList = this.filterResult;
-      return taskList;
+      const name = "projectName";
+      const orderedList = taskList.reduce((accumilate, current) => {
+        accumilate[current[this.filterOrderBy]] = (
+          accumilate[current[this.filterOrderBy]] || []
+        ).concat(current);
+        return accumilate;
+      }, {});
+      console.log("taskList", taskList);
+      console.log("taskListOrder", orderedList);
+
+      // return taskList;
+      return orderedList;
     },
     jqlSearch() {
       // filterAssignee: [],
@@ -485,7 +509,7 @@ export default {
             }
           }
         );
-        console.log("tasks--->", taskFilterResponse.data);
+        // console.log("tasks--->", taskFilterResponse.data);
         this.filterResult = taskFilterResponse.data;
       } catch (error) {
         console.log("Error fetching data", error);
