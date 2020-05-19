@@ -2304,7 +2304,9 @@
 .spacerTemplate {
   width: 20px;
 }
-.asdasdad {
-  position: absolute;
-  z-index: 100000;
+.orderByEntity {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px !important;
+  margin-top: 20px;
 }

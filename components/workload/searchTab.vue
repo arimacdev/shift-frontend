@@ -147,7 +147,6 @@
                 background-color="#FFFFFF"
                 small-chips
                 label="Order By"
-                clearable
                 @click:clear="clearOrderBy()"
               >
                 <template v-slot:no-data>
@@ -194,7 +193,6 @@
                         background-color="#FFFFFF"
                         small-chips
                         label="Saved Templates"
-                        multiple
                         clearable
                         :clear-icon-cb="clearAssignee()"
                       >
@@ -240,8 +238,11 @@
             <!-- {{this.filterResult}} -->
             <div v-for="(entityTasks, entity, index) in this.orderedTaskList()" :key="index">
               <!-- <span> {{entityTasks}} || {{entity}} || {{index}}</span> -->
-              <span v-if="filterOrderBy === 'taskDueDateAt' && entity == null">No Due Date</span>
-              <span>{{entity}}</span>
+              <div
+                class="orderByEntity"
+                v-if="filterOrderBy === 'taskDueDateAt' && entity == null"
+              >No Due Date</div>
+              <div class="orderByEntity" v-if="entity != undefined">{{entity}}</div>
 
               <div v-for="(task, index) in entityTasks" :key="index">
                 <div class="taskList restructuredWorkloadTaskFilterList">
@@ -537,6 +538,7 @@ export default {
     clearOrderBy() {
       this.orderByQuery = "";
       this.jqlQuery = "";
+      this.filterOrderBy = "projectName";
     },
     clearName() {
       this.taskNameQuery = "";
