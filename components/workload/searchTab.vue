@@ -180,7 +180,8 @@
           <div v-if="this.filterResult == ''" class="defaultFilterBackground">
             <v-icon size="150" color="#EDF0F5">mdi-magnify</v-icon>
           </div>
-          <div v-else>{{this.filterResult}}</div>
+          <!-- {{this.filterResult}} -->
+          <div v-else></div>
         </div>
       </div>
     </v-row>
