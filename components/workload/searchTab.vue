@@ -97,7 +97,7 @@
                 </template>
               </v-autocomplete>
               <v-autocomplete
-                v-model="taskStatus"
+                v-model="filterStatus"
                 return-object
                 :items="taskStatusArray"
                 item-text="name"
@@ -135,7 +135,7 @@
               ></VueCtkDateTimePicker>
               <v-autocomplete
                 class="filterOrderWorkload"
-                v-model="orderBy"
+                v-model="filterOrderBy"
                 :items="orderByArray"
                 item-text="name"
                 item-value="id"
@@ -448,6 +448,11 @@ export default {
         if (decodedFilterTempQuery.includes("issueType")) {
           this.fillTemplateCriteria("issueType", decodedFilterTempQuery);
         }
+        if (decodedFilterTempQuery.includes("taskStatus")) {
+          this.fillTemplateCriteria("taskStatus", decodedFilterTempQuery);
+        }
+        if (decodedFilterTempQuery.includes("ORDER")) {
+        }
       } catch (error) {
         console.log("Error fetching data", error);
       }
@@ -492,28 +497,37 @@ export default {
                 user => user.userId === entities[i]
               );
               console.log("filterUser", filterUser);
-              this.filterAssignee.push({
-                name: filterUser.firstName,
-                id: filterUser.userId,
-                img: filterUser.profileImage
-              });
+              if (filterUser) {
+                this.filterAssignee.push({
+                  name: filterUser.firstName,
+                  id: filterUser.userId,
+                  img: filterUser.profileImage
+                });
+              }
               break;
             case "projectId":
               let filterProject = this.allProjects.find(
                 project => project.projectId === entities[i]
               );
               console.log("filterProject", filterProject);
-              this.filterProject.push({
-                name: filterProject.projectName,
-                id: filterProject.projectId
-              });
+              if (filterProject) {
+                this.filterProject.push({
+                  name: filterProject.projectName,
+                  id: filterProject.projectId
+                });
+              }
               break;
             case "issueType":
               let filterIssueType = this.taskTypeArray.find(
                 issueType => issueType.id === entities[i]
               );
-              this.filterType.push(filterIssueType);
+              if (filterIssueType) this.filterType.push(filterIssueType);
               break;
+            case "taskStatus":
+              let filterTaskStatus = this.taskStatusArray.find(
+                taskStatus => taskStatus.id === entities[i]
+              );
+              if (filterTaskStatus) this.filterStatus.push(filterTaskStatus);
           }
         }
       }
