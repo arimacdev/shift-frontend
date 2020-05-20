@@ -207,7 +207,7 @@
                       </v-autocomplete>
                     </v-col>
                     <v-col md="4">
-                      <v-btn width="100%" color="primary">Go</v-btn>
+                      <v-btn width="100%" color="primary" @click="loadTemplate">Go</v-btn>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -412,6 +412,23 @@ export default {
       // return taskList;
       return orderedList;
     },
+    async loadTemplate() {
+      console.log("loadTemplate", this.filterTemplate.query);
+      let taskFilterResponse;
+      try {
+        taskFilterResponse = await this.$axios.$get(
+          `/projects/workload/filter?query=${this.filterTemplate.query}`,
+          {
+            headers: {
+              user: this.$store.state.user.userId
+            }
+          }
+        );
+        this.filterResult = taskFilterResponse.data;
+      } catch (error) {
+        console.log("Error fetching data", error);
+      }
+    },
     jqlSearch() {
       // filterAssignee: [],
       // filterProject: [],
@@ -520,7 +537,6 @@ export default {
             }
           }
         );
-        // console.log("tasks--->", taskFilterResponse.data);
         this.filterResult = taskFilterResponse.data;
       } catch (error) {
         console.log("Error fetching data", error);
@@ -709,7 +725,6 @@ export default {
       },
       set(value) {
         this.filterTemplate = value;
-        console.log("filter", this.filterTemplate);
       }
     },
     taskType: {
