@@ -439,47 +439,44 @@ export default {
         }
 
         //taskAssignee String
-        var str = decodedFilterTempQuery;
-        var regex = /taskAssignee\s*(.*?)\s*AND/g;
+        const assigneeRegEx = /taskAssignee\s*(.*?)\s*AND/g;
 
-        // var matches = [];
-        // while ((m = regex.exec(str))) {
-        //   matches.push(m[1]);
-        // }
+        const exec = assigneeRegEx.exec(decodedFilterTempQuery);
+        if (exec != null) {
+          let assigneeMatchString = exec[1];
+          console.log("decode", assigneeMatchString);
+          //Get String Between Parantheses
+          const regExp = /\(([^)]+)\)/;
+          const paranthesesMatch = regExp.exec(assigneeMatchString);
 
-        var matchString = "";
-        var exec = regex.exec(str);
-        if (exec != null) matchString = exec[1];
-        console.log("decode", matchString);
+          //Multiple Assignees
+          let assigneeString = paranthesesMatch[1];
+          let assignees = [];
+          console.log("dec", paranthesesMatch[1]);
+          if (assigneeString.includes(",")) {
+            assigneeString.split(/\s*,\s*/).forEach(assignee => {
+              //Remove Quotation Marks
+              assignee = assignee.replace(/^"(.*)"$/, "$1");
+              assignees.push(assignee);
+              console.log("user", assignee);
+            });
+          } else {
+            assigneeString = assigneeString.replace(/^"(.*)"$/, "$1");
+            assignees.push(assigneeString);
+          }
 
-        //Get String Between Parantheses
-        var regExp = /\(([^)]+)\)/;
-        var matches = regExp.exec(matchString);
-
-        //Multiple Assignees
-        const values = matches[1];
-        let assignees = [];
-        console.log("dec", matches[1]);
-        if (values.includes(",")) {
-          values.split(/\s*,\s*/).forEach(assignee => {
-            //Remove Quotation Marks
-            assignee = assignee.replace(/^"(.*)"$/, "$1");
-            assignees.push(assignee);
-            console.log("user", assignee);
-          });
-        }
-
-        this.filterAssignee = [];
-        for (let i = 0; i < assignees.length; i++) {
-          let filterUser = this.users.find(
-            user => user.userId === assignees[i]
-          );
-          console.log("filterUser", filterUser);
-          this.filterAssignee.push({
-            name: filterUser.firstName,
-            id: filterUser.userId,
-            img: filterUser.profileImage
-          });
+          this.filterAssignee = [];
+          for (let i = 0; i < assignees.length; i++) {
+            let filterUser = this.users.find(
+              user => user.userId === assignees[i]
+            );
+            console.log("filterUser", filterUser);
+            this.filterAssignee.push({
+              name: filterUser.firstName,
+              id: filterUser.userId,
+              img: filterUser.profileImage
+            });
+          }
         }
       } catch (error) {
         console.log("Error fetching data", error);
