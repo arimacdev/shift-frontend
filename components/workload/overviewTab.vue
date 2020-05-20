@@ -72,7 +72,10 @@
                   </div>
                   <div class="overviewAvater">
                     <v-list-item-avatar @click="selectUser(user)">
-                      <v-img v-if="user.profileImage != null" :src="user.profileImage"></v-img>
+                      <v-img
+                        v-if="user.profileImage != null && user.profileImage != ''"
+                        :src="user.profileImage"
+                      ></v-img>
                       <v-img
                         v-else
                         src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
