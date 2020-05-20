@@ -413,7 +413,11 @@ export default {
       return orderedList;
     },
     async loadTemplate() {
-      console.log("loadTemplate", this.filterTemplate.query);
+      console.log(
+        "loadTemplate",
+        this.filterTemplate.query,
+        this.filterAssignee
+      );
       let taskFilterResponse;
       try {
         taskFilterResponse = await this.$axios.$get(
@@ -425,17 +429,63 @@ export default {
           }
         );
         this.filterResult = taskFilterResponse.data;
+
+        //Filling the Filters
+        let decodedFilterTempQuery;
+        try {
+          decodedFilterTempQuery = decodeURI(this.filterTemplate.query);
+        } catch (e) {
+          console.log("Invalid Filter Template Query");
+        }
+
+        //taskAssignee String
+        var str = decodedFilterTempQuery;
+        var regex = /taskAssignee\s*(.*?)\s*AND/g;
+
+        // var matches = [];
+        // while ((m = regex.exec(str))) {
+        //   matches.push(m[1]);
+        // }
+
+        var matchString = "";
+        var exec = regex.exec(str);
+        if (exec != null) matchString = exec[1];
+        console.log("decode", matchString);
+
+        //Get String Between Parantheses
+        var regExp = /\(([^)]+)\)/;
+        var matches = regExp.exec(matchString);
+
+        //Multiple Assignees
+        const values = matches[1];
+        let assignees = [];
+        console.log("dec", matches[1]);
+        if (values.includes(",")) {
+          values.split(/\s*,\s*/).forEach(assignee => {
+            //Remove Quotation Marks
+            assignee = assignee.replace(/^"(.*)"$/, "$1");
+            assignees.push(assignee);
+            console.log("user", assignee);
+          });
+        }
+
+        this.filterAssignee = [];
+        for (let i = 0; i < assignees.length; i++) {
+          let filterUser = this.users.find(
+            user => user.userId === assignees[i]
+          );
+          console.log("filterUser", filterUser);
+          this.filterAssignee.push({
+            name: filterUser.firstName,
+            id: filterUser.userId,
+            img: filterUser.profileImage
+          });
+        }
       } catch (error) {
         console.log("Error fetching data", error);
       }
     },
     jqlSearch() {
-      // filterAssignee: [],
-      // filterProject: [],
-      // filterType: [],
-      // filterStatus: [],
-      // filterOrderBy: [],
-
       if (this.filterAssignee.length != 0) {
         let assigneeList = "";
         for (let i = 0; i < this.filterAssignee.length; i++) {
@@ -761,3 +811,22 @@ export default {
   }
 };
 </script>
+
+
+var str = " taskAssignee IN ("138bbb3d-02ed-4d72-9a03-7e8cdfe89eff") AND projectId IN ("033a26dd-0532-4c5b-97f4-55b0c5efa841") ORDER BY projectName ASC";
+var regex = /taskAssignee\s*(.*?)\s*AND/g;
+
+var matches = [];
+while (m = regex.exec(str)) {
+  matches.push(m[1]);
+}
+
+var str = "taskAssignee IN ('138bbb3d-02ed-4d72-9a03-7e8cdfe89eff') AND projectId IN ('033a26dd-0532-4c5b-97f4-55b0c5efa841') ORDER BY projectName ASC";
+var regex = /taskAssignee\s*(.*?)\s*AND/g;
+
+var matches = [];
+var exec = regex.exec(str);
+while (exec) {
+  matches.push(exec[1]);
+}
+
