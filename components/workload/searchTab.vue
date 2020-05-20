@@ -43,14 +43,13 @@
                   </v-list-item>
                 </template>
               </v-autocomplete>
-
+             <!-- :search-input.sync="searchProject" -->
               <v-autocomplete
-                v-model="project"
+                v-model="filterProject"
                 return-object
                 :items="projectArray"
                 item-text="name"
-                item-value="id"
-                :search-input.sync="searchProject"
+                item-value="id"               
                 flat
                 outlined
                 dense
@@ -326,7 +325,7 @@ export default {
     dateQuery: "",
     taskNameQuery: "",
     // assigneeArray: [],
-    projectArray: [],
+    // projectArray: [],
     templateArray: [],
     filterAssignee: [],
     filterProject: [],
@@ -438,48 +437,77 @@ export default {
           console.log("Invalid Filter Template Query");
         }
 
+        this.filterAssignee = [];
+        this.filterProject = [];
+
         //taskAssignee String
-        const assigneeRegEx = /taskAssignee\s*(.*?)\s*AND/g;
-
-        const exec = assigneeRegEx.exec(decodedFilterTempQuery);
-        if (exec != null) {
-          let assigneeMatchString = exec[1];
-          console.log("decode", assigneeMatchString);
-          //Get String Between Parantheses
-          const regExp = /\(([^)]+)\)/;
-          const paranthesesMatch = regExp.exec(assigneeMatchString);
-
-          //Multiple Assignees
-          let assigneeString = paranthesesMatch[1];
-          let assignees = [];
-          console.log("dec", paranthesesMatch[1]);
-          if (assigneeString.includes(",")) {
-            assigneeString.split(/\s*,\s*/).forEach(assignee => {
-              //Remove Quotation Marks
-              assignee = assignee.replace(/^"(.*)"$/, "$1");
-              assignees.push(assignee);
-              console.log("user", assignee);
-            });
-          } else {
-            assigneeString = assigneeString.replace(/^"(.*)"$/, "$1");
-            assignees.push(assigneeString);
-          }
-
-          this.filterAssignee = [];
-          for (let i = 0; i < assignees.length; i++) {
-            let filterUser = this.users.find(
-              user => user.userId === assignees[i]
-            );
-            console.log("filterUser", filterUser);
-            this.filterAssignee.push({
-              name: filterUser.firstName,
-              id: filterUser.userId,
-              img: filterUser.profileImage
-            });
-          }
+        if (decodedFilterTempQuery.includes("taskAssignee")) {
+          this.fillTemplateCriteria("taskAssignee", decodedFilterTempQuery);
+        }
+        if (decodedFilterTempQuery.includes("projectId")) {
+          this.fillTemplateCriteria("projectId", decodedFilterTempQuery);
         }
       } catch (error) {
         console.log("Error fetching data", error);
+      }
+    },
+    fillTemplateCriteria(criteria, decodedFilterTempQuery) {
+      const assigneeRegExBetween = new RegExp(`${criteria}\s*(.*?)\s*AND`, "g");
+      const assigneeRegExEnd = new RegExp(`${criteria}\s*(.*?)\s*ORDER`, "g");
+
+      // const assigneeRegExEnd = /taskAssignee\s*(.*?)\s*AND/g;
+
+      const between = assigneeRegExBetween.exec(decodedFilterTempQuery);
+      const end = assigneeRegExEnd.exec(decodedFilterTempQuery);
+      console.log("bewteen", between, end);
+      if (between != null || end != null) {
+        let assigneeMatchString;
+        if (between) assigneeMatchString = between[1];
+        else assigneeMatchString = end[1];
+        console.log("decode", assigneeMatchString);
+        //Get String Between Parantheses
+        const regExp = /\(([^)]+)\)/;
+        const paranthesesMatch = regExp.exec(assigneeMatchString);
+        //Multiple Assignees
+        let assigneeString = paranthesesMatch[1];
+        let assignees = [];
+        console.log("dec", paranthesesMatch[1]);
+        if (assigneeString.includes(",")) {
+          assigneeString.split(/\s*,\s*/).forEach(assignee => {
+            //Remove Quotation Marks
+            assignee = assignee.replace(/^"(.*)"$/, "$1");
+            assignees.push(assignee);
+            console.log("entity", assignee);
+          });
+        } else {
+          assigneeString = assigneeString.replace(/^"(.*)"$/, "$1");
+          assignees.push(assigneeString);
+        }
+
+        for (let i = 0; i < assignees.length; i++) {
+          switch (criteria) {
+            case "taskAssignee":
+              let filterUser = this.users.find(
+                user => user.userId === assignees[i]
+              );
+              console.log("filterUser", filterUser);
+              this.filterAssignee.push({
+                name: filterUser.firstName,
+                id: filterUser.userId,
+                img: filterUser.profileImage
+              });
+              break;
+            case "projectId":
+              let filterProject = this.allProjects.find(
+                project => project.projectId === assignees[i]
+              );
+              console.log("filterProject", filterProject);
+              this.filterProject.push({
+                name: filterProject.projectName,
+                id: filterProject.projectId
+              });
+          }
+        }
       }
     },
     jqlSearch() {
@@ -761,6 +789,18 @@ export default {
         });
       }
       return assigneeList;
+    },
+    projectArray() {
+      let projectSearchList = this.allProjects;
+      let projectList = [];
+      for (let index = 0; index < projectSearchList.length; ++index) {
+        let project = projectSearchList[index];
+        projectList.push({
+          name: project.projectName,
+          id: project.projectId
+        });
+      }
+      return projectList;
     },
     assignee: {
       get() {
