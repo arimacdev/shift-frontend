@@ -110,10 +110,8 @@ export default {
       };
       try {
         response = await this.$axios.$post(`/template`, template);
-        // this.$store.dispatch(
-        //   "task/fetchProjectUserCompletionTasks",
-        //   this.projectId
-        // );
+        this.$store.dispatch("workload/addTemplate", template);
+        this.templateName = "";
       } catch (e) {
         console.log("Error adding a User", e);
       }

@@ -17,6 +17,9 @@ export const mutations = {
   SET_TEMPLATES(state, templates) {
     state.templates = templates;
   },
+  ADD_TEMPLATE(state, template) {
+    state.templates.push(template);
+  },
 };
 
 export const actions = {
@@ -28,6 +31,9 @@ export const actions = {
     } catch (e) {}
     console.log('template list', templateResponse.data);
     commit('SET_TEMPLATES', templateResponse.data);
+  },
+  addTemplate({ commit }, template) {
+    commit('ADD_TEMPLATE', template);
   },
   async fetchAllTaskLoadUsers({ commit, rootState }) {
     const user = rootState.user.userId;

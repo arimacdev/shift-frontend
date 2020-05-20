@@ -310,6 +310,9 @@ export default {
   components: {
     "save-template": SaveTemplate
   },
+  created() {
+    this.$store.dispatch("workload/fetchTemplates");
+  },
   data: () => ({
     items: ["foo", "bar", "fizz", "buzz"],
     value: null,
@@ -574,14 +577,15 @@ export default {
         });
       }
     },
-    async loadTempalte(v) {
+    loadTempalte(v) {
       // let templateResponse;
       // let userId = this.$store.state.user.userId;
       // try {
       //   templateResponse = await this.$axios.$get(`/template/${userId}`);
       // } catch (e) {}
       // console.log("template list", templateResponse.data);
-      // let templateSearchList = templateResponse.data;
+      // this.$store.dispatch("workload/fetchTemplates");
+      let templateSearchList = this.templates;
       for (let index = 0; index < templateSearchList.length; ++index) {
         let template = templateSearchList[index];
         this.templateArray.push({
@@ -679,8 +683,8 @@ export default {
   computed: {
     ...mapState({
       users: state => state.user.users,
-      allProjects: state => state.project.projects
-      // templates: state
+      allProjects: state => state.project.projects,
+      templates: state => state.workload.templates
     }),
     assignee: {
       get() {
