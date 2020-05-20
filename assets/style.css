@@ -2322,3 +2322,78 @@
 .calanderSection {
   padding-bottom: 100px !important;
 }
+.workloadCard {
+  display: inline-block;
+  /* width: 300px; */
+  /* margin-right: 2px; */
+  width: 120px;
+  height: 50vh;
+  /* background-color: bisque; */
+}
+.overviewBody {
+  height: 80vh;
+  padding-bottom: 100px;
+}
+.graphDiv {
+  margin-top: 30px;
+  width: 93vw;
+  margin-right: 20px;
+  height: 50vh;
+  padding-top: 10px;
+  /* position: absolute; */
+  overflow-y: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  background-color: #e5e5e5;
+}
+.overviewScrollingWrapper {
+  /* overflow-x: scroll; */
+  overflow-y: hidden;
+  white-space: nowrap;
+  height: 95%;
+  width: 100%;
+  padding-right: 100px;
+  padding-left: 10px;
+}
+.overviewTitle {
+  font-weight: bold;
+  padding-left: 20px;
+}
+.filterSectionOverview {
+  margin-top: 30px;
+  width: 93vw;
+  background-color: #e5e5e5;
+  margin-bottom: -50px;
+  padding-right: 20px;
+}
+.overviewProgressSection {
+  transform: rotate(-90deg);
+  width: 200px;
+  height: 200px;
+  margin-left: 53px;
+  /* margin-top: 100px; */
+}
+.graphNameField {
+  text-align: center;
+  color: #7c8696;
+  /* padding-top: 80%; */
+}
+.overviewAvater {
+  padding-left: 35%;
+  cursor: pointer;
+}
+.progressCounter {
+  text-align: center;
+  font-size: 10px;
+  color: #576377;
+  /* margin-top: -30px; */
+}
+.workloadSelectedName {
+  font-size: 18px;
+  font-weight: bold;
+  color: #080848;
+  margin-top: 40px;
+}
+.workloadTasksDisplay {
+  margin-right: 80px;
+}
