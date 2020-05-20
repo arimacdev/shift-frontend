@@ -185,6 +185,7 @@
                   @click:date="viewDay"
                   @change="updateRange"
                 ></v-calendar>
+
                 <v-menu
                   v-model="selectedOpen"
                   :close-on-content-click="false"
@@ -217,6 +218,7 @@
             </v-col>
           </v-row>
           {{this.filterResult}}
+          {{this.events}}
         </div>
       </div>
     </v-row>
@@ -257,7 +259,8 @@ export default {
       "Event",
       "Birthday",
       "Conference",
-      "Party"
+      "Party",
+      "KKKK"
     ],
 
     value: null,
@@ -369,23 +372,37 @@ export default {
     },
     updateRange({ start, end }) {
       const events = [];
+      // console.log("LOOP TRIGERED: " + start.date + end.date);
 
-      const min = new Date(`${start.date}T00:00:00`);
-      const max = new Date(`${end.date}T23:59:59`);
-      const days = (max.getTime() - min.getTime()) / 86400000;
-      const eventCount = this.rnd(days, days + 20);
+      // const min = new Date(`${start.date}T00:00:00`);
+      // const max = new Date(`${end.date}T23:59:59`);
+      // const days = (max.getTime() - min.getTime()) / 86400000;
+      // const eventCount = this.rnd(days, days + 20);
 
-      for (let i = 0; i < eventCount; i++) {
-        const allDay = this.rnd(0, 3) === 0;
-        const firstTimestamp = this.rnd(min.getTime(), max.getTime());
-        const first = new Date(firstTimestamp - (firstTimestamp % 900000));
-        const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000;
-        const second = new Date(first.getTime() + secondTimestamp);
+      // for (let i = 0; i < eventCount; i++) {
+      //   const allDay = this.rnd(0, 3) === 0;
+      //   const firstTimestamp = this.rnd(min.getTime(), max.getTime());
+      //   const first = new Date(firstTimestamp - (firstTimestamp % 900000));
+      //   const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000;
+      //   const second = new Date(first.getTime() + secondTimestamp);
 
+      //   events.push({
+      //     name: this.names[this.rnd(0, this.names.length - 1)],
+      //     start: this.formatDate(first, !allDay),
+      //     end: this.formatDate(second, !allDay),
+      //     color: this.colors[this.rnd(0, this.colors.length - 1)]
+      //   });
+      // }
+
+      let taskSearchList = this.filterResult;
+      console.log("LOOP TRIGERED changed: " + taskSearchList);
+      for (let index = 0; index < taskSearchList.length; ++index) {
+        let task = taskSearchList[index];
+        console.log("TASK ADDED: " + task);
         events.push({
-          name: this.names[this.rnd(0, this.names.length - 1)],
-          start: this.formatDate(first, !allDay),
-          end: this.formatDate(second, !allDay),
+          name: task.taskName,
+          start: this.getProjectDisplayDates(task.taskCreatedAt),
+          end: this.getProjectDisplayDates(task.taskDueDateAt),
           color: this.colors[this.rnd(0, this.colors.length - 1)]
         });
       }
@@ -393,6 +410,24 @@ export default {
       this.start = start;
       this.end = end;
       this.events = events;
+      console.log("START: " + this.start);
+    },
+    getProjectDisplayDates(date) {
+      const dueDate = new Date(date);
+      const dueToUtc = new Date(
+        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+      );
+      const dueToUtcDate = new Date(dueToUtc);
+      const now = new Date();
+
+      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
+        return "";
+      } else {
+        let stringDate = date + "";
+        stringDate = stringDate.toString();
+        stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 16);
+        return stringDate;
+      }
     },
     nth(d) {
       return d > 3 && d < 21
@@ -513,8 +548,9 @@ export default {
           }
         );
         // console.log("tasks--->", taskFilterResponse.data);
-        this.loadTasks();
+
         this.filterResult = taskFilterResponse.data;
+        this.loadTasks(taskFilterResponse.data);
       } catch (error) {
         console.log("Error fetching data", error);
       }
@@ -539,12 +575,17 @@ export default {
       this.taskNameQuery = "";
       this.jqlQuery = "";
     },
-    loadTasks(v) {
-      let taskSearchList = this.filterResult;
+    loadTasks(taskSearchList) {
+      // const events = [];
+      console.log("LOOP TRIGERED 123: " + taskSearchList);
       for (let index = 0; index < taskSearchList.length; ++index) {
-        let task = taskSearchList[index].taskName;
-        this.names.push({
-          task
+        let task = taskSearchList[index];
+        console.log("TASK ADDED: " + task);
+        this.events.push({
+          name: task.taskName,
+          start: this.getProjectDisplayDates(task.taskCreatedAt),
+          end: this.getProjectDisplayDates(task.taskDueDateAt),
+          color: this.colors[this.rnd(0, this.colors.length - 1)]
         });
       }
     },
