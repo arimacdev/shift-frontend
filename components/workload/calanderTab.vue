@@ -180,6 +180,7 @@
                   :event-color="getEventColor"
                   :now="today"
                   :type="type"
+                  event-height="15"
                   @click:event="showEvent"
                   @click:more="viewDay"
                   @click:date="viewDay"
@@ -192,22 +193,42 @@
                   :activator="selectedElement"
                   offset-x
                 >
-                  <v-card color="grey lighten-4" min-width="350px" flat>
+                  <v-card color="grey lighten-4" width="450px" flat>
                     <v-toolbar :color="selectedEvent.color" dark>
-                      <v-btn icon>
+                      <!-- <v-btn icon>
                         <v-icon>mdi-pencil</v-icon>
-                      </v-btn>
+                      </v-btn>-->
                       <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-                      <v-spacer></v-spacer>
-                      <v-btn icon>
+                      <!-- <v-spacer></v-spacer>
+                       <v-btn icon>
                         <v-icon>mdi-heart</v-icon>
                       </v-btn>
                       <v-btn icon>
                         <v-icon>mdi-dots-vertical</v-icon>
-                      </v-btn>
+                      </v-btn>-->
                     </v-toolbar>
                     <v-card-text>
-                      <span v-html="selectedEvent.details"></span>
+                      <v-row>
+                        <v-col>
+                          <div class="templateText">Project:</div>
+                          <span v-html="selectedEvent.project"></span>
+                        </v-col>
+                        <v-col>
+                          <div class="templateText">Status:</div>
+                          <span v-html="selectedEvent.status"></span>
+                        </v-col>
+                      </v-row>
+
+                      <v-row>
+                        <v-col>
+                          <div class="templateText">Start Date:</div>
+                          <span v-html="selectedEvent.start"></span>
+                        </v-col>
+                        <v-col>
+                          <div class="templateText">End Date:</div>
+                          <span v-html="selectedEvent.end"></span>
+                        </v-col>
+                      </v-row>
                     </v-card-text>
                     <v-card-actions>
                       <v-btn text color="secondary" @click="selectedOpen = false">Cancel</v-btn>
@@ -403,6 +424,8 @@ export default {
           name: task.taskName,
           start: this.getProjectDisplayDates(task.taskCreatedAt),
           end: this.getProjectDisplayDates(task.taskDueDateAt),
+          project: task.projectName,
+          status: task.taskStatus,
           color: this.colors[this.rnd(0, this.colors.length - 1)]
         });
       }
@@ -534,6 +557,7 @@ export default {
 
       this.jqlQuery = filterQuery.slice(0, -5) + this.orderByQuery;
       console.log("QUERY:  " + encodeURI(this.jqlQuery));
+      this.events = [];
       this.getFilterResponse();
     },
     async getFilterResponse() {
@@ -585,6 +609,8 @@ export default {
           name: task.taskName,
           start: this.getProjectDisplayDates(task.taskCreatedAt),
           end: this.getProjectDisplayDates(task.taskDueDateAt),
+          project: task.projectName,
+          status: task.taskStatus,
           color: this.colors[this.rnd(0, this.colors.length - 1)]
         });
       }
