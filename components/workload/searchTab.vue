@@ -16,13 +16,13 @@
           ></v-text-field>
           <v-row align="center">
             <v-col md="12">
+              <!-- :search-input.sync="searchAssignee" -->
               <v-autocomplete
-                v-model="assignee"
+                v-model="filterAssignee"
                 return-object
                 :items="assigneeArray"
                 item-text="name"
                 item-value="id"
-                :search-input.sync="searchAssignee"
                 flat
                 outlined
                 dense
@@ -185,7 +185,7 @@
                         :items="templateArray"
                         item-text="name"
                         item-value="id"
-                        :search-input.sync="searchAssignee"
+                        :search-input.sync="searchTemplate"
                         flat
                         solo
                         dense
@@ -325,7 +325,7 @@ export default {
     orderByQuery: "",
     dateQuery: "",
     taskNameQuery: "",
-    assigneeArray: [],
+    // assigneeArray: [],
     projectArray: [],
     templateArray: [],
     filterAssignee: [],
@@ -702,6 +702,19 @@ export default {
       allProjects: state => state.project.projects,
       templates: state => state.workload.templates
     }),
+    assigneeArray() {
+      let AssigneeSearchList = this.users;
+      let assigneeList = [];
+      for (let index = 0; index < AssigneeSearchList.length; ++index) {
+        let user = AssigneeSearchList[index];
+        assigneeList.push({
+          name: user.firstName + " " + user.lastName,
+          id: user.userId,
+          img: user.profileImage
+        });
+      }
+      return assigneeList;
+    },
     assignee: {
       get() {
         this.loadAssignee();
