@@ -180,9 +180,9 @@
                   <v-row>
                     <v-col md="8">
                       <v-autocomplete
-                        v-model="assignee"
+                        v-model="template"
                         return-object
-                        :items="assigneeArray"
+                        :items="templateArray"
                         item-text="name"
                         item-value="id"
                         :search-input.sync="searchAssignee"
@@ -213,6 +213,7 @@
                   <v-row>
                     <v-col>
                       <save-template
+                        :saveTemplateQuery="saveTemplateQuery"
                         :filterAssignee="filterAssignee"
                         :filterProject="filterProject"
                         :filterType="filterType"
@@ -309,9 +310,13 @@ export default {
   components: {
     "save-template": SaveTemplate
   },
+  created() {
+    this.$store.dispatch("workload/fetchTemplates");
+  },
   data: () => ({
     items: ["foo", "bar", "fizz", "buzz"],
     value: null,
+    saveTemplateQuery: "",
     jqlQuery: "",
     assigneeQuery: "",
     projectQuery: "",
@@ -322,8 +327,10 @@ export default {
     taskNameQuery: "",
     assigneeArray: [],
     projectArray: [],
+    templateArray: [],
     filterAssignee: [],
     filterProject: [],
+    filterTemplate: "",
     filterType: [],
     filterStatus: [],
     filterResult: [],
@@ -332,6 +339,7 @@ export default {
     selectAssignee: null,
     searchProject: null,
     selectProject: null,
+    selectTemplate: null,
     from: "",
     to: "",
     dateRange: new Date(),
@@ -383,6 +391,9 @@ export default {
     },
     searchProject(val) {
       val && val !== this.selectProject && this.loadProject(val);
+    },
+    searchTemplate(val) {
+      val && val !== this.selectTemplate && this.loadTempalte(val);
     }
   },
   methods: {
@@ -493,6 +504,9 @@ export default {
 
       this.jqlQuery = filterQuery.slice(0, -5) + this.orderByQuery;
       console.log("QUERY:  " + encodeURI(this.jqlQuery));
+      this.saveTemplateQuery = encodeURI(this.jqlQuery);
+      console.log("TEMP QUERY:  " + this.saveTemplateQuery);
+
       this.getFilterResponse();
     },
     async getFilterResponse() {
@@ -560,6 +574,24 @@ export default {
         this.projectArray.push({
           name: project.projectName,
           id: project.projectId
+        });
+      }
+    },
+    loadTempalte(v) {
+      // let templateResponse;
+      // let userId = this.$store.state.user.userId;
+      // try {
+      //   templateResponse = await this.$axios.$get(`/template/${userId}`);
+      // } catch (e) {}
+      // console.log("template list", templateResponse.data);
+      // this.$store.dispatch("workload/fetchTemplates");
+      let templateSearchList = this.templates;
+      for (let index = 0; index < templateSearchList.length; ++index) {
+        let template = templateSearchList[index];
+        this.templateArray.push({
+          name: template.templateName,
+          id: template.templateId,
+          query: template.templateQuery
         });
       }
     },
@@ -651,7 +683,8 @@ export default {
   computed: {
     ...mapState({
       users: state => state.user.users,
-      allProjects: state => state.project.projects
+      allProjects: state => state.project.projects,
+      templates: state => state.workload.templates
     }),
     assignee: {
       get() {
@@ -666,7 +699,17 @@ export default {
         this.loadProject();
       },
       set(value) {
+        console.log("project", value);
         this.filterProject = value;
+      }
+    },
+    template: {
+      get() {
+        this.loadTempalte();
+      },
+      set(value) {
+        this.filterTemplate = value;
+        console.log("filter", this.filterTemplate);
       }
     },
     taskType: {

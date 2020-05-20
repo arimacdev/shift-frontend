@@ -60,8 +60,14 @@
           </v-row>
           <v-row>
             <v-col>
+              <div class="templateText">Query:</div>
+              <span>{{this.saveTemplateQuery}}</span>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
               <div class="templateText">Choose a name for the template:</div>
-              <v-text-field solo background-color="#EDF0F5" dense flat></v-text-field>
+              <v-text-field solo background-color="#EDF0F5" dense flat v-model="templateName"></v-text-field>
             </v-col>
           </v-row>
         </div>
@@ -70,7 +76,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="#FF6161" dark text @click="dialog = false">Cancel</v-btn>
-          <v-btn color="#2EC973" dark text @click="dialog = false">OK</v-btn>
+          <v-btn color="#2EC973" dark text @click="saveTemplate">OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -79,6 +85,7 @@
 <script>
 export default {
   props: [
+    "saveTemplateQuery",
     "filterAssignee",
     "filterProject",
     "filterType",
@@ -88,8 +95,27 @@ export default {
   ],
   data() {
     return {
-      dialog: false
+      dialog: false,
+      templateName: ""
     };
+  },
+  methods: {
+    async saveTemplate() {
+      console.log("clicked");
+      let response;
+      const template = {
+        templateName: this.templateName,
+        templateCreatorId: this.$store.state.user.userId,
+        templateQuery: this.saveTemplateQuery
+      };
+      try {
+        response = await this.$axios.$post(`/template`, template);
+        this.$store.dispatch("workload/addTemplate", template);
+        this.templateName = "";
+      } catch (e) {
+        console.log("Error adding a User", e);
+      }
+    }
   }
 };
 </script>
