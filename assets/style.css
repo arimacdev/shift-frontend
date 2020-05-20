@@ -2186,7 +2186,7 @@
   padding-left: 20px;
   padding-top: 12px;
   position: fixed;
-  /* z-index: 1000; */
+  z-index: 1000;
 }
 
 .workloadV2Body {
