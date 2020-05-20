@@ -82,7 +82,7 @@
                 </div>
               </div>
             </div>
-            <div class="workloadTasksDisplay">
+            <div v-if="this.selectedUser !=''" class="workloadTasksDisplay">
               <div class="workloadSelectedName">{{this.firstName}} {{this.lastName}}</div>
               <div class="workloadContentDiv">
                 <v-expansion-panels v-model="panel" :disabled="disabled" multiple dark>
