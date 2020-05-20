@@ -56,6 +56,7 @@
                   <div class="progressCounter">{{ user.tasksCompleted + "/" + user.totalTasks}}</div>
                   <div class="overviewProgressSection">
                     <v-progress-linear
+                      @click="selectUser(user)"
                       :value="(user.tasksCompleted/user.totalTasks)*100"
                       color="#78CF20"
                       background-color="#ED5F5F"
@@ -70,7 +71,7 @@
                     {{ user.firstName }}
                   </div>
                   <div class="overviewAvater">
-                    <v-list-item-avatar>
+                    <v-list-item-avatar @click="selectUser(user)">
                       <v-img v-if="user.profileImage != null" :src="user.profileImage"></v-img>
                       <v-img
                         v-else
@@ -81,67 +82,83 @@
                 </div>
               </div>
             </div>
-            <h1>sadasdsad</h1>
-            <h1>sadasdsad</h1>
-            <h1>sadasdsad</h1>
-            <h1>sadasdsad</h1>
-            <h1>sadasdsad</h1>
-            <h1>sadasdsad</h1>
-            <h1>sadasdsad</h1>
-            <h1>sadasdsad</h1>
-            <!-- <v-list-item-group>
-              <div v-for="(user, index) in taskWorkLoadUsers" :key="index">
-                <v-list-item @click="selectUser(user)" class="workloadListItem">
-                  <v-list-item-avatar>
-                    <v-img v-if="user.profileImage != null" :src="user.profileImage"></v-img>
-                    <v-img
-                      v-else
-                      src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-                    ></v-img>
-                  </v-list-item-avatar>
-                  <v-list-item-content>
-                    <v-list-item-title
-                      @click="selectUser(user)"
-                      v-on:click="component='view-user'"
-                      class="body-2"
-                    >{{ user.firstName }} {{ user.lastName}}</v-list-item-title>
-                  </v-list-item-content>
-                  <v-divider vertical inset class="workloadDivider"></v-divider>
-                  <v-list-item-content>
-                    <v-task-title
-                      class="workloadCompletedStatus"
-                    >{{ user.tasksCompleted + "/" + user.totalTasks + " Tasks completed"}}</v-task-title>
-
-                    <v-list-item-subtitle class="workloadProgressLine">
-                      <v-progress-linear
-                        :value="(user.tasksCompleted/user.totalTasks)*100"
-                        color="#2EC973"
-                        background-color="red"
-                        height="8"
-                        rounded
-                        reactive
+            <div class="workloadTasksDisplay">
+              <div class="workloadSelectedName">{{this.firstName}} {{this.lastName}}</div>
+              <div class="workloadContentDiv">
+                <v-expansion-panels v-model="panel" :disabled="disabled" multiple dark>
+                  <!-- -------------- loop this pannel for every project ---------- -->
+                  <v-expansion-panel
+                    v-for="(project, index) in workloadTasks"
+                    :key="index"
+                    class="projectDetailsPannels"
+                  >
+                    <v-expansion-panel-header
+                      v-if="project.total > 0"
+                      class="projectDetailsPannelHeader"
+                      color="#080848"
+                    >
+                      {{ project.projectName }} - {{ project.completed }}/{{
+                      project.total
+                      }}
+                      <template
+                        v-slot:actions
                       >
-                        <template></template>
-                      </v-progress-linear>
-                    </v-list-item-subtitle>
-                  </v-list-item-content>
-                  <div
-                    v-if="(user.tasksCompleted/user.totalTasks)*100 < 25"
-                    class="progressColorCode progressBad"
-                  ></div>
-                  <div
-                    v-else-if="(user.tasksCompleted/user.totalTasks)*100 >= 25 && (user.tasksCompleted/user.totalTasks)*100 < 75 "
-                    class="progressColorCode progressFair"
-                  ></div>
-                  <div
-                    v-else-if="(user.tasksCompleted/user.totalTasks)*100 >= 75"
-                    class="progressColorCode progressGood"
-                  ></div>
-                  <div v-else-if="user.totalTasks == 0" class="progressColorCode progressNoWorks"></div>
-                </v-list-item>
-                <v-divider class="mx-4"></v-divider>
+                        <v-icon color="#2EC973">mdi-arrow-down-circle-outline</v-icon>
+                      </template>
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-header
+                      v-else-if="project.total == 0"
+                      class="projectDetailsEmptyPannelHeader"
+                      color="#EDF0F5"
+                    >
+                      {{ project.projectName }} - {{ project.completed }}/{{
+                      project.total
+                      }}
+                      <template
+                        v-slot:actions
+                      >
+                        <v-icon color="error">mdi-alert-circle</v-icon>
+                      </template>
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-content class="projectDetailsPannelContent" color="#EDF0F5">
+                      <!-- ----------- loop content for tasks of projects --------------- -->
+                      <div class="taskDetailsBar">
+                        <v-list-item
+                          class="workloadTaskItems"
+                          @click.stop="drawer = !drawer"
+                          v-for="(task, index) in project.taskList"
+                          :key="index"
+                          @click="selectTask(task, project.projectId)"
+                        >
+                          <v-list-item-action>
+                            <v-icon
+                              v-if="task.taskStatus == 'closed'"
+                              size="30"
+                              color="#2EC973"
+                            >mdi-checkbox-marked-circle</v-icon>
+                            <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <div class="workloadTaskName">{{ task.taskName }}</div>
+                          </v-list-item-content>
+                          <!-- <v-list-item-action>
+                  <div class="workloadTaskName">{{ task.taskName }}</div>
+                          </v-list-item-action>-->
+
+                          <v-list-item-action>
+                            <v-list-item-title
+                              :class="dueDateCheck(task)"
+                            >{{ getDueDate(task.dueDate) }}</v-list-item-title>
+                          </v-list-item-action>
+                        </v-list-item>
+                      </div>
+
+                      <!-- ---------------- end task loop ------------- -->
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                </v-expansion-panels>
               </div>
-            </v-list-item-group>-->
+            </div>
           </div>
         </div>
       </div>
@@ -253,6 +270,71 @@ export default {
       //   this.$store.dispatch('workload/loadWorkLoadTask',userData.userId);
       // }
     },
+    dueDateCheck(task) {
+      // console.log("check due date color", task);
+      if (task.taskStatus === "closed") {
+        return "workLoadTaskDone";
+      } else if (task.dueDate == null) {
+        return "workLoadTaskDefault";
+      } else {
+        const dueDate = new Date(task.dueDate);
+        const dueToUtc = new Date(
+          dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+        );
+        const dueToUtcDate = new Date(dueToUtc);
+        const now = new Date();
+        const today = dueToUtcDate.toDateString() === now.toDateString();
+        // console.log("isToday--->", today);
+        // console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
+        if (now.getTime() > dueToUtcDate.getTime()) {
+          // console.log("overdue");
+          return "workLoadTaskOverDue";
+        } else if (today) {
+          /// This is where I check
+          return "workLoadTaskOverDue";
+          // console.log("this is Today--->", today);
+        }
+        {
+          return "workLoadTaskHealthy";
+        }
+      }
+    },
+    getDueDate(date) {
+      const dueDate = new Date(date);
+      const dueToUtc = new Date(
+        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+      );
+      const dueToUtcDate = new Date(dueToUtc);
+      const now = new Date();
+      // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
+
+      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
+        return "Add Due Date";
+      } else if (
+        now.getDate() === dueToUtcDate.getDate() &&
+        now.getMonth() === dueToUtcDate.getMonth() &&
+        now.getFullYear() === dueToUtcDate.getFullYear()
+      ) {
+        return "Today";
+      } else if (
+        now.getDate() - 1 === dueToUtcDate.getDate() &&
+        now.getMonth() - 1 === dueToUtcDate.getMonth() &&
+        now.getFullYear() - 1 === dueToUtcDate.getFullYear()
+      ) {
+        return "Yesterday";
+      } else if (
+        now.getDate() + 1 === dueToUtcDate.getDate() &&
+        now.getMonth() + 1 === dueToUtcDate.getMonth() &&
+        now.getFullYear() + 1 === dueToUtcDate.getFullYear()
+      ) {
+        return "Tomorrow";
+      } else {
+        let stringDate = date + "";
+        stringDate = stringDate.toString();
+        stringDate = stringDate.slice(0, 10);
+        return stringDate;
+      }
+    },
     querySelections(v) {
       let projectSearchList = this.taskWorkLoadUsers;
       for (let index = 0; index < projectSearchList.length; ++index) {
@@ -275,6 +357,7 @@ export default {
   },
   computed: {
     ...mapState({
+      workloadTasks: state => state.workload.workloadTasks,
       taskWorkLoadUsers: state => state.workload.taskWorkLoadUsers,
       users: state => state.user.users,
       allProjects: state => state.project.projects
