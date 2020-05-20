@@ -1,11 +1,11 @@
 <template>
   <div class="text-center adasd">
-    <v-dialog v-model="dialog" width="600">
+    <v-dialog scrollable v-model="dialog" width="600">
       <template v-slot:activator="{ on }">
         <v-btn width="100%" color="#2EC973" dark v-on="on">Save current filter as a template</v-btn>
       </template>
 
-      <v-card class="asdasdad">
+      <v-card class>
         <v-card-title class="grey lighten-2" primary-title>Save filteration as a template</v-card-title>
         <div class="saveTemplateBody">
           <v-row>
