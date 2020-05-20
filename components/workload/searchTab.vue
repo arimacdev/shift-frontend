@@ -413,11 +413,11 @@ export default {
       return orderedList;
     },
     async loadTemplate() {
-      console.log("loadTemplate");
+      console.log("loadTemplate", this.filterTemplate.query);
       let taskFilterResponse;
       try {
         taskFilterResponse = await this.$axios.$get(
-          `/projects/workload/filter?query=${this.jqlQuery}`,
+          `/projects/workload/filter?query=${this.filterTemplate.query}`,
           {
             headers: {
               user: this.$store.state.user.userId
@@ -537,7 +537,6 @@ export default {
             }
           }
         );
-        // console.log("tasks--->", taskFilterResponse.data);
         this.filterResult = taskFilterResponse.data;
       } catch (error) {
         console.log("Error fetching data", error);
@@ -726,7 +725,6 @@ export default {
       },
       set(value) {
         this.filterTemplate = value;
-        console.log("filter", this.filterTemplate);
       }
     },
     taskType: {
