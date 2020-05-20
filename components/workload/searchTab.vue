@@ -71,7 +71,7 @@
                 </template>
               </v-autocomplete>
               <v-autocomplete
-                v-model="taskType"
+                v-model="filterType"
                 return-object
                 :items="taskTypeArray"
                 item-text="name"
@@ -313,7 +313,6 @@ export default {
     this.$store.dispatch("workload/fetchTemplates");
   },
   data: () => ({
-    items: ["foo", "bar", "fizz", "buzz"],
     value: null,
     saveTemplateQuery: "",
     jqlQuery: "",
@@ -440,55 +439,57 @@ export default {
         this.filterAssignee = [];
         this.filterProject = [];
 
-        //taskAssignee String
         if (decodedFilterTempQuery.includes("taskAssignee")) {
           this.fillTemplateCriteria("taskAssignee", decodedFilterTempQuery);
         }
         if (decodedFilterTempQuery.includes("projectId")) {
           this.fillTemplateCriteria("projectId", decodedFilterTempQuery);
         }
+        if (decodedFilterTempQuery.includes("issueType")) {
+          this.fillTemplateCriteria("issueType", decodedFilterTempQuery);
+        }
       } catch (error) {
         console.log("Error fetching data", error);
       }
     },
     fillTemplateCriteria(criteria, decodedFilterTempQuery) {
-      const assigneeRegExBetween = new RegExp(`${criteria}\s*(.*?)\s*AND`, "g");
-      const assigneeRegExEnd = new RegExp(`${criteria}\s*(.*?)\s*ORDER`, "g");
+      const entityBetween = new RegExp(`${criteria}\s*(.*?)\s*AND`, "g");
+      const entityEnd = new RegExp(`${criteria}\s*(.*?)\s*ORDER`, "g");
 
-      // const assigneeRegExEnd = /taskAssignee\s*(.*?)\s*AND/g;
+      // const entityEnd = /taskAssignee\s*(.*?)\s*AND/g;
 
-      const between = assigneeRegExBetween.exec(decodedFilterTempQuery);
-      const end = assigneeRegExEnd.exec(decodedFilterTempQuery);
+      const between = entityBetween.exec(decodedFilterTempQuery);
+      const end = entityEnd.exec(decodedFilterTempQuery);
       console.log("bewteen", between, end);
       if (between != null || end != null) {
-        let assigneeMatchString;
-        if (between) assigneeMatchString = between[1];
-        else assigneeMatchString = end[1];
-        console.log("decode", assigneeMatchString);
+        let entityMatchString;
+        if (between) entityMatchString = between[1];
+        else entityMatchString = end[1];
+        console.log("decode", entityMatchString);
         //Get String Between Parantheses
         const regExp = /\(([^)]+)\)/;
-        const paranthesesMatch = regExp.exec(assigneeMatchString);
+        const paranthesesMatch = regExp.exec(entityMatchString);
         //Multiple Assignees
-        let assigneeString = paranthesesMatch[1];
-        let assignees = [];
+        let entityString = paranthesesMatch[1];
+        let entities = [];
         console.log("dec", paranthesesMatch[1]);
-        if (assigneeString.includes(",")) {
-          assigneeString.split(/\s*,\s*/).forEach(assignee => {
+        if (entityString.includes(",")) {
+          entityString.split(/\s*,\s*/).forEach(assignee => {
             //Remove Quotation Marks
             assignee = assignee.replace(/^"(.*)"$/, "$1");
-            assignees.push(assignee);
+            entities.push(assignee);
             console.log("entity", assignee);
           });
         } else {
-          assigneeString = assigneeString.replace(/^"(.*)"$/, "$1");
-          assignees.push(assigneeString);
+          entityString = entityString.replace(/^"(.*)"$/, "$1");
+          entities.push(entityString);
         }
 
-        for (let i = 0; i < assignees.length; i++) {
+        for (let i = 0; i < entities.length; i++) {
           switch (criteria) {
             case "taskAssignee":
               let filterUser = this.users.find(
-                user => user.userId === assignees[i]
+                user => user.userId === entities[i]
               );
               console.log("filterUser", filterUser);
               this.filterAssignee.push({
@@ -499,13 +500,20 @@ export default {
               break;
             case "projectId":
               let filterProject = this.allProjects.find(
-                project => project.projectId === assignees[i]
+                project => project.projectId === entities[i]
               );
               console.log("filterProject", filterProject);
               this.filterProject.push({
                 name: filterProject.projectName,
                 id: filterProject.projectId
               });
+              break;
+            case "issueType":
+              let filterIssueType = this.taskTypeArray.find(
+                issueType => issueType.id === entities[i]
+              );
+              this.filterType.push(filterIssueType);
+              break;
           }
         }
       }
