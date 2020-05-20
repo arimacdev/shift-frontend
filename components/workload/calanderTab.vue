@@ -238,8 +238,8 @@
               </v-sheet>
             </v-col>
           </v-row>
-          {{this.filterResult}}
-          {{this.events}}
+          <!-- {{this.filterResult}}
+          {{this.events}}-->
         </div>
       </div>
     </v-row>
