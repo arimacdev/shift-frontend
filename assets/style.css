@@ -1782,7 +1782,8 @@
   margin-right: 10px;
 }
 .restructuredTaskCreate {
-  margin-bottom: -20px;
+  margin-top: 20px;
+  margin-bottom: -40px;
 }
 .restructuredSubTaskList {
   background-color: #ffffff;
@@ -2340,7 +2341,6 @@
   margin-right: 20px;
   height: 50vh;
   padding-top: 10px;
-  /* position: absolute; */
   overflow-y: scroll;
   overflow-y: hidden;
   white-space: nowrap;

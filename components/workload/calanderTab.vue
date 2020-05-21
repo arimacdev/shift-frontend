@@ -479,12 +479,6 @@ export default {
         : `${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()}`;
     },
     jqlSearch() {
-      // filterAssignee: [],
-      // filterProject: [],
-      // filterType: [],
-      // filterStatus: [],
-      // filterOrderBy: [],
-
       if (this.filterAssignee.length != 0) {
         let assigneeList = "";
         for (let i = 0; i < this.filterAssignee.length; i++) {

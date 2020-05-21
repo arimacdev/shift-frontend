@@ -1,16 +1,9 @@
 <template>
   <div class="taskContent">
-    <!-- <v-select
-      v-model="taskSelect"
-      :items="items"
-      item-text="name"
-      item-value="id"
-      label="All"
-      solo
-      @change="taskFilter"
-    ></v-select>-->
     <div class="filterSection">
-      <div class="taskFilterTypeDiv">
+      <!-- {{people}} -->
+      <!-- {{this.assigneeArray}} -->
+      <!-- <div class="taskFilterTypeDiv">
         <div class="filterTitleDiv">Filter by:</div>
         <div class="filterDropdownDiv">
           <v-select
@@ -28,7 +21,6 @@
         </div>
       </div>
       <div class="taskFilterDiv">
-        <!-- ---------- filter options ------------- -->
         <div class="filterOptionDiv">
           <v-select
             flat
@@ -72,19 +64,7 @@
             autoClose
           ></VueCtkDateTimePicker>
         </div>
-        <!-- ----------- filter assignee button ---------- -->
         <div class="filterSubmitButton">
-          <!-- <v-btn
-            @click="filterTasks('assignee', taskAssigneeFilter, '', '', '')"
-            v-if="this.taskFilter == 'assignee'"
-            dark
-            width="100%"
-            height="40px"
-            color="#080848"
-          >
-            <v-icon color="#FFFFFF">mdi-filter-outline</v-icon>Filter
-          </v-btn>-->
-          <!-- ------------- filter dateRange button ---------------- -->
           <v-btn
             v-if="this.taskFilter == 'dueDate'"
             dark
@@ -96,7 +76,116 @@
             <v-icon color="#FFFFFF">mdi-filter-outline</v-icon>Filter
           </v-btn>
         </div>
-      </div>
+      </div>-->
+      <v-row>
+        <v-col md="2">
+          <v-text-field
+            dense
+            clearable
+            @click:clear="clearName()"
+            v-model="nameOfTask"
+            outlined
+            solo
+            flat
+            label="Task Name"
+            background-color="#FFFFFF"
+          ></v-text-field>
+        </v-col>
+        <v-col md="2">
+          <v-autocomplete
+            v-model="assigneeOfTask"
+            :items="assigneeArray"
+            return-object
+            item-text="name"
+            item-value="id"
+            :search-input.sync="searchAssignee"
+            flat
+            outlined
+            dense
+            chips
+            background-color="#FFFFFF"
+            small-chips
+            label="Assignee"
+            multiple
+            clearable
+            :clear-icon-cb="clearAssignee()"
+          >
+            <template v-slot:selection="{ item, index }">
+              <v-chip x-small v-if="index === 0">
+                <span>{{ item.name }}</span>
+              </v-chip>
+            </template>
+          </v-autocomplete>
+        </v-col>
+        <v-col md="2">
+          <v-autocomplete
+            v-model="taskType"
+            return-object
+            :items="taskTypeArray"
+            item-text="name"
+            item-value="id"
+            flat
+            outlined
+            dense
+            chips
+            background-color="#FFFFFF"
+            small-chips
+            label="Task Type"
+            multiple
+            clearable
+            @click:clear="clearType()"
+          >
+            <template v-slot:selection="{ item, index }">
+              <v-chip x-small v-if="index === 0">
+                <span>{{ item.name }}</span>
+              </v-chip>
+            </template>
+          </v-autocomplete>
+        </v-col>
+        <v-col md="2">
+          <v-autocomplete
+            v-model="taskStatus"
+            return-object
+            :items="taskStatusArray"
+            item-text="name"
+            item-value="id"
+            flat
+            outlined
+            dense
+            chips
+            background-color="#FFFFFF"
+            small-chips
+            label="Task Status"
+            multiple
+            clearable
+            @click:clear="clearStatus()"
+          >
+            <template v-slot:selection="{ item, index }">
+              <v-chip x-small v-if="index === 0">
+                <span>{{ item.name }}</span>
+              </v-chip>
+            </template>
+          </v-autocomplete>
+        </v-col>
+        <v-col md="2">
+          <VueCtkDateTimePicker
+            :no-value-to-custom-elem="false"
+            color="#3f51b5"
+            v-model="dateRange"
+            label="Date Range"
+            range
+            right
+            noButton
+            autoClose
+            :clear-icon-cb="clearDate()"
+          ></VueCtkDateTimePicker>
+        </v-col>
+        <v-col md="2">
+          <v-btn @click="jqlSearch()" dark width="100%" height="40px" color="#080848">
+            <v-icon color="#FFFFFF">mdi-filter-outline</v-icon>Filter
+          </v-btn>
+        </v-col>
+      </v-row>
     </div>
 
     <div v-if="this.taskFilter == 'none'" class="restructuredTaskCreate">
@@ -416,6 +505,23 @@ export default {
   // props: ['projectId', 'projectUsers', 'people'],
   data() {
     return {
+      jqlQuery: "",
+      assigneeQuery: "",
+      projectQuery: "",
+      typeQuery: "",
+      statusQuery: "",
+      orderByQuery: "",
+      dateQuery: "",
+      taskNameQuery: "",
+      assigneeArray: [],
+      templateArray: [],
+      filterAssignee: [],
+      filterProject: [],
+      filterTemplate: "",
+      filterType: [],
+      filterStatus: [],
+      filterResult: [],
+
       errorMessage: "",
       successMessage: "",
       component: "",
@@ -432,6 +538,39 @@ export default {
       updatedTask: {
         taskName: ""
       },
+      nameOfTask: "",
+      taskTypeArray: [
+        { name: "Development", id: "development" },
+        { name: "QA", id: "qa" },
+        { name: "Design", id: "design" },
+        { name: "Bug", id: "bug" },
+        { name: "Operational", id: "operational" },
+        { name: "Pre-sales", id: "preSales" },
+        { name: "General", id: "general" }
+      ],
+      taskStatusArray: [
+        { name: "Pending", id: "pending" },
+        { name: "On hold", id: "onHold" },
+        { name: "Open", id: "open" },
+        { name: "Cancel", id: "cancel" },
+        { name: "ReOpened", id: "reOpened" },
+        { name: "Fixing", id: "fixing" },
+        { name: "Testing", id: "testing" },
+        { name: "Resolved", id: "resolved" },
+        { name: "In progress", id: "inprogress" },
+        { name: "Completed", id: "completed" },
+        { name: "Implementing", id: "implementing" },
+        { name: "Under review", id: "underReview" },
+        { name: "Weiting for approval", id: "waitingForApproval" },
+        { name: "Review", id: "review" },
+        { name: "Discussion", id: "discussion" },
+        { name: "Waiting response", id: "waitingResponse" },
+        { name: "Ready", id: "ready" },
+        { name: "Deployed", id: "deployed" },
+        { name: "Fixed", id: "fixed" },
+        { name: "Rejected", id: "rejected" },
+        { name: "Closed", id: "closed" }
+      ],
 
       items: [
         { name: "Development", id: "development" },
@@ -467,7 +606,150 @@ export default {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup
   },
+  watch: {
+    searchAssignee(val) {
+      val && val !== this.selectAssignee && this.loadAssignee(val);
+    }
+  },
   methods: {
+    jqlSearch() {
+      if (this.filterAssignee.length != 0) {
+        let assigneeList = "";
+        for (let i = 0; i < this.filterAssignee.length; i++) {
+          assigneeList = assigneeList + '"' + this.filterAssignee[i].id + '"';
+          if (i < this.filterAssignee.length - 1) {
+            assigneeList = assigneeList + ",";
+          }
+        }
+        this.assigneeQuery = "taskAssignee IN " + "(" + assigneeList + ") AND ";
+      }
+      if (this.filterProject.length != 0) {
+        let projectList = "";
+        for (let i = 0; i < this.filterProject.length; i++) {
+          projectList = projectList + '"' + this.filterProject[i].id + '"';
+          if (i < this.filterProject.length - 1) {
+            projectList = projectList + ",";
+          }
+        }
+        this.projectQuery = "projectId IN " + "(" + projectList + ")  AND ";
+      }
+      if (this.filterType.length != 0) {
+        let typeList = "";
+        for (let i = 0; i < this.filterType.length; i++) {
+          typeList = typeList + '"' + this.filterType[i].id + '"';
+          if (i < this.filterType.length - 1) {
+            typeList = typeList + ",";
+          }
+        }
+        this.typeQuery = "issueType IN " + "(" + typeList + ")  AND ";
+      }
+      if (this.filterStatus.length != 0) {
+        let statusList = "";
+        for (let i = 0; i < this.filterStatus.length; i++) {
+          statusList = statusList + '"' + this.filterStatus[i].id + '"';
+          if (i < this.filterStatus.length - 1) {
+            statusList = statusList + ",";
+          }
+        }
+        this.statusQuery = "taskStatus IN " + "(" + statusList + ")  AND ";
+      }
+      if (this.dateRange != null) {
+        if (
+          this.dateRange.start !== undefined &&
+          this.dateRange.end !== undefined
+        ) {
+          this.from = this.dateRange.start;
+          this.to = this.dateRange.end;
+          const startDate = new Date(this.dateRange.start);
+          const isoStartDate = new Date(
+            startDate.getTime() - startDate.getTimezoneOffset() * 60000
+          ).toISOString();
+
+          const endDate = new Date(this.dateRange.end);
+          const isoEndDate = new Date(
+            endDate.getTime() - endDate.getTimezoneOffset() * 60000
+          ).toISOString();
+
+          this.dateQuery =
+            'taskDueDateAt BETWEEN "' +
+            isoStartDate +
+            '" AND "' +
+            isoEndDate +
+            '" AND ';
+        }
+      }
+      if (this.filterOrderBy != "" && this.filterOrderBy != undefined) {
+        this.orderByQuery = "ORDER BY projectName ASC";
+      }
+
+      if (this.nameOfTask != "") {
+        this.taskNameQuery =
+          'taskName LIKE "%25' + this.nameOfTask + '%25"  AND ';
+      }
+
+      let filterQuery =
+        this.assigneeQuery +
+        this.projectQuery +
+        this.typeQuery +
+        this.statusQuery +
+        this.dateQuery +
+        this.taskNameQuery;
+
+      this.jqlQuery = filterQuery.slice(0, -5) + this.orderByQuery;
+      console.log("QUERY:  " + encodeURI(this.jqlQuery));
+      this.events = [];
+      this.getFilterResponse();
+    },
+    async getFilterResponse() {
+      let taskFilterResponse;
+      try {
+        taskFilterResponse = await this.$axios.$get(
+          `/projects/workload/filter?query=${this.jqlQuery}`,
+          {
+            headers: {
+              user: this.$store.state.user.userId
+            }
+          }
+        );
+        console.log("tasks--->", taskFilterResponse.data);
+
+        this.filterResult = taskFilterResponse.data;
+      } catch (error) {
+        console.log("Error fetching data", error);
+      }
+    },
+    clearAssignee() {
+      this.assigneeQuery = "";
+      this.jqlQuery = "";
+    },
+    clearType() {
+      this.typeQuery = "";
+      this.jqlQuery = "";
+    },
+    clearStatus() {
+      this.statusQuery = "";
+      this.jqlQuery = "";
+    },
+    clearDate() {
+      this.dateQuery = "";
+      this.jqlQuery = "";
+    },
+    clearName() {
+      this.taskNameQuery = "";
+      this.jqlQuery = "";
+    },
+    loadAssignee(v) {
+      let AssigneeSearchList = this.people;
+      console.log("PEOPLE-> " + AssigneeSearchList);
+      for (let index = 0; index < AssigneeSearchList.length; ++index) {
+        let user = AssigneeSearchList[index];
+        this.assigneeArray.push({
+          name: user.assigneeFirstName + " " + user.assigneeLastName,
+          id: user.assigneeId,
+          img: user.assigneeProfileImage
+        });
+      }
+    },
     filterStyles(isParent) {
       if (isParent == true) {
         return "restructuredMainTaskFilterList";
@@ -771,7 +1053,14 @@ export default {
       projectId: state => state.project.project.projectId,
       selectedTask: state => state.task.selectedTask
     }),
-
+    assigneeOfTask: {
+      get() {
+        this.loadAssignee();
+      },
+      set(value) {
+        this.filterAssignee = value;
+      }
+    },
     taskName: {
       get() {
         return null;
