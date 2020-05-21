@@ -43,13 +43,13 @@
                   </v-list-item>
                 </template>-->
               </v-autocomplete>
-             <!-- :search-input.sync="searchProject" -->
+              <!-- :search-input.sync="searchProject" -->
               <v-autocomplete
                 v-model="filterProject"
                 return-object
                 :items="projectArray"
                 item-text="name"
-                item-value="id"               
+                item-value="id"
                 flat
                 outlined
                 dense
@@ -313,16 +313,10 @@ export default {
     this.$store.dispatch("workload/fetchTemplates");
   },
   data: () => ({
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
     task: {},
     taskDialog: false,
     taskFiles: [],
     items: ["foo", "bar", "fizz", "buzz"],
->>>>>>> Stashed changes
     value: null,
     saveTemplateQuery: "",
     jqlQuery: "",
