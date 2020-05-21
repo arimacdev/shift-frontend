@@ -2397,3 +2397,11 @@
 .workloadTasksDisplay {
   margin-right: 80px;
 }
+.statusSpan {
+  font-size: 16px;
+  background-color: #edf0f5;
+  color: #576377;
+  width: 250px;
+  padding: 10px;
+  border-radius: 5px;
+}

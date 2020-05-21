@@ -5,7 +5,7 @@
         <v-btn width="100%" color="#2EC973" dark v-on="on">Save current filter as a template</v-btn>
       </template>
 
-      <v-card class>
+      <v-card height="100%">
         <v-card-title class="grey lighten-2" primary-title>Save filteration as a template</v-card-title>
         <div class="saveTemplateBody">
           <v-row>
@@ -76,7 +76,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="#FF6161" dark text @click="dialog = false">Cancel</v-btn>
-          <v-btn color="#2EC973" dark text @click="saveTemplate">OK</v-btn>
+          <v-btn color="#2EC973" dark text @click="saveTemplate; dialog = false">OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

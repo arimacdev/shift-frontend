@@ -10,31 +10,12 @@
         }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-toolbar-items>
-        <!-- <button class :disabled="checkValidation">
-          <v-list-item dark>
-            <div>
-              <v-tooltip left>
-                <template v-slot:activator="{ on }">
-                  <v-icon
-                    v-on="on"
-                    size="30px"
-                    @click="taskDeleteDialog = true"
-                    color="#FFFFFF"
-                  >mdi-delete-circle</v-icon>
-                </template>
-                <span>Delete task</span>
-              </v-tooltip>
-            </div>
-          </v-list-item>
-        </button>-->
-      </v-toolbar-items>
+      <v-toolbar-items></v-toolbar-items>
     </v-toolbar>
     <div class="viewDialogTaskContent overflow-y-auto">
       <div class="taskDialogFormDiv">
         <form>
           <v-row class="mb-12 formRowSpec" no-gutters>
-            <v-col sm="2" md="2"></v-col>
             <v-col sm="2" md="2">
               <div
                 class="taskStatusDropdown"
@@ -45,37 +26,8 @@
             <v-col sm="12" md="12" class="formRowNameRange">
               <v-row class="mb-12" no-gutters>
                 <v-col>
-                  <input
-                    type="text"
-                    class="viewTaskTitle"
-                    v-model="this.selectedTask.taskName"
-                    v-if="editTask == true"
-                    :disabled="editTask"
-                  />
-                  <!-- <input
-                    maxlength="100"
-                    type="text"
-                    class="viewTaskTitleEdit"
-                    v-model="taskName"
-                    v-if="editTask == false"
-                    :disabled="editTask"
-                    @keyup.enter="updateTaskName"
-                  />-->
+                  <div class="viewTaskTitle">{{this.selectedTask.taskName}}</div>
                 </v-col>
-                <!-- <v-col sm="1" md="1" class="taskEditIconCol">
-                  <v-tooltip left>
-                    <template v-slot:activator="{ on }">
-                      <v-icon
-                        v-on="on"
-                        size="25"
-                        color="#424F64"
-                        class="editIcon"
-                        @click="EditTaskName"
-                      >mdi-pencil-circle</v-icon>
-                    </template>
-                    <span>Edit task name</span>
-                  </v-tooltip>
-                </v-col>-->
               </v-row>
               <v-divider class="nameRangeDevider"></v-divider>
             </v-col>
@@ -98,19 +50,38 @@
                       <div class="taskViewTaskListPadding">
                         <v-row class="mb-12" no-gutters>
                           <v-col sm="6" md="6">
-                            <v-select
-                              dense
-                              v-model="this.selectedTask.taskStatus"
-                              disabled
-                              :items="status"
-                              background-color="#EDF0F5"
-                              item-text="name"
-                              item-value="id"
-                              label="Task status"
-                              outlined
-                              class="createFormElements"
-                              @change="updateTaskStatus"
-                            ></v-select>
+                            <div
+                              class="statusSpan"
+                            >{{this.selectedTask.taskStatus.charAt(0).toUpperCase()+ this.selectedTask.taskStatus.slice(1)}}</div>
+                          </v-col>
+                          <v-col sm="6" md="6">
+                            <div
+                              class="statusSpan"
+                            >{{this.selectedTask.issueType.charAt(0).toUpperCase()+ this.selectedTask.issueType.slice(1)}}</div>
+                          </v-col>
+                        </v-row>
+                      </div>
+                      <!-- --------------- -->
+                    </v-list-item-content>
+                  </div>
+                  <v-divider></v-divider>
+
+                  <!-- -------------- task sprint section ------------- -->
+                  <div class="expansionViewHeader">
+                    <v-list-item class="taskViewTitleSection">
+                      <v-list-item-icon>
+                        <v-icon size="30" color="#6FCD17">mdi-animation-outline</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-title class="viewTaskFontColors">Board</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item-content class="parentChildTaskList">
+                      <!-- ---------- task list --------- -->
+                      <div class="taskViewTaskListPadding">
+                        <v-row class="mb-12" no-gutters>
+                          <v-col sm="6" md="6">
+                            <div
+                              class="statusSpan"
+                            >{{this.selectedTask.taskStatus.charAt(0).toUpperCase()+ this.selectedTask.taskStatus.slice(1)}}</div>
                           </v-col>
                         </v-row>
                       </div>
@@ -131,6 +102,7 @@
                       <v-list-item-content>
                         <v-list-item-title class="subItem noteSubItem">
                           <v-textarea
+                            disabled
                             name="input-7-4"
                             auto-grow
                             clearable
@@ -138,19 +110,6 @@
                             v-model="this.selectedTask.taskNote"
                           ></v-textarea>
                         </v-list-item-title>
-                        <div class="noteUpdateButton">
-                          <v-btn
-                            class="ma-2"
-                            small
-                            rounded
-                            depressed
-                            color="#0BAFFF"
-                            dark
-                            @click="updateTaskNote"
-                          >
-                            <v-icon left>mdi-pencil</v-icon>Update note
-                          </v-btn>
-                        </div>
                       </v-list-item-content>
                     </v-list-item>
                   </div>
@@ -160,6 +119,15 @@
               <!-- ------------------ right side column ------------- -->
               <v-col sm="4" md="4">
                 <div class="rightSideColumn">
+                  <v-list-item>
+                    <v-list-item-icon>
+                      <v-icon size="35" color="#02C1D4">mdi-account-arrow-left-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
+                      <v-list-item-title>{{this.selectedTask.firstName}} {{this.selectedTask.lastName}}</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
                   <!-- ----------- Due date section --------- -->
 
                   <v-list-item>
@@ -176,42 +144,6 @@
                         }}
                       </v-list-item-title>
                     </v-list-item-content>
-                    <v-list-item-action>
-                      <datetime
-                        hidden
-                        type="datetime"
-                        v-model="taskDue"
-                        zone="local"
-                        input-id="dueDate"
-                      >
-                        <label for="dueDate" slot="before" class="tabListItemsTextDue">
-                          <!-- <span class="dialogPickerNewText">Due Date</span> -->
-                        </label>
-                        <label for="dueDate" slot="after" class>
-                          <v-icon>mdi-pencil-plus</v-icon>
-                        </label>
-                        <template slot="button-cancel">
-                          <fa :icon="['far', 'times']"></fa>Cancel
-                        </template>
-                        <template slot="button-confirm">
-                          <fa :icon="['fas', 'check-circle']"></fa>
-                          <p @click="clickToPrint">Confirm</p>
-                        </template>
-                      </datetime>
-                    </v-list-item-action>
-
-                    <v-list-item-action>
-                      <v-tooltip left>
-                        <template v-slot:activator="{ on }">
-                          <v-btn v-on="on" icon color="deep-orange">
-                            <v-icon
-                              @click="updateTaskDates('dueDate')"
-                            >mdi-checkbox-marked-circle-outline</v-icon>
-                          </v-btn>
-                        </template>
-                        <span>Select date and click to update</span>
-                      </v-tooltip>
-                    </v-list-item-action>
                   </v-list-item>
 
                   <!-- ----------- Reminder date section --------- -->
@@ -230,42 +162,6 @@
                         }}
                       </v-list-item-title>
                     </v-list-item-content>
-                    <v-list-item-action>
-                      <datetime
-                        hidden
-                        type="datetime"
-                        v-model="taskRemindOn"
-                        zone="local"
-                        input-id="remindDate"
-                        :max-datetime="this.selectedTask.taskDueDateAt"
-                      >
-                        <label for="remindDate" slot="before" class="tabListItemsTextDue">
-                          <!-- <span class="dialogPickerNewText">Remind Date</span> -->
-                        </label>
-                        <label for="remindDate" slot="after" class>
-                          <v-icon>mdi-pencil-plus</v-icon>
-                        </label>
-                        <template slot="button-cancel">
-                          <fa :icon="['far', 'times']"></fa>Cancel
-                        </template>
-                        <template slot="button-confirm">
-                          <fa :icon="['fas', 'check-circle']"></fa>
-                          <p>Confirm</p>
-                        </template>
-                      </datetime>
-                    </v-list-item-action>
-                    <v-list-item-action>
-                      <v-tooltip left>
-                        <template v-slot:activator="{ on }">
-                          <v-btn v-on="on" icon color="deep-orange">
-                            <v-icon
-                              @click="updateTaskDates('remindOn')"
-                            >mdi-checkbox-marked-circle-outline</v-icon>
-                          </v-btn>
-                        </template>
-                        <span>Select date and click to update</span>
-                      </v-tooltip>
-                    </v-list-item-action>
                   </v-list-item>
 
                   <v-divider class="datePickerDivider"></v-divider>
@@ -278,39 +174,7 @@
                       <v-list-item-title class="rightColumnItemsTitle">Files</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
-                  <div class="viewTaskPickerDiv">
-                    <v-file-input
-                      label="Upload files"
-                      v-model="files"
-                      outlined
-                      prepend-inner-icon="mdi-upload-outline"
-                      prepend-icon
-                      multiple
-                      class
-                      chips
-                      dense
-                    ></v-file-input>
-                  </div>
-                  <div class="viewTaskPickerDiv">
-                    <div class="fileUploadButton taskViewFileUploadButton">
-                      <v-btn
-                        @click="taskFileUpload()"
-                        class="ma-2"
-                        x-small
-                        rounded
-                        depressed
-                        color="#0BAFFF"
-                        dark
-                      >
-                        <v-icon left>mdi-upload</v-icon>Upload
-                      </v-btn>
-                      <v-progress-circular
-                        v-if="uploadLoading == true"
-                        indeterminate
-                        color="primary"
-                      ></v-progress-circular>
-                    </div>
-                  </div>
+
                   <!-- ------------- file viewer ------------ -->
                   <div class="filesViewDiv" v-for="(file, index) in this.taskFiles" :key="index">
                     <v-list-item>
@@ -408,13 +272,13 @@
 
     <!-- ---------------------- end popup ------------------ -->
 
-    <div class="RestTaskLogDiv">
+    <!-- <div class="RestTaskLogDiv">
       <div class="RestTaskLogTitle">
         <v-list-item-content>
           <v-list-item-title class="font-weight-medium">Task Log</v-list-item-title>
         </v-list-item-content>
       </div>
-    </div>
+    </div>-->
     <div @click="close" class="taskPopupPopups">
       <component
         v-bind:is="component"

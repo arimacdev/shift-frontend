@@ -291,7 +291,7 @@
     </v-row>
     <!-- ------------ task dialog --------- -->
 
-    <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition" persistent>
+    <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
       <task-dialog
         :selectedTask="task"
         :taskFiles="taskFiles"
