@@ -441,18 +441,18 @@ export default {
         this.filterProject = [];
         this.filterOrderBy = "";
 
-        // if (decodedFilterTempQuery.includes("taskAssignee")) {
-        //   this.fillTemplateCriteria("taskAssignee", decodedFilterTempQuery);
-        // }
-        // if (decodedFilterTempQuery.includes("projectId")) {
-        //   this.fillTemplateCriteria("projectId", decodedFilterTempQuery);
-        // }
-        // if (decodedFilterTempQuery.includes("issueType")) {
-        //   this.fillTemplateCriteria("issueType", decodedFilterTempQuery);
-        // }
-        // if (decodedFilterTempQuery.includes("taskStatus")) {
-        //   this.fillTemplateCriteria("taskStatus", decodedFilterTempQuery);
-        // }
+        if (decodedFilterTempQuery.includes("taskAssignee")) {
+          this.fillTemplateCriteria("taskAssignee", decodedFilterTempQuery);
+        }
+        if (decodedFilterTempQuery.includes("projectId")) {
+          this.fillTemplateCriteria("projectId", decodedFilterTempQuery);
+        }
+        if (decodedFilterTempQuery.includes("issueType")) {
+          this.fillTemplateCriteria("issueType", decodedFilterTempQuery);
+        }
+        if (decodedFilterTempQuery.includes("taskStatus")) {
+          this.fillTemplateCriteria("taskStatus", decodedFilterTempQuery);
+        }
         if (decodedFilterTempQuery.includes("ORDER")) {
           this.fillTemplateCriteria("ORDERBY", decodedFilterTempQuery);
         }
