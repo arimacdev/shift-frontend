@@ -470,6 +470,7 @@ export default {
         this.filterAssignee = [];
         this.filterProject = [];
         this.filterOrderBy = "";
+        this.taskName = "";
 
         if (decodedFilterTempQuery.includes("taskAssignee")) {
           this.fillTemplateCriteria("taskAssignee", decodedFilterTempQuery);
@@ -485,6 +486,9 @@ export default {
         }
         if (decodedFilterTempQuery.includes("ORDER")) {
           this.fillTemplateCriteria("ORDERBY", decodedFilterTempQuery);
+        }
+        if (decodedFilterTempQuery.includes("LIKE")) {
+          this.fillTemplateCriteria("LIKE", decodedFilterTempQuery);
         }
       } catch (error) {
         console.log("Error fetching data", error);
@@ -525,7 +529,11 @@ export default {
             }
           }
         }
-      } else {
+      }
+      //  else if (criteria === "LIKE") {
+
+      // }
+      else {
         const entityBetween = new RegExp(`${criteria}\s*(.*?)\s*AND`, "g");
         const entityEnd = new RegExp(`${criteria}\s*(.*?)\s*ORDER`, "g");
 
@@ -539,63 +547,72 @@ export default {
           if (between) entityMatchString = between[1];
           else entityMatchString = end[1];
           console.log("decode", entityMatchString);
-          //Get String Between Parantheses
-          const regExp = /\(([^)]+)\)/;
-          const paranthesesMatch = regExp.exec(entityMatchString);
-          //Multiple Assignees
-          let entityString = paranthesesMatch[1];
-          let entities = [];
-          console.log("dec", paranthesesMatch[1]);
-          if (entityString.includes(",")) {
-            entityString.split(/\s*,\s*/).forEach(assignee => {
-              //Remove Quotation Marks
-              assignee = assignee.replace(/^"(.*)"$/, "$1");
-              entities.push(assignee);
-              console.log("entity", assignee);
-            });
+          if (criteria === "LIKE") {
+            let likeString = entityMatchString.replace(/^"(.*)"$/, "$1");
+            const likeText = likeString.match(/%25(.*)%/).pop();
+            console.log("like", likeText);
+            this.taskName = likeText;
           } else {
-            entityString = entityString.replace(/^"(.*)"$/, "$1");
-            entities.push(entityString);
-          }
+            //Get String Between Parantheses
+            const regExp = /\(([^)]+)\)/;
+            const paranthesesMatch = regExp.exec(entityMatchString);
+            console.log("para", paranthesesMatch);
+            //Multiple Assignees
+            let entityString = paranthesesMatch[1];
+            let entities = [];
+            console.log("dec", paranthesesMatch[1]);
+            if (entityString.includes(",")) {
+              entityString.split(/\s*,\s*/).forEach(assignee => {
+                //Remove Quotation Marks
+                assignee = assignee.replace(/^"(.*)"$/, "$1");
+                entities.push(assignee);
+                console.log("entity", assignee);
+              });
+            } else {
+              entityString = entityString.replace(/^"(.*)"$/, "$1");
+              entities.push(entityString);
+            }
 
-          for (let i = 0; i < entities.length; i++) {
-            switch (criteria) {
-              case "taskAssignee":
-                let filterUser = this.users.find(
-                  user => user.userId === entities[i]
-                );
-                console.log("filterUser", filterUser);
-                if (filterUser) {
-                  this.filterAssignee.push({
-                    name: filterUser.firstName,
-                    id: filterUser.userId,
-                    img: filterUser.profileImage
-                  });
-                }
-                break;
-              case "projectId":
-                let filterProject = this.allProjects.find(
-                  project => project.projectId === entities[i]
-                );
-                console.log("filterProject", filterProject);
-                if (filterProject) {
-                  this.filterProject.push({
-                    name: filterProject.projectName,
-                    id: filterProject.projectId
-                  });
-                }
-                break;
-              case "issueType":
-                let filterIssueType = this.taskTypeArray.find(
-                  issueType => issueType.id === entities[i]
-                );
-                if (filterIssueType) this.filterType.push(filterIssueType);
-                break;
-              case "taskStatus":
-                let filterTaskStatus = this.taskStatusArray.find(
-                  taskStatus => taskStatus.id === entities[i]
-                );
-                if (filterTaskStatus) this.filterStatus.push(filterTaskStatus);
+            for (let i = 0; i < entities.length; i++) {
+              switch (criteria) {
+                case "taskAssignee":
+                  let filterUser = this.users.find(
+                    user => user.userId === entities[i]
+                  );
+                  console.log("filterUser", filterUser);
+                  if (filterUser) {
+                    this.filterAssignee.push({
+                      name: filterUser.firstName,
+                      id: filterUser.userId,
+                      img: filterUser.profileImage
+                    });
+                  }
+                  break;
+                case "projectId":
+                  let filterProject = this.allProjects.find(
+                    project => project.projectId === entities[i]
+                  );
+                  console.log("filterProject", filterProject);
+                  if (filterProject) {
+                    this.filterProject.push({
+                      name: filterProject.projectName,
+                      id: filterProject.projectId
+                    });
+                  }
+                  break;
+                case "issueType":
+                  let filterIssueType = this.taskTypeArray.find(
+                    issueType => issueType.id === entities[i]
+                  );
+                  if (filterIssueType) this.filterType.push(filterIssueType);
+                  break;
+                case "taskStatus":
+                  let filterTaskStatus = this.taskStatusArray.find(
+                    taskStatus => taskStatus.id === entities[i]
+                  );
+                  if (filterTaskStatus)
+                    this.filterStatus.push(filterTaskStatus);
+              }
             }
           }
         }
