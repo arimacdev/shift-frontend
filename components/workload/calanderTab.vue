@@ -210,8 +210,18 @@
                     <v-card-text>
                       <v-row>
                         <v-col>
+                          <div class="templateText">Assignee:</div>
+                          <span v-html="selectedEvent.assignee"></span>
+                        </v-col>
+                        <v-col>
                           <div class="templateText">Project:</div>
                           <span v-html="selectedEvent.project"></span>
+                        </v-col>
+                      </v-row>
+                      <v-row>
+                        <v-col>
+                          <div class="templateText">Type:</div>
+                          <span v-html="selectedEvent.issueType"></span>
                         </v-col>
                         <v-col>
                           <div class="templateText">Status:</div>
@@ -426,6 +436,8 @@ export default {
           end: this.getProjectDisplayDates(task.taskDueDateAt),
           project: task.projectName,
           status: task.taskStatus,
+          issueType: task.issueType,
+          assignee: task.firstName + " " + task.lastName,
           color: this.colors[this.rnd(0, this.colors.length - 1)]
         });
       }
@@ -611,6 +623,8 @@ export default {
           end: this.getProjectDisplayDates(task.taskDueDateAt),
           project: task.projectName,
           status: task.taskStatus,
+          issueType: task.issueType,
+          assignee: task.firstName + " " + task.lastName,
           color: this.colors[this.rnd(0, this.colors.length - 1)]
         });
       }

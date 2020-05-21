@@ -295,6 +295,7 @@
       <task-dialog
         :selectedTask="task"
         :taskFiles="taskFiles"
+        :taskSprint="taskSprint"
         @taskDialogClosing="taskDialogClosing()"
       />
     </v-dialog>
@@ -316,6 +317,7 @@ export default {
     task: {},
     taskDialog: false,
     taskFiles: [],
+    taskSprint: {},
     items: ["foo", "bar", "fizz", "buzz"],
     value: null,
     saveTemplateQuery: "",
@@ -417,6 +419,21 @@ export default {
         // console.log("files--->", taskFilesResponse.data);
         this.taskFiles = taskFilesResponse.data;
         this.$store.dispatch("task/setTaskFiles", taskFilesResponse.data);
+      } catch (error) {
+        // console.log("Error fetching data", error);
+      }
+      let sprintResponse;
+      try {
+        sprintResponse = await this.$axios.$get(
+          `/sprints/${this.projectId}/${task.sprintId}`,
+          {
+            headers: {
+              userId: task.taskAssignee
+            }
+          }
+        );
+        console.log("sprint--->", sprintResponse.data);
+        this.taskSprint = sprintResponse.data;
       } catch (error) {
         // console.log("Error fetching data", error);
       }

@@ -170,6 +170,7 @@
                   '/task/' + task.parentTask.taskId + '/?project=' + projectId
                 "
                   style="text-decoration: none;"
+                  target="_blank"
                 >
                   <v-icon color="blue">mdi-link-variant</v-icon>
                 </nuxt-link>
@@ -246,6 +247,7 @@
                   <nuxt-link
                     :to="'/task/' + childTask.taskId + '/?project=' + projectId"
                     style="text-decoration: none;"
+                    target="_blank"
                   >
                     <v-icon color="blue">mdi-link-variant</v-icon>
                   </nuxt-link>
