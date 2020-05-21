@@ -66,10 +66,12 @@
                       <template></template>
                     </v-progress-linear>
                   </div>
+
                   <div class="graphNameField">
                     <v-divider></v-divider>
                     {{ user.firstName }}
                   </div>
+
                   <div class="overviewAvater">
                     <v-list-item-avatar @click="selectUser(user)">
                       <v-img
@@ -144,9 +146,6 @@
                           <v-list-item-content>
                             <div class="workloadTaskName">{{ task.taskName }}</div>
                           </v-list-item-content>
-                          <!-- <v-list-item-action>
-                  <div class="workloadTaskName">{{ task.taskName }}</div>
-                          </v-list-item-action>-->
 
                           <v-list-item-action>
                             <v-list-item-title
