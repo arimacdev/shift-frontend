@@ -446,6 +446,11 @@ export default {
         this.filterTemplate.query,
         this.filterAssignee
       );
+      this.filterAssignee = [];
+      this.filterProject = [];
+      this.filterOrderBy = "";
+      this.taskName = "";
+
       let taskFilterResponse;
       try {
         taskFilterResponse = await this.$axios.$get(
@@ -467,11 +472,6 @@ export default {
           console.log("Invalid Filter Template Query");
         }
 
-        this.filterAssignee = [];
-        this.filterProject = [];
-        this.filterOrderBy = "";
-        this.taskName = "";
-
         if (decodedFilterTempQuery.includes("taskAssignee")) {
           this.fillTemplateCriteria("taskAssignee", decodedFilterTempQuery);
         }
@@ -490,6 +490,7 @@ export default {
         if (decodedFilterTempQuery.includes("LIKE")) {
           this.fillTemplateCriteria("LIKE", decodedFilterTempQuery);
         }
+        this.jqlSearch();
       } catch (error) {
         console.log("Error fetching data", error);
       }
