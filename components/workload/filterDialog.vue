@@ -85,7 +85,7 @@
                       <div class="taskViewTaskListPadding">
                         <v-row class="mb-12" no-gutters>
                           <v-col sm="6" md="6">
-                            <div class="statusSpan">{{this.taskSprint.sprintName}}</div>
+                            <div class="statusSpan">{{this.taskSprint}}</div>
                           </v-col>
                         </v-row>
                       </div>
@@ -129,7 +129,7 @@
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
-                      <v-list-item-title>{{this.selectedTask.firstName}} {{this.selectedTask.lastName}}</v-list-item-title>
+                      <v-list-item-title>{{this.taskUser.firstName}} {{this.taskUser.lastName}}</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
                   <!-- ----------- Due date section --------- -->
@@ -306,7 +306,7 @@ import AddParentTask from "~/components/tasks/addParentTask";
 import AddChildTask from "~/components/tasks/addChildTask";
 
 export default {
-  props: ["selectedTask", "taskFiles", "taskSprint"],
+  props: ["selectedTask", "taskFiles", "taskSprint", "taskUser"],
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,

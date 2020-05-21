@@ -151,7 +151,7 @@
                           <v-list-item-action>
                             <v-list-item-title
                               :class="dueDateCheck(task)"
-                            >{{ getDueDate(task.dueDate) }}</v-list-item-title>
+                            >{{ getDueDate(task.taskDueDateAt) }}</v-list-item-title>
                           </v-list-item-action>
                         </v-list-item>
                       </div>
