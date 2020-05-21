@@ -40,7 +40,7 @@ export const actions = {
     let taskLoadResponse;
     try {
       taskLoadResponse = await this.$axios.$get(
-        '/projects/tasks/users/workload',
+        '/projects/tasks/users/workload?assignee=all',
         {
           headers: {
             user: user,
