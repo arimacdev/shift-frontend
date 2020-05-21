@@ -860,7 +860,8 @@
 
 .taskListViewContent {
   height: 60vh;
-  /* margin-top: 25px; */
+  z-index: -100;
+  margin-top: 25px;
   padding-bottom: 100px;
 }
 .allTaskCreateTab {

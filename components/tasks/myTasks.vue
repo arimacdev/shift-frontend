@@ -148,7 +148,7 @@
                 <div>
                   <v-list-item-avatar>
                     <v-img
-                      v-if="task.parentTask.taskAssigneeProfileImage != null"
+                      v-if="task.parentTask.taskAssigneeProfileImage != null && task.parentTask.taskAssigneeProfileImage != ''"
                       :src="task.parentTask.taskAssigneeProfileImage"
                     ></v-img>
                     <v-img
@@ -213,7 +213,7 @@
                   <div>
                     <v-list-item-avatar>
                       <v-img
-                        v-if="childTask.taskAssigneeProfileImage != null"
+                        v-if="childTask.taskAssigneeProfileImage != null && childTask.taskAssigneeProfileImage != ''"
                         :src="childTask.taskAssigneeProfileImage"
                       ></v-img>
                       <v-img
@@ -287,7 +287,7 @@
               <div>
                 <v-list-item-avatar>
                   <v-img
-                    v-if="task.taskAssigneeProfileImage != null"
+                    v-if="task.taskAssigneeProfileImage != null && task.taskAssigneeProfileImage != ''"
                     :src="task.taskAssigneeProfileImage"
                   ></v-img>
                   <v-img
@@ -476,6 +476,7 @@ export default {
         }
         this.typeQuery = "issueType IN " + "(" + typeList + ")  AND ";
       }
+      this.projectQuery = 'projectId IN ("' + this.projectId + '")  AND ';
       if (this.filterStatus.length != 0) {
         let statusList = "";
         for (let i = 0; i < this.filterStatus.length; i++) {
