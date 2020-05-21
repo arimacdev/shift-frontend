@@ -518,7 +518,7 @@ export default {
             if (filterOrderByType) {
               this.filterOrderBy = JSON.parse(
                 JSON.stringify(filterOrderByType)
-              );
+              ).id;
               this.filterOrderSequence = orderBySequence;
               // this.dateRange.start = new Date("2020-04-10T20:40:00.000+0000");
               // this.dateRange.end = new Date("2020-04-15T20:40:00.000+0000");
