@@ -21,7 +21,7 @@
         <div class="workloadTypeSection">
           <v-tabs background-color="#0b0b53" dark>
             <v-tab v-on:click="component='my-workload' ">My Workload</v-tab>
-            <v-tab v-on:click="component='org-workload'">Organizational Workload</v-tab>
+            <v-tab v-if="userRole === 'SUPER_ADMIN'" v-on:click="component='org-workload'">Organizational Workload</v-tab>
           </v-tabs>
         </div>
       </div>
@@ -53,6 +53,7 @@ export default {
     return {
       component: "my-workload",
       userId: this.$store.state.user.userId,
+      userRole: this.$store.state.user.organizationalRole,
       workLoad: {},
       userData: {},
       firstName: "",
