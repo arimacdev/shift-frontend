@@ -17,6 +17,12 @@
         <form>
           <v-row class="mb-12 formRowSpec" no-gutters>
             <v-col sm="2" md="2">
+              <div class="taskViewTitle">
+                Task -
+                <span class="secondaryId">#{{this.selectedTask.secondaryTaskId}}</span>
+              </div>
+            </v-col>
+            <v-col sm="2" md="2">
               <div
                 class="taskStatusDropdown"
               >{{this.selectedTask.taskStatus.charAt(0).toUpperCase()+ this.selectedTask.taskStatus.slice(1)}}</div>
@@ -79,9 +85,7 @@
                       <div class="taskViewTaskListPadding">
                         <v-row class="mb-12" no-gutters>
                           <v-col sm="6" md="6">
-                            <div
-                              class="statusSpan"
-                            >{{this.selectedTask.taskStatus.charAt(0).toUpperCase()+ this.selectedTask.taskStatus.slice(1)}}</div>
+                            <div class="statusSpan">{{this.taskSprint}}</div>
                           </v-col>
                         </v-row>
                       </div>
@@ -125,7 +129,7 @@
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
-                      <v-list-item-title>{{this.selectedTask.firstName}} {{this.selectedTask.lastName}}</v-list-item-title>
+                      <v-list-item-title>{{this.taskUser.firstName}} {{this.taskUser.lastName}}</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
                   <!-- ----------- Due date section --------- -->
@@ -202,7 +206,10 @@
                       <v-list-item-content>
                         <v-list-item-title class="fileTitles">
                           {{
-                          taskUser
+                          file.firstName
+                          }}
+                          {{
+                          file.lastName
                           }}
                         </v-list-item-title>
                         <v-list-item-subtitle class="fileSubTitles">
@@ -216,13 +223,13 @@
                           <v-icon size="25" color="#0BAFFF">mdi-cloud-download</v-icon>
                         </a>
                       </div>
-                      <div>
+                      <!-- <div>
                         <v-icon
                           @click="handleFileDelete(file.taskFileId)"
                           size="25"
                           color="#FF6161"
                         >mdi-delete-circle</v-icon>
-                      </div>
+                      </div>-->
                     </v-list-item>
                   </div>
                 </div>
@@ -299,7 +306,7 @@ import AddParentTask from "~/components/tasks/addParentTask";
 import AddChildTask from "~/components/tasks/addChildTask";
 
 export default {
-  props: ["selectedTask", "taskFiles"],
+  props: ["selectedTask", "taskFiles", "taskSprint", "taskUser"],
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,

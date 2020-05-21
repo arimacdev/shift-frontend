@@ -337,7 +337,10 @@
                       <v-list-item-content>
                         <v-list-item-title class="fileTitles">
                           {{
-                          taskUser
+                          file.firstName
+                          }}
+                          {{
+                          file.lastName
                           }}
                         </v-list-item-title>
                         <v-list-item-subtitle class="fileSubTitles">

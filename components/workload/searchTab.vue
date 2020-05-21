@@ -295,6 +295,8 @@
       <task-dialog
         :selectedTask="task"
         :taskFiles="taskFiles"
+        :taskSprint="taskSprint"
+        :taskUser="taskUser"
         @taskDialogClosing="taskDialogClosing()"
       />
     </v-dialog>
@@ -316,6 +318,8 @@ export default {
     task: {},
     taskDialog: false,
     taskFiles: [],
+    taskSprint: "",
+    taskUser: {},
     items: ["foo", "bar", "fizz", "buzz"],
     value: null,
     saveTemplateQuery: "",
@@ -417,6 +421,34 @@ export default {
         // console.log("files--->", taskFilesResponse.data);
         this.taskFiles = taskFilesResponse.data;
         this.$store.dispatch("task/setTaskFiles", taskFilesResponse.data);
+      } catch (error) {
+        // console.log("Error fetching data", error);
+      }
+      let sprintResponse;
+      if (task.sprintId == "default") {
+        this.taskSprint = "Default";
+      } else {
+        try {
+          sprintResponse = await this.$axios.$get(
+            `/sprints/${this.projectId}/${task.sprintId}`,
+            {
+              headers: {
+                userId: task.taskAssignee
+              }
+            }
+          );
+          console.log("sprint--->", sprintResponse.data.sprintName);
+          this.taskSprint = sprintResponse.data.sprintName;
+        } catch (error) {
+          // console.log("Error fetching data", error);
+        }
+      }
+
+      let userResponse;
+      try {
+        userResponse = await this.$axios.$get(`/users/${task.taskAssignee}`);
+        console.log("user--->", userResponse.data);
+        this.taskUser = userResponse.data;
       } catch (error) {
         // console.log("Error fetching data", error);
       }

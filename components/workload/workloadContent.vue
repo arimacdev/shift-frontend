@@ -85,7 +85,7 @@
                 @click.stop="drawer = !drawer"
                 v-for="(task, index) in project.taskList"
                 :key="index"
-                @click="selectTask(task, project.projectId)"
+                @click="selectTask(task); taskDialog = true;"
               >
                 <v-list-item-action>
                   <v-icon
@@ -103,7 +103,9 @@
                 </v-list-item-action>-->
 
                 <v-list-item-action>
-                  <v-list-item-title :class="dueDateCheck(task)">{{ getDueDate(task.dueDate) }}</v-list-item-title>
+                  <v-list-item-title
+                    :class="dueDateCheck(task)"
+                  >{{ getDueDate(task.taskDueDateAt) }}</v-list-item-title>
                 </v-list-item-action>
               </v-list-item>
             </div>
@@ -113,37 +115,39 @@
         </v-expansion-panel>
       </v-expansion-panels>
 
-      <!-- -------------- start side bar ----------------- -->
+      <!-- ------------ task dialog --------- -->
 
-      <!-- <v-navigation-drawer
-        v-model="drawer"
-        absolute
-        temporary
-        right
-        width="600px"
-        class
-        color="#FFFFFF"
-      >
-        <task-side-bar :task="task" :projectId="projectId" />
-      </v-navigation-drawer>-->
-      <!-- --------------- end side bar --------------------- -->
+      <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
+        <task-dialog
+          :selectedTask="task"
+          :taskFiles="taskFiles"
+          :taskSprint="taskSprint"
+          :taskUser="taskUser"
+          @taskDialogClosing="taskDialogClosing()"
+        />
+      </v-dialog>
     </div>
-    <!-- {{getStartDate()}} -->
   </div>
 </template>
 
 <script>
 import TaskSideBar from "~/components/workload/workloadSideBar";
 import { mapState, mapGetters } from "vuex";
+import TaskDialog from "~/components/workload/filterDialog";
 export default {
   props: ["selectedUser"],
   components: {
-    "task-side-bar": TaskSideBar
+    "task-side-bar": TaskSideBar,
+    "task-dialog": TaskDialog
   },
   data() {
     return {
-      drawer: null,
       task: {},
+      taskDialog: false,
+      taskFiles: [],
+      taskSprint: "",
+      taskUser: {},
+      drawer: null,
       projectId: "",
       dateRange: new Date(),
       filterStart: "",
@@ -154,6 +158,10 @@ export default {
     };
   },
   methods: {
+    taskDialogClosing() {
+      // console.log("Task Dialog Closing");
+      this.taskDialog = false;
+    },
     getProjects(type) {
       const projectsAll = this.workloadTasks;
       if (this.looped === false) {
@@ -237,14 +245,54 @@ export default {
       // console.log("iso end date", isoDate);
       return isoDate;
     },
-    selectTask(task, projectId) {
+    async selectTask(task) {
       // console.log("FETCHED TASK: ", task);
       this.task = task;
-      this.projectId = projectId;
-      this.$store.dispatch("subtask/fetchSubTasks", {
-        projectId: projectId,
-        taskId: task.taskId
-      });
+      this.projectId = task.projectId;
+      let taskFilesResponse;
+      try {
+        taskFilesResponse = await this.$axios.$get(
+          `/projects/${this.projectId}/tasks/${task.taskId}/files`,
+          {
+            headers: {
+              user: task.taskAssignee,
+              type: "project"
+            }
+          }
+        );
+        // console.log("files--->", taskFilesResponse.data);
+        this.taskFiles = taskFilesResponse.data;
+        this.$store.dispatch("task/setTaskFiles", taskFilesResponse.data);
+      } catch (error) {
+        // console.log("Error fetching data", error);
+      }
+      let sprintResponse;
+      if (task.sprintId == "default") {
+        this.taskSprint = "Default";
+      } else {
+        try {
+          sprintResponse = await this.$axios.$get(
+            `/sprints/${this.projectId}/${task.sprintId}`,
+            {
+              headers: {
+                userId: task.taskAssignee
+              }
+            }
+          );
+          console.log("sprint--->", sprintResponse.data.sprintName);
+          this.taskSprint = sprintResponse.data.sprintName;
+        } catch (error) {
+          // console.log("Error fetching data", error);
+        }
+      }
+      let userResponse;
+      try {
+        userResponse = await this.$axios.$get(`/users/${task.taskAssignee}`);
+        console.log("user--->", userResponse.data);
+        this.taskUser = userResponse.data;
+      } catch (error) {
+        // console.log("Error fetching data", error);
+      }
     },
     getDueDate(date) {
       const dueDate = new Date(date);
