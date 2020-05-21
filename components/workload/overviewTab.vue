@@ -47,6 +47,11 @@
                   :clear-icon-cb="clearDate()"
                 ></VueCtkDateTimePicker>
               </v-col>
+              <v-col md="1">
+                <v-btn @click="jqlSearch()" dark width="100%" height="40px" color="#080848">
+                  <v-icon color="#FFFFFF">mdi-filter-outline</v-icon>
+                </v-btn>
+              </v-col>
             </v-row>
           </div>
           <div class="overflow-y-auto">
@@ -234,6 +239,66 @@ export default {
     }
   },
   methods: {
+    jqlSearch() {
+      if (this.filterAssignee.length != 0) {
+        let assigneeList = "";
+        for (let i = 0; i < this.filterAssignee.length; i++) {
+          assigneeList = assigneeList + "assignee=" + this.filterAssignee[i].id;
+          if (i < this.filterAssignee.length - 1) {
+            assigneeList = assigneeList + "&";
+          }
+        }
+        this.assigneeQuery = assigneeList;
+        console.log("ASSIGNEE QUERY======> " + this.assigneeQuery);
+      }
+      if (this.dateRange != null) {
+        if (
+          this.dateRange.start !== undefined &&
+          this.dateRange.end !== undefined
+        ) {
+          this.from = this.dateRange.start.slice(0, 10);
+          this.to = this.dateRange.end.slice(0, 10);
+          const startDate = new Date(this.dateRange.start);
+          const isoStartDate = new Date(
+            startDate.getTime() - startDate.getTimezoneOffset() * 60000
+          ).toISOString();
+
+          const endDate = new Date(this.dateRange.end);
+          const isoEndDate = new Date(
+            endDate.getTime() - endDate.getTimezoneOffset() * 60000
+          ).toISOString();
+
+          this.dateQuery =
+            'taskDueDateAt BETWEEN "' +
+            isoStartDate +
+            '" AND "' +
+            isoEndDate +
+            '" AND ';
+        }
+      }
+      this.getFilterResponse(this.from, this.to);
+    },
+    async getFilterResponse(from, to) {
+      let taskFilterResponse;
+      try {
+        taskFilterResponse = await this.$axios.$get(
+          `/projects/tasks/users/workload?${this.assigneeQuery}`,
+          {
+            headers: {
+              user: this.$store.state.user.userId,
+              from: from,
+              to: to
+            }
+          }
+        );
+        console.log("tasks##--->", taskFilterResponse.data);
+        this.taskFilter = true;
+
+        this.filterList = taskFilterResponse.data;
+      } catch (error) {
+        console.log("Error fetching data", error);
+      }
+    },
     taskDialogClosing() {
       // console.log("Task Dialog Closing");
       this.taskDialog = false;

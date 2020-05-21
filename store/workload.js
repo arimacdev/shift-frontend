@@ -44,11 +44,13 @@ export const actions = {
         {
           headers: {
             user: user,
+            from: 'all',
+            to: 'all',
           },
         }
       );
       commit('SET_TASKLOAD_USERS', taskLoadResponse.data);
-      // console.log('workload response from store', taskLoadResponse.data);
+      console.log('workload response from store', taskLoadResponse.data);
     } catch (e) {
       console.log('Error fetching fetchAllTaskLoadUsers', e);
     }
