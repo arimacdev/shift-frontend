@@ -853,14 +853,22 @@
 .errorText {
   color: red;
   font-size: 12px;
-  margin-top: 15px;
+  margin-top: 5px;
   margin-left: 10px;
   margin-bottom: -20px;
 }
 
 .taskListViewContent {
   height: 60vh;
+  z-index: -100;
+  margin-top: 25px;
   padding-bottom: 100px;
+}
+.allTaskCreateTab {
+  margin-bottom: -40px !important;
+}
+.filterListTop {
+  margin-top: 25px;
 }
 
 /* --------------- popup ---------------- */
@@ -1783,7 +1791,7 @@
 }
 .restructuredTaskCreate {
   margin-top: 20px;
-  margin-bottom: -40px;
+  margin-bottom: -20px;
 }
 .restructuredSubTaskList {
   background-color: #ffffff;

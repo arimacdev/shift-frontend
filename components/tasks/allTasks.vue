@@ -1,82 +1,6 @@
 <template>
   <div class="taskContent">
     <div class="filterSection">
-      <!-- {{people}} -->
-      <!-- {{this.assigneeArray}} -->
-      <!-- <div class="taskFilterTypeDiv">
-        <div class="filterTitleDiv">Filter by:</div>
-        <div class="filterDropdownDiv">
-          <v-select
-            flat
-            background-color="#CDCFD2"
-            dense
-            v-model="taskFilter"
-            :items="filterOptions"
-            item-text="name"
-            item-value="id"
-            label="None"
-            solo
-            @mousedown="clearFilter()"
-          ></v-select>
-        </div>
-      </div>
-      <div class="taskFilterDiv">
-        <div class="filterOptionDiv">
-          <v-select
-            flat
-            background-color="#EDF0F5"
-            dense
-            v-if="this.taskFilter == 'assignee'"
-            v-model="taskAssigneeFilter"
-            :items="states"
-            item-text="name"
-            item-value="id.assigneeId"
-            label="Task assignee"
-            solo
-            class="createFormElements"
-            @mousedown="querySelections"
-            @change="filterTasks('assignee', taskAssigneeFilter, '', '', '')"
-          ></v-select>
-
-          <v-select
-            flat
-            background-color="#EDF0F5"
-            dense
-            v-model="taskSelect"
-            v-if="this.taskFilter == 'issueType'"
-            :items="items"
-            item-text="name"
-            item-value="id"
-            label="Select type"
-            class="createFormElements"
-            solo
-            @change="filterTasks('issueType', '', '', '', taskSelect)"
-          ></v-select>
-          <VueCtkDateTimePicker
-            v-if="this.taskFilter == 'dueDate'"
-            :no-value-to-custom-elem="false"
-            color="#3f51b5"
-            v-model="dateRange"
-            label="Filter tasks by"
-            range
-            right
-            noButton
-            autoClose
-          ></VueCtkDateTimePicker>
-        </div>
-        <div class="filterSubmitButton">
-          <v-btn
-            v-if="this.taskFilter == 'dueDate'"
-            dark
-            width="100%"
-            height="45px"
-            color="#080848"
-            @click="filterTasks('dueDate', '', dateRange.start, dateRange.end, '')"
-          >
-            <v-icon color="#FFFFFF">mdi-filter-outline</v-icon>Filter
-          </v-btn>
-        </div>
-      </div>-->
       <v-row>
         <v-col md="2">
           <v-text-field
@@ -85,7 +9,6 @@
             @click:clear="clearName()"
             v-model="nameOfTask"
             outlined
-            solo
             flat
             label="Task Name"
             background-color="#FFFFFF"
@@ -102,7 +25,6 @@
             flat
             outlined
             dense
-            chips
             background-color="#FFFFFF"
             small-chips
             label="Assignee"
@@ -180,15 +102,22 @@
             :clear-icon-cb="clearDate()"
           ></VueCtkDateTimePicker>
         </v-col>
-        <v-col md="2">
+        <v-col md="1">
           <v-btn @click="jqlSearch()" dark width="100%" height="40px" color="#080848">
-            <v-icon color="#FFFFFF">mdi-filter-outline</v-icon>Filter
+            <v-icon color="#FFFFFF">mdi-filter-outline</v-icon>
+            <!-- Filter -->
+          </v-btn>
+        </v-col>
+        <v-col md="1">
+          <v-btn @click="filterChange()" dark width="100%" height="40px" color="#FF6161">
+            <v-icon color="#FFFFFF">mdi-cancel</v-icon>
+            <!-- Cancel -->
           </v-btn>
         </v-col>
       </v-row>
     </div>
 
-    <div v-if="this.taskFilter == 'none'" class="restructuredTaskCreate">
+    <div v-if="this.taskFilter == 'none'" class="restructuredTaskCreate allTaskCreateTab">
       <v-form v-model="isValid" onsubmit="return false" ref="form">
         <v-text-field
           v-model="taskName"
@@ -242,7 +171,7 @@
                 <div>
                   <v-list-item-avatar>
                     <v-img
-                      v-if="task.parentTask.taskAssigneeProfileImage != null"
+                      v-if="task.parentTask.taskAssigneeProfileImage != null && task.parentTask.taskAssigneeProfileImage != ''"
                       :src="task.parentTask.taskAssigneeProfileImage"
                     ></v-img>
                     <v-img
@@ -322,7 +251,7 @@
                   <div>
                     <v-list-item-avatar>
                       <v-img
-                        v-if="childTask.taskAssigneeProfileImage != null"
+                        v-if="childTask.taskAssigneeProfileImage != null && childTask.taskAssigneeProfileImage != ''"
                         :src="childTask.taskAssigneeProfileImage"
                       ></v-img>
                       <v-img
@@ -350,7 +279,7 @@
       </div>
     </div>
     <!-- -------------- filter list -------------- -->
-    <div v-else class="taskListViewContent overflow-y-auto">
+    <div v-else class="taskListViewContent filterListTop overflow-y-auto">
       <div v-if="this.filterList == ''" class="filterTitleDiv headline">No items to show</div>
       <div v-for="(task, index) in filterList" :key="index">
         <div class="taskList" :class="filterStyles(task.isParent)">
@@ -392,8 +321,8 @@
               <div>
                 <v-list-item-avatar>
                   <v-img
-                    v-if="task.taskAssigneeProfileImage != null"
-                    :src="task.taskAssigneeProfileImage"
+                    v-if="task.profileImage != null && task.profileImage != ''"
+                    :src="task.profileImage"
                   ></v-img>
                   <v-img
                     v-else
@@ -612,6 +541,9 @@ export default {
     }
   },
   methods: {
+    filterChange() {
+      this.taskFilter = "none";
+    },
     jqlSearch() {
       if (this.filterAssignee.length != 0) {
         let assigneeList = "";
@@ -623,16 +555,7 @@ export default {
         }
         this.assigneeQuery = "taskAssignee IN " + "(" + assigneeList + ") AND ";
       }
-      if (this.filterProject.length != 0) {
-        let projectList = "";
-        for (let i = 0; i < this.filterProject.length; i++) {
-          projectList = projectList + '"' + this.filterProject[i].id + '"';
-          if (i < this.filterProject.length - 1) {
-            projectList = projectList + ",";
-          }
-        }
-        this.projectQuery = "projectId IN " + "(" + projectList + ")  AND ";
-      }
+      this.projectQuery = 'projectId IN ("' + this.projectId + '")  AND ';
       if (this.filterType.length != 0) {
         let typeList = "";
         for (let i = 0; i < this.filterType.length; i++) {
@@ -678,9 +601,7 @@ export default {
             '" AND ';
         }
       }
-      if (this.filterOrderBy != "" && this.filterOrderBy != undefined) {
-        this.orderByQuery = "ORDER BY projectName ASC";
-      }
+      this.orderByQuery = "ORDER BY projectName ASC";
 
       if (this.nameOfTask != "") {
         this.taskNameQuery =
@@ -712,8 +633,9 @@ export default {
           }
         );
         console.log("tasks--->", taskFilterResponse.data);
+        this.taskFilter = true;
 
-        this.filterResult = taskFilterResponse.data;
+        this.filterList = taskFilterResponse.data;
       } catch (error) {
         console.log("Error fetching data", error);
       }
@@ -768,36 +690,36 @@ export default {
       // console.log("Task Dialog Closing");
       this.taskDialog = false;
     },
-    async filterTasks(filterType, assignee, from, to, issueType) {
-      console.log(
-        "filter options " + filterType,
-        assignee,
-        from,
-        to,
-        issueType
-      );
-      let response;
-      try {
-        response = await this.$axios.$get(
-          `/projects/${this.projectId}/tasks/filter`,
-          {
-            data: {},
-            headers: {
-              user: this.userId,
-              filterType: filterType,
-              assignee: assignee,
-              issueType: issueType,
-              from: from.slice(0, 10),
-              to: to.slice(0, 10)
-            }
-          }
-        );
-        this.filterList = response.data;
-        console.log("filter response: " + response.data);
-      } catch (e) {
-        console.log("Error filter task", e);
-      }
-    },
+    // async filterTasks(filterType, assignee, from, to, issueType) {
+    //   console.log(
+    //     "filter options " + filterType,
+    //     assignee,
+    //     from,
+    //     to,
+    //     issueType
+    //   );
+    //   let response;
+    //   try {
+    //     response = await this.$axios.$get(
+    //       `/projects/${this.projectId}/tasks/filter`,
+    //       {
+    //         data: {},
+    //         headers: {
+    //           user: this.userId,
+    //           filterType: filterType,
+    //           assignee: assignee,
+    //           issueType: issueType,
+    //           from: from.slice(0, 10),
+    //           to: to.slice(0, 10)
+    //         }
+    //       }
+    //     );
+    //     this.filterList = response.data;
+    //     console.log("filter response: " + response.data);
+    //   } catch (e) {
+    //     console.log("Error filter task", e);
+    //   }
+    // },
     async deleteTask() {
       let response;
       try {
@@ -1059,6 +981,18 @@ export default {
       },
       set(value) {
         this.filterAssignee = value;
+      }
+    },
+    taskType: {
+      get() {},
+      set(value) {
+        this.filterType = value;
+      }
+    },
+    taskStatus: {
+      get() {},
+      set(value) {
+        this.filterStatus = value;
       }
     },
     taskName: {
