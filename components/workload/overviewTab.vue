@@ -131,7 +131,7 @@
                           @click.stop="drawer = !drawer"
                           v-for="(task, index) in project.taskList"
                           :key="index"
-                          @click="selectTask(task, project.projectId)"
+                          @click="selectTask(task); taskDialog = true;"
                         >
                           <v-list-item-action>
                             <v-icon
@@ -166,6 +166,17 @@
         </div>
       </div>
     </div>
+    <!-- ------------ task dialog --------- -->
+
+    <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
+      <task-dialog
+        :selectedTask="task"
+        :taskFiles="taskFiles"
+        :taskSprint="taskSprint"
+        :taskUser="taskUser"
+        @taskDialogClosing="taskDialogClosing()"
+      />
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -173,14 +184,21 @@ import NavigationDrawer from "~/components/navigationDrawer";
 import usersSearchBar from "~/components/tools/usersSearchBar";
 import WorkloadContent from "~/components/workload/workloadContent";
 import { mapState, mapGetters } from "vuex";
+import TaskDialog from "~/components/workload/filterDialog";
 
 export default {
   components: {
     NavigationDrawer,
-    "workload-content": WorkloadContent
+    "workload-content": WorkloadContent,
+    "task-dialog": TaskDialog
   },
   data() {
     return {
+      task: {},
+      taskDialog: false,
+      taskFiles: [],
+      taskSprint: "",
+      taskUser: {},
       filterAssignee: [],
       assigneeArray: [],
       dateRange: new Date(),
@@ -217,6 +235,59 @@ export default {
     }
   },
   methods: {
+    taskDialogClosing() {
+      // console.log("Task Dialog Closing");
+      this.taskDialog = false;
+    },
+    async selectTask(task) {
+      // console.log("FETCHED TASK: ", task);
+      this.task = task;
+      this.projectId = task.projectId;
+      let taskFilesResponse;
+      try {
+        taskFilesResponse = await this.$axios.$get(
+          `/projects/${this.projectId}/tasks/${task.taskId}/files`,
+          {
+            headers: {
+              user: task.taskAssignee,
+              type: "project"
+            }
+          }
+        );
+        // console.log("files--->", taskFilesResponse.data);
+        this.taskFiles = taskFilesResponse.data;
+        this.$store.dispatch("task/setTaskFiles", taskFilesResponse.data);
+      } catch (error) {
+        // console.log("Error fetching data", error);
+      }
+      let sprintResponse;
+      if (task.sprintId == "default") {
+        this.taskSprint = "Default";
+      } else {
+        try {
+          sprintResponse = await this.$axios.$get(
+            `/sprints/${this.projectId}/${task.sprintId}`,
+            {
+              headers: {
+                userId: task.taskAssignee
+              }
+            }
+          );
+          console.log("sprint--->", sprintResponse.data.sprintName);
+          this.taskSprint = sprintResponse.data.sprintName;
+        } catch (error) {
+          // console.log("Error fetching data", error);
+        }
+      }
+      let userResponse;
+      try {
+        userResponse = await this.$axios.$get(`/users/${task.taskAssignee}`);
+        console.log("user--->", userResponse.data);
+        this.taskUser = userResponse.data;
+      } catch (error) {
+        // console.log("Error fetching data", error);
+      }
+    },
     loadAssignee(v) {
       let AssigneeSearchList = this.users;
       for (let index = 0; index < AssigneeSearchList.length; ++index) {
