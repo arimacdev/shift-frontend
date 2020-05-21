@@ -6,12 +6,12 @@
       </v-btn>
       <v-toolbar-title class="font-weight-bold">
         {{
-        this.taskName
+        this.selectedTask.taskName
         }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <button class :disabled="checkValidation">
+        <!-- <button class :disabled="checkValidation">
           <v-list-item dark>
             <div>
               <v-tooltip left>
@@ -27,7 +27,7 @@
               </v-tooltip>
             </div>
           </v-list-item>
-        </button>
+        </button>-->
       </v-toolbar-items>
     </v-toolbar>
     <div class="viewDialogTaskContent overflow-y-auto">
@@ -38,21 +38,21 @@
             <v-col sm="2" md="2">
               <div
                 class="taskStatusDropdown"
-              >{{task.taskStatus.charAt(0).toUpperCase()+ task.taskStatus.slice(1)}}</div>
+              >{{this.selectedTask.taskStatus.charAt(0).toUpperCase()+ this.selectedTask.taskStatus.slice(1)}}</div>
             </v-col>
           </v-row>
           <v-row class="mb-12" no-gutters>
             <v-col sm="12" md="12" class="formRowNameRange">
               <v-row class="mb-12" no-gutters>
-                <v-col sm="11" md="11">
+                <v-col>
                   <input
                     type="text"
                     class="viewTaskTitle"
-                    v-model="taskName"
+                    v-model="this.selectedTask.taskName"
                     v-if="editTask == true"
                     :disabled="editTask"
                   />
-                  <input
+                  <!-- <input
                     maxlength="100"
                     type="text"
                     class="viewTaskTitleEdit"
@@ -60,9 +60,9 @@
                     v-if="editTask == false"
                     :disabled="editTask"
                     @keyup.enter="updateTaskName"
-                  />
+                  />-->
                 </v-col>
-                <v-col sm="1" md="1" class="taskEditIconCol">
+                <!-- <v-col sm="1" md="1" class="taskEditIconCol">
                   <v-tooltip left>
                     <template v-slot:activator="{ on }">
                       <v-icon
@@ -75,7 +75,7 @@
                     </template>
                     <span>Edit task name</span>
                   </v-tooltip>
-                </v-col>
+                </v-col>-->
               </v-row>
               <v-divider class="nameRangeDevider"></v-divider>
             </v-col>
@@ -100,7 +100,8 @@
                           <v-col sm="6" md="6">
                             <v-select
                               dense
-                              v-model="taskStatus"
+                              v-model="this.selectedTask.taskStatus"
+                              disabled
                               :items="status"
                               background-color="#EDF0F5"
                               item-text="name"
@@ -134,7 +135,7 @@
                             auto-grow
                             clearable
                             outlined
-                            v-model="taskNote"
+                            v-model="this.selectedTask.taskNote"
                           ></v-textarea>
                         </v-list-item-title>
                         <div class="noteUpdateButton">
@@ -434,7 +435,7 @@ import AddParentTask from "~/components/tasks/addParentTask";
 import AddChildTask from "~/components/tasks/addChildTask";
 
 export default {
-  props: ["task", "projectId", "people", "taskObject"],
+  props: ["selectedTask", "taskFiles"],
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
@@ -780,12 +781,12 @@ export default {
     },
     dueDateCheck(task) {
       // console.log("check due date color", task);
-      if (task.taskStatus === "closed") {
+      if (task.selectedTask.taskStatus === "closed") {
         return "workLoadTaskDone";
       } else if (task.taskDueDateAt == null) {
         return "workLoadTaskDefault";
       } else {
-        const dueDate = new Date(task.taskDueDateAt);
+        const dueDate = new Date(task.selectedTask.taskDueDateAt);
         const dueToUtc = new Date(
           dueDate.toLocaleString("en-US", { timeZone: "UTC" })
         );
@@ -853,12 +854,12 @@ export default {
   },
   computed: {
     ...mapState({
-      people: state => state.task.userCompletionTasks,
-      projectSprints: state => state.sprints.sprint.sprints,
-      projectAllTasks: state => state.task.allTasks,
-      projectId: state => state.project.project.projectId,
-      selectedTask: state => state.personalTasks.selectedTask,
-      taskFiles: state => state.personalTasks.personalTaskFiles
+      //   people: state => state.task.userCompletionTasks,
+      //   projectSprints: state => state.sprints.sprint.sprints,
+      //   projectAllTasks: state => state.task.allTasks,
+      //   projectId: state => state.project.project.projectId,
+      //   selectedTask: state => state.personalTasks.selectedTask,
+      //   taskFiles: state => state.personalTasks.personalTaskFiles
     }),
     ...mapGetters(["getuserCompletionTasks"]),
 
@@ -872,24 +873,24 @@ export default {
         this.updatedTask.taskName = name;
       }
     },
-    taskStatus: {
-      get() {
-        return this.selectedTask.taskStatus;
-      },
-      set(value) {
-        // console.log("task status", value);
-        this.updatedStatus = value;
-      }
-    },
+    // taskStatus: {
+    //   get() {
+    //     return this.selectedTask.taskStatus;
+    //   },
+    //   set(value) {
+    //     // console.log("task status", value);
+    //     this.updatedStatus = value;
+    //   }
+    // },
 
-    taskNote: {
-      get() {
-        return this.selectedTask.taskNote;
-      },
-      set(value) {
-        this.updatedTask.taskNote = value;
-      }
-    },
+    // taskNote: {
+    //   get() {
+    //     return this.selectedTask.taskNote;
+    //   },
+    //   set(value) {
+    //     this.updatedTask.taskNote = value;
+    //   }
+    // },
 
     taskDue: {
       get() {

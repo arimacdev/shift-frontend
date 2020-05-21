@@ -34,22 +34,22 @@
                 clearable
                 :clear-icon-cb="clearAssignee()"
               >
-                <template v-slot:no-data>
+                <!-- <template v-slot:no-data>
                   <v-list-item>
                     <v-list-item-title>
                       Filter by
                       <strong>Assignee</strong>
                     </v-list-item-title>
                   </v-list-item>
-                </template>
+                </template>-->
               </v-autocomplete>
-             <!-- :search-input.sync="searchProject" -->
+              <!-- :search-input.sync="searchProject" -->
               <v-autocomplete
                 v-model="filterProject"
                 return-object
                 :items="projectArray"
                 item-text="name"
-                item-value="id"               
+                item-value="id"
                 flat
                 outlined
                 dense
@@ -61,14 +61,14 @@
                 clearable
                 :clear-icon-cb="clearProject()"
               >
-                <template v-slot:no-data>
+                <!-- <template v-slot:no-data>
                   <v-list-item>
                     <v-list-item-title>
                       Filter by
                       <strong>Project</strong>
                     </v-list-item-title>
                   </v-list-item>
-                </template>
+                </template>-->
               </v-autocomplete>
               <v-autocomplete
                 v-model="filterType"
@@ -87,14 +87,14 @@
                 clearable
                 @click:clear="clearType()"
               >
-                <template v-slot:no-data>
+                <!-- <template v-slot:no-data>
                   <v-list-item>
                     <v-list-item-title>
                       Filter by
                       <strong>Type</strong>
                     </v-list-item-title>
                   </v-list-item>
-                </template>
+                </template>-->
               </v-autocomplete>
               <v-autocomplete
                 v-model="filterStatus"
@@ -113,14 +113,14 @@
                 clearable
                 @click:clear="clearStatus()"
               >
-                <template v-slot:no-data>
+                <!-- <template v-slot:no-data>
                   <v-list-item>
                     <v-list-item-title>
                       Filter by
                       <strong>Status</strong>
                     </v-list-item-title>
                   </v-list-item>
-                </template>
+                </template>-->
               </v-autocomplete>
               <VueCtkDateTimePicker
                 :no-value-to-custom-elem="false"
@@ -148,14 +148,14 @@
                 label="Order By"
                 @click:clear="clearOrderBy()"
               >
-                <template v-slot:no-data>
+                <!-- <template v-slot:no-data>
                   <v-list-item>
                     <v-list-item-title>
                       Filter
                       <strong>Order By</strong>
                     </v-list-item-title>
                   </v-list-item>
-                </template>
+                </template>-->
               </v-autocomplete>
               <v-radio-group v-model="filterOrderSequence">
                 <v-row>
@@ -195,14 +195,14 @@
                         clearable
                         :clear-icon-cb="clearAssignee()"
                       >
-                        <template v-slot:no-data>
+                        <!-- <template v-slot:no-data>
                           <v-list-item>
                             <v-list-item-title>
                               Filter by
                               <strong>Saved templates</strong>
                             </v-list-item-title>
                           </v-list-item>
-                        </template>
+                        </template>-->
                       </v-autocomplete>
                     </v-col>
                     <v-col md="4">
@@ -246,53 +246,42 @@
 
               <div v-for="(task, index) in entityTasks" :key="index">
                 <div class="taskList restructuredWorkloadTaskFilterList">
-                  <nuxt-link
-                    :to="
-                  '/task/' + task.taskId + '/?project=' + projectId
-                "
-                    style="text-decoration: none;"
-                    target="_blank"
-                  >
-                    <v-list-item>
-                      <!-- @click.stop="drawer = !drawer" -->
-                      <v-list-item-action>
-                        <v-icon
-                          v-if="task.taskStatus == 'closed'"
-                          size="30"
-                          color="#2EC973"
-                        >mdi-checkbox-marked-circle</v-icon>
-                        <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
-                      </v-list-item-action>
-                      <div class="tasklistTaskNames restructuredMainTaskName">
-                        <div class="body-2">
-                          <span class="restructuredMainTaskCode">{{task.secondaryTaskId}}</span>
-                          {{ task.taskName }}
-                        </div>
+                  <v-list-item @click="selectTask(task); taskDialog = true;">
+                    <!-- @click.stop="drawer = !drawer" -->
+                    <v-list-item-action>
+                      <v-icon
+                        v-if="task.taskStatus == 'closed'"
+                        size="30"
+                        color="#2EC973"
+                      >mdi-checkbox-marked-circle</v-icon>
+                      <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                    </v-list-item-action>
+                    <div class="tasklistTaskNames restructuredMainTaskName">
+                      <div class="body-2">
+                        <span class="restructuredMainTaskCode">{{task.secondaryTaskId}}</span>
+                        {{ task.taskName }}
                       </div>
-                      <!-- <div
-                      class="restStatusChip"
-                      :class="statusCheck(task.issueType)"
-                      >{{ task.issueType }}</div>-->
-                      <v-list-item-content class="updatedDate">
-                        <v-list-item-title
-                          :class="dueDateCheck(task)"
-                        >{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
-                      </v-list-item-content>
-                      <div>
-                        <v-list-item-avatar>
-                          <v-img
-                            v-if="task.taskAssigneeProfileImage != null"
-                            :src="task.taskAssigneeProfileImage"
-                          ></v-img>
-                          <v-img
-                            v-else
-                            src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-                          ></v-img>
-                        </v-list-item-avatar>
-                      </div>
-                      <div v-if="task.isParent == true" class="bluePart"></div>
-                    </v-list-item>
-                  </nuxt-link>
+                    </div>
+                    <!-- <div
+                        class="restStatusChip"
+                        :class="statusCheck(task.issueType)"
+                    >{{ task.issueType }}</div>-->
+                    <v-list-item-content class="updatedDate">
+                      <v-list-item-title
+                        :class="dueDateCheck(task)"
+                      >{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
+                    </v-list-item-content>
+                    <div>
+                      <v-list-item-avatar>
+                        <v-img v-if="task.profileImage != null" :src="task.profileImage"></v-img>
+                        <v-img
+                          v-else
+                          src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                        ></v-img>
+                      </v-list-item-avatar>
+                    </div>
+                    <div v-if="task.isParent == true" class="bluePart"></div>
+                  </v-list-item>
                 </div>
               </div>
             </div>
@@ -300,19 +289,34 @@
         </div>
       </div>
     </v-row>
+    <!-- ------------ task dialog --------- -->
+
+    <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition" persistent>
+      <task-dialog
+        :selectedTask="task"
+        :taskFiles="taskFiles"
+        @taskDialogClosing="taskDialogClosing()"
+      />
+    </v-dialog>
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
 import SaveTemplate from "~/components/workload/saveTemplate";
+import TaskDialog from "~/components/workload/filterDialog";
 export default {
   components: {
-    "save-template": SaveTemplate
+    "save-template": SaveTemplate,
+    "task-dialog": TaskDialog
   },
   created() {
     this.$store.dispatch("workload/fetchTemplates");
   },
   data: () => ({
+    task: {},
+    taskDialog: false,
+    taskFiles: [],
+    items: ["foo", "bar", "fizz", "buzz"],
     value: null,
     saveTemplateQuery: "",
     jqlQuery: "",
@@ -395,6 +399,32 @@ export default {
     }
   },
   methods: {
+    async selectTask(task) {
+      // console.log("FETCHED TASK: ", task);
+      this.task = task;
+      this.projectId = task.projectId;
+      let taskFilesResponse;
+      try {
+        taskFilesResponse = await this.$axios.$get(
+          `/projects/${this.projectId}/tasks/${task.taskId}/files`,
+          {
+            headers: {
+              user: task.taskAssignee,
+              type: "project"
+            }
+          }
+        );
+        // console.log("files--->", taskFilesResponse.data);
+        this.taskFiles = taskFilesResponse.data;
+        this.$store.dispatch("task/setTaskFiles", taskFilesResponse.data);
+      } catch (error) {
+        // console.log("Error fetching data", error);
+      }
+    },
+    taskDialogClosing() {
+      // console.log("Task Dialog Closing");
+      this.taskDialog = false;
+    },
     orderedTaskList() {
       const taskList = this.filterResult;
       const name = "projectName";
