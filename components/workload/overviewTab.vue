@@ -66,8 +66,20 @@
                   <div class="progressCounter">{{ user.tasksCompleted + "/" + user.totalTasks}}</div>
                   <div class="overviewProgressSection">
                     <v-progress-linear
+                      v-if="user.totalTasks == 0"
                       @click="selectUser(user)"
-                      :value="(user.tasksCompleted/user.totalTasks)*100"
+                      value="0"
+                      color="#78CF20"
+                      background-color="#ED5F5F"
+                      height="13"
+                      reactive
+                    >
+                      <template></template>
+                    </v-progress-linear>
+                    <v-progress-linear
+                      v-else
+                      @click="selectUser(user)"
+                      :value="(user.tasksCompleted/ user.totalTasks)*100"
                       color="#78CF20"
                       background-color="#ED5F5F"
                       height="13"
@@ -203,6 +215,7 @@ export default {
   },
   data() {
     return {
+      progress: 0,
       task: {},
       taskDialog: false,
       taskFiles: [],
@@ -248,6 +261,10 @@ export default {
     }
   },
   methods: {
+    getProgress(completed, total) {
+      this.progress = (completed / total) * 100;
+      return this.progress;
+    },
     jqlSearch() {
       if (this.filterAssignee.length != 0) {
         let assigneeList = "";
@@ -278,6 +295,7 @@ export default {
           ).toISOString();
         }
       }
+
       this.getFilterResponse(this.from, this.to);
     },
     async getFilterResponse(from, to) {
