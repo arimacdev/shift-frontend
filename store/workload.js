@@ -35,17 +35,17 @@ export const actions = {
   addTemplate({ commit }, template) {
     commit('ADD_TEMPLATE', template);
   },
-  async fetchAllTaskLoadUsers({ commit, rootState }) {
+  async fetchAllTaskLoadUsers({ commit, rootState }, { assignees, from, to }) {
     const user = rootState.user.userId;
     let taskLoadResponse;
     try {
       taskLoadResponse = await this.$axios.$get(
-        '/projects/tasks/users/workload?assignee=all',
+        `/projects/tasks/users/workload?${assignees}`,
         {
           headers: {
             user: user,
-            from: 'all',
-            to: 'all',
+            from: from,
+            to: to,
           },
         }
       );
