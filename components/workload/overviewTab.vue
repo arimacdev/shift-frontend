@@ -210,7 +210,7 @@ export default {
       taskUser: {},
       filterAssignee: [],
       assigneeArray: [],
-      dateRange: new Date(),
+      dateRange: null,
       dateQuery: "",
       jqlQuery: "",
       assigneeQuery: "",
@@ -260,7 +260,12 @@ export default {
         this.assigneeQuery = assigneeList;
         console.log("ASSIGNEE QUERY======> " + this.assigneeQuery);
       }
-      if (this.dateRange != null) {
+      console.log("from" + this.dateRange);
+
+      if (this.dateRange == null) {
+        this.from = "all";
+        this.to = "all";
+      } else {
         if (
           this.dateRange.start !== undefined &&
           this.dateRange.end !== undefined
@@ -271,23 +276,12 @@ export default {
           const isoStartDate = new Date(
             startDate.getTime() - startDate.getTimezoneOffset() * 60000
           ).toISOString();
-
-          const endDate = new Date(this.dateRange.end);
-          const isoEndDate = new Date(
-            endDate.getTime() - endDate.getTimezoneOffset() * 60000
-          ).toISOString();
-
-          this.dateQuery =
-            'taskDueDateAt BETWEEN "' +
-            isoStartDate +
-            '" AND "' +
-            isoEndDate +
-            '" AND ';
         }
       }
       this.getFilterResponse(this.from, this.to);
     },
     async getFilterResponse(from, to) {
+      console.log("from", from, "to", to);
       // let taskFilterResponse;
       // try {
       //   taskFilterResponse = await this.$axios.$get(
@@ -304,11 +298,16 @@ export default {
       this.taskFilter = true;
 
       // this.filterList = taskFilterResponse.data;
-      this.$store.dispatch("workload/fetchAllTaskLoadUsers", {
+
+      // let fromV = if(from === null) ? "all" ? new Date(from).toISOString();
+      // let to
+
+      const filters = {
         assignees: this.assigneeQuery,
-        from: new Date(from).toISOString(),
-        to: new Date(to).toISOString()
-      });
+        from: from == "all" ? "all" : new Date(from).toISOString(),
+        to: to == "all" ? "all" : new Date(to).toISOString()
+      };
+      this.$store.dispatch("workload/fetchAllTaskLoadUsers", filters);
       // } catch (error) {
       //   console.log("Error fetching data", error);
       // }
