@@ -240,13 +240,20 @@
               <!-- <span> {{entityTasks}} || {{entity}} || {{index}}</span> -->
               <div
                 class="orderByEntity"
-                v-if="filterOrderBy === 'taskDueDateAt' && entity == null"
+                v-if="filterOrderBy === 'taskDueDateAt' && entity === null"
               >No Due Date</div>
+              <div
+                class="orderByEntity"
+                v-if="entity != undefined && filterOrderBy === 'taskDueDateAt'"
+              >{{entity.slice(0,10)}}</div>
               <div
                 class="orderByEntity"
                 v-if="filterOrderBy === 'taskAssignee'"
               >{{getUserName(entity)}}</div>
-              <div class="orderByEntity" v-if="entity != undefined">{{entity}}</div>
+              <div
+                class="orderByEntity"
+                v-if="entity != undefined && filterOrderBy !== 'taskAssignee' && filterOrderBy !== 'taskDueDateAt'"
+              >{{entity.charAt(0).toUpperCase() + entity.slice(1)}}</div>
 
               <div v-for="(task, index) in entityTasks" :key="index">
                 <div class="taskList restructuredWorkloadTaskFilterList">
