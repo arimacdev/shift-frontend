@@ -432,20 +432,37 @@ export default {
     },
     async selectUser(userData) {
       // this.userData = userData;
-      this.firstName = userData.firstName;
-      this.lastName = userData.lastName;
-      console.log("check", userData);
-      this.selectedUser = userData.userId;
-      // if(userData.totalTasks != 0){
-      this.$store.dispatch("workload/fetchAllWorkloadTasks", {
-        userId: userData.userId,
-        from: "all",
-        to: "all"
-      });
-      // } else {
-      //   this.$store.dispatch('workload/clearWorkLoadTasks');
-      //   this.$store.dispatch('workload/loadWorkLoadTask',userData.userId);
-      // }
+      if (this.dateRange != null) {
+        const startDate = this.dateRange.start;
+        const endDate = this.dateRange.end;
+        if (startDate != null && endDate != null) {
+          let start = new Date(startDate);
+          let end = new Date(endDate);
+          const filterStart = new Date(
+            start.getTime() - start.getTimezoneOffset() * 60000
+          ).toISOString();
+          const filterEnd = new Date(
+            end.getTime() - end.getTimezoneOffset() * 60000
+          ).toISOString();
+          this.$store.dispatch("workload/fetchAllWorkloadTasks", {
+            userId: userData.userId,
+            from: filterStart,
+            to: filterEnd
+          });
+        }
+        console.log("FILTER APPLIED");
+      } else {
+        this.firstName = userData.firstName;
+        this.lastName = userData.lastName;
+        console.log("check", userData);
+        this.selectedUser = userData.userId;
+        this.$store.dispatch("workload/fetchAllWorkloadTasks", {
+          userId: userData.userId,
+          from: "all",
+          to: "all"
+        });
+        console.log("NO FILTER APPLIED");
+      }
     },
     dueDateCheck(task) {
       // console.log("check due date color", task);
