@@ -286,8 +286,8 @@ export default {
           {
             headers: {
               user: this.$store.state.user.userId,
-              from: from,
-              to: to
+              from: new Date(from).toISOString(),
+              to: new Date(to).toISOString()
             }
           }
         );
