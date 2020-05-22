@@ -34,7 +34,7 @@
                   :clear-icon-cb="clearAssignee()"
                 ></v-autocomplete>
               </v-col>
-              <v-col md="4">
+              <v-col md="3">
                 <VueCtkDateTimePicker
                   :no-value-to-custom-elem="false"
                   color="#3f51b5"
@@ -50,6 +50,11 @@
               <v-col md="1">
                 <v-btn @click="jqlSearch()" dark width="100%" height="40px" color="#080848">
                   <v-icon color="#FFFFFF">mdi-filter-outline</v-icon>
+                </v-btn>
+              </v-col>
+              <v-col md="1">
+                <v-btn dark width="100%" height="40px" color="#FF6161">
+                  <v-icon color="#FFFFFF">mdi-cancel</v-icon>
                 </v-btn>
               </v-col>
             </v-row>
