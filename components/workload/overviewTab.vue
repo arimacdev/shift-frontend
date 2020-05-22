@@ -53,7 +53,7 @@
                 </v-btn>
               </v-col>
               <v-col md="1">
-                <v-btn dark width="100%" height="40px" color="#FF6161">
+                <v-btn dark width="100%" height="40px" color="#FF6161" @click="clearFilters">
                   <v-icon color="#FFFFFF">mdi-cancel</v-icon>
                 </v-btn>
               </v-col>
@@ -378,12 +378,18 @@ export default {
       }
     },
     clearAssignee() {
-      this.assigneeQuery = "";
+      this.assigneeQuery = "assignee=all";
       this.jqlQuery = "";
     },
     clearDate() {
-      this.dateQuery = "";
+      this.from = "all";
+      this.to = "all";
       this.jqlQuery = "";
+    },
+    clearFilters() {
+      this.assigneeQuery = "assignee=all";
+      this.from = "all";
+      this.to = "all";
     },
     onSelectUser() {
       console.log("details", this.select);
