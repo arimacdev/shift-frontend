@@ -29,7 +29,7 @@ export const actions = {
     try {
       templateResponse = await this.$axios.$get(`/template/${userId}`);
     } catch (e) {}
-    console.log('template list', templateResponse.data);
+    // console.log('template list', templateResponse.data);
     commit('SET_TEMPLATES', templateResponse.data);
   },
   addTemplate({ commit }, template) {
@@ -50,7 +50,7 @@ export const actions = {
         }
       );
       commit('SET_TASKLOAD_USERS', taskLoadResponse.data);
-      console.log('workload response from store', taskLoadResponse.data);
+      // console.log('workload response from store', taskLoadResponse.data);
     } catch (e) {
       console.log('Error fetching fetchAllTaskLoadUsers', e);
     }
