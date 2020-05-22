@@ -101,7 +101,7 @@ export default {
   },
   methods: {
     async saveTemplate() {
-      console.log("clicked");
+      // console.log("clicked");
       let response;
       const template = {
         templateName: this.templateName,

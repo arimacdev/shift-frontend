@@ -419,10 +419,10 @@ export default {
       let userResponse;
       try {
         userResponse = await this.$axios.$get(`/users/${entity}`);
-        console.log(
-          "user--->",
-          userResponse.data.firstName + " " + userResponse.data.lastName
-        );
+        // console.log(
+        //   "user--->",
+        //   userResponse.data.firstName + " " + userResponse.data.lastName
+        // );
         return userResponse.data.firstName;
       } catch (error) {
         // console.log("Error fetching data", error);
@@ -462,7 +462,7 @@ export default {
               }
             }
           );
-          console.log("sprint--->", sprintResponse.data.sprintName);
+          // console.log("sprint--->", sprintResponse.data.sprintName);
           this.taskSprint = sprintResponse.data.sprintName;
         } catch (error) {
           // console.log("Error fetching data", error);
@@ -472,7 +472,7 @@ export default {
       let userResponse;
       try {
         userResponse = await this.$axios.$get(`/users/${task.taskAssignee}`);
-        console.log("user--->", userResponse.data);
+        // console.log("user--->", userResponse.data);
         this.taskUser = userResponse.data;
       } catch (error) {
         // console.log("Error fetching data", error);
@@ -491,18 +491,18 @@ export default {
         ).concat(current);
         return accumilate;
       }, {});
-      console.log("taskList", taskList);
-      console.log("taskListOrder", orderedList);
+      // console.log("taskList", taskList);
+      // console.log("taskListOrder", orderedList);
 
       // return taskList;
       return orderedList;
     },
     async loadTemplate() {
-      console.log(
-        "loadTemplate",
-        this.filterTemplate.query,
-        this.filterAssignee
-      );
+      // console.log(
+      //   "loadTemplate",
+      //   this.filterTemplate.query,
+      //   this.filterAssignee
+      // );
       this.filterAssignee = [];
       this.filterProject = [];
       this.filterOrderBy = "";
@@ -524,9 +524,9 @@ export default {
         let decodedFilterTempQuery;
         try {
           decodedFilterTempQuery = decodeURI(this.filterTemplate.query);
-          console.log("dec", decodedFilterTempQuery);
+          // console.log("dec", decodedFilterTempQuery);
         } catch (e) {
-          console.log("Invalid Filter Template Query");
+          // console.log("Invalid Filter Template Query");
         }
 
         if (decodedFilterTempQuery.includes("taskAssignee")) {
@@ -553,29 +553,29 @@ export default {
       }
     },
     fillTemplateCriteria(criteria, decodedFilterTempQuery) {
-      console.log("criteria", criteria);
+      // console.log("criteria", criteria);
       if (criteria === "ORDERBY") {
         const orderby = decodedFilterTempQuery.split("ORDER BY");
 
         if (orderby[1]) {
-          console.log("criteria", orderby[1]);
+          // console.log("criteria", orderby[1]);
           const orderByString = orderby[1].trim();
-          console.log("criteria", orderByString);
+          // console.log("criteria", orderByString);
           const orderBySplit = orderByString.split(" ");
 
           if (!orderBySplit.length < 2) {
             const orderByType = orderBySplit[0];
-            console.log("criteria", orderByType);
+            // console.log("criteria", orderByType);
 
             const orderBySequence = orderBySplit[1];
-            console.log("criteria", orderBySequence);
+            // console.log("criteria", orderBySequence);
             let filterOrderByType = this.orderByArray.find(
               type => type.id === orderByType
             );
-            console.log(
-              "criteria",
-              JSON.parse(JSON.stringify(filterOrderByType))
-            );
+            // console.log(
+            //   "criteria",
+            //   JSON.parse(JSON.stringify(filterOrderByType))
+            // );
 
             if (filterOrderByType) {
               this.filterOrderBy = JSON.parse(
@@ -599,32 +599,32 @@ export default {
 
         const between = entityBetween.exec(decodedFilterTempQuery);
         const end = entityEnd.exec(decodedFilterTempQuery);
-        console.log("bewteen", between, end);
+        // console.log("bewteen", between, end);
         if (between != null || end != null) {
           let entityMatchString;
           if (between) entityMatchString = between[1];
           else entityMatchString = end[1];
-          console.log("decode", entityMatchString);
+          // console.log("decode", entityMatchString);
           if (criteria === "LIKE") {
             let likeString = entityMatchString.replace(/^"(.*)"$/, "$1");
             const likeText = likeString.match(/%25(.*)%/).pop();
-            console.log("like", likeText);
+            // console.log("like", likeText);
             this.taskName = likeText;
           } else {
             //Get String Between Parantheses
             const regExp = /\(([^)]+)\)/;
             const paranthesesMatch = regExp.exec(entityMatchString);
-            console.log("para", paranthesesMatch);
+            // console.log("para", paranthesesMatch);
             //Multiple Assignees
             let entityString = paranthesesMatch[1];
             let entities = [];
-            console.log("dec", paranthesesMatch[1]);
+            // console.log("dec", paranthesesMatch[1]);
             if (entityString.includes(",")) {
               entityString.split(/\s*,\s*/).forEach(assignee => {
                 //Remove Quotation Marks
                 assignee = assignee.replace(/^"(.*)"$/, "$1");
                 entities.push(assignee);
-                console.log("entity", assignee);
+                // console.log("entity", assignee);
               });
             } else {
               entityString = entityString.replace(/^"(.*)"$/, "$1");
@@ -637,7 +637,7 @@ export default {
                   let filterUser = this.users.find(
                     user => user.userId === entities[i]
                   );
-                  console.log("filterUser", filterUser);
+                  // console.log("filterUser", filterUser);
                   if (filterUser) {
                     this.filterAssignee.push({
                       name: filterUser.firstName,
@@ -650,7 +650,7 @@ export default {
                   let filterProject = this.allProjects.find(
                     project => project.projectId === entities[i]
                   );
-                  console.log("filterProject", filterProject);
+                  // console.log("filterProject", filterProject);
                   if (filterProject) {
                     this.filterProject.push({
                       name: filterProject.projectName,
@@ -761,9 +761,9 @@ export default {
         this.taskNameQuery;
 
       this.jqlQuery = filterQuery.slice(0, -5) + this.orderByQuery;
-      console.log("QUERY:  " + encodeURI(this.jqlQuery));
+      // console.log("QUERY:  " + encodeURI(this.jqlQuery));
       this.saveTemplateQuery = encodeURI(this.jqlQuery);
-      console.log("TEMP QUERY:  " + this.saveTemplateQuery);
+      // console.log("TEMP QUERY:  " + this.saveTemplateQuery);
 
       this.getFilterResponse();
     },
@@ -981,7 +981,7 @@ export default {
         this.loadProject();
       },
       set(value) {
-        console.log("project", value);
+        // console.log("project", value);
         this.filterProject = value;
       }
     },

@@ -426,10 +426,10 @@ export default {
       // }
 
       let taskSearchList = this.filterResult;
-      console.log("LOOP TRIGERED changed: " + taskSearchList);
+      // console.log("LOOP TRIGERED changed: " + taskSearchList);
       for (let index = 0; index < taskSearchList.length; ++index) {
         let task = taskSearchList[index];
-        console.log("TASK ADDED: " + task);
+        // console.log("TASK ADDED: " + task);
         events.push({
           name: task.taskName,
           start: this.getProjectDisplayDates(task.taskCreatedAt),
@@ -445,7 +445,7 @@ export default {
       this.start = start;
       this.end = end;
       this.events = events;
-      console.log("START: " + this.start);
+      // console.log("START: " + this.start);
     },
     getProjectDisplayDates(date) {
       const dueDate = new Date(date);
@@ -562,7 +562,7 @@ export default {
         this.taskNameQuery;
 
       this.jqlQuery = filterQuery.slice(0, -5) + this.orderByQuery;
-      console.log("QUERY:  " + encodeURI(this.jqlQuery));
+      // console.log("QUERY:  " + encodeURI(this.jqlQuery));
       this.events = [];
       this.getFilterResponse();
     },
@@ -607,10 +607,10 @@ export default {
     },
     loadTasks(taskSearchList) {
       // const events = [];
-      console.log("LOOP TRIGERED 123: " + taskSearchList);
+      // console.log("LOOP TRIGERED 123: " + taskSearchList);
       for (let index = 0; index < taskSearchList.length; ++index) {
         let task = taskSearchList[index];
-        console.log("TASK ADDED: " + task);
+        // console.log("TASK ADDED: " + task);
         this.events.push({
           name: task.taskName,
           start: this.getProjectDisplayDates(task.taskCreatedAt),

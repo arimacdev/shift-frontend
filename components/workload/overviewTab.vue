@@ -254,7 +254,7 @@ export default {
 
   watch: {
     search(val) {
-      console.log("value is ", val);
+      // console.log("value is ", val);
       val && val !== this.select && this.querySelections(val);
     },
     searchAssignee(val) {
@@ -276,9 +276,9 @@ export default {
           }
         }
         this.assigneeQuery = assigneeList;
-        console.log("ASSIGNEE QUERY======> " + this.assigneeQuery);
+        // console.log("ASSIGNEE QUERY======> " + this.assigneeQuery);
       }
-      console.log("from" + this.dateRange);
+      // console.log("from" + this.dateRange);
 
       if (this.dateRange == null) {
         this.from = "all";
@@ -300,7 +300,7 @@ export default {
       this.getFilterResponse(this.from, this.to);
     },
     async getFilterResponse(from, to) {
-      console.log("from", from, "to", to);
+      // console.log("from", from, "to", to);
       // let taskFilterResponse;
       // try {
       //   taskFilterResponse = await this.$axios.$get(
@@ -369,7 +369,7 @@ export default {
               }
             }
           );
-          console.log("sprint--->", sprintResponse.data.sprintName);
+          // console.log("sprint--->", sprintResponse.data.sprintName);
           this.taskSprint = sprintResponse.data.sprintName;
         } catch (error) {
           // console.log("Error fetching data", error);
@@ -378,7 +378,7 @@ export default {
       let userResponse;
       try {
         userResponse = await this.$axios.$get(`/users/${task.taskAssignee}`);
-        console.log("user--->", userResponse.data);
+        // console.log("user--->", userResponse.data);
         this.taskUser = userResponse.data;
       } catch (error) {
         // console.log("Error fetching data", error);
@@ -412,7 +412,7 @@ export default {
       this.getFilterResponse(this.from, this.to);
     },
     onSelectUser() {
-      console.log("details", this.select);
+      // console.log("details", this.select);
       if (this.select !== undefined) {
         // this.userData.firstName = this.select.firstName;
         // this.userData.lastName = this.select.lastName;
@@ -454,18 +454,18 @@ export default {
             to: filterEnd
           });
         }
-        console.log("FILTER APPLIED");
+        // console.log("FILTER APPLIED");
       } else {
         this.firstName = userData.firstName;
         this.lastName = userData.lastName;
-        console.log("check", userData);
+        // console.log("check", userData);
         this.selectedUser = userData.userId;
         this.$store.dispatch("workload/fetchAllWorkloadTasks", {
           userId: userData.userId,
           from: "all",
           to: "all"
         });
-        console.log("NO FILTER APPLIED");
+        // console.log("NO FILTER APPLIED");
       }
     },
     dueDateCheck(task) {

@@ -42,7 +42,7 @@ export default {
 
   watch: {
     search(val) {
-      console.log("value is ", val);
+      // console.log("value is ", val);
       val && val !== this.select && this.querySelections(val);
     }
   },
