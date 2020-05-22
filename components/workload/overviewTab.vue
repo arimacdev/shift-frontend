@@ -230,7 +230,11 @@ export default {
   },
 
   created() {
-    this.$store.dispatch("workload/fetchAllTaskLoadUsers");
+    this.$store.dispatch("workload/fetchAllTaskLoadUsers", {
+      assignees: "assignee=all",
+      from: "all",
+      to: "all"
+    });
     this.$store.dispatch("project/clearProject");
   },
 
@@ -284,25 +288,30 @@ export default {
       this.getFilterResponse(this.from, this.to);
     },
     async getFilterResponse(from, to) {
-      let taskFilterResponse;
-      try {
-        taskFilterResponse = await this.$axios.$get(
-          `/projects/tasks/users/workload?${this.assigneeQuery}`,
-          {
-            headers: {
-              user: this.$store.state.user.userId,
-              from: new Date(from).toISOString(),
-              to: new Date(to).toISOString()
-            }
-          }
-        );
-        console.log("tasks##--->", taskFilterResponse.data);
-        this.taskFilter = true;
+      // let taskFilterResponse;
+      // try {
+      //   taskFilterResponse = await this.$axios.$get(
+      //     `/projects/tasks/users/workload?${this.assigneeQuery}`,
+      //     {
+      //       headers: {
+      //         user: this.$store.state.user.userId,
+      //         from: new Date(from).toISOString(),
+      //         to: new Date(to).toISOString()
+      //       }
+      //     }
+      //   );
+      //   console.log("tasks##--->", taskFilterResponse.data);
+      this.taskFilter = true;
 
-        this.filterList = taskFilterResponse.data;
-      } catch (error) {
-        console.log("Error fetching data", error);
-      }
+      // this.filterList = taskFilterResponse.data;
+      this.$store.dispatch("workload/fetchAllTaskLoadUsers", {
+        assignees: this.assigneeQuery,
+        from: new Date(from).toISOString(),
+        to: new Date(to).toISOString()
+      });
+      // } catch (error) {
+      //   console.log("Error fetching data", error);
+      // }
     },
     taskDialogClosing() {
       // console.log("Task Dialog Closing");
