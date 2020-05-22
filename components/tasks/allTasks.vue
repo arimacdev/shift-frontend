@@ -197,7 +197,7 @@
           </div>
 
           <!-- -------------- sub task design --------------- -->
-          <div class="restructuredSubTaskCreate">
+          <div class="restructuredSubTaskCreate" v-if="task.parentTask.taskStatus != 'closed'">
             <v-text-field
               v-model="subTaskName"
               background-color="#0BAFFF"
