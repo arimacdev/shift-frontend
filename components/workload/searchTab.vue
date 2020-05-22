@@ -242,7 +242,11 @@
                 class="orderByEntity"
                 v-if="filterOrderBy === 'taskDueDateAt' && entity == null"
               >No Due Date</div>
-              <div class="orderByEntity" v-if="entity != undefined">{{entity}}</div>
+              <div
+                class="orderByEntity"
+                v-if="filterOrderBy === 'taskAssignee'"
+              >{{getUserName(entity)}}</div>
+              <div v-else class="orderByEntity" v-if="entity != undefined">{{entity}}</div>
 
               <div v-for="(task, index) in entityTasks" :key="index">
                 <div class="taskList restructuredWorkloadTaskFilterList">
@@ -402,7 +406,21 @@ export default {
       val && val !== this.selectTemplate && this.loadTempalte(val);
     }
   },
+
   methods: {
+    async getUserName(entity) {
+      let userResponse;
+      try {
+        userResponse = await this.$axios.$get(`/users/${entity}`);
+        console.log(
+          "user--->",
+          userResponse.data.firstName + " " + userResponse.data.lastName
+        );
+        return userResponse.data.firstName;
+      } catch (error) {
+        // console.log("Error fetching data", error);
+      }
+    },
     async selectTask(task) {
       // console.log("FETCHED TASK: ", task);
       this.task = task;
