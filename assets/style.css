@@ -1724,7 +1724,12 @@
   float: left;
   color: #7a8b9f;
   font-weight: 600;
-  font-size: ;
+}
+.noResultDiv {
+  float: left;
+  color: #7a8b9f;
+  font-weight: 600;
+  font-size: 18px;
 }
 .filterDropdownDiv {
   width: 70%;

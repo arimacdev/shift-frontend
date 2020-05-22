@@ -112,6 +112,7 @@
             <div v-if="this.selectedUser !=''" class="workloadTasksDisplay">
               <div class="workloadSelectedName">{{this.firstName}} {{this.lastName}}</div>
               <div class="workloadContentDiv">
+                <div v-if="workloadTasks == ''" class="noResultDiv">No tasks to show</div>
                 <v-expansion-panels v-model="panel" :disabled="disabled" multiple dark>
                   <!-- -------------- loop this pannel for every project ---------- -->
                   <v-expansion-panel
@@ -295,7 +296,7 @@ export default {
           ).toISOString();
         }
       }
-
+      this.selectedUser = "";
       this.getFilterResponse(this.from, this.to);
     },
     async getFilterResponse(from, to) {
@@ -433,6 +434,9 @@ export default {
     async selectUser(userData) {
       // this.userData = userData;
       if (this.dateRange != null) {
+        this.selectedUser = userData.userId;
+        this.firstName = userData.firstName;
+        this.lastName = userData.lastName;
         const startDate = this.dateRange.start;
         const endDate = this.dateRange.end;
         if (startDate != null && endDate != null) {
