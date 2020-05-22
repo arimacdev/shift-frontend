@@ -249,7 +249,7 @@
               <div
                 class="orderByEntity"
                 v-if="filterOrderBy === 'taskAssignee'"
-              >{{getUserName(entity)}}</div>
+              >{{entityTasks[0].firstNameN}}</div>
               <div
                 class="orderByEntity"
                 v-if="entity != undefined && filterOrderBy !== 'taskAssignee' && filterOrderBy !== 'taskDueDateAt'"
