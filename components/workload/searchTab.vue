@@ -246,7 +246,7 @@
                 class="orderByEntity"
                 v-if="filterOrderBy === 'taskAssignee'"
               >{{getUserName(entity)}}</div>
-              <div v-else class="orderByEntity" v-if="entity != undefined">{{entity}}</div>
+              <div class="orderByEntity" v-if="entity != undefined">{{entity}}</div>
 
               <div v-for="(task, index) in entityTasks" :key="index">
                 <div class="taskList restructuredWorkloadTaskFilterList">
