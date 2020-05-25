@@ -131,7 +131,7 @@
 </template>
 
 <script>
-import TaskSideBar from "~/components/workload/workloadSideBar";
+// import TaskSideBar from "~/components/workload/workloadSideBar";
 import { mapState, mapGetters } from "vuex";
 import TaskDialog from "~/components/workload/filterDialog";
 export default {

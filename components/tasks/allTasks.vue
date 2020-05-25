@@ -349,7 +349,7 @@
       class
       color="#FFFFFF"
     >
-      <task-side-bar
+      <!-- <task-side-bar
         :task="task"
         :assignee="assignee"
         :projectId="projectId"
@@ -358,7 +358,7 @@
         :componentClose="componentClose"
         @listenChange="listenToChange"
         @shrinkSideBar="shrinkSideBar"
-      />
+      /> -->
     </v-navigation-drawer>
     <!-- ------------ task dialog --------- -->
 
@@ -423,7 +423,7 @@
 </template>
 
 <script>
-import TaskSideBar from "~/components/tasks/taskSideBar";
+// import TaskSideBar from "~/components/tasks/taskSideBar";
 import TaskDialog from "~/components/tasks/taskDialog";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
@@ -531,7 +531,7 @@ export default {
     this.projectId = this.$route.params.projects;
   },
   components: {
-    "task-side-bar": TaskSideBar,
+    // "task-side-bar": TaskSideBar,
     "task-dialog": TaskDialog,
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup
