@@ -206,7 +206,7 @@
               prepend-inner-icon="mdi-plus-circle"
               label="Add a sub task..."
               class
-              @keyup.enter="addSubTask(subTaskName, task.parentTask.taskId, task.parentTask.issueType)"
+              @keyup.enter="addSubTask(subTaskName, task.parentTask.taskId, task.parentTask.issueType, task.parentTask.sprintId)"
               clearable
             ></v-text-field>
           </div>
@@ -785,7 +785,7 @@ export default {
         console.log("Error updating a status", e);
       }
     },
-    async addSubTask(subTaskName, selectedParentTask, issueType) {
+    async addSubTask(subTaskName, selectedParentTask, issueType, sprintId) {
       let response;
       try {
         response = await this.$axios.$post(
@@ -800,7 +800,8 @@ export default {
             taskStatus: null,
             taskNotes: "",
             issueType: issueType,
-            parentTaskId: selectedParentTask
+            parentTaskId: selectedParentTask,
+            sprintId: sprintId
           }
         );
         this.subTaskName = "";
