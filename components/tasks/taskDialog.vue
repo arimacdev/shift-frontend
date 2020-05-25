@@ -850,7 +850,7 @@ export default {
       editTask: true,
       // task: {},
       files: [],
-      taskObject: {},
+      // taskObject: {},
       updatedIssue: "",
       updatedStatus: "",
       updatedSprint: "",

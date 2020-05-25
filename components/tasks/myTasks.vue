@@ -383,7 +383,7 @@ export default {
       component: "",
       taskDialog: false,
       taskDeleteDialog: false,
-      dateRange: new Date(),
+      dateRange: null,
       dialog: false,
       notifications: false,
       sound: true,
