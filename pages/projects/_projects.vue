@@ -165,11 +165,10 @@
               this.$route.params.projects != undefined
           "
           v-bind:is="component"
-          
           :project="project"
           @refreshSelectedTab="refreshSelectedTab"
         ></component>
-        <component v-else-if="this.component == 'add-project'" v-bind:is="component" ></component>
+        <component v-else-if="this.component == 'add-project'" v-bind:is="component"></component>
       </keep-alive>
     </div>
   </div>
@@ -369,7 +368,7 @@ export default {
       this.newProject = false;
       this.project = project;
       this.projectDisplayName = this.project.projectId;
-      console.log("selected project ---------->", project, this.selectedTab);
+      // console.log("selected project ---------->", project, this.selectedTab);
       this.$store.dispatch("project/fetchProject", this.$route.params.projects);
       switch (this.selectedTab) {
         case "task":

@@ -118,7 +118,7 @@
     </div>
 
     <div v-if="this.taskFilter == 'none'" class="restructuredTaskCreate allTaskCreateTab">
-      <v-form  onsubmit="return false" ref="form">
+      <v-form onsubmit="return false" ref="form">
         <v-text-field
           v-model="taskName"
           background-color="#EDF0F5"
@@ -339,7 +339,7 @@
 
     <!-- -------------- start side bar ----------------- -->
 
-    <v-navigation-drawer
+    <!-- <v-navigation-drawer
       v-model="drawer"
       fixed
       temporary
@@ -359,7 +359,7 @@
         @listenChange="listenToChange"
         @shrinkSideBar="shrinkSideBar"
       />
-    </v-navigation-drawer>
+    </v-navigation-drawer>-->
     <!-- ------------ task dialog --------- -->
 
     <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition" persistent>
@@ -660,7 +660,7 @@ export default {
     },
     loadAssignee(v) {
       let AssigneeSearchList = this.people;
-      console.log("PEOPLE-> " + AssigneeSearchList);
+      // console.log("PEOPLE-> " + AssigneeSearchList);
       for (let index = 0; index < AssigneeSearchList.length; ++index) {
         let user = AssigneeSearchList[index];
         this.assigneeArray.push({
