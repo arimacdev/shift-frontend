@@ -306,6 +306,7 @@ export default {
 
   data() {
     return {
+      projectId: "",
       selectedSprint: "",
       errorMessage: "",
       successMessage: "",
@@ -687,10 +688,13 @@ export default {
       }
     }
   },
+  async created() {
+    this.projectId = this.$route.params.projects;
+  },
   computed: {
     ...mapState({
       users: state => state.user.users,
-      projectId: state => state.project.project.projectId,
+      // projectId: state => state.project.project.projectId,
       people: state => state.task.userCompletionTasks,
       projectAllTasks: state => state.task.allTasks,
       projectSprints: state => state.sprints.sprint.sprints,

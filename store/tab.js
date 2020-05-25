@@ -10,7 +10,7 @@ export const mutations = {
 
 export const actions = {
   updateTabViewsTab({ commit }, tab) {
-    console.log('tab updated from store', tab);
+    // console.log('tab updated from store', tab);
     commit('UPDATE_TAB', tab);
   },
 };

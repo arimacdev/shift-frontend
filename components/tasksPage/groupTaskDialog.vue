@@ -1143,7 +1143,7 @@ export default {
       people: state => state.task.userCompletionTasks,
       projectSprints: state => state.sprints.sprint.sprints,
       projectAllTasks: state => state.task.allTasks,
-      projectId: state => state.project.project.projectId,
+      // projectId: state => state.project.project.projectId,
       selectedTaskUser: state => state.user.selectedTaskUser,
       groupPeople: state => state.groups.groupPeople.groupPeople,
       taskFiles: state => state.groups.groupTask.groupTaskFiles,

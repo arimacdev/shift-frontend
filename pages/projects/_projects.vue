@@ -153,6 +153,7 @@
               <!-- <v-divider class="mx-4"></v-divider>
               <v-divider class="mx-4"></v-divider>-->
             </div>
+            {{this.overlay}}
             <v-divider class="mx-4"></v-divider>
           </div>
           <!-- allProjects -->
@@ -171,6 +172,9 @@
         <component v-else-if="this.component == 'add-project'" v-bind:is="component"></component>
       </keep-alive>
     </div>
+    <v-overlay :value="overlay">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
   </div>
 </template>
 
@@ -191,6 +195,7 @@ export default {
   },
   data() {
     return {
+      overlay: false,
       component: "tab-views",
       project: {},
       taskLog: [],
@@ -270,11 +275,20 @@ export default {
         console.log("Home Page");
     }
   },
+  watch: {
+    overlay(val) {
+      val &&
+        setTimeout(() => {
+          this.overlay = false;
+        }, 3000);
+    }
+  },
 
   methods: {
     getProjectName(name) {
       return name.replace(/\s+/g, "-").toLowerCase();
     },
+
     getProjects(type) {
       const projectsAll = this.allProjects;
       if (this.looped === false) {
@@ -365,6 +379,7 @@ export default {
       }
     },
     async selectProject(project) {
+      console.log("TRIGERED " + this.overlay);
       this.newProject = false;
       this.project = project;
       this.projectDisplayName = this.project.projectId;
