@@ -197,7 +197,7 @@ export default {
       taskLog: [],
       Alltasks: [],
       MyTasks: [],
-      taskCompletion: {},
+      // taskCompletion: {},
       users: [],
       user_org_role: this.$store.state.user.organizationalRole,
       access_token: this.$store.state.user.access_token,
@@ -220,22 +220,24 @@ export default {
     // this.$store.dispatch("project/fetchProject", this.$route.params.projects);
     switch (this.selectedTab) {
       case "task":
-        this.$store.dispatch(
-          "task/fetchTasksAllTasks",
-          this.$route.params.projects
-        );
-        this.$store.dispatch(
-          "task/fetchTasksMyTasks",
-          this.$route.params.projects
-        );
-        this.$store.dispatch(
-          "task/fetchProjectUserCompletionTasks",
-          this.$route.params.projects
-        );
-        this.$store.dispatch(
-          "sprints/sprint/fetchAllProjectSprints",
-          this.$route.params.projects
-        );
+        if (this.$route.params.projects != "projects") {
+          this.$store.dispatch(
+            "task/fetchTasksAllTasks",
+            this.$route.params.projects
+          );
+          this.$store.dispatch(
+            "task/fetchTasksMyTasks",
+            this.$route.params.projects
+          );
+          this.$store.dispatch(
+            "task/fetchProjectUserCompletionTasks",
+            this.$route.params.projects
+          );
+          this.$store.dispatch(
+            "sprints/sprint/fetchAllProjectSprints",
+            this.$route.params.projects
+          );
+        }
         break;
       case "people":
         this.$store.dispatch(
@@ -367,7 +369,7 @@ export default {
       this.newProject = false;
       this.project = project;
       this.projectDisplayName = this.project.projectId;
-      // console.log("selected project ---------->", project, this.selectedTab);
+      console.log("selected project ---------->", project, this.selectedTab);
       this.$store.dispatch("project/fetchProject", this.$route.params.projects);
       switch (this.selectedTab) {
         case "task":

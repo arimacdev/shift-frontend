@@ -58,8 +58,8 @@ export default {
     return {
       drawer: null,
       userId: this.$store.state.user.userId,
-      items: [],
-      taskCompletion: {}
+      items: []
+      // taskCompletion: {}
     };
   },
   props: [
@@ -71,8 +71,8 @@ export default {
     "users",
     "MyTasks",
     "people",
-    "taskLog",
-    "taskCompletion"
+    "taskLog"
+    // "taskCompletion"
   ],
   name: "tabViews",
   components: {
