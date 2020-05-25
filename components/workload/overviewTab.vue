@@ -199,6 +199,17 @@
         @taskDialogClosing="taskDialogClosing()"
       />
     </v-dialog>
+    <v-overlay :value="taskWorkLoadUsers == ''">
+      <progress-loading />
+    </v-overlay>
+    <div @click="close" class="filterTaskPopupPlacements">
+      <component
+        v-bind:is="component"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
+      <!-- <success-popup /> -->
+    </div>
   </div>
 </template>
 <script>
@@ -207,15 +218,26 @@ import usersSearchBar from "~/components/tools/usersSearchBar";
 import WorkloadContent from "~/components/workload/workloadContent";
 import { mapState, mapGetters } from "vuex";
 import TaskDialog from "~/components/workload/filterDialog";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
+import Progress from "~/components/popups/progress";
 
 export default {
   components: {
     NavigationDrawer,
     "workload-content": WorkloadContent,
-    "task-dialog": TaskDialog
+    "task-dialog": TaskDialog,
+
+    "progress-loading": Progress,
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup
   },
   data() {
     return {
+      overlay: true,
+      errorMessage: "",
+      successMessage: "",
+      component: "",
       progress: 0,
       task: {},
       taskDialog: false,
@@ -262,11 +284,15 @@ export default {
     }
   },
   methods: {
+    close() {
+      this.component = "";
+    },
     getProgress(completed, total) {
       this.progress = (completed / total) * 100;
       return this.progress;
     },
     jqlSearch() {
+      this.overlay = true;
       if (this.filterAssignee.length != 0) {
         let assigneeList = "";
         for (let i = 0; i < this.filterAssignee.length; i++) {
@@ -327,6 +353,7 @@ export default {
         to: to == "all" ? "all" : new Date(to).toISOString()
       };
       this.$store.dispatch("workload/fetchAllTaskLoadUsers", filters);
+      this.overlay = false;
       // } catch (error) {
       //   console.log("Error fetching data", error);
       // }
