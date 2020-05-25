@@ -76,7 +76,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="#FF6161" dark text @click="dialog = false">Cancel</v-btn>
-          <v-btn color="#2EC973" dark text @click="saveTemplate; dialog = false">OK</v-btn>
+          <v-btn color="#2EC973" dark text @click="saveTemplate">OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -101,7 +101,7 @@ export default {
   },
   methods: {
     async saveTemplate() {
-      // console.log("clicked");
+      console.log("clicked");
       let response;
       const template = {
         templateName: this.templateName,
@@ -112,6 +112,7 @@ export default {
         response = await this.$axios.$post(`/template`, template);
         this.$store.dispatch("workload/addTemplate", template);
         this.templateName = "";
+        this.dialog = false;
       } catch (e) {
         console.log("Error adding a User", e);
       }

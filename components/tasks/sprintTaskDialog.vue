@@ -12,7 +12,7 @@
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <!-- <v-btn dark text @click="dialog = false">Save</v-btn> -->
-        <button class :disabled="checkValidation">
+        <button class>
           <v-list-item dark>
             <div>
               <v-tooltip left>
@@ -1479,6 +1479,9 @@ export default {
       this.editTask = false;
     }
   },
+  async created() {
+    this.projectId = this.$route.params.projects;
+  },
   computed: {
     taskUser() {
       if (Object.keys(this.selectedTaskUser).length === 0) {
@@ -1498,7 +1501,7 @@ export default {
       people: state => state.task.userCompletionTasks,
       projectSprints: state => state.sprints.sprint.sprints,
       projectAllTasks: state => state.task.allTasks,
-      projectId: state => state.project.project.projectId,
+      // projectId: state => state.project.project.projectId,
       selectedTaskUser: state => state.user.selectedTaskUser,
       taskFiles: state => state.task.taskFiles,
       selectedTask: state => state.task.selectedTask,

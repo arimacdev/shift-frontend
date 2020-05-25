@@ -262,7 +262,7 @@
       class
       color="#FFFFFF"
     >
-      <task-side-bar
+      <!-- <task-side-bar
         :task="task"
         :assignee="assignee"
         :projectId="projectId"
@@ -271,7 +271,7 @@
         :people="people"
         @listenChange="listenChange"
         @shrinkSideBar="shrinkSideBar"
-      />
+      />-->
     </v-navigation-drawer>
     <!-- ------------ task dialog --------- -->
 
@@ -333,7 +333,7 @@
 
 <script>
 import { mapState } from "vuex";
-import TaskSideBar from "~/components/tasks/taskSideBar";
+// import TaskSideBar from "~/components/tasks/taskSideBar";
 import AddSprint from "~/components/projects/addSprint";
 import UpdateSprint from "~/components/projects/updateSprint";
 import TaskDialog from "~/components/tasks/sprintTaskDialog";
@@ -341,7 +341,7 @@ import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 export default {
   components: {
-    "task-side-bar": TaskSideBar,
+    // "task-side-bar": TaskSideBar,
     "add-sprint": AddSprint,
     "task-dialog": TaskDialog,
     "success-popup": SuccessPopup,
@@ -350,6 +350,7 @@ export default {
   },
   data() {
     return {
+      projectId: "",
       errorMessage: "",
       successMessage: "",
       component: "",
@@ -365,11 +366,14 @@ export default {
       taskSelect: null
     };
   },
+  async created() {
+    this.projectId = this.$route.params.projects;
+  },
   computed: {
     ...mapState({
       projectAllTasks: state => state.task.allTasks,
       projectSprints: state => state.sprints.sprint.sprints,
-      projectId: state => state.project.project.projectId,
+      // projectId: state => state.project.project.projectId,
       selectedTask: state => state.task.selectedTask
       // people: (state) => state.
     })

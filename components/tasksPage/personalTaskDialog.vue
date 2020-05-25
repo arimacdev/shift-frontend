@@ -11,7 +11,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <button class :disabled="checkValidation">
+        <button class>
           <v-list-item dark>
             <div>
               <v-tooltip left>
@@ -859,7 +859,6 @@ export default {
       people: state => state.task.userCompletionTasks,
       projectSprints: state => state.sprints.sprint.sprints,
       projectAllTasks: state => state.task.allTasks,
-      projectId: state => state.project.project.projectId,
       selectedTask: state => state.personalTasks.selectedTask,
       taskFiles: state => state.personalTasks.personalTaskFiles
     }),

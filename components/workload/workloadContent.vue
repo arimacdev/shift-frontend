@@ -74,7 +74,7 @@
             <template
               v-slot:actions
             >
-              <v-icon color="error">mdi-alert-circle</v-icon>
+              <v-icon color="#ACACAC">mdi-arrow-down-circle-outline</v-icon>
             </template>
           </v-expansion-panel-header>
           <v-expansion-panel-content class="projectDetailsPannelContent" color="#EDF0F5">
@@ -131,13 +131,13 @@
 </template>
 
 <script>
-import TaskSideBar from "~/components/workload/workloadSideBar";
+// import TaskSideBar from "~/components/workload/workloadSideBar";
 import { mapState, mapGetters } from "vuex";
 import TaskDialog from "~/components/workload/filterDialog";
 export default {
   props: ["selectedUser"],
   components: {
-    "task-side-bar": TaskSideBar,
+    // "task-side-bar": TaskSideBar,
     "task-dialog": TaskDialog
   },
   data() {

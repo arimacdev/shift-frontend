@@ -118,7 +118,7 @@
     </div>
 
     <div v-if="this.taskFilter == 'none'" class="restructuredTaskCreate allTaskCreateTab">
-      <v-form v-model="isValid" onsubmit="return false" ref="form">
+      <v-form onsubmit="return false" ref="form">
         <v-text-field
           v-model="taskName"
           background-color="#EDF0F5"
@@ -206,7 +206,7 @@
               prepend-inner-icon="mdi-plus-circle"
               label="Add a sub task..."
               class
-              @keyup.enter="addSubTask(subTaskName, task.parentTask.taskId, task.parentTask.issueType)"
+              @keyup.enter="addSubTask(subTaskName, task.parentTask.taskId, task.parentTask.issueType, task.parentTask.sprintId)"
               clearable
             ></v-text-field>
           </div>
@@ -339,7 +339,7 @@
 
     <!-- -------------- start side bar ----------------- -->
 
-    <v-navigation-drawer
+    <!-- <v-navigation-drawer
       v-model="drawer"
       fixed
       temporary
@@ -355,12 +355,11 @@
         :projectId="projectId"
         :subTasks="subTasks"
         :taskFiles="taskFiles"
-        :projectUsers="projectUsers"
         :componentClose="componentClose"
         @listenChange="listenToChange"
         @shrinkSideBar="shrinkSideBar"
       />
-    </v-navigation-drawer>
+    </v-navigation-drawer>-->
     <!-- ------------ task dialog --------- -->
 
     <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition" persistent>
@@ -369,7 +368,6 @@
         :projectId="projectId"
         :subTasks="subTasks"
         :taskFiles="taskFiles"
-        :projectUsers="projectUsers"
         :componentClose="componentClose"
         :taskObject="taskObject"
         @taskDialogClosing="taskDialogClosing()"
@@ -431,9 +429,10 @@ import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import { mapState } from "vuex";
 export default {
-  // props: ['projectId', 'projectUsers', 'people'],
   data() {
     return {
+      subTaskName: "",
+      projectId: "",
       jqlQuery: "",
       assigneeQuery: "",
       projectQuery: "",
@@ -456,7 +455,7 @@ export default {
       component: "",
       taskDialog: false,
       taskDeleteDialog: false,
-      dateRange: new Date(),
+      dateRange: null,
       dialog: false,
       notifications: false,
       sound: true,
@@ -662,7 +661,7 @@ export default {
     },
     loadAssignee(v) {
       let AssigneeSearchList = this.people;
-      console.log("PEOPLE-> " + AssigneeSearchList);
+      // console.log("PEOPLE-> " + AssigneeSearchList);
       for (let index = 0; index < AssigneeSearchList.length; ++index) {
         let user = AssigneeSearchList[index];
         this.assigneeArray.push({
@@ -785,7 +784,7 @@ export default {
         console.log("Error updating a status", e);
       }
     },
-    async addSubTask(subTaskName, selectedParentTask, issueType) {
+    async addSubTask(subTaskName, selectedParentTask, issueType, sprintId) {
       let response;
       try {
         response = await this.$axios.$post(
@@ -800,6 +799,7 @@ export default {
             taskStatus: null,
             taskNotes: "",
             issueType: issueType,
+            sprintId: sprintId,
             parentTaskId: selectedParentTask
           }
         );
@@ -867,11 +867,12 @@ export default {
           projectId: this.projectId,
           taskId: this.task.taskId
         });
+      } else {
+        this.$store.dispatch("task/fetchParentTask", {
+          projectId: this.projectId,
+          taskId: this.task.parentId
+        });
       }
-      this.$store.dispatch("task/fetchParentTask", {
-        projectId: this.projectId,
-        taskId: this.task.parentId
-      });
       let taskFilesResponse;
       try {
         taskFilesResponse = await this.$axios.$get(
@@ -968,11 +969,14 @@ export default {
       }
     }
   },
+  async created() {
+    this.projectId = this.$route.params.projects;
+  },
   computed: {
     ...mapState({
       people: state => state.task.userCompletionTasks,
       projectAllTasks: state => state.task.allTasks,
-      projectId: state => state.project.project.projectId,
+      // projectId: state => state.project.project.projectId,
       selectedTask: state => state.task.selectedTask
     }),
     assigneeOfTask: {

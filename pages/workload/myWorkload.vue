@@ -26,8 +26,9 @@
       <v-divider></v-divider>
 
       <!-- -------------- component of the content ----------- -->
-
-      <workload-content :selectedUser="selectedUser" />
+      <div class="myWorkloadContainer">
+        <workload-content :selectedUser="selectedUser" />
+      </div>
     </div>
   </div>
 </template>

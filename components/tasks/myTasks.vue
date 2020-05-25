@@ -287,8 +287,8 @@
               <div>
                 <v-list-item-avatar>
                   <v-img
-                    v-if="task.taskAssigneeProfileImage != null && task.taskAssigneeProfileImage != ''"
-                    :src="task.taskAssigneeProfileImage"
+                    v-if="task.profileImage != null && task.profileImage != ''"
+                    :src="task.profileImage"
                   ></v-img>
                   <v-img
                     v-else
@@ -305,7 +305,7 @@
 
     <!-- -------------- start side bar ----------------- -->
 
-    <v-navigation-drawer
+    <!-- <v-navigation-drawer
       v-model="drawer"
       fixed
       temporary
@@ -326,7 +326,7 @@
         @listenChange="listenToChange"
         @shrinkSideBar="shrinkSideBar"
       />
-    </v-navigation-drawer>
+    </v-navigation-drawer>-->
     <!-- ------------ task dialog --------- -->
 
     <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition" persistent>
@@ -351,7 +351,7 @@
 </template>
 
 <script>
-import TaskSideBar from "~/components/tasks/taskSideBar";
+// import TaskSideBar from "~/components/tasks/taskSideBar";
 import TaskDialog from "~/components/tasks/taskDialog";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
@@ -360,6 +360,7 @@ export default {
   // props: ['projectId', 'projectUsers', 'people'],
   data() {
     return {
+      projectId: "",
       jqlQuery: "",
       assigneeQuery: "",
       projectQuery: "",
@@ -382,7 +383,7 @@ export default {
       component: "",
       taskDialog: false,
       taskDeleteDialog: false,
-      dateRange: new Date(),
+      dateRange: null,
       dialog: false,
       notifications: false,
       sound: true,
@@ -455,8 +456,11 @@ export default {
       componentClose: null
     };
   },
+  async created() {
+    this.projectId = this.$route.params.projects;
+  },
   components: {
-    "task-side-bar": TaskSideBar,
+    // "task-side-bar": TaskSideBar,
     "task-dialog": TaskDialog,
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup
@@ -743,11 +747,12 @@ export default {
           projectId: this.projectId,
           taskId: this.task.taskId
         });
+      } else {
+        this.$store.dispatch("task/fetchParentTask", {
+          projectId: this.projectId,
+          taskId: this.task.parentId
+        });
       }
-      this.$store.dispatch("task/fetchParentTask", {
-        projectId: this.projectId,
-        taskId: this.task.parentId
-      });
       let taskFilesResponse;
       try {
         taskFilesResponse = await this.$axios.$get(
@@ -848,7 +853,7 @@ export default {
     ...mapState({
       people: state => state.task.userCompletionTasks,
       projectAllTasks: state => state.task.allTasks,
-      projectId: state => state.project.project.projectId,
+      // projectId: state => state.project.project.projectId,
       selectedTask: state => state.task.selectedTask
     }),
     taskType: {
