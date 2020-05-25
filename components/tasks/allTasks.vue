@@ -869,11 +869,12 @@ export default {
           projectId: this.projectId,
           taskId: this.task.taskId
         });
+      } else {
+        this.$store.dispatch("task/fetchParentTask", {
+          projectId: this.projectId,
+          taskId: this.task.parentId
+        });
       }
-      this.$store.dispatch("task/fetchParentTask", {
-        projectId: this.projectId,
-        taskId: this.task.parentId
-      });
       let taskFilesResponse;
       try {
         taskFilesResponse = await this.$axios.$get(
