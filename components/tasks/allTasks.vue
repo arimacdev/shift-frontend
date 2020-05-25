@@ -431,6 +431,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
+      subTaskName: "",
       projectId: "",
       jqlQuery: "",
       assigneeQuery: "",

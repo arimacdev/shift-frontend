@@ -12,7 +12,7 @@
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <!-- <v-btn dark text @click="dialog = false">Save</v-btn> -->
-        <button class :disabled="checkValidation">
+        <button class>
           <v-list-item dark>
             <div>
               <v-tooltip left>
