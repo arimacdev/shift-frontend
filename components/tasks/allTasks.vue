@@ -118,7 +118,7 @@
     </div>
 
     <div v-if="this.taskFilter == 'none'" class="restructuredTaskCreate allTaskCreateTab">
-      <v-form onsubmit="return false" ref="form">
+      <v-form v-model="isValid" onsubmit="return false" ref="form">
         <v-text-field
           v-model="taskName"
           background-color="#EDF0F5"
@@ -206,7 +206,7 @@
               prepend-inner-icon="mdi-plus-circle"
               label="Add a sub task..."
               class
-              @keyup.enter="addSubTask(subTaskName, task.parentTask.taskId, task.parentTask.issueType, task.parentTask.sprintId)"
+              @keyup.enter="addSubTask(subTaskName, task.parentTask.taskId, task.parentTask.issueType)"
               clearable
             ></v-text-field>
           </div>
@@ -349,16 +349,17 @@
       class
       color="#FFFFFF"
     >
-      <!-- <task-side-bar
+      <task-side-bar
         :task="task"
         :assignee="assignee"
         :projectId="projectId"
         :subTasks="subTasks"
         :taskFiles="taskFiles"
+        :projectUsers="projectUsers"
         :componentClose="componentClose"
         @listenChange="listenToChange"
         @shrinkSideBar="shrinkSideBar"
-      /> -->
+      />
     </v-navigation-drawer>
     <!-- ------------ task dialog --------- -->
 
@@ -368,6 +369,7 @@
         :projectId="projectId"
         :subTasks="subTasks"
         :taskFiles="taskFiles"
+        :projectUsers="projectUsers"
         :componentClose="componentClose"
         :taskObject="taskObject"
         @taskDialogClosing="taskDialogClosing()"
@@ -423,12 +425,13 @@
 </template>
 
 <script>
-// import TaskSideBar from "~/components/tasks/taskSideBar";
+import TaskSideBar from "~/components/tasks/taskSideBar";
 import TaskDialog from "~/components/tasks/taskDialog";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import { mapState } from "vuex";
 export default {
+  // props: ['projectId', 'projectUsers', 'people'],
   data() {
     return {
       projectId: "",
@@ -527,11 +530,8 @@ export default {
       componentClose: null
     };
   },
-  async created() {
-    this.projectId = this.$route.params.projects;
-  },
   components: {
-    // "task-side-bar": TaskSideBar,
+    "task-side-bar": TaskSideBar,
     "task-dialog": TaskDialog,
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup
@@ -786,7 +786,7 @@ export default {
         console.log("Error updating a status", e);
       }
     },
-    async addSubTask(subTaskName, selectedParentTask, issueType, sprintId) {
+    async addSubTask(subTaskName, selectedParentTask, issueType) {
       let response;
       try {
         response = await this.$axios.$post(
@@ -801,8 +801,7 @@ export default {
             taskStatus: null,
             taskNotes: "",
             issueType: issueType,
-            parentTaskId: selectedParentTask,
-            sprintId: sprintId
+            parentTaskId: selectedParentTask
           }
         );
         this.subTaskName = "";
@@ -813,7 +812,6 @@ export default {
         }, 3000);
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
       } catch (e) {
-        this.subTaskName = "";
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -970,6 +968,9 @@ export default {
         return stringDate;
       }
     }
+  },
+  async created() {
+    this.projectId = this.$route.params.projects;
   },
   computed: {
     ...mapState({
