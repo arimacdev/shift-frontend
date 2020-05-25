@@ -431,6 +431,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
+      projectId: "",
       jqlQuery: "",
       assigneeQuery: "",
       projectQuery: "",
@@ -525,6 +526,9 @@ export default {
       taskFilter: "none",
       componentClose: null
     };
+  },
+  async created() {
+    this.projectId = this.$route.params.projects;
   },
   components: {
     "task-side-bar": TaskSideBar,
@@ -809,6 +813,7 @@ export default {
         }, 3000);
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
       } catch (e) {
+        this.subTaskName = "";
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -970,7 +975,7 @@ export default {
     ...mapState({
       people: state => state.task.userCompletionTasks,
       projectAllTasks: state => state.task.allTasks,
-      projectId: state => state.project.project.projectId,
+      // projectId: state => state.project.project.projectId,
       selectedTask: state => state.task.selectedTask
     }),
     assigneeOfTask: {

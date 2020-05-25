@@ -360,6 +360,7 @@ export default {
   // props: ['projectId', 'projectUsers', 'people'],
   data() {
     return {
+      projectId: "",
       jqlQuery: "",
       assigneeQuery: "",
       projectQuery: "",
@@ -454,6 +455,9 @@ export default {
       taskFilter: "none",
       componentClose: null
     };
+  },
+  async created() {
+    this.projectId = this.$route.params.projects;
   },
   components: {
     "task-side-bar": TaskSideBar,
@@ -848,7 +852,7 @@ export default {
     ...mapState({
       people: state => state.task.userCompletionTasks,
       projectAllTasks: state => state.task.allTasks,
-      projectId: state => state.project.project.projectId,
+      // projectId: state => state.project.project.projectId,
       selectedTask: state => state.task.selectedTask
     }),
     taskType: {
