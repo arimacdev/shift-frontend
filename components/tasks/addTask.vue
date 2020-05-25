@@ -54,6 +54,7 @@
               background-color="#EDF0F5"
               class="createFormElements"
               @mousedown="getParentTasks"
+              @change="getSprint"
               clearable
             ></v-select>
           </v-col>
@@ -168,6 +169,7 @@
           </v-col>
           <v-col sm="4" md="4">
             <v-select
+              :disabled="this.parentTask != '' && this.parentTask != undefined"
               :menu-props="{ maxHeight: '500' }"
               v-model="taskBoard"
               :items="sprints"
@@ -304,6 +306,7 @@ export default {
 
   data() {
     return {
+      selectedSprint: "",
       errorMessage: "",
       successMessage: "",
       userId: this.$store.state.user.userId,
@@ -486,6 +489,27 @@ export default {
     }
   },
   methods: {
+    async getSprint() {
+      let sprintResponse;
+      if (this.parentTask != "" && this.parentTask != undefined) {
+        try {
+          sprintResponse = await this.$axios.$get(
+            `/projects/${this.projectId}/tasks/${this.parentTask}`,
+            {
+              headers: {
+                user: this.userId
+              }
+            }
+          );
+          console.log("sprint--->", sprintResponse.data);
+          this.taskBoard = sprintResponse.data.sprintId;
+        } catch (error) {
+          console.log("Error fetching data", error);
+        }
+      } else {
+        this.taskBoard = "";
+      }
+    },
     getMaxDueDate() {
       let stringDate = this.fetchProject.projectEndDate + "";
       stringDate = stringDate.toString();
