@@ -6,78 +6,87 @@
       </template>
 
       <v-card height="100%">
-        <v-card-title class="grey lighten-2" primary-title>Save filteration as a template</v-card-title>
-        <div class="saveTemplateBody">
-          <v-row>
-            <v-col>
-              <div class="templateText">Assignee:</div>
-              <span v-for="(assignee, index) in this.filterAssignee" :key="index">
-                {{assignee.name}}
-                &nbsp;&nbsp;
-              </span>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <div class="templateText">Project:</div>
-              <span v-for="(project, index) in this.filterProject" :key="index">
-                {{project.name}}
-                &nbsp;&nbsp;
-              </span>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <div class="templateText">Type:</div>
-              <span v-for="(type, index) in this.filterType" :key="index">
-                {{type.name}}
-                &nbsp;&nbsp;
-              </span>
-            </v-col>
-            <v-col>
-              <div class="templateText">Status:</div>
-              <span v-for="(status, index) in this.filterStatus" :key="index">
-                {{status.name}}
-                &nbsp;&nbsp;
-              </span>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <div class="templateText">From:</div>
-              <span>
-                {{this.from}}
-                &nbsp;&nbsp;
-              </span>
-            </v-col>
-            <v-col>
-              <div class="templateText">To:</div>
-              <span>
-                {{this.to}}
-                &nbsp;&nbsp;
-              </span>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <div class="templateText">Query:</div>
-              <span>{{this.saveTemplateQuery}}</span>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <div class="templateText">Choose a name for the template:</div>
-              <v-text-field solo background-color="#EDF0F5" dense flat v-model="templateName"></v-text-field>
-            </v-col>
-          </v-row>
-        </div>
-        <v-divider></v-divider>
+        <v-form v-model="isValid" ref="form">
+          <v-card-title class="grey lighten-2" primary-title>Save filteration as a template</v-card-title>
+          <div class="saveTemplateBody">
+            <v-row>
+              <v-col>
+                <div class="templateText">Assignee:</div>
+                <span v-for="(assignee, index) in this.filterAssignee" :key="index">
+                  {{assignee.name}}
+                  &nbsp;&nbsp;
+                </span>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <div class="templateText">Project:</div>
+                <span v-for="(project, index) in this.filterProject" :key="index">
+                  {{project.name}}
+                  &nbsp;&nbsp;
+                </span>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <div class="templateText">Type:</div>
+                <span v-for="(type, index) in this.filterType" :key="index">
+                  {{type.name}}
+                  &nbsp;&nbsp;
+                </span>
+              </v-col>
+              <v-col>
+                <div class="templateText">Status:</div>
+                <span v-for="(status, index) in this.filterStatus" :key="index">
+                  {{status.name}}
+                  &nbsp;&nbsp;
+                </span>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <div class="templateText">From:</div>
+                <span>
+                  {{this.from}}
+                  &nbsp;&nbsp;
+                </span>
+              </v-col>
+              <v-col>
+                <div class="templateText">To:</div>
+                <span>
+                  {{this.to}}
+                  &nbsp;&nbsp;
+                </span>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <div class="templateText">Query:</div>
+                <span>{{this.saveTemplateQuery}}</span>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <div class="templateText">Choose a name for the template:</div>
+                <v-text-field
+                  :rules="nameRules"
+                  solo
+                  background-color="#EDF0F5"
+                  dense
+                  flat
+                  v-model="templateName"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </div>
+          <v-divider></v-divider>
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="#FF6161" dark text @click="dialog = false">Cancel</v-btn>
-          <v-btn color="#2EC973" dark text @click="saveTemplate">OK</v-btn>
-        </v-card-actions>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="#FF6161" dark text @click="dialog = false">Cancel</v-btn>
+            <v-btn color="#2EC973" :disabled="!isValid" @click="saveTemplate">OK</v-btn>
+          </v-card-actions>
+        </v-form>
       </v-card>
     </v-dialog>
   </div>
@@ -96,7 +105,9 @@ export default {
   data() {
     return {
       dialog: false,
-      templateName: ""
+      isValid: true,
+      templateName: "",
+      nameRules: [value => !!value || "Template name is required!"]
     };
   },
   methods: {

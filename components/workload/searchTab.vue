@@ -311,21 +311,42 @@
         @taskDialogClosing="taskDialogClosing()"
       />
     </v-dialog>
+    <v-overlay :value="overlay">
+      <progress-loading />
+    </v-overlay>
+    <div @click="close" class="filterTaskPopupPlacements">
+      <component
+        v-bind:is="component"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
+      <!-- <success-popup /> -->
+    </div>
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
 import SaveTemplate from "~/components/workload/saveTemplate";
 import TaskDialog from "~/components/workload/filterDialog";
+import Progress from "~/components/popups/progress";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
 export default {
   components: {
     "save-template": SaveTemplate,
-    "task-dialog": TaskDialog
+    "task-dialog": TaskDialog,
+    "progress-loading": Progress,
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup
   },
   created() {
     this.$store.dispatch("workload/fetchTemplates");
   },
   data: () => ({
+    overlay: false,
+    errorMessage: "",
+    successMessage: "",
+    component: "",
     task: {},
     taskDialog: false,
     taskFiles: [],
@@ -342,8 +363,6 @@ export default {
     orderByQuery: "",
     dateQuery: "",
     taskNameQuery: "",
-    // assigneeArray: [],
-    // projectArray: [],
     templateArray: [],
     filterAssignee: [],
     filterProject: [],
@@ -676,7 +695,11 @@ export default {
         }
       }
     },
+    close() {
+      this.component = "";
+    },
     jqlSearch() {
+      this.overlay = true;
       if (this.filterAssignee.length != 0) {
         let assigneeList = "";
         for (let i = 0; i < this.filterAssignee.length; i++) {
@@ -778,8 +801,15 @@ export default {
             }
           }
         );
+        this.overlay = false;
         this.filterResult = taskFilterResponse.data;
-      } catch (error) {
+      } catch (e) {
+        this.overlay = false;
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         console.log("Error fetching data", error);
       }
     },
