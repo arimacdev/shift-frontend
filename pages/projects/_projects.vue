@@ -165,11 +165,11 @@
               this.$route.params.projects != undefined
           "
           v-bind:is="component"
-          :name="name"
+          
           :project="project"
           @refreshSelectedTab="refreshSelectedTab"
         ></component>
-        <component v-else-if="this.component == 'add-project'" v-bind:is="component" :name="name"></component>
+        <component v-else-if="this.component == 'add-project'" v-bind:is="component" ></component>
       </keep-alive>
     </div>
   </div>
