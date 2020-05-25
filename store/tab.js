@@ -1,5 +1,5 @@
 export const state = () => ({
-  selectedTab: 'task',
+  selectedTab: '',
 });
 
 export const mutations = {

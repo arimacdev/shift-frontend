@@ -217,7 +217,8 @@ export default {
     this.$store.dispatch("project/fetchAllProjects");
     this.$store.dispatch("user/setAllUsers");
 
-    this.$store.dispatch("project/fetchProject", this.$route.params.projects);
+    // this.$store.dispatch("project/fetchProject", this.$route.params.projects);
+    console.log("seelcted", this.selectedTab);
     switch (this.selectedTab) {
       case "task":
         this.$store.dispatch(
@@ -265,6 +266,8 @@ export default {
           this.$route.params.projects
         );
         break;
+      default:
+        console.log("Home Page");
     }
   },
 
