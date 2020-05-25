@@ -1,6 +1,6 @@
 <template>
   <div class="top-nav">
-    <navigation-drawer :user="user" :currentUser="currentUser" />
+    <navigation-drawer />
 
     <v-toolbar app color dark fixed class="tool-bar">
       <div class="title-div">
@@ -42,7 +42,7 @@
 
             <div
               v-for="(project, index) in getProjects('presales')"
-              :key="index"
+              :key="'preSales' + index"
               @click="selectProject(project)"
             >
               <v-list-item
@@ -96,7 +96,7 @@
 
             <div
               v-for="(project, index) in getProjects('ongoing')"
-              :key="index"
+              :key="'ongoing' + index"
               v-on:click="component = 'tab-views'"
               @click="selectProject(project)"
             >
@@ -117,7 +117,7 @@
 
             <div
               v-for="(project, index) in getProjects('support')"
-              :key="index"
+              :key="'support' + index"
               v-on:click="component = 'tab-views'"
               @click="selectProject(project)"
             >
@@ -138,7 +138,7 @@
 
             <div
               v-for="(project, index) in getProjects('finished')"
-              :key="index"
+              :key="'finished'+index"
               v-on:click="component = 'tab-views'"
               @click="selectProject(project)"
             >
@@ -218,7 +218,6 @@ export default {
     this.$store.dispatch("user/setAllUsers");
 
     // this.$store.dispatch("project/fetchProject", this.$route.params.projects);
-    console.log("seelcted", this.selectedTab);
     switch (this.selectedTab) {
       case "task":
         this.$store.dispatch(
