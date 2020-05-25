@@ -118,7 +118,7 @@
     </div>
 
     <div v-if="this.taskFilter == 'none'" class="restructuredTaskCreate allTaskCreateTab">
-      <v-form v-model="isValid" onsubmit="return false" ref="form">
+      <v-form  onsubmit="return false" ref="form">
         <v-text-field
           v-model="taskName"
           background-color="#EDF0F5"
@@ -355,7 +355,6 @@
         :projectId="projectId"
         :subTasks="subTasks"
         :taskFiles="taskFiles"
-        :projectUsers="projectUsers"
         :componentClose="componentClose"
         @listenChange="listenToChange"
         @shrinkSideBar="shrinkSideBar"
@@ -369,7 +368,6 @@
         :projectId="projectId"
         :subTasks="subTasks"
         :taskFiles="taskFiles"
-        :projectUsers="projectUsers"
         :componentClose="componentClose"
         :taskObject="taskObject"
         @taskDialogClosing="taskDialogClosing()"
@@ -431,7 +429,6 @@ import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import { mapState } from "vuex";
 export default {
-  // props: ['projectId', 'projectUsers', 'people'],
   data() {
     return {
       projectId: "",
@@ -457,7 +454,7 @@ export default {
       component: "",
       taskDialog: false,
       taskDeleteDialog: false,
-      dateRange: new Date(),
+      dateRange: null,
       dialog: false,
       notifications: false,
       sound: true,
