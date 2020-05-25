@@ -416,7 +416,11 @@
 
     <!-- --------------- end side bar --------------------- -->
     <div @click="close" class="allTaskPopupPlacements">
-      <component v-bind:is="component" :errorMessage="errorMessage"></component>
+      <component
+        v-bind:is="component"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
       <!-- <success-popup /> -->
     </div>
   </div>
