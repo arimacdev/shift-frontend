@@ -2074,7 +2074,12 @@
 .allTaskPopupPlacements {
   position: absolute;
   right: 30px;
-  bottom: 60px;
+  bottom: 100px;
+}
+.filterTaskPopupPlacements {
+  position: absolute;
+  right: 30px;
+  bottom: 20px;
 }
 .deleteTaskButton {
   /* background-color: #ff6161; */

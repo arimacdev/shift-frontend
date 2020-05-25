@@ -253,12 +253,36 @@
         </div>
       </div>
     </v-row>
+    <v-overlay :value="overlay">
+      <progress-loading />
+    </v-overlay>
+    <div @click="close" class="filterTaskPopupPlacements">
+      <component
+        v-bind:is="component"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
+      <!-- <success-popup /> -->
+    </div>
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
+
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
+import Progress from "~/components/popups/progress";
 export default {
+  components: {
+    "progress-loading": Progress,
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup
+  },
   data: () => ({
+    overlay: false,
+    errorMessage: "",
+    successMessage: "",
+    component: "",
     focus: "",
     type: "month",
     typeToLabel: {
@@ -447,6 +471,9 @@ export default {
       this.events = events;
       // console.log("START: " + this.start);
     },
+    close() {
+      this.component = "";
+    },
     getProjectDisplayDates(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
@@ -479,6 +506,7 @@ export default {
         : `${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()}`;
     },
     jqlSearch() {
+      this.overlay = true;
       if (this.filterAssignee.length != 0) {
         let assigneeList = "";
         for (let i = 0; i < this.filterAssignee.length; i++) {
@@ -580,8 +608,20 @@ export default {
         // console.log("tasks--->", taskFilterResponse.data);
 
         this.filterResult = taskFilterResponse.data;
+        this.overlay = false;
+        this.component = "success-popup";
+        this.successMessage = "Calander successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         this.loadTasks(taskFilterResponse.data);
-      } catch (error) {
+      } catch (e) {
+        this.overlay = false;
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         console.log("Error fetching data", error);
       }
     },

@@ -280,6 +280,9 @@
         </v-row>
       </form>
     </div>
+    <v-overlay :value="overlay">
+      <progress-loading />
+    </v-overlay>
 
     <div @click="close" class="taskAddPopupPlacements">
       <component v-bind:is="component" :errorMessage="errorMessage"></component>
@@ -294,6 +297,8 @@ import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import { mapState } from "vuex";
 
+import Progress from "~/components/popups/progress";
+
 import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 
 import axios from "axios";
@@ -301,11 +306,14 @@ export default {
   props: ["projectId", "projectUsers", "people", "AllTasks"],
   components: {
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
+
+    "progress-loading": Progress
   },
 
   data() {
     return {
+      overlay: false,
       projectId: "",
       selectedSprint: "",
       errorMessage: "",
@@ -609,6 +617,7 @@ export default {
       }
     },
     async addTask() {
+      this.overlay = true;
       let response;
       try {
         response = await this.$axios.$post(
@@ -660,6 +669,7 @@ export default {
                 console.log("File Upload Failed");
               });
           }
+          this.overlay = false;
         }
         this.files = null;
         if (this.taskAssignee === this.userId) {
@@ -679,6 +689,7 @@ export default {
           (this.files = null);
         this.$v.$reset();
       } catch (e) {
+        this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {

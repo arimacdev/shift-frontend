@@ -216,7 +216,7 @@ export default {
     this.$store.dispatch("project/fetchAllProjects");
     this.$store.dispatch("user/setAllUsers");
 
-    // this.$store.dispatch("project/fetchProject", this.$route.params.projects);
+    this.$store.dispatch("project/fetchProject", this.$route.params.projects);
     switch (this.selectedTab) {
       case "task":
         if (this.$route.params.projects != "projects") {
