@@ -33,7 +33,7 @@
             :clear-icon-cb="clearAssignee()"
           >
             <template v-slot:selection="{ item, index }">
-              <v-chip x-small v-if="index === 0">
+              <v-chip x-small style="width: 30px" v-if="index === 0">
                 <span>{{ item.name }}</span>
               </v-chip>
             </template>
@@ -58,7 +58,7 @@
             @click:clear="clearType()"
           >
             <template v-slot:selection="{ item, index }">
-              <v-chip x-small v-if="index === 0">
+              <v-chip x-small style="width: 30px" v-if="index === 0">
                 <span>{{ item.name }}</span>
               </v-chip>
             </template>
@@ -83,7 +83,7 @@
             @click:clear="clearStatus()"
           >
             <template v-slot:selection="{ item, index }">
-              <v-chip x-small v-if="index === 0">
+              <v-chip x-small style="width: 30px" v-if="index === 0">
                 <span>{{ item.name }}</span>
               </v-chip>
             </template>
@@ -423,6 +423,9 @@
       ></component>
       <!-- <success-popup /> -->
     </div>
+    <v-overlay :value="overlay">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 
@@ -431,10 +434,12 @@ import TaskSideBar from "~/components/tasks/taskSideBar";
 import TaskDialog from "~/components/tasks/taskDialog";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
+import Progress from "~/components/popups/progress";
 import { mapState } from "vuex";
 export default {
   data() {
     return {
+      overlay: false,
       subTaskName: "",
       projectId: "",
       jqlQuery: "",
@@ -536,7 +541,8 @@ export default {
     "task-side-bar": TaskSideBar,
     "task-dialog": TaskDialog,
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
+    "progress-loading": Progress
   },
   watch: {
     searchAssignee(val) {
@@ -548,6 +554,7 @@ export default {
       this.taskFilter = "none";
     },
     jqlSearch() {
+      this.overlay = true;
       if (this.filterAssignee.length != 0) {
         let assigneeList = "";
         for (let i = 0; i < this.filterAssignee.length; i++) {
@@ -637,9 +644,20 @@ export default {
         );
         console.log("tasks--->", taskFilterResponse.data);
         this.taskFilter = true;
-
-        this.filterList = taskFilterResponse.data;
-      } catch (error) {
+        this.overlay = false;
+        // this.filterList = taskFilterResponse.data;
+        // this.component = "success-popup";
+        // this.successMessage = "Task added successfully";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 3000);
+      } catch (e) {
+        this.overlay = false;
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         console.log("Error fetching data", error);
       }
     },
@@ -755,6 +773,7 @@ export default {
       this.component = "";
     },
     async addTask(selectedParentTask, issueType) {
+      this.overlay = true;
       let response;
       try {
         response = await this.$axios.$post(
@@ -778,8 +797,10 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
+        this.overlay = false;
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
       } catch (e) {
+        this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -789,6 +810,7 @@ export default {
       }
     },
     async addSubTask(subTaskName, selectedParentTask, issueType, sprintId) {
+      this.overlay = true;
       let response;
       try {
         response = await this.$axios.$post(
@@ -813,6 +835,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
+        this.overlay = false;
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
       } catch (e) {
         this.errorMessage = e.response.data;
@@ -820,6 +843,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
+        this.overlay = false;
         console.log("Error updating a status", e);
       }
     },

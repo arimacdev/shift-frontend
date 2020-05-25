@@ -34,7 +34,7 @@
             @click:clear="clearType()"
           >
             <template v-slot:selection="{ item, index }">
-              <v-chip x-small v-if="index === 0">
+              <v-chip x-small style="width: 30px" v-if="index === 0">
                 <span>{{ item.name }}</span>
               </v-chip>
             </template>
@@ -59,7 +59,7 @@
             @click:clear="clearStatus()"
           >
             <template v-slot:selection="{ item, index }">
-              <v-chip x-small v-if="index === 0">
+              <v-chip x-small style="width: 30px" v-if="index === 0">
                 <span>{{ item.name }}</span>
               </v-chip>
             </template>
