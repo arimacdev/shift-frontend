@@ -74,7 +74,7 @@
             <template
               v-slot:actions
             >
-              <v-icon color="error">mdi-alert-circle</v-icon>
+              <v-icon color="#ACACAC">mdi-arrow-down-circle-outline</v-icon>
             </template>
           </v-expansion-panel-header>
           <v-expansion-panel-content class="projectDetailsPannelContent" color="#EDF0F5">

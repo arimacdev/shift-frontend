@@ -2341,7 +2341,8 @@
   /* width: 300px; */
   /* margin-right: 2px; */
   width: 120px;
-  height: 50vh;
+  padding-bottom: 30px;
+  height: 100%;
   /* background-color: bisque; */
 }
 .overviewBody {
@@ -2352,7 +2353,7 @@
   margin-top: 30px;
   width: 93vw;
   margin-right: 20px;
-  height: 50vh;
+  height: 100%;
   padding-top: 10px;
   overflow-y: scroll;
   overflow-y: hidden;
