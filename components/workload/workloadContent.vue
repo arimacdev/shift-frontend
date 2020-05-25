@@ -137,7 +137,7 @@ import TaskDialog from "~/components/workload/filterDialog";
 export default {
   props: ["selectedUser"],
   components: {
-    "task-side-bar": TaskSideBar,
+    // "task-side-bar": TaskSideBar,
     "task-dialog": TaskDialog
   },
   data() {

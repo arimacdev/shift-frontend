@@ -11,7 +11,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <button class :disabled="checkValidation">
+        <button class>
           <v-list-item dark>
             <div>
               <v-tooltip left>

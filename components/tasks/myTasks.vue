@@ -287,8 +287,8 @@
               <div>
                 <v-list-item-avatar>
                   <v-img
-                    v-if="task.taskAssigneeProfileImage != null && task.taskAssigneeProfileImage != ''"
-                    :src="task.taskAssigneeProfileImage"
+                    v-if="task.profileImage != null && task.profileImage != ''"
+                    :src="task.profileImage"
                   ></v-img>
                   <v-img
                     v-else
@@ -305,7 +305,7 @@
 
     <!-- -------------- start side bar ----------------- -->
 
-    <v-navigation-drawer
+    <!-- <v-navigation-drawer
       v-model="drawer"
       fixed
       temporary
@@ -315,7 +315,7 @@
       class
       color="#FFFFFF"
     >
-      <!-- <task-side-bar
+      <task-side-bar
         :task="task"
         :assignee="assignee"
         :projectId="projectId"
@@ -325,8 +325,8 @@
         :componentClose="componentClose"
         @listenChange="listenToChange"
         @shrinkSideBar="shrinkSideBar"
-      /> -->
-    </v-navigation-drawer>
+      />
+    </v-navigation-drawer>-->
     <!-- ------------ task dialog --------- -->
 
     <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition" persistent>
