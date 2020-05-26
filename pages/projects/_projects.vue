@@ -25,7 +25,7 @@
           <v-list-item-title
             v-if="this.newProject == true"
             class="font-weight-bold"
-          >Select a project</v-list-item-title>
+          >Create a project</v-list-item-title>
           <v-list-item-title v-else class="font-weight-bold">{{ this.fetchProject.projectName }}</v-list-item-title>
         </div>
       </div>

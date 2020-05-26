@@ -39,6 +39,17 @@
               <v-list-item-title class="projectProgress">
                 <div class="progressLine">
                   <v-progress-linear
+                    v-if="assignee.totalTasks == 0"
+                    value="0"
+                    color="#2EC973"
+                    background-color="red"
+                    height="13"
+                    reactive
+                  >
+                    <template></template>
+                  </v-progress-linear>
+                  <v-progress-linear
+                    v-else
                     :value="(assignee.tasksCompleted/assignee.totalTasks)*100"
                     color="#2EC973"
                     background-color="red"

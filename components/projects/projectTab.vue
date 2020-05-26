@@ -393,20 +393,26 @@
     <!-- <div class="popupBox">
         <success-popup />
     </div>-->
+    <v-overlay :value="overlay">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
+import Progress from "~/components/popups/progress";
 
 export default {
   components: {
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
+    "progress-loading": Progress
   },
   data() {
     return {
+      overlay: false,
       successMessage: "",
       errorMessage: "",
       userId: this.$store.state.user.userId,
@@ -507,6 +513,7 @@ export default {
       return "123";
     },
     async editProject() {
+      this.overlay = true;
       console.log("update Project", this.updateProject);
       let response;
       try {
@@ -541,6 +548,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
+        this.overlay = false;
         location.reload();
       } catch (e) {
         this.errorMessage = e.response.data;
@@ -548,6 +556,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
+        this.overlay = false;
         console.log("Error updating a project", e);
       }
     },
@@ -555,6 +564,7 @@ export default {
       this.component = "";
     },
     async deleteData() {
+      this.overlay = true;
       // console.log(this.fetchProject.projectId);
       let response;
       try {
@@ -567,16 +577,22 @@ export default {
             }
           }
         );
-        location.reload();
+        // location.reload();
+        window.location.href = "/projects/projects";
         this.component = "success-popup";
         this.successMessage = "Project successfully deleted";
         setTimeout(() => {
           this.close();
         }, 3000);
+        this.overlay = false;
         console.log(response.data);
       } catch (e) {
         this.component = "error-popup";
         this.errorMessage = e.response.data;
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
         console.log("Error deleting project", e);
       }
     },
