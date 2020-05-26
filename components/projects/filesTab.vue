@@ -134,10 +134,17 @@
     </div>
     <div class="popupDivContent">
       <div @click="close">
-        <component v-bind:is="component" :errorMessage="errorMessage"></component>
+        <component
+          v-bind:is="component"
+          :successMessage="successMessage"
+          :errorMessage="errorMessage"
+        ></component>
       </div>
       <!-- <success-popup /> -->
     </div>
+    <v-overlay :value="overlay">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 
@@ -145,16 +152,21 @@
 import FileSearchBar from "~/components/tools/fileSearchBar";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
+import Progress from "~/components/popups/progress";
 import { mapState } from "vuex";
 
 export default {
   components: {
     "file-search-bar": FileSearchBar,
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
+    "progress-loading": Progress
   },
   data() {
     return {
+      errorMessage: "",
+      successMessage: "",
+      overlay: false,
       fileId: "",
       taskDialog: false,
       errorMessage: "",
@@ -174,6 +186,9 @@ export default {
   },
 
   methods: {
+    close() {
+      this.component = "";
+    },
     selectFile(projectFileId) {
       this.fileId = projectFileId;
       // console.log("file Id " + this.fileId);
@@ -201,6 +216,7 @@ export default {
       this.visible = true;
     },
     async projectFileUpload() {
+      this.overlay = true;
       this.uploadLoading = true;
       this.visible = false;
       for (let index = 0; index < this.files.length; ++index) {
@@ -218,7 +234,12 @@ export default {
             // console.log("resp", res.data);
             this.uploadLoading = false;
             this.visible = false;
+            this.overlay = false;
             this.component = "success-popup";
+            this.successMessage = "File(s) successfully uploaded";
+            setTimeout(() => {
+              this.close();
+            }, 3000);
             const uploadedFile = res.data[0];
             uploadedFile.firstName = this.userProfile.firstName;
             uploadedFile.lastName = this.userProfile.lastName;
@@ -227,9 +248,14 @@ export default {
             // console.log("File upload successful", res);
           })
           .catch(err => {
+            this.overlay = false;
             this.uploadLoading = false;
             this.visible = false;
+            this.errorMessage = err.response.data;
             this.component = "error-popup";
+            setTimeout(() => {
+              this.close();
+            }, 3000);
             //  this.errorMessage = err.response.data
             console.log("File Upload Failed", err);
           });

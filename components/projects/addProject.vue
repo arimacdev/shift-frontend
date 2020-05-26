@@ -114,7 +114,7 @@
       <v-row class="mb-12 formRow" no-gutters>
         <v-col sm="12" md="6" class></v-col>
         <v-col sm="12" md="6" class="buttonGrid">
-          <button :class="addProjectStyling" :disabled="checkValidation" @click.once="postData()">
+          <button :class="addProjectStyling" :disabled="checkValidation" @click="postData()">
             <v-list-item dark>
               <v-list-item-action>
                 <v-icon size="20" color>mdi-folder-outline</v-icon>

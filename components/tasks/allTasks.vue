@@ -650,12 +650,7 @@ export default {
         console.log("tasks--->", taskFilterResponse.data);
         this.taskFilter = true;
         this.overlay = false;
-        // this.filterList = taskFilterResponse.data;
-        // this.component = "success-popup";
-        // this.successMessage = "Task added successfully";
-        // setTimeout(() => {
-        //   this.close();
-        // }, 3000);
+        this.filterList = taskFilterResponse.data;
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;

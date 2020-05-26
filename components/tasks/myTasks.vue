@@ -351,6 +351,9 @@
       ></component>
       <!-- <success-popup /> -->
     </div>
+    <v-overlay :value="overlay">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 
@@ -359,11 +362,13 @@
 import TaskDialog from "~/components/tasks/taskDialog";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
+import Progress from "~/components/popups/progress";
 import { mapState } from "vuex";
 export default {
   // props: ['projectId', 'projectUsers', 'people'],
   data() {
     return {
+      overlay: false,
       projectId: "",
       jqlQuery: "",
       assigneeQuery: "",
@@ -467,7 +472,8 @@ export default {
     // "task-side-bar": TaskSideBar,
     "task-dialog": TaskDialog,
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
+    "progress-loading": Progress
   },
   methods: {
     filterChange() {
@@ -478,6 +484,7 @@ export default {
       this.taskFilter = "none";
     },
     jqlSearch() {
+      this.overlay = true;
       if (this.filterType.length != 0) {
         let typeList = "";
         for (let i = 0; i < this.filterType.length; i++) {
@@ -557,9 +564,11 @@ export default {
         );
         console.log("tasks--->", taskFilterResponse.data);
         this.taskFilter = true;
+        this.overlay = false;
 
         this.filterList = taskFilterResponse.data;
       } catch (error) {
+        this.overlay = false;
         console.log("Error fetching data", error);
       }
     },
@@ -659,6 +668,7 @@ export default {
       this.component = "";
     },
     async addTask(selectedParentTask) {
+      this.overlay = true;
       let response;
       try {
         response = await this.$axios.$post(
@@ -679,6 +689,7 @@ export default {
         this.taskName = "";
         this.component = "success-popup";
         this.successMessage = "Task added successfully";
+        this.overlay = false;
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -699,6 +710,7 @@ export default {
           (this.taskNotes = ""),
           (this.files = null);
       } catch (e) {
+        this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
