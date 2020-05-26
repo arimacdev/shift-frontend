@@ -566,7 +566,7 @@ export default {
         if (decodedFilterTempQuery.includes("LIKE")) {
           this.fillTemplateCriteria("LIKE", decodedFilterTempQuery);
         }
-        this.jqlSearch();
+        // this.jqlSearch(); ------> removed this
       } catch (error) {
         console.log("Error fetching data", error);
       }
