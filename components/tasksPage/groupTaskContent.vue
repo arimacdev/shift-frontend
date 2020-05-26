@@ -14,7 +14,7 @@
             label="All"
             solo
           ></v-select>
-          <v-form v-model="isValid" onsubmit="return false" ref="form">
+          <v-form onsubmit="return false" ref="form">
             <v-text-field
               v-model="addNewTask"
               solo
@@ -276,7 +276,7 @@
     </div>
 
     <!-- -------------- start side bar ----------------- -->
-    <v-navigation-drawer
+    <!-- <v-navigation-drawer
       v-model="drawer"
       fixed
       temporary
@@ -295,7 +295,7 @@
         :taskFiles="taskFiles"
         @shrinkSideBar="shrinkSideBar"
       />
-    </v-navigation-drawer>
+    </v-navigation-drawer>-->
     <!-- --------------- end side bar --------------------- -->
     <!-- ------------ task dialog --------- -->
 
@@ -303,10 +303,7 @@
       <task-dialog
         ref="taskDialog"
         :task="task"
-        :projectId="projectId"
         :subTasks="subTasks"
-        :projectUsers="projectUsers"
-        :componentClose="componentClose"
         :taskObject="taskObject"
         :taskFiles="taskFiles"
         @taskDialogClosing="taskDialogClosing()"
@@ -343,6 +340,7 @@ export default {
   },
   data() {
     return {
+      subTaskName: "",
       overlay: false,
       taskObject: {},
       taskDialog: false,

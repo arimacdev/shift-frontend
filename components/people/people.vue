@@ -2,7 +2,7 @@
   <div>
     <div class="projectTabContent overflow-y-auto">
       <div class="peopleWrapper">
-        <addProjectUser :editUser="assignee" :projectId="projectId" :users="users" />
+        <addProjectUser :editUser="assignee" :projectId="projectId" />
       </div>
 
       <div class>
@@ -235,6 +235,7 @@ export default {
   },
   data() {
     return {
+      assignee: {},
       // userList: this.people,
       skill: 0,
       progress: this.progress

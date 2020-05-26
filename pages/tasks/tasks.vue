@@ -1,7 +1,7 @@
 <template>
   <div class="top-nav">
-    <navigation-drawer :user="user" />
-    <v-toolbar app color dark fixed class="tool-bar">
+    <navigation-drawer />
+    <v-toolbar color dark fixed class="tool-bar">
       <div class="title-div">
         <div class="task-name-div">
           <v-list-item>

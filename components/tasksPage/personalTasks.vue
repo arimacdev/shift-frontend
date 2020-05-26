@@ -88,7 +88,7 @@
 
     <!-- -------------- start side bar ----------------- -->
 
-    <v-navigation-drawer
+    <!-- <v-navigation-drawer
       v-model="drawer"
       absolute
       temporary
@@ -105,7 +105,7 @@
         :taskFiles="taskFiles"
         @shrinkSideBar="shrinkSideBar"
       />
-    </v-navigation-drawer>
+    </v-navigation-drawer>-->
 
     <!-- --------------- end side bar --------------------- -->
     <!-- ------------ task dialog --------- -->

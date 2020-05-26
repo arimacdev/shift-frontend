@@ -653,7 +653,7 @@ import AddParentTask from "~/components/tasksPage/addParentTask";
 import AddChildTask from "~/components/tasksPage/addChildTask";
 
 export default {
-  props: ["task", "projectId", "people", "taskObject"],
+  props: ["task", "people", "taskObject"],
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
@@ -664,7 +664,6 @@ export default {
     return {
       taskDeleteDialog: false,
       taskId: "",
-      projectId: "",
       userId: this.$store.state.user.userId,
       sprints: [],
       editTask: true,
