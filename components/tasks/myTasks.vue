@@ -335,7 +335,6 @@
         :projectId="projectId"
         :subTasks="subTasks"
         :taskFiles="taskFiles"
-        :projectUsers="projectUsers"
         :componentClose="componentClose"
         :taskObject="taskObject"
         @taskDialogClosing="taskDialogClosing()"
@@ -547,7 +546,7 @@ export default {
         this.taskNameQuery;
 
       this.jqlQuery = filterQuery.slice(0, -5) + this.orderByQuery;
-      console.log("QUERY:  " + encodeURI(this.jqlQuery));
+      // console.log("QUERY:  " + encodeURI(this.jqlQuery));
       this.events = [];
       this.getFilterResponse();
     },
@@ -562,7 +561,7 @@ export default {
             }
           }
         );
-        console.log("tasks--->", taskFilterResponse.data);
+        // console.log("tasks--->", taskFilterResponse.data);
         this.taskFilter = true;
         this.overlay = false;
 

@@ -2,7 +2,7 @@
   <div class="top-nav">
     <navigation-drawer />
 
-    <v-toolbar app color dark fixed class="tool-bar">
+    <v-toolbar color dark fixed class="tool-bar">
       <div class="title-div">
         <div class="name-div">
           <v-list-item>
@@ -218,8 +218,10 @@ export default {
   created() {
     this.$store.dispatch("project/fetchAllProjects");
     this.$store.dispatch("user/setAllUsers");
-
-    this.$store.dispatch("project/fetchProject", this.$route.params.projects);
+    this.$store.dispatch("project/clearProject");
+    if (this.$route.params.projects != "projects") {
+      this.$store.dispatch("project/fetchProject", this.$route.params.projects);
+    }
     switch (this.selectedTab) {
       case "task":
         if (this.$route.params.projects != "projects") {
