@@ -133,7 +133,7 @@
                 autoClose
                 :clear-icon-cb="clearDate()"
               ></VueCtkDateTimePicker>
-              <v-autocomplete
+              <v-select
                 class="filterOrderWorkload"
                 v-model="filterOrderBy"
                 :items="orderByArray"
@@ -156,7 +156,7 @@
                     </v-list-item-title>
                   </v-list-item>
                 </template>-->
-              </v-autocomplete>
+              </v-select>
               <v-radio-group v-model="filterOrderSequence">
                 <v-row>
                   <v-col md="6">
@@ -245,7 +245,7 @@
               <!-- <span> {{entityTasks}} || {{entity}} || {{index}}</span> -->
               <div
                 class="orderByEntity"
-                v-if="filterOrderBy === 'taskDueDateAt' && entity === null"
+                v-if="filterOrderBy === 'taskDueDateAt' && entity === null && entity != undefined"
               >No Due Date</div>
               <div
                 class="orderByEntity"
@@ -253,7 +253,7 @@
               >{{entity.slice(0,10)}}</div>
               <div
                 class="orderByEntity"
-                v-if="filterOrderBy === 'taskAssignee'"
+                v-if="filterOrderBy === 'taskAssignee' && entity != undefined"
               >{{entityTasks[0].firstName}} {{entityTasks[0].lastName}}</div>
               <div
                 class="orderByEntity"
