@@ -159,6 +159,9 @@
         </v-list-item-group>
       </div>
       <keep-alive>
+        <div v-if="this.$route.params.projects == 'projects'" class="defaultFilterBackground">
+          <v-icon size="150" color="#EDF0F5">mdi-folder-multiple-outline</v-icon>
+        </div>
         <component
           v-if="
             this.$route.params.projects != 'projects' &&
