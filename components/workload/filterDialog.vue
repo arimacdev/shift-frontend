@@ -44,32 +44,54 @@
               <v-col sm="8" md="8">
                 <div class="leftSideColumn">
                   <!-- -------------- task type section ------------- -->
-                  <div class="expansionViewHeader">
-                    <v-list-item class="taskViewTitleSection">
-                      <v-list-item-icon>
-                        <v-icon size="30" color="#0BAFFF">mdi-checkbox-multiple-blank-outline</v-icon>
-                      </v-list-item-icon>
-                      <v-list-item-title class="viewTaskFontColors">Task status</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item-content class="parentChildTaskList">
-                      <!-- ---------- task list --------- -->
-                      <div class="taskViewTaskListPadding">
-                        <v-row class="mb-12" no-gutters>
-                          <v-col sm="6" md="6">
-                            <div
-                              class="statusSpan"
-                            >{{this.selectedTask.taskStatus.charAt(0).toUpperCase()+ this.selectedTask.taskStatus.slice(1)}}</div>
-                          </v-col>
-                          <v-col sm="6" md="6">
-                            <div
-                              class="statusSpan"
-                            >{{this.selectedTask.issueType.charAt(0).toUpperCase()+ this.selectedTask.issueType.slice(1)}}</div>
-                          </v-col>
-                        </v-row>
+                  <v-row>
+                    <v-col md="6">
+                      <div class="expansionViewHeader">
+                        <v-list-item class="taskViewTitleSection">
+                          <v-list-item-icon>
+                            <v-icon size="30" color="#0BAFFF">mdi-checkbox-multiple-blank-outline</v-icon>
+                          </v-list-item-icon>
+                          <v-list-item-title class="viewTaskFontColors">Task Type</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item-content class="parentChildTaskList">
+                          <!-- ---------- task list --------- -->
+                          <div class="taskViewTaskListPadding">
+                            <v-row class="mb-12" no-gutters>
+                              <v-col>
+                                <div
+                                  class="statusSpan"
+                                >{{this.selectedTask.taskStatus.charAt(0).toUpperCase()+ this.selectedTask.taskStatus.slice(1)}}</div>
+                              </v-col>
+                            </v-row>
+                          </div>
+                          <!-- --------------- -->
+                        </v-list-item-content>
                       </div>
-                      <!-- --------------- -->
-                    </v-list-item-content>
-                  </div>
+                    </v-col>
+                    <v-col md="6">
+                      <div class="expansionViewHeader">
+                        <v-list-item class="taskViewTitleSection">
+                          <v-list-item-icon>
+                            <v-icon size="30" color="#0BAFFF">mdi-checkbox-multiple-blank-outline</v-icon>
+                          </v-list-item-icon>
+                          <v-list-item-title class="viewTaskFontColors">Task Status</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item-content class="parentChildTaskList">
+                          <!-- ---------- task list --------- -->
+                          <div class="taskViewTaskListPadding">
+                            <v-row class="mb-12" no-gutters>
+                              <v-col>
+                                <div
+                                  class="statusSpan"
+                                >{{this.selectedTask.issueType.charAt(0).toUpperCase()+ this.selectedTask.issueType.slice(1)}}</div>
+                              </v-col>
+                            </v-row>
+                          </div>
+                          <!-- --------------- -->
+                        </v-list-item-content>
+                      </div>
+                    </v-col>
+                  </v-row>
                   <v-divider></v-divider>
 
                   <!-- -------------- task sprint section ------------- -->
