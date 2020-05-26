@@ -2299,6 +2299,16 @@
   border-radius: 5px;
   cursor: pointer;
 }
+.filterCancelBtn {
+  background-color: #ff6161;
+  color: #ffffff;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
 .defaultFilterBackground {
   text-align: center;
   padding-top: 20%;

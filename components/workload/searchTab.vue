@@ -168,8 +168,13 @@
                 </v-row>
               </v-radio-group>
               <v-row>
-                <v-col md="12">
+                <v-col md="10">
                   <div @click="jqlSearch()" class="filterSearchBtn">Search</div>
+                </v-col>
+                <v-col md="2">
+                  <div @click="jqlCancel()" class="filterCancelBtn">
+                    <v-icon color="#FFFFFF">mdi-cancel</v-icon>
+                  </div>
                 </v-col>
               </v-row>
 
@@ -516,14 +521,26 @@ export default {
       // return taskList;
       return orderedList;
     },
+    async jqlCancel() {
+      try {
+        this.taskName = "";
+        this.filterAssignee = [];
+        this.filterProject = [];
+        this.filterType = [];
+        this.filterStatus = [];
+        this.dateRange = null;
+        this.filterResult = [];
+      } catch (error) {
+        console.log("Error fetching data", error);
+      }
+    },
     async loadTemplate() {
-      // console.log(
-      //   "loadTemplate",
-      //   this.filterTemplate.query,
-      //   this.filterAssignee
-      // );
+      this.taskName = "";
       this.filterAssignee = [];
       this.filterProject = [];
+      this.filterType = [];
+      this.filterStatus = [];
+      this.dateRange = null;
       this.filterOrderBy = "";
       this.taskName = "";
 

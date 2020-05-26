@@ -551,6 +551,11 @@ export default {
   },
   methods: {
     filterChange() {
+      this.nameOfTask = null;
+      this.assigneeOfTask = [];
+      this.taskType = [];
+      this.taskStatus = [];
+      this.dateRange = null;
       this.taskFilter = "none";
     },
     jqlSearch() {
