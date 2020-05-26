@@ -317,6 +317,9 @@
       <component v-bind:is="component" :errorMessage="errorMessage"></component>
       <!-- <success-popup /> -->
     </div>
+    <v-overlay :value="overlay">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 
@@ -325,6 +328,7 @@ import GroupSideDrawer from "~/components/tasksPage/groupSideDrawer";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import TaskDialog from "~/components/tasksPage/groupTaskDialog";
+import Progress from "~/components/popups/progress";
 import axios from "axios";
 import { mapState } from "vuex";
 
@@ -334,10 +338,12 @@ export default {
     "group-side-drawer": GroupSideDrawer,
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
-    "task-dialog": TaskDialog
+    "task-dialog": TaskDialog,
+    "progress-loading": Progress
   },
   data() {
     return {
+      overlay: false,
       taskObject: {},
       taskDialog: false,
       taskDeleteDialog: false,
@@ -466,6 +472,7 @@ export default {
         });
     },
     async addGroupTask(selectedParentTask) {
+      this.overlay = true;
       // console.log("add group task");
       this.$store.dispatch("groups/groupTask/addTaskToGroup", {
         taskName: this.updatedTaskName,
@@ -474,8 +481,10 @@ export default {
       });
       this.updatedTaskName = "";
       this.$refs.form.reset();
+      this.overlay = false;
     },
     async addGroupSubTask(subTaskName, selectedParentTask) {
+      this.overlay = true;
       // console.log("add group task");
       this.$store.dispatch("groups/groupTask/addTaskToGroup", {
         taskName: subTaskName,
@@ -483,6 +492,7 @@ export default {
         parentTaskId: selectedParentTask
       });
       this.subTaskName = "";
+      this.overlay = false;
     },
     getTaskDueDate(date) {
       const dueDate = new Date(date);

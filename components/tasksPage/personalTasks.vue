@@ -115,9 +115,16 @@
     </v-dialog>
 
     <div @click="close">
-      <component v-bind:is="component" :errorMessage="errorMessage"></component>
+      <component
+        v-bind:is="component"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
       <!-- <success-popup /> -->
     </div>
+    <v-overlay :value="overlay">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 
@@ -126,6 +133,7 @@ import TaskSideDrawer from "~/components/tasksPage/tasksSideDrawer";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import TaskDialog from "~/components/tasksPage/personalTaskDialog";
+import Progress from "~/components/popups/progress";
 import axios from "axios";
 import { mapState } from "vuex";
 
@@ -134,12 +142,15 @@ export default {
     "tasks-side-drawer": TaskSideDrawer,
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
-    "task-dialog": TaskDialog
+    "task-dialog": TaskDialog,
+    "progress-loading": Progress
   },
   data() {
     return {
+      overlay: false,
       taskDialog: false,
       taskDeleteDialog: false,
+      successMessage: "",
       errorMessage: "",
       component: "",
       drawer: null,
@@ -218,6 +229,7 @@ export default {
       );
     },
     async addPersonalTask() {
+      this.overlay = true;
       // console.log("add personal task");
       let response;
       try {
@@ -231,16 +243,19 @@ export default {
         // console.log(response);
         this.$store.dispatch("personalTasks/fetchAllPersonalTasks");
         this.component = "success-popup";
+        this.successMessage = "Task successfully created";
         setTimeout(() => {
           this.close();
-        }, 2000);
+        }, 3000);
+        this.overlay = false;
       } catch (e) {
         // console.log("Error adding a subTask", e);
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
           this.close();
-        }, 2000);
+        }, 3000);
+        this.overlay = false;
       }
     },
     getTaskDueDate(date) {
