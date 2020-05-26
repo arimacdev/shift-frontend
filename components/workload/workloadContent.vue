@@ -42,6 +42,8 @@
       </v-list-item-action>
     </div>
     <div class="workloadContentDiv">
+      <div v-if="this.workloadTasks == ''" class="filterTitleDiv headline">No items to show</div>
+
       <v-expansion-panels v-model="panel" :disabled="disabled" multiple dark>
         <!-- -------------- loop this pannel for every project ---------- -->
         <v-expansion-panel
