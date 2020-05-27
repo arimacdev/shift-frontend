@@ -1,86 +1,96 @@
 <template>
   <div class="taskContent">
-    <!-- <v-select
-      v-model="taskSelect"
-      :items="items"
-      item-text="name"
-      item-value="id"
-      label="All"
-      solo
-      @change="taskFilter"
-    ></v-select>-->
     <div class="filterSection">
-      <div class="taskFilterTypeDiv">
-        <div class="filterTitleDiv">Filter by:</div>
-        <div class="filterDropdownDiv">
-          <v-select
-            flat
-            background-color="#CDCFD2"
+      <v-row>
+        <v-col md="2">
+          <v-text-field
             dense
-            v-model="taskFilter"
-            :items="filterOptions"
+            clearable
+            @click:clear="clearName()"
+            v-model="nameOfTask"
+            outlined
+            flat
+            label="Task Name"
+            background-color="#FFFFFF"
+          ></v-text-field>
+        </v-col>
+
+        <v-col md="2">
+          <v-autocomplete
+            v-model="filterType"
+            return-object
+            :items="taskTypeArray"
             item-text="name"
             item-value="id"
-            label="None"
-            solo
-            @mousedown="clearFilter()"
-          ></v-select>
-        </div>
-      </div>
-      <div class="taskFilterDiv">
-        <!-- ---------- filter options ------------- -->
-        <div class="filterOptionDiv">
-          <v-select
             flat
-            background-color="#EDF0F5"
+            outlined
             dense
-            v-model="taskSelect"
-            v-if="this.taskFilter == 'issueType'"
-            :items="items"
+            chips
+            background-color="#FFFFFF"
+            small-chips
+            label="Task Type"
+            multiple
+            clearable
+            @click:clear="clearType()"
+          >
+            <template v-slot:selection="{ item, index }">
+              <v-chip x-small style="width: 30px" v-if="index === 0">
+                <span>{{ item.name }}</span>
+              </v-chip>
+            </template>
+          </v-autocomplete>
+        </v-col>
+        <v-col md="2">
+          <v-autocomplete
+            v-model="filterStatus"
+            return-object
+            :items="taskStatusArray"
             item-text="name"
             item-value="id"
-            label="Select type"
-            class="createFormElements"
-            solo
-            @change="filterTasks('issueType', '', '', '', taskSelect)"
-          ></v-select>
+            flat
+            outlined
+            dense
+            chips
+            background-color="#FFFFFF"
+            small-chips
+            label="Task Status"
+            multiple
+            clearable
+            @click:clear="clearStatus()"
+          >
+            <template v-slot:selection="{ item, index }">
+              <v-chip x-small style="width: 30px" v-if="index === 0">
+                <span>{{ item.name }}</span>
+              </v-chip>
+            </template>
+          </v-autocomplete>
+        </v-col>
+        <v-col md="4">
           <VueCtkDateTimePicker
-            v-if="this.taskFilter == 'dueDate'"
             :no-value-to-custom-elem="false"
             color="#3f51b5"
             v-model="dateRange"
-            label="Filter tasks by"
+            label="Date Range"
             range
             right
             noButton
             autoClose
+            :clear-icon-cb="clearDate()"
           ></VueCtkDateTimePicker>
-        </div>
-        <!-- ----------- filter assignee button ---------- -->
-        <div class="filterSubmitButton">
-          <!-- <v-btn
-            @click="filterTasks('assignee', taskAssigneeFilter, '', '', '')"
-            v-if="this.taskFilter == 'assignee'"
-            dark
-            width="100%"
-            height="40px"
-            color="#080848"
-          >
-            <v-icon color="#FFFFFF">mdi-filter-outline</v-icon>Filter
-          </v-btn>-->
-          <!-- ------------- filter dateRange button ---------------- -->
-          <v-btn
-            v-if="this.taskFilter == 'dueDate'"
-            dark
-            width="100%"
-            height="45px"
-            color="#080848"
-            @click="filterTasks('dueDate', '', dateRange.start, dateRange.end, '')"
-          >
-            <v-icon color="#FFFFFF">mdi-filter-outline</v-icon>Filter
+        </v-col>
+        <v-col md="1">
+          <v-btn @click="jqlSearch()" dark width="100%" height="40px" color="#080848">
+            <v-icon color="#FFFFFF">mdi-filter-outline</v-icon>
+            <!-- Filter -->
           </v-btn>
-        </div>
-      </div>
+        </v-col>
+        <v-col md="1">
+          <v-btn @click="filterChange()" dark width="100%" height="40px" color="#FF6161">
+            <v-icon color="#FFFFFF">mdi-cancel</v-icon>
+            <!-- Cancel -->
+          </v-btn>
+        </v-col>
+      </v-row>
     </div>
 
     <div v-if="this.taskFilter == 'none'" class="restructuredTaskCreate">
@@ -138,7 +148,7 @@
                 <div>
                   <v-list-item-avatar>
                     <v-img
-                      v-if="task.parentTask.taskAssigneeProfileImage != null"
+                      v-if="task.parentTask.taskAssigneeProfileImage != null && task.parentTask.taskAssigneeProfileImage != ''"
                       :src="task.parentTask.taskAssigneeProfileImage"
                     ></v-img>
                     <v-img
@@ -155,6 +165,7 @@
                   '/task/' + task.parentTask.taskId + '/?project=' + projectId
                 "
                   style="text-decoration: none;"
+                  target="_blank"
                 >
                   <v-icon color="blue">mdi-link-variant</v-icon>
                 </nuxt-link>
@@ -202,7 +213,7 @@
                   <div>
                     <v-list-item-avatar>
                       <v-img
-                        v-if="childTask.taskAssigneeProfileImage != null"
+                        v-if="childTask.taskAssigneeProfileImage != null && childTask.taskAssigneeProfileImage != ''"
                         :src="childTask.taskAssigneeProfileImage"
                       ></v-img>
                       <v-img
@@ -216,6 +227,7 @@
                   <nuxt-link
                     :to="'/task/' + childTask.taskId + '/?project=' + projectId"
                     style="text-decoration: none;"
+                    target="_blank"
                   >
                     <v-icon color="blue">mdi-link-variant</v-icon>
                   </nuxt-link>
@@ -229,7 +241,7 @@
       </div>
     </div>
     <!-- -------------- filter list -------------- -->
-    <div v-else class="taskListViewContent overflow-y-auto">
+    <div v-else class="taskListViewContent filterListTop overflow-y-auto">
       <div v-if="this.filterList == ''" class="filterTitleDiv headline">No items to show</div>
       <div v-for="(task, index) in filterList" :key="index">
         <div
@@ -275,8 +287,8 @@
               <div>
                 <v-list-item-avatar>
                   <v-img
-                    v-if="task.taskAssigneeProfileImage != null"
-                    :src="task.taskAssigneeProfileImage"
+                    v-if="task.profileImage != null && task.profileImage != ''"
+                    :src="task.profileImage"
                   ></v-img>
                   <v-img
                     v-else
@@ -293,7 +305,7 @@
 
     <!-- -------------- start side bar ----------------- -->
 
-    <v-navigation-drawer
+    <!-- <v-navigation-drawer
       v-model="drawer"
       fixed
       temporary
@@ -314,7 +326,7 @@
         @listenChange="listenToChange"
         @shrinkSideBar="shrinkSideBar"
       />
-    </v-navigation-drawer>
+    </v-navigation-drawer>-->
     <!-- ------------ task dialog --------- -->
 
     <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition" persistent>
@@ -323,7 +335,6 @@
         :projectId="projectId"
         :subTasks="subTasks"
         :taskFiles="taskFiles"
-        :projectUsers="projectUsers"
         :componentClose="componentClose"
         :taskObject="taskObject"
         @taskDialogClosing="taskDialogClosing()"
@@ -332,28 +343,55 @@
 
     <!-- --------------- end side bar --------------------- -->
     <div @click="close" class="allTaskPopupPlacements">
-      <component v-bind:is="component" :errorMessage="errorMessage"></component>
+      <component
+        v-bind:is="component"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
       <!-- <success-popup /> -->
     </div>
+    <v-overlay :value="overlay">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 
 <script>
-import TaskSideBar from "~/components/tasks/taskSideBar";
+// import TaskSideBar from "~/components/tasks/taskSideBar";
 import TaskDialog from "~/components/tasks/taskDialog";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
+import Progress from "~/components/popups/progress";
 import { mapState } from "vuex";
 export default {
   // props: ['projectId', 'projectUsers', 'people'],
   data() {
     return {
+      overlay: false,
+      projectId: "",
+      jqlQuery: "",
+      assigneeQuery: "",
+      projectQuery: "",
+      typeQuery: "",
+      statusQuery: "",
+      orderByQuery: "",
+      dateQuery: "",
+      taskNameQuery: "",
+      assigneeArray: [],
+      templateArray: [],
+      filterAssignee: [],
+      filterProject: [],
+      filterTemplate: "",
+      filterType: [],
+      filterStatus: [],
+      filterResult: [],
+
       errorMessage: "",
       successMessage: "",
       component: "",
       taskDialog: false,
       taskDeleteDialog: false,
-      dateRange: new Date(),
+      dateRange: null,
       dialog: false,
       notifications: false,
       sound: true,
@@ -365,6 +403,39 @@ export default {
       updatedTask: {
         taskName: ""
       },
+      nameOfTask: "",
+      taskTypeArray: [
+        { name: "Development", id: "development" },
+        { name: "QA", id: "qa" },
+        { name: "Design", id: "design" },
+        { name: "Bug", id: "bug" },
+        { name: "Operational", id: "operational" },
+        { name: "Pre-sales", id: "preSales" },
+        { name: "General", id: "general" }
+      ],
+      taskStatusArray: [
+        { name: "Pending", id: "pending" },
+        { name: "On hold", id: "onHold" },
+        { name: "Open", id: "open" },
+        { name: "Cancel", id: "cancel" },
+        { name: "ReOpened", id: "reOpened" },
+        { name: "Fixing", id: "fixing" },
+        { name: "Testing", id: "testing" },
+        { name: "Resolved", id: "resolved" },
+        { name: "In progress", id: "inprogress" },
+        { name: "Completed", id: "completed" },
+        { name: "Implementing", id: "implementing" },
+        { name: "Under review", id: "underReview" },
+        { name: "Weiting for approval", id: "waitingForApproval" },
+        { name: "Review", id: "review" },
+        { name: "Discussion", id: "discussion" },
+        { name: "Waiting response", id: "waitingResponse" },
+        { name: "Ready", id: "ready" },
+        { name: "Deployed", id: "deployed" },
+        { name: "Fixed", id: "fixed" },
+        { name: "Rejected", id: "rejected" },
+        { name: "Closed", id: "closed" }
+      ],
 
       items: [
         { name: "Development", id: "development" },
@@ -393,13 +464,135 @@ export default {
       componentClose: null
     };
   },
+  async created() {
+    this.projectId = this.$route.params.projects;
+  },
   components: {
-    "task-side-bar": TaskSideBar,
+    // "task-side-bar": TaskSideBar,
     "task-dialog": TaskDialog,
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
+    "progress-loading": Progress
   },
   methods: {
+    filterChange() {
+      this.nameOfTask = "";
+      this.taskType = [];
+      this.taskStatus = [];
+      this.dateRange = null;
+      this.taskFilter = "none";
+
+      this.taskNameQuery = "";
+      this.typeQuery = "";
+      this.statusQuery = "";
+      this.dateRange = null;
+      this.jqlQuery = "";
+    },
+    jqlSearch() {
+      this.overlay = true;
+      if (this.filterType.length != 0) {
+        let typeList = "";
+        for (let i = 0; i < this.filterType.length; i++) {
+          typeList = typeList + '"' + this.filterType[i].id + '"';
+          if (i < this.filterType.length - 1) {
+            typeList = typeList + ",";
+          }
+        }
+        this.typeQuery = "issueType IN " + "(" + typeList + ")  AND ";
+      }
+      this.projectQuery = 'projectId IN ("' + this.projectId + '")  AND ';
+      if (this.filterStatus.length != 0) {
+        let statusList = "";
+        for (let i = 0; i < this.filterStatus.length; i++) {
+          statusList = statusList + '"' + this.filterStatus[i].id + '"';
+          if (i < this.filterStatus.length - 1) {
+            statusList = statusList + ",";
+          }
+        }
+        this.statusQuery = "taskStatus IN " + "(" + statusList + ")  AND ";
+      }
+      if (this.dateRange != null) {
+        if (
+          this.dateRange.start !== undefined &&
+          this.dateRange.end !== undefined
+        ) {
+          this.from = this.dateRange.start;
+          this.to = this.dateRange.end;
+          const startDate = new Date(this.dateRange.start);
+          const isoStartDate = new Date(
+            startDate.getTime() - startDate.getTimezoneOffset() * 60000
+          ).toISOString();
+
+          const endDate = new Date(this.dateRange.end);
+          const isoEndDate = new Date(
+            endDate.getTime() - endDate.getTimezoneOffset() * 60000
+          ).toISOString();
+
+          this.dateQuery =
+            'taskDueDateAt BETWEEN "' +
+            isoStartDate +
+            '" AND "' +
+            isoEndDate +
+            '" AND ';
+        }
+      }
+      this.orderByQuery = "ORDER BY projectName ASC";
+
+      if (this.nameOfTask != "") {
+        this.taskNameQuery =
+          'taskName LIKE "%25' + this.nameOfTask + '%25"  AND ';
+      }
+
+      let filterQuery =
+        this.assigneeQuery +
+        this.projectQuery +
+        this.typeQuery +
+        this.statusQuery +
+        this.dateQuery +
+        this.taskNameQuery;
+
+      this.jqlQuery = filterQuery.slice(0, -5) + this.orderByQuery;
+      // console.log("QUERY:  " + encodeURI(this.jqlQuery));
+      this.events = [];
+      this.getFilterResponse();
+    },
+    async getFilterResponse() {
+      let taskFilterResponse;
+      try {
+        taskFilterResponse = await this.$axios.$get(
+          `/projects/workload/filter?query=${this.jqlQuery}`,
+          {
+            headers: {
+              user: this.$store.state.user.userId
+            }
+          }
+        );
+        // console.log("tasks--->", taskFilterResponse.data);
+        this.taskFilter = true;
+        this.overlay = false;
+
+        this.filterList = taskFilterResponse.data;
+      } catch (error) {
+        this.overlay = false;
+        console.log("Error fetching data", error);
+      }
+    },
+    clearType() {
+      this.typeQuery = "";
+      this.jqlQuery = "";
+    },
+    clearStatus() {
+      this.statusQuery = "";
+      this.jqlQuery = "";
+    },
+    clearDate() {
+      this.dateQuery = "";
+      this.jqlQuery = "";
+    },
+    clearName() {
+      this.taskNameQuery = "";
+      this.jqlQuery = "";
+    },
     taskDialogClosing() {
       // console.log("Task Dialog Closing");
       this.taskDialog = false;
@@ -480,6 +673,7 @@ export default {
       this.component = "";
     },
     async addTask(selectedParentTask) {
+      this.overlay = true;
       let response;
       try {
         response = await this.$axios.$post(
@@ -500,6 +694,7 @@ export default {
         this.taskName = "";
         this.component = "success-popup";
         this.successMessage = "Task added successfully";
+        this.overlay = false;
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -520,6 +715,7 @@ export default {
           (this.taskNotes = ""),
           (this.files = null);
       } catch (e) {
+        this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -570,6 +766,18 @@ export default {
         this.assignee = response.data.data;
       });
       this.$store.dispatch("user/setSelectedTaskUser", task.taskAssignee);
+      if (this.task.isParent) {
+        // console.log("parent task");
+        this.$store.dispatch("task/fetchChildren", {
+          projectId: this.projectId,
+          taskId: this.task.taskId
+        });
+      } else {
+        this.$store.dispatch("task/fetchParentTask", {
+          projectId: this.projectId,
+          taskId: this.task.parentId
+        });
+      }
       let taskFilesResponse;
       try {
         taskFilesResponse = await this.$axios.$get(
@@ -670,9 +878,21 @@ export default {
     ...mapState({
       people: state => state.task.userCompletionTasks,
       projectAllTasks: state => state.task.allTasks,
-      projectId: state => state.project.project.projectId,
+      // projectId: state => state.project.project.projectId,
       selectedTask: state => state.task.selectedTask
-    })
+    }),
+    taskType: {
+      get() {},
+      set(value) {
+        this.filterType = value;
+      }
+    },
+    taskStatus: {
+      get() {},
+      set(value) {
+        this.filterStatus = value;
+      }
+    }
 
     // taskName: {
     //   get() {

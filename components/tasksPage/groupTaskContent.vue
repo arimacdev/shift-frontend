@@ -14,7 +14,7 @@
             label="All"
             solo
           ></v-select>
-          <v-form v-model="isValid" onsubmit="return false" ref="form">
+          <v-form onsubmit="return false" ref="form">
             <v-text-field
               v-model="addNewTask"
               solo
@@ -79,6 +79,7 @@
               <!-- -------------- sub task design --------------- -->
               <div class="restructuredSubTaskCreate">
                 <v-text-field
+                  v-if="task.parentTask.taskStatus != 'closed'"
                   v-model="subTaskName"
                   background-color="#0BAFFF"
                   solo
@@ -275,7 +276,7 @@
     </div>
 
     <!-- -------------- start side bar ----------------- -->
-    <v-navigation-drawer
+    <!-- <v-navigation-drawer
       v-model="drawer"
       fixed
       temporary
@@ -294,7 +295,7 @@
         :taskFiles="taskFiles"
         @shrinkSideBar="shrinkSideBar"
       />
-    </v-navigation-drawer>
+    </v-navigation-drawer>-->
     <!-- --------------- end side bar --------------------- -->
     <!-- ------------ task dialog --------- -->
 
@@ -302,10 +303,7 @@
       <task-dialog
         ref="taskDialog"
         :task="task"
-        :projectId="projectId"
         :subTasks="subTasks"
-        :projectUsers="projectUsers"
-        :componentClose="componentClose"
         :taskObject="taskObject"
         :taskFiles="taskFiles"
         @taskDialogClosing="taskDialogClosing()"
@@ -316,6 +314,9 @@
       <component v-bind:is="component" :errorMessage="errorMessage"></component>
       <!-- <success-popup /> -->
     </div>
+    <v-overlay :value="overlay">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 
@@ -324,6 +325,7 @@ import GroupSideDrawer from "~/components/tasksPage/groupSideDrawer";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import TaskDialog from "~/components/tasksPage/groupTaskDialog";
+import Progress from "~/components/popups/progress";
 import axios from "axios";
 import { mapState } from "vuex";
 
@@ -333,10 +335,13 @@ export default {
     "group-side-drawer": GroupSideDrawer,
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
-    "task-dialog": TaskDialog
+    "task-dialog": TaskDialog,
+    "progress-loading": Progress
   },
   data() {
     return {
+      subTaskName: "",
+      overlay: false,
       taskObject: {},
       taskDialog: false,
       taskDeleteDialog: false,
@@ -465,16 +470,23 @@ export default {
         });
     },
     async addGroupTask(selectedParentTask) {
+      this.overlay = true;
       // console.log("add group task");
-      this.$store.dispatch("groups/groupTask/addTaskToGroup", {
+      await this.$store.dispatch("groups/groupTask/addTaskToGroup", {
         taskName: this.updatedTaskName,
         taskGroupId: this.group.taskGroupId,
         parentTaskId: selectedParentTask
       });
       this.updatedTaskName = "";
       this.$refs.form.reset();
+      this.overlay = false;
+      this.$store.dispatch("groups/groupPeople/fetchGroupPeople", {
+        taskGroupId: this.group.taskGroupId,
+        userId: "user"
+      });
     },
     async addGroupSubTask(subTaskName, selectedParentTask) {
+      this.overlay = true;
       // console.log("add group task");
       this.$store.dispatch("groups/groupTask/addTaskToGroup", {
         taskName: subTaskName,
@@ -482,6 +494,7 @@ export default {
         parentTaskId: selectedParentTask
       });
       this.subTaskName = "";
+      this.overlay = false;
     },
     getTaskDueDate(date) {
       const dueDate = new Date(date);

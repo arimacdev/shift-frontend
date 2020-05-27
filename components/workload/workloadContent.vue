@@ -2,8 +2,8 @@
   <div>
     <div class="workloadFilter">
       <v-list-item-action class="filterIcon"></v-list-item-action>
-      <v-list-item-action>
-        <VueCtkDateTimePicker
+      <div class="filterBottom">
+        <!-- <VueCtkDateTimePicker
           :no-value-to-custom-elem="false"
           color="#3f51b5"
           v-model="dateRange"
@@ -12,8 +12,8 @@
           right
           noButton
           autoClose
+          clearable
         >
-          <!-- <button>Clear Filters</button> -->
           <button type="button" class="rangePickerButton">
             <v-icon color="#FFFFFF">mdi-filter</v-icon>Filter by
           </button>
@@ -37,10 +37,39 @@
           >
             <v-icon color="#FFFFFF">mdi-close</v-icon>
           </button>
-        </VueCtkDateTimePicker>
-      </v-list-item-action>
+        </VueCtkDateTimePicker>-->
+
+        <v-row>
+          <v-col md="8">
+            <VueCtkDateTimePicker
+              :no-value-to-custom-elem="false"
+              color="#3f51b5"
+              v-model="dateRange"
+              label="Filter tasks by"
+              range
+              left
+              noButton
+              autoClose
+            ></VueCtkDateTimePicker>
+          </v-col>
+          <v-col md="2">
+            <v-btn @click="applyFilter()" dark width="100%" height="40px" color="#080848">
+              <v-icon color="#FFFFFF">mdi-filter-outline</v-icon>
+              <!-- Filter -->
+            </v-btn>
+          </v-col>
+          <v-col md="2">
+            <v-btn dark width="100%" @click="clearFilter()" height="40px" color="#FF6161">
+              <v-icon color="#FFFFFF">mdi-cancel</v-icon>
+              <!-- Cancel -->
+            </v-btn>
+          </v-col>
+        </v-row>
+      </div>
     </div>
-    <div class="workloadContentDiv myWorkloadBody overflow-y-auto">
+    <div class="workloadContentDiv">
+      <div v-if="this.workloadTasks == ''" class="filterTitleDiv headline">No items to show</div>
+
       <v-expansion-panels v-model="panel" :disabled="disabled" multiple dark>
         <!-- -------------- loop this pannel for every project ---------- -->
         <v-expansion-panel
@@ -56,15 +85,25 @@
             {{ project.projectName }} - {{ project.completed }}/{{
             project.total
             }}
+            <template
+              v-slot:actions
+            >
+              <v-icon color="#2EC973">mdi-arrow-down-circle-outline</v-icon>
+            </template>
           </v-expansion-panel-header>
           <v-expansion-panel-header
             v-else-if="project.total == 0"
-            class="projectDetailsPannelHeader"
-            color="#ACACAC"
+            class="projectDetailsEmptyPannelHeader"
+            color="#EDF0F5"
           >
             {{ project.projectName }} - {{ project.completed }}/{{
             project.total
             }}
+            <template
+              v-slot:actions
+            >
+              <v-icon color="#ACACAC">mdi-arrow-down-circle-outline</v-icon>
+            </template>
           </v-expansion-panel-header>
           <v-expansion-panel-content class="projectDetailsPannelContent" color="#EDF0F5">
             <!-- ----------- loop content for tasks of projects --------------- -->
@@ -74,7 +113,7 @@
                 @click.stop="drawer = !drawer"
                 v-for="(task, index) in project.taskList"
                 :key="index"
-                @click="selectTask(task, project.projectId)"
+                @click="selectTask(task); taskDialog = true;"
               >
                 <v-list-item-action>
                   <v-icon
@@ -85,22 +124,17 @@
                   <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
-                  <!-- <v-list-item-title class="workloadTaskName">{{task.taskName}}</v-list-item-title> -->
                   <div class="workloadTaskName">{{ task.taskName }}</div>
                 </v-list-item-content>
-                <v-list-item-content>
-                  <v-list-item-title :class="dueDateCheck(task)">{{ getDueDate(task.dueDate) }}</v-list-item-title>
-                </v-list-item-content>
+                <!-- <v-list-item-action>
+                  <div class="workloadTaskName">{{ task.taskName }}</div>
+                </v-list-item-action>-->
 
-                <!-- <div class="">{{task.taskStatus}}</div> -->
-                <!-- <div class="updatedDate">
-                            <div class="body-2"> {{getDueDate(task.dueDate)}}</div>
-                </div>-->
-                <!-- <v-list-item-avatar>
-                    <v-img v-if="task.taskAssigneeProfileImage != null" :src="task.taskAssigneeProfileImage"></v-img>
-                        <v-img src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
-
-                </v-list-item-avatar>-->
+                <v-list-item-action>
+                  <v-list-item-title
+                    :class="dueDateCheck(task)"
+                  >{{ getDueDate(task.taskDueDateAt) }}</v-list-item-title>
+                </v-list-item-action>
               </v-list-item>
             </div>
 
@@ -109,47 +143,82 @@
         </v-expansion-panel>
       </v-expansion-panels>
 
-      <!-- -------------- start side bar ----------------- -->
+      <!-- ------------ task dialog --------- -->
 
-      <v-navigation-drawer
-        v-model="drawer"
-        absolute
-        temporary
-        right
-        width="600px"
-        class
-        color="#FFFFFF"
-      >
-        <task-side-bar :task="task" :projectId="projectId" />
-      </v-navigation-drawer>
-      <!-- --------------- end side bar --------------------- -->
+      <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
+        <task-dialog
+          :selectedTask="task"
+          :taskFiles="taskFiles"
+          :taskSprint="taskSprint"
+          :taskUser="taskUser"
+          @taskDialogClosing="taskDialogClosing()"
+        />
+      </v-dialog>
     </div>
-    <!-- {{getStartDate()}} -->
   </div>
 </template>
 
 <script>
-import TaskSideBar from "~/components/workload/workloadSideBar";
+// import TaskSideBar from "~/components/workload/workloadSideBar";
 import { mapState, mapGetters } from "vuex";
+import TaskDialog from "~/components/workload/filterDialog";
 export default {
   props: ["selectedUser"],
   components: {
-    "task-side-bar": TaskSideBar
+    // "task-side-bar": TaskSideBar,
+    "task-dialog": TaskDialog
   },
   data() {
     return {
-      drawer: null,
       task: {},
+      taskDialog: false,
+      taskFiles: [],
+      taskSprint: "",
+      taskUser: {},
+      drawer: null,
       projectId: "",
       dateRange: new Date(),
       filterStart: "",
-      filterEnd: ""
+      filterEnd: "",
+      looped: false,
+      projectTasks: [],
+      emptyTasks: []
     };
   },
   methods: {
+    taskDialogClosing() {
+      // console.log("Task Dialog Closing");
+      this.taskDialog = false;
+    },
+    getProjects(type) {
+      const projectsAll = this.workloadTasks;
+      if (this.looped === false) {
+        // console.log("run loop inside: " + projectsAll);
+        for (let i = 0; i < projectsAll.length; i++) {
+          let taskCount = projectsAll[i].total;
+          switch (taskCount) {
+            case 0:
+              this.emptyTasks.push(projectsAll[i]);
+              break;
+
+            default:
+              this.projectTasks.push(projectsAll[i]);
+              break;
+          }
+          this.looped = true;
+        }
+      }
+      switch (type) {
+        case 0:
+          return this.emptyTasks;
+          break;
+
+        default:
+          return this.projectTasks;
+          break;
+      }
+    },
     applyFilter() {
-      // console.log("start WF", this.dateRange.start);
-      // console.log("end WF", this.dateRange.end);
       const startDate = this.dateRange.start;
       const endDate = this.dateRange.end;
       if (startDate != null && endDate != null) {
@@ -162,16 +231,11 @@ export default {
         const filterEnd = new Date(
           end.getTime() - end.getTimezoneOffset() * 60000
         ).toISOString();
-        // console.log("filterStart", filterStart);
-        // console.log("filterEnd", filterEnd);
-        // console.log("selectedUser", this.selectedUser);
         this.$store.dispatch("workload/fetchAllWorkloadTasks", {
           userId: this.selectedUser,
           from: filterStart,
           to: filterEnd
         });
-        // this.dateRange.start = null
-        // this.dateRange.end = null
       }
     },
     clearFilter() {
@@ -209,13 +273,54 @@ export default {
       // console.log("iso end date", isoDate);
       return isoDate;
     },
-    selectTask(task, projectId) {
+    async selectTask(task) {
+      // console.log("FETCHED TASK: ", task);
       this.task = task;
-      this.projectId = projectId;
-      this.$store.dispatch("subtask/fetchSubTasks", {
-        projectId: projectId,
-        taskId: task.taskId
-      });
+      this.projectId = task.projectId;
+      let taskFilesResponse;
+      try {
+        taskFilesResponse = await this.$axios.$get(
+          `/projects/${this.projectId}/tasks/${task.taskId}/files`,
+          {
+            headers: {
+              user: task.taskAssignee,
+              type: "project"
+            }
+          }
+        );
+        // console.log("files--->", taskFilesResponse.data);
+        this.taskFiles = taskFilesResponse.data;
+        this.$store.dispatch("task/setTaskFiles", taskFilesResponse.data);
+      } catch (error) {
+        // console.log("Error fetching data", error);
+      }
+      let sprintResponse;
+      if (task.sprintId == "default") {
+        this.taskSprint = "Default";
+      } else {
+        try {
+          sprintResponse = await this.$axios.$get(
+            `/sprints/${this.projectId}/${task.sprintId}`,
+            {
+              headers: {
+                userId: task.taskAssignee
+              }
+            }
+          );
+          console.log("sprint--->", sprintResponse.data.sprintName);
+          this.taskSprint = sprintResponse.data.sprintName;
+        } catch (error) {
+          // console.log("Error fetching data", error);
+        }
+      }
+      let userResponse;
+      try {
+        userResponse = await this.$axios.$get(`/users/${task.taskAssignee}`);
+        console.log("user--->", userResponse.data);
+        this.taskUser = userResponse.data;
+      } catch (error) {
+        // console.log("Error fetching data", error);
+      }
     },
     getDueDate(date) {
       const dueDate = new Date(date);
@@ -228,11 +333,23 @@ export default {
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
         return "Add Due Date";
-      } else if (now.getDate() === dueToUtcDate.getDate()) {
+      } else if (
+        now.getDate() === dueToUtcDate.getDate() &&
+        now.getMonth() === dueToUtcDate.getMonth() &&
+        now.getFullYear() === dueToUtcDate.getFullYear()
+      ) {
         return "Today";
-      } else if (now.getDate() - 1 === dueToUtcDate.getDate()) {
+      } else if (
+        now.getDate() - 1 === dueToUtcDate.getDate() &&
+        now.getMonth() - 1 === dueToUtcDate.getMonth() &&
+        now.getFullYear() - 1 === dueToUtcDate.getFullYear()
+      ) {
         return "Yesterday";
-      } else if (now.getDate() + 1 === dueToUtcDate.getDate()) {
+      } else if (
+        now.getDate() + 1 === dueToUtcDate.getDate() &&
+        now.getMonth() + 1 === dueToUtcDate.getMonth() &&
+        now.getFullYear() + 1 === dueToUtcDate.getFullYear()
+      ) {
         return "Tomorrow";
       } else {
         let stringDate = date + "";
@@ -256,7 +373,7 @@ export default {
         const now = new Date();
         const today = dueToUtcDate.toDateString() === now.toDateString();
         // console.log("isToday--->", today);
-        console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
+        // console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
         if (now.getTime() > dueToUtcDate.getTime()) {
           // console.log("overdue");
           return "workLoadTaskOverDue";

@@ -813,7 +813,7 @@ export default {
         { name: "On hold", id: "onHold" },
         { name: "Open", id: "open" },
         { name: "Cancel", id: "cancel" },
-        { name: "Reopened", id: "reOpened" },
+        { name: "ReOpened", id: "reOpened" },
         { name: "Fixing", id: "fixing" },
         { name: "Testing", id: "testing" },
         { name: "Resolved", id: "resolved" },

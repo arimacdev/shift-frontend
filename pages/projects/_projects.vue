@@ -1,8 +1,8 @@
 <template>
   <div class="top-nav">
-    <navigation-drawer :user="user" :currentUser="currentUser" />
+    <navigation-drawer />
 
-    <v-toolbar app color dark fixed class="tool-bar">
+    <v-toolbar color dark fixed class="tool-bar">
       <div class="title-div">
         <div class="name-div">
           <v-list-item>
@@ -25,6 +25,11 @@
           <v-list-item-title
             v-if="this.newProject == true"
             class="font-weight-bold"
+          >Create a project</v-list-item-title>
+
+          <v-list-item-title
+            v-else-if="this.$route.params.projects == 'projects'"
+            class="font-weight-bold"
           >Select a project</v-list-item-title>
           <v-list-item-title v-else class="font-weight-bold">{{ this.fetchProject.projectName }}</v-list-item-title>
         </div>
@@ -42,7 +47,7 @@
 
             <div
               v-for="(project, index) in getProjects('presales')"
-              :key="index"
+              :key="'preSales' + index"
               @click="selectProject(project)"
             >
               <v-list-item
@@ -96,7 +101,7 @@
 
             <div
               v-for="(project, index) in getProjects('ongoing')"
-              :key="index"
+              :key="'ongoing' + index"
               v-on:click="component = 'tab-views'"
               @click="selectProject(project)"
             >
@@ -117,7 +122,7 @@
 
             <div
               v-for="(project, index) in getProjects('support')"
-              :key="index"
+              :key="'support' + index"
               v-on:click="component = 'tab-views'"
               @click="selectProject(project)"
             >
@@ -138,7 +143,7 @@
 
             <div
               v-for="(project, index) in getProjects('finished')"
-              :key="index"
+              :key="'finished'+index"
               v-on:click="component = 'tab-views'"
               @click="selectProject(project)"
             >
@@ -159,17 +164,19 @@
         </v-list-item-group>
       </div>
       <keep-alive>
+        <div v-if="this.$route.params.projects == 'projects'" class="defaultFilterBackground">
+          <v-icon size="150" color="#EDF0F5">mdi-folder-multiple-outline</v-icon>
+        </div>
         <component
           v-if="
             this.$route.params.projects != 'projects' &&
               this.$route.params.projects != undefined
           "
           v-bind:is="component"
-          :name="name"
           :project="project"
           @refreshSelectedTab="refreshSelectedTab"
         ></component>
-        <component v-else-if="this.component == 'add-project'" v-bind:is="component" :name="name"></component>
+        <component v-else-if="this.component == 'add-project'" v-bind:is="component"></component>
       </keep-alive>
     </div>
   </div>
@@ -197,7 +204,7 @@ export default {
       taskLog: [],
       Alltasks: [],
       MyTasks: [],
-      taskCompletion: {},
+      // taskCompletion: {},
       users: [],
       user_org_role: this.$store.state.user.organizationalRole,
       access_token: this.$store.state.user.access_token,
@@ -216,26 +223,30 @@ export default {
   created() {
     this.$store.dispatch("project/fetchAllProjects");
     this.$store.dispatch("user/setAllUsers");
-
-    this.$store.dispatch("project/fetchProject", this.$route.params.projects);
+    this.$store.dispatch("project/clearProject");
+    if (this.$route.params.projects != "projects") {
+      this.$store.dispatch("project/fetchProject", this.$route.params.projects);
+    }
     switch (this.selectedTab) {
       case "task":
-        this.$store.dispatch(
-          "task/fetchTasksAllTasks",
-          this.$route.params.projects
-        );
-        this.$store.dispatch(
-          "task/fetchTasksMyTasks",
-          this.$route.params.projects
-        );
-        this.$store.dispatch(
-          "task/fetchProjectUserCompletionTasks",
-          this.$route.params.projects
-        );
-        this.$store.dispatch(
-          "sprints/sprint/fetchAllProjectSprints",
-          this.$route.params.projects
-        );
+        if (this.$route.params.projects != "projects") {
+          this.$store.dispatch(
+            "task/fetchTasksAllTasks",
+            this.$route.params.projects
+          );
+          this.$store.dispatch(
+            "task/fetchTasksMyTasks",
+            this.$route.params.projects
+          );
+          this.$store.dispatch(
+            "task/fetchProjectUserCompletionTasks",
+            this.$route.params.projects
+          );
+          this.$store.dispatch(
+            "sprints/sprint/fetchAllProjectSprints",
+            this.$route.params.projects
+          );
+        }
         break;
       case "people":
         this.$store.dispatch(
@@ -265,6 +276,8 @@ export default {
           this.$route.params.projects
         );
         break;
+      default:
+        console.log("Home Page");
     }
   },
 
@@ -272,6 +285,7 @@ export default {
     getProjectName(name) {
       return name.replace(/\s+/g, "-").toLowerCase();
     },
+
     getProjects(type) {
       const projectsAll = this.allProjects;
       if (this.looped === false) {

@@ -860,7 +860,15 @@
 
 .taskListViewContent {
   height: 60vh;
+  z-index: -100;
+  margin-top: 25px;
   padding-bottom: 100px;
+}
+.allTaskCreateTab {
+  margin-bottom: -40px !important;
+}
+.filterListTop {
+  margin-top: 25px;
 }
 
 /* --------------- popup ---------------- */
@@ -1174,6 +1182,7 @@
   height: 60px !important;
 }
 .workloadContentDiv {
+  padding-top: 20px !important;
 }
 
 .projectDetailsPannels {
@@ -1182,6 +1191,9 @@
 }
 .projectDetailsPannelHeader {
   color: #ffffff;
+}
+.projectDetailsEmptyPannelHeader {
+  color: #576377;
 }
 .projectDetailsPannelContent {
   padding-top: 10px;
@@ -1276,12 +1288,6 @@
   width: 59%;
 }
 
-.workloadFilter {
-  position: absolute;
-  right: 30px;
-  top: 80px;
-  /* z-index: 1000; */
-}
 .filterIcon {
   margin-right: -15px !important;
   padding-top: 5px !important;
@@ -1718,7 +1724,12 @@
   float: left;
   color: #7a8b9f;
   font-weight: 600;
-  font-size: ;
+}
+.noResultDiv {
+  float: left;
+  color: #7a8b9f;
+  font-weight: 600;
+  font-size: 18px;
 }
 .filterDropdownDiv {
   width: 70%;
@@ -1784,6 +1795,7 @@
   margin-right: 10px;
 }
 .restructuredTaskCreate {
+  margin-top: 20px;
   margin-bottom: -20px;
 }
 .restructuredSubTaskList {
@@ -2062,7 +2074,12 @@
 .allTaskPopupPlacements {
   position: absolute;
   right: 30px;
-  bottom: 60px;
+  bottom: 100px;
+}
+.filterTaskPopupPlacements {
+  position: absolute;
+  right: 30px;
+  bottom: 20px;
 }
 .deleteTaskButton {
   /* background-color: #ff6161; */
@@ -2174,4 +2191,259 @@
   position: absolute;
   padding-left: 10px;
   background-color: #ffffff;
+}
+
+/* ----------------- workload restructure ------------ */
+
+.workloadTypeSection {
+  width: 100%;
+  height: 60px;
+  background-color: #0b0b53;
+  margin-top: -20px;
+  margin-bottom: 40px;
+  color: #ffffff;
+  padding-left: 20px;
+  padding-top: 12px;
+  position: fixed;
+  z-index: 100;
+}
+
+.workloadV2Body {
+  padding: 30px;
+}
+
+.myWorkloadV2Content {
+  margin-top: 100px;
+}
+.workloadFilter {
+  width: 50vw;
+  /* background-color: #ffffff; */
+  position: absolute;
+  right: 30px;
+  top: 100px;
+  margin-bottom: 50px;
+  /* z-index: 1000; */
+}
+.filterBottom {
+  /* margin-bottom: 20px; */
+}
+.filterDivider {
+  margin-bottom: 20px;
+  margin-top: -20px;
+}
+.orgWorkloadTopTabs {
+  margin-top: 30px;
+  margin-left: -25px;
+  height: 90vh;
+  width: 100%;
+  position: fixed !important;
+}
+.tabHeaders {
+  font-size: 12px;
+  font-weight: bold;
+}
+.searchTabLeftBar {
+  background-color: #edf0f5;
+  margin-left: -20px;
+  /* margin-top: -13px; */
+  padding: 20px;
+  padding-left: 25px;
+  height: 80vh;
+  padding-bottom: 100px;
+}
+.searchTabRightBar {
+  /* margin-left: -20px; */
+  /* margin-top: -13px; */
+  padding: 20px;
+  padding-left: 25px;
+  height: 80vh;
+  padding-right: 100px;
+  padding-bottom: 100px;
+}
+.containsText {
+  font-size: 15px;
+  font-weight: bold;
+  color: #576377;
+  padding-bottom: 20px !important;
+}
+.dateTimePickerFilter {
+  position: absolute;
+  width: 30%;
+}
+.bottomColFilter {
+  margin-top: 45px;
+}
+.toolBarFilter {
+  /* z-index: 100; */
+}
+.col1 {
+  width: 35%;
+  float: left;
+  padding-left: 10px;
+}
+.col2 {
+  width: 65%;
+  float: right;
+}
+.filterOrderWorkload {
+  margin-top: 25px !important;
+  margin-bottom: -20px !important;
+}
+.WorkloadTabsContents {
+  padding-top: 80px;
+  width: 100%;
+}
+.filterSearchBtn {
+  background-color: #080848;
+  color: #ffffff;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.filterCancelBtn {
+  background-color: #ff6161;
+  color: #ffffff;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.defaultFilterBackground {
+  text-align: center;
+  padding-top: 20%;
+}
+.calanderTabContent {
+  width: 80vw;
+}
+.restructuredWorkloadTaskFilterList {
+  background-color: #edf0f5;
+  overflow: hidden;
+}
+.templateText {
+  font-size: 15px;
+  font-weight: bold;
+  color: #576377;
+}
+.saveTemplateBody {
+  padding-left: 40px;
+  padding-right: 40px;
+  color: #576377;
+}
+.spacerTemplate {
+  width: 20px;
+}
+.orderByEntity {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px !important;
+  margin-top: 20px;
+}
+.calanderCol1 {
+  width: 25%;
+  float: left;
+  padding-left: 10px;
+}
+.calanderCol2 {
+  width: 75%;
+  float: right;
+}
+.calanderSection {
+  padding-bottom: 100px !important;
+}
+.workloadCard {
+  display: inline-block;
+  /* width: 300px; */
+  /* margin-right: 2px; */
+  width: 120px;
+  padding-bottom: 30px;
+  height: 100%;
+  /* background-color: bisque; */
+}
+.overviewBody {
+  height: 80vh;
+  padding-bottom: 100px;
+}
+.graphDiv {
+  margin-top: 30px;
+  width: 93vw;
+  margin-right: 20px;
+  height: 100%;
+  padding-top: 10px;
+  overflow-y: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  background-color: #e5e5e5;
+}
+.overviewScrollingWrapper {
+  /* overflow-x: scroll; */
+  overflow-y: hidden;
+  white-space: nowrap;
+  height: 95%;
+  width: 100%;
+  padding-right: 100px;
+  padding-left: 10px;
+}
+.overviewTitle {
+  font-weight: bold;
+  padding-left: 20px;
+}
+.filterSectionOverview {
+  margin-top: 30px;
+  width: 93vw;
+  background-color: #e5e5e5;
+  margin-bottom: -50px;
+  padding-right: 20px;
+}
+.overviewProgressSection {
+  transform: rotate(-90deg);
+  width: 200px;
+  height: 200px;
+  margin-left: 53px;
+  /* margin-top: 100px; */
+}
+.graphNameField {
+  text-align: center;
+  color: #7c8696;
+  /* padding-top: 80%; */
+}
+.overviewAvater {
+  padding-left: 35%;
+  cursor: pointer;
+}
+.progressCounter {
+  text-align: center;
+  font-size: 10px;
+  color: #576377;
+  /* margin-top: -30px; */
+}
+.workloadSelectedName {
+  font-size: 18px;
+  font-weight: bold;
+  color: #080848;
+  margin-top: 40px;
+}
+.workloadTasksDisplay {
+  margin-right: 80px;
+}
+.statusSpan {
+  font-size: 16px;
+  background-color: #edf0f5;
+  color: #576377;
+  width: 250px;
+  padding: 10px;
+  border-radius: 5px;
+}
+.myWorkloadContainer {
+  margin: 30px;
+  margin-top: 80px;
+}
+.logooutButton {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
 }

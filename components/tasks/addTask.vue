@@ -54,6 +54,7 @@
               background-color="#EDF0F5"
               class="createFormElements"
               @mousedown="getParentTasks"
+              @change="getSprint"
               clearable
             ></v-select>
           </v-col>
@@ -168,6 +169,7 @@
           </v-col>
           <v-col sm="4" md="4">
             <v-select
+              :disabled="this.parentTask != '' && this.parentTask != undefined"
               :menu-props="{ maxHeight: '500' }"
               v-model="taskBoard"
               :items="sprints"
@@ -278,6 +280,9 @@
         </v-row>
       </form>
     </div>
+    <v-overlay :value="overlay">
+      <progress-loading />
+    </v-overlay>
 
     <div @click="close" class="taskAddPopupPlacements">
       <component v-bind:is="component" :errorMessage="errorMessage"></component>
@@ -292,18 +297,25 @@ import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import { mapState } from "vuex";
 
+import Progress from "~/components/popups/progress";
+
 import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 
 import axios from "axios";
 export default {
-  props: ["projectId", "projectUsers", "people", "AllTasks"],
+  props: ["projectUsers", "AllTasks"],
   components: {
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
+
+    "progress-loading": Progress
   },
 
   data() {
     return {
+      overlay: false,
+      projectId: "",
+      selectedSprint: "",
       errorMessage: "",
       successMessage: "",
       userId: this.$store.state.user.userId,
@@ -318,6 +330,7 @@ export default {
         taskRemindOnDate: "",
         taskNotes: ""
       },
+      taskBoard: "",
       component: "",
       issueType: "general",
       taskAssignee: "",
@@ -486,6 +499,27 @@ export default {
     }
   },
   methods: {
+    async getSprint() {
+      let sprintResponse;
+      if (this.parentTask != "" && this.parentTask != undefined) {
+        try {
+          sprintResponse = await this.$axios.$get(
+            `/projects/${this.projectId}/tasks/${this.parentTask}`,
+            {
+              headers: {
+                user: this.userId
+              }
+            }
+          );
+          console.log("sprint--->", sprintResponse.data);
+          this.taskBoard = sprintResponse.data.sprintId;
+        } catch (error) {
+          console.log("Error fetching data", error);
+        }
+      } else {
+        this.taskBoard = "";
+      }
+    },
     getMaxDueDate() {
       let stringDate = this.fetchProject.projectEndDate + "";
       stringDate = stringDate.toString();
@@ -584,6 +618,7 @@ export default {
       }
     },
     async addTask() {
+      this.overlay = true;
       let response;
       try {
         response = await this.$axios.$post(
@@ -635,6 +670,7 @@ export default {
                 console.log("File Upload Failed");
               });
           }
+          this.overlay = false;
         }
         this.files = null;
         if (this.taskAssignee === this.userId) {
@@ -654,6 +690,7 @@ export default {
           (this.files = null);
         this.$v.$reset();
       } catch (e) {
+        this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -663,10 +700,13 @@ export default {
       }
     }
   },
+  async created() {
+    this.projectId = this.$route.params.projects;
+  },
   computed: {
     ...mapState({
       users: state => state.user.users,
-      projectId: state => state.project.project.projectId,
+      // projectId: state => state.project.project.projectId,
       people: state => state.task.userCompletionTasks,
       projectAllTasks: state => state.task.allTasks,
       projectSprints: state => state.sprints.sprint.sprints,

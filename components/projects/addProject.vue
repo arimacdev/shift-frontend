@@ -114,7 +114,7 @@
       <v-row class="mb-12 formRow" no-gutters>
         <v-col sm="12" md="6" class></v-col>
         <v-col sm="12" md="6" class="buttonGrid">
-          <button :class="addProjectStyling" :disabled="checkValidation" @click.once="postData()">
+          <button :class="addProjectStyling" :disabled="checkValidation" @click="postData()">
             <v-list-item dark>
               <v-list-item-action>
                 <v-icon size="20" color>mdi-folder-outline</v-icon>
@@ -128,6 +128,9 @@
         </v-col>
       </v-row>
     </form>
+    <v-overlay :value="overlay">
+      <progress-loading />
+    </v-overlay>
     <div @click="close">
       <component v-bind:is="component" :errorMessage="errorMessage"></component>
     </div>
@@ -146,13 +149,15 @@ import {
 } from "vuelidate/lib/validators";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
+import Progress from "~/components/popups/progress";
 
 import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 
 export default {
   components: {
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
+    "progress-loading": Progress
   },
 
   methods: {
@@ -173,6 +178,7 @@ export default {
       return isoDate;
     },
     async postData() {
+      this.overlay = true;
       let response;
       try {
         response = await this.$axios.$post("/projects", {
@@ -192,9 +198,11 @@ export default {
 
         console.log("project added successfully", response);
         this.component = "success-popup";
+        this.overlay = false;
         window.location.href = "/projects/" + response.data.projectId;
         // window.setTimeout(location.reload(), 8000);
       } catch (e) {
+        this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         console.log("Error creating project", e);
@@ -215,6 +223,7 @@ export default {
   },
   data() {
     return {
+      overlay: false,
       errorMessage: "",
       userId: this.$store.state.user.userId,
       projectName: "",

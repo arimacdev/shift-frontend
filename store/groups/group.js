@@ -4,7 +4,16 @@ export const state = () => ({
 
 export const mutations = {
   SET_MY_GROUPS(state, mygroups) {
-    state.myGroups = mygroups;
+    const sorted = mygroups.sort((a, b) => {
+      const groupA = a.taskGroupName.toUpperCase();
+      const groupB = b.taskGroupName.toUpperCase();
+
+      if (groupA < groupB) return -1;
+      if (groupA > groupB) return 1;
+
+      return 0;
+    });
+    state.myGroups = sorted;
   },
 
   ADD_MY_GROUP(state, myGroup) {

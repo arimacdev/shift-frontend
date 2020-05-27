@@ -11,7 +11,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <button class :disabled="checkValidation">
+        <button class>
           <v-list-item dark>
             <div>
               <v-tooltip left>
@@ -653,7 +653,7 @@ import AddParentTask from "~/components/tasksPage/addParentTask";
 import AddChildTask from "~/components/tasksPage/addChildTask";
 
 export default {
-  props: ["task", "projectId", "people", "taskObject"],
+  props: ["task", "people", "taskObject"],
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
@@ -664,7 +664,6 @@ export default {
     return {
       taskDeleteDialog: false,
       taskId: "",
-      projectId: "",
       userId: this.$store.state.user.userId,
       sprints: [],
       editTask: true,
@@ -1143,7 +1142,7 @@ export default {
       people: state => state.task.userCompletionTasks,
       projectSprints: state => state.sprints.sprint.sprints,
       projectAllTasks: state => state.task.allTasks,
-      projectId: state => state.project.project.projectId,
+      // projectId: state => state.project.project.projectId,
       selectedTaskUser: state => state.user.selectedTaskUser,
       groupPeople: state => state.groups.groupPeople.groupPeople,
       taskFiles: state => state.groups.groupTask.groupTaskFiles,

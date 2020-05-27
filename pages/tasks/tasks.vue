@@ -1,7 +1,7 @@
 <template>
   <div class="top-nav">
-    <navigation-drawer :user="user" />
-    <v-toolbar app color dark fixed class="tool-bar">
+    <navigation-drawer />
+    <v-toolbar color dark fixed class="tool-bar">
       <div class="title-div">
         <div class="task-name-div">
           <v-list-item>
@@ -88,6 +88,9 @@
         v-bind:is="component"
       ></component>
     </div>
+    <v-overlay :value="overlay">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 <script>
@@ -95,6 +98,7 @@ import NavigationDrawer from "~/components/navigationDrawer";
 import TaskSearchBar from "~/components/tools/taskSearchBar";
 import PersonalTasks from "~/components/tasksPage/personalTasks";
 import GroupTasks from "~/components/tasksPage/groupTasks";
+import Progress from "~/components/popups/progress";
 import { mapState } from "vuex";
 import axios from "axios";
 
@@ -112,11 +116,13 @@ export default {
     NavigationDrawer,
     "task-search-bar": TaskSearchBar,
     "personal-tasks": PersonalTasks,
-    "group-tasks": GroupTasks
+    "group-tasks": GroupTasks,
+    "progress-loading": Progress
   },
 
   data() {
     return {
+      overlay: false,
       component: "personal-tasks",
       groupName: "",
       userId: this.$store.state.user.userId,
@@ -168,10 +174,12 @@ export default {
     },
 
     async addGroup() {
+      this.overlay = true;
       console.log("add group");
       this.$store.dispatch("groups/group/addGroup", this.groupName);
 
       this.groupName = "";
+      this.overlay = false;
     }
   }
 };

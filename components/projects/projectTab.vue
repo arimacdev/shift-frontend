@@ -393,20 +393,26 @@
     <!-- <div class="popupBox">
         <success-popup />
     </div>-->
+    <v-overlay :value="overlay">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
+import Progress from "~/components/popups/progress";
 
 export default {
   components: {
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
+    "progress-loading": Progress
   },
   data() {
     return {
+      overlay: false,
       successMessage: "",
       errorMessage: "",
       userId: this.$store.state.user.userId,
@@ -466,7 +472,7 @@ export default {
         const isoDate = new Date(
           startDate.getTime() - startDate.getTimezoneOffset() * 60000
         ).toISOString();
-        console.log("iso edit Start date", isoDate);
+        // console.log("iso edit Start date", isoDate);
         this.updateProject.projectStartDate = isoDate;
       }
     },
@@ -482,17 +488,17 @@ export default {
         const isoDate = new Date(
           startDate.getTime() - startDate.getTimezoneOffset() * 60000
         ).toISOString();
-        console.log("iso edit end date", isoDate);
+        // console.log("iso edit end date", isoDate);
         this.updateProject.projectEndDate = isoDate;
       }
     },
     projectStatus: {
       get() {
-        console.log("get status", this.fetchProject.projectStatus);
+        // console.log("get status", this.fetchProject.projectStatus);
         return this.fetchProject.projectStatus;
       },
       set(value) {
-        console.log("set status", this.fetchProject.projectStatus);
+        // console.log("set status", this.fetchProject.projectStatus);
 
         this.updateProject.projectStatus = value;
       }
@@ -507,7 +513,8 @@ export default {
       return "123";
     },
     async editProject() {
-      console.log("update Project", this.updateProject);
+      this.overlay = true;
+      // console.log("update Project", this.updateProject);
       let response;
       try {
         response = await this.$axios.$put(
@@ -519,7 +526,7 @@ export default {
             projectStartDate: this.updateProject.projectStartDate,
             projectEndDate: this.updateProject.projectEndDate,
             projectStatus: this.updateProject.projectStatus,
-            projectAlias: this.updateProject.projectAlias
+            projectAlias: this.updateProject.projectAlias.toUpperCase()
           }
         );
         // console.log("project edit response ----------> ", response);
@@ -541,6 +548,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
+        this.overlay = false;
         location.reload();
       } catch (e) {
         this.errorMessage = e.response.data;
@@ -548,6 +556,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
+        this.overlay = false;
         console.log("Error updating a project", e);
       }
     },
@@ -555,6 +564,7 @@ export default {
       this.component = "";
     },
     async deleteData() {
+      this.overlay = true;
       // console.log(this.fetchProject.projectId);
       let response;
       try {
@@ -567,16 +577,22 @@ export default {
             }
           }
         );
-        location.reload();
+        // location.reload();
+        window.location.href = "/projects/projects";
         this.component = "success-popup";
         this.successMessage = "Project successfully deleted";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log(response.data);
+        this.overlay = false;
+        // console.log(response.data);
       } catch (e) {
         this.component = "error-popup";
         this.errorMessage = e.response.data;
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
         console.log("Error deleting project", e);
       }
     },

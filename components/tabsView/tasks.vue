@@ -43,7 +43,6 @@
         :projectId="projectId"
         :Alltasks="Alltasks"
         :MyTasks="MyTasks"
-        :projectUsers="projectUsers"
         :people="people"
       ></component>
       <!-- </keep-alive> -->
@@ -71,8 +70,7 @@ export default {
   },
   data() {
     return {
-      component: "all-tasks",
-      projectUsers: []
+      component: "all-tasks"
     };
   },
   methods: {
