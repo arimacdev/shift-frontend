@@ -13,6 +13,15 @@ export const mutations = {
     state.project = {};
   },
   FETCH_ALL_PROJECTS(state, projects) {
+    const sorted = projects.sort((a, b) => {
+      const projectA = a.projectName.toUpperCase();
+      const projectB = b.projectName.toUpperCase();
+
+      if (projectA < projectB) return -1;
+      if (projectA > projectB) return 1;
+
+      return 0;
+    });
     state.projects = projects;
   },
   FETCH_ALL_PROJECTS_FILES(state, projectFiles) {
