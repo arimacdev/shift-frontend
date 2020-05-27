@@ -127,7 +127,8 @@
           </v-row>
           <v-row>
             <v-col md="12">
-              <div @click="jqlSearch()" class="filterSearchBtn">Search</div>
+              <!-- <div @click="jqlSearch()" class="filterSearchBtn">Search</div> -->
+              <v-btn @click="jqlSearch()" height="70px" color="#080848" dark width="100%">Search</v-btn>
             </v-col>
           </v-row>
         </div>
@@ -592,7 +593,11 @@ export default {
       this.jqlQuery = filterQuery.slice(0, -5) + this.orderByQuery;
       // console.log("QUERY:  " + encodeURI(this.jqlQuery));
       this.events = [];
-      this.getFilterResponse();
+      if (filterQuery != "") {
+        this.getFilterResponse();
+      } else {
+        this.overlay = false;
+      }
     },
     async getFilterResponse() {
       let taskFilterResponse;
