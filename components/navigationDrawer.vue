@@ -24,6 +24,8 @@
 
     <v-divider></v-divider>
 
+    <button @click="userLogOut"> Logout </button>
+
     <v-list v-if="organizationalRole === 'SUPER_ADMIN'">
       <v-list-item
         :router="item.path"
@@ -127,7 +129,13 @@ export default {
     }
   },
 
-  methods: {}
+  methods: {
+    userLogOut() {
+      const APP = "http://localhost:3000/login";
+      const LOGOUT_URL = `https://pmtool.devops.arimac.xyz/auth/realms/pm-tool/protocol/openid-connect/logout?redirect_uri=${APP}`;
+      window.location.replace(LOGOUT_URL);
+    }
+  }
 };
 </script>
 <style scoped>
