@@ -818,11 +818,11 @@ export default {
             }
           }
         );
-        this.component = "success-popup";
-        this.successMessage = "Tasks successfully retrieved";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
+        // this.component = "success-popup";
+        // this.successMessage = "Tasks successfully retrieved";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 3000);
         this.overlay = false;
         this.filterResult = taskFilterResponse.data;
       } catch (e) {
