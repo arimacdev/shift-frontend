@@ -2442,3 +2442,7 @@
   margin: 30px;
   margin-top: 80px;
 }
+.logooutButton {
+  position: absolute;
+  bottom: 20px;
+}

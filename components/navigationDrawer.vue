@@ -60,6 +60,20 @@
         </v-list-item-content>
       </v-list-item>
     </v-list>
+    <v-divider></v-divider>
+    <div class="logooutButton">
+      <v-list>
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon class="navButtons">mdi-power-standby</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title class="navText">Logout</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </div>
   </v-navigation-drawer>
 </template>
 
