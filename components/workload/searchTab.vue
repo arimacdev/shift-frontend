@@ -517,7 +517,9 @@ export default {
         console.log("accumilate", this.filterOrderBy);
         console.log("current", current);
         if (this.filterOrderBy === "taskDueDateAt") {
-          const dueDate = current.taskDueDateAt.slice(0, 10);
+          let dueDate;
+          if (current.taskDueDateAt) dueDate = current.taskDueDateAt;
+          else dueDate = "No Date";
           accumilate[dueDate] = (accumilate[dueDate] || []).concat(current);
         } else {
           accumilate[current[this.filterOrderBy]] = (
@@ -526,10 +528,7 @@ export default {
         }
         return accumilate;
       }, {});
-      // console.log("taskList", taskList);
-      // console.log("taskListOrder", orderedList);
 
-      // return taskList;
       return orderedList;
     },
     async jqlCancel() {
