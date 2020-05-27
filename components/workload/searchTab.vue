@@ -169,12 +169,17 @@
               </v-radio-group>
               <v-row>
                 <v-col md="10">
-                  <div @click="jqlSearch()" class="filterSearchBtn">Search</div>
+                  <!-- <div class="filterSearchBtn"> -->
+                  <v-btn @click="jqlSearch()" height="70px" color="#080848" dark width="100%">Search</v-btn>
+                  <!-- </div> -->
                 </v-col>
                 <v-col md="2">
-                  <div @click="jqlCancel()" class="filterCancelBtn">
+                  <!-- <div @click="jqlCancel()" class="filterCancelBtn">
                     <v-icon color="#FFFFFF">mdi-cancel</v-icon>
-                  </div>
+                  </div>-->
+                  <v-btn @click="jqlCancel()" height="70px" color="#ff6161" dark width="70%">
+                    <v-icon color="#FFFFFF">mdi-cancel</v-icon>
+                  </v-btn>
                 </v-col>
               </v-row>
 
@@ -804,8 +809,11 @@ export default {
       // console.log("QUERY:  " + encodeURI(this.jqlQuery));
       this.saveTemplateQuery = encodeURI(this.jqlQuery);
       // console.log("TEMP QUERY:  " + this.saveTemplateQuery);
-
-      this.getFilterResponse();
+      if (filterQuery != "") {
+        this.getFilterResponse();
+      } else {
+        this.overlay = false;
+      }
     },
     async getFilterResponse() {
       let taskFilterResponse;
