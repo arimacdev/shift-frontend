@@ -604,7 +604,8 @@ export default {
         if (between != null) {
           console.log("betweenPara", between);
           const paramRemove = between[1].replace(/^"(.*)"$/, "$1");
-          const twoDates = paramRemove.split("ANDi");
+          const twoDates = paramRemove.split("AND");
+          console.log("betweenPara", twoDates);
           if (twoDates[0] && twoDates[1]) {
             console.log("from", twoDates[0]);
             console.log("to", twoDates[1]);
@@ -758,11 +759,11 @@ export default {
           ).toISOString();
 
           this.dateQuery =
-            '( taskDueDateAt BETWEEN "' +
+            'taskDueDateAt BETWEEN "' +
             isoStartDate +
             '" AND "' +
             isoEndDate +
-            '") AND ';
+            '" AND ';
         }
       }
       if (this.filterOrderBy != "" && this.filterOrderBy != undefined) {
