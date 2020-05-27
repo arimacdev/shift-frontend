@@ -16,14 +16,13 @@
               </v-col>
               <v-col md="4">
                 <v-autocomplete
-                  v-model="assignee"
+                  v-model="filterAssignee"
                   return-object
                   :items="assigneeArray"
                   item-text="name"
                   item-value="id"
-                  :search-input.sync="searchAssignee"
                   flat
-                  solo
+                  outlined
                   dense
                   chips
                   background-color="#FFFFFF"
@@ -245,7 +244,7 @@ export default {
       taskSprint: "",
       taskUser: {},
       filterAssignee: [],
-      assigneeArray: [],
+      // assigneeArray: [],
       dateRange: null,
       dateQuery: "",
       jqlQuery: "",
@@ -432,6 +431,8 @@ export default {
       this.jqlQuery = "";
     },
     clearFilters() {
+      this.dateRange = null;
+      this.filterAssignee = [];
       this.assigneeQuery = "assignee=all";
       this.from = "all";
       this.to = "all";
@@ -587,6 +588,19 @@ export default {
       users: state => state.user.users,
       allProjects: state => state.project.projects
     }),
+    assigneeArray() {
+      let AssigneeSearchList = this.users;
+      let assigneeList = [];
+      for (let index = 0; index < AssigneeSearchList.length; ++index) {
+        let user = AssigneeSearchList[index];
+        assigneeList.push({
+          name: user.firstName + " " + user.lastName,
+          id: user.userId,
+          img: user.profileImage
+        });
+      }
+      return assigneeList;
+    },
     assignee: {
       get() {
         this.loadAssignee();
