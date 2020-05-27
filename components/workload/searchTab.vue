@@ -513,11 +513,17 @@ export default {
     },
     orderedTaskList() {
       const taskList = this.filterResult;
-      const name = "projectName";
       const orderedList = taskList.reduce((accumilate, current) => {
-        accumilate[current[this.filterOrderBy]] = (
-          accumilate[current[this.filterOrderBy]] || []
-        ).concat(current);
+        console.log("accumilate", this.filterOrderBy);
+        console.log("current", current);
+        if (this.filterOrderBy === "taskDueDateAt") {
+          const dueDate = current.taskDueDateAt.slice(0, 10);
+          accumilate[dueDate] = (accumilate[dueDate] || []).concat(current);
+        } else {
+          accumilate[current[this.filterOrderBy]] = (
+            accumilate[current[this.filterOrderBy]] || []
+          ).concat(current);
+        }
         return accumilate;
       }, {});
       // console.log("taskList", taskList);
