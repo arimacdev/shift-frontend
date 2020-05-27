@@ -33,16 +33,7 @@
                 multiple
                 clearable
                 :clear-icon-cb="clearAssignee()"
-              >
-                <!-- <template v-slot:no-data>
-                  <v-list-item>
-                    <v-list-item-title>
-                      Filter by
-                      <strong>Assignee</strong>
-                    </v-list-item-title>
-                  </v-list-item>
-                </template>-->
-              </v-autocomplete>
+              ></v-autocomplete>
               <!-- :search-input.sync="searchProject" -->
               <v-autocomplete
                 v-model="filterProject"
@@ -60,16 +51,7 @@
                 multiple
                 clearable
                 :clear-icon-cb="clearProject()"
-              >
-                <!-- <template v-slot:no-data>
-                  <v-list-item>
-                    <v-list-item-title>
-                      Filter by
-                      <strong>Project</strong>
-                    </v-list-item-title>
-                  </v-list-item>
-                </template>-->
-              </v-autocomplete>
+              ></v-autocomplete>
               <v-autocomplete
                 v-model="filterType"
                 return-object
@@ -86,16 +68,7 @@
                 multiple
                 clearable
                 @click:clear="clearType()"
-              >
-                <!-- <template v-slot:no-data>
-                  <v-list-item>
-                    <v-list-item-title>
-                      Filter by
-                      <strong>Type</strong>
-                    </v-list-item-title>
-                  </v-list-item>
-                </template>-->
-              </v-autocomplete>
+              ></v-autocomplete>
               <v-autocomplete
                 v-model="filterStatus"
                 return-object
@@ -112,16 +85,7 @@
                 multiple
                 clearable
                 @click:clear="clearStatus()"
-              >
-                <!-- <template v-slot:no-data>
-                  <v-list-item>
-                    <v-list-item-title>
-                      Filter by
-                      <strong>Status</strong>
-                    </v-list-item-title>
-                  </v-list-item>
-                </template>-->
-              </v-autocomplete>
+              ></v-autocomplete>
               <VueCtkDateTimePicker
                 :no-value-to-custom-elem="false"
                 color="#3f51b5"
@@ -147,16 +111,7 @@
                 small-chips
                 label="Order By"
                 @click:clear="clearOrderBy()"
-              >
-                <!-- <template v-slot:no-data>
-                  <v-list-item>
-                    <v-list-item-title>
-                      Filter
-                      <strong>Order By</strong>
-                    </v-list-item-title>
-                  </v-list-item>
-                </template>-->
-              </v-select>
+              ></v-select>
               <v-radio-group v-model="filterOrderSequence">
                 <v-row>
                   <v-col md="6">
@@ -169,14 +124,9 @@
               </v-radio-group>
               <v-row>
                 <v-col md="10">
-                  <!-- <div class="filterSearchBtn"> -->
                   <v-btn @click="jqlSearch()" height="70px" color="#080848" dark width="100%">Search</v-btn>
-                  <!-- </div> -->
                 </v-col>
                 <v-col md="2">
-                  <!-- <div @click="jqlCancel()" class="filterCancelBtn">
-                    <v-icon color="#FFFFFF">mdi-cancel</v-icon>
-                  </div>-->
                   <v-btn @click="jqlCancel()" height="70px" color="#ff6161" dark width="70%">
                     <v-icon color="#FFFFFF">mdi-cancel</v-icon>
                   </v-btn>
@@ -538,12 +488,18 @@ export default {
     async jqlCancel() {
       try {
         this.taskName = "";
+        this.taskNameQuery = "";
         this.filterAssignee = [];
+        this.assigneeQuery = "";
         this.filterProject = [];
+        this.projectQuery = "";
         this.filterType = [];
+        this.typeQuery = "";
         this.filterStatus = [];
+        this.statusQuery = "";
         this.dateRange = null;
         this.filterResult = [];
+        this.jqlQuery = "";
       } catch (error) {
         console.log("Error fetching data", error);
       }

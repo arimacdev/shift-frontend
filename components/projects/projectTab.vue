@@ -526,7 +526,7 @@ export default {
             projectStartDate: this.updateProject.projectStartDate,
             projectEndDate: this.updateProject.projectEndDate,
             projectStatus: this.updateProject.projectStatus,
-            projectAlias: this.updateProject.projectAlias
+            projectAlias: this.updateProject.projectAlias.toUpperCase()
           }
         );
         // console.log("project edit response ----------> ", response);

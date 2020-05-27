@@ -17,7 +17,7 @@
 
         <v-col md="2">
           <v-autocomplete
-            v-model="taskType"
+            v-model="filterType"
             return-object
             :items="taskTypeArray"
             item-text="name"
@@ -42,7 +42,7 @@
         </v-col>
         <v-col md="2">
           <v-autocomplete
-            v-model="taskStatus"
+            v-model="filterStatus"
             return-object
             :items="taskStatusArray"
             item-text="name"
@@ -476,11 +476,17 @@ export default {
   },
   methods: {
     filterChange() {
-      this.nameOfTask = null;
+      this.nameOfTask = "";
       this.taskType = [];
       this.taskStatus = [];
       this.dateRange = null;
       this.taskFilter = "none";
+
+      this.taskNameQuery = "";
+      this.typeQuery = "";
+      this.statusQuery = "";
+      this.dateRange = null;
+      this.jqlQuery = "";
     },
     jqlSearch() {
       this.overlay = true;
