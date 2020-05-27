@@ -60,7 +60,7 @@
         </v-list-item-content>
       </v-list-item>
     </v-list>
-    <v-divider></v-divider>
+    <!-- <v-divider></v-divider>
     <div class="logooutButton">
       <v-list>
         <v-list-item @click="userLogOut">
@@ -73,7 +73,7 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-    </div>
+    </div>-->
   </v-navigation-drawer>
 </template>
 
@@ -154,9 +154,7 @@ export default {
 .navButtons {
   color: #4d4f85;
 }
-.navText {
-  /* color: #4D4F85; */
-}
+
 .navText:visited {
   color: rgb(231, 231, 240);
 }
