@@ -607,8 +607,11 @@ export default {
           const twoDates = paramRemove.split("AND");
           console.log("betweenPara", twoDates);
           if (twoDates[0] && twoDates[1]) {
-            console.log("from", twoDates[0]);
-            console.log("to", twoDates[1]);
+            console.log("from", twoDates[0].slice(0, 28));
+            console.log("to", twoDates[1].slice(0, 28));
+            this.dateRange = new Date();
+            this.dateRange.start = twoDates[0];
+            this.dateRange.end = twoDates[1];
           }
         }
       } else {
