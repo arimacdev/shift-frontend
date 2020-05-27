@@ -17,12 +17,11 @@
           <v-row align="center">
             <v-col md="12">
               <v-autocomplete
-                v-model="assignee"
+                v-model="filterAssignee"
                 return-object
                 :items="assigneeArray"
                 item-text="name"
                 item-value="id"
-                :search-input.sync="searchAssignee"
                 flat
                 outlined
                 dense
@@ -33,24 +32,14 @@
                 multiple
                 clearable
                 :clear-icon-cb="clearAssignee()"
-              >
-                <template v-slot:no-data>
-                  <v-list-item>
-                    <v-list-item-title>
-                      Filter by
-                      <strong>Assignee</strong>
-                    </v-list-item-title>
-                  </v-list-item>
-                </template>
-              </v-autocomplete>
+              ></v-autocomplete>
 
               <v-autocomplete
-                v-model="project"
+                v-model="filterProject"
                 return-object
                 :items="projectArray"
                 item-text="name"
                 item-value="id"
-                :search-input.sync="searchProject"
                 flat
                 outlined
                 dense
@@ -61,18 +50,9 @@
                 multiple
                 clearable
                 :clear-icon-cb="clearProject()"
-              >
-                <template v-slot:no-data>
-                  <v-list-item>
-                    <v-list-item-title>
-                      Filter by
-                      <strong>Project</strong>
-                    </v-list-item-title>
-                  </v-list-item>
-                </template>
-              </v-autocomplete>
+              ></v-autocomplete>
               <v-autocomplete
-                v-model="taskType"
+                v-model="filterType"
                 return-object
                 :items="taskTypeArray"
                 item-text="name"
@@ -87,18 +67,9 @@
                 multiple
                 clearable
                 @click:clear="clearType()"
-              >
-                <template v-slot:no-data>
-                  <v-list-item>
-                    <v-list-item-title>
-                      Filter by
-                      <strong>Type</strong>
-                    </v-list-item-title>
-                  </v-list-item>
-                </template>
-              </v-autocomplete>
+              ></v-autocomplete>
               <v-autocomplete
-                v-model="taskStatus"
+                v-model="filterStatus"
                 return-object
                 :items="taskStatusArray"
                 item-text="name"
@@ -113,21 +84,18 @@
                 multiple
                 clearable
                 @click:clear="clearStatus()"
-              >
-                <template v-slot:no-data>
-                  <v-list-item>
-                    <v-list-item-title>
-                      Filter by
-                      <strong>Status</strong>
-                    </v-list-item-title>
-                  </v-list-item>
-                </template>
-              </v-autocomplete>
+              ></v-autocomplete>
             </v-col>
           </v-row>
           <v-row>
-            <v-col md="12">
-              <div @click="jqlSearch()" class="filterSearchBtn">Search</div>
+            <v-col md="9">
+              <!-- <div @click="jqlSearch()" class="filterSearchBtn">Search</div> -->
+              <v-btn @click="jqlSearch()" height="70px" color="#080848" dark width="100%">Search</v-btn>
+            </v-col>
+            <v-col md="3">
+              <v-btn @click="clear()" height="70px" color="#ff6161" dark width="70%">
+                <v-icon color="#FFFFFF">mdi-cancel</v-icon>
+              </v-btn>
             </v-col>
           </v-row>
         </div>
@@ -327,8 +295,8 @@ export default {
     orderByQuery: "",
     dateQuery: "",
     taskNameQuery: "",
-    assigneeArray: [],
-    projectArray: [],
+    // assigneeArray: [],
+    // projectArray: [],
     filterAssignee: [],
     filterProject: [],
     filterType: [],
@@ -393,6 +361,21 @@ export default {
     }
   },
   methods: {
+    clear() {
+      this.taskName = "";
+      this.taskNameQuery = "";
+      this.filterAssignee = [];
+      this.assigneeQuery = "";
+      this.filterProject = [];
+      this.projectQuery = "";
+      this.filterType = [];
+      this.typeQuery = "";
+      this.filterStatus = [];
+      this.statusQuery = "";
+      this.filterResult = [];
+      this.jqlQuery = "";
+      this.events = [];
+    },
     viewDay({ date }) {
       this.focus = date;
       this.type = "day";
@@ -592,7 +575,11 @@ export default {
       this.jqlQuery = filterQuery.slice(0, -5) + this.orderByQuery;
       // console.log("QUERY:  " + encodeURI(this.jqlQuery));
       this.events = [];
-      this.getFilterResponse();
+      if (filterQuery != "") {
+        this.getFilterResponse();
+      } else {
+        this.overlay = false;
+      }
     },
     async getFilterResponse() {
       let taskFilterResponse;
@@ -642,6 +629,7 @@ export default {
       this.jqlQuery = "";
     },
     clearName() {
+      this.taskName = "";
       this.taskNameQuery = "";
       this.jqlQuery = "";
     },
@@ -690,6 +678,31 @@ export default {
       users: state => state.user.users,
       allProjects: state => state.project.projects
     }),
+    assigneeArray() {
+      let AssigneeSearchList = this.users;
+      let assigneeList = [];
+      for (let index = 0; index < AssigneeSearchList.length; ++index) {
+        let user = AssigneeSearchList[index];
+        assigneeList.push({
+          name: user.firstName + " " + user.lastName,
+          id: user.userId,
+          img: user.profileImage
+        });
+      }
+      return assigneeList;
+    },
+    projectArray() {
+      let projectSearchList = this.allProjects;
+      let projectList = [];
+      for (let index = 0; index < projectSearchList.length; ++index) {
+        let project = projectSearchList[index];
+        projectList.push({
+          name: project.projectName,
+          id: project.projectId
+        });
+      }
+      return projectList;
+    },
     assignee: {
       get() {
         this.loadAssignee();

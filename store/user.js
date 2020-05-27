@@ -19,6 +19,15 @@ export const mutations = {
     state.organizationalRole = value;
   },
   SET_USERS(state, users) {
+    const sorted = users.sort((a, b) => {
+      const userA = a.firstName.toUpperCase();
+      const userB = b.firstName.toUpperCase();
+
+      if (userA < userB) return -1;
+      if (userA > userB) return 1;
+
+      return 0;
+    });
     state.users = users;
   },
   SET_TASK_USER(state, user) {

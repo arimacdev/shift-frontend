@@ -33,16 +33,7 @@
                 multiple
                 clearable
                 :clear-icon-cb="clearAssignee()"
-              >
-                <!-- <template v-slot:no-data>
-                  <v-list-item>
-                    <v-list-item-title>
-                      Filter by
-                      <strong>Assignee</strong>
-                    </v-list-item-title>
-                  </v-list-item>
-                </template>-->
-              </v-autocomplete>
+              ></v-autocomplete>
               <!-- :search-input.sync="searchProject" -->
               <v-autocomplete
                 v-model="filterProject"
@@ -60,16 +51,7 @@
                 multiple
                 clearable
                 :clear-icon-cb="clearProject()"
-              >
-                <!-- <template v-slot:no-data>
-                  <v-list-item>
-                    <v-list-item-title>
-                      Filter by
-                      <strong>Project</strong>
-                    </v-list-item-title>
-                  </v-list-item>
-                </template>-->
-              </v-autocomplete>
+              ></v-autocomplete>
               <v-autocomplete
                 v-model="filterType"
                 return-object
@@ -86,16 +68,7 @@
                 multiple
                 clearable
                 @click:clear="clearType()"
-              >
-                <!-- <template v-slot:no-data>
-                  <v-list-item>
-                    <v-list-item-title>
-                      Filter by
-                      <strong>Type</strong>
-                    </v-list-item-title>
-                  </v-list-item>
-                </template>-->
-              </v-autocomplete>
+              ></v-autocomplete>
               <v-autocomplete
                 v-model="filterStatus"
                 return-object
@@ -112,16 +85,7 @@
                 multiple
                 clearable
                 @click:clear="clearStatus()"
-              >
-                <!-- <template v-slot:no-data>
-                  <v-list-item>
-                    <v-list-item-title>
-                      Filter by
-                      <strong>Status</strong>
-                    </v-list-item-title>
-                  </v-list-item>
-                </template>-->
-              </v-autocomplete>
+              ></v-autocomplete>
               <VueCtkDateTimePicker
                 :no-value-to-custom-elem="false"
                 color="#3f51b5"
@@ -133,7 +97,7 @@
                 autoClose
                 :clear-icon-cb="clearDate()"
               ></VueCtkDateTimePicker>
-              <v-autocomplete
+              <v-select
                 class="filterOrderWorkload"
                 v-model="filterOrderBy"
                 :items="orderByArray"
@@ -147,16 +111,7 @@
                 small-chips
                 label="Order By"
                 @click:clear="clearOrderBy()"
-              >
-                <!-- <template v-slot:no-data>
-                  <v-list-item>
-                    <v-list-item-title>
-                      Filter
-                      <strong>Order By</strong>
-                    </v-list-item-title>
-                  </v-list-item>
-                </template>-->
-              </v-autocomplete>
+              ></v-select>
               <v-radio-group v-model="filterOrderSequence">
                 <v-row>
                   <v-col md="6">
@@ -169,12 +124,12 @@
               </v-radio-group>
               <v-row>
                 <v-col md="10">
-                  <div @click="jqlSearch()" class="filterSearchBtn">Search</div>
+                  <v-btn @click="jqlSearch()" height="70px" color="#080848" dark width="100%">Search</v-btn>
                 </v-col>
                 <v-col md="2">
-                  <div @click="jqlCancel()" class="filterCancelBtn">
+                  <v-btn @click="jqlCancel()" height="70px" color="#ff6161" dark width="70%">
                     <v-icon color="#FFFFFF">mdi-cancel</v-icon>
-                  </div>
+                  </v-btn>
                 </v-col>
               </v-row>
 
@@ -245,7 +200,7 @@
               <!-- <span> {{entityTasks}} || {{entity}} || {{index}}</span> -->
               <div
                 class="orderByEntity"
-                v-if="filterOrderBy === 'taskDueDateAt' && entity === null"
+                v-if="filterOrderBy === 'taskDueDateAt' && entity === null && entity != undefined"
               >No Due Date</div>
               <div
                 class="orderByEntity"
@@ -253,7 +208,7 @@
               >{{entity.slice(0,10)}}</div>
               <div
                 class="orderByEntity"
-                v-if="filterOrderBy === 'taskAssignee'"
+                v-if="filterOrderBy === 'taskAssignee' && entity != undefined"
               >{{entityTasks[0].firstName}} {{entityTasks[0].lastName}}</div>
               <div
                 class="orderByEntity"
@@ -508,11 +463,20 @@ export default {
     },
     orderedTaskList() {
       const taskList = this.filterResult;
-      const name = "projectName";
       const orderedList = taskList.reduce((accumilate, current) => {
-        accumilate[current[this.filterOrderBy]] = (
-          accumilate[current[this.filterOrderBy]] || []
-        ).concat(current);
+        // console.log("accumilate", this.filterOrderBy);
+        // console.log("current", current);
+        if (this.filterOrderBy === "taskDueDateAt") {
+          let dueDate;
+          if (current.taskDueDateAt)
+            dueDate = current.taskDueDateAt.slice(0, 10);
+          else dueDate = "No Due Date";
+          accumilate[dueDate] = (accumilate[dueDate] || []).concat(current);
+        } else {
+          accumilate[current[this.filterOrderBy]] = (
+            accumilate[current[this.filterOrderBy]] || []
+          ).concat(current);
+        }
         return accumilate;
       }, {});
       // console.log("taskList", taskList);
@@ -524,12 +488,18 @@ export default {
     async jqlCancel() {
       try {
         this.taskName = "";
+        this.taskNameQuery = "";
         this.filterAssignee = [];
+        this.assigneeQuery = "";
         this.filterProject = [];
+        this.projectQuery = "";
         this.filterType = [];
+        this.typeQuery = "";
         this.filterStatus = [];
+        this.statusQuery = "";
         this.dateRange = null;
         this.filterResult = [];
+        this.jqlQuery = "";
       } catch (error) {
         console.log("Error fetching data", error);
       }
@@ -583,6 +553,9 @@ export default {
         if (decodedFilterTempQuery.includes("LIKE")) {
           this.fillTemplateCriteria("LIKE", decodedFilterTempQuery);
         }
+        if (decodedFilterTempQuery.includes("BETWEEN")) {
+          this.fillTemplateCriteria("BETWEEN", decodedFilterTempQuery);
+        }
         // this.jqlSearch(); ------> removed this
       } catch (error) {
         console.log("Error fetching data", error);
@@ -590,6 +563,7 @@ export default {
     },
     fillTemplateCriteria(criteria, decodedFilterTempQuery) {
       // console.log("criteria", criteria);
+
       if (criteria === "ORDERBY") {
         const orderby = decodedFilterTempQuery.split("ORDER BY");
 
@@ -623,11 +597,24 @@ export default {
             }
           }
         }
-      }
-      //  else if (criteria === "LIKE") {
-
-      // }
-      else {
+      } else if (criteria === "BETWEEN") {
+        const entityBetween = new RegExp(`${criteria}\s*(.*?)\s*ORDER`, "g");
+        //validation
+        const between = entityBetween.exec(decodedFilterTempQuery);
+        if (between != null) {
+          console.log("betweenPara", between);
+          const paramRemove = between[1].replace(/^"(.*)"$/, "$1");
+          const twoDates = paramRemove.split("AND");
+          console.log("betweenPara", twoDates);
+          if (twoDates[0] && twoDates[1]) {
+            console.log("from", twoDates[0].slice(0, 28));
+            console.log("to", twoDates[1].slice(0, 28));
+            this.dateRange = new Date();
+            this.dateRange.start = twoDates[0];
+            this.dateRange.end = twoDates[1];
+          }
+        }
+      } else {
         const entityBetween = new RegExp(`${criteria}\s*(.*?)\s*AND`, "g");
         const entityEnd = new RegExp(`${criteria}\s*(.*?)\s*ORDER`, "g");
 
@@ -804,8 +791,11 @@ export default {
       // console.log("QUERY:  " + encodeURI(this.jqlQuery));
       this.saveTemplateQuery = encodeURI(this.jqlQuery);
       // console.log("TEMP QUERY:  " + this.saveTemplateQuery);
-
-      this.getFilterResponse();
+      if (filterQuery != "") {
+        this.getFilterResponse();
+      } else {
+        this.overlay = false;
+      }
     },
     async getFilterResponse() {
       let taskFilterResponse;
@@ -818,11 +808,11 @@ export default {
             }
           }
         );
-        this.component = "success-popup";
-        this.successMessage = "Tasks successfully retrieved";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
+        // this.component = "success-popup";
+        // this.successMessage = "Tasks successfully retrieved";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 3000);
         this.overlay = false;
         this.filterResult = taskFilterResponse.data;
       } catch (e) {

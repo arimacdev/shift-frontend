@@ -472,7 +472,7 @@ export default {
         const isoDate = new Date(
           startDate.getTime() - startDate.getTimezoneOffset() * 60000
         ).toISOString();
-        console.log("iso edit Start date", isoDate);
+        // console.log("iso edit Start date", isoDate);
         this.updateProject.projectStartDate = isoDate;
       }
     },
@@ -488,17 +488,17 @@ export default {
         const isoDate = new Date(
           startDate.getTime() - startDate.getTimezoneOffset() * 60000
         ).toISOString();
-        console.log("iso edit end date", isoDate);
+        // console.log("iso edit end date", isoDate);
         this.updateProject.projectEndDate = isoDate;
       }
     },
     projectStatus: {
       get() {
-        console.log("get status", this.fetchProject.projectStatus);
+        // console.log("get status", this.fetchProject.projectStatus);
         return this.fetchProject.projectStatus;
       },
       set(value) {
-        console.log("set status", this.fetchProject.projectStatus);
+        // console.log("set status", this.fetchProject.projectStatus);
 
         this.updateProject.projectStatus = value;
       }
@@ -514,7 +514,7 @@ export default {
     },
     async editProject() {
       this.overlay = true;
-      console.log("update Project", this.updateProject);
+      // console.log("update Project", this.updateProject);
       let response;
       try {
         response = await this.$axios.$put(
@@ -526,7 +526,7 @@ export default {
             projectStartDate: this.updateProject.projectStartDate,
             projectEndDate: this.updateProject.projectEndDate,
             projectStatus: this.updateProject.projectStatus,
-            projectAlias: this.updateProject.projectAlias
+            projectAlias: this.updateProject.projectAlias.toUpperCase()
           }
         );
         // console.log("project edit response ----------> ", response);
@@ -585,7 +585,7 @@ export default {
           this.close();
         }, 3000);
         this.overlay = false;
-        console.log(response.data);
+        // console.log(response.data);
       } catch (e) {
         this.component = "error-popup";
         this.errorMessage = e.response.data;

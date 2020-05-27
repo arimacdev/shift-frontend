@@ -252,7 +252,7 @@
         </div>
       </div>
     </div>
-    <v-navigation-drawer
+    <!-- <v-navigation-drawer
       v-model="drawer"
       fixed
       temporary
@@ -262,7 +262,7 @@
       class
       color="#FFFFFF"
     >
-      <!-- <task-side-bar
+      <task-side-bar
         :task="task"
         :assignee="assignee"
         :projectId="projectId"
@@ -271,8 +271,8 @@
         :people="people"
         @listenChange="listenChange"
         @shrinkSideBar="shrinkSideBar"
-      />-->
-    </v-navigation-drawer>
+      />
+    </v-navigation-drawer>-->
     <!-- ------------ task dialog --------- -->
 
     <v-dialog persistent v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
@@ -350,6 +350,7 @@ export default {
   },
   data() {
     return {
+      componentClose: null,
       projectId: "",
       errorMessage: "",
       successMessage: "",

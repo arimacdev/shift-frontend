@@ -1182,7 +1182,7 @@
   height: 60px !important;
 }
 .workloadContentDiv {
-  margin-top: 40px !important;
+  padding-top: 20px !important;
 }
 
 .projectDetailsPannels {
@@ -2216,12 +2216,16 @@
   margin-top: 100px;
 }
 .workloadFilter {
+  width: 50vw;
   /* background-color: #ffffff; */
   position: absolute;
   right: 30px;
-  top: 130px;
+  top: 100px;
   margin-bottom: 50px;
   /* z-index: 1000; */
+}
+.filterBottom {
+  /* margin-bottom: 20px; */
 }
 .filterDivider {
   margin-bottom: 20px;
@@ -2437,4 +2441,9 @@
 .myWorkloadContainer {
   margin: 30px;
   margin-top: 80px;
+}
+.logooutButton {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
 }

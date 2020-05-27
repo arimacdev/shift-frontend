@@ -2,7 +2,7 @@
   <div class="top-nav">
     <navigation-drawer />
 
-    <v-toolbar app color dark fixed class="tool-bar">
+    <v-toolbar color dark fixed class="tool-bar">
       <div class="title-div">
         <div class="name-div">
           <v-list-item>
@@ -26,6 +26,11 @@
             v-if="this.newProject == true"
             class="font-weight-bold"
           >Create a project</v-list-item-title>
+
+          <v-list-item-title
+            v-else-if="this.$route.params.projects == 'projects'"
+            class="font-weight-bold"
+          >Select a project</v-list-item-title>
           <v-list-item-title v-else class="font-weight-bold">{{ this.fetchProject.projectName }}</v-list-item-title>
         </div>
       </div>
@@ -159,6 +164,9 @@
         </v-list-item-group>
       </div>
       <keep-alive>
+        <div v-if="this.$route.params.projects == 'projects'" class="defaultFilterBackground">
+          <v-icon size="150" color="#EDF0F5">mdi-folder-multiple-outline</v-icon>
+        </div>
         <component
           v-if="
             this.$route.params.projects != 'projects' &&
@@ -215,8 +223,10 @@ export default {
   created() {
     this.$store.dispatch("project/fetchAllProjects");
     this.$store.dispatch("user/setAllUsers");
-
-    this.$store.dispatch("project/fetchProject", this.$route.params.projects);
+    this.$store.dispatch("project/clearProject");
+    if (this.$route.params.projects != "projects") {
+      this.$store.dispatch("project/fetchProject", this.$route.params.projects);
+    }
     switch (this.selectedTab) {
       case "task":
         if (this.$route.params.projects != "projects") {

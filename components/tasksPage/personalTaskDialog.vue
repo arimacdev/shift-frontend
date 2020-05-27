@@ -194,7 +194,7 @@
                         </template>
                         <template slot="button-confirm">
                           <fa :icon="['fas', 'check-circle']"></fa>
-                          <p @click="clickToPrint">Confirm</p>
+                          <p>Confirm</p>
                         </template>
                       </datetime>
                     </v-list-item-action>

@@ -93,6 +93,15 @@ export default {
     let userId = store.state.user.userId;
     const { data: projects } = await $axios.$get(`/projects?userId=${userId}`);
     const { data: users } = await $axios.$get("/users");
+    const sorted = users.sort((a, b) => {
+      const userA = a.firstName.toUpperCase();
+      const userB = b.firstName.toUpperCase();
+
+      if (userA < userB) return -1;
+      if (userA > userB) return 1;
+
+      return 0;
+    });
     console.log(projects);
     console.log(users);
     return {

@@ -303,7 +303,7 @@ import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 
 import axios from "axios";
 export default {
-  props: ["projectId", "projectUsers", "people", "AllTasks"],
+  props: ["projectUsers", "AllTasks"],
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
@@ -330,6 +330,7 @@ export default {
         taskRemindOnDate: "",
         taskNotes: ""
       },
+      taskBoard: "",
       component: "",
       issueType: "general",
       taskAssignee: "",

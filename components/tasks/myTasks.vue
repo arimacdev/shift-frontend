@@ -17,7 +17,7 @@
 
         <v-col md="2">
           <v-autocomplete
-            v-model="taskType"
+            v-model="filterType"
             return-object
             :items="taskTypeArray"
             item-text="name"
@@ -42,7 +42,7 @@
         </v-col>
         <v-col md="2">
           <v-autocomplete
-            v-model="taskStatus"
+            v-model="filterStatus"
             return-object
             :items="taskStatusArray"
             item-text="name"
@@ -335,7 +335,6 @@
         :projectId="projectId"
         :subTasks="subTasks"
         :taskFiles="taskFiles"
-        :projectUsers="projectUsers"
         :componentClose="componentClose"
         :taskObject="taskObject"
         @taskDialogClosing="taskDialogClosing()"
@@ -477,11 +476,17 @@ export default {
   },
   methods: {
     filterChange() {
-      this.nameOfTask = null;
+      this.nameOfTask = "";
       this.taskType = [];
       this.taskStatus = [];
       this.dateRange = null;
       this.taskFilter = "none";
+
+      this.taskNameQuery = "";
+      this.typeQuery = "";
+      this.statusQuery = "";
+      this.dateRange = null;
+      this.jqlQuery = "";
     },
     jqlSearch() {
       this.overlay = true;
@@ -547,7 +552,7 @@ export default {
         this.taskNameQuery;
 
       this.jqlQuery = filterQuery.slice(0, -5) + this.orderByQuery;
-      console.log("QUERY:  " + encodeURI(this.jqlQuery));
+      // console.log("QUERY:  " + encodeURI(this.jqlQuery));
       this.events = [];
       this.getFilterResponse();
     },
@@ -562,7 +567,7 @@ export default {
             }
           }
         );
-        console.log("tasks--->", taskFilterResponse.data);
+        // console.log("tasks--->", taskFilterResponse.data);
         this.taskFilter = true;
         this.overlay = false;
 

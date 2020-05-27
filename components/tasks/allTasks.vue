@@ -16,15 +16,15 @@
         </v-col>
         <v-col md="2">
           <v-autocomplete
-            v-model="assigneeOfTask"
-            :items="assigneeArray"
+            v-model="filterAssignee"
             return-object
+            :items="assigneeArray"
             item-text="name"
             item-value="id"
-            :search-input.sync="searchAssignee"
             flat
             outlined
             dense
+            chips
             background-color="#FFFFFF"
             small-chips
             label="Assignee"
@@ -41,7 +41,7 @@
         </v-col>
         <v-col md="2">
           <v-autocomplete
-            v-model="taskType"
+            v-model="filterType"
             return-object
             :items="taskTypeArray"
             item-text="name"
@@ -66,7 +66,7 @@
         </v-col>
         <v-col md="2">
           <v-autocomplete
-            v-model="taskStatus"
+            v-model="filterStatus"
             return-object
             :items="taskStatusArray"
             item-text="name"
@@ -439,6 +439,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
+      searchAssignee: "",
       overlay: false,
       subTaskName: "",
       projectId: "",
@@ -450,7 +451,7 @@ export default {
       orderByQuery: "",
       dateQuery: "",
       taskNameQuery: "",
-      assigneeArray: [],
+      // assigneeArray: [],
       templateArray: [],
       filterAssignee: [],
       filterProject: [],
@@ -551,12 +552,19 @@ export default {
   },
   methods: {
     filterChange() {
-      this.nameOfTask = null;
+      this.nameOfTask = "";
       this.assigneeOfTask = [];
       this.taskType = [];
       this.taskStatus = [];
       this.dateRange = null;
       this.taskFilter = "none";
+
+      this.taskNameQuery = "";
+      this.assigneeQuery = "";
+      this.typeQuery = "";
+      this.statusQuery = "";
+      this.dateRange = null;
+      this.jqlQuery = "";
     },
     jqlSearch() {
       this.overlay = true;
@@ -632,7 +640,7 @@ export default {
         this.taskNameQuery;
 
       this.jqlQuery = filterQuery.slice(0, -5) + this.orderByQuery;
-      console.log("QUERY:  " + encodeURI(this.jqlQuery));
+      // console.log("QUERY:  " + encodeURI(this.jqlQuery));
       this.events = [];
       this.getFilterResponse();
     },
@@ -647,7 +655,7 @@ export default {
             }
           }
         );
-        console.log("tasks--->", taskFilterResponse.data);
+        // console.log("tasks--->", taskFilterResponse.data);
         this.taskFilter = true;
         this.overlay = false;
         this.filterList = taskFilterResponse.data;
@@ -683,7 +691,6 @@ export default {
     },
     loadAssignee(v) {
       let AssigneeSearchList = this.people;
-      // console.log("PEOPLE-> " + AssigneeSearchList);
       for (let index = 0; index < AssigneeSearchList.length; ++index) {
         let user = AssigneeSearchList[index];
         this.assigneeArray.push({
@@ -1007,6 +1014,19 @@ export default {
       // projectId: state => state.project.project.projectId,
       selectedTask: state => state.task.selectedTask
     }),
+    assigneeArray() {
+      let AssigneeSearchList = this.people;
+      let assigneeList = [];
+      for (let index = 0; index < AssigneeSearchList.length; ++index) {
+        let user = AssigneeSearchList[index];
+        assigneeList.push({
+          name: user.assigneeFirstName + " " + user.assigneeLastName,
+          id: user.assigneeId,
+          img: user.assigneeProfileImage
+        });
+      }
+      return assigneeList;
+    },
     assigneeOfTask: {
       get() {
         this.loadAssignee();
