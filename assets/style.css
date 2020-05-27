@@ -2216,11 +2216,11 @@
   margin-top: 100px;
 }
 .workloadFilter {
-  width: 40vw;
+  width: 50vw;
   /* background-color: #ffffff; */
   position: absolute;
   right: 30px;
-  top: 130px;
+  top: 100px;
   margin-bottom: 50px;
   /* z-index: 1000; */
 }
