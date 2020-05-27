@@ -626,7 +626,7 @@ export default {
       }
       this.orderByQuery = "ORDER BY projectName ASC";
 
-      if (this.nameOfTask != "") {
+      if (this.nameOfTask != "" && this.nameOfTask != null) {
         this.taskNameQuery =
           'taskName LIKE "%25' + this.nameOfTask + '%25"  AND ';
       }
