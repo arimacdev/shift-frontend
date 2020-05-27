@@ -24,8 +24,6 @@
 
     <v-divider></v-divider>
 
-    <button @click="userLogOut"> Logout </button>
-
     <v-list v-if="organizationalRole === 'SUPER_ADMIN'">
       <v-list-item
         :router="item.path"
@@ -65,7 +63,7 @@
     <v-divider></v-divider>
     <div class="logooutButton">
       <v-list>
-        <v-list-item @click>
+        <v-list-item @click="userLogOut">
           <v-list-item-icon>
             <v-icon class="navButtons">mdi-power-standby</v-icon>
           </v-list-item-icon>
