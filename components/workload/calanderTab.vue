@@ -126,9 +126,14 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col md="12">
+            <v-col md="9">
               <!-- <div @click="jqlSearch()" class="filterSearchBtn">Search</div> -->
               <v-btn @click="jqlSearch()" height="70px" color="#080848" dark width="100%">Search</v-btn>
+            </v-col>
+            <v-col md="3">
+              <v-btn @click="clear()" height="70px" color="#ff6161" dark width="70%">
+                <v-icon color="#FFFFFF">mdi-cancel</v-icon>
+              </v-btn>
             </v-col>
           </v-row>
         </div>
@@ -394,6 +399,14 @@ export default {
     }
   },
   methods: {
+    clear() {
+      this.taskName = "";
+      this.filterAssignee = [];
+      this.filterProject = [];
+      this.filterType = [];
+      this.filterStatus = [];
+      this.events = [];
+    },
     viewDay({ date }) {
       this.focus = date;
       this.type = "day";
