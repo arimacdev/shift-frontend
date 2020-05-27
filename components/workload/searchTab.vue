@@ -6,8 +6,8 @@
           <span class="containsText">Contains Text</span>
 
           <v-text-field
-            clearable
             @click:clear="clearName()"
+            clearable
             v-model="taskName"
             outlined
             solo
@@ -201,11 +201,11 @@
               <div
                 class="orderByEntity"
                 v-if="filterOrderBy === 'taskDueDateAt' && entity === null && entity != undefined"
-              >No Due Date</div>
+              >No Due</div>
               <div
                 class="orderByEntity"
                 v-if="entity != undefined && filterOrderBy === 'taskDueDateAt'"
-              >{{entity.slice(0,10)}}</div>
+              >{{entity.slice(0,11)}}</div>
               <div
                 class="orderByEntity"
                 v-if="filterOrderBy === 'taskAssignee' && entity != undefined"
@@ -602,16 +602,16 @@ export default {
         //validation
         const between = entityBetween.exec(decodedFilterTempQuery);
         if (between != null) {
-          console.log("betweenPara", between);
+          // console.log("betweenPara", between);
           const paramRemove = between[1].replace(/^"(.*)"$/, "$1");
           const twoDates = paramRemove.split("AND");
-          console.log("betweenPara", twoDates);
+          // console.log("betweenPara", twoDates);
           if (twoDates[0] && twoDates[1]) {
-            console.log("from", twoDates[0].slice(0, 28));
-            console.log("to", twoDates[1].slice(0, 28));
+            console.log("from", twoDates[0].slice(0, 12));
+            console.log("to", twoDates[1].slice(0, 12));
             this.dateRange = new Date();
-            this.dateRange.start = twoDates[0];
-            this.dateRange.end = twoDates[1];
+            this.dateRange.start = new Date(twoDates[0].slice(0, 12));
+            this.dateRange.end = new Date(twoDates[1].slice(0, 12));
           }
         }
       } else {
@@ -774,7 +774,7 @@ export default {
           "ORDER BY " + this.filterOrderBy + " " + this.filterOrderSequence;
       }
 
-      if (this.taskName != "") {
+      if (this.taskName != "" && this.taskName != null) {
         this.taskNameQuery =
           'taskName LIKE "%25' + this.taskName + '%25"  AND ';
       }
@@ -852,6 +852,7 @@ export default {
       this.filterOrderBy = "projectName";
     },
     clearName() {
+      this.taskName = "";
       this.taskNameQuery = "";
       this.jqlQuery = "";
     },
