@@ -63,7 +63,7 @@
     <v-divider></v-divider>
     <div class="logooutButton">
       <v-list>
-        <v-list-item>
+        <v-list-item @click>
           <v-list-item-icon>
             <v-icon class="navButtons">mdi-power-standby</v-icon>
           </v-list-item-icon>
