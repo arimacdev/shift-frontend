@@ -514,12 +514,13 @@ export default {
     orderedTaskList() {
       const taskList = this.filterResult;
       const orderedList = taskList.reduce((accumilate, current) => {
-        console.log("accumilate", this.filterOrderBy);
-        console.log("current", current);
+        // console.log("accumilate", this.filterOrderBy);
+        // console.log("current", current);
         if (this.filterOrderBy === "taskDueDateAt") {
           let dueDate;
-          if (current.taskDueDateAt) dueDate = current.taskDueDateAt;
-          else dueDate = "No Date";
+          if (current.taskDueDateAt)
+            dueDate = current.taskDueDateAt.slice(0, 10);
+          else dueDate = "No Due Date";
           accumilate[dueDate] = (accumilate[dueDate] || []).concat(current);
         } else {
           accumilate[current[this.filterOrderBy]] = (
@@ -528,7 +529,10 @@ export default {
         }
         return accumilate;
       }, {});
+      // console.log("taskList", taskList);
+      // console.log("taskListOrder", orderedList);
 
+      // return taskList;
       return orderedList;
     },
     async jqlCancel() {
@@ -593,6 +597,9 @@ export default {
         if (decodedFilterTempQuery.includes("LIKE")) {
           this.fillTemplateCriteria("LIKE", decodedFilterTempQuery);
         }
+        if (decodedFilterTempQuery.includes("BETWEEN")) {
+          this.fillTemplateCriteria("BETWEEN", decodedFilterTempQuery);
+        }
         // this.jqlSearch(); ------> removed this
       } catch (error) {
         console.log("Error fetching data", error);
@@ -600,6 +607,7 @@ export default {
     },
     fillTemplateCriteria(criteria, decodedFilterTempQuery) {
       // console.log("criteria", criteria);
+
       if (criteria === "ORDERBY") {
         const orderby = decodedFilterTempQuery.split("ORDER BY");
 
@@ -633,11 +641,20 @@ export default {
             }
           }
         }
-      }
-      //  else if (criteria === "LIKE") {
-
-      // }
-      else {
+      } else if (criteria === "BETWEEN") {
+        const entityBetween = new RegExp(`${criteria}\s*(.*?)\s*ORDER`, "g");
+        //validation
+        const between = entityBetween.exec(decodedFilterTempQuery);
+        if (between != null) {
+          console.log("betweenPara", between);
+          const paramRemove = between[1].replace(/^"(.*)"$/, "$1");
+          const twoDates = paramRemove.split("ANDi");
+          if (twoDates[0] && twoDates[1]) {
+            console.log("from", twoDates[0]);
+            console.log("to", twoDates[1]);
+          }
+        }
+      } else {
         const entityBetween = new RegExp(`${criteria}\s*(.*?)\s*AND`, "g");
         const entityEnd = new RegExp(`${criteria}\s*(.*?)\s*ORDER`, "g");
 
@@ -785,11 +802,11 @@ export default {
           ).toISOString();
 
           this.dateQuery =
-            'taskDueDateAt BETWEEN "' +
+            '( taskDueDateAt BETWEEN "' +
             isoStartDate +
             '" AND "' +
             isoEndDate +
-            '" AND ';
+            '") AND ';
         }
       }
       if (this.filterOrderBy != "" && this.filterOrderBy != undefined) {
