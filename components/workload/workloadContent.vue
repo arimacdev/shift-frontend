@@ -2,8 +2,8 @@
   <div>
     <div class="workloadFilter">
       <v-list-item-action class="filterIcon"></v-list-item-action>
-      <v-list-item-action>
-        <VueCtkDateTimePicker
+      <div class="filterBottom">
+        <!-- <VueCtkDateTimePicker
           :no-value-to-custom-elem="false"
           color="#3f51b5"
           v-model="dateRange"
@@ -14,7 +14,6 @@
           autoClose
           clearable
         >
-          <!-- <button>Clear Filters</button> -->
           <button type="button" class="rangePickerButton">
             <v-icon color="#FFFFFF">mdi-filter</v-icon>Filter by
           </button>
@@ -38,8 +37,35 @@
           >
             <v-icon color="#FFFFFF">mdi-close</v-icon>
           </button>
-        </VueCtkDateTimePicker>
-      </v-list-item-action>
+        </VueCtkDateTimePicker>-->
+
+        <v-row>
+          <v-col md="8">
+            <VueCtkDateTimePicker
+              :no-value-to-custom-elem="false"
+              color="#3f51b5"
+              v-model="dateRange"
+              label="Filter tasks by"
+              range
+              left
+              noButton
+              autoClose
+            ></VueCtkDateTimePicker>
+          </v-col>
+          <v-col md="2">
+            <v-btn @click="applyFilter()" dark width="100%" height="40px" color="#080848">
+              <v-icon color="#FFFFFF">mdi-filter-outline</v-icon>
+              <!-- Filter -->
+            </v-btn>
+          </v-col>
+          <v-col md="2">
+            <v-btn dark width="100%" @click="clearFilter()" height="40px" color="#FF6161">
+              <v-icon color="#FFFFFF">mdi-cancel</v-icon>
+              <!-- Cancel -->
+            </v-btn>
+          </v-col>
+        </v-row>
+      </div>
     </div>
     <div class="workloadContentDiv">
       <div v-if="this.workloadTasks == ''" class="filterTitleDiv headline">No items to show</div>

@@ -1182,7 +1182,7 @@
   height: 60px !important;
 }
 .workloadContentDiv {
-  margin-top: 40px !important;
+  padding-top: 50px !important;
 }
 
 .projectDetailsPannels {
@@ -2216,12 +2216,16 @@
   margin-top: 100px;
 }
 .workloadFilter {
+  width: 40vw;
   /* background-color: #ffffff; */
   position: absolute;
   right: 30px;
   top: 130px;
   margin-bottom: 50px;
   /* z-index: 1000; */
+}
+.filterBottom {
+  /* margin-bottom: 20px; */
 }
 .filterDivider {
   margin-bottom: 20px;
