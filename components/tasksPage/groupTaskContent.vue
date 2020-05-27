@@ -472,7 +472,7 @@ export default {
     async addGroupTask(selectedParentTask) {
       this.overlay = true;
       // console.log("add group task");
-      this.$store.dispatch("groups/groupTask/addTaskToGroup", {
+      await this.$store.dispatch("groups/groupTask/addTaskToGroup", {
         taskName: this.updatedTaskName,
         taskGroupId: this.group.taskGroupId,
         parentTaskId: selectedParentTask
@@ -480,6 +480,10 @@ export default {
       this.updatedTaskName = "";
       this.$refs.form.reset();
       this.overlay = false;
+      this.$store.dispatch("groups/groupPeople/fetchGroupPeople", {
+        taskGroupId: this.group.taskGroupId,
+        userId: "user"
+      });
     },
     async addGroupSubTask(subTaskName, selectedParentTask) {
       this.overlay = true;
