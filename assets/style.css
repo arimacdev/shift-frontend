@@ -2401,14 +2401,21 @@
 }
 .overviewProgressSection {
   transform: rotate(-90deg);
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   margin-left: 53px;
   /* margin-top: 100px; */
+}
+.overviewProgressSectionMinus {
+  transform: rotate(90deg);
+  width: 150px;
+  height: 150px;
+  margin-left: -84px;
 }
 .graphNameField {
   text-align: center;
   color: #7c8696;
+  margin-top: 15px;
   /* padding-top: 80%; */
 }
 .overviewAvater {

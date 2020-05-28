@@ -47,12 +47,24 @@
                 ></VueCtkDateTimePicker>
               </v-col>
               <v-col md="1">
-                <v-btn @click="jqlSearch()" dark width="100%" height="40px" color="#080848">
+                <v-btn
+                  @click="jqlSearch()"
+                  dark
+                  width="100%"
+                  height="40px"
+                  color="#080848"
+                >
                   <v-icon color="#FFFFFF">mdi-filter-outline</v-icon>
                 </v-btn>
               </v-col>
               <v-col md="1">
-                <v-btn dark width="100%" height="40px" color="#FF6161" @click="clearFilters()">
+                <v-btn
+                  dark
+                  width="100%"
+                  height="40px"
+                  color="#FF6161"
+                  @click="clearFilters()"
+                >
                   <v-icon color="#FFFFFF">mdi-cancel</v-icon>
                 </v-btn>
               </v-col>
@@ -61,15 +73,58 @@
           <div class="overflow-y-auto">
             <div class="graphDiv">
               <div class="overviewScrollingWrapper">
-                <div class="workloadCard" v-for="(user, index) in taskWorkLoadUsers" :key="index">
-                  <div class="progressCounter">{{ user.tasksCompleted + "/" + user.totalTasks}}</div>
+                <!-- <div style="width: 105%; overflow-x: auto;">
+                  <bar-chart
+                    :data="barChartData"
+                    :options="barChartOptions"
+                    :width="users.length * 100"
+                    :height="350"
+                  />
+                </div> -->
+                <div
+                  class="workloadCard"
+                  v-for="(user, index) in taskWorkLoadUsers"
+                  :key="index"
+                >
+                  <div class="progressCounter">
+                    {{ user.tasksCompleted + '/' + user.totalTasks }}
+                  </div>
                   <div class="overviewProgressSection">
                     <v-progress-linear
                       v-if="user.totalTasks == 0"
                       @click="selectUser(user)"
                       value="0"
                       color="#78CF20"
-                      background-color="#ED5F5F"
+                      background-color="#FFFFFF"
+                      background-opacity="0.1"
+                      height="13"
+                      reactive
+                    >
+                      <template></template>
+                    </v-progress-linear>
+
+                    <v-progress-linear
+                      v-else
+                      @click="selectUser(user)"
+                      :value="(user.tasksCompleted / 10) * 100"
+                      color="#78CF20"
+                      background-color="#FFFFFF"
+                      background-opacity="0.1"
+                      height="13"
+                      reactive
+                    >
+                      <template> </template>
+                    </v-progress-linear>
+                  </div>
+                  <v-divider></v-divider>
+                  <div class="overviewProgressSectionMinus">
+                    <v-progress-linear
+                      v-if="user.totalTasks == 0"
+                      @click="selectUser(user)"
+                      value="0"
+                      color="#ED5F5F"
+                      background-color="#FFFFFF"
+                      background-opacity="0.1"
                       height="13"
                       reactive
                     >
@@ -78,25 +133,36 @@
                     <v-progress-linear
                       v-else
                       @click="selectUser(user)"
-                      :value="(user.tasksCompleted/ user.totalTasks)*100"
-                      color="#78CF20"
-                      background-color="#ED5F5F"
+                      :value="(user.tasksCompleted / 29) * 100"
+                      color="#ED5F5F"
+                      background-color="#FFFFFF"
+                      background-opacity="0.1"
                       height="13"
                       reactive
                     >
                       <template></template>
                     </v-progress-linear>
                   </div>
+                  <div class="progressCounter">
+                    {{
+                      user.totalTasks -
+                        user.tasksCompleted +
+                        '/' +
+                        user.totalTasks
+                    }}
+                  </div>
 
                   <div class="graphNameField">
-                    <v-divider></v-divider>
+                    <!-- <v-divider></v-divider> -->
                     {{ user.firstName }}
                   </div>
 
                   <div class="overviewAvater">
                     <v-list-item-avatar @click="selectUser(user)">
                       <v-img
-                        v-if="user.profileImage != null && user.profileImage != ''"
+                        v-if="
+                          user.profileImage != null && user.profileImage != ''
+                        "
                         :src="user.profileImage"
                       ></v-img>
                       <v-img
@@ -108,11 +174,20 @@
                 </div>
               </div>
             </div>
-            <div v-if="this.selectedUser !=''" class="workloadTasksDisplay">
-              <div class="workloadSelectedName">{{this.firstName}} {{this.lastName}}</div>
+            <div v-if="this.selectedUser != ''" class="workloadTasksDisplay">
+              <div class="workloadSelectedName">
+                {{ this.firstName }} {{ this.lastName }}
+              </div>
               <div class="workloadContentDiv">
-                <div v-if="workloadTasks == ''" class="noResultDiv">No tasks to show</div>
-                <v-expansion-panels v-model="panel" :disabled="disabled" multiple dark>
+                <div v-if="workloadTasks == ''" class="noResultDiv">
+                  No tasks to show
+                </div>
+                <v-expansion-panels
+                  v-model="panel"
+                  :disabled="disabled"
+                  multiple
+                  dark
+                >
                   <!-- -------------- loop this pannel for every project ---------- -->
                   <v-expansion-panel
                     v-for="(project, index) in workloadTasks"
@@ -125,12 +200,12 @@
                       color="#080848"
                     >
                       {{ project.projectName }} - {{ project.completed }}/{{
-                      project.total
+                        project.total
                       }}
-                      <template
-                        v-slot:actions
-                      >
-                        <v-icon color="#2EC973">mdi-arrow-down-circle-outline</v-icon>
+                      <template v-slot:actions>
+                        <v-icon color="#2EC973"
+                          >mdi-arrow-down-circle-outline</v-icon
+                        >
                       </template>
                     </v-expansion-panel-header>
                     <v-expansion-panel-header
@@ -139,15 +214,18 @@
                       color="#EDF0F5"
                     >
                       {{ project.projectName }} - {{ project.completed }}/{{
-                      project.total
+                        project.total
                       }}
-                      <template
-                        v-slot:actions
-                      >
-                        <v-icon color="#ACACAC">mdi-arrow-down-circle-outline</v-icon>
+                      <template v-slot:actions>
+                        <v-icon color="#ACACAC"
+                          >mdi-arrow-down-circle-outline</v-icon
+                        >
                       </template>
                     </v-expansion-panel-header>
-                    <v-expansion-panel-content class="projectDetailsPannelContent" color="#EDF0F5">
+                    <v-expansion-panel-content
+                      class="projectDetailsPannelContent"
+                      color="#EDF0F5"
+                    >
                       <!-- ----------- loop content for tasks of projects --------------- -->
                       <div class="taskDetailsBar">
                         <v-list-item
@@ -155,24 +233,32 @@
                           @click.stop="drawer = !drawer"
                           v-for="(task, index) in project.taskList"
                           :key="index"
-                          @click="selectTask(task); taskDialog = true;"
+                          @click="
+                            selectTask(task);
+                            taskDialog = true;
+                          "
                         >
                           <v-list-item-action>
                             <v-icon
                               v-if="task.taskStatus == 'closed'"
                               size="30"
                               color="#2EC973"
-                            >mdi-checkbox-marked-circle</v-icon>
-                            <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                              >mdi-checkbox-marked-circle</v-icon
+                            >
+                            <v-icon v-else size="30" color="#EDF0F5"
+                              >mdi-checkbox-blank-circle</v-icon
+                            >
                           </v-list-item-action>
                           <v-list-item-content>
-                            <div class="workloadTaskName">{{ task.taskName }}</div>
+                            <div class="workloadTaskName">
+                              {{ task.taskName }}
+                            </div>
                           </v-list-item-content>
 
                           <v-list-item-action>
-                            <v-list-item-title
-                              :class="dueDateCheck(task)"
-                            >{{ getDueDate(task.taskDueDateAt) }}</v-list-item-title>
+                            <v-list-item-title :class="dueDateCheck(task)">{{
+                              getDueDate(task.taskDueDateAt)
+                            }}</v-list-item-title>
                           </v-list-item-action>
                         </v-list-item>
                       </div>
@@ -187,9 +273,14 @@
         </div>
       </div>
     </div>
+
     <!-- ------------ task dialog --------- -->
 
-    <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
+    <v-dialog
+      v-model="taskDialog"
+      width="90vw"
+      transition="dialog-bottom-transition"
+    >
       <task-dialog
         :selectedTask="task"
         :taskFiles="taskFiles"
@@ -212,65 +303,134 @@
   </div>
 </template>
 <script>
-import NavigationDrawer from "~/components/navigationDrawer";
-import usersSearchBar from "~/components/tools/usersSearchBar";
-import WorkloadContent from "~/components/workload/workloadContent";
-import { mapState, mapGetters } from "vuex";
-import TaskDialog from "~/components/workload/filterDialog";
-import SuccessPopup from "~/components/popups/successPopup";
-import ErrorPopup from "~/components/popups/errorPopup";
-import Progress from "~/components/popups/progress";
+import NavigationDrawer from '~/components/navigationDrawer';
+import usersSearchBar from '~/components/tools/usersSearchBar';
+import WorkloadContent from '~/components/workload/workloadContent';
+import { mapState, mapGetters } from 'vuex';
+import TaskDialog from '~/components/workload/filterDialog';
+import SuccessPopup from '~/components/popups/successPopup';
+import ErrorPopup from '~/components/popups/errorPopup';
+import Progress from '~/components/popups/progress';
+import BarChart from '~/components/charts/chart';
 
 export default {
   components: {
     NavigationDrawer,
-    "workload-content": WorkloadContent,
-    "task-dialog": TaskDialog,
+    BarChart,
+    'workload-content': WorkloadContent,
+    'task-dialog': TaskDialog,
 
-    "progress-loading": Progress,
-    "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    'progress-loading': Progress,
+    'success-popup': SuccessPopup,
+    'error-popup': ErrorPopup,
   },
   data() {
     return {
+      array: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      barChartData: {
+        labels: [
+          'July',
+          'January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+          'January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+          'January',
+          'February',
+        ],
+        datasets: [
+          {
+            type: 'bar',
+            label: 'Completed',
+            backgroundColor: '#78CF20',
+            data: [65, 0, 80, 81, 56, 85, 40],
+          },
+          {
+            type: 'bar',
+            label: 'Remaining',
+            backgroundColor: '#EE7071',
+            data: [-65, 0, -80, -81, -56, -85, -40],
+          },
+        ],
+      },
+      barChartOptions: {
+        maintainAspectRatio: true,
+        responsive: false,
+        legend: {
+          display: false,
+        },
+        title: {
+          display: false,
+          text: 'Organization overview',
+        },
+        scales: {
+          xAxes: [
+            {
+              stacked: true,
+              maxBarThickness: 15,
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+          yAxes: [
+            {
+              stacked: true,
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
+
       overlay: true,
-      errorMessage: "",
-      successMessage: "",
-      component: "",
+      errorMessage: '',
+      successMessage: '',
+      component: '',
       progress: 0,
       task: {},
       taskDialog: false,
       taskFiles: [],
-      taskSprint: "",
+      taskSprint: '',
       taskUser: {},
       filterAssignee: [],
       // assigneeArray: [],
       dateRange: null,
-      dateQuery: "",
-      jqlQuery: "",
-      assigneeQuery: "",
+      dateQuery: '',
+      jqlQuery: '',
+      assigneeQuery: '',
       userId: this.$store.state.user.userId,
-      component: "add-user",
+      component: 'add-user',
       workLoad: {},
       userData: {},
-      firstName: "",
-      lastName: "",
-      selectedUser: "",
-      skill: "",
+      firstName: '',
+      lastName: '',
+      selectedUser: '',
+      skill: '',
       search: null,
       select: {},
       states: [],
-      drawer: null
+      drawer: null,
     };
   },
 
   created() {
-    this.$store.dispatch("workload/fetchAllTaskLoadUsers", {
-      assignees: "assignee=all",
-      from: "all",
-      to: "all"
+    this.$store.dispatch('workload/fetchAllTaskLoadUsers', {
+      assignees: 'assignee=all',
+      from: 'all',
+      to: 'all',
     });
-    this.$store.dispatch("project/clearProject");
+    this.$store.dispatch('project/clearProject');
   },
 
   watch: {
@@ -280,11 +440,11 @@ export default {
     },
     searchAssignee(val) {
       val && val !== this.selectAssignee && this.loadAssignee(val);
-    }
+    },
   },
   methods: {
     close() {
-      this.component = "";
+      this.component = '';
     },
     getProgress(completed, total) {
       this.progress = (completed / total) * 100;
@@ -293,11 +453,11 @@ export default {
     jqlSearch() {
       this.overlay = true;
       if (this.filterAssignee.length != 0) {
-        let assigneeList = "";
+        let assigneeList = '';
         for (let i = 0; i < this.filterAssignee.length; i++) {
-          assigneeList = assigneeList + "assignee=" + this.filterAssignee[i].id;
+          assigneeList = assigneeList + 'assignee=' + this.filterAssignee[i].id;
           if (i < this.filterAssignee.length - 1) {
-            assigneeList = assigneeList + "&";
+            assigneeList = assigneeList + '&';
           }
         }
         this.assigneeQuery = assigneeList;
@@ -306,8 +466,8 @@ export default {
       // console.log("from" + this.dateRange);
 
       if (this.dateRange == null) {
-        this.from = "all";
-        this.to = "all";
+        this.from = 'all';
+        this.to = 'all';
       } else {
         if (
           this.dateRange.start !== undefined &&
@@ -321,7 +481,7 @@ export default {
           ).toISOString();
         }
       }
-      this.selectedUser = "";
+      this.selectedUser = '';
       this.getFilterResponse(this.from, this.to);
     },
     async getFilterResponse(from, to) {
@@ -348,10 +508,10 @@ export default {
 
       const filters = {
         assignees: this.assigneeQuery,
-        from: from == "all" ? "all" : new Date(from).toISOString(),
-        to: to == "all" ? "all" : new Date(to).toISOString()
+        from: from == 'all' ? 'all' : new Date(from).toISOString(),
+        to: to == 'all' ? 'all' : new Date(to).toISOString(),
       };
-      this.$store.dispatch("workload/fetchAllTaskLoadUsers", filters);
+      this.$store.dispatch('workload/fetchAllTaskLoadUsers', filters);
       this.overlay = false;
       // } catch (error) {
       //   console.log("Error fetching data", error);
@@ -372,27 +532,27 @@ export default {
           {
             headers: {
               user: task.taskAssignee,
-              type: "project"
-            }
+              type: 'project',
+            },
           }
         );
         // console.log("files--->", taskFilesResponse.data);
         this.taskFiles = taskFilesResponse.data;
-        this.$store.dispatch("task/setTaskFiles", taskFilesResponse.data);
+        this.$store.dispatch('task/setTaskFiles', taskFilesResponse.data);
       } catch (error) {
         // console.log("Error fetching data", error);
       }
       let sprintResponse;
-      if (task.sprintId == "default") {
-        this.taskSprint = "Default";
+      if (task.sprintId == 'default') {
+        this.taskSprint = 'Default';
       } else {
         try {
           sprintResponse = await this.$axios.$get(
             `/sprints/${this.projectId}/${task.sprintId}`,
             {
               headers: {
-                userId: task.taskAssignee
-              }
+                userId: task.taskAssignee,
+              },
             }
           );
           // console.log("sprint--->", sprintResponse.data.sprintName);
@@ -415,27 +575,27 @@ export default {
       for (let index = 0; index < AssigneeSearchList.length; ++index) {
         let user = AssigneeSearchList[index];
         this.assigneeArray.push({
-          name: user.firstName + " " + user.lastName,
+          name: user.firstName + ' ' + user.lastName,
           id: user.userId,
-          img: user.profileImage
+          img: user.profileImage,
         });
       }
     },
     clearAssignee() {
-      this.assigneeQuery = "assignee=all";
-      this.jqlQuery = "";
+      this.assigneeQuery = 'assignee=all';
+      this.jqlQuery = '';
     },
     clearDate() {
-      this.from = "all";
-      this.to = "all";
-      this.jqlQuery = "";
+      this.from = 'all';
+      this.to = 'all';
+      this.jqlQuery = '';
     },
     clearFilters() {
       this.dateRange = null;
       this.filterAssignee = [];
-      this.assigneeQuery = "assignee=all";
-      this.from = "all";
-      this.to = "all";
+      this.assigneeQuery = 'assignee=all';
+      this.from = 'all';
+      this.to = 'all';
 
       this.getFilterResponse(this.from, this.to);
     },
@@ -448,10 +608,10 @@ export default {
         this.lastName = this.select.lastName;
         this.selectedUser = this.select.userId;
         //  if(this.select.totalTasks != 0){
-        this.$store.dispatch("workload/fetchAllWorkloadTasks", {
+        this.$store.dispatch('workload/fetchAllWorkloadTasks', {
           userId: this.select.userId,
-          from: "all",
-          to: "all"
+          from: 'all',
+          to: 'all',
         });
         //  } else {
         //    this.$store.dispatch('workload/clearWorkLoadTasks');
@@ -476,10 +636,10 @@ export default {
           const filterEnd = new Date(
             end.getTime() - end.getTimezoneOffset() * 60000
           ).toISOString();
-          this.$store.dispatch("workload/fetchAllWorkloadTasks", {
+          this.$store.dispatch('workload/fetchAllWorkloadTasks', {
             userId: userData.userId,
             from: filterStart,
-            to: filterEnd
+            to: filterEnd,
           });
         }
         // console.log("FILTER APPLIED");
@@ -488,24 +648,24 @@ export default {
         this.lastName = userData.lastName;
         // console.log("check", userData);
         this.selectedUser = userData.userId;
-        this.$store.dispatch("workload/fetchAllWorkloadTasks", {
+        this.$store.dispatch('workload/fetchAllWorkloadTasks', {
           userId: userData.userId,
-          from: "all",
-          to: "all"
+          from: 'all',
+          to: 'all',
         });
         // console.log("NO FILTER APPLIED");
       }
     },
     dueDateCheck(task) {
       // console.log("check due date color", task);
-      if (task.taskStatus === "closed") {
-        return "workLoadTaskDone";
+      if (task.taskStatus === 'closed') {
+        return 'workLoadTaskDone';
       } else if (task.dueDate == null) {
-        return "workLoadTaskDefault";
+        return 'workLoadTaskDefault';
       } else {
         const dueDate = new Date(task.dueDate);
         const dueToUtc = new Date(
-          dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+          dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
         );
         const dueToUtcDate = new Date(dueToUtc);
         const now = new Date();
@@ -514,48 +674,48 @@ export default {
         // console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
         if (now.getTime() > dueToUtcDate.getTime()) {
           // console.log("overdue");
-          return "workLoadTaskOverDue";
+          return 'workLoadTaskOverDue';
         } else if (today) {
           /// This is where I check
-          return "workLoadTaskOverDue";
+          return 'workLoadTaskOverDue';
           // console.log("this is Today--->", today);
         }
         {
-          return "workLoadTaskHealthy";
+          return 'workLoadTaskHealthy';
         }
       }
     },
     getDueDate(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+        dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
       );
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
-      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "Add Due Date";
+      if (date === null || date === '1970-01-01T05:30:00.000+0000') {
+        return 'Add Due Date';
       } else if (
         now.getDate() === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
         now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
-        return "Today";
+        return 'Today';
       } else if (
         now.getDate() - 1 === dueToUtcDate.getDate() &&
         now.getMonth() - 1 === dueToUtcDate.getMonth() &&
         now.getFullYear() - 1 === dueToUtcDate.getFullYear()
       ) {
-        return "Yesterday";
+        return 'Yesterday';
       } else if (
         now.getDate() + 1 === dueToUtcDate.getDate() &&
         now.getMonth() + 1 === dueToUtcDate.getMonth() &&
         now.getFullYear() + 1 === dueToUtcDate.getFullYear()
       ) {
-        return "Tomorrow";
+        return 'Tomorrow';
       } else {
-        let stringDate = date + "";
+        let stringDate = date + '';
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 10);
         return stringDate;
@@ -566,37 +726,38 @@ export default {
       for (let index = 0; index < projectSearchList.length; ++index) {
         let user = projectSearchList[index];
         this.states.push({
-          name: user.firstName + " " + user.lastName,
-          id: user
+          name: user.firstName + ' ' + user.lastName,
+          id: user,
         });
       }
       // console.log("usersList for search bar", this.taskWorkLoadUsers, "nameList", this.states)
       this.loading = true;
       setTimeout(() => {
-        this.items = this.states.filter(e => {
-          return (e || "").toLowerCase().indexOf((v || "").toLowerCase()) > -1;
+        this.items = this.states.filter((e) => {
+          return (e || '').toLowerCase().indexOf((v || '').toLowerCase()) > -1;
         });
         this.loading = false;
       });
       this.loading = false;
-    }
+    },
   },
   computed: {
     ...mapState({
-      workloadTasks: state => state.workload.workloadTasks,
-      taskWorkLoadUsers: state => state.workload.taskWorkLoadUsers,
-      users: state => state.user.users,
-      allProjects: state => state.project.projects
+      workloadTasks: (state) => state.workload.workloadTasks,
+      taskWorkLoadUsers: (state) => state.workload.taskWorkLoadUsers,
+      users: (state) => state.user.users,
+      allProjects: (state) => state.project.projects,
     }),
+
     assigneeArray() {
       let AssigneeSearchList = this.users;
       let assigneeList = [];
       for (let index = 0; index < AssigneeSearchList.length; ++index) {
         let user = AssigneeSearchList[index];
         assigneeList.push({
-          name: user.firstName + " " + user.lastName,
+          name: user.firstName + ' ' + user.lastName,
           id: user.userId,
-          img: user.profileImage
+          img: user.profileImage,
         });
       }
       return assigneeList;
@@ -607,7 +768,7 @@ export default {
       },
       set(value) {
         this.filterAssignee = value;
-      }
+      },
     },
     project: {
       get() {
@@ -615,8 +776,8 @@ export default {
       },
       set(value) {
         this.filterProject = value;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
