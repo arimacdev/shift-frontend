@@ -133,7 +133,9 @@
                     <v-progress-linear
                       v-else
                       @click="selectUser(user)"
-                      :value="(user.tasksCompleted / 29) * 100"
+                      :value="
+                        ((user.totalTasks - user.tasksCompleted) / 29) * 100
+                      "
                       color="#ED5F5F"
                       background-color="#FFFFFF"
                       background-opacity="0.1"
