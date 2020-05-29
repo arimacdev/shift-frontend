@@ -853,7 +853,7 @@
 .errorText {
   color: red;
   font-size: 12px;
-  margin-top: 15px;
+  /* margin-top: 15px; */
   margin-left: 10px;
   margin-bottom: -20px;
 }
@@ -2461,4 +2461,9 @@
 .tabInactiveStyle {
   font-weight: bold !important;
   font-size: 19px;
+}
+.profileUpdateTextFields {
+  margin-bottom: -30px !important;
+  margin-right: 10px !important;
+  margin-left: 10px !important;
 }
