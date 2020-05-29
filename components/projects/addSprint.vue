@@ -6,7 +6,7 @@
           <div v-on="on" class="addSprintButton">
             <v-list-item v-on:click="component='add-task'" dark>
               <v-list-item-action>
-                <v-icon size="20" color>mdi-animation-outline</v-icon>
+                <v-icon size="20" color>icon-board</v-icon>
               </v-list-item-action>
               <v-list-item-content class="buttonText">
                 <v-list-item-title class="bodyWiew">Add new sprint</v-list-item-title>
@@ -18,7 +18,7 @@
         <v-card class="addUserPopup">
           <v-form v-model="isValid" ref="form">
             <div class="popupFormContent">
-              <v-icon class size="60" color="deep-orange lighten-1">mdi-card-plus-outline</v-icon>
+              <v-icon class size="60" color="deep-orange lighten-1">icon-board</v-icon>
               <v-card-text class="deletePopupTitle">Add new sprint</v-card-text>
               <v-card-actions>
                 <v-text-field

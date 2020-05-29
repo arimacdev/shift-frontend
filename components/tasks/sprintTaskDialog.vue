@@ -484,7 +484,7 @@
                   <div class="expansionViewHeader">
                     <v-list-item class="taskViewTitleSection">
                       <v-list-item-icon>
-                        <v-icon size="30" color="#FF6767">mdi-file-document-edit-outline</v-icon>
+                        <v-icon size="30" color="#FF6767">mdi-square-edit-outline</v-icon>
                       </v-list-item-icon>
                       <v-list-item-title class="viewTaskFontColors">Notes</v-list-item-title>
                     </v-list-item>
