@@ -64,7 +64,7 @@
                 :to="project.projectId"
               >
                 <v-list-item-action>
-                  <v-icon size="20" color="deep-orange lighten-1">mdi-folder-outline</v-icon>
+                  <v-icon size="17" color="deep-orange lighten-1">icon-project</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
@@ -107,7 +107,7 @@
             >
               <v-list-item :to="project.projectId">
                 <v-list-item-action>
-                  <v-icon size="20" color="#FFC212">mdi-folder-outline</v-icon>
+                  <v-icon size="17" color="#FFC212">icon-project</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
@@ -128,7 +128,7 @@
             >
               <v-list-item :to="project.projectId">
                 <v-list-item-action>
-                  <v-icon size="20" color="#ED5ED1">mdi-folder-outline</v-icon>
+                  <v-icon size="17" color="#ED5ED1">icon-project</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
@@ -149,7 +149,7 @@
             >
               <v-list-item :to="project.projectId">
                 <v-list-item-action>
-                  <v-icon size="20" color="#0BAFFF">mdi-folder-outline</v-icon>
+                  <v-icon size="17" color="#0BAFFF">icon-project</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>

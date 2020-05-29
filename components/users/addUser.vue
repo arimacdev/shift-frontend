@@ -8,11 +8,13 @@
       </v-row>
       <v-row class="mb-12 formRow" no-gutters>
         <v-col sm="6" md="6">
-          <input
+          <v-text-field
+            flat
+            outlined
             v-model.trim="$v.firstName.$model"
-            placeholder="First Name"
+            label="First Name"
             autocomplete="off"
-            class="formElements"
+            class="profileUpdateTextFields"
           />
           <div
             v-if="$v.firstName.$error && !$v.firstName.required"
@@ -24,11 +26,13 @@
           >Cannot use more than 50 characters</div>
         </v-col>
         <v-col sm="6" md="6">
-          <input
+          <v-text-field
+            flat
+            outlined
             v-model.trim="$v.lastName.$model"
-            placeholder="Last Name"
+            label="Last Name"
             autocomplete="off"
-            class="formElements"
+            class="profileUpdateTextFields"
           />
           <div
             v-if="$v.lastName.$error && !$v.lastName.required"
@@ -43,11 +47,13 @@
 
       <v-row class="mb-12 formRow" no-gutters>
         <v-col sm="6" md="6">
-          <input
+          <v-text-field
+            flat
+            outlined
             v-model.trim="$v.userName.$model"
-            placeholder="User Name"
+            label="User Name"
             autocomplete="off"
-            class="formElements"
+            class="profileUpdateTextFields"
           />
           <div
             v-if="$v.userName.$error && !$v.userName.required"
@@ -55,12 +61,14 @@
           >User name is required</div>
         </v-col>
         <v-col sm="6" md="6">
-          <input
+          <v-text-field
+            flat
+            outlined
             type="email"
             v-model.trim="$v.email.$model"
-            placeholder="Email"
+            label="Email"
             autocomplete="off"
-            class="formElements"
+            class="profileUpdateTextFields"
           />
           <div v-if="$v.email.$error && !$v.email.required" class="errorText">Email is required</div>
           <div v-if="$v.email.$error && !$v.email.email" class="errorText">Use valid Email address</div>
@@ -69,12 +77,14 @@
 
       <v-row class="mb-12 formRow" no-gutters>
         <v-col sm="6" md="6">
-          <input
+          <v-text-field
+            flat
+            outlined
             type="password"
             v-model.trim="$v.password.$model"
-            placeholder="Password"
+            label="Password"
             autocomplete="off"
-            class="formElements"
+            class="profileUpdateTextFields"
           />
           <div
             v-if="$v.password.$error && !$v.password.required"
@@ -86,12 +96,14 @@
           >Password must be at least 6 characters</div>
         </v-col>
         <v-col sm="6" md="6">
-          <input
+          <v-text-field
+            flat
+            outlined
             type="password"
             v-model.trim="$v.confirmPassword.$model"
-            placeholder="Confirm Password"
+            label="Confirm Password"
             autocomplete="off"
-            class="formElements"
+            class="profileUpdateTextFields"
           />
           <div
             v-if="$v.confirmPassword.$error && !$v.confirmPassword.sameAs"

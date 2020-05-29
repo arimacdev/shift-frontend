@@ -3,7 +3,7 @@
     <!-- tabs body -->
     <div>
       <v-card class="tabs">
-        <v-tabs slider-color="#0c0c5a" slider-size>
+        <v-tabs slider-color="#0c0c5a" slider-size="3">
           <v-tab
             @click="changeTabView('task')"
             class="tabInactiveStyle"

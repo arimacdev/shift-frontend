@@ -2466,3 +2466,9 @@
   margin-right: 10px !important;
   margin-left: 10px !important;
 }
+.activeTaskTabList {
+  border-radius: 5px;
+}
+.activeTaskTabList .buttonText .bodyWiew {
+  color: #ffffff !important;
+}

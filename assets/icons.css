@@ -57,3 +57,7 @@
   content: '\e900';
   font-family: 'icomoon';
 }
+.icon-edit:before {
+  content: '\e904';
+  font-family: 'icomoon';
+}
