@@ -2454,3 +2454,11 @@
   bottom: 20px;
   width: 100%;
 }
+.tabTitleStyle {
+  color: #0c0c5a !important;
+  font-weight: bold !important;
+}
+.tabInactiveStyle {
+  font-weight: bold !important;
+  font-size: 19px;
+}
