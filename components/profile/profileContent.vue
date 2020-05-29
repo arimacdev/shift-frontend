@@ -2,7 +2,11 @@
   <div class="profileDetailsCover">
     <div class="blackBar profileBlackBar"></div>
     <div class="userImage profileUserImage">
-      <v-img v-if="user.profileImage != null" class="profileImage" :src="user.profileImage"></v-img>
+      <v-img
+        v-if="user.profileImage != null && user.profileImage != 'null'  "
+        class="profileImage"
+        :src="user.profileImage"
+      ></v-img>
       <v-img
         v-else
         class="profileImage"
@@ -71,7 +75,7 @@
             <!-- <v-btn x-small depressed color="primary" v-if="user.userSlackId != null && user.notification == false" v-show="enableNotification"  @click='changeNotificationStatus(user.notification)' >Enable Notifications</v-btn>  
             <v-btn x-small depressed   v-if="user.userSlackId != null && user.notification == true" v-show="disableNotification"  @click='changeNotificationStatus(user.notification)'>Disable Notifications</v-btn>-->
 
-            <div class="notiTitle">Enable Notifications</div>
+            <div class="notiTitle" v-if="!enableNotification">Enable Notifications</div>
             <div class="notiButton">
               <v-switch
                 inset

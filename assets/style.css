@@ -857,6 +857,14 @@
   margin-bottom: -20px;
 }
 
+.errorTextCreateProject {
+  color: red;
+  font-size: 12px;
+  margin-top: 15px;
+  margin-left: 10px;
+  /* margin-bottom: 10px; */
+}
+
 .taskListViewContent {
   height: 60vh;
   z-index: -100;
