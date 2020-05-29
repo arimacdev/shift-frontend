@@ -5,8 +5,7 @@
 @import './css/base/typo.css';
 @import 'circular-std';
 
-/* -------------- common --------------- */
-
+@import './icons.css'; /* -------------- common --------------- */
 * {
   font-family: CircularStd;
 }
