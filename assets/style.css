@@ -250,6 +250,9 @@
   margin-left: -30px;
   /* margin-top: -20px; */
 }
+.orgTabContent {
+  padding-top: 30px;
+}
 .tabContentAdmin {
   height: 80vh !important;
 }
