@@ -13,7 +13,7 @@
         src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
       ></v-img>
     </div>
-    <div class="userNameAdmin">{{userData.firstName}}{{userData.lastName}}</div>
+    <div class="userNameAdmin">{{userData.firstName}} {{userData.lastName}}</div>
     <div class="buttonSectionAdmin">
       <v-btn color="#FFC212" dark small>Reset Password</v-btn>
       <v-btn color="#FF6161" dark small>Deactivate User</v-btn>
@@ -124,7 +124,7 @@
                     <v-btn small>Owner</v-btn>
                   </v-col>
                   <v-col md="2">
-                    <v-btn small>Admin</v-btn>
+                    <v-btn small color="primary">Admin</v-btn>
                   </v-col>
                   <v-col md="2">
                     <v-btn small>User</v-btn>

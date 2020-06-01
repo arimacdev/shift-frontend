@@ -92,7 +92,7 @@ export default {
     viewSearchComponent(data) {
       this.name = data;
       this.userData = data;
-      this.component = "view-user";
+      this.component = "edit-user";
     },
     selectUser(userData) {
       this.name = userData;
