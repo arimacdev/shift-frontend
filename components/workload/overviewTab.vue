@@ -61,15 +61,52 @@
           <div class="overflow-y-auto">
             <div class="graphDiv">
               <div class="overviewScrollingWrapper">
+                <!-- <div style="width: 105%; overflow-x: auto;">
+                  <bar-chart
+                    :data="barChartData"
+                    :options="barChartOptions"
+                    :width="users.length * 100"
+                    :height="350"
+                  />
+                </div>-->
                 <div class="workloadCard" v-for="(user, index) in taskWorkLoadUsers" :key="index">
-                  <div class="progressCounter">{{ user.tasksCompleted + "/" + user.totalTasks}}</div>
+                  <div class="progressCounter">{{ user.tasksCompleted + '/' + user.totalTasks }}</div>
                   <div class="overviewProgressSection">
                     <v-progress-linear
                       v-if="user.totalTasks == 0"
                       @click="selectUser(user)"
                       value="0"
                       color="#78CF20"
-                      background-color="#ED5F5F"
+                      background-color="#FFFFFF"
+                      background-opacity="0.1"
+                      height="13"
+                      reactive
+                    >
+                      <template></template>
+                    </v-progress-linear>
+
+                    <v-progress-linear
+                      v-else
+                      @click="selectUser(user)"
+                      :value="(user.tasksCompleted / maxCompleted.tasksCompleted) * 100"
+                      color="#78CF20"
+                      background-color="#FFFFFF"
+                      background-opacity="0.1"
+                      height="13"
+                      reactive
+                    >
+                      <template></template>
+                    </v-progress-linear>
+                  </div>
+                  <v-divider></v-divider>
+                  <div class="overviewProgressSectionMinus">
+                    <v-progress-linear
+                      v-if="user.totalTasks == 0"
+                      @click="selectUser(user)"
+                      value="0"
+                      color="#ED5F5F"
+                      background-color="#FFFFFF"
+                      background-opacity="0.1"
                       height="13"
                       reactive
                     >
@@ -78,25 +115,38 @@
                     <v-progress-linear
                       v-else
                       @click="selectUser(user)"
-                      :value="(user.tasksCompleted/ user.totalTasks)*100"
-                      color="#78CF20"
-                      background-color="#ED5F5F"
+                      :value="
+                        ((user.totalTasks - user.tasksCompleted) / (minCompleted.totalTasks - minCompleted.tasksCompleted)) * 100
+                      "
+                      color="#ED5F5F"
+                      background-color="#FFFFFF"
+                      background-opacity="0.1"
                       height="13"
                       reactive
                     >
                       <template></template>
                     </v-progress-linear>
                   </div>
+                  <div class="progressCounter">
+                    {{
+                    user.totalTasks -
+                    user.tasksCompleted +
+                    '/' +
+                    user.totalTasks
+                    }}
+                  </div>
 
                   <div class="graphNameField">
-                    <v-divider></v-divider>
+                    <!-- <v-divider></v-divider> -->
                     {{ user.firstName }}
                   </div>
 
                   <div class="overviewAvater">
                     <v-list-item-avatar @click="selectUser(user)">
                       <v-img
-                        v-if="user.profileImage != null && user.profileImage != ''"
+                        v-if="
+                          user.profileImage != null && user.profileImage != ''
+                        "
                         :src="user.profileImage"
                       ></v-img>
                       <v-img
@@ -108,8 +158,8 @@
                 </div>
               </div>
             </div>
-            <div v-if="this.selectedUser !=''" class="workloadTasksDisplay">
-              <div class="workloadSelectedName">{{this.firstName}} {{this.lastName}}</div>
+            <div v-if="this.selectedUser != ''" class="workloadTasksDisplay">
+              <div class="workloadSelectedName">{{ this.firstName }} {{ this.lastName }}</div>
               <div class="workloadContentDiv">
                 <div v-if="workloadTasks == ''" class="noResultDiv">No tasks to show</div>
                 <v-expansion-panels v-model="panel" :disabled="disabled" multiple dark>
@@ -155,7 +205,10 @@
                           @click.stop="drawer = !drawer"
                           v-for="(task, index) in project.taskList"
                           :key="index"
-                          @click="selectTask(task); taskDialog = true;"
+                          @click="
+                            selectTask(task);
+                            taskDialog = true;
+                          "
                         >
                           <v-list-item-action>
                             <v-icon
@@ -170,9 +223,11 @@
                           </v-list-item-content>
 
                           <v-list-item-action>
-                            <v-list-item-title
-                              :class="dueDateCheck(task)"
-                            >{{ getDueDate(task.taskDueDateAt) }}</v-list-item-title>
+                            <v-list-item-title :class="dueDateCheck(task)">
+                              {{
+                              getDueDate(task.taskDueDateAt)
+                              }}
+                            </v-list-item-title>
                           </v-list-item-action>
                         </v-list-item>
                       </div>
@@ -187,6 +242,7 @@
         </div>
       </div>
     </div>
+
     <!-- ------------ task dialog --------- -->
 
     <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
@@ -220,10 +276,12 @@ import TaskDialog from "~/components/workload/filterDialog";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import Progress from "~/components/popups/progress";
+import BarChart from "~/components/charts/chart";
 
 export default {
   components: {
     NavigationDrawer,
+    BarChart,
     "workload-content": WorkloadContent,
     "task-dialog": TaskDialog,
 
@@ -233,6 +291,73 @@ export default {
   },
   data() {
     return {
+      array: ["January", "February", "March", "April", "May", "June", "July"],
+      barChartData: {
+        labels: [
+          "July",
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "January",
+          "February"
+        ],
+        datasets: [
+          {
+            type: "bar",
+            label: "Completed",
+            backgroundColor: "#78CF20",
+            data: [65, 0, 80, 81, 56, 85, 40]
+          },
+          {
+            type: "bar",
+            label: "Remaining",
+            backgroundColor: "#EE7071",
+            data: [-65, 0, -80, -81, -56, -85, -40]
+          }
+        ]
+      },
+      barChartOptions: {
+        maintainAspectRatio: true,
+        responsive: false,
+        legend: {
+          display: false
+        },
+        title: {
+          display: false,
+          text: "Organization overview"
+        },
+        scales: {
+          xAxes: [
+            {
+              stacked: true,
+              maxBarThickness: 15,
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ],
+          yAxes: [
+            {
+              stacked: true,
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
+        }
+      },
+
       overlay: true,
       errorMessage: "",
       successMessage: "",
@@ -588,6 +713,23 @@ export default {
       users: state => state.user.users,
       allProjects: state => state.project.projects
     }),
+    maxCompleted() {
+      if (this.taskWorkLoadUsers.length == 0) return;
+      return this.taskWorkLoadUsers.reduce((a, b) =>
+        Number(a.tasksCompleted) > Number(b.tasksCompleted) ? a : b
+      );
+    },
+    minCompleted() {
+      if (this.taskWorkLoadUsers.length == 0) return;
+      return this.taskWorkLoadUsers.reduce((a, b) =>
+        Number(a.totalTasks - a.tasksCompleted) >
+        Number(b.totalTasks - b.tasksCompleted)
+          ? a
+          : b
+      );
+    },
+    // user.totalTasks - user.tasksCompleted
+
     assigneeArray() {
       let AssigneeSearchList = this.users;
       let assigneeList = [];

@@ -50,7 +50,7 @@
                 style="text-decoration: none;"
                 target="_blank"
               >
-                <v-icon size="22" color="#0083E2">mdi-folder-outline</v-icon>Project
+                <v-icon size="18" color="#0083E2">icon-project</v-icon>Project
               </nuxt-link>/
               <nuxt-link
                 v-if="selectedTask.isParent == false"
@@ -58,7 +58,7 @@
                 :to="'/task/' +    this.taskObject.parentTask.taskId + '/?project=' +  this.projectId"
                 style="text-decoration: none;"
               >
-                <v-icon size="22" color="#0083E2">mdi-calendar-check</v-icon>
+                <v-icon size="18" color="#0083E2">icon-task</v-icon>
                 {{this.taskObject.parentTask.secondaryTaskId}}
               </nuxt-link>
               <span v-if="selectedTask.isParent == false">/</span>
@@ -68,7 +68,7 @@
                 target="_blank"
                 style="text-decoration: none; color: #B9B9B9"
               >
-                <v-icon size="22" color="#B9B9B9">mdi-calendar-check-outline</v-icon>
+                <v-icon size="18" color="#B9B9B9">icon-task</v-icon>
                 {{selectedTask.secondaryTaskId}}
               </nuxt-link>
             </v-col>
@@ -301,7 +301,7 @@
                   <div class="expansionViewHeader">
                     <v-list-item class="taskViewTitleSection">
                       <v-list-item-icon>
-                        <v-icon size="30" color="#0BAFFF">mdi-checkbox-multiple-blank-outline</v-icon>
+                        <v-icon size="25" color="#0BAFFF">icon-task</v-icon>
                       </v-list-item-icon>
                       <v-list-item-title class="viewTaskFontColors">Task type</v-list-item-title>
                     </v-list-item>
@@ -435,7 +435,7 @@
                   <div class="expansionViewHeader">
                     <v-list-item class="taskViewTitleSection">
                       <v-list-item-icon>
-                        <v-icon size="30" color="#6FCD17">mdi-animation-outline</v-icon>
+                        <v-icon size="25" color="#6FCD17">icon-board</v-icon>
                       </v-list-item-icon>
                       <v-list-item-title class="viewTaskFontColors">Board</v-list-item-title>
                     </v-list-item>
@@ -484,7 +484,7 @@
                   <div class="expansionViewHeader">
                     <v-list-item class="taskViewTitleSection">
                       <v-list-item-icon>
-                        <v-icon size="30" color="#FF6767">mdi-file-document-edit-outline</v-icon>
+                        <v-icon size="30" color="#FF6767">mdi-square-edit-outline</v-icon>
                       </v-list-item-icon>
                       <v-list-item-title class="viewTaskFontColors">Notes</v-list-item-title>
                     </v-list-item>
@@ -523,8 +523,10 @@
                 <div class="rightSideColumn">
                   <!-- --------- assignee section ---------- -->
                   <v-list-item>
-                    <v-list-item-icon>
-                      <v-icon size="35" color="#02C1D4">mdi-account-arrow-left-outline</v-icon>
+                    <v-list-item-icon
+                      style="background-color: #02C1D4; padding: 10px; border-radius: 50%"
+                    >
+                      <v-icon size="25" color="#FFFFFF">icon-assignee</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
@@ -555,8 +557,10 @@
                   <!-- ----------- Due date section --------- -->
 
                   <v-list-item>
-                    <v-list-item-icon>
-                      <v-icon size="35" color="#7CDD00">mdi-calendar-blank-outline</v-icon>
+                    <v-list-item-icon
+                      style="background-color: #7CDD00; padding: 10px; border-radius: 50%"
+                    >
+                      <v-icon size="25" color="#FFFFFF">mdi-calendar-blank-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Due Date</v-list-item-subtitle>
@@ -611,8 +615,10 @@
 
                   <!-- ----------- Reminder date section --------- -->
                   <v-list-item>
-                    <v-list-item-icon>
-                      <v-icon size="35" color="#7CDD00">mdi-clock-outline</v-icon>
+                    <v-list-item-icon
+                      style="background-color: #7CDD00; padding: 10px; border-radius: 50%"
+                    >
+                      <v-icon size="25" color="#FFFFFF">mdi-clock-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Remind Date</v-list-item-subtitle>
@@ -666,8 +672,10 @@
                   <v-divider class="datePickerDivider"></v-divider>
                   <!-- ----------- Files section --------- -->
                   <v-list-item>
-                    <v-list-item-icon>
-                      <v-icon size="35" color="#FFAE4F">mdi-paperclip</v-icon>
+                    <v-list-item-icon
+                      style="background-color: #FFAE4F; padding: 10px; border-radius: 50%"
+                    >
+                      <v-icon size="25" color="#FFFFFF">mdi-paperclip</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-title class="rightColumnItemsTitle">Files</v-list-item-title>
@@ -846,6 +854,7 @@ export default {
   },
   data() {
     return {
+      uploader: true,
       overlay: false,
       maxdate: "2020-05-11 12:17",
       taskId: "",
@@ -975,6 +984,9 @@ export default {
     };
   },
   methods: {
+    uploadHandler() {
+      this.uploader = false;
+    },
     getMaxDueDate() {
       let stringDate = this.fetchProject.projectEndDate + "";
       stringDate = stringDate.toString();
@@ -1383,6 +1395,7 @@ export default {
           }
         }
       }
+      this.overlay = false;
       this.files = null;
     },
     // ------------ file remove ---------

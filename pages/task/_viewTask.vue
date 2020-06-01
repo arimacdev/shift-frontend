@@ -88,14 +88,14 @@
             </v-col>
             <v-col sm="8" md="8" class="taskViewLinksDiv">
               <nuxt-link :to="'/projects/'  +  this.projectId" style="text-decoration: none;">
-                <v-icon size="22" color="#0083E2">mdi-folder-outline</v-icon>Project
+                <v-icon size="18" color="#0083E2">icon-project</v-icon>Project
               </nuxt-link>/
               <nuxt-link
                 v-if="this.task.isParent == false"
                 :to="'/task/' +   this.parentTask.taskId + '/?project=' +  this.projectId"
                 style="text-decoration: none;"
               >
-                <v-icon size="22" color="#0083E2">mdi-calendar-check</v-icon>
+                <v-icon size="18" color="#0083E2">icon-task</v-icon>
                 {{this.parentTask.secondaryTaskId}}
               </nuxt-link>
               <span v-if="this.task.isParent == false">/</span>
@@ -105,7 +105,7 @@
                 style="text-decoration: none; color: #B9B9B9"
                 class="currentTaskColor"
               >
-                <v-icon size="22" color="#B9B9B9">mdi-calendar-check-outline</v-icon>
+                <v-icon size="18" color="#B9B9B9">icon-task</v-icon>
                 {{this.task.secondaryTaskId}}
               </nuxt-link>
             </v-col>
@@ -324,7 +324,7 @@
                   <div class="expansionViewHeader">
                     <v-list-item class="taskViewTitleSection">
                       <v-list-item-icon>
-                        <v-icon size="30" color="#0BAFFF">mdi-checkbox-multiple-blank-outline</v-icon>
+                        <v-icon size="25" color="#0BAFFF">icon-task</v-icon>
                       </v-list-item-icon>
                       <v-list-item-title class="viewTaskFontColors">Task Type</v-list-item-title>
                     </v-list-item>
@@ -450,7 +450,7 @@
                   <div class="expansionViewHeader">
                     <v-list-item class="taskViewTitleSection">
                       <v-list-item-icon>
-                        <v-icon size="30" color="#6FCD17">mdi-animation-outline</v-icon>
+                        <v-icon size="25" color="#6FCD17">icon-board</v-icon>
                       </v-list-item-icon>
                       <v-list-item-title class="viewTaskFontColors">Board</v-list-item-title>
                     </v-list-item>
@@ -536,8 +536,10 @@
                 <div class="rightSideColumn">
                   <!-- --------- assignee section ---------- -->
                   <v-list-item>
-                    <v-list-item-icon>
-                      <v-icon size="35" color="#02C1D4">mdi-account-arrow-left-outline</v-icon>
+                    <v-list-item-icon
+                      style="background-color: #02C1D4; padding: 8px; border-radius: 50%"
+                    >
+                      <v-icon size="25" color="#FFFFFF">icon-assignee</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
@@ -568,8 +570,10 @@
                   </v-list-item>
                   <!-- ----------- Due date section --------- -->
                   <v-list-item>
-                    <v-list-item-icon>
-                      <v-icon size="35" color="#7CDD00">mdi-calendar-blank-outline</v-icon>
+                    <v-list-item-icon
+                      style="background-color: #7CDD00; padding: 8px; border-radius: 50%"
+                    >
+                      <v-icon size="25" color="#FFFFFF">mdi-calendar-blank-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Due Date</v-list-item-subtitle>
@@ -587,8 +591,10 @@
                   </div>
                   <!-- ----------- Reminder date section --------- -->
                   <v-list-item>
-                    <v-list-item-icon>
-                      <v-icon size="35" color="#7CDD00">mdi-clock-outline</v-icon>
+                    <v-list-item-icon
+                      style="background-color: #7CDD00; padding: 8px; border-radius: 50%"
+                    >
+                      <v-icon size="25" color="#FFFFFF">mdi-clock-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Remind Date</v-list-item-subtitle>
@@ -607,8 +613,10 @@
                   <v-divider class="datePickerDivider"></v-divider>
                   <!-- ----------- Files section --------- -->
                   <v-list-item>
-                    <v-list-item-icon>
-                      <v-icon size="35" color="#FFAE4F">mdi-paperclip</v-icon>
+                    <v-list-item-icon
+                      style="background-color: #FFAE4F; padding: 8px; border-radius: 50%"
+                    >
+                      <v-icon size="25" color="#FFFFFF">mdi-paperclip</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-title class="rightColumnItemsTitle">Files</v-list-item-title>

@@ -1,0 +1,63 @@
+@font-face {
+  font-family: 'icomoon';
+  src: url('../static/fonts/icomoon.eot');
+  src: url('../static/fonts/icomoon.eot?#iefix') format('embedded-opentype'),
+    url('../static/fonts/icomoon.woff') format('woff'),
+    url('../static/fonts/icomoon.ttf') format('truetype'),
+    url('../static/fonts/icomoon.svg#icomoon') format('svg');
+  speak: none;
+  font-style: oblique;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+}
+
+.icon-project:before {
+  content: '\e90b';
+  font-family: 'icomoon';
+}
+.icon-summary:before {
+  content: '\e90c';
+  font-family: 'icomoon';
+}
+.icon-task:before {
+  content: '\e90a';
+  font-family: 'icomoon';
+}
+.icon-users:before {
+  content: '\e909';
+  font-family: 'icomoon';
+}
+.icon-inventory:before {
+  content: '\e908';
+  font-family: 'icomoon';
+}
+.icon-workload:before {
+  content: '\e907';
+  font-family: 'icomoon';
+}
+.icon-user:before {
+  content: '\e906';
+  font-family: 'icomoon';
+}
+.icon-admin:before {
+  content: '\e905';
+  font-family: 'icomoon';
+}
+.icon-cancel:before {
+  content: '\e903';
+  font-family: 'icomoon';
+}
+.icon-board:before {
+  content: '\e902';
+  font-family: 'icomoon';
+}
+.icon-assignee:before {
+  content: '\e900';
+  font-family: 'icomoon';
+}
+.icon-edit:before {
+  content: '\e904';
+  font-family: 'icomoon';
+}

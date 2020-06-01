@@ -17,12 +17,15 @@
       <v-list-item-title>
         <div id="name-div">
           <p id="company-name">ARIMAC</p>
+
           <p id="name">{{userProfile.firstName}} {{userProfile.lastName}}</p>
         </div>
       </v-list-item-title>
     </v-list-item>
 
     <v-divider></v-divider>
+    <!-- <span class="icon-Vector-1"></span> -->
+    <v-icon size="10">icomoon-/e900</v-icon>
 
     <v-list v-if="organizationalRole === 'SUPER_ADMIN'">
       <v-list-item
@@ -34,7 +37,8 @@
         active-class="active"
       >
         <v-list-item-icon>
-          <v-icon class="navButtons">{{ item.icon }}</v-icon>
+          <!-- <span class="navButtons" :class="item.icon"></span> -->
+          <v-icon size="20" class="navButtons">{{ item.icon }}</v-icon>
         </v-list-item-icon>
 
         <v-list-item-content>
@@ -85,48 +89,48 @@ export default {
       // profilePic: this.userProfile.profileImage,
       drawer: true,
       adminItems: [
-        // { title: 'Summary', icon: 'mdi-chart-line', route: '../summary'},
+        // { title: 'Summary', icon: 'icon-summary', route: '../summary'},
         {
           title: "Projects",
-          icon: "mdi-folder-outline",
+          icon: "icon-project",
           route: "../../projects/projects"
         },
         {
           title: "Tasks",
-          icon: "mdi-calendar-blank-multiple",
+          icon: "icon-task",
           route: "../../tasks/tasks"
         },
-        // { title: 'Inventory', icon: 'mdi-comment-outline', route: '../inventory'},
+        // { title: 'Inventory', icon: 'icon-inventory', route: '../inventory'},
         {
           title: "Workload",
-          icon: "mdi-bag-checked",
+          icon: "icon-workload",
           route: "../../workload/workload"
         },
         {
           title: "Users",
-          icon: "mdi-account-multiple-outline",
+          icon: "icon-users",
           route: "../../users/users"
         }
-        // { title: 'Admin', icon: 'mdi-account-circle-outline', route: '../admin' },
+        // { title: "Admin", icon: "icon-admin", route: "../../admin/admin" }
       ],
       mini: true,
       userItems: [
-        // { title: 'Summary', icon: 'mdi-chart-line', route: '../summary'},
+        // { title: 'Summary', icon: 'icon-summary', route: '../summary'},
         {
           title: "Projects",
-          icon: "mdi-folder-outline",
+          icon: "icon-project",
           route: "../../projects/projects"
         },
         {
           title: "Tasks",
-          icon: "mdi-calendar-blank-multiple",
+          icon: "icon-task",
           route: "../../tasks/tasks"
         },
-        // { title: 'Inventory', icon: 'mdi-comment-outline', route: '../inventory'},
+        // { title: 'Inventory', icon: 'icon-inventory', route: '../inventory'},
         {
           title: "Workload",
-          icon: "mdi-bag-checked",
-          route: "../../workload/myWorkload"
+          icon: "icon-workload",
+          route: "../../workload/workload"
         }
       ]
     };

@@ -10,7 +10,7 @@
         <v-card class="addUserPopup">
           <v-form v-model="isValid" ref="form">
             <div class="popupFormContent">
-              <v-icon class size="60" color="deep-orange lighten-1">mdi-square-edit-outline</v-icon>
+              <v-icon class size="60" color="deep-orange lighten-1">icon-board</v-icon>
               <v-card-text class="deletePopupTitle">Update sprint</v-card-text>
               <v-card-actions>
                 <v-text-field

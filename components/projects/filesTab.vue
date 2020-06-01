@@ -261,6 +261,7 @@ export default {
           });
       }
       this.files = null;
+      this.overlay = false;
     },
     async removeFiles() {
       // console.log("projectFile " + this.fileId);

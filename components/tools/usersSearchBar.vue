@@ -42,7 +42,7 @@ export default {
     onSelectedUser() {
       if (this.select !== undefined) {
         this.$emit("searchSelected", this.select);
-        // console.log("selected user",this.select)
+        console.log("selected user", this.select);
       }
     },
     querySelections(v) {
@@ -56,12 +56,12 @@ export default {
       }
       // console.log("usersList", this.users, "nameList", this.states)
       this.loading = true;
-      setTimeout(() => {
-        this.items = this.states.filter(e => {
-          return (e || "").toLowerCase().indexOf((v || "").toLowerCase()) > -1;
-        });
-        this.loading = false;
-      });
+      // setTimeout(() => {
+      //   this.items = this.states.filter(e => {
+      //     return (e || "").toLowerCase().indexOf((v || "").toLowerCase()) > -1;
+      //   });
+      //   this.loading = false;
+      // });
       this.loading = false;
     }
   }

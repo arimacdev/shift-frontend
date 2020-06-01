@@ -128,6 +128,7 @@
           class
           @keyup.enter="addTask(null, 'general')"
           clearable
+          hint="Type a task name and hit enter"
         ></v-text-field>
       </v-form>
     </div>

@@ -2,7 +2,11 @@
   <div class="profileDetailsCover">
     <div class="blackBar profileBlackBar"></div>
     <div class="userImage profileUserImage">
-      <v-img v-if="user.profileImage != null" class="profileImage" :src="user.profileImage"></v-img>
+      <v-img
+        v-if="user.profileImage != null && user.profileImage != 'null'  "
+        class="profileImage"
+        :src="user.profileImage"
+      ></v-img>
       <v-img
         v-else
         class="profileImage"
@@ -71,7 +75,7 @@
             <!-- <v-btn x-small depressed color="primary" v-if="user.userSlackId != null && user.notification == false" v-show="enableNotification"  @click='changeNotificationStatus(user.notification)' >Enable Notifications</v-btn>  
             <v-btn x-small depressed   v-if="user.userSlackId != null && user.notification == true" v-show="disableNotification"  @click='changeNotificationStatus(user.notification)'>Disable Notifications</v-btn>-->
 
-            <div class="notiTitle">Enable Notifications</div>
+            <div class="notiTitle" v-if="!enableNotification">Enable Notifications</div>
             <div class="notiButton">
               <v-switch
                 inset
@@ -111,17 +115,36 @@
       <div class="usersForms userDetailsForm profileForm">
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="6" md="6">
-            <input v-model="user.firstName" placeholder="First Name" class="formElements" />
+            <v-text-field
+              flat
+              outlined
+              v-model="user.firstName"
+              label="First Name"
+              class="profileUpdateTextFields"
+            />
           </v-col>
           <v-col sm="6" md="6">
-            <input v-model="user.lastName" placeholder="Last Name" class="formElements" />
+            <v-text-field
+              flat
+              outlined
+              v-model="user.lastName"
+              label="Last Name"
+              class="profileUpdateTextFields"
+            />
           </v-col>
         </v-row>
 
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="6" md="6">
             <!-- <input  v-model="user.userName" disabled  placeholder="Username" class="formElements"> -->
-            <input type="email" v-model="user.email" placeholder="Email" class="formElements" />
+            <v-text-field
+              flat
+              outlined
+              type="email"
+              v-model="user.email"
+              label="Email"
+              class="profileUpdateTextFields"
+            />
           </v-col>
           <v-col sm="6" md="6">
             <!-- <input type="email" v-model="user.email"  placeholder="Email" class="formElements"> -->
@@ -132,11 +155,13 @@
           <v-col sm="6" md="6">
             <!-- <input type="password"  v-model="password"  placeholder="************" class="formElements"> -->
 
-            <input
+            <v-text-field
+              flat
+              outlined
               type="password"
               v-model.trim="$v.password.$model"
-              placeholder="New password (Change if needed) "
-              class="formElements"
+              label="New password (Change if needed) "
+              class="profileUpdateTextFields"
             />
             <!-- <div v-if="$v.password.$error && !$v.password.required" class="errorText"> Password is required</div> -->
             <div
@@ -145,11 +170,13 @@
             >Password must be at least 6 characters</div>
           </v-col>
           <v-col sm="6" md="6">
-            <input
+            <v-text-field
+              flat
+              outlined
               type="password"
               v-model.trim="$v.confirmPassword.$model"
-              placeholder="Confirm Password"
-              class="formElements"
+              label="Confirm Password"
+              class="profileUpdateTextFields"
             />
             <div
               v-if="$v.confirmPassword.$error && !$v.confirmPassword.sameAs"

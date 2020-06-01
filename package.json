@@ -13,6 +13,7 @@
   "dependencies": {
     "@nuxtjs/auth": "^4.9.0",
     "@nuxtjs/axios": "^5.9.5",
+    "chart.js": "^2.9.3",
     "circular-std": "^1.0.3",
     "i": "^0.3.6",
     "jsonwebtoken": "^8.5.1",
@@ -22,6 +23,7 @@
     "nuxt": "^2.0.0",
     "qs": "^6.9.2",
     "vee-validate": "^3.2.5",
+    "vue-chartjs": "^3.5.0",
     "vue-ctk-date-time-picker": "^2.4.0",
     "vue-datetime": "^1.0.0-beta.11",
     "vue-router": "^3.1.6",

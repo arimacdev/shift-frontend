@@ -3,7 +3,7 @@
     <form @submit.prevent="handleSubmit">
       <v-row class="mb-12 formRow" no-gutters>
         <v-col sm="12" md="12" class="textGrid">
-          <p class="addProjectTitle">Create new user</p>
+          <p class="addProjectTitle adminUserViewContent">Create new user</p>
         </v-col>
       </v-row>
       <v-row class="mb-12 formRow" no-gutters>
@@ -12,7 +12,7 @@
             flat
             outlined
             v-model.trim="$v.firstName.$model"
-            label="First Name"
+            label="First Name*"
             autocomplete="off"
             class="profileUpdateTextFields"
           />
@@ -30,7 +30,7 @@
             flat
             outlined
             v-model.trim="$v.lastName.$model"
-            label="Last Name"
+            label="Last Name*"
             autocomplete="off"
             class="profileUpdateTextFields"
           />
@@ -51,7 +51,7 @@
             flat
             outlined
             v-model.trim="$v.userName.$model"
-            label="User Name"
+            label="User Name*"
             autocomplete="off"
             class="profileUpdateTextFields"
           />
@@ -66,7 +66,7 @@
             outlined
             type="email"
             v-model.trim="$v.email.$model"
-            label="Email"
+            label="Email*"
             autocomplete="off"
             class="profileUpdateTextFields"
           />
@@ -80,9 +80,9 @@
           <v-text-field
             flat
             outlined
-            type="password"
+            type="password*"
             v-model.trim="$v.password.$model"
-            label="Password"
+            label="Password*"
             autocomplete="off"
             class="profileUpdateTextFields"
           />
@@ -101,7 +101,7 @@
             outlined
             type="password"
             v-model.trim="$v.confirmPassword.$model"
-            label="Confirm Password"
+            label="Confirm Password*"
             autocomplete="off"
             class="profileUpdateTextFields"
           />
@@ -112,15 +112,35 @@
         </v-col>
       </v-row>
       <v-row class="mb-12 formRow" no-gutters>
+        <v-col sm="6" md="6">
+          <v-text-field
+            flat
+            outlined
+            v-model.trim="$v.designation.$model"
+            label="Designation*"
+            autocomplete="off"
+            class="profileUpdateTextFields"
+          />
+          <div
+            v-if="$v.designation.$error && !$v.designation.required"
+            class="errorText"
+          >Designation is required</div>
+          <div
+            v-if="$v.designation.$error && !$v.designation.maxLength"
+            class="errorText"
+          >Cannot use more than 50 characters</div>
+        </v-col>
+      </v-row>
+      <v-row class="mb-12 formRow" no-gutters>
         <v-col sm="12" md="6" class></v-col>
         <v-col sm="12" md="6" class="buttonGrid">
-          <button class="submitButtonEdit addUserSubmit">
-            <v-list-item @click="postData()" dark>
+          <button :class="addProjectStyling" :disabled="checkValidation" @click="postData()">
+            <v-list-item dark>
               <v-list-item-action>
-                <v-icon size="20" color>mdi-account-outline</v-icon>
+                <v-icon size="20" color>icon-user</v-icon>
               </v-list-item-action>
               <v-list-item-content class="buttonText">
-                <v-list-item-title class="bodyWiew">Register user details</v-list-item-title>
+                <v-list-item-title class="bodyWiew">Register user</v-list-item-title>
               </v-list-item-content>
               <v-icon>mdi-plus-circle</v-icon>
             </v-list-item>
@@ -128,14 +148,15 @@
         </v-col>
       </v-row>
     </form>
-    <div @click="close">
+    <div class="adminPagePopups" @click="close">
       <component
         v-bind:is="component"
         :successMessage="successMessage"
         :errorMessage="errorMessage"
       ></component>
+
+      <!-- <success-popup /> -->
     </div>
-    <!-- <success-popup /> -->
   </div>
 </template>
 
@@ -159,6 +180,29 @@ export default {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup
   },
+  computed: {
+    checkValidation: {
+      get() {
+        if (this.$v.$invalid == true) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      set(value) {
+        this.projectName = value;
+      }
+    },
+    addProjectStyling: {
+      get() {
+        if (this.$v.$invalid == true) {
+          return "addProjectButtonFail";
+        } else {
+          return "addProjectButtonSuccess";
+        }
+      }
+    }
+  },
   methods: {
     async postData() {
       let response;
@@ -168,7 +212,8 @@ export default {
           firstName: this.firstName,
           lastName: this.lastName,
           email: this.email,
-          password: this.password
+          password: this.password,
+          designation: this.designation
         });
         (this.userName = ""),
           (this.firstName = ""),
@@ -176,13 +221,14 @@ export default {
           (this.email = ""),
           (this.password = ""),
           (this.confirmPassword = ""),
+          (this.designation = ""),
           this.$v.$reset();
         this.component = "success-popup";
         this.successMessage = "User successfully created";
         setTimeout(() => {
           this.close();
         }, 3000);
-        window.setTimeout(location.reload(), 8000);
+        // window.setTimeout(location.reload(), 8000);
       } catch (e) {
         // console.log("Error creating user", e);
         this.errorMessage = e.response.data;
@@ -192,6 +238,9 @@ export default {
         }, 3000);
         // console.log("Error creating project", e);
       }
+    },
+    close() {
+      this.component = "";
     },
     handleSubmit(e) {
       this.submitted = true;
@@ -212,6 +261,7 @@ export default {
       userName: "",
       firstName: "",
       lastName: "",
+      designation: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -224,6 +274,10 @@ export default {
       maxLength: maxLength(50)
     },
     lastName: {
+      required,
+      maxLength: maxLength(50)
+    },
+    designation: {
       required,
       maxLength: maxLength(50)
     },

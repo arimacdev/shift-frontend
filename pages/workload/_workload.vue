@@ -19,9 +19,15 @@
 
       <div class="body-div">
         <div class="workloadTypeSection">
-          <v-tabs background-color="#0b0b53" dark>
-            <v-tab v-on:click="component='my-workload' ">My Workload</v-tab>
+          <v-tabs background-color="#0b0b53" slider-size="3" dark>
             <v-tab
+              class="tabInactiveStyle"
+              active-class="adminTabTitleStyle"
+              v-on:click="component='my-workload' "
+            >My Workload</v-tab>
+            <v-tab
+              class="tabInactiveStyle"
+              active-class="adminTabTitleStyle"
               v-if="userRole === 'SUPER_ADMIN'"
               v-on:click="component='org-workload'"
             >Organizational Workload</v-tab>
