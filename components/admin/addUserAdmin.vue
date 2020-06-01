@@ -134,8 +134,8 @@
       <v-row class="mb-12 formRow" no-gutters>
         <v-col sm="12" md="6" class></v-col>
         <v-col sm="12" md="6" class="buttonGrid">
-          <button :class="addProjectStyling" :disabled="checkValidation">
-            <v-list-item @click="postData()" dark>
+          <button :class="addProjectStyling" :disabled="checkValidation" @click="postData()">
+            <v-list-item dark>
               <v-list-item-action>
                 <v-icon size="20" color>icon-user</v-icon>
               </v-list-item-action>

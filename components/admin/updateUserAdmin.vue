@@ -104,10 +104,10 @@
             <button class="submitButtonEdit profileButton" @click="postData()">
               <v-list-item dark>
                 <v-list-item-action>
-                  <v-icon size="20" color>mdi-account-outline</v-icon>
+                  <v-icon size="20" color>icon-user</v-icon>
                 </v-list-item-action>
                 <v-list-item-content class="buttonText">
-                  <v-list-item-title class="bodyWiew">Save changes</v-list-item-title>
+                  <v-list-item-title class="bodyWiew">Update</v-list-item-title>
                 </v-list-item-content>
                 <v-icon>mdi-plus-circle</v-icon>
               </v-list-item>

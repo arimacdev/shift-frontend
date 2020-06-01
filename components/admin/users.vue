@@ -44,7 +44,7 @@
                     </v-list-item-avatar>
                     <v-list-item-content>
                       <v-list-item-title class="body-2">{{ user.firstName }} {{ user.lastName}}</v-list-item-title>
-                      <v-list-item-subtitle>Developer</v-list-item-subtitle>
+                      <!-- <v-list-item-subtitle>Developer</v-list-item-subtitle> -->
                     </v-list-item-content>
                     <!-- <v-list-item-action
                       @click="selectUser(user)"
