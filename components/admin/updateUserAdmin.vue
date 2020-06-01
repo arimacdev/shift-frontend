@@ -120,7 +120,9 @@
             <v-row>
               <v-col md="8">
                 <v-row>
-                  <v-col md="4">Organization Role</v-col>
+                  <v-col md="4">
+                    <div style="color: #576377; font-weight: 450">Organization Role</div>
+                  </v-col>
                   <v-col md="2">
                     <v-btn small @click.stop="roleChangeDialog = true">Owner</v-btn>
                   </v-col>
