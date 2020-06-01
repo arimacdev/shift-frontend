@@ -19,19 +19,32 @@
     <div class="body-div">
       <div class="workloadTypeSection">
         <v-tabs background-color="#0b0b53" dark>
-          <v-tab v-on:click="component='my-workload' ">Users</v-tab>
-          <v-tab v-on:click="component='org-workload'">Organization</v-tab>
+          <v-tab v-on:click="component='users-tasb' ">Users</v-tab>
+          <v-tab v-on:click="component='organization-tab'">Organization</v-tab>
         </v-tabs>
       </div>
+    </div>
+
+    <div class="workloadV2Body">
+      <component v-bind:is="component"></component>
     </div>
   </div>
 </template>
 <script>
 import NavigationDrawer from "~/components/navigationDrawer";
+import Users from "~/components/admin/users";
+import Organization from "~/components/admin/organization";
 
 export default {
   components: {
-    NavigationDrawer
+    NavigationDrawer,
+    "users-tasb": Users,
+    "organization-tab": Organization
+  },
+  data() {
+    return {
+      component: "users-tab"
+    };
   },
   created() {
     this.$store.dispatch("project/clearProject");
