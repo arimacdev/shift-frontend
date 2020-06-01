@@ -27,7 +27,11 @@
             <div class="listView overflow-y-auto">
               <v-list-item-group>
                 <div v-for="(user, index) in users" :key="index">
-                  <v-list-item @click="selectUser(user)">
+                  <v-list-item
+                    class="singleUserList"
+                    @click="selectUser(user)"
+                    v-on:click="component='edit-user'"
+                  >
                     <v-list-item-avatar>
                       <v-img
                         v-if="user.profileImage != null && user.profileImage != ''"
@@ -39,20 +43,17 @@
                       ></v-img>
                     </v-list-item-avatar>
                     <v-list-item-content>
-                      <v-list-item-title
-                        @click="selectUser(user)"
-                        v-on:click="component='edit-user'"
-                        class="body-2"
-                      >{{ user.firstName }} {{ user.lastName}}</v-list-item-title>
+                      <v-list-item-title class="body-2">{{ user.firstName }} {{ user.lastName}}</v-list-item-title>
+                      <v-list-item-subtitle>Developer</v-list-item-subtitle>
                     </v-list-item-content>
-                    <v-list-item-action
+                    <!-- <v-list-item-action
                       @click="selectUser(user)"
                       v-on:click="component='edit-user'"
                     >
                       <div class="iconBackCircle">
                         <v-icon size="17" color="#0BAFFF">mdi-pencil-outline</v-icon>
                       </div>
-                    </v-list-item-action>
+                    </v-list-item-action>-->
                   </v-list-item>
                   <v-divider class="mx-4"></v-divider>
                 </div>
@@ -97,7 +98,7 @@ export default {
     selectUser(userData) {
       this.name = userData;
       this.userData = userData;
-      console.log("USERDATA: " + userData);
+      // console.log("USERDATA: " + userData);
     }
   },
 

@@ -18,7 +18,9 @@
   background-color: #edf0f5;
   padding-bottom: 100px !important;
 }
-
+.singleUserList {
+  height: 80px;
+}
 .projectTabSideBar {
   height: 100vh;
 }

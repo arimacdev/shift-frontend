@@ -154,7 +154,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn small color="red darken-1" dark @click="resetDialog = false">Disagree</v-btn>
+          <v-btn small color="red darken-1" dark @click="resetDialog = false">Cancel</v-btn>
 
           <v-btn small color="green darken-1" dark @click="resetDialog = false">Confirm</v-btn>
           <v-spacer></v-spacer>
@@ -175,7 +175,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn small color="red darken-1" dark @click="deactivateDialog = false">Disagree</v-btn>
+          <v-btn small color="red darken-1" dark @click="deactivateDialog = false">Cancel</v-btn>
 
           <v-btn small color="green darken-1" dark @click="deactivateDialog = false">Confirm</v-btn>
           <v-spacer></v-spacer>
@@ -196,7 +196,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn small color="red darken-1" dark @click="roleChangeDialog = false">Disagree</v-btn>
+          <v-btn small color="red darken-1" dark @click="roleChangeDialog = false">Cancel</v-btn>
 
           <v-btn small color="green darken-1" dark @click="roleChangeDialog = false">Confirm</v-btn>
           <v-spacer></v-spacer>
