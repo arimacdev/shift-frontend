@@ -172,7 +172,7 @@
           <v-spacer></v-spacer>
         </v-card-title>
 
-        <v-card-text>Deactivated users cannot interact with the system and user not allowed to log in tothe system</v-card-text>
+        <v-card-text>Are you sure you need to deactivate the user permanently? Deactivated users would not be able to interact with the tool and not allowed to login to the system</v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -193,7 +193,7 @@
           <v-spacer></v-spacer>
         </v-card-title>
 
-        <v-card-text>This user will have previlages according to the selected role</v-card-text>
+        <v-card-text>The user will receive privileges according to the selected role</v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
