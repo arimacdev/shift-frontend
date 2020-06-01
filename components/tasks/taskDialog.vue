@@ -1380,17 +1380,19 @@ export default {
             this.overlay = false;
             // console.log("file response", this.taskFiles);
           } catch (e) {
-            // console.log("Error adding group file", e);
+            this.overlay = false;
+            console.log("Error adding group file", e);
             this.errorMessage = e.response.data;
             this.component = "error-popup";
             setTimeout(() => {
               this.close();
             }, 3000);
-            this.overlay = false;
+
             this.uploadLoading = false;
           }
         }
       }
+      this.overlay = false;
       this.files = null;
     },
     // ------------ file remove ---------

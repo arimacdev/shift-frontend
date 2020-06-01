@@ -744,6 +744,7 @@ export default {
           }
         }
       }
+      this.overlay = false;
       this.files = null;
     },
     // ------------ file remove ---------

@@ -854,6 +854,7 @@ export default {
   },
   data() {
     return {
+      uploader: true,
       overlay: false,
       maxdate: "2020-05-11 12:17",
       taskId: "",
@@ -983,6 +984,9 @@ export default {
     };
   },
   methods: {
+    uploadHandler() {
+      this.uploader = false;
+    },
     getMaxDueDate() {
       let stringDate = this.fetchProject.projectEndDate + "";
       stringDate = stringDate.toString();
@@ -1391,6 +1395,7 @@ export default {
           }
         }
       }
+      this.overlay = false;
       this.files = null;
     },
     // ------------ file remove ---------
