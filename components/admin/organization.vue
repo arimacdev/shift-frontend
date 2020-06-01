@@ -38,7 +38,7 @@
       width="100px"
       src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1591002135277_arimac_logo%201.png"
     ></v-img>
-    <v-btn dark color="#0BAFFF" width="100px" style=" margin-top: 20px;" height="40px">Upload</v-btn>
+    <v-btn small dark color="#0BAFFF" width="100px" style=" margin-top: 20px;" height="40px">Upload</v-btn>
   </div>
 </template>
 
