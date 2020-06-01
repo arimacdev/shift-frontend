@@ -130,7 +130,7 @@ export default {
         {
           title: "Workload",
           icon: "icon-workload",
-          route: "../../workload/myWorkload"
+          route: "../../workload/workload"
         }
       ]
     };
