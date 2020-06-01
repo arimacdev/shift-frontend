@@ -106,11 +106,11 @@ export default {
           icon: "icon-workload",
           route: "../../workload/workload"
         },
-        {
-          title: "Users",
-          icon: "icon-users",
-          route: "../../users/users"
-        },
+        // {
+        //   title: "Users",
+        //   icon: "icon-users",
+        //   route: "../../users/users"
+        // },
         { title: "Admin", icon: "icon-admin", route: "../../admin/admin" }
       ],
       mini: true,
