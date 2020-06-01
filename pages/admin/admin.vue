@@ -18,9 +18,17 @@
 
     <div class="body-div">
       <div class="workloadTypeSection">
-        <v-tabs background-color="#0b0b53" dark>
-          <v-tab v-on:click="component='users-tasb' ">Users</v-tab>
-          <v-tab v-on:click="component='organization-tab'">Organization</v-tab>
+        <v-tabs background-color="#0b0b53" slider-size="3" dark>
+          <v-tab
+            class="tabInactiveStyle"
+            active-class="adminTabTitleStyle"
+            v-on:click="component='users-tab' "
+          >Users</v-tab>
+          <v-tab
+            class="tabInactiveStyle"
+            active-class="adminTabTitleStyle"
+            v-on:click="component='organization-tab'"
+          >Organization</v-tab>
         </v-tabs>
       </div>
     </div>
@@ -38,7 +46,7 @@ import Organization from "~/components/admin/organization";
 export default {
   components: {
     NavigationDrawer,
-    "users-tasb": Users,
+    "users-tab": Users,
     "organization-tab": Organization
   },
   data() {
@@ -46,7 +54,29 @@ export default {
       component: "users-tab"
     };
   },
+  async asyncData({ $axios, store }) {
+    let userId = store.state.user.userId;
+    const { data: projects } = await $axios.$get(`/projects?userId=${userId}`);
+    const { data: users } = await $axios.$get("/users");
+    const sorted = users.sort((a, b) => {
+      const userA = a.firstName.toUpperCase();
+      const userB = b.firstName.toUpperCase();
+
+      if (userA < userB) return -1;
+      if (userA > userB) return 1;
+
+      return 0;
+    });
+    // console.log(projects);
+    // console.log(users);
+    return {
+      projects: projects,
+      users: users,
+      name: users[0].userId
+    };
+  },
   created() {
+    this.$store.dispatch("user/setAllUsers");
     this.$store.dispatch("project/clearProject");
   }
 };

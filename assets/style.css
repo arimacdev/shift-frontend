@@ -135,6 +135,19 @@
   margin-right: 5px;
   float: right;
 }
+.addUserSubmitButtonEdit {
+  background-color: #0bafff !important;
+  margin-left: 20px;
+  width: 88%;
+  border-radius: 5px;
+  float: left;
+}
+.userAddBottom {
+  margin-bottom: -15px !important;
+}
+.activeUserAdmin {
+  background-color: #ffffff !important;
+}
 .submitButton {
   /* background-color: #0BAFFF; */
   width: 50%;
@@ -144,7 +157,7 @@
   float: right;
 }
 .addProjectButtonFail {
-  background-color: red;
+  background-color: #e5e5e5;
   width: 50%;
   border-radius: 5px;
   float: left;
@@ -164,6 +177,11 @@
   position: absolute;
   right: 10px !important;
   top: 80vh !important;
+}
+.adminPagePopups {
+  position: absolute;
+  right: 30px;
+  top: 100vh;
 }
 
 /* --------- add task ---------- */
@@ -217,12 +235,21 @@
 /* ------------ Users --------- */
 
 .users-list {
-  width: 25%;
+  width: 30%;
   float: left;
-  /* padding-left: 12px; */
-  padding-top: 20px;
-  background-color: #ffffff;
+  padding-left: -12px;
+  padding-top: 40px;
+
+  /* background-color: #ffffff; */
   margin-top: -20px;
+}
+.tabContent {
+  /* background-color: khaki; */
+  margin-left: -30px;
+  /* margin-top: -20px; */
+}
+.tabContentAdmin {
+  height: 80vh !important;
 }
 
 .users {
@@ -247,7 +274,10 @@
   border-radius: 50%;
 }
 .usersForms {
-  padding-left: 5% !important;
+  padding-left: 8% !important;
+}
+.adminUserViewContent {
+  margin-top: 30px !important;
 }
 .addUserSubmit {
   width: 60% !important;
@@ -268,6 +298,31 @@
   position: absolute;
   margin-top: -110px;
   left: 53%;
+}
+.adminUserImage {
+  position: absolute;
+  margin-top: -100px;
+  margin-left: 30px;
+}
+.userNameAdmin {
+  position: absolute;
+  margin-left: 200px;
+  margin-top: -60px;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 34px;
+}
+.buttonSectionAdmin {
+  position: absolute;
+  right: 20px;
+  top: 150px;
+  color: #ffffff;
+}
+.userAdminProfileImage {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  border: 5px solid #ffffff;
 }
 .image {
   border-radius: 50%;
@@ -308,6 +363,16 @@
 }
 .profileBlackBar {
   height: 190px !important;
+}
+.adminBlackBar {
+  height: 150px !important;
+  width: 120%;
+  /* margin-left: 30%; */
+  background-color: #040428;
+}
+.formContentAdmin {
+  padding-left: 30px !important;
+  margin-top: 60px;
 }
 
 .profileUserName {
@@ -2465,6 +2530,10 @@
   color: #0c0c5a !important;
   font-weight: bold !important;
 }
+.adminTabTitleStyle {
+  color: #ffffff !important;
+  font-weight: bold !important;
+}
 .tabInactiveStyle {
   font-weight: bold !important;
   font-size: 19px;
@@ -2473,10 +2542,14 @@
   margin-bottom: -30px !important;
   margin-right: 10px !important;
   margin-left: 10px !important;
+  margin-top: -15px !important;
 }
 .activeTaskTabList {
   border-radius: 5px;
 }
 .activeTaskTabList .buttonText .bodyWiew {
   color: #ffffff !important;
+}
+.userAddButtonText {
+  margin-left: -120px;
 }
