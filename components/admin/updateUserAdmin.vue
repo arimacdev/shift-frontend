@@ -15,9 +15,10 @@
     </div>
     <div class="userNameAdmin">{{userData.firstName}} {{userData.lastName}}</div>
     <div class="buttonSectionAdmin">
-      <v-btn color="#FFC212" dark small>Reset Password</v-btn>
-      <v-btn color="#FF6161" dark small>Deactivate User</v-btn>
+      <v-btn color="#FFC212" dark small @click.stop="resetDialog = true">Reset Password</v-btn>
+      <v-btn color="#FF6161" dark small @click.stop="deactivateDialog = true">Deactivate User</v-btn>
     </div>
+
     <div class="formContentAdmin">
       <form @submit.prevent="handleSubmit">
         <v-row class="mb-12 formRow" no-gutters>
@@ -121,16 +122,16 @@
                 <v-row>
                   <v-col md="4">Organization Role</v-col>
                   <v-col md="2">
-                    <v-btn small>Owner</v-btn>
+                    <v-btn small @click.stop="roleChangeDialog = true">Owner</v-btn>
                   </v-col>
                   <v-col md="2">
-                    <v-btn small color="primary">Admin</v-btn>
+                    <v-btn small @click.stop="roleChangeDialog = true" color="primary">Admin</v-btn>
                   </v-col>
                   <v-col md="2">
-                    <v-btn small>User</v-btn>
+                    <v-btn small @click.stop="roleChangeDialog = true">User</v-btn>
                   </v-col>
                   <v-col md="2">
-                    <v-btn small>Workload</v-btn>
+                    <v-btn small @click.stop="roleChangeDialog = true">Workload</v-btn>
                   </v-col>
                 </v-row>
               </v-col>
@@ -140,6 +141,68 @@
         </v-row>
       </form>
     </div>
+    <!-- -------- reset dialog -------- -->
+    <v-dialog v-model="resetDialog" max-width="350">
+      <v-card style="text-align: center ; padding-bottom: 25px">
+        <v-card-title class="headline" style="text-align: center">
+          <v-spacer></v-spacer>Reset Password
+          <v-spacer></v-spacer>
+        </v-card-title>
+
+        <v-card-text>User will receive an email with password reset link. User should follow mentioned steps to reset the password</v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn small color="red darken-1" dark @click="resetDialog = false">Disagree</v-btn>
+
+          <v-btn small color="green darken-1" dark @click="resetDialog = false">Confirm</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- -------- deactivate dialog -------- -->
+    <v-dialog v-model="deactivateDialog" max-width="350">
+      <v-card style="text-align: center; padding-bottom: 25px">
+        <v-card-title class="headline" style="text-align: center">
+          <v-spacer></v-spacer>Deactivate User
+          <v-spacer></v-spacer>
+        </v-card-title>
+
+        <v-card-text>Deactivated users cannot interact with the system and user not allowed to log in tothe system</v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn small color="red darken-1" dark @click="deactivateDialog = false">Disagree</v-btn>
+
+          <v-btn small color="green darken-1" dark @click="deactivateDialog = false">Confirm</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- -------- role change dialog -------- -->
+    <v-dialog v-model="roleChangeDialog" max-width="350">
+      <v-card style="text-align: center; padding-bottom: 25px">
+        <v-card-title class="headline" style="text-align: center">
+          <v-spacer></v-spacer>Change User Role
+          <v-spacer></v-spacer>
+        </v-card-title>
+
+        <v-card-text>This user will have previlages according to the selected role</v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn small color="red darken-1" dark @click="roleChangeDialog = false">Disagree</v-btn>
+
+          <v-btn small color="green darken-1" dark @click="roleChangeDialog = false">Confirm</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <div @click="close">
       <component
         v-bind:is="component"
@@ -172,10 +235,18 @@ export default {
     "error-popup": ErrorPopup
   },
 
-  data: function() {
+  data() {
     return {
+      resetDialog: false,
+      roleChangeDialog: false,
+      deactivateDialog: false,
       successMessage: "",
-      userId: this.userData
+      userId: this.userData,
+      password: "",
+      confirmPassword: "",
+      component: "",
+      errorMessage: "",
+      successMessage: ""
     };
   },
 
@@ -215,15 +286,6 @@ export default {
     close() {
       this.component = "";
     }
-  },
-  data() {
-    return {
-      password: "",
-      confirmPassword: "",
-      component: "",
-      errorMessage: "",
-      successMessage: ""
-    };
   },
   validations: {
     password: {
