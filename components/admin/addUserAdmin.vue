@@ -249,9 +249,6 @@ export default {
       if (this.$v.$invalid) {
         return;
       }
-    },
-    close() {
-      this.component = "";
     }
   },
   data() {

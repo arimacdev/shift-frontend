@@ -29,23 +29,40 @@
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="6" md="6">
             <v-text-field
-              v-model="userData.firstName"
+              v-model.trim="$v.firstName.$model"
               flat
               outlined
               name="firstname"
               label="First Name"
               class="profileUpdateTextFields"
             />
+
+            <div
+              v-if="$v.firstName.$error && !$v.firstName.required"
+              class="errorText"
+            >First name is required</div>
+            <div
+              v-if="$v.firstName.$error && !$v.firstName.maxLength"
+              class="errorText"
+            >Cannot use more than 50 characters</div>
           </v-col>
           <v-col sm="6" md="6">
             <v-text-field
               flat
               outlined
-              v-model="userData.lastName"
+              v-model.trim="$v.lastName.$model"
               name="lastname"
               label="Last Name"
               class="profileUpdateTextFields"
             />
+            <div
+              v-if="$v.lastName.$error && !$v.lastName.required"
+              class="errorText"
+            >Last name is required</div>
+            <div
+              v-if="$v.lastName.$error && !$v.lastName.maxLength"
+              class="errorText"
+            >Cannot use more than 50 characters</div>
           </v-col>
         </v-row>
 
@@ -55,11 +72,13 @@
               flat
               outlined
               type="email"
-              v-model="userData.email"
+              v-model.trim="$v.email.$model"
               name="email"
               label="Email"
               class="profileUpdateTextFields"
             />
+            <div v-if="$v.email.$error && !$v.email.required" class="errorText">Email is required</div>
+            <div v-if="$v.email.$error && !$v.email.email" class="errorText">Use valid Email address</div>
           </v-col>
           <v-col sm="6" md="6">
             <v-text-field
@@ -101,7 +120,8 @@
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="12" md="6" class></v-col>
           <v-col sm="12" md="6" class="buttonGrid">
-            <button class="submitButtonEdit profileButton" @click="postData()">
+            <button :class="addProjectStyling" :disabled="checkValidation" @click="postData()">
+              <!-- class="submitButtonEdit profileButton" -->
               <v-list-item dark>
                 <v-list-item-action>
                   <v-icon size="20" color>icon-user</v-icon>
@@ -118,13 +138,18 @@
         <v-row>
           <v-col>
             <v-row>
-              <v-col md="8">
+              <v-col md="3">
+                <div style="color: #576377; font-weight: 450">Organization Roles</div>
+              </v-col>
+              <v-col md="9">
                 <v-row>
-                  <v-col md="4">
-                    <div style="color: #576377; font-weight: 450">Organization Role</div>
-                  </v-col>
-                  <v-col md="2" v-for="(role,index) in realmRoles" :key="index">
-                    <v-btn small @click="selectUserRole(role)" :color="checkUserRole(role.name)">{{role.name}}</v-btn>
+                  <v-col md="3" v-for="(role,index) in realmRoles" :key="index">
+                    <v-btn
+                      width="110px"
+                      small
+                      @click="selectUserRole(role)"
+                      :color="checkUserRole(role.name)"
+                    >{{role.name}}</v-btn>
                   </v-col>
                 </v-row>
               </v-col>
@@ -191,7 +216,6 @@
         <v-card-text v-if="this.existingRole">Remove User Role</v-card-text>
         <v-card-text v-else>Add User Role</v-card-text>
 
-
         <v-card-actions>
           <v-spacer></v-spacer>
 
@@ -215,16 +239,19 @@
 
 <script>
 import axios from "axios";
+import { mapState } from "vuex";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
+
 import {
+  numeric,
   required,
+  between,
   minLength,
   maxLength,
   email,
   sameAs
 } from "vuelidate/lib/validators";
-import { mapState } from "vuex";
-import SuccessPopup from "~/components/popups/successPopup";
-import ErrorPopup from "~/components/popups/errorPopup";
 
 export default {
   props: ["userData"],
@@ -247,7 +274,12 @@ export default {
       errorMessage: "",
       successMessage: "",
       selectedRole: {},
-      existingRole: false
+      existingRole: false,
+
+      firstName: this.userData.firstName,
+      lastName: this.userData.lastName,
+      email: this.userData.email,
+      designation: ""
     };
   },
 
@@ -293,18 +325,19 @@ export default {
       let response;
       try {
         response = await this.$axios.$put(`/users/${this.userData.userId}`, {
-          firstName: this.userData.firstName,
-          lastName: this.userData.lastName,
-          email: this.userData.email
+          firstName: this.firstName,
+          lastName: this.lastName,
+          email: this.email,
+          designation: this.designation
         });
         this.component = "success-popup";
         this.successMessage = "User successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
+        this.$v.$reset();
       } catch (e) {
-        // console.log("Error edit user", e);
-        // console.log("Error creating user", e);
+        console.log("Error creating user", e);
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -317,6 +350,8 @@ export default {
       this.submitted = true;
       // stop here if form is invalid
       this.$v.$touch();
+
+      console.log("VALIDATION: " + this.$v);
       if (this.$v.$invalid) {
         return;
       }
@@ -329,15 +364,45 @@ export default {
     ...mapState({
       realmRoles: state => state.admin.realmRoles,
       userRoles: state => state.admin.userRoles
-    })
+    }),
+    checkValidation: {
+      get() {
+        if (this.$v.$invalid == true) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      set(value) {
+        this.projectName = value;
+      }
+    },
+    addProjectStyling: {
+      get() {
+        if (this.$v.$invalid == true) {
+          return "addProjectButtonFail";
+        } else {
+          return "addProjectButtonSuccess";
+        }
+      }
+    }
   },
   validations: {
-    password: {
+    firstName: {
       required,
-      minLength: minLength(6)
+      maxLength: maxLength(50)
     },
-    confirmPassword: {
-      sameAsPassword: sameAs("password")
+    lastName: {
+      required,
+      maxLength: maxLength(50)
+    },
+    // designation: {
+    //   required,
+    //   maxLength: maxLength(50)
+    // },
+    email: {
+      required,
+      email
     }
   }
 };
