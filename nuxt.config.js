@@ -43,6 +43,22 @@ export default {
    ** Nuxt.js modules
    */
   modules: ['@nuxtjs/axios', '@nuxtjs/auth'],
+<<<<<<< Updated upstream
+=======
+  env: {
+    SLACK_AUTHORIZATION_ENDPOINT:
+      process.env.SLACK_AUTHORIZATION_ENDPOINT ||
+      'https://slack.com/oauth/v2/authorize',
+    SLACK_TOKEN_ENDPOINT:
+      process.env.SLACK_TOKEN_ENDPOINT || 'SLACK_TOKEN_ENDPOINT',
+    SLACK_CLIENT_ID:
+      process.env.SLACK_CLIENT_ID || '345426929140.1020110511447',
+    SLACK_CLIENT_SECRET:
+      process.env.SLACK_CLIENT_SECRET || 'fd851b7af77e525c1700879de9b328ab',
+    ORGANIZATION_URL:
+      process.env.ORGANIZATION_URL || 'https://project.arimaclanka.com',
+  },
+>>>>>>> Stashed changes
   /*
    ** Base URL
    ** http://pmtool.devops.arimac.xyz/api/pm-service
@@ -57,12 +73,28 @@ export default {
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
    */
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
   env: {
     ORGANIZATION_URL:
       process.env.ORGANIZATION_URL || 'https://project.arimaclanka.com',
   },
 
+=======
+=======
+>>>>>>> Stashed changes
+  env: {
+    ORGANIZATION_URL:
+      process.env.ORGANIZATION_URL || 'https://project.arimaclanka.com',
+    LOGOUT_URL:
+      process.env.LOGOUT_URL ||
+      'https://project.arimaclanka.com/auth/realms/pm-tool/protocol/openid-connect/logout',
+  },
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
   auth: {
     strategies: {
       local: false,
