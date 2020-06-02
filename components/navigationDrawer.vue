@@ -10,7 +10,10 @@
   >
     <v-list-item class="px-2 background" :to="'../../profile/profile'">
       <v-list-item-avatar>
-        <v-img v-if="userProfile.profileImage != null" :src="userProfile.profileImage"></v-img>
+        <v-img
+          v-if="userProfile.profileImage != null && userProfile.profileImage != ''"
+          :src="userProfile.profileImage"
+        ></v-img>
         <v-img v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
       </v-list-item-avatar>
 

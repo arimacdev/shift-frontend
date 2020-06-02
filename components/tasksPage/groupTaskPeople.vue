@@ -18,7 +18,7 @@
           <v-list-item v-if="assignee.taskGroupRole == 1" class="peopleContainer">
             <v-list-item-avatar>
               <v-img
-                v-if="assignee.assigneeProfileImage != null"
+                v-if="assignee.assigneeProfileImage != null && assignee.assigneeProfileImage != ''"
                 :src="assignee.assigneeProfileImage"
               ></v-img>
               <v-img
@@ -85,7 +85,7 @@
           <v-list-item v-if="assignee.taskGroupRole == 2" class="peopleContainer">
             <v-list-item-avatar>
               <v-img
-                v-if="assignee.assigneeProfileImage != null"
+                v-if="assignee.assigneeProfileImage != null && assignee.assigneeProfileImage != ''"
                 :src="assignee.assigneeProfileImage"
               ></v-img>
               <v-img

@@ -3,7 +3,7 @@
     <div class="adminBlackBar"></div>
     <div class="adminUserImage">
       <v-img
-        v-if="userData.profileImage != null && userData.profileImage != 'null'  "
+        v-if="userData.profileImage != null && userData.profileImage != ''  "
         class="userAdminProfileImage"
         :src="userData.profileImage"
       ></v-img>
@@ -126,6 +126,15 @@
                   <v-col md="2" v-for="(role,index) in realmRoles" :key="index">
                     <v-btn small @click="selectUserRole(role)" :color="checkUserRole(role.name)">{{role.name}}</v-btn>
                   </v-col>
+                  <!-- <v-col md="2">
+                    <v-btn small @click.stop="roleChangeDialog = true" color="primary">Admin</v-btn>
+                  </v-col>
+                  <v-col md="2">
+                    <v-btn small @click.stop="roleChangeDialog = true">User</v-btn>
+                  </v-col>
+                  <v-col md="2">
+                    <v-btn small @click.stop="roleChangeDialog = true">Workload</v-btn>
+                  </v-col>-->
                 </v-row>
               </v-col>
               <v-col></v-col>
