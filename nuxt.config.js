@@ -30,7 +30,11 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: [
+    '~/plugins/vuelidate.js',
+    '~/plugins/datepicker.js',
+    '~/plugins/vuedatetime.js',
+  ],
   /*
    ** Nuxt.js dev-modules
    */
@@ -38,23 +42,55 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ['@nuxtjs/axios'],
-
-  env: {
-    ORGANIZATION_URL:
-      process.env.ORGANIZATION_URL || 'https://project.arimaclanka.com',
-    LOGOUT_URL:
-      process.env.LOGOUT_URL ||
-      'https://project.arimaclanka.com/auth/realms/pm-tool/protocol/openid-connect/logout',
-  },
-
+  modules: ['@nuxtjs/axios', '@nuxtjs/auth'],
+  /*
+   ** Base URL
+   ** http://pmtool.devops.arimac.xyz/api/pm-service
+   ** http://localhost:8080/api/pm-service
+   ** UserId - Admin
+   ** 138bbb3d-02ed-4d72-9a03-7e8cdfe89eff
+   */
   axios: {
-    baseURL: 'http://pmtool.devops.arimac.xyz/api/pm-service',
+    baseURL: `${process.env.BASE_URL}/api/pm-service`,
   },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
    */
+  auth: {
+    strategies: {
+      local: false,
+      keycloak: {
+        _scheme: 'oauth2',
+        authorization_endpoint: `${process.env.BASE_URL}/auth/realms/pm-tool/protocol/openid-connect/auth`,
+        userinfo_endpoint: `${process.env.BASE_URL}/auth/realms/pm-tool/protocol/openid-connect/userinfo`,
+        access_token_endpoint: `${process.env.BASE_URL}/auth/realms/pm-tool/protocol/openid-connect/token`,
+        scope: ['openid', 'roles', 'profile'],
+        grant_type: 'authorization_code',
+        response_type: 'code',
+        token_type: 'Bearer',
+        client_id: `${process.env.KEYCLOAK_CLIENT_ID}`,
+        token_key: 'access_token',
+      },
+    },
+    redirect: {
+      login: '/',
+      home: '/projects/projects',
+      callback: '/',
+    },
+    localStorage: false,
+  },
+
+  router: {
+    middleware: ['auth', 'token'],
+  },
+
+  constants: {
+    hostUrl: `${process.env.BASE_URL}`,
+    appUrl: `${process.env.BASE_URL}`,
+    realm: `${process.env.KEYCLOAK_REALM}`,
+  },
+
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
