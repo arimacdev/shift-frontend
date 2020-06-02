@@ -295,7 +295,16 @@
                               </div>
                               <div>
                                 <v-list-item-avatar size="25">
-                                  <v-img :src="child.taskAssigneeProfileImage"></v-img>
+                                  <!-- <v-img :src="child.taskAssigneeProfileImage"></v-img> -->
+
+                                  <v-img
+                                    v-if="child.taskAssigneeProfileImage != null && child.taskAssigneeProfileImage != ''"
+                                    :src="child.taskAssigneeProfileImage"
+                                  ></v-img>
+                                  <v-img
+                                    v-else
+                                    src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                                  ></v-img>
                                 </v-list-item-avatar>
                               </div>
                               <div class="boardTabLinkIcon">
