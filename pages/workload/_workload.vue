@@ -28,7 +28,7 @@
             <v-tab
               class="tabInactiveStyle"
               active-class="adminTabTitleStyle"
-              v-if="userRole === 'SUPER_ADMIN'"
+              v-if="userRole === 'SUPER_ADMIN' || userRole === 'WORKLOAD' || userRole == 'ADMIN'"
               v-on:click="component='org-workload'"
             >Organizational Workload</v-tab>
           </v-tabs>

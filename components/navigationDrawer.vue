@@ -136,8 +136,7 @@ export default {
           route: "../../workload/workload"
         }
       ],
-      homePage: process.env.ORGANIZATION_URL,
-      logOutUrl: process.env.LOGOUT_URL
+      homePage: process.env.SYSTEM_URL
     };
   },
   computed: {
@@ -152,7 +151,10 @@ export default {
 
   methods: {
     userLogOut() {
-      const LOGOUT_URL = this.logOutUrl + "?redirect_uri=" + this.homePage;
+      const LOGOUT_URL =
+        this.homePage +
+        "/auth/realms/pm-tool/protocol/openid-connect/logout?redirect_uri=" +
+        this.homePage;
       window.location.replace(LOGOUT_URL);
     }
   }

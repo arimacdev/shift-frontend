@@ -53,16 +53,13 @@ export default {
   axios: {
     baseURL: `${process.env.BASE_URL}/api/pm-service`,
   },
+  env: {
+    SYSTEM_URL: process.env.BASE_URL || 'https://project.arimaclanka.com',
+  },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
    */
-
-  env: {
-    ORGANIZATION_URL:
-      process.env.ORGANIZATION_URL || 'https://project.arimaclanka.com',
-  },
-
   auth: {
     strategies: {
       local: false,

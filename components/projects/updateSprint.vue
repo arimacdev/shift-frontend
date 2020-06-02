@@ -16,14 +16,14 @@
                   class
                 >{{this.sprintName}}</v-card-text>-->
               </v-list-item-content>
-              <v-list-item-action>
+              <!-- <v-list-item-action>
                 <v-tooltip left>
                   <template v-slot:activator="{ on }">
                     <v-icon v-on="on" class size="25" color="red">mdi-delete</v-icon>
                   </template>
                   <span>Delete sprint</span>
                 </v-tooltip>
-              </v-list-item-action>
+              </v-list-item-action>-->
             </v-list-item>
           </div>
           <v-form v-model="isValid" ref="form">

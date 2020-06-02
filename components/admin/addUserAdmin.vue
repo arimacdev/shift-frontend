@@ -111,7 +111,7 @@
           >Passwords must be identical</div>
         </v-col>
       </v-row>
-      <v-row class="mb-12 formRow" no-gutters>
+      <!-- <v-row class="mb-12 formRow" no-gutters>
         <v-col sm="6" md="6">
           <v-text-field
             flat
@@ -130,7 +130,7 @@
             class="errorText"
           >Cannot use more than 50 characters</div>
         </v-col>
-      </v-row>
+      </v-row>-->
       <v-row class="mb-12 formRow" no-gutters>
         <v-col sm="12" md="6" class></v-col>
         <v-col sm="12" md="6" class="buttonGrid">
@@ -212,8 +212,8 @@ export default {
           firstName: this.firstName,
           lastName: this.lastName,
           email: this.email,
-          password: this.password,
-          designation: this.designation
+          password: this.password
+          // designation: this.designation
         });
         (this.userName = ""),
           (this.firstName = ""),
@@ -221,7 +221,7 @@ export default {
           (this.email = ""),
           (this.password = ""),
           (this.confirmPassword = ""),
-          (this.designation = ""),
+          // (this.designation = ""),
           this.$v.$reset();
         this.component = "success-popup";
         this.successMessage = "User successfully created";
@@ -258,7 +258,7 @@ export default {
       userName: "",
       firstName: "",
       lastName: "",
-      designation: "",
+      // designation: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -274,10 +274,10 @@ export default {
       required,
       maxLength: maxLength(50)
     },
-    designation: {
-      required,
-      maxLength: maxLength(50)
-    },
+    // designation: {
+    //   required,
+    //   maxLength: maxLength(50)
+    // },
     userName: {
       required
     },
