@@ -4,7 +4,11 @@
     <div class="userImage">
       <!-- <v-img class="image" src="https://randomuser.me/api/portraits/men/22.jpg"></v-img> -->
 
-      <v-img class="image" v-if="userData.profileImage != null" :src="userData.profileImage"></v-img>
+      <v-img
+        class="image"
+        v-if="userData.profileImage != null && userData.profileImage != ''"
+        :src="userData.profileImage"
+      ></v-img>
       <v-img
         class="image"
         v-else

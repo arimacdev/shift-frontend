@@ -3,7 +3,7 @@
     <div class="blackBar profileBlackBar"></div>
     <div class="userImage profileUserImage">
       <v-img
-        v-if="user.profileImage != null && user.profileImage != 'null'  "
+        v-if="user.profileImage != null && user.profileImage != ''  "
         class="profileImage"
         :src="user.profileImage"
       ></v-img>

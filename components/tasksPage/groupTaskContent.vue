@@ -53,7 +53,7 @@
                   <div>
                     <v-list-item-avatar>
                       <v-img
-                        v-if="task.parentTask.taskAssigneeProfileImage != null"
+                        v-if="task.parentTask.taskAssigneeProfileImage != null && task.parentTask.taskAssigneeProfileImage != ''"
                         :src="task.parentTask.taskAssigneeProfileImage"
                       ></v-img>
                       <v-img
@@ -127,7 +127,7 @@
                     <div>
                       <v-list-item-avatar>
                         <v-img
-                          v-if="childTask.taskAssigneeProfileImage != null"
+                          v-if="childTask.taskAssigneeProfileImage != null && childTask.taskAssigneeProfileImage != ''"
                           :src="childTask.taskAssigneeProfileImage"
                         ></v-img>
                         <v-img
@@ -184,7 +184,7 @@
                   <div>
                     <v-list-item-avatar>
                       <v-img
-                        v-if="task.parentTask.taskAssigneeProfileImage != null"
+                        v-if="task.parentTask.taskAssigneeProfileImage != null && task.parentTask.taskAssigneeProfileImage != ''"
                         :src="task.parentTask.taskAssigneeProfileImage"
                       ></v-img>
                       <v-img
@@ -246,7 +246,7 @@
                     <div>
                       <v-list-item-avatar>
                         <v-img
-                          v-if="childTask.taskAssigneeProfileImage != null"
+                          v-if="childTask.taskAssigneeProfileImage != null && childTask.taskAssigneeProfileImage != ''"
                           :src="childTask.taskAssigneeProfileImage"
                         ></v-img>
                         <v-img

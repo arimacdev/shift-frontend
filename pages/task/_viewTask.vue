@@ -215,7 +215,7 @@
                             <div>
                               <v-list-item-avatar size="25">
                                 <v-img
-                                  v-if="this.parentTaskUser.profileImage != null"
+                                  v-if="this.parentTaskUser.profileImage != null && this.parentTaskUser.profileImage != ''"
                                   :src="this.parentTaskUser.profileImage"
                                 ></v-img>
                                 <v-img
