@@ -34,7 +34,7 @@
               </v-list-item-content>
               <v-list-item-avatar size="25">
                 <v-img
-                  v-if="task.parentTask.taskAssigneeProfileImage != null"
+                  v-if="task.parentTask.taskAssigneeProfileImage != null && task.parentTask.taskAssigneeProfileImage != ''"
                   :src="task.parentTask.taskAssigneeProfileImage"
                 ></v-img>
                 <v-img
@@ -79,7 +79,7 @@
               </v-list-item-content>
               <v-list-item-avatar size="25">
                 <v-img
-                  v-if="childTask.taskAssigneeProfileImage != null"
+                  v-if="childTask.taskAssigneeProfileImage != null && childTask.taskAssigneeProfileImage != ''"
                   :src="childTask.taskAssigneeProfileImage"
                 ></v-img>
                 <v-img
@@ -162,7 +162,7 @@
                       <v-list-item-avatar size="25">
                         <v-img
                           v-if="
-                            task.parentTask.taskAssigneeProfileImage != null
+                            task.parentTask.taskAssigneeProfileImage != null && task.parentTask.taskAssigneeProfileImage != ''
                           "
                           :src="task.parentTask.taskAssigneeProfileImage"
                         ></v-img>
@@ -216,7 +216,7 @@
                       </v-list-item-content>
                       <v-list-item-avatar size="25">
                         <v-img
-                          v-if="childTask.taskAssigneeProfileImage != null"
+                          v-if="childTask.taskAssigneeProfileImage != null && childTask.taskAssigneeProfileImage != ''"
                           :src="childTask.taskAssigneeProfileImage"
                         ></v-img>
                         <v-img
@@ -428,6 +428,20 @@ export default {
       this.task = task;
       this.$store.dispatch("task/setSelectedTask", task);
       // console.log("selectedTask", task);
+
+      this.$store.dispatch("user/setSelectedTaskUser", task.taskAssignee);
+      if (this.task.isParent) {
+        // console.log("parent task");
+        this.$store.dispatch("task/fetchChildren", {
+          projectId: this.projectId,
+          taskId: this.task.taskId
+        });
+      } else {
+        this.$store.dispatch("task/fetchParentTask", {
+          projectId: this.projectId,
+          taskId: this.task.parentId
+        });
+      }
       this.$axios
         .get(`/users/${this.task.taskAssignee}`)
         .then(async response => {
