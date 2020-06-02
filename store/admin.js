@@ -31,6 +31,11 @@ export const mutations = {
     };
     state.userRoles.push(role);
   },
+
+  REMOVE_USER_ROLE(state, roleToRemove) {
+    const index = state.userRoles.findIndex((i) => i.id === roleToRemove.id);
+    state.userRoles.splice(index, 1);
+  },
 };
 
 export const actions = {
@@ -89,19 +94,35 @@ export const actions = {
     const userId = rootState.user.userId;
     let response;
     try {
-      response = await this.$axios.$delete(
-        `/admin/user/roles`,
-        {
+      response = await this.$axios.$delete(`/admin/user/roles`, {
+        data: {
           userId: userRole.userId,
           roleId: userRole.id,
           roleName: userRole.name,
         },
-        { headers: { user: userId } }
-      );
-      commit('_USER_ROLE', userRole);
+        headers: {
+          user: userId,
+        },
+      });
+      commit('REMOVE_USER_ROLE', userRole);
       console.log('Remove Role', response);
     } catch (e) {
       console.log('Error adding a group', e);
     }
   },
 };
+
+// try {
+//   response = await this.$axios.$delete(
+//     `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+//     {
+//       data: {},
+//       headers: {
+//         user: this.userId,
+//         type: 'project',
+//       },
+//     }
+//   );
+//   this.$emit('listenChange');
+//   this.$emit('shrinkSideBar');
+// }

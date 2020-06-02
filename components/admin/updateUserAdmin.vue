@@ -254,11 +254,22 @@ export default {
   methods: {
     userRoleUpdate() {
       this.roleChangeDialog = false;
-      this.$store.dispatch("admin/addUserRole", {
-        userId: this.userData.userId,
-        id: this.selectedRole.id,
-        name: this.selectedRole.name
-      });
+      if (!this.existingRole) {
+        this.$store.dispatch("admin/addUserRole", {
+          userId: this.userData.userId,
+          id: this.selectedRole.id,
+          name: this.selectedRole.name
+        });
+      } else {
+        if (this.existingRole) {
+          console.log("calling delete");
+          this.$store.dispatch("admin/removeUserRole", {
+            userId: this.userData.userId,
+            id: this.selectedRole.id,
+            name: this.selectedRole.name
+          });
+        }
+      }
     },
     checkUserRole(name) {
       if (this.userRoles.some(role => role.name === name)) return "primary";
