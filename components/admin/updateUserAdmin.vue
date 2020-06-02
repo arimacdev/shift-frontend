@@ -126,15 +126,6 @@
                   <v-col md="2" v-for="(role,index) in realmRoles" :key="index">
                     <v-btn small @click="selectUserRole(role)" :color="checkUserRole(role.name)">{{role.name}}</v-btn>
                   </v-col>
-                  <!-- <v-col md="2">
-                    <v-btn small @click.stop="roleChangeDialog = true" color="primary">Admin</v-btn>
-                  </v-col>
-                  <v-col md="2">
-                    <v-btn small @click.stop="roleChangeDialog = true">User</v-btn>
-                  </v-col>
-                  <v-col md="2">
-                    <v-btn small @click.stop="roleChangeDialog = true">Workload</v-btn>
-                  </v-col>-->
                 </v-row>
               </v-col>
               <v-col></v-col>
@@ -206,7 +197,7 @@
 
           <v-btn small color="red darken-1" dark @click="roleChangeDialog = false">Cancel</v-btn>
 
-          <v-btn small color="green darken-1" dark @click="roleChangeDialog = false">Confirm</v-btn>
+          <v-btn small color="green darken-1" dark @click="userRoleUpdate">Confirm</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -261,10 +252,19 @@ export default {
   },
 
   methods: {
+    userRoleUpdate() {
+      this.roleChangeDialog = false;
+      this.$store.dispatch("admin/addUserRole", {
+        userId: this.userData.userId,
+        id: this.selectedRole.id,
+        name: this.selectedRole.name
+      });
+    },
     checkUserRole(name) {
       if (this.userRoles.some(role => role.name === name)) return "primary";
     },
     selectUserRole(userRole) {
+      console.log("userRole", userRole);
       this.roleChangeDialog = true;
       this.selectedRole = userRole;
       if (
