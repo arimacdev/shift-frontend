@@ -124,17 +124,8 @@
                     <div style="color: #576377; font-weight: 450">Organization Role</div>
                   </v-col>
                   <v-col md="2" v-for="(role,index) in realmRoles" :key="index">
-                    <v-btn small @click.stop="roleChangeDialog = true" :color="checkUserRole(role.name)">{{role.name}}</v-btn>
+                    <v-btn small @click="selectUserRole(role)" :color="checkUserRole(role.name)">{{role.name}}</v-btn>
                   </v-col>
-                  <!-- <v-col md="2">
-                    <v-btn small @click.stop="roleChangeDialog = true" color="primary">Admin</v-btn>
-                  </v-col>
-                  <v-col md="2">
-                    <v-btn small @click.stop="roleChangeDialog = true">User</v-btn>
-                  </v-col>
-                  <v-col md="2">
-                    <v-btn small @click.stop="roleChangeDialog = true">Workload</v-btn>
-                  </v-col> -->
                 </v-row>
               </v-col>
               <v-col></v-col>
@@ -188,12 +179,18 @@
     <!-- -------- role change dialog -------- -->
     <v-dialog v-model="roleChangeDialog" max-width="350">
       <v-card style="text-align: center; padding-bottom: 25px">
-        <v-card-title class="headline" style="text-align: center">
-          <v-spacer></v-spacer>Change User Role
+        <v-card-title class="headline" style="text-align: center" v-if="this.existingRole">
+          <v-spacer></v-spacer>Remove User Role
+          <v-spacer></v-spacer>
+        </v-card-title>
+        <v-card-title class="headline" style="text-align: center" v-else>
+          <v-spacer></v-spacer>Add User Role
           <v-spacer></v-spacer>
         </v-card-title>
 
-        <v-card-text>The user will receive privileges according to the selected role</v-card-text>
+        <v-card-text v-if="this.existingRole">Remove User Role</v-card-text>
+        <v-card-text v-else>Add User Role</v-card-text>
+
 
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -248,13 +245,29 @@ export default {
       confirmPassword: "",
       component: "",
       errorMessage: "",
-      successMessage: ""
+      successMessage: "",
+      selectedRole: {},
+      existingRole: false
     };
   },
 
   methods: {
     checkUserRole(name) {
       if (this.userRoles.some(role => role.name === name)) return "primary";
+    },
+    selectUserRole(userRole) {
+      this.roleChangeDialog = true;
+      this.selectedRole = userRole;
+      if (
+        this.userRoles.filter(role => role.name === userRole.name).length > 0
+      ) {
+        this.existingRole = true;
+        console.log("role exists");
+      } else {
+        console.log("role not exists");
+
+        this.existingRole = false;
+      }
     },
     async postData() {
       let response;
