@@ -23,13 +23,13 @@
     >Organization Information</div>
     <v-row>
       <v-col md="5">
-        <v-text-field flat outlined label="Name" background-color="#EDF0F5"></v-text-field>
+        <v-text-field v-model="companyName" flat outlined label="Name" background-color="#EDF0F5"></v-text-field>
       </v-col>
       <v-col md="5">
-        <v-text-field flat outlined label="Company" background-color="#EDF0F5"></v-text-field>
+        <v-text-field v-model="company" flat outlined label="Company" background-color="#EDF0F5"></v-text-field>
       </v-col>
       <v-col md="2">
-        <v-btn dark color="#0BAFFF" width="150px" height="50px">Save</v-btn>
+        <v-btn disabled color="#0BAFFF" width="150px" height="50px">Save</v-btn>
       </v-col>
     </v-row>
     <div style="color: #576377;  margin-top: 20px; margin-bottom: 30px">Icon</div>
@@ -37,7 +37,14 @@
       width="100px"
       src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1591002135277_arimac_logo%201.png"
     ></v-img>
-    <v-btn small dark color="#0BAFFF" width="100px" style=" margin-top: 20px;" height="40px">Upload</v-btn>
+    <v-btn
+      disabled
+      small
+      color="#0BAFFF"
+      width="100px"
+      style=" margin-top: 20px;"
+      height="40px"
+    >Upload</v-btn>
   </div>
 </template>
 
@@ -45,7 +52,10 @@
 export default {
   data() {
     return {
-      url: process.env.ORGANIZATION_URL
+      // url: process.env.ORGANIZATION_URL,
+      url: "https://project.arimaclanka.com",
+      companyName: "Arimac Digital",
+      company: "Arimac Lanka PVT LTD"
     };
   },
   methods: {
