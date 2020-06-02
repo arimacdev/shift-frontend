@@ -30,11 +30,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [
-    '~/plugins/vuelidate.js',
-    '~/plugins/datepicker.js',
-    '~/plugins/vuedatetime.js',
-  ],
+  plugins: [],
   /*
    ** Nuxt.js dev-modules
    */
@@ -42,48 +38,8 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ['@nuxtjs/axios', '@nuxtjs/auth'],
-<<<<<<< Updated upstream
-=======
-  env: {
-    SLACK_AUTHORIZATION_ENDPOINT:
-      process.env.SLACK_AUTHORIZATION_ENDPOINT ||
-      'https://slack.com/oauth/v2/authorize',
-    SLACK_TOKEN_ENDPOINT:
-      process.env.SLACK_TOKEN_ENDPOINT || 'SLACK_TOKEN_ENDPOINT',
-    SLACK_CLIENT_ID:
-      process.env.SLACK_CLIENT_ID || '345426929140.1020110511447',
-    SLACK_CLIENT_SECRET:
-      process.env.SLACK_CLIENT_SECRET || 'fd851b7af77e525c1700879de9b328ab',
-    ORGANIZATION_URL:
-      process.env.ORGANIZATION_URL || 'https://project.arimaclanka.com',
-  },
->>>>>>> Stashed changes
-  /*
-   ** Base URL
-   ** http://pmtool.devops.arimac.xyz/api/pm-service
-   ** http://localhost:8080/api/pm-service
-   ** UserId - Admin
-   ** 138bbb3d-02ed-4d72-9a03-7e8cdfe89eff
-   */
-  axios: {
-    baseURL: `${process.env.BASE_URL}/api/pm-service`,
-  },
-  /*
-   ** vuetify module configuration
-   ** https://github.com/nuxt-community/vuetify-module
-   */
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+  modules: ['@nuxtjs/axios'],
 
-  env: {
-    ORGANIZATION_URL:
-      process.env.ORGANIZATION_URL || 'https://project.arimaclanka.com',
-  },
-
-=======
-=======
->>>>>>> Stashed changes
   env: {
     ORGANIZATION_URL:
       process.env.ORGANIZATION_URL || 'https://project.arimaclanka.com',
@@ -91,44 +47,14 @@ export default {
       process.env.LOGOUT_URL ||
       'https://project.arimaclanka.com/auth/realms/pm-tool/protocol/openid-connect/logout',
   },
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-  auth: {
-    strategies: {
-      local: false,
-      keycloak: {
-        _scheme: 'oauth2',
-        authorization_endpoint: `${process.env.BASE_URL}/auth/realms/pm-tool/protocol/openid-connect/auth`,
-        userinfo_endpoint: `${process.env.BASE_URL}/auth/realms/pm-tool/protocol/openid-connect/userinfo`,
-        access_token_endpoint: `${process.env.BASE_URL}/auth/realms/pm-tool/protocol/openid-connect/token`,
-        scope: ['openid', 'roles', 'profile'],
-        grant_type: 'authorization_code',
-        response_type: 'code',
-        token_type: 'Bearer',
-        client_id: `${process.env.KEYCLOAK_CLIENT_ID}`,
-        token_key: 'access_token',
-      },
-    },
-    redirect: {
-      login: '/',
-      home: '/projects/projects',
-      callback: '/',
-    },
-    localStorage: false,
-  },
 
-  router: {
-    middleware: ['auth', 'token'],
+  axios: {
+    baseURL: 'http://pmtool.devops.arimac.xyz/api/pm-service',
   },
-
-  constants: {
-    hostUrl: `${process.env.BASE_URL}`,
-    appUrl: `${process.env.BASE_URL}`,
-    realm: `${process.env.KEYCLOAK_REALM}`,
-  },
-
+  /*
+   ** vuetify module configuration
+   ** https://github.com/nuxt-community/vuetify-module
+   */
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
