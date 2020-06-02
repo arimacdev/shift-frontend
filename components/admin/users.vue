@@ -98,7 +98,7 @@ export default {
     selectUser(userData) {
       this.name = userData;
       this.userData = userData;
-      // console.log("USERDATA: " + userData);
+      this.$store.dispatch("admin/fetchRealmRoles");
     }
   },
 
