@@ -93,7 +93,7 @@
             <div v-if="$v.email.$error && !$v.email.required" class="errorText">Email is required</div>
             <div v-if="$v.email.$error && !$v.email.email" class="errorText">Use valid Email address</div>
           </v-col>
-          <v-col sm="6" md="6">
+          <!-- <v-col sm="6" md="6">
             <v-text-field
               flat
               outlined
@@ -101,7 +101,7 @@
               label="Designation"
               class="profileUpdateTextFields"
             />
-          </v-col>
+          </v-col>-->
         </v-row>
 
         <!-- <v-row class="mb-12 formRow" no-gutters>
@@ -330,8 +330,8 @@ export default {
 
       firstName: this.userData.firstName,
       lastName: this.userData.lastName,
-      email: this.userData.email,
-      designation: ""
+      email: this.userData.email
+      // designation: ""
     };
   },
 
@@ -446,8 +446,8 @@ export default {
         response = await this.$axios.$put(`/users/${this.userData.userId}`, {
           firstName: this.firstName,
           lastName: this.lastName,
-          email: this.email,
-          designation: this.designation
+          email: this.email
+          // designation: this.designation
         });
         this.component = "success-popup";
         this.successMessage = "User successfully updated";
