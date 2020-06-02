@@ -23,6 +23,14 @@ export const mutations = {
     });
     state.userRoles = roleList;
   },
+
+  APPEND_USER_ROLE(state, newRole) {
+    const role = {
+      id: newRole.id,
+      name: newRole.name,
+    };
+    state.userRoles.push(role);
+  },
 };
 
 export const actions = {
@@ -54,6 +62,46 @@ export const actions = {
       console.log('roles', roleMapping.data);
     } catch (e) {
       console.log('Error fetching role mappings', e);
+    }
+  },
+
+  async addUserRole({ commit, rootState }, userRole) {
+    const userId = rootState.user.userId;
+    let response;
+    try {
+      response = await this.$axios.$post(
+        `/admin/user/roles`,
+        {
+          userId: userRole.userId,
+          roleId: userRole.id,
+          roleName: userRole.name,
+        },
+        { headers: { user: userId } }
+      );
+      commit('APPEND_USER_ROLE', userRole);
+      console.log('Add Role', response);
+    } catch (e) {
+      console.log('Error adding a group', e);
+    }
+  },
+
+  async removeUserRole({ commit, rootState }, userRole) {
+    const userId = rootState.user.userId;
+    let response;
+    try {
+      response = await this.$axios.$delete(
+        `/admin/user/roles`,
+        {
+          userId: userRole.userId,
+          roleId: userRole.id,
+          roleName: userRole.name,
+        },
+        { headers: { user: userId } }
+      );
+      commit('_USER_ROLE', userRole);
+      console.log('Remove Role', response);
+    } catch (e) {
+      console.log('Error adding a group', e);
     }
   },
 };
