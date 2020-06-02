@@ -126,7 +126,7 @@
                   <v-col md="2">
                     <v-btn small @click.stop="roleChangeDialog = true">Owner</v-btn>
                   </v-col>
-                  <v-col md="2">
+                  <!-- <v-col md="2">
                     <v-btn small @click.stop="roleChangeDialog = true" color="primary">Admin</v-btn>
                   </v-col>
                   <v-col md="2">
@@ -134,7 +134,7 @@
                   </v-col>
                   <v-col md="2">
                     <v-btn small @click.stop="roleChangeDialog = true">Workload</v-btn>
-                  </v-col>
+                  </v-col> -->
                 </v-row>
               </v-col>
               <v-col></v-col>
