@@ -16,7 +16,20 @@
     <div class="userNameAdmin">{{userData.firstName}} {{userData.lastName}}</div>
     <div class="buttonSectionAdmin">
       <v-btn color="#FFC212" dark small @click.stop="resetDialog = true">Reset Password</v-btn>
-      <v-btn color="#FF6161" dark small @click.stop="deactivateDialog = true">Deactivate User</v-btn>
+      <v-btn
+        v-if="userData.isActive == true"
+        color="#FF6161"
+        dark
+        small
+        @click.stop="deactivateDialog = true;"
+      >Deactivate User</v-btn>
+      <v-btn
+        v-if="userData.isActive == false"
+        color="#B52DD7"
+        dark
+        small
+        @click.stop="activateDialog = true"
+      >Activate User</v-btn>
     </div>
 
     <div class="formContentAdmin">
@@ -195,7 +208,38 @@
 
           <v-btn small color="red darken-1" dark @click="deactivateDialog = false">Cancel</v-btn>
 
-          <v-btn small color="green darken-1" dark @click="deactivateDialog = false">Confirm</v-btn>
+          <v-btn
+            small
+            color="green darken-1"
+            dark
+            @click="deactivateDialog = false; deactivateUser()"
+          >Confirm</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- -------- activate dialog -------- -->
+    <v-dialog v-model="activateDialog" max-width="350">
+      <v-card style="text-align: center; padding-bottom: 25px">
+        <v-card-title class="headline" style="text-align: center">
+          <v-spacer></v-spacer>Activate User
+          <v-spacer></v-spacer>
+        </v-card-title>
+
+        <v-card-text>Are you sure you need to activate the user? Activated user will allow to login to the system and able to interact with the tool</v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn small color="red darken-1" dark @click="activateDialog = false">Cancel</v-btn>
+
+          <v-btn
+            small
+            color="green darken-1"
+            dark
+            @click="activateDialog = false; activateUser()"
+          >Confirm</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -272,8 +316,10 @@ export default {
       resetDialog: false,
       roleChangeDialog: false,
       deactivateDialog: false,
+      activateDialog: false,
       successMessage: "",
       userId: this.userData,
+      adminId: this.$store.state.user.userId,
       password: "",
       confirmPassword: "",
       component: "",
@@ -325,6 +371,73 @@ export default {
         console.log("role not exists");
 
         this.existingRole = false;
+      }
+    },
+    async deactivateUser() {
+      let response;
+      try {
+        response = await this.$axios.$post(
+          `/users/deactivate`,
+          {
+            headers: {
+              user: this.adminId
+            }
+          },
+          {
+            data: {
+              adminId: this.adminId,
+              userId: this.userData.userId
+            }
+          }
+        );
+        this.component = "success-popup";
+        this.successMessage = "User successfully deactivated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.$v.$reset();
+      } catch (e) {
+        console.log("Error creating user", e);
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        //   alert("Error updating user!")
+      }
+    },
+
+    async activateUser() {
+      let response;
+      try {
+        response = await this.$axios.$post(
+          `/users/activate`,
+          {
+            headers: {
+              user: this.adminId
+            }
+          },
+          {
+            data: {
+              adminId: this.adminId,
+              userId: this.userData.userId
+            }
+          }
+        );
+        this.component = "success-popup";
+        this.successMessage = "User successfully activated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.$v.$reset();
+      } catch (e) {
+        console.log("Error creating user", e);
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        //   alert("Error updating user!")
       }
     },
     async postData() {
