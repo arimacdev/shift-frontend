@@ -41,8 +41,10 @@ export const mutations = {
     state.componentUser = user;
   },
   SET_SELECTED_USER(state, user) {
-    console.log('se', user);
-
+    state.selectedUser = user;
+  },
+  UPDATE_ACTIVATION(state, { user, status }) {
+    user.isActive = status;
     state.selectedUser = user;
   },
 };
@@ -115,7 +117,10 @@ export const actions = {
   },
 
   setSelectedUser({ commit }, user) {
-    console.log('se', user);
     commit('SET_SELECTED_USER', user);
+  },
+
+  updateActivationStatus({ commit }, { user, status }) {
+    commit('UPDATE_ACTIVATION', { user, status });
   },
 };

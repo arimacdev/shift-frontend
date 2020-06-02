@@ -13,7 +13,7 @@
         src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
       ></v-img>
     </div>
-    <div class="userNameAdmin">{{this.getFirstName() + " " + this.getLastName()}}</div>
+    <div class="userNameAdmin">{{this.userFirstName + " " + this.userLastName}}</div>
     <div class="buttonSectionAdmin">
       <!-- <v-btn color="#FFC212" dark small @click.stop="resetDialog = true">Reset Password</v-btn> -->
       <v-btn
@@ -396,6 +396,11 @@ export default {
           this.close();
         }, 3000);
         this.$v.$reset();
+        let updatedUser = this.selectedUser;
+        this.$store.dispatch("user/updateActivationStatus", {
+          user: updatedUser,
+          status: false
+        });
       } catch (e) {
         console.log("Error creating user", e);
         this.errorMessage = e.response.data;
@@ -430,6 +435,11 @@ export default {
           this.close();
         }, 3000);
         this.$v.$reset();
+        let updatedUser = this.selectedUser;
+        this.$store.dispatch("user/updateActivationStatus", {
+          user: updatedUser,
+          status: true
+        });
       } catch (e) {
         console.log("Error creating user", e);
         this.errorMessage = e.response.data;
