@@ -383,7 +383,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log(response.message);
+        // console.log(response.message);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";

@@ -213,8 +213,14 @@
           <v-spacer></v-spacer>
         </v-card-title>
 
-        <v-card-text v-if="this.existingRole">Remove User Role</v-card-text>
-        <v-card-text v-else>Add User Role</v-card-text>
+        <v-card-text v-if="this.existingRole">
+          <!-- Remove User Role -->
+          <br />The privileges of this role no longer exists for the user
+        </v-card-text>
+        <v-card-text v-else>
+          <!-- Add User Role -->
+          <br />The user will receive privileges according to the selected role
+        </v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -294,7 +300,7 @@ export default {
         });
       } else {
         if (this.existingRole) {
-          console.log("calling delete");
+          // console.log("calling delete");
           this.$store.dispatch("admin/removeUserRole", {
             userId: this.userData.userId,
             id: this.selectedRole.id,
@@ -307,7 +313,7 @@ export default {
       if (this.userRoles.some(role => role.name === name)) return "primary";
     },
     selectUserRole(userRole) {
-      console.log("userRole", userRole);
+      // console.log("userRole", userRole);
       this.roleChangeDialog = true;
       this.selectedRole = userRole;
       if (
@@ -351,7 +357,6 @@ export default {
       // stop here if form is invalid
       this.$v.$touch();
 
-      console.log("VALIDATION: " + this.$v);
       if (this.$v.$invalid) {
         return;
       }
