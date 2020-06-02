@@ -18,7 +18,6 @@
       style="color: #576377; font-size: 18px; margin-top: 20px; margin-bottom: 30px"
     >Base link of the application</div>
     <v-divider></v-divider>
-
     <div
       style="color: #576377; font-weight: 500; margin-top: 20px; font-size: 18px"
     >Organization Information</div>
@@ -46,7 +45,7 @@
 export default {
   data() {
     return {
-      url: "https://project.arimaclanka.com/"
+      url: process.env.ORGANIZATION_URL
     };
   },
   methods: {
