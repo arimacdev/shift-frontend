@@ -123,8 +123,8 @@
                   <v-col md="4">
                     <div style="color: #576377; font-weight: 450">Organization Role</div>
                   </v-col>
-                  <v-col md="2">
-                    <v-btn small @click.stop="roleChangeDialog = true">Owner</v-btn>
+                  <v-col md="2" v-for="(role,index) in realmRoles" :key="index">
+                    <v-btn small @click.stop="roleChangeDialog = true" :color="checkUserRole(role.name)">{{role.name}}</v-btn>
                   </v-col>
                   <!-- <v-col md="2">
                     <v-btn small @click.stop="roleChangeDialog = true" color="primary">Admin</v-btn>
@@ -225,7 +225,7 @@ import {
   email,
   sameAs
 } from "vuelidate/lib/validators";
-
+import { mapState } from "vuex";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 
@@ -253,6 +253,9 @@ export default {
   },
 
   methods: {
+    checkUserRole(name) {
+      if (this.userRoles.some(role => role.name === name)) return "primary";
+    },
     async postData() {
       let response;
       try {
@@ -288,6 +291,12 @@ export default {
     close() {
       this.component = "";
     }
+  },
+  computed: {
+    ...mapState({
+      realmRoles: state => state.admin.realmRoles,
+      userRoles: state => state.admin.userRoles
+    })
   },
   validations: {
     password: {
