@@ -15,7 +15,7 @@
     </div>
     <div class="userNameAdmin">{{userData.firstName}} {{userData.lastName}}</div>
     <div class="buttonSectionAdmin">
-      <v-btn color="#FFC212" dark small @click.stop="resetDialog = true">Reset Password</v-btn>
+      <!-- <v-btn color="#FFC212" dark small @click.stop="resetDialog = true">Reset Password</v-btn> -->
       <v-btn
         v-if="userData.isActive == true"
         color="#FF6161"
