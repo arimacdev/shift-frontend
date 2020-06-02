@@ -2558,3 +2558,8 @@
 .userAddButtonText {
   margin-left: -120px;
 }
+.updateProfilePopupDiv {
+  position: absolute;
+  right: 10px;
+  bottom: 160px;
+}

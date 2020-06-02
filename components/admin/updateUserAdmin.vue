@@ -226,14 +226,14 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <div @click="close">
+    <div @click="close" class="updateProfilePopupDiv">
       <component
         v-bind:is="component"
         :successMessage="successMessage"
         :errorMessage="errorMessage"
       ></component>
+      <!-- <success-popup /> -->
     </div>
-    <!-- <success-popup /> -->
   </div>
 </template>
 
