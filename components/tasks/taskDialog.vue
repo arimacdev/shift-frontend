@@ -158,6 +158,13 @@
                               >mdi-checkbox-marked-circle</v-icon>
                               <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
                             </v-list-item-action>
+                            <v-list-item-action
+                              style="font-size: 14px; font-weight: 800; padding-right: 20px"
+                            >
+                              {{
+                              parent.secondaryTaskId
+                              }}
+                            </v-list-item-action>
                             <v-list-item-content>
                               <v-list-item-title>
                                 {{
@@ -181,7 +188,8 @@
                                 <v-img
                                   v-if="
                                     parent
-                                      .taskAssigneeProfileImage != null
+                                      .taskAssigneeProfileImage != null &&  parent
+                                      .taskAssigneeProfileImage != ''
                                   "
                                   :src="
                                     parent
@@ -245,6 +253,13 @@
                                 >mdi-checkbox-marked-circle</v-icon>
                                 <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
                               </v-list-item-action>
+                              <v-list-item-action
+                                style="font-size: 14px; font-weight: 800; padding-right: 20px"
+                              >
+                                {{
+                                childTask.secondaryTaskId
+                                }}
+                              </v-list-item-action>
                               <v-list-item-content>
                                 <v-list-item-title>
                                   {{
@@ -265,7 +280,7 @@
                                 <v-list-item-avatar size="25">
                                   <v-img
                                     v-if="
-                                      childTask.taskAssigneeProfileImage != null
+                                      childTask.taskAssigneeProfileImage != null &&   childTask.taskAssigneeProfileImage != ''
                                     "
                                     :src="childTask.taskAssigneeProfileImage"
                                   ></v-img>

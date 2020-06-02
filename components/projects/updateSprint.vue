@@ -4,14 +4,33 @@
       <v-dialog v-model="dialog" persistent max-width="350">
         <template v-slot:activator="{ on }">
           <v-btn v-on="on" icon color="#FFFFFF">
-            <v-icon size="20">mdi-square-edit-outline</v-icon>
+            <v-icon size="20">mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
         <v-card class="addUserPopup">
+          <div>
+            <v-list-item>
+              <v-list-item-content>
+                <!-- <v-card-text
+                  style="font-weight: 500; font-size: 20px; color: #FFFFFF"
+                  class
+                >{{this.sprintName}}</v-card-text>-->
+              </v-list-item-content>
+              <!-- <v-list-item-action>
+                <v-tooltip left>
+                  <template v-slot:activator="{ on }">
+                    <v-icon v-on="on" class size="25" color="red">mdi-delete</v-icon>
+                  </template>
+                  <span>Delete sprint</span>
+                </v-tooltip>
+              </v-list-item-action>-->
+            </v-list-item>
+          </div>
           <v-form v-model="isValid" ref="form">
-            <div class="popupFormContent">
+            <div class="popupFormContent" style="margin-top: -40px">
               <v-icon class size="60" color="deep-orange lighten-1">icon-board</v-icon>
               <v-card-text class="deletePopupTitle">Update sprint</v-card-text>
+
               <v-card-actions>
                 <v-text-field
                   v-model="sprintName"

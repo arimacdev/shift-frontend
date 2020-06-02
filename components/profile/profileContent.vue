@@ -3,7 +3,7 @@
     <div class="blackBar profileBlackBar"></div>
     <div class="userImage profileUserImage">
       <v-img
-        v-if="user.profileImage != null && user.profileImage != 'null'  "
+        v-if="user.profileImage != null && user.profileImage != ''  "
         class="profileImage"
         :src="user.profileImage"
       ></v-img>
@@ -383,7 +383,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log(response.message);
+        // console.log(response.message);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";

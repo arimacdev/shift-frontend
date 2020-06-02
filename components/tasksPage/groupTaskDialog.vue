@@ -151,7 +151,8 @@
                                 <v-img
                                   v-if="
                                     parent
-                                      .taskAssigneeProfileImage != null
+                                      .taskAssigneeProfileImage != null &&  parent
+                                      .taskAssigneeProfileImage != ''
                                   "
                                   :src="
                                     parent
@@ -235,7 +236,7 @@
                                 <v-list-item-avatar size="25">
                                   <v-img
                                     v-if="
-                                      childTask.taskAssigneeProfileImage != null
+                                      childTask.taskAssigneeProfileImage != null && childTask.taskAssigneeProfileImage != ''
                                     "
                                     :src="childTask.taskAssigneeProfileImage"
                                   ></v-img>

@@ -31,7 +31,27 @@
                   :rules="assigneeRules"
                   @mousedown="getParentTasks"
                   clearable
-                ></v-select>
+                >
+                  <template v-slot:selection="data">
+                    <template>
+                      <v-list-item-action>
+                        <v-list-item-subtitle v-html="data.item.secondaryId"></v-list-item-subtitle>
+                      </v-list-item-action>
+                      <v-list-item-content>
+                        <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                      </v-list-item-content>
+                    </template>
+                  </template>
+                  <template v-slot:item="data">
+                    <template>
+                      <v-list-item-content>
+                        <v-list-item-subtitle v-html="data.item.secondaryId"></v-list-item-subtitle>
+
+                        <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                      </v-list-item-content>
+                    </template>
+                  </template>
+                </v-select>
               </v-card-actions>
             </div>
 
@@ -125,18 +145,19 @@ export default {
       this.$refs.form.reset();
       this.component = "";
     },
+
     getParentTasks(v) {
       // console.log("parent task list", this.projectAllTasks);
       this.parentTasks = [];
       let parentSearchList = this.projectAllTasks;
+
       for (let index = 0; index < parentSearchList.length; ++index) {
         let parent = parentSearchList[index];
-        if (parent.parentTask.taskId != this.taskId) {
-          this.parentTasks.push({
-            name: parent.parentTask.taskName,
-            id: parent.parentTask.taskId
-          });
-        }
+        this.parentTasks.push({
+          name: parent.parentTask.taskName,
+          id: parent.parentTask.taskId,
+          secondaryId: parent.parentTask.secondaryTaskId
+        });
       }
 
       // console.log("nameList", this.states);

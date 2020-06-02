@@ -86,7 +86,8 @@ export default {
     return {
       userData: "",
       component: "",
-      userId: this.$store.state.user.userId
+      userId: this.$store.state.user.userId,
+      roleListCount: 0
     };
   },
   methods: {
@@ -98,7 +99,15 @@ export default {
     selectUser(userData) {
       this.name = userData;
       this.userData = userData;
-      // console.log("USERDATA: " + userData);
+      try {
+        if (this.roleListCount === 0) {
+          this.$store.dispatch("admin/fetchRealmRoles");
+        }
+        this.roleListCount += 1;
+      } catch (e) {
+        this.roleListCount = 0;
+      }
+      this.$store.dispatch("admin/fetchUserRoleMapping", userData.userId);
     }
   },
 
