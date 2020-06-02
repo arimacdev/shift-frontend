@@ -67,7 +67,7 @@
         </v-list-item-content>
       </v-list-item>
     </v-list>
-    <!-- <v-divider></v-divider>
+    <v-divider></v-divider>
     <div class="logooutButton">
       <v-list>
         <v-list-item @click="userLogOut">
@@ -80,7 +80,7 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-    </div>-->
+    </div>
   </v-navigation-drawer>
 </template>
 
@@ -135,7 +135,9 @@ export default {
           icon: "icon-workload",
           route: "../../workload/workload"
         }
-      ]
+      ],
+      homePage: process.env.ORGANIZATION_URL,
+      logOutUrl: process.env.LOGOUT_URL
     };
   },
   computed: {
@@ -150,8 +152,7 @@ export default {
 
   methods: {
     userLogOut() {
-      const APP = "http://localhost:3000/login";
-      const LOGOUT_URL = `https://pmtool.devops.arimac.xyz/auth/realms/pm-tool/protocol/openid-connect/logout?redirect_uri=${APP}`;
+      const LOGOUT_URL = this.logOutUrl + "?redirect_uri=" + this.homePage;
       window.location.replace(LOGOUT_URL);
     }
   }
