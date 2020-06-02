@@ -108,6 +108,7 @@ export default {
         this.roleListCount = 0;
       }
       this.$store.dispatch("admin/fetchUserRoleMapping", userData.userId);
+      this.$store.dispatch("user/setSelectedUser", userData);
     }
   },
 

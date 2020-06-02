@@ -3,9 +3,9 @@
     <div class="adminBlackBar"></div>
     <div class="adminUserImage">
       <v-img
-        v-if="userData.profileImage != null && userData.profileImage != ''  "
+        v-if="selectedUser.profileImage != null && selectedUser.profileImage != ''  "
         class="userAdminProfileImage"
-        :src="userData.profileImage"
+        :src="selectedUser.profileImage"
       ></v-img>
       <v-img
         v-else
@@ -13,18 +13,18 @@
         src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
       ></v-img>
     </div>
-    <div class="userNameAdmin">{{userData.firstName}} {{userData.lastName}}</div>
+    <div class="userNameAdmin">{{this.getFirstName() + " " + this.getLastName()}}</div>
     <div class="buttonSectionAdmin">
       <!-- <v-btn color="#FFC212" dark small @click.stop="resetDialog = true">Reset Password</v-btn> -->
       <v-btn
-        v-if="userData.isActive == true"
+        v-if="selectedUser.isActive == true"
         color="#FF6161"
         dark
         small
         @click.stop="deactivateDialog = true;"
       >Deactivate User</v-btn>
       <v-btn
-        v-if="userData.isActive == false"
+        v-if="selectedUser.isActive == false"
         color="#B52DD7"
         dark
         small
@@ -42,10 +42,10 @@
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="6" md="6">
             <v-text-field
-              v-model.trim="$v.firstName.$model"
+              v-model="userFirstName"
               flat
               outlined
-              name="firstname"
+              name="userFirstName"
               label="First Name"
               class="profileUpdateTextFields"
             />
@@ -63,7 +63,7 @@
             <v-text-field
               flat
               outlined
-              v-model.trim="$v.lastName.$model"
+              v-model="userLastName"
               name="lastname"
               label="Last Name"
               class="profileUpdateTextFields"
@@ -85,7 +85,7 @@
               flat
               outlined
               type="email"
-              v-model.trim="$v.email.$model"
+              v-model="userEmail"
               name="email"
               label="Email"
               class="profileUpdateTextFields"
@@ -133,7 +133,7 @@
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="12" md="6" class></v-col>
           <v-col sm="12" md="6" class="buttonGrid">
-            <button :class="addProjectStyling" :disabled="checkValidation" @click="postData()">
+            <button class="addProjectButtonSuccess"  @click="postData()">
               <!-- class="submitButtonEdit profileButton" -->
               <v-list-item dark>
                 <v-list-item-action>
@@ -328,9 +328,9 @@ export default {
       selectedRole: {},
       existingRole: false,
 
-      firstName: this.userData.firstName,
-      lastName: this.userData.lastName,
-      email: this.userData.email,
+      firstName: "",
+      lastName: "",
+      email: "",
       designation: ""
     };
   },
@@ -443,12 +443,15 @@ export default {
     async postData() {
       let response;
       try {
-        response = await this.$axios.$put(`/users/${this.userData.userId}`, {
-          firstName: this.firstName,
-          lastName: this.lastName,
-          email: this.email,
-          designation: this.designation
-        });
+        response = await this.$axios.$put(
+          `/users/${this.selectedUser.userId}`,
+          {
+            firstName: this.getFirstName(),
+            lastName: this.getLastName(),
+            email: this.getEmail(),
+            designation: this.designation
+          }
+        );
         this.component = "success-popup";
         this.successMessage = "User successfully updated";
         setTimeout(() => {
@@ -464,6 +467,21 @@ export default {
         }, 3000);
         //   alert("Error updating user!")
       }
+    },
+    getFirstName() {
+      if (this.firstName.length === 0) {
+        return this.selectedUser.firstName;
+      } else return this.firstName;
+    },
+    getLastName() {
+      if (this.lastName.length === 0) {
+        return this.selectedUser.lastName;
+      } else return this.lastName;
+    },
+    getEmail() {
+      if (this.email.length === 0) {
+        return this.selectedUser.email;
+      } else return this.email;
     },
     handleSubmit(e) {
       this.submitted = true;
@@ -481,7 +499,8 @@ export default {
   computed: {
     ...mapState({
       realmRoles: state => state.admin.realmRoles,
-      userRoles: state => state.admin.userRoles
+      userRoles: state => state.admin.userRoles,
+      selectedUser: state => state.user.selectedUser
     }),
     checkValidation: {
       get() {
@@ -502,6 +521,30 @@ export default {
         } else {
           return "addProjectButtonSuccess";
         }
+      }
+    },
+    userFirstName: {
+      get() {
+        return this.selectedUser.firstName;
+      },
+      set(value) {
+        this.firstName = value;
+      }
+    },
+    userLastName: {
+      get() {
+        return this.selectedUser.lastName;
+      },
+      set(value) {
+        this.lastName = value;
+      }
+    },
+    userEmail: {
+      get() {
+        return this.selectedUser.email;
+      },
+      set(value) {
+        this.email = value;
       }
     }
   },
