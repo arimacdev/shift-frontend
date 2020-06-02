@@ -136,7 +136,7 @@ export default {
           route: "../../workload/workload"
         }
       ],
-      homePage: process.env.BASE_URL
+      homePage: process.env.SYSTEM_URL
     };
   },
   computed: {
