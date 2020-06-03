@@ -10,7 +10,7 @@
       <v-img
         v-else
         class="profileImage"
-        src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
       ></v-img>
 
       <div class="profilePictureUpload">
@@ -138,7 +138,6 @@
 
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="6" md="6">
-            <!-- <input  v-model="user.userName" disabled  placeholder="Username" class="formElements"> -->
             <v-text-field
               flat
               outlined
@@ -150,7 +149,14 @@
             />
           </v-col>
           <v-col sm="6" md="6">
-            <!-- <input type="email" v-model="user.email"  placeholder="Email" class="formElements"> -->
+            <v-text-field
+              flat
+              outlined
+              v-model="user.userName"
+              disabled
+              label="Username"
+              class="profileUpdateTextFields"
+            />
           </v-col>
         </v-row>
 

@@ -12,7 +12,7 @@
       <v-img
         v-else
         class="userAdminProfileImage"
-        src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
       ></v-img>
     </div>
     <div class="userNameAdmin">{{this.selectedUser.firstName + " " + this.selectedUser.lastName}}</div>
@@ -98,43 +98,18 @@
             <!-- <div v-if="$v.email.$error && !$v.email.required" class="errorText">Email is required</div>
             <div v-if="$v.email.$error && !$v.email.email" class="errorText">Use valid Email address</div>-->
           </v-col>
-          <!-- <v-col sm="6" md="6">
+          <v-col sm="6" md="6">
             <v-text-field
+              disabled
               flat
               outlined
-              v-model="designation"
-              label="Designation"
+              v-model="selectedUser.userName"
+              label="User name"
               class="profileUpdateTextFields"
             />
-          </v-col>-->
+          </v-col>
         </v-row>
 
-        <!-- <v-row class="mb-12 formRow" no-gutters>
-          <v-col sm="6" md="6">
-            <input
-              type="password"
-              v-model.trim="$v.password.$model"
-              placeholder="Password"
-              class="formElements"
-            />
-            <div
-              v-if="$v.password.$error && !$v.password.minLength"
-              class="errorText"
-            >Password must be at least 6 characters</div>
-          </v-col>
-          <v-col sm="6" md="6">
-            <input
-              type="password"
-              v-model.trim="$v.confirmPassword.$model"
-              placeholder="Confirm Password"
-              class="formElements"
-            />
-            <div
-              v-if="$v.confirmPassword.$error && !$v.confirmPassword.sameAs"
-              class="errorText"
-            >Passwords must be identical</div>
-          </v-col>
-        </v-row>-->
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="12" md="6" class></v-col>
           <v-col sm="12" md="6" class="buttonGrid">

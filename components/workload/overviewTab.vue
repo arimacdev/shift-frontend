@@ -151,7 +151,7 @@
                       ></v-img>
                       <v-img
                         v-else
-                        src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                       ></v-img>
                     </v-list-item-avatar>
                   </div>
@@ -217,6 +217,12 @@
                               color="#2EC973"
                             >mdi-checkbox-marked-circle</v-icon>
                             <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                          </v-list-item-action>
+                          <v-list-item-action>
+                            <div
+                              style="font-weight: bold; margin-right: 30px"
+                              class="workloadTaskName"
+                            >{{ task.secondaryTaskId }}</div>
                           </v-list-item-action>
                           <v-list-item-content>
                             <div class="workloadTaskName">{{ task.taskName }}</div>

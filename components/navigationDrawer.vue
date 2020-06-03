@@ -14,7 +14,10 @@
           v-if="userProfile.profileImage != null && userProfile.profileImage != ''"
           :src="userProfile.profileImage"
         ></v-img>
-        <v-img v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
+        <v-img
+          v-else
+          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+        ></v-img>
       </v-list-item-avatar>
 
       <v-list-item-title>
@@ -28,7 +31,9 @@
 
     <v-divider></v-divider>
 
-    <v-list v-if="organizationalRoles.indexOf('ADMIN') > -1 || organizationalRoles.indexOf('SUPER_ADMIN') > -1">
+    <v-list
+      v-if="organizationalRoles.indexOf('ADMIN') > -1 || organizationalRoles.indexOf('SUPER_ADMIN') > -1"
+    >
       <v-list-item
         :router="item.path"
         :to="item.route"
