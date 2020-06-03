@@ -133,7 +133,7 @@
       </v-form>
     </div>
     <div v-if="this.taskFilter == 'none'" class="taskListViewContent overflow-y-auto">
-      <!-- ------ start task filter list ------- -->
+      <!-- ------ start task list ------- -->
       <div v-for="(task, index) in projectAllTasks" :key="index">
         <div class="backPannelAllTask">
           <div class="taskList restructuredMainTaskList">

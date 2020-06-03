@@ -27,8 +27,6 @@
     </v-list-item>
 
     <v-divider></v-divider>
-    <!-- <span class="icon-Vector-1"></span> -->
-    <v-icon size="10">icomoon-/e900</v-icon>
 
     <v-list v-if="organizationalRoles.indexOf('ADMIN') > -1 || organizationalRoles.indexOf('SUPER_ADMIN') > -1">
       <v-list-item
