@@ -172,6 +172,7 @@
                       small
                       @click="selectUserRole(role)"
                       :color="checkUserRole(role.name)"
+                      :disabled="checkUser(role.name)"
                       >{{ role.name }}</v-btn
                     >
                   </v-col>
@@ -389,6 +390,11 @@ export default {
   },
 
   methods: {
+    checkUser(roleName) {
+      if (roleName === "USER") {
+        return true;
+      } else return false;
+    },
     userRoleUpdate() {
       this.roleChangeDialog = false;
       if (!this.existingRole) {
