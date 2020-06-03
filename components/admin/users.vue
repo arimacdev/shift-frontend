@@ -95,6 +95,17 @@ export default {
       this.name = data;
       this.userData = data;
       this.component = "edit-user";
+
+      try {
+        if (this.roleListCount === 0) {
+          this.$store.dispatch("admin/fetchRealmRoles");
+        }
+        this.roleListCount += 1;
+      } catch (e) {
+        this.roleListCount = 0;
+      }
+      this.$store.dispatch("admin/fetchUserRoleMapping", data.userId);
+      this.$store.dispatch("user/setSelectedUser", data);
     },
     selectUser(userData) {
       this.name = userData;
