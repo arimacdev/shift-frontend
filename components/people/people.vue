@@ -85,7 +85,10 @@
           :key="index"
           class="taskList peopleListItems"
         >
-          <v-list-item v-if="assignee.projectRoleId == 2" class="peopleContainer">
+          <v-list-item
+            v-if="assignee.projectRoleId == 2 && assignee.isUserBlocked == false"
+            class="peopleContainer"
+          >
             <v-list-item-avatar>
               <v-img
                 v-if="assignee.assigneeProfileImage != null && assignee.assigneeProfileImage != ''"
@@ -96,6 +99,7 @@
                 src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
               ></v-img>
             </v-list-item-avatar>
+
             <v-list-item-content>
               <v-list-item-title class="projectRole">
                 {{ assignee.assigneeFirstName }}
@@ -154,7 +158,10 @@
             :key="index"
             class="taskList peopleListItems"
           >
-            <v-list-item v-if="assignee.projectRoleId == 3" class="peopleContainer">
+            <v-list-item
+              v-if="assignee.projectRoleId == 3 && assignee.isUserBlocked == false"
+              class="peopleContainer"
+            >
               <v-list-item-avatar>
                 <v-img
                   v-if="assignee.assigneeProfileImage != null && assignee.assigneeProfileImage != ''"
