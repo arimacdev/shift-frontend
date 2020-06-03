@@ -68,6 +68,9 @@
         </keep-alive>
       </div>
     </div>
+    <v-overlay :value="overlay">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 
@@ -75,15 +78,18 @@
 import usersSearchBar from "~/components/tools/usersSearchBar";
 import AddUser from "~/components/admin/addUserAdmin";
 import EditUser from "~/components/admin/updateUserAdmin";
+import Progress from "~/components/popups/progress";
 import { mapState } from "vuex";
 export default {
   components: {
     "search-bar": usersSearchBar,
     "add-user": AddUser,
-    "edit-user": EditUser
+    "edit-user": EditUser,
+    "progress-loading": Progress
   },
   data() {
     return {
+      overlay: false,
       userData: "",
       component: "",
       userId: this.$store.state.user.userId,

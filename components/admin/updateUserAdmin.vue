@@ -109,32 +109,6 @@
           </v-col>-->
         </v-row>
 
-        <!-- <v-row class="mb-12 formRow" no-gutters>
-          <v-col sm="6" md="6">
-            <input
-              type="password"
-              v-model.trim="$v.password.$model"
-              placeholder="Password"
-              class="formElements"
-            />
-            <div
-              v-if="$v.password.$error && !$v.password.minLength"
-              class="errorText"
-            >Password must be at least 6 characters</div>
-          </v-col>
-          <v-col sm="6" md="6">
-            <input
-              type="password"
-              v-model.trim="$v.confirmPassword.$model"
-              placeholder="Confirm Password"
-              class="formElements"
-            />
-            <div
-              v-if="$v.confirmPassword.$error && !$v.confirmPassword.sameAs"
-              class="errorText"
-            >Passwords must be identical</div>
-          </v-col>
-        </v-row>-->
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="12" md="6" class></v-col>
           <v-col sm="12" md="6" class="buttonGrid">
