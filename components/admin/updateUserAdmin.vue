@@ -3,9 +3,11 @@
     <div class="adminBlackBar"></div>
     <div class="adminUserImage">
       <v-img
-        v-if="userData.profileImage != null && userData.profileImage != ''  "
+        v-if="
+          selectedUser.profileImage != null && selectedUser.profileImage != ''
+        "
         class="userAdminProfileImage"
-        :src="userData.profileImage"
+        :src="selectedUser.profileImage"
       ></v-img>
       <v-img
         v-else
@@ -13,23 +15,25 @@
         src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
       ></v-img>
     </div>
-    <div class="userNameAdmin">{{userData.firstName}} {{userData.lastName}}</div>
+    <div class="userNameAdmin">{{this.selectedUser.firstName + " " + this.selectedUser.lastName}}</div>
     <div class="buttonSectionAdmin">
       <!-- <v-btn color="#FFC212" dark small @click.stop="resetDialog = true">Reset Password</v-btn> -->
       <v-btn
-        v-if="userData.isActive == true"
+        v-if="selectedUser.isActive == true"
         color="#FF6161"
         dark
         small
-        @click.stop="deactivateDialog = true;"
-      >Deactivate User</v-btn>
+        @click.stop="deactivateDialog = true"
+        >Deactivate User</v-btn
+      >
       <v-btn
-        v-if="userData.isActive == false"
+        v-if="selectedUser.isActive == false"
         color="#B52DD7"
         dark
         small
         @click.stop="activateDialog = true"
-      >Activate User</v-btn>
+        >Activate User</v-btn
+      >
     </div>
 
     <div class="formContentAdmin">
@@ -42,40 +46,40 @@
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="6" md="6">
             <v-text-field
-              v-model.trim="$v.firstName.$model"
+              v-model="userFirstName"
               flat
               outlined
-              name="firstname"
+              name="userFirstName"
               label="First Name"
               class="profileUpdateTextFields"
             />
 
-            <div
+            <!-- <div
               v-if="$v.firstName.$error && !$v.firstName.required"
               class="errorText"
             >First name is required</div>
             <div
               v-if="$v.firstName.$error && !$v.firstName.maxLength"
               class="errorText"
-            >Cannot use more than 50 characters</div>
+            >Cannot use more than 50 characters</div> -->
           </v-col>
           <v-col sm="6" md="6">
             <v-text-field
               flat
               outlined
-              v-model.trim="$v.lastName.$model"
+              v-model="userLastName"
               name="lastname"
               label="Last Name"
               class="profileUpdateTextFields"
             />
-            <div
+            <!-- <div
               v-if="$v.lastName.$error && !$v.lastName.required"
               class="errorText"
             >Last name is required</div>
             <div
               v-if="$v.lastName.$error && !$v.lastName.maxLength"
               class="errorText"
-            >Cannot use more than 50 characters</div>
+            >Cannot use more than 50 characters</div> -->
           </v-col>
         </v-row>
 
@@ -85,13 +89,13 @@
               flat
               outlined
               type="email"
-              v-model.trim="$v.email.$model"
+              v-model="userEmail"
               name="email"
               label="Email"
               class="profileUpdateTextFields"
             />
-            <div v-if="$v.email.$error && !$v.email.required" class="errorText">Email is required</div>
-            <div v-if="$v.email.$error && !$v.email.email" class="errorText">Use valid Email address</div>
+            <!-- <div v-if="$v.email.$error && !$v.email.required" class="errorText">Email is required</div>
+            <div v-if="$v.email.$error && !$v.email.email" class="errorText">Use valid Email address</div> -->
           </v-col>
           <!-- <v-col sm="6" md="6">
             <v-text-field
@@ -133,7 +137,7 @@
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="12" md="6" class></v-col>
           <v-col sm="12" md="6" class="buttonGrid">
-            <button :class="addProjectStyling" :disabled="checkValidation" @click="postData()">
+            <button class="addProjectButtonSuccess" @click="postData()">
               <!-- class="submitButtonEdit profileButton" -->
               <v-list-item dark>
                 <v-list-item-action>
@@ -152,17 +156,25 @@
           <v-col>
             <v-row>
               <v-col md="3">
-                <div style="color: #576377; font-weight: 450">Organization Roles</div>
+                <div style="color: #576377; font-weight: 450">
+                  Organization Roles
+                </div>
               </v-col>
               <v-col md="9">
                 <v-row>
-                  <v-col md="3" v-for="(role,index) in realmRoles" :key="index">
+                  <v-col
+                    md="3"
+                    v-for="(role, index) in realmRoles"
+                    :key="index"
+                  >
                     <v-btn
                       width="110px"
                       small
                       @click="selectUserRole(role)"
                       :color="checkUserRole(role.name)"
-                    >{{role.name}}</v-btn>
+                      :disabled="checkUser(role.name)"
+                      >{{ role.name }}</v-btn
+                    >
                   </v-col>
                 </v-row>
               </v-col>
@@ -180,14 +192,21 @@
           <v-spacer></v-spacer>
         </v-card-title>
 
-        <v-card-text>User will receive an email with password reset link. User should follow mentioned steps to reset the password</v-card-text>
+        <v-card-text
+          >User will receive an email with password reset link. User should
+          follow mentioned steps to reset the password</v-card-text
+        >
 
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn small color="red darken-1" dark @click="resetDialog = false">Cancel</v-btn>
+          <v-btn small color="red darken-1" dark @click="resetDialog = false"
+            >Cancel</v-btn
+          >
 
-          <v-btn small color="green darken-1" dark @click="resetDialog = false">Confirm</v-btn>
+          <v-btn small color="green darken-1" dark @click="resetDialog = false"
+            >Confirm</v-btn
+          >
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -201,19 +220,33 @@
           <v-spacer></v-spacer>
         </v-card-title>
 
-        <v-card-text>Are you sure you need to deactivate the user permanently? Deactivated users would not be able to interact with the tool and not allowed to login to the system</v-card-text>
+        <v-card-text
+          >Are you sure you need to deactivate the user permanently? Deactivated
+          users would not be able to interact with the tool and not allowed to
+          login to the system</v-card-text
+        >
 
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn small color="red darken-1" dark @click="deactivateDialog = false">Cancel</v-btn>
+          <v-btn
+            small
+            color="red darken-1"
+            dark
+            @click="deactivateDialog = false"
+            >Cancel</v-btn
+          >
 
           <v-btn
             small
             color="green darken-1"
             dark
-            @click="deactivateDialog = false; deactivateUser()"
-          >Confirm</v-btn>
+            @click="
+              deactivateDialog = false;
+              deactivateUser();
+            "
+            >Confirm</v-btn
+          >
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -227,19 +260,28 @@
           <v-spacer></v-spacer>
         </v-card-title>
 
-        <v-card-text>Are you sure you need to activate the user? Activated user will allow to login to the system and able to interact with the tool</v-card-text>
+        <v-card-text
+          >Are you sure you need to activate the user? Activated user will allow
+          to login to the system and able to interact with the tool</v-card-text
+        >
 
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn small color="red darken-1" dark @click="activateDialog = false">Cancel</v-btn>
+          <v-btn small color="red darken-1" dark @click="activateDialog = false"
+            >Cancel</v-btn
+          >
 
           <v-btn
             small
             color="green darken-1"
             dark
-            @click="activateDialog = false; activateUser()"
-          >Confirm</v-btn>
+            @click="
+              activateDialog = false;
+              activateUser();
+            "
+            >Confirm</v-btn
+          >
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -248,7 +290,11 @@
     <!-- -------- role change dialog -------- -->
     <v-dialog v-model="roleChangeDialog" max-width="350">
       <v-card style="text-align: center; padding-bottom: 25px">
-        <v-card-title class="headline" style="text-align: center" v-if="this.existingRole">
+        <v-card-title
+          class="headline"
+          style="text-align: center"
+          v-if="this.existingRole"
+        >
           <v-spacer></v-spacer>Remove User Role
           <v-spacer></v-spacer>
         </v-card-title>
@@ -269,9 +315,17 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn small color="red darken-1" dark @click="roleChangeDialog = false">Cancel</v-btn>
+          <v-btn
+            small
+            color="red darken-1"
+            dark
+            @click="roleChangeDialog = false"
+            >Cancel</v-btn
+          >
 
-          <v-btn small color="green darken-1" dark @click="userRoleUpdate">Confirm</v-btn>
+          <v-btn small color="green darken-1" dark @click="userRoleUpdate"
+            >Confirm</v-btn
+          >
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -327,15 +381,20 @@ export default {
       successMessage: "",
       selectedRole: {},
       existingRole: false,
-
-      firstName: this.userData.firstName,
-      lastName: this.userData.lastName,
-      email: this.userData.email
-      // designation: ""
+      fullName: this.userFirstName,
+      firstName: "",
+      lastName: "",
+      email: "",
+      designation: ""
     };
   },
 
   methods: {
+    checkUser(roleName) {
+      if (roleName === "USER") {
+        return true;
+      } else return false;
+    },
     userRoleUpdate() {
       this.roleChangeDialog = false;
       if (!this.existingRole) {
@@ -396,6 +455,11 @@ export default {
           this.close();
         }, 3000);
         this.$v.$reset();
+        let updatedUser = this.selectedUser;
+        this.$store.dispatch("user/updateActivationStatus", {
+          user: updatedUser,
+          status: false
+        });
       } catch (e) {
         console.log("Error creating user", e);
         this.errorMessage = e.response.data;
@@ -430,6 +494,11 @@ export default {
           this.close();
         }, 3000);
         this.$v.$reset();
+        let updatedUser = this.selectedUser;
+        this.$store.dispatch("user/updateActivationStatus", {
+          user: updatedUser,
+          status: true
+        });
       } catch (e) {
         console.log("Error creating user", e);
         this.errorMessage = e.response.data;
@@ -441,20 +510,26 @@ export default {
       }
     },
     async postData() {
+      const userObj = {
+        firstName: this.getFirstName(),
+        lastName: this.getLastName(),
+        email: this.getEmail(),
+        designation: this.designation
+      };
       let response;
       try {
-        response = await this.$axios.$put(`/users/${this.userData.userId}`, {
-          firstName: this.firstName,
-          lastName: this.lastName,
-          email: this.email
-          // designation: this.designation
-        });
+        response = await this.$axios.$put(
+          `/users/${this.selectedUser.userId}`,
+          userObj
+        );
         this.component = "success-popup";
         this.successMessage = "User successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
         this.$v.$reset();
+        let updatedUser = this.selectedUser;
+        this.$store.dispatch("user/updateSelectedUser", userObj);
       } catch (e) {
         console.log("Error creating user", e);
         this.errorMessage = e.response.data;
@@ -464,6 +539,21 @@ export default {
         }, 3000);
         //   alert("Error updating user!")
       }
+    },
+    getFirstName() {
+      if (this.firstName.length === 0) {
+        return this.selectedUser.firstName;
+      } else return this.firstName;
+    },
+    getLastName() {
+      if (this.lastName.length === 0) {
+        return this.selectedUser.lastName;
+      } else return this.lastName;
+    },
+    getEmail() {
+      if (this.email.length === 0) {
+        return this.selectedUser.email;
+      } else return this.email;
     },
     handleSubmit(e) {
       this.submitted = true;
@@ -481,7 +571,8 @@ export default {
   computed: {
     ...mapState({
       realmRoles: state => state.admin.realmRoles,
-      userRoles: state => state.admin.userRoles
+      userRoles: state => state.admin.userRoles,
+      selectedUser: state => state.user.selectedUser
     }),
     checkValidation: {
       get() {
@@ -502,6 +593,30 @@ export default {
         } else {
           return "addProjectButtonSuccess";
         }
+      }
+    },
+    userFirstName: {
+      get() {
+        return this.selectedUser.firstName;
+      },
+      set(value) {
+        this.firstName = value;
+      }
+    },
+    userLastName: {
+      get() {
+        return this.selectedUser.lastName;
+      },
+      set(value) {
+        this.lastName = value;
+      }
+    },
+    userEmail: {
+      get() {
+        return this.selectedUser.email;
+      },
+      set(value) {
+        this.email = value;
       }
     }
   },

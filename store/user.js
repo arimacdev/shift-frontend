@@ -6,6 +6,7 @@ export const state = () => ({
   selectedTaskUser: {},
   componentUser: {},
   parentTaskUser: {},
+  selectedUser: {},
 });
 
 export const mutations = {
@@ -38,6 +39,18 @@ export const mutations = {
   },
   SET_COMPONENT_USER_DETAILS(state, user) {
     state.componentUser = user;
+  },
+  SET_SELECTED_USER(state, user) {
+    state.selectedUser = user;
+  },
+  UPDATE_ACTIVATION(state, { user, status }) {
+    user.isActive = status;
+    state.selectedUser = user;
+  },
+  UPDATE_SELECTED_USER(state, user) {
+    state.selectedUser.firstName = user.firstName;
+    state.selectedUser.lastName = user.lastName;
+    state.selectedUser.email = user.email;
   },
 };
 
@@ -106,5 +119,17 @@ export const actions = {
     } catch (e) {
       console.log('Error fetching component user from store', e);
     }
+  },
+
+  setSelectedUser({ commit }, user) {
+    commit('SET_SELECTED_USER', user);
+  },
+
+  updateActivationStatus({ commit }, { user, status }) {
+    commit('UPDATE_ACTIVATION', { user, status });
+  },
+
+  updateSelectedUser({ commit }, user) {
+    commit('UPDATE_SELECTED_USER', user);
   },
 };

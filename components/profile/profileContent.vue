@@ -57,7 +57,7 @@
 
           <div class="slackButton">
             <a
-              href="https://slack.com/oauth/v2/authorize?scope=incoming-webhook,chat:write&client_id=345426929140.1020110511447&redirect_uri=https://project.arimaclanka.com/profile"
+              href="https://slack.com/oauth/v2/authorize?scope=incoming-webhook,chat:write&client_id=345426929140.1020110511447&redirect_uri=https://project.arimaclanka.com/profile/profile"
             >
               <img
                 alt="Join Slack Notifications"
