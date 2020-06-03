@@ -27,8 +27,6 @@
     </v-list-item>
 
     <v-divider></v-divider>
-    <!-- <span class="icon-Vector-1"></span> -->
-    <v-icon size="10">icomoon-/e900</v-icon>
 
     <v-list v-if="organizationalRole === 'SUPER_ADMIN'">
       <v-list-item
