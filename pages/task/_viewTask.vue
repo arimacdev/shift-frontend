@@ -88,14 +88,14 @@
             </v-col>
             <v-col sm="8" md="8" class="taskViewLinksDiv">
               <nuxt-link :to="'/projects/'  +  this.projectId" style="text-decoration: none;">
-                <v-icon size="18" color="#0083E2">icon-project</v-icon>Project
+                <v-icon size="22" color="#0083E2">mdi-folder-outline</v-icon>Project
               </nuxt-link>/
               <nuxt-link
                 v-if="this.task.isParent == false"
                 :to="'/task/' +   this.parentTask.taskId + '/?project=' +  this.projectId"
                 style="text-decoration: none;"
               >
-                <v-icon size="18" color="#0083E2">icon-task</v-icon>
+                <v-icon size="22" color="#0083E2">mdi-calendar-check</v-icon>
                 {{this.parentTask.secondaryTaskId}}
               </nuxt-link>
               <span v-if="this.task.isParent == false">/</span>
@@ -105,7 +105,7 @@
                 style="text-decoration: none; color: #B9B9B9"
                 class="currentTaskColor"
               >
-                <v-icon size="18" color="#B9B9B9">icon-task</v-icon>
+                <v-icon size="22" color="#B9B9B9">mdi-calendar-check-outline</v-icon>
                 {{this.task.secondaryTaskId}}
               </nuxt-link>
             </v-col>
@@ -215,7 +215,7 @@
                             <div>
                               <v-list-item-avatar size="25">
                                 <v-img
-                                  v-if="this.parentTaskUser.profileImage != null && this.parentTaskUser.profileImage != ''"
+                                  v-if="this.parentTaskUser.profileImage != null"
                                   :src="this.parentTaskUser.profileImage"
                                 ></v-img>
                                 <v-img
@@ -295,16 +295,7 @@
                               </div>
                               <div>
                                 <v-list-item-avatar size="25">
-                                  <!-- <v-img :src="child.taskAssigneeProfileImage"></v-img> -->
-
-                                  <v-img
-                                    v-if="child.taskAssigneeProfileImage != null && child.taskAssigneeProfileImage != ''"
-                                    :src="child.taskAssigneeProfileImage"
-                                  ></v-img>
-                                  <v-img
-                                    v-else
-                                    src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-                                  ></v-img>
+                                  <v-img :src="child.taskAssigneeProfileImage"></v-img>
                                 </v-list-item-avatar>
                               </div>
                               <div class="boardTabLinkIcon">
@@ -333,7 +324,7 @@
                   <div class="expansionViewHeader">
                     <v-list-item class="taskViewTitleSection">
                       <v-list-item-icon>
-                        <v-icon size="25" color="#0BAFFF">icon-task</v-icon>
+                        <v-icon size="30" color="#0BAFFF">mdi-checkbox-multiple-blank-outline</v-icon>
                       </v-list-item-icon>
                       <v-list-item-title class="viewTaskFontColors">Task Type</v-list-item-title>
                     </v-list-item>
@@ -459,7 +450,7 @@
                   <div class="expansionViewHeader">
                     <v-list-item class="taskViewTitleSection">
                       <v-list-item-icon>
-                        <v-icon size="25" color="#6FCD17">icon-board</v-icon>
+                        <v-icon size="30" color="#6FCD17">mdi-animation-outline</v-icon>
                       </v-list-item-icon>
                       <v-list-item-title class="viewTaskFontColors">Board</v-list-item-title>
                     </v-list-item>
@@ -545,10 +536,8 @@
                 <div class="rightSideColumn">
                   <!-- --------- assignee section ---------- -->
                   <v-list-item>
-                    <v-list-item-icon
-                      style="background-color: #02C1D4; padding: 8px; border-radius: 50%"
-                    >
-                      <v-icon size="25" color="#FFFFFF">icon-assignee</v-icon>
+                    <v-list-item-icon>
+                      <v-icon size="35" color="#02C1D4">mdi-account-arrow-left-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
@@ -578,11 +567,9 @@
                     </v-list-item-content>
                   </v-list-item>
                   <!-- ----------- Due date section --------- -->
-                  <!-- <v-list-item>
-                    <v-list-item-icon
-                      style="background-color: #7CDD00; padding: 8px; border-radius: 50%"
-                    >
-                      <v-icon size="25" color="#FFFFFF">mdi-calendar-blank-outline</v-icon>
+                  <v-list-item>
+                    <v-list-item-icon>
+                      <v-icon size="35" color="#7CDD00">mdi-calendar-blank-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Due Date</v-list-item-subtitle>
@@ -597,67 +584,11 @@
                       label="Add due date"
                       right
                     />
-                  </div>-->
-                  <v-list-item>
-                    <v-list-item-icon
-                      style="background-color: #7CDD00; padding: 10px; border-radius: 50%"
-                    >
-                      <v-icon size="25" color="#FFFFFF">mdi-calendar-blank-outline</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Due Date</v-list-item-subtitle>
-                      <v-list-item-title>
-                        {{
-                        getProjectDisplayDates(
-                        this.selectedTask.taskDueDateAt
-                        )
-                        }}
-                      </v-list-item-title>
-                    </v-list-item-content>
-                    <v-list-item-action>
-                      <datetime
-                        hidden
-                        type="datetime"
-                        v-model="taskDue"
-                        zone="local"
-                        input-id="dueDate"
-                      >
-                        <!-- :max-datetime="this.fetchProject.projectEndDate" -->
-                        <label for="dueDate" slot="before" class="tabListItemsTextDue">
-                          <!-- <span class="dialogPickerNewText">Due Date</span> -->
-                        </label>
-                        <label for="dueDate" slot="after" class>
-                          <v-icon>mdi-pencil-plus</v-icon>
-                        </label>
-                        <template slot="button-cancel">
-                          <fa :icon="['far', 'times']"></fa>Cancel
-                        </template>
-                        <template slot="button-confirm">
-                          <fa :icon="['fas', 'check-circle']"></fa>
-                          <p>Confirm</p>
-                        </template>
-                      </datetime>
-                    </v-list-item-action>
-
-                    <v-list-item-action>
-                      <v-tooltip left>
-                        <template v-slot:activator="{ on }">
-                          <v-btn v-on="on" icon color="deep-orange">
-                            <v-icon
-                              @click="updateTaskDates('dueDate')"
-                            >mdi-checkbox-marked-circle-outline</v-icon>
-                          </v-btn>
-                        </template>
-                        <span>Select date and click to update</span>
-                      </v-tooltip>
-                    </v-list-item-action>
-                  </v-list-item>
+                  </div>
                   <!-- ----------- Reminder date section --------- -->
-                  <!-- <v-list-item>
-                    <v-list-item-icon
-                      style="background-color: #7CDD00; padding: 8px; border-radius: 50%"
-                    >
-                      <v-icon size="25" color="#FFFFFF">mdi-clock-outline</v-icon>
+                  <v-list-item>
+                    <v-list-item-icon>
+                      <v-icon size="35" color="#7CDD00">mdi-clock-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Remind Date</v-list-item-subtitle>
@@ -672,69 +603,12 @@
                       label="Add remind date"
                       right
                     />
-                  </div>-->
-
-                  <v-list-item>
-                    <v-list-item-icon
-                      style="background-color: #7CDD00; padding: 10px; border-radius: 50%"
-                    >
-                      <v-icon size="25" color="#FFFFFF">mdi-clock-outline</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Remind Date</v-list-item-subtitle>
-
-                      <v-list-item-title>
-                        {{
-                        getProjectDisplayDates(
-                        this.selectedTask.taskReminderAt
-                        )
-                        }}
-                      </v-list-item-title>
-                    </v-list-item-content>
-                    <v-list-item-action>
-                      <datetime
-                        hidden
-                        type="datetime"
-                        v-model="taskRemindOn"
-                        zone="local"
-                        input-id="remindDate"
-                        :max-datetime="this.selectedTask.taskDueDateAt"
-                      >
-                        <label for="remindDate" slot="before" class="tabListItemsTextDue">
-                          <!-- <span class="dialogPickerNewText">Remind Date</span> -->
-                        </label>
-                        <label for="remindDate" slot="after" class>
-                          <v-icon>mdi-pencil-plus</v-icon>
-                        </label>
-                        <template slot="button-cancel">
-                          <fa :icon="['far', 'times']"></fa>Cancel
-                        </template>
-                        <template slot="button-confirm">
-                          <fa :icon="['fas', 'check-circle']"></fa>
-                          <p>Confirm</p>
-                        </template>
-                      </datetime>
-                    </v-list-item-action>
-                    <v-list-item-action>
-                      <v-tooltip left>
-                        <template v-slot:activator="{ on }">
-                          <v-btn v-on="on" icon color="deep-orange">
-                            <v-icon
-                              @click="updateTaskDates('remindOn')"
-                            >mdi-checkbox-marked-circle-outline</v-icon>
-                          </v-btn>
-                        </template>
-                        <span>Select date and click to update</span>
-                      </v-tooltip>
-                    </v-list-item-action>
-                  </v-list-item>
+                  </div>
                   <v-divider class="datePickerDivider"></v-divider>
                   <!-- ----------- Files section --------- -->
                   <v-list-item>
-                    <v-list-item-icon
-                      style="background-color: #FFAE4F; padding: 8px; border-radius: 50%"
-                    >
-                      <v-icon size="25" color="#FFFFFF">mdi-paperclip</v-icon>
+                    <v-list-item-icon>
+                      <v-icon size="35" color="#FFAE4F">mdi-paperclip</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-title class="rightColumnItemsTitle">Files</v-list-item-title>
@@ -1025,24 +899,6 @@ export default {
     }
   },
   methods: {
-    getProjectDisplayDates(date) {
-      const dueDate = new Date(date);
-      const dueToUtc = new Date(
-        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
-      );
-      const dueToUtcDate = new Date(dueToUtc);
-      const now = new Date();
-      // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
-
-      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "Add Task Date";
-      } else {
-        let stringDate = date + "";
-        stringDate = stringDate.toString();
-        stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 16);
-        return stringDate;
-      }
-    },
     async deleteTask() {
       let response;
       try {
@@ -1353,84 +1209,23 @@ export default {
       }
       // return [];
     },
-    // async updateTaskDates(type) {
-    //   console.log("triggered");
-    //   let dueDate;
-    //   let remindDate;
-    //   let changedDate = {};
-    //   console.log(
-    //     "dates ========> " +
-    //       this.updatedTaskDueDate +
-    //       "/" +
-    //       this.updatedRemindOnDate
-    //   );
-    //   if (type === "dueDate" && this.updatedTaskDueDate != null) {
-    //     dueDate = new Date(this.updatedTaskDueDate);
-    //     const isoDate = new Date(
-    //       dueDate.getTime() - dueDate.getTimezoneOffset() * 60000
-    //     ).toISOString();
-    //     dueDate = isoDate;
-    //     changedDate = {
-    //       taskDueDate: dueDate
-    //     };
-    //     this.$store.dispatch("task/updateProjectDates", {
-    //       type: "dueDate",
-    //       date: dueDate
-    //     });
-    //   } else if (type === "remindOn" && this.updatedRemindOnDate != null) {
-    //     remindDate = new Date(this.updatedRemindOnDate);
-    //     const isoDate = new Date(
-    //       remindDate.getTime() - remindDate.getTimezoneOffset() * 60000
-    //     ).toISOString();
-    //     remindDate = isoDate;
-    //     changedDate = {
-    //       taskRemindOnDate: remindDate
-    //     };
-    //     this.$store.dispatch("task/updateProjectDates", {
-    //       type: "remindDate",
-    //       date: remindDate
-    //     });
-    //   }
-    //   let response;
-    //   try {
-    //     response = await this.$axios.$put(
-    //       `/projects/${this.projectId}/tasks/${this.task.taskId}`,
-    //       changedDate,
-    //       {
-    //         headers: {
-    //           user: this.userId
-    //         }
-    //       }
-    //     );
-    //     // this.component = "success-popup";
-    //     // this.successMessage = "Date successfully updated";
-    //     // setTimeout(() => {
-    //     //   this.close();
-    //     // }, 3000);
-    //     // console.log("update task dates response", response);
-    //   } catch (e) {
-    //     // this.errorMessage = e.response.data;
-    //     // this.component = "error-popup";
-    //     // setTimeout(() => {
-    //     //   this.close();
-    //     // }, 3000);
-    //     // console.log("Error updating a date", e);
-    //   }
-    // },
     async updateTaskDates(type) {
-      this.overlay = true;
+      console.log("triggered");
       let dueDate;
       let remindDate;
       let changedDate = {};
-      if (type === "dueDate" && this.updatedTask.taskDueDateAt != "") {
-        // console.log("inside due date");
-        dueDate = new Date(this.updatedTask.taskDueDateAt);
+      console.log(
+        "dates ========> " +
+          this.updatedTaskDueDate +
+          "/" +
+          this.updatedRemindOnDate
+      );
+      if (type === "dueDate" && this.updatedTaskDueDate != null) {
+        dueDate = new Date(this.updatedTaskDueDate);
         const isoDate = new Date(
           dueDate.getTime() - dueDate.getTimezoneOffset() * 60000
         ).toISOString();
-        // console.log("iso edit due date", isoDate);
         dueDate = isoDate;
-        remindDate = this.updatedTask.taskRemindOnDate;
         changedDate = {
           taskDueDate: dueDate
         };
@@ -1438,14 +1233,11 @@ export default {
           type: "dueDate",
           date: dueDate
         });
-      } else if (this.updatedTask.taskRemindOnDate != "") {
-        // console.log("inside remind on date");
-        remindDate = new Date(this.updatedTask.taskRemindOnDate);
+      } else if (type === "remindOn" && this.updatedRemindOnDate != null) {
+        remindDate = new Date(this.updatedRemindOnDate);
         const isoDate = new Date(
           remindDate.getTime() - remindDate.getTimezoneOffset() * 60000
         ).toISOString();
-        // console.log("iso edit remind date", isoDate);
-        dueDate = this.updatedTask.taskDueDateAt;
         remindDate = isoDate;
         changedDate = {
           taskRemindOnDate: remindDate
@@ -1455,12 +1247,10 @@ export default {
           date: remindDate
         });
       }
-      // console.log("dueDate", dueDate);
-      // console.log("remindDate", remindDate);
       let response;
       try {
         response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           changedDate,
           {
             headers: {
@@ -1468,22 +1258,18 @@ export default {
             }
           }
         );
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
-
-        this.component = "success-popup";
-        this.successMessage = "Date successfully updated";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        this.overlay = false;
+        // this.component = "success-popup";
+        // this.successMessage = "Date successfully updated";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 3000);
         // console.log("update task dates response", response);
       } catch (e) {
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        this.overlay = false;
+        // this.errorMessage = e.response.data;
+        // this.component = "error-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 3000);
         // console.log("Error updating a date", e);
       }
     },
@@ -1742,70 +1528,36 @@ export default {
         this.updatedTask.taskNote = value;
       }
     },
-    taskDue: {
+    taskDueDate: {
       get() {
         if (
-          this.selectedTask.taskDueDateAt === null ||
-          this.selectedTask.taskDueDateAt === "1970-01-01T05:30:00.000+0000"
+          this.updatedTaskDueDate == null ||
+          this.updatedTaskDueDate === "1970-01-01T05:30:00.000+0000"
         )
-          return null;
-        let stringDate = this.selectedTask.taskDueDateAt + " ";
-        stringDate = stringDate.toString();
-        stringDate = stringDate.slice(0, 16);
-        return stringDate;
+          this.updatedTaskDueDate = this.task.taskDueDateAt;
+        this.updateTaskDates("dueDate");
+        return this.updatedTaskDueDate;
       },
       set(value) {
-        // console.log("updated task due ->", value);
-        this.updatedTask.taskDueDateAt = value;
+        // console.log("set updated", value);
+        this.updatedTaskDueDate = value;
       }
     },
-    taskRemindOn: {
+    taskRemindOnDate: {
       get() {
         if (
-          this.selectedTask.taskReminderAt === null ||
-          this.selectedTask.taskReminderAt === "1970-01-01T05:30:00.000+0000"
+          this.updatedRemindOnDate == null ||
+          this.updatedRemindOnDate === "1970-01-01T05:30:00.000+0000"
         )
-          return "Add Reminder Date";
-        let stringDate = this.selectedTask.taskReminderAt + "";
-        stringDate = stringDate.toString();
-        stringDate = stringDate.slice(0, 16);
-        return stringDate;
+          this.updatedRemindOnDate = this.task.taskReminderAt;
+        this.updateTaskDates("remindOn");
+        return this.updatedRemindOnDate;
       },
       set(value) {
-        // console.log("updated task reminder ->", value);
-        this.updatedTask.taskRemindOnDate = value;
+        // console.log("updated remind on ->", value);
+        this.updatedRemindOnDate = value;
       }
     }
-    // taskDueDate: {
-    //   get() {
-    //     if (
-    //       this.updatedTaskDueDate == null ||
-    //       this.updatedTaskDueDate === "1970-01-01T05:30:00.000+0000"
-    //     )
-    //       this.updatedTaskDueDate = this.task.taskDueDateAt;
-    //     this.updateTaskDates("dueDate");
-    //     return this.updatedTaskDueDate;
-    //   },
-    //   set(value) {
-    //     // console.log("set updated", value);
-    //     this.updatedTaskDueDate = value;
-    //   }
-    // },
-    // taskRemindOnDate: {
-    //   get() {
-    //     if (
-    //       this.updatedRemindOnDate == null ||
-    //       this.updatedRemindOnDate === "1970-01-01T05:30:00.000+0000"
-    //     )
-    //       this.updatedRemindOnDate = this.task.taskReminderAt;
-    //     this.updateTaskDates("remindOn");
-    //     return this.updatedRemindOnDate;
-    //   },
-    //   set(value) {
-    //     // console.log("updated remind on ->", value);
-    //     this.updatedRemindOnDate = value;
-    //   }
-    // }
   }
 };
 </script>
