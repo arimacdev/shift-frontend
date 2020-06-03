@@ -14,7 +14,7 @@
 
       <div class="loginText">Please login to access your account</div>
 
-      <button class="loginButton" color="secondary" @click="$auth.loginWith('keycloak')">Login</button>
+      <button class="loginButton" color="secondary" @click="$auth.loginWith('keycloak')">Log in</button>
     </div>
   </div>
   <!-- </v-card> -->
