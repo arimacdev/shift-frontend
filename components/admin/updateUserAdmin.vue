@@ -15,7 +15,7 @@
         src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
       ></v-img>
     </div>
-    <div class="userNameAdmin">{{this.userFirstName + " " + this.userLastName}}</div>
+    <div class="userNameAdmin">{{this.selectedUser.firstName + " " + this.selectedUser.lastName}}</div>
     <div class="buttonSectionAdmin">
       <!-- <v-btn color="#FFC212" dark small @click.stop="resetDialog = true">Reset Password</v-btn> -->
       <v-btn
@@ -380,7 +380,7 @@ export default {
       successMessage: "",
       selectedRole: {},
       existingRole: false,
-
+      fullName: this.userFirstName,
       firstName: "",
       lastName: "",
       email: "",
@@ -504,16 +504,17 @@ export default {
       }
     },
     async postData() {
+      const userObj = {
+        firstName: this.getFirstName(),
+        lastName: this.getLastName(),
+        email: this.getEmail(),
+        designation: this.designation
+      };
       let response;
       try {
         response = await this.$axios.$put(
           `/users/${this.selectedUser.userId}`,
-          {
-            firstName: this.getFirstName(),
-            lastName: this.getLastName(),
-            email: this.getEmail(),
-            designation: this.designation
-          }
+          userObj
         );
         this.component = "success-popup";
         this.successMessage = "User successfully updated";
@@ -521,6 +522,8 @@ export default {
           this.close();
         }, 3000);
         this.$v.$reset();
+        let updatedUser = this.selectedUser;
+        this.$store.dispatch("user/updateSelectedUser", userObj);
       } catch (e) {
         console.log("Error creating user", e);
         this.errorMessage = e.response.data;

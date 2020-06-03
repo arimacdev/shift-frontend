@@ -47,6 +47,11 @@ export const mutations = {
     user.isActive = status;
     state.selectedUser = user;
   },
+  UPDATE_SELECTED_USER(state, user) {
+    state.selectedUser.firstName = user.firstName;
+    state.selectedUser.lastName = user.lastName;
+    state.selectedUser.email = user.email;
+  },
 };
 
 export const actions = {
@@ -122,5 +127,9 @@ export const actions = {
 
   updateActivationStatus({ commit }, { user, status }) {
     commit('UPDATE_ACTIVATION', { user, status });
+  },
+
+  updateSelectedUser({ commit }, user) {
+    commit('UPDATE_SELECTED_USER', user);
   },
 };
