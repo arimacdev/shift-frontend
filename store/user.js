@@ -1,7 +1,7 @@
 export const state = () => ({
   access_token: '',
   userId: '',
-  organizationalRole: '',
+  organizationalRoles: [],
   users: [],
   selectedTaskUser: {},
   componentUser: {},
@@ -16,8 +16,8 @@ export const mutations = {
   setUserId(state, value) {
     state.userId = value;
   },
-  setOrganizationalRole(state, value) {
-    state.organizationalRole = value;
+  setOrganizationalRole(state, roles) {
+    state.organizationalRoles = roles;
   },
   SET_USERS(state, users) {
     const sorted = users.sort((a, b) => {

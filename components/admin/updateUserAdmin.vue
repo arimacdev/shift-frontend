@@ -159,7 +159,7 @@
           </v-col>
         </v-row>
         <v-divider></v-divider>
-        <v-row>
+        <v-row v-if="organizationalRoles.indexOf('SUPER_ADMIN') > -1">
           <v-col>
             <v-row>
               <v-col md="3">
@@ -553,7 +553,8 @@ export default {
     ...mapState({
       realmRoles: state => state.admin.realmRoles,
       userRoles: state => state.admin.userRoles,
-      selectedUser: state => state.user.selectedUser
+      selectedUser: state => state.user.selectedUser,
+      organizationalRoles: state => state.user.organizationalRoles
     }),
     checkValidation: {
       get() {
