@@ -105,7 +105,7 @@
         <!-- <v-switch v-model="switch1" inset :label="`Switch 1: ${switch1.toString()}`"></v-switch> -->
       </div>
     </div>
-    <form @submit.prevent="handleSubmit">
+    <v-form @submit.prevent="handleSubmit" v-model="isValid" ref="form">
       <div class="profileUserName">{{ user.firstName }} {{ user.lastName }}</div>
 
       <div class="userDetails">
@@ -121,6 +121,7 @@
               v-model="user.firstName"
               label="First Name"
               class="profileUpdateTextFields"
+              :rules="firstNameRules"
             />
           </v-col>
           <v-col sm="6" md="6">
@@ -130,6 +131,7 @@
               v-model="user.lastName"
               label="Last Name"
               class="profileUpdateTextFields"
+              :rules="lastNameRules"
             />
           </v-col>
         </v-row>
@@ -144,6 +146,7 @@
               v-model="user.email"
               label="Email"
               class="profileUpdateTextFields"
+              :rules="emailRules"
             />
           </v-col>
           <v-col sm="6" md="6">
@@ -186,23 +189,49 @@
         </v-row>
         <v-row>
           <v-col sm="12" md="12">
-            <button class="submitButtonEdit profileButton">
+            <v-btn
+              v-if="this.password == ''"
+              :disabled="!isValid"
+              height="50px"
+              width="300px"
+              class="submitButtonEdit"
+            >
               <v-list-item @click="postData()" dark>
                 <v-list-item-action>
-                  <v-icon size="20" color>mdi-account-outline</v-icon>
+                  <v-icon size="20" color>icon-user</v-icon>
                 </v-list-item-action>
                 <v-list-item-content class="buttonText">
                   <v-list-item-title class="bodyWiew">Edit profile details</v-list-item-title>
                 </v-list-item-content>
-                <div class="iconBackCircle">
+                <!-- <div class="iconBackCircle">
                   <v-icon size="17" color="#0BAFFF">mdi-pencil-outline</v-icon>
-                </div>
+                </div>-->
               </v-list-item>
-            </button>
+            </v-btn>
+
+            <v-btn
+              v-if="this.password != ''"
+              :disabled="this.$v.$invalid"
+              height="50px"
+              width="300px"
+              class="submitButtonEdit"
+            >
+              <v-list-item @click="postData()" dark>
+                <v-list-item-action>
+                  <v-icon size="20" color>icon-user</v-icon>
+                </v-list-item-action>
+                <v-list-item-content class="buttonText">
+                  <v-list-item-title class="bodyWiew">Update Password</v-list-item-title>
+                </v-list-item-content>
+                <!-- <div class="iconBackCircle">
+                  <v-icon size="17" color="#0BAFFF">mdi-pencil-outline</v-icon>
+                </div>-->
+              </v-list-item>
+            </v-btn>
           </v-col>
         </v-row>
       </div>
-    </form>
+    </v-form>
 
     <div>
       <!-- ---- this is a switch button if applicable ---- -->
@@ -245,6 +274,14 @@ export default {
   // },
   data() {
     return {
+      isValid: true,
+      firstNameRules: [value => !!value || "First name is required!"],
+      lastNameRules: [value => !!value || "Last name is required!"],
+      emailRules: [
+        value => !!value || "E-mail is required",
+        value => /.+@.+\..+/.test(value) || "E-mail must be valid"
+      ],
+
       disableButton: true,
       switch1: true,
       switch2: false,
@@ -376,7 +413,7 @@ export default {
           firstName: this.user.firstName,
           lastName: this.user.lastName,
           email: this.user.email,
-          password: this.user.password
+          password: this.password
         });
         this.component = "success-popup";
         this.successMessage = "Profile successfully updated";
