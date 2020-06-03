@@ -221,7 +221,7 @@
                   <v-icon size="20" color>icon-user</v-icon>
                 </v-list-item-action>
                 <v-list-item-content class="buttonText">
-                  <v-list-item-title class="bodyWiew">Update Password</v-list-item-title>
+                  <v-list-item-title class="bodyWiew">Edit profile details</v-list-item-title>
                 </v-list-item-content>
                 <!-- <div class="iconBackCircle">
                   <v-icon size="17" color="#0BAFFF">mdi-pencil-outline</v-icon>
