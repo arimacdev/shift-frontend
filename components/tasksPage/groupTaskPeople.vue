@@ -23,7 +23,7 @@
               ></v-img>
               <v-img
                 v-if="assignee.assigneeProfileImage == null"
-                src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
               ></v-img>
             </v-list-item-avatar>
             <v-list-item-content>
@@ -90,7 +90,7 @@
               ></v-img>
               <v-img
                 v-if="assignee.assigneeProfileImage == null"
-                src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
               ></v-img>
             </v-list-item-avatar>
             <v-list-item-content>
