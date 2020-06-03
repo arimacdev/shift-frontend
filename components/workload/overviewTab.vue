@@ -218,6 +218,12 @@
                             >mdi-checkbox-marked-circle</v-icon>
                             <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                           </v-list-item-action>
+                          <v-list-item-action>
+                            <div
+                              style="font-weight: bold; margin-right: 30px"
+                              class="workloadTaskName"
+                            >{{ task.secondaryTaskId }}</div>
+                          </v-list-item-action>
                           <v-list-item-content>
                             <div class="workloadTaskName">{{ task.taskName }}</div>
                           </v-list-item-content>
