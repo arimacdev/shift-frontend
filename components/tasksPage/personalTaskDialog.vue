@@ -501,7 +501,7 @@ export default {
       } else {
         let stringDate = date + "";
         stringDate = stringDate.toString();
-        stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(12, 16);
+        stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 16);
         return stringDate;
       }
     },

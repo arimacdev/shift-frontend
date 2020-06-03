@@ -27,10 +27,8 @@
     </v-list-item>
 
     <v-divider></v-divider>
-    <!-- <span class="icon-Vector-1"></span> -->
-    <v-icon size="10">icomoon-/e900</v-icon>
 
-    <v-list v-if="organizationalRole === 'SUPER_ADMIN'">
+    <v-list v-if="organizationalRoles.indexOf('ADMIN') > -1 || organizationalRoles.indexOf('SUPER_ADMIN') > -1">
       <v-list-item
         :router="item.path"
         :to="item.route"
@@ -142,7 +140,7 @@ export default {
   computed: {
     ...mapState({
       userProfile: state => state.userProfile.userProfile,
-      organizationalRole: state => state.user.organizationalRole
+      organizationalRoles: state => state.user.organizationalRoles
     }),
     profileImage() {
       // console.log("profile image", this.profilePic);
