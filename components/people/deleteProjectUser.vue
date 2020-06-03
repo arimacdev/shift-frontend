@@ -1,38 +1,58 @@
 <template>
-  <v-row justify="center">
-    <v-dialog v-model="dialog" persistent max-width="350">
-      <template v-slot:activator="{ on }">
-        <div class="iconBackCircle">
-          <v-icon v-on="on" size="17" color="#FF6161">mdi-trash-can-outline</v-icon>
-        </div>
-      </template>
-      <v-card>
-        <div class="deletePopupContent">
-          <v-icon class="deletePopup" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
-          <v-card-text class="deletePopupTitle">Block User</v-card-text>
-          <v-card-text>
-            You are about to permanantly block from the project.
-            <span>If you are not sure, you can close this popup</span>
-          </v-card-text>
+  <div>
+    <v-row justify="center">
+      <v-dialog v-model="dialog" persistent max-width="350">
+        <template v-slot:activator="{ on }">
+          <div class="iconBackCircle">
+            <v-icon v-on="on" size="17" color="#FF6161">mdi-trash-can-outline</v-icon>
+          </div>
+        </template>
+        <v-card>
+          <div class="deletePopupContent">
+            <v-icon class="deletePopup" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
+            <v-card-text class="deletePopupTitle">Block User</v-card-text>
+            <v-card-text>
+              You are about to permanantly block from the project.
+              <span>If you are not sure, you can close this popup</span>
+            </v-card-text>
 
-          <v-btn class="editButton" text @click="dialog = false">Cancel</v-btn>
-          <v-btn class="deleteButtonSpec" text @click="changeHandler">Block</v-btn>
-        </div>
-      </v-card>
-    </v-dialog>
-  </v-row>
+            <v-btn class="editButton" text @click="dialog = false">Cancel</v-btn>
+            <v-btn class="deleteButtonSpec" text @click="changeHandler">Block</v-btn>
+          </div>
+        </v-card>
+      </v-dialog>
+    </v-row>
+    <div @click="close" class="editProjectUserPopup">
+      <component v-bind:is="component" :errorMessage="errorMessage"></component>
+      <!-- <success-popup /> -->
+    </div>
+  </div>
 </template>
 
 <script>
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
+
 export default {
   props: ["blockedUserId", "projectId"],
+  components: {
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup
+  },
   data() {
     return {
+      errorMessage: "",
+      successMessage: "",
+      component: "",
       userId: this.$store.state.user.userId,
       dialog: false
     };
   },
   methods: {
+    close() {
+      this.$refs.form.reset();
+      this.component = "";
+    },
     async changeHandler() {
       this.dialog = false;
       let response;
@@ -45,7 +65,21 @@ export default {
             blockedStatus: true
           }
         );
+        this.component = "success-popup";
+        this.successMessage = "User successfully added";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.$store.dispatch(
+          "task/fetchProjectUserCompletionTasks",
+          this.projectId
+        );
       } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         console.log("Error blocking user", e);
       }
       // console.log(response);

@@ -80,7 +80,7 @@
           <v-text-field
             flat
             outlined
-            type="password*"
+            type="password"
             v-model.trim="$v.password.$model"
             label="Password*"
             autocomplete="off"
