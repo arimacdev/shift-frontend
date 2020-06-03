@@ -98,15 +98,16 @@
             <!-- <div v-if="$v.email.$error && !$v.email.required" class="errorText">Email is required</div>
             <div v-if="$v.email.$error && !$v.email.email" class="errorText">Use valid Email address</div>-->
           </v-col>
-          <!-- <v-col sm="6" md="6">
+          <v-col sm="6" md="6">
             <v-text-field
+              disabled
               flat
               outlined
-              v-model="designation"
-              label="Designation"
+              v-model="selectedUser.userName"
+              label="User name"
               class="profileUpdateTextFields"
             />
-          </v-col>-->
+          </v-col>
         </v-row>
 
         <v-row class="mb-12 formRow" no-gutters>
