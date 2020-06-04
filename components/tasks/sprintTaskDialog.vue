@@ -545,10 +545,10 @@
                           class="rightColumnItemsText"
                         >
                           <!-- <option>Naveen Perera</option> -->
-                          <option value disabled>
+                          <!-- <option value disabled>
                             {{ selectedTaskUser.firstName }}
                             {{ selectedTaskUser.lastName }}
-                          </option>
+                          </option>-->
                           <option
                             class="tabListItemsText"
                             v-for="(taskAssignee, index) in peopleList"
@@ -885,7 +885,7 @@ export default {
       updatedRemindOnDate: null,
       // taskDue: this.selectedTask.taskDueDateAt,
       uploadLoading: false,
-      taskAssignee: "",
+      // taskAssignee: "",
       updatedTask: {
         taskName: "",
         taskAssignee: "",
@@ -1191,7 +1191,7 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
           {
-            taskAssignee: this.taskAssignee
+            taskAssignee: this.updatedTask.taskAssignee
           },
           {
             headers: {
@@ -1576,6 +1576,15 @@ export default {
         );
       } else {
         return this.people;
+      }
+    },
+
+    taskAssignee: {
+      get() {
+        return this.selectedTask.taskAssignee;
+      },
+      set(assignee) {
+        this.updatedTask.taskAssignee = assignee;
       }
     },
 

@@ -569,11 +569,11 @@
                           @change="changeAssignee"
                         >
                           <!-- <option>Naveen Perera</option> -->
-                          <option value disabled>
+                          <!-- <option value disabled>
                             {{
                             taskUser
                             }}
-                          </option>
+                          </option>-->
                           <option
                             class="tabListItemsText"
                             v-for="(taskAssignee, index) in peopleList"
@@ -792,11 +792,12 @@ export default {
       parentProfile: {},
       updatedTaskDueDate: null,
       updatedRemindOnDate: null,
-      taskAssignee: "",
+      // taskAssignee: "",
       task: {},
       updatedTaskName: "",
       updatedTask: {
-        taskName: ""
+        taskName: "",
+        taskAssignee: ""
       },
       updatedIssue: "",
       updatedStatus: "",
@@ -1072,7 +1073,7 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            taskAssignee: this.taskAssignee
+            taskAssignee: this.updatedTask.taskAssignee
           },
           {
             headers: {
@@ -1520,6 +1521,15 @@ export default {
 
     childrenCount() {
       return this.children.length;
+    },
+
+    taskAssignee: {
+      get() {
+        return this.task.taskAssignee;
+      },
+      set(assignee) {
+        this.updatedTask.taskAssignee = assignee;
+      }
     },
 
     taskName: {
