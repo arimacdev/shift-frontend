@@ -528,7 +528,7 @@
               </v-col>
               <!-- ------------------ right side column ------------- -->
               <v-col sm="4" md="4">
-                <v-list-item>
+                <v-list-item v-if="this.checkUserExists()">
                   <v-list-item-action>
                     <v-icon size="15" color="red">mdi-alert-outline</v-icon>
                   </v-list-item-action>
@@ -1012,6 +1012,13 @@ export default {
     };
   },
   methods: {
+    checkUserExists() {
+      const index = this.people.findIndex(
+        user => user.assigneeId === this.selectedTask.taskAssignee
+      );
+      if (index === -1) return true;
+      else return false;
+    },
     getMaxDueDate() {
       let stringDate = this.fetchProject.projectEndDate + "";
       stringDate = stringDate.toString();

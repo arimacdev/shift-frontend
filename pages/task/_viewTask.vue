@@ -554,6 +554,14 @@
               </v-col>
               <!-- ------------------ right side column ------------- -->
               <v-col sm="4" md="4">
+                <v-list-item v-if="this.checkUserExists()">
+                  <v-list-item-action>
+                    <v-icon size="15" color="red">mdi-alert-outline</v-icon>
+                  </v-list-item-action>
+                  <v-list-item-content
+                    class="userBlockedWarning"
+                  >Assignee is no longer a participant of the project</v-list-item-content>
+                </v-list-item>
                 <div class="rightSideColumn">
                   <!-- --------- assignee section ---------- -->
                   <v-list-item>
@@ -952,6 +960,13 @@ export default {
     }
   },
   methods: {
+    checkUserExists() {
+      const index = this.people.findIndex(
+        user => user.assigneeId === this.selectedTask.taskAssignee
+      );
+      if (index === -1) return true;
+      else return false;
+    },
     async deleteTask() {
       let response;
       try {
