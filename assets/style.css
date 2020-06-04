@@ -55,9 +55,12 @@
   width: 100vw;
   height: 100vh;
   text-align: center;
-  padding-top: 20%;
+  padding-top: 10%;
 }
-
+.companyLogo {
+  margin-top: 100px;
+  text-align: center;
+}
 .loginContent {
   text-align: center;
 }
@@ -2102,6 +2105,12 @@
   margin-left: 80px;
   margin-top: -20px;
 }
+.viewPageTaskPickerDiv {
+  /* width: 250px; */
+  margin-left: 80px;
+  margin-top: -35px;
+  margin-right: 20px;
+}
 .leftSideColumn {
   padding-right: 15px;
 }
@@ -2567,4 +2576,9 @@
   position: absolute;
   right: 10px;
   bottom: 160px;
+}
+.userBlockedWarning {
+  color: red;
+  font-size: 12px !important;
+  margin-left: -30px;
 }
