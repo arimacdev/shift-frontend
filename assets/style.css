@@ -2573,3 +2573,8 @@
   right: 10px;
   bottom: 160px;
 }
+.userBlockedWarning {
+  color: red;
+  font-size: 12px !important;
+  margin-left: -30px;
+}
