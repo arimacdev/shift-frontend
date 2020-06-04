@@ -55,9 +55,12 @@
   width: 100vw;
   height: 100vh;
   text-align: center;
-  padding-top: 20%;
+  padding-top: 10%;
 }
-
+.companyLogo {
+  margin-top: 100px;
+  text-align: center;
+}
 .loginContent {
   text-align: center;
 }
