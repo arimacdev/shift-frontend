@@ -352,19 +352,17 @@
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
                       <v-list-item-title>
-                        <select
+                        <!-- <select
                           v-model="taskAssignee"
                           @change="changeAssignee"
                           class="rightColumnItemsText"
                         >
-                          <!-- <option value disabled>
-                            {{this.task.taskAssignee}}
-                          </option>-->
-                          <!-- <option value disabled>
+
+                          <option value disabled>
                             {{
                             taskUser
                             }}
-                          </option>-->
+                          </option>
                           <option
                             class="tabListItemsText"
                             v-for="(taskAssignee, index) in groupPeople"
@@ -374,7 +372,19 @@
                             {{ taskAssignee.assigneeFirstName }}
                             {{ taskAssignee.assigneeLastName }}
                           </option>
-                        </select>
+                        </select>-->
+                        <v-select
+                          style="margin-left: -10px"
+                          dense
+                          v-model="taskAssignee"
+                          :items="assignees"
+                          item-text="name"
+                          item-value="id"
+                          solo
+                          flat
+                          class="createFormElements"
+                          @change="changeAssignee"
+                        ></v-select>
                       </v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
@@ -678,6 +688,8 @@ export default {
       editTask: true,
       task: {},
       files: [],
+
+      assignees: [],
       taskObject: {},
       updatedIssue: "",
       updatedStatus: "",
@@ -856,6 +868,19 @@ export default {
         }, 3000);
         // console.log("Error updating a status", e);
       }
+    },
+    getAssigneeDetails(v) {
+      this.assignees = [];
+      let assigneeSearchList = this.groupPeople;
+      for (let index = 0; index < assigneeSearchList.length; ++index) {
+        let assignee = assigneeSearchList[index];
+        this.assignees.push({
+          name: assignee.assigneeFirstName + " " + assignee.assigneeLastName,
+          id: assignee.assigneeId
+        });
+      }
+      // console.log("nameList", this.states);
+      this.loading = true;
     },
     // ---------- update task note -----------
     async updateTaskNote() {
@@ -1166,14 +1191,31 @@ export default {
     }),
     ...mapGetters(["getuserCompletionTasks"]),
 
+    // taskAssignee: {
+    //   get() {
+    //     return this.task.taskAssignee;
+    //   },
+    //   set(assignee) {
+    //     this.updatedTask.taskAssignee = assignee;
+    //   }
+    // },
+
     taskAssignee: {
       get() {
-        return this.task.taskAssignee;
+        this.getAssigneeDetails();
+        if (this.updatedTask.taskAssignee == "") {
+          return this.task.taskAssignee;
+        } else {
+          return this.updatedTask.taskAssignee;
+        }
+        // console.log("sprintId", this.selectedTask);
       },
       set(assignee) {
+        // console.log("spid", sprintId);
         this.updatedTask.taskAssignee = assignee;
       }
     },
+
     taskName: {
       get() {
         if (this.updatedTask.taskName == "") {
