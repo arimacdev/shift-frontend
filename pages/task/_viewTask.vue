@@ -1312,7 +1312,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("update task dates response", response);
+        // console.log("update task dates response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
@@ -1494,7 +1494,7 @@ export default {
     },
 
     peopleList() {
-      console.log("people list", this.people);
+      // console.log("people list", this.people);
       if (this.people.length == 0) {
         this.$store.dispatch(
           "task/fetchProjectUserCompletionTasks",
