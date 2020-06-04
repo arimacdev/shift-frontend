@@ -196,8 +196,7 @@
         <v-row>
           <v-col sm="12" md="12">
             <v-btn
-              v-if="this.password == ''"
-              :disabled="!isValid"
+              v-if="this.password != '' && !this.$v.$invalid == true && isValid == true"
               height="50px"
               width="300px"
               class="submitButtonEdit"
@@ -216,8 +215,7 @@
             </v-btn>
 
             <v-btn
-              v-if="this.password != ''"
-              :disabled="this.$v.$invalid"
+              v-else-if="this.confirmPassword == '' && this.password == '' && !this.$v.$invalid == false && isValid == true"
               height="50px"
               width="300px"
               class="submitButtonEdit"
@@ -229,9 +227,16 @@
                 <v-list-item-content class="buttonText">
                   <v-list-item-title class="bodyWiew">Edit profile details</v-list-item-title>
                 </v-list-item-content>
-                <!-- <div class="iconBackCircle">
-                  <v-icon size="17" color="#0BAFFF">mdi-pencil-outline</v-icon>
-                </div>-->
+              </v-list-item>
+            </v-btn>
+            <v-btn v-else disabled height="50px" width="300px" class="submitButtonEdit">
+              <v-list-item @click="postData()" dark>
+                <v-list-item-action>
+                  <v-icon size="20" color>icon-user</v-icon>
+                </v-list-item-action>
+                <v-list-item-content class="buttonText">
+                  <v-list-item-title class="bodyWiew">Edit profile details</v-list-item-title>
+                </v-list-item-content>
               </v-list-item>
             </v-btn>
           </v-col>
@@ -415,12 +420,21 @@ export default {
     async postData() {
       let response;
       try {
-        response = await this.$axios.$put(`/users/${this.userId}`, {
-          firstName: this.user.firstName,
-          lastName: this.user.lastName,
-          email: this.user.email,
-          password: this.password
-        });
+        if (this.password == "") {
+          response = await this.$axios.$put(`/users/${this.userId}`, {
+            firstName: this.user.firstName,
+            lastName: this.user.lastName,
+            email: this.user.email
+          });
+        } else {
+          response = await this.$axios.$put(`/users/${this.userId}`, {
+            firstName: this.user.firstName,
+            lastName: this.user.lastName,
+            email: this.user.email,
+            password: this.password
+          });
+        }
+
         this.component = "success-popup";
         this.successMessage = "Profile successfully updated";
         setTimeout(() => {

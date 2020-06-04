@@ -186,15 +186,8 @@
                             <div>
                               <v-list-item-avatar size="25">
                                 <v-img
-                                  v-if="
-                                   parent
-                                      .taskAssigneeProfileImage != null &&  parent
-                                      .taskAssigneeProfileImage != ''
-                                  "
-                                  :src="
-                                   parent
-                                      .taskAssigneeProfileImage
-                                  "
+                                  v-if="this.parentTaskUser.profileImage != null && this.parentTaskUser.profileImage != ''"
+                                  :src="this.parentTaskUser.profileImage"
                                 ></v-img>
                                 <v-img
                                   v-else
@@ -552,10 +545,10 @@
                           class="rightColumnItemsText"
                         >
                           <!-- <option>Naveen Perera</option> -->
-                          <option value disabled>
+                          <!-- <option value disabled>
                             {{ selectedTaskUser.firstName }}
                             {{ selectedTaskUser.lastName }}
-                          </option>
+                          </option>-->
                           <option
                             class="tabListItemsText"
                             v-for="(taskAssignee, index) in peopleList"
@@ -892,7 +885,7 @@ export default {
       updatedRemindOnDate: null,
       // taskDue: this.selectedTask.taskDueDateAt,
       uploadLoading: false,
-      taskAssignee: "",
+      // taskAssignee: "",
       updatedTask: {
         taskName: "",
         taskAssignee: "",
@@ -1198,7 +1191,7 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
           {
-            taskAssignee: this.taskAssignee
+            taskAssignee: this.updatedTask.taskAssignee
           },
           {
             headers: {
@@ -1570,7 +1563,8 @@ export default {
       selectedTaskUser: state => state.user.selectedTaskUser,
       taskFiles: state => state.task.taskFiles,
       selectedTask: state => state.task.selectedTask,
-      fetchProject: state => state.project.project
+      fetchProject: state => state.project.project,
+      parentTaskUser: state => state.user.parentTaskUser
     }),
     ...mapGetters(["getuserCompletionTasks"]),
     peopleList() {
@@ -1582,6 +1576,15 @@ export default {
         );
       } else {
         return this.people;
+      }
+    },
+
+    taskAssignee: {
+      get() {
+        return this.selectedTask.taskAssignee;
+      },
+      set(assignee) {
+        this.updatedTask.taskAssignee = assignee;
       }
     },
 

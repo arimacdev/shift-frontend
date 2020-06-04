@@ -19,6 +19,15 @@ export const mutations = {
     }
   },
   SET_ALL_TASKS(state, event) {
+    const sorted = event.sort((a, b) => {
+      const userA = a.parentTask.taskName.toUpperCase();
+      const userB = b.parentTask.taskName.toUpperCase();
+
+      if (userA < userB) return -1;
+      if (userA > userB) return 1;
+
+      return 0;
+    });
     state.allTasks = event;
   },
   SET_CHILD_TASKS(state, children) {
