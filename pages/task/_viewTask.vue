@@ -554,14 +554,14 @@
               </v-col>
               <!-- ------------------ right side column ------------- -->
               <v-col sm="4" md="4">
-                <v-list-item v-if="this.checkUserExists()">
+                <!-- <v-list-item v-show="!this.userExists">
                   <v-list-item-action>
                     <v-icon size="15" color="red">mdi-alert-outline</v-icon>
                   </v-list-item-action>
                   <v-list-item-content
                     class="userBlockedWarning"
                   >Assignee is no longer a participant of the project</v-list-item-content>
-                </v-list-item>
+                </v-list-item> -->
                 <div class="rightSideColumn">
                   <!-- --------- assignee section ---------- -->
                   <v-list-item>
@@ -835,6 +835,7 @@ export default {
       issueTypes: "",
       issueStatus: "",
       componentUsers: [],
+      userExists: true,
       files: [],
       component: "",
       errorMessage: "",
@@ -942,6 +943,10 @@ export default {
     this.taskId = this.$route.params.viewTask;
     this.projectId = this.$route.query.project;
     this.userId = this.$store.state.user.userId;
+    this.$store.dispatch(
+      "task/fetchProjectUserCompletionTasks",
+      this.$route.query.project
+    );
     let taskResponse;
     try {
       taskResponse = await this.$axios.$get(
@@ -978,8 +983,11 @@ export default {
       const index = this.people.findIndex(
         user => user.assigneeId === this.selectedTask.taskAssignee
       );
-      if (index === -1) return true;
-      else return false;
+      if (index === -1) {
+        this.userExists = false;
+      } else {
+        this.userExists = true;
+      }
     },
     async deleteTask() {
       let response;
@@ -1136,8 +1144,10 @@ export default {
     },
     getAssigneeDetails(v) {
       // console.log("board list", this.projectSprints);
+      this.checkUserExists();
+
       this.assignees = [];
-      let assigneeSearchList = this.peopleList;
+      let assigneeSearchList = this.people;
       for (let index = 0; index < assigneeSearchList.length; ++index) {
         let assignee = assigneeSearchList[index];
         this.assignees.push({
@@ -1148,6 +1158,17 @@ export default {
       // console.log("nameList", this.states);
       this.loading = true;
     },
+    // getPeopleList() {
+    //   console.log("callinglist");
+    //   if (this.people.length === undefined || this.people.length === 0) {
+    //     this.$store.dispatch(
+    //       "task/fetchProjectUserCompletionTasks",
+    //       this.$route.query.project
+    //     );
+    //   } else {
+    //     return this.people;
+    //   }
+    // },
     async updateTaskNote() {
       // console.log("updatedTaskValue ->", this.updatedTask.taskNotes);
       let response;
@@ -1548,7 +1569,7 @@ export default {
 
     peopleList() {
       // console.log("people list", this.people);
-      if (this.people.length == 0) {
+      if (this.people.length === undefined || this.people.length === 0) {
         this.$store.dispatch(
           "task/fetchProjectUserCompletionTasks",
           this.$route.query.project

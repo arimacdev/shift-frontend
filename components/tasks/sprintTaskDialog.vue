@@ -528,7 +528,7 @@
               </v-col>
               <!-- ------------------ right side column ------------- -->
               <v-col sm="4" md="4">
-                 <v-list-item v-if="this.checkUserExists()">
+                 <v-list-item v-if="!this.userExists">
                   <v-list-item-action>
                     <v-icon size="15" color="red">mdi-alert-outline</v-icon>
                   </v-list-item-action>
@@ -914,6 +914,7 @@ export default {
         taskRemindOnDate: "",
         taskDueDateAt: ""
       },
+      userExists: true,
       // taskStatus: this.task.taskStatus,
       // issueType: this.task.issueType,
 
@@ -1016,8 +1017,8 @@ export default {
       const index = this.people.findIndex(
         user => user.assigneeId === this.selectedTask.taskAssignee
       );
-      if (index === -1) return true;
-      else return false;
+      if (index === -1) this.userExists = false;
+      else this.userExists = true;
     },
     uploadHandler() {
       this.uploader = false;
@@ -1229,6 +1230,7 @@ export default {
         this.component = "success-popup";
         this.successMessage = "Assignee successfully updated";
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.userExists = true;
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -1246,6 +1248,7 @@ export default {
     },
     getAssigneeDetails(v) {
       // console.log("board list", this.projectSprints);
+      this.checkUserExists();
       this.assignees = [];
       let assigneeSearchList = this.peopleList;
       for (let index = 0; index < assigneeSearchList.length; ++index) {
