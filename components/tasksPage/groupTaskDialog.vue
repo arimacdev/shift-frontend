@@ -767,6 +767,10 @@ export default {
           taskGroupId: this.task.taskGroupId,
           userId: this.userId
         });
+        this.$store.dispatch("groups/groupPeople/fetchGroupPeople", {
+          taskGroupId: this.task.taskGroupId,
+          userId: "user"
+        });
         setTimeout(() => {
           this.close();
         }, 3000);
