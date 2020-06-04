@@ -573,17 +573,16 @@
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
                       <v-list-item-title>
-                        <select
+                        <!-- <select
                           v-model="taskAssignee"
                           class="rightColumnItemsText"
                           @change="changeAssignee"
                         >
-                          <!-- <option>Naveen Perera</option> -->
-                          <!-- <option value disabled>
+                          <option value disabled>
                             {{
                             taskUser
                             }}
-                          </option>-->
+                          </option>
                           <option
                             class="tabListItemsText"
                             v-for="(taskAssignee, index) in peopleList"
@@ -593,7 +592,20 @@
                             {{ taskAssignee.assigneeFirstName }}
                             {{ taskAssignee.assigneeLastName }}
                           </option>
-                        </select>
+                        </select>-->
+
+                        <v-select
+                          style="margin-left: -10px"
+                          dense
+                          v-model="taskAssignee"
+                          :items="assignees"
+                          item-text="name"
+                          item-value="id"
+                          solo
+                          flat
+                          class="createFormElements"
+                          @change="changeAssignee"
+                        ></v-select>
                       </v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
@@ -804,6 +816,8 @@ export default {
       projectId: "",
       userId: "",
       sprints: [],
+
+      assignees: [],
       editTask: true,
       // parentTask: {},
       parentProfile: {},
@@ -1119,6 +1133,20 @@ export default {
         }, 3000);
         console.log("Error updating a status", e);
       }
+    },
+    getAssigneeDetails(v) {
+      // console.log("board list", this.projectSprints);
+      this.assignees = [];
+      let assigneeSearchList = this.peopleList;
+      for (let index = 0; index < assigneeSearchList.length; ++index) {
+        let assignee = assigneeSearchList[index];
+        this.assignees.push({
+          name: assignee.assigneeFirstName + " " + assignee.assigneeLastName,
+          id: assignee.assigneeId
+        });
+      }
+      // console.log("nameList", this.states);
+      this.loading = true;
     },
     async updateTaskNote() {
       // console.log("updatedTaskValue ->", this.updatedTask.taskNotes);
@@ -1547,11 +1575,27 @@ export default {
       return this.children.length;
     },
 
+    // taskAssignee: {
+    //   get() {
+    //     return this.task.taskAssignee;
+    //   },
+    //   set(assignee) {
+    //     this.updatedTask.taskAssignee = assignee;
+    //   }
+    // },
+
     taskAssignee: {
       get() {
-        return this.task.taskAssignee;
+        this.getAssigneeDetails();
+        if (this.updatedTask.taskAssignee == "") {
+          return this.selectedTask.taskAssignee;
+        } else {
+          return this.updatedTask.taskAssignee;
+        }
+        // console.log("sprintId", this.selectedTask);
       },
       set(assignee) {
+        // console.log("spid", sprintId);
         this.updatedTask.taskAssignee = assignee;
       }
     },
