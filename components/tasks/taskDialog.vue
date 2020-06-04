@@ -528,6 +528,14 @@
               </v-col>
               <!-- ------------------ right side column ------------- -->
               <v-col sm="4" md="4">
+                <v-list-item>
+                  <v-list-item-action>
+                    <v-icon size="15" color="red">mdi-alert-outline</v-icon>
+                  </v-list-item-action>
+                  <v-list-item-content
+                    class="userBlockedWarning"
+                  >Assignee is no longer a participant of the project</v-list-item-content>
+                </v-list-item>
                 <div class="rightSideColumn">
                   <!-- --------- assignee section ---------- -->
                   <v-list-item>

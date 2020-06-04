@@ -622,6 +622,7 @@
                     </v-row>
                   </div>
                   <!-- ----------- Reminder date section --------- -->
+
                   <v-list-item>
                     <v-list-item-icon
                       style="background-color: #7CDD00; padding: 10px; border-radius: 50%"
