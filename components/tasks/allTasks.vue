@@ -128,11 +128,12 @@
           class
           @keyup.enter="addTask(null, 'general')"
           clearable
+          hint="Type a task name and hit enter"
         ></v-text-field>
       </v-form>
     </div>
     <div v-if="this.taskFilter == 'none'" class="taskListViewContent overflow-y-auto">
-      <!-- ------ start task filter list ------- -->
+      <!-- ------ start task list ------- -->
       <div v-for="(task, index) in projectAllTasks" :key="index">
         <div class="backPannelAllTask">
           <div class="taskList restructuredMainTaskList">
@@ -176,7 +177,7 @@
                     ></v-img>
                     <v-img
                       v-else
-                      src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                     ></v-img>
                   </v-list-item-avatar>
                 </div>
@@ -256,7 +257,7 @@
                       ></v-img>
                       <v-img
                         v-else
-                        src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                       ></v-img>
                     </v-list-item-avatar>
                   </div>
@@ -326,7 +327,7 @@
                   ></v-img>
                   <v-img
                     v-else
-                    src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                    src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                   ></v-img>
                 </v-list-item-avatar>
               </div>

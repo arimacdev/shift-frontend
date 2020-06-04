@@ -18,12 +18,12 @@
           <v-list-item v-if="assignee.taskGroupRole == 1" class="peopleContainer">
             <v-list-item-avatar>
               <v-img
-                v-if="assignee.assigneeProfileImage != null"
+                v-if="assignee.assigneeProfileImage != null && assignee.assigneeProfileImage != ''"
                 :src="assignee.assigneeProfileImage"
               ></v-img>
               <v-img
                 v-if="assignee.assigneeProfileImage == null"
-                src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
               ></v-img>
             </v-list-item-avatar>
             <v-list-item-content>
@@ -85,12 +85,12 @@
           <v-list-item v-if="assignee.taskGroupRole == 2" class="peopleContainer">
             <v-list-item-avatar>
               <v-img
-                v-if="assignee.assigneeProfileImage != null"
+                v-if="assignee.assigneeProfileImage != null && assignee.assigneeProfileImage != ''"
                 :src="assignee.assigneeProfileImage"
               ></v-img>
               <v-img
                 v-if="assignee.assigneeProfileImage == null"
-                src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
               ></v-img>
             </v-list-item-avatar>
             <v-list-item-content>

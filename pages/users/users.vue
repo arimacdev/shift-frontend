@@ -30,10 +30,13 @@
             <div v-for="(user, index) in users" :key="index">
               <v-list-item @click="selectUser(user)">
                 <v-list-item-avatar>
-                  <v-img v-if="user.profileImage != null" :src="user.profileImage"></v-img>
+                  <v-img
+                    v-if="user.profileImage != null && user.profileImage != ''"
+                    :src="user.profileImage"
+                  ></v-img>
                   <v-img
                     v-else
-                    src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                    src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                   ></v-img>
                 </v-list-item-avatar>
                 <v-list-item-content>

@@ -19,6 +19,15 @@ export const mutations = {
     }
   },
   SET_ALL_TASKS(state, event) {
+    const sorted = event.sort((a, b) => {
+      const userA = a.parentTask.taskName.toUpperCase();
+      const userB = b.parentTask.taskName.toUpperCase();
+
+      if (userA < userB) return -1;
+      if (userA > userB) return 1;
+
+      return 0;
+    });
     state.allTasks = event;
   },
   SET_CHILD_TASKS(state, children) {
@@ -31,6 +40,15 @@ export const mutations = {
     state.myTasks = event;
   },
   SET_USER_TASK_COMPLETION(state, event) {
+    const sorted = event.sort((a, b) => {
+      const userA = a.assigneeFirstName.toUpperCase();
+      const userB = b.assigneeFirstName.toUpperCase();
+
+      if (userA < userB) return -1;
+      if (userA > userB) return 1;
+
+      return 0;
+    });
     state.userCompletionTasks = event;
   },
   SET_PROJECT_TASK_COMPLETION(state, projectTaskCompletion) {

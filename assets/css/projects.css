@@ -36,7 +36,7 @@
   width: 20%;
   float: left;
   /* padding-left: 12px; */
-  padding-top: 10px;
+  margin-top: -20px;
 }
 .body-tabs {
   width: 80%;

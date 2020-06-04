@@ -47,7 +47,7 @@
                   <div class="expansionViewHeader">
                     <v-list-item class="taskViewTitleSection">
                       <v-list-item-icon>
-                        <v-icon size="30" color="#0BAFFF">mdi-checkbox-multiple-blank-outline</v-icon>
+                        <v-icon size="25" color="#0BAFFF">icon-task</v-icon>
                       </v-list-item-icon>
                       <v-list-item-title class="viewTaskFontColors">Task Type</v-list-item-title>
                     </v-list-item>
@@ -76,7 +76,7 @@
                   <div class="expansionViewHeader">
                     <v-list-item class="taskViewTitleSection">
                       <v-list-item-icon>
-                        <v-icon size="30" color="#6FCD17">mdi-animation-outline</v-icon>
+                        <v-icon size="25" color="#6FCD17">icon-board</v-icon>
                       </v-list-item-icon>
                       <v-list-item-title class="viewTaskFontColors">Board</v-list-item-title>
                     </v-list-item>
@@ -98,7 +98,7 @@
                   <div class="expansionViewHeader">
                     <v-list-item class="taskViewTitleSection">
                       <v-list-item-icon>
-                        <v-icon size="30" color="#FF6767">mdi-file-document-edit-outline</v-icon>
+                        <v-icon size="30" color="#FF6767">mdi-square-edit-outline</v-icon>
                       </v-list-item-icon>
                       <v-list-item-title class="viewTaskFontColors">Notes</v-list-item-title>
                     </v-list-item>
@@ -124,8 +124,10 @@
               <v-col sm="4" md="4">
                 <div class="rightSideColumn">
                   <v-list-item>
-                    <v-list-item-icon>
-                      <v-icon size="35" color="#02C1D4">mdi-account-arrow-left-outline</v-icon>
+                    <v-list-item-icon
+                      style="background-color: #02C1D4; padding: 10px; border-radius: 50%"
+                    >
+                      <v-icon size="25" color="#FFFFFF">icon-assignee</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
@@ -135,8 +137,10 @@
                   <!-- ----------- Due date section --------- -->
 
                   <v-list-item>
-                    <v-list-item-icon>
-                      <v-icon size="35" color="#7CDD00">mdi-calendar-blank-outline</v-icon>
+                    <v-list-item-icon
+                      style="background-color: #7CDD00; padding: 10px; border-radius: 50%"
+                    >
+                      <v-icon size="25" color="#FFFFFF">mdi-calendar-blank-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Due Date</v-list-item-subtitle>
@@ -152,8 +156,10 @@
 
                   <!-- ----------- Reminder date section --------- -->
                   <v-list-item>
-                    <v-list-item-icon>
-                      <v-icon size="35" color="#7CDD00">mdi-clock-outline</v-icon>
+                    <v-list-item-icon
+                      style="background-color: #7CDD00; padding: 10px; border-radius: 50%"
+                    >
+                      <v-icon size="25" color="#FFFFFF">mdi-clock-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Remind Date</v-list-item-subtitle>
@@ -171,8 +177,10 @@
                   <v-divider class="datePickerDivider"></v-divider>
                   <!-- ----------- Files section --------- -->
                   <v-list-item>
-                    <v-list-item-icon>
-                      <v-icon size="35" color="#FFAE4F">mdi-paperclip</v-icon>
+                    <v-list-item-icon
+                      style="background-color: #FFAE4F; padding: 10px; border-radius: 50%"
+                    >
+                      <v-icon size="25" color="#FFFFFF">mdi-paperclip</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-title class="rightColumnItemsTitle">Files</v-list-item-title>
@@ -360,11 +368,11 @@ export default {
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "Add Task Date";
+        return "No Task Date";
       } else {
         let stringDate = date + "";
         stringDate = stringDate.toString();
-        stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(12, 16);
+        stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 16);
         return stringDate;
       }
     },

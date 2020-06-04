@@ -10,13 +10,20 @@
   >
     <v-list-item class="px-2 background" :to="'../../profile/profile'">
       <v-list-item-avatar>
-        <v-img v-if="userProfile.profileImage != null" :src="userProfile.profileImage"></v-img>
-        <v-img v-else src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"></v-img>
+        <v-img
+          v-if="userProfile.profileImage != null && userProfile.profileImage != ''"
+          :src="userProfile.profileImage"
+        ></v-img>
+        <v-img
+          v-else
+          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+        ></v-img>
       </v-list-item-avatar>
 
       <v-list-item-title>
         <div id="name-div">
           <p id="company-name">ARIMAC</p>
+
           <p id="name">{{userProfile.firstName}} {{userProfile.lastName}}</p>
         </div>
       </v-list-item-title>
@@ -24,7 +31,9 @@
 
     <v-divider></v-divider>
 
-    <v-list v-if="organizationalRole === 'SUPER_ADMIN'">
+    <v-list
+      v-if="organizationalRoles.indexOf('ADMIN') > -1 || organizationalRoles.indexOf('SUPER_ADMIN') > -1"
+    >
       <v-list-item
         :router="item.path"
         :to="item.route"
@@ -34,7 +43,8 @@
         active-class="active"
       >
         <v-list-item-icon>
-          <v-icon class="navButtons">{{ item.icon }}</v-icon>
+          <!-- <span class="navButtons" :class="item.icon"></span> -->
+          <v-icon size="20" class="navButtons">{{ item.icon }}</v-icon>
         </v-list-item-icon>
 
         <v-list-item-content>
@@ -60,7 +70,7 @@
         </v-list-item-content>
       </v-list-item>
     </v-list>
-    <!-- <v-divider></v-divider>
+    <v-divider></v-divider>
     <div class="logooutButton">
       <v-list>
         <v-list-item @click="userLogOut">
@@ -73,7 +83,7 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-    </div>-->
+    </div>
   </v-navigation-drawer>
 </template>
 
@@ -85,56 +95,57 @@ export default {
       // profilePic: this.userProfile.profileImage,
       drawer: true,
       adminItems: [
-        // { title: 'Summary', icon: 'mdi-chart-line', route: '../summary'},
+        // { title: 'Summary', icon: 'icon-summary', route: '../summary'},
         {
           title: "Projects",
-          icon: "mdi-folder-outline",
+          icon: "icon-project",
           route: "../../projects/projects"
         },
         {
           title: "Tasks",
-          icon: "mdi-calendar-blank-multiple",
+          icon: "icon-task",
           route: "../../tasks/tasks"
         },
-        // { title: 'Inventory', icon: 'mdi-comment-outline', route: '../inventory'},
+        // { title: 'Inventory', icon: 'icon-inventory', route: '../inventory'},
         {
           title: "Workload",
-          icon: "mdi-bag-checked",
+          icon: "icon-workload",
           route: "../../workload/workload"
         },
-        {
-          title: "Users",
-          icon: "mdi-account-multiple-outline",
-          route: "../../users/users"
-        }
-        // { title: 'Admin', icon: 'mdi-account-circle-outline', route: '../admin' },
+        // {
+        //   title: "Users",
+        //   icon: "icon-users",
+        //   route: "../../users/users"
+        // },
+        { title: "Admin", icon: "icon-admin", route: "../../admin/admin" }
       ],
       mini: true,
       userItems: [
-        // { title: 'Summary', icon: 'mdi-chart-line', route: '../summary'},
+        // { title: 'Summary', icon: 'icon-summary', route: '../summary'},
         {
           title: "Projects",
-          icon: "mdi-folder-outline",
+          icon: "icon-project",
           route: "../../projects/projects"
         },
         {
           title: "Tasks",
-          icon: "mdi-calendar-blank-multiple",
+          icon: "icon-task",
           route: "../../tasks/tasks"
         },
-        // { title: 'Inventory', icon: 'mdi-comment-outline', route: '../inventory'},
+        // { title: 'Inventory', icon: 'icon-inventory', route: '../inventory'},
         {
           title: "Workload",
-          icon: "mdi-bag-checked",
-          route: "../../workload/myWorkload"
+          icon: "icon-workload",
+          route: "../../workload/workload"
         }
-      ]
+      ],
+      homePage: process.env.SYSTEM_URL
     };
   },
   computed: {
     ...mapState({
       userProfile: state => state.userProfile.userProfile,
-      organizationalRole: state => state.user.organizationalRole
+      organizationalRoles: state => state.user.organizationalRoles
     }),
     profileImage() {
       // console.log("profile image", this.profilePic);
@@ -143,8 +154,10 @@ export default {
 
   methods: {
     userLogOut() {
-      const APP = "http://localhost:3000/login";
-      const LOGOUT_URL = `https://pmtool.devops.arimac.xyz/auth/realms/pm-tool/protocol/openid-connect/logout?redirect_uri=${APP}`;
+      const LOGOUT_URL =
+        this.homePage +
+        "/auth/realms/pm-tool/protocol/openid-connect/logout?redirect_uri=" +
+        this.homePage;
       window.location.replace(LOGOUT_URL);
     }
   }

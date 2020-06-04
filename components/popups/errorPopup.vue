@@ -9,9 +9,13 @@
           <v-list-item-content class="buttonText">
             <v-list-item-title class="popupTitle">Error occurred!</v-list-item-title>
             <div
-              v-if="errorMessage.status != 500 && errorMessage.status != 400"
+              v-if="errorMessage.status != 500 && errorMessage.status != 400 && errorMessage.status != 422"
               class="popupSubtitle errorSubtitle"
             >{{errorMessage.message}}</div>
+            <div
+              v-else-if="errorMessage.status == 422"
+              class="popupSubtitle errorSubtitle"
+            >{{JSON.parse(errorMessage.message).errorMessage}}</div>
             <div
               v-else-if="errorMessage.status == 400"
               class="popupSubtitle errorSubtitle"

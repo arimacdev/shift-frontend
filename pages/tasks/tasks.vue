@@ -35,7 +35,7 @@
               <div v-on:click="component='personal-tasks'">
                 <v-list-item class="tasksListItem">
                   <v-list-item-action>
-                    <v-icon size="20" color="#FFFFFF">mdi-calendar-blank-multiple</v-icon>
+                    <v-icon size="20" color="#FFFFFF">icon-task</v-icon>
                   </v-list-item-action>
                   <v-list-item-content>
                     <v-list-item-title class="taskListName">My personal tasks</v-list-item-title>
@@ -66,13 +66,13 @@
                   @click="selectGroup(group)"
                 >
                   <v-list-item-action class="active">
-                    <v-icon size="20" class="groupListElement">mdi-calendar-blank-multiple</v-icon>
+                    <v-icon size="20" class="groupListElement">icon-task</v-icon>
                   </v-list-item-action>
                   <v-list-item-content class="active">
                     <v-list-item-title class="groupListName">{{ group.taskGroupName }}</v-list-item-title>
                   </v-list-item-content>
                   <v-list-item-action class="active">
-                    <v-icon size="15" class="groupListElement">mdi-account-group-outline</v-icon>
+                    <v-icon size="15" class="groupListElement">icon-users</v-icon>
                   </v-list-item-action>
                 </v-list-item>
               </div>

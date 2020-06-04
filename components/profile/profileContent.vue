@@ -2,11 +2,15 @@
   <div class="profileDetailsCover">
     <div class="blackBar profileBlackBar"></div>
     <div class="userImage profileUserImage">
-      <v-img v-if="user.profileImage != null" class="profileImage" :src="user.profileImage"></v-img>
+      <v-img
+        v-if="user.profileImage != null && user.profileImage != ''  "
+        class="profileImage"
+        :src="user.profileImage"
+      ></v-img>
       <v-img
         v-else
         class="profileImage"
-        src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
       ></v-img>
 
       <div class="profilePictureUpload">
@@ -53,7 +57,7 @@
 
           <div class="slackButton">
             <a
-              href="https://slack.com/oauth/v2/authorize?scope=incoming-webhook,chat:write&client_id=345426929140.1020110511447&redirect_uri=https://project.arimaclanka.com/profile"
+              href="https://slack.com/oauth/v2/authorize?scope=incoming-webhook,chat:write&client_id=345426929140.1020110511447&redirect_uri=https://project.arimaclanka.com/profile/profile"
             >
               <img
                 alt="Join Slack Notifications"
@@ -71,7 +75,7 @@
             <!-- <v-btn x-small depressed color="primary" v-if="user.userSlackId != null && user.notification == false" v-show="enableNotification"  @click='changeNotificationStatus(user.notification)' >Enable Notifications</v-btn>  
             <v-btn x-small depressed   v-if="user.userSlackId != null && user.notification == true" v-show="disableNotification"  @click='changeNotificationStatus(user.notification)'>Disable Notifications</v-btn>-->
 
-            <div class="notiTitle">Enable Notifications</div>
+            <div class="notiTitle" v-if="!enableNotification">Enable Notifications</div>
             <div class="notiButton">
               <v-switch
                 inset
@@ -101,7 +105,7 @@
         <!-- <v-switch v-model="switch1" inset :label="`Switch 1: ${switch1.toString()}`"></v-switch> -->
       </div>
     </div>
-    <form @submit.prevent="handleSubmit">
+    <v-form @submit.prevent="handleSubmit" v-model="isValid" ref="form">
       <div class="profileUserName">{{ user.firstName }} {{ user.lastName }}</div>
 
       <div class="userDetails">
@@ -111,20 +115,48 @@
       <div class="usersForms userDetailsForm profileForm">
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="6" md="6">
-            <input v-model="user.firstName" placeholder="First Name" class="formElements" />
+            <v-text-field
+              flat
+              outlined
+              v-model="user.firstName"
+              label="First Name"
+              class="profileUpdateTextFields"
+              :rules="firstNameRules"
+            />
           </v-col>
           <v-col sm="6" md="6">
-            <input v-model="user.lastName" placeholder="Last Name" class="formElements" />
+            <v-text-field
+              flat
+              outlined
+              v-model="user.lastName"
+              label="Last Name"
+              class="profileUpdateTextFields"
+              :rules="lastNameRules"
+            />
           </v-col>
         </v-row>
 
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="6" md="6">
-            <!-- <input  v-model="user.userName" disabled  placeholder="Username" class="formElements"> -->
-            <input type="email" v-model="user.email" placeholder="Email" class="formElements" />
+            <v-text-field
+              flat
+              outlined
+              type="email"
+              v-model="user.email"
+              label="Email"
+              class="profileUpdateTextFields"
+              :rules="emailRules"
+            />
           </v-col>
           <v-col sm="6" md="6">
-            <!-- <input type="email" v-model="user.email"  placeholder="Email" class="formElements"> -->
+            <v-text-field
+              flat
+              outlined
+              v-model="user.userName"
+              disabled
+              label="Username"
+              class="profileUpdateTextFields"
+            />
           </v-col>
         </v-row>
 
@@ -132,11 +164,13 @@
           <v-col sm="6" md="6">
             <!-- <input type="password"  v-model="password"  placeholder="************" class="formElements"> -->
 
-            <input
+            <v-text-field
+              flat
+              outlined
               type="password"
               v-model.trim="$v.password.$model"
-              placeholder="New password (Change if needed) "
-              class="formElements"
+              label="New password (Change if needed) "
+              class="profileUpdateTextFields"
             />
             <!-- <div v-if="$v.password.$error && !$v.password.required" class="errorText"> Password is required</div> -->
             <div
@@ -145,11 +179,13 @@
             >Password must be at least 6 characters</div>
           </v-col>
           <v-col sm="6" md="6">
-            <input
+            <v-text-field
+              flat
+              outlined
               type="password"
               v-model.trim="$v.confirmPassword.$model"
-              placeholder="Confirm Password"
-              class="formElements"
+              label="Confirm Password"
+              class="profileUpdateTextFields"
             />
             <div
               v-if="$v.confirmPassword.$error && !$v.confirmPassword.sameAs"
@@ -159,23 +195,54 @@
         </v-row>
         <v-row>
           <v-col sm="12" md="12">
-            <button class="submitButtonEdit profileButton">
+            <v-btn
+              v-if="this.password != '' && !this.$v.$invalid == true && isValid == true"
+              height="50px"
+              width="300px"
+              class="submitButtonEdit"
+            >
               <v-list-item @click="postData()" dark>
                 <v-list-item-action>
-                  <v-icon size="20" color>mdi-account-outline</v-icon>
+                  <v-icon size="20" color>icon-user</v-icon>
                 </v-list-item-action>
                 <v-list-item-content class="buttonText">
                   <v-list-item-title class="bodyWiew">Edit profile details</v-list-item-title>
                 </v-list-item-content>
-                <div class="iconBackCircle">
+                <!-- <div class="iconBackCircle">
                   <v-icon size="17" color="#0BAFFF">mdi-pencil-outline</v-icon>
-                </div>
+                </div>-->
               </v-list-item>
-            </button>
+            </v-btn>
+
+            <v-btn
+              v-else-if="this.confirmPassword == '' && this.password == '' && !this.$v.$invalid == false && isValid == true"
+              height="50px"
+              width="300px"
+              class="submitButtonEdit"
+            >
+              <v-list-item @click="postData()" dark>
+                <v-list-item-action>
+                  <v-icon size="20" color>icon-user</v-icon>
+                </v-list-item-action>
+                <v-list-item-content class="buttonText">
+                  <v-list-item-title class="bodyWiew">Edit profile details</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-btn>
+            <v-btn v-else disabled height="50px" width="300px" class="submitButtonEdit">
+              <v-list-item @click="postData()" dark>
+                <v-list-item-action>
+                  <v-icon size="20" color>icon-user</v-icon>
+                </v-list-item-action>
+                <v-list-item-content class="buttonText">
+                  <v-list-item-title class="bodyWiew">Edit profile details</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-btn>
           </v-col>
         </v-row>
       </div>
-    </form>
+    </v-form>
 
     <div>
       <!-- ---- this is a switch button if applicable ---- -->
@@ -218,6 +285,14 @@ export default {
   // },
   data() {
     return {
+      isValid: true,
+      firstNameRules: [value => !!value || "First name is required!"],
+      lastNameRules: [value => !!value || "Last name is required!"],
+      emailRules: [
+        value => !!value || "E-mail is required",
+        value => /.+@.+\..+/.test(value) || "E-mail must be valid"
+      ],
+
       disableButton: true,
       switch1: true,
       switch2: false,
@@ -345,18 +420,27 @@ export default {
     async postData() {
       let response;
       try {
-        response = await this.$axios.$put(`/users/${this.userId}`, {
-          firstName: this.user.firstName,
-          lastName: this.user.lastName,
-          email: this.user.email,
-          password: this.user.password
-        });
+        if (this.password == "") {
+          response = await this.$axios.$put(`/users/${this.userId}`, {
+            firstName: this.user.firstName,
+            lastName: this.user.lastName,
+            email: this.user.email
+          });
+        } else {
+          response = await this.$axios.$put(`/users/${this.userId}`, {
+            firstName: this.user.firstName,
+            lastName: this.user.lastName,
+            email: this.user.email,
+            password: this.password
+          });
+        }
+
         this.component = "success-popup";
         this.successMessage = "Profile successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log(response.message);
+        // console.log(response.message);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";

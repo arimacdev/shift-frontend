@@ -20,11 +20,11 @@
           ></v-text-field>
           <div
             v-if="$v.projectName.$error && !$v.projectName.required"
-            class="errorText"
+            class="errorTextCreateProject"
           >Project name is required</div>
           <div
             v-if="$v.projectName.$error && !$v.projectName.maxLength"
-            class="errorText"
+            class="errorTextCreateProject"
           >Cannot use more than 50 characters</div>
         </v-col>
         <v-col sm="6" md="6">
@@ -37,7 +37,10 @@
             class="createFormElements"
             v-model.trim="$v.client.$model"
           ></v-text-field>
-          <div v-if="$v.client.$error && !$v.client.required" class="errorText">Client is required</div>
+          <div
+            v-if="$v.client.$error && !$v.client.required"
+            class="errorTextCreateProject"
+          >Client is required</div>
         </v-col>
       </v-row>
 
@@ -56,7 +59,7 @@
             />
             <div
               v-if="$v.startDate.$error && !$v.startDate.dateCheck"
-              class="errorText errorDiv"
+              class="errorTextCreateProject errorDiv"
             >Start date cannot be past date</div>
           </div>
         </v-col>
@@ -103,11 +106,11 @@
           ></v-text-field>
           <div
             v-if="$v.alias.$error && !$v.alias.required"
-            class="errorText"
+            class="errorTextCreateProject"
           >Project alias is required</div>
           <div
             v-if="$v.alias.$error && !$v.alias.maxLength"
-            class="errorText"
+            class="errorTextCreateProject"
           >Cannot use more than 6 characters</div>
         </v-col>
       </v-row>

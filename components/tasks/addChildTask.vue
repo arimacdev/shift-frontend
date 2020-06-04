@@ -31,7 +31,27 @@
                   :rules="assigneeRules"
                   @mousedown="getParentTasks"
                   clearable
-                ></v-select>
+                >
+                  <template v-slot:selection="data">
+                    <template>
+                      <v-list-item-action>
+                        <v-list-item-subtitle v-html="data.item.secondaryId"></v-list-item-subtitle>
+                      </v-list-item-action>
+                      <v-list-item-content>
+                        <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                      </v-list-item-content>
+                    </template>
+                  </template>
+                  <template v-slot:item="data">
+                    <template>
+                      <v-list-item-content>
+                        <v-list-item-subtitle v-html="data.item.secondaryId"></v-list-item-subtitle>
+
+                        <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                      </v-list-item-content>
+                    </template>
+                  </template>
+                </v-select>
               </v-card-actions>
             </div>
 
@@ -129,7 +149,8 @@ export default {
         ) {
           this.parentTasks.push({
             name: task.parentTask.taskName,
-            id: task.parentTask.taskId
+            id: task.parentTask.taskId,
+            secondaryId: task.parentTask.secondaryTaskId
           });
         }
       }

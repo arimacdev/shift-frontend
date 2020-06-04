@@ -53,12 +53,12 @@
                   <div>
                     <v-list-item-avatar>
                       <v-img
-                        v-if="task.parentTask.taskAssigneeProfileImage != null"
+                        v-if="task.parentTask.taskAssigneeProfileImage != null && task.parentTask.taskAssigneeProfileImage != ''"
                         :src="task.parentTask.taskAssigneeProfileImage"
                       ></v-img>
                       <v-img
                         v-else
-                        src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                       ></v-img>
                     </v-list-item-avatar>
                   </div>
@@ -77,7 +77,7 @@
               </div>
 
               <!-- -------------- sub task design --------------- -->
-              <div class="restructuredSubTaskCreate">
+              <div class="restructuredSubTaskCreateGroup">
                 <v-text-field
                   v-if="task.parentTask.taskStatus != 'closed'"
                   v-model="subTaskName"
@@ -127,12 +127,12 @@
                     <div>
                       <v-list-item-avatar>
                         <v-img
-                          v-if="childTask.taskAssigneeProfileImage != null"
+                          v-if="childTask.taskAssigneeProfileImage != null && childTask.taskAssigneeProfileImage != ''"
                           :src="childTask.taskAssigneeProfileImage"
                         ></v-img>
                         <v-img
                           v-else
-                          src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                         ></v-img>
                       </v-list-item-avatar>
                     </div>
@@ -184,12 +184,12 @@
                   <div>
                     <v-list-item-avatar>
                       <v-img
-                        v-if="task.parentTask.taskAssigneeProfileImage != null"
+                        v-if="task.parentTask.taskAssigneeProfileImage != null && task.parentTask.taskAssigneeProfileImage != ''"
                         :src="task.parentTask.taskAssigneeProfileImage"
                       ></v-img>
                       <v-img
                         v-else
-                        src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                       ></v-img>
                     </v-list-item-avatar>
                   </div>
@@ -246,12 +246,12 @@
                     <div>
                       <v-list-item-avatar>
                         <v-img
-                          v-if="childTask.taskAssigneeProfileImage != null"
+                          v-if="childTask.taskAssigneeProfileImage != null && childTask.taskAssigneeProfileImage != ''"
                           :src="childTask.taskAssigneeProfileImage"
                         ></v-img>
                         <v-img
                           v-else
-                          src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                         ></v-img>
                       </v-list-item-avatar>
                     </div>

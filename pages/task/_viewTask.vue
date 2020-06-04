@@ -88,14 +88,14 @@
             </v-col>
             <v-col sm="8" md="8" class="taskViewLinksDiv">
               <nuxt-link :to="'/projects/'  +  this.projectId" style="text-decoration: none;">
-                <v-icon size="22" color="#0083E2">mdi-folder-outline</v-icon>Project
+                <v-icon size="18" color="#0083E2">icon-project</v-icon>Project
               </nuxt-link>/
               <nuxt-link
                 v-if="this.task.isParent == false"
                 :to="'/task/' +   this.parentTask.taskId + '/?project=' +  this.projectId"
                 style="text-decoration: none;"
               >
-                <v-icon size="22" color="#0083E2">mdi-calendar-check</v-icon>
+                <v-icon size="18" color="#0083E2">icon-task</v-icon>
                 {{this.parentTask.secondaryTaskId}}
               </nuxt-link>
               <span v-if="this.task.isParent == false">/</span>
@@ -105,7 +105,7 @@
                 style="text-decoration: none; color: #B9B9B9"
                 class="currentTaskColor"
               >
-                <v-icon size="22" color="#B9B9B9">mdi-calendar-check-outline</v-icon>
+                <v-icon size="18" color="#B9B9B9">icon-task</v-icon>
                 {{this.task.secondaryTaskId}}
               </nuxt-link>
             </v-col>
@@ -194,6 +194,13 @@
                               >mdi-checkbox-marked-circle</v-icon>
                               <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
                             </v-list-item-action>
+                            <v-list-item-action
+                              style="font-size: 14px; font-weight: 800; padding-right: 20px"
+                            >
+                              {{
+                              this.parentTask.secondaryTaskId
+                              }}
+                            </v-list-item-action>
                             <v-list-item-content>
                               <v-list-item-title>
                                 {{
@@ -215,12 +222,12 @@
                             <div>
                               <v-list-item-avatar size="25">
                                 <v-img
-                                  v-if="this.parentTaskUser.profileImage != null"
+                                  v-if="this.parentTaskUser.profileImage != null && this.parentTaskUser.profileImage != ''"
                                   :src="this.parentTaskUser.profileImage"
                                 ></v-img>
                                 <v-img
                                   v-else
-                                  src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                                  src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                                 ></v-img>
                               </v-list-item-avatar>
                             </div>
@@ -277,6 +284,13 @@
                                 >mdi-checkbox-marked-circle</v-icon>
                                 <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
                               </v-list-item-action>
+                              <v-list-item-action
+                                style="font-size: 14px; font-weight: 800; padding-right: 20px"
+                              >
+                                {{
+                                child.secondaryTaskId
+                                }}
+                              </v-list-item-action>
                               <v-list-item-content>
                                 <v-list-item-title>
                                   {{
@@ -295,7 +309,14 @@
                               </div>
                               <div>
                                 <v-list-item-avatar size="25">
-                                  <v-img :src="child.taskAssigneeProfileImage"></v-img>
+                                  <v-img
+                                    v-if="child.taskAssigneeProfileImage != null && child.taskAssigneeProfileImage != ''"
+                                    :src="child.taskAssigneeProfileImage"
+                                  ></v-img>
+                                  <v-img
+                                    v-else
+                                    src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                                  ></v-img>
                                 </v-list-item-avatar>
                               </div>
                               <div class="boardTabLinkIcon">
@@ -324,7 +345,7 @@
                   <div class="expansionViewHeader">
                     <v-list-item class="taskViewTitleSection">
                       <v-list-item-icon>
-                        <v-icon size="30" color="#0BAFFF">mdi-checkbox-multiple-blank-outline</v-icon>
+                        <v-icon size="25" color="#0BAFFF">icon-task</v-icon>
                       </v-list-item-icon>
                       <v-list-item-title class="viewTaskFontColors">Task Type</v-list-item-title>
                     </v-list-item>
@@ -450,7 +471,7 @@
                   <div class="expansionViewHeader">
                     <v-list-item class="taskViewTitleSection">
                       <v-list-item-icon>
-                        <v-icon size="30" color="#6FCD17">mdi-animation-outline</v-icon>
+                        <v-icon size="25" color="#6FCD17">icon-board</v-icon>
                       </v-list-item-icon>
                       <v-list-item-title class="viewTaskFontColors">Board</v-list-item-title>
                     </v-list-item>
@@ -497,7 +518,7 @@
                   <div class="expansionViewHeader">
                     <v-list-item class="taskViewTitleSection">
                       <v-list-item-icon>
-                        <v-icon size="30" color="#FF6767">mdi-file-document-edit-outline</v-icon>
+                        <v-icon size="30" color="#FF6767">mdi-square-edit-outline</v-icon>
                       </v-list-item-icon>
                       <v-list-item-title class="viewTaskFontColors">Notes</v-list-item-title>
                     </v-list-item>
@@ -533,21 +554,30 @@
               </v-col>
               <!-- ------------------ right side column ------------- -->
               <v-col sm="4" md="4">
+                <!-- <v-list-item v-show="!this.userExists">
+                  <v-list-item-action>
+                    <v-icon size="15" color="red">mdi-alert-outline</v-icon>
+                  </v-list-item-action>
+                  <v-list-item-content
+                    class="userBlockedWarning"
+                  >Assignee is no longer a participant of the project</v-list-item-content>
+                </v-list-item> -->
                 <div class="rightSideColumn">
                   <!-- --------- assignee section ---------- -->
                   <v-list-item>
-                    <v-list-item-icon>
-                      <v-icon size="35" color="#02C1D4">mdi-account-arrow-left-outline</v-icon>
+                    <v-list-item-icon
+                      style="background-color: #02C1D4; padding: 10px; border-radius: 50%"
+                    >
+                      <v-icon size="25" color="#FFFFFF">icon-assignee</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
                       <v-list-item-title>
-                        <select
+                        <!-- <select
                           v-model="taskAssignee"
                           class="rightColumnItemsText"
                           @change="changeAssignee"
                         >
-                          <!-- <option>Naveen Perera</option> -->
                           <option value disabled>
                             {{
                             taskUser
@@ -562,53 +592,95 @@
                             {{ taskAssignee.assigneeFirstName }}
                             {{ taskAssignee.assigneeLastName }}
                           </option>
-                        </select>
+                        </select>-->
+
+                        <v-select
+                          style="margin-left: -10px"
+                          dense
+                          v-model="taskAssignee"
+                          :items="assignees"
+                          item-text="name"
+                          item-value="id"
+                          solo
+                          flat
+                          class="createFormElements"
+                          @change="changeAssignee"
+                        ></v-select>
                       </v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
                   <!-- ----------- Due date section --------- -->
                   <v-list-item>
-                    <v-list-item-icon>
-                      <v-icon size="35" color="#7CDD00">mdi-calendar-blank-outline</v-icon>
+                    <v-list-item-icon
+                      style="background-color: #7CDD00; padding: 10px; border-radius: 50%"
+                    >
+                      <v-icon size="25" color="#FFFFFF">mdi-calendar-blank-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Due Date</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
-                  <div class="viewTaskPickerDiv">
-                    <VueCtkDateTimePicker
-                      color="#3f51b5"
-                      id="duePicker"
-                      class
-                      v-model="taskDueDate"
-                      label="Add due date"
-                      right
-                    />
+                  <div class="viewPageTaskPickerDiv">
+                    <v-row>
+                      <v-col md="10">
+                        <VueCtkDateTimePicker
+                          color="#3f51b5"
+                          id="duePicker"
+                          class
+                          v-model="taskDueDate"
+                          label="Add due date"
+                          right
+                        />
+                      </v-col>
+                      <v-col md="2">
+                        <v-btn v-on="on" icon color="deep-orange">
+                          <v-icon
+                            @click="updateTaskDates('dueDate')"
+                          >mdi-checkbox-marked-circle-outline</v-icon>
+                        </v-btn>
+                      </v-col>
+                    </v-row>
                   </div>
                   <!-- ----------- Reminder date section --------- -->
+
                   <v-list-item>
-                    <v-list-item-icon>
-                      <v-icon size="35" color="#7CDD00">mdi-clock-outline</v-icon>
+                    <v-list-item-icon
+                      style="background-color: #7CDD00; padding: 10px; border-radius: 50%"
+                    >
+                      <v-icon size="25" color="#FFFFFF">mdi-clock-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-subtitle class="rightColumnItemsSubTitle">Remind Date</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
-                  <div class="viewTaskPickerDiv">
-                    <VueCtkDateTimePicker
-                      color="#3f51b5"
-                      id="reminderPicker"
-                      class
-                      v-model="taskRemindOnDate"
-                      label="Add remind date"
-                      right
-                    />
+                  <div class="viewPageTaskPickerDiv">
+                    <v-row>
+                      <v-col md="10">
+                        <VueCtkDateTimePicker
+                          color="#3f51b5"
+                          id="reminderPicker"
+                          class
+                          v-model="taskRemindOnDate"
+                          label="Add remind date"
+                          right
+                        />
+                      </v-col>
+                      <v-col md="2">
+                        <v-btn v-on="on" icon color="deep-orange">
+                          <v-icon
+                            @click="updateTaskDates('remindOn')"
+                          >mdi-checkbox-marked-circle-outline</v-icon>
+                        </v-btn>
+                      </v-col>
+                    </v-row>
                   </div>
                   <v-divider class="datePickerDivider"></v-divider>
                   <!-- ----------- Files section --------- -->
                   <v-list-item>
-                    <v-list-item-icon>
-                      <v-icon size="35" color="#FFAE4F">mdi-paperclip</v-icon>
+                    <v-list-item-icon
+                      style="background-color: #FFAE4F; padding: 10px; border-radius: 50%"
+                    >
+                      <v-icon size="25" color="#FFFFFF">mdi-paperclip</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-title class="rightColumnItemsTitle">Files</v-list-item-title>
@@ -744,22 +816,26 @@ export default {
       projectId: "",
       userId: "",
       sprints: [],
+
+      assignees: [],
       editTask: true,
       // parentTask: {},
       parentProfile: {},
       updatedTaskDueDate: null,
       updatedRemindOnDate: null,
-      taskAssignee: "",
+      // taskAssignee: "",
       task: {},
       updatedTaskName: "",
       updatedTask: {
-        taskName: ""
+        taskName: "",
+        taskAssignee: ""
       },
       updatedIssue: "",
       updatedStatus: "",
       issueTypes: "",
       issueStatus: "",
       componentUsers: [],
+      userExists: true,
       files: [],
       component: "",
       errorMessage: "",
@@ -867,6 +943,10 @@ export default {
     this.taskId = this.$route.params.viewTask;
     this.projectId = this.$route.query.project;
     this.userId = this.$store.state.user.userId;
+    this.$store.dispatch(
+      "task/fetchProjectUserCompletionTasks",
+      this.$route.query.project
+    );
     let taskResponse;
     try {
       taskResponse = await this.$axios.$get(
@@ -899,6 +979,16 @@ export default {
     }
   },
   methods: {
+    checkUserExists() {
+      const index = this.people.findIndex(
+        user => user.assigneeId === this.selectedTask.taskAssignee
+      );
+      if (index === -1) {
+        this.userExists = false;
+      } else {
+        this.userExists = true;
+      }
+    },
     async deleteTask() {
       let response;
       try {
@@ -1029,7 +1119,7 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            taskAssignee: this.taskAssignee
+            taskAssignee: this.updatedTask.taskAssignee
           },
           {
             headers: {
@@ -1052,6 +1142,33 @@ export default {
         console.log("Error updating a status", e);
       }
     },
+    getAssigneeDetails(v) {
+      // console.log("board list", this.projectSprints);
+      this.checkUserExists();
+
+      this.assignees = [];
+      let assigneeSearchList = this.people;
+      for (let index = 0; index < assigneeSearchList.length; ++index) {
+        let assignee = assigneeSearchList[index];
+        this.assignees.push({
+          name: assignee.assigneeFirstName + " " + assignee.assigneeLastName,
+          id: assignee.assigneeId
+        });
+      }
+      // console.log("nameList", this.states);
+      this.loading = true;
+    },
+    // getPeopleList() {
+    //   console.log("callinglist");
+    //   if (this.people.length === undefined || this.people.length === 0) {
+    //     this.$store.dispatch(
+    //       "task/fetchProjectUserCompletionTasks",
+    //       this.$route.query.project
+    //     );
+    //   } else {
+    //     return this.people;
+    //   }
+    // },
     async updateTaskNote() {
       // console.log("updatedTaskValue ->", this.updatedTask.taskNotes);
       let response;
@@ -1220,12 +1337,17 @@ export default {
           "/" +
           this.updatedRemindOnDate
       );
-      if (type === "dueDate" && this.updatedTaskDueDate != null) {
+      if (
+        type === "dueDate" &&
+        this.updatedTaskDueDate != "" &&
+        this.updatedTaskDueDate != null
+      ) {
         dueDate = new Date(this.updatedTaskDueDate);
         const isoDate = new Date(
           dueDate.getTime() - dueDate.getTimezoneOffset() * 60000
         ).toISOString();
         dueDate = isoDate;
+        remindDate = this.updatedRemindOnDate;
         changedDate = {
           taskDueDate: dueDate
         };
@@ -1239,6 +1361,7 @@ export default {
           remindDate.getTime() - remindDate.getTimezoneOffset() * 60000
         ).toISOString();
         remindDate = isoDate;
+        dueDate = this.updatedRemindOnDate;
         changedDate = {
           taskRemindOnDate: remindDate
         };
@@ -1258,19 +1381,19 @@ export default {
             }
           }
         );
-        // this.component = "success-popup";
-        // this.successMessage = "Date successfully updated";
-        // setTimeout(() => {
-        //   this.close();
-        // }, 3000);
+        this.component = "success-popup";
+        this.successMessage = "Date successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
         // console.log("update task dates response", response);
       } catch (e) {
-        // this.errorMessage = e.response.data;
-        // this.component = "error-popup";
-        // setTimeout(() => {
-        //   this.close();
-        // }, 3000);
-        // console.log("Error updating a date", e);
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error updating a date", e);
       }
     },
     getProjectDates(date) {
@@ -1445,8 +1568,8 @@ export default {
     },
 
     peopleList() {
-      console.log("people list", this.people);
-      if (this.people.length == 0) {
+      // console.log("people list", this.people);
+      if (this.people.length === undefined || this.people.length === 0) {
         this.$store.dispatch(
           "task/fetchProjectUserCompletionTasks",
           this.$route.query.project
@@ -1471,6 +1594,31 @@ export default {
 
     childrenCount() {
       return this.children.length;
+    },
+
+    // taskAssignee: {
+    //   get() {
+    //     return this.task.taskAssignee;
+    //   },
+    //   set(assignee) {
+    //     this.updatedTask.taskAssignee = assignee;
+    //   }
+    // },
+
+    taskAssignee: {
+      get() {
+        this.getAssigneeDetails();
+        if (this.updatedTask.taskAssignee == "") {
+          return this.selectedTask.taskAssignee;
+        } else {
+          return this.updatedTask.taskAssignee;
+        }
+        // console.log("sprintId", this.selectedTask);
+      },
+      set(assignee) {
+        // console.log("spid", sprintId);
+        this.updatedTask.taskAssignee = assignee;
+      }
     },
 
     taskName: {
@@ -1535,7 +1683,7 @@ export default {
           this.updatedTaskDueDate === "1970-01-01T05:30:00.000+0000"
         )
           this.updatedTaskDueDate = this.task.taskDueDateAt;
-        this.updateTaskDates("dueDate");
+
         return this.updatedTaskDueDate;
       },
       set(value) {
@@ -1550,7 +1698,7 @@ export default {
           this.updatedRemindOnDate === "1970-01-01T05:30:00.000+0000"
         )
           this.updatedRemindOnDate = this.task.taskReminderAt;
-        this.updateTaskDates("remindOn");
+
         return this.updatedRemindOnDate;
       },
       set(value) {

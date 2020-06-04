@@ -19,12 +19,12 @@
           <v-list-item v-if="assignee.projectRoleId == 1" class="peopleContainer">
             <v-list-item-avatar>
               <v-img
-                v-if="assignee.assigneeProfileImage != null"
+                v-if="assignee.assigneeProfileImage != null && assignee.assigneeProfileImage != ''"
                 :src="assignee.assigneeProfileImage"
               ></v-img>
               <v-img
                 v-else
-                src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
               ></v-img>
             </v-list-item-avatar>
             <v-list-item-content>
@@ -85,17 +85,21 @@
           :key="index"
           class="taskList peopleListItems"
         >
-          <v-list-item v-if="assignee.projectRoleId == 2" class="peopleContainer">
+          <v-list-item
+            v-if="assignee.projectRoleId == 2 && assignee.isUserBlocked == false"
+            class="peopleContainer"
+          >
             <v-list-item-avatar>
               <v-img
-                v-if="assignee.assigneeProfileImage != null"
+                v-if="assignee.assigneeProfileImage != null && assignee.assigneeProfileImage != ''"
                 :src="assignee.assigneeProfileImage"
               ></v-img>
               <v-img
                 v-else
-                src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
               ></v-img>
             </v-list-item-avatar>
+
             <v-list-item-content>
               <v-list-item-title class="projectRole">
                 {{ assignee.assigneeFirstName }}
@@ -154,15 +158,18 @@
             :key="index"
             class="taskList peopleListItems"
           >
-            <v-list-item v-if="assignee.projectRoleId == 3" class="peopleContainer">
+            <v-list-item
+              v-if="assignee.projectRoleId == 3 && assignee.isUserBlocked == false"
+              class="peopleContainer"
+            >
               <v-list-item-avatar>
                 <v-img
-                  v-if="assignee.assigneeProfileImage != null"
+                  v-if="assignee.assigneeProfileImage != null && assignee.assigneeProfileImage != ''"
                   :src="assignee.assigneeProfileImage"
                 ></v-img>
                 <v-img
                   v-else
-                  src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                  src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                 ></v-img>
               </v-list-item-avatar>
               <v-list-item-content>

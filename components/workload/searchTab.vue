@@ -244,10 +244,13 @@
                     </v-list-item-content>
                     <div>
                       <v-list-item-avatar>
-                        <v-img v-if="task.profileImage != null" :src="task.profileImage"></v-img>
+                        <v-img
+                          v-if="task.profileImage != null && task.profileImage != ''"
+                          :src="task.profileImage"
+                        ></v-img>
                         <v-img
                           v-else
-                          src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                         ></v-img>
                       </v-list-item-avatar>
                     </div>

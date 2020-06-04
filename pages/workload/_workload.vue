@@ -19,10 +19,16 @@
 
       <div class="body-div">
         <div class="workloadTypeSection">
-          <v-tabs background-color="#0b0b53" dark>
-            <v-tab v-on:click="component='my-workload' ">My Workload</v-tab>
+          <v-tabs background-color="#0b0b53" slider-size="3" dark>
             <v-tab
-              v-if="userRole === 'SUPER_ADMIN'"
+              class="tabInactiveStyle"
+              active-class="adminTabTitleStyle"
+              v-on:click="component='my-workload' "
+            >My Workload</v-tab>
+            <v-tab
+              class="tabInactiveStyle"
+              active-class="adminTabTitleStyle"
+              v-if="organizationalRoles.indexOf('SUPER_ADMIN') > -1 || organizationalRoles.indexOf('WORKLOAD') > -1 || organizationalRoles.indexOf('ADMIN') > -1"
               v-on:click="component='org-workload'"
             >Organizational Workload</v-tab>
           </v-tabs>
@@ -56,7 +62,6 @@ export default {
     return {
       component: "my-workload",
       userId: this.$store.state.user.userId,
-      userRole: this.$store.state.user.organizationalRole,
       workLoad: {},
       userData: {},
       firstName: "",
@@ -141,7 +146,8 @@ export default {
   },
   computed: {
     ...mapState({
-      taskWorkLoadUsers: state => state.workload.taskWorkLoadUsers
+      taskWorkLoadUsers: state => state.workload.taskWorkLoadUsers,
+      organizationalRoles: state => state.user.organizationalRoles
     })
   },
   created() {

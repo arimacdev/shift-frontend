@@ -3,12 +3,32 @@
     <!-- tabs body -->
     <div>
       <v-card class="tabs">
-        <v-tabs>
-          <v-tab @click="changeTabView('task')">Tasks</v-tab>
-          <v-tab @click="changeTabView('board')">Board</v-tab>
-          <v-tab @click="changeTabView('people')">People</v-tab>
-          <v-tab @click="changeTabView('project')">Project</v-tab>
-          <v-tab @click="changeTabView('files')">Files</v-tab>
+        <v-tabs slider-color="#0c0c5a" slider-size="3">
+          <v-tab
+            @click="changeTabView('task')"
+            class="tabInactiveStyle"
+            active-class="tabTitleStyle"
+          >Tasks</v-tab>
+          <v-tab
+            @click="changeTabView('board')"
+            class="tabInactiveStyle"
+            active-class="tabTitleStyle"
+          >Board</v-tab>
+          <v-tab
+            @click="changeTabView('people')"
+            class="tabInactiveStyle"
+            active-class="tabTitleStyle"
+          >People</v-tab>
+          <v-tab
+            @click="changeTabView('project')"
+            class="tabInactiveStyle"
+            active-class="tabTitleStyle"
+          >Project</v-tab>
+          <v-tab
+            @click="changeTabView('files')"
+            class="tabInactiveStyle"
+            active-class="tabTitleStyle"
+          >Files</v-tab>
 
           <v-tab-item>
             <v-divider class="mx-4"></v-divider>
