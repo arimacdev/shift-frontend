@@ -10,7 +10,7 @@
               <v-list-item-title class="font-weight-medium">Projects</v-list-item-title>
             </v-list-item-content>
 
-            <v-list-item-icon v-if="organizationalRoles.indexOf('ADMIN') > -1 || organizationalRoles.indexOf('SUPER_ADMIN') > -1">
+            <v-list-item-icon v-if="organizationalRoles.indexOf('ADMIN') > -1 || organizationalRoles.indexOf('SUPER_ADMIN') > -1 || organizationalRoles.indexOf('WORKLOAD') > -1">
               <button v-on:click="component = 'add-project'">
                 <v-icon @click="createNewProject">mdi-plus-circle</v-icon>
               </button>
