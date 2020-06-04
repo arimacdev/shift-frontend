@@ -186,15 +186,8 @@
                             <div>
                               <v-list-item-avatar size="25">
                                 <v-img
-                                  v-if="
-                                   parent
-                                      .taskAssigneeProfileImage != null &&  parent
-                                      .taskAssigneeProfileImage != ''
-                                  "
-                                  :src="
-                                   parent
-                                      .taskAssigneeProfileImage
-                                  "
+                                  v-if="this.parentTaskUser.profileImage != null && this.parentTaskUser.profileImage != ''"
+                                  :src="this.parentTaskUser.profileImage"
                                 ></v-img>
                                 <v-img
                                   v-else
@@ -1570,7 +1563,8 @@ export default {
       selectedTaskUser: state => state.user.selectedTaskUser,
       taskFiles: state => state.task.taskFiles,
       selectedTask: state => state.task.selectedTask,
-      fetchProject: state => state.project.project
+      fetchProject: state => state.project.project,
+      parentTaskUser: state => state.user.parentTaskUser
     }),
     ...mapGetters(["getuserCompletionTasks"]),
     peopleList() {
