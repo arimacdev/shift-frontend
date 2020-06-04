@@ -360,11 +360,11 @@
                           <!-- <option value disabled>
                             {{this.task.taskAssignee}}
                           </option>-->
-                          <option value disabled>
+                          <!-- <option value disabled>
                             {{
                             taskUser
                             }}
-                          </option>
+                          </option>-->
                           <option
                             class="tabListItemsText"
                             v-for="(taskAssignee, index) in groupPeople"
@@ -689,7 +689,7 @@ export default {
       updatedRemindOnDate: null,
       // taskDue: this.task.taskDueDateAt,
       uploadLoading: false,
-      taskAssignee: "",
+      // taskAssignee: "",
       updatedTask: {
         taskName: "",
         taskAssignee: "",
@@ -826,7 +826,7 @@ export default {
         response = await this.$axios.$put(
           `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}`,
           {
-            taskAssignee: this.taskAssignee
+            taskAssignee: this.updatedTask.taskAssignee
           },
           {
             headers: {
@@ -1162,6 +1162,14 @@ export default {
     }),
     ...mapGetters(["getuserCompletionTasks"]),
 
+    taskAssignee: {
+      get() {
+        return this.task.taskAssignee;
+      },
+      set(assignee) {
+        this.updatedTask.taskAssignee = assignee;
+      }
+    },
     taskName: {
       get() {
         if (this.updatedTask.taskName == "") {
