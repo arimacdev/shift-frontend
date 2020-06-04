@@ -420,12 +420,21 @@ export default {
     async postData() {
       let response;
       try {
-        response = await this.$axios.$put(`/users/${this.userId}`, {
-          firstName: this.user.firstName,
-          lastName: this.user.lastName,
-          email: this.user.email,
-          password: this.password
-        });
+        if (this.password == "") {
+          response = await this.$axios.$put(`/users/${this.userId}`, {
+            firstName: this.user.firstName,
+            lastName: this.user.lastName,
+            email: this.user.email
+          });
+        } else {
+          response = await this.$axios.$put(`/users/${this.userId}`, {
+            firstName: this.user.firstName,
+            lastName: this.user.lastName,
+            email: this.user.email,
+            password: this.password
+          });
+        }
+
         this.component = "success-popup";
         this.successMessage = "Profile successfully updated";
         setTimeout(() => {
