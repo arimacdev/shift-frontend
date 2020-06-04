@@ -8,6 +8,15 @@ export const mutations = {
     state.sprints.push(sprint);
   },
   FETCH_ALL_SPRINTS(state, sprints) {
+    const sorted = sprints.sort((a, b) => {
+      const userA = a.sprintCreatedAt.toUpperCase();
+      const userB = b.sprintCreatedAt.toUpperCase();
+
+      if (userA < userB) return -1;
+      if (userA > userB) return 1;
+
+      return 0;
+    });
     state.sprints = sprints;
   },
   UPDATE_SPRINT(state, { sprintId, sprintName, sprintDescription }) {
