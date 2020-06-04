@@ -196,8 +196,7 @@
         <v-row>
           <v-col sm="12" md="12">
             <v-btn
-              v-if="this.password == ''"
-              :disabled="!isValid"
+              v-if="this.password != '' && !this.$v.$invalid == true && isValid == true"
               height="50px"
               width="300px"
               class="submitButtonEdit"
@@ -207,7 +206,7 @@
                   <v-icon size="20" color>icon-user</v-icon>
                 </v-list-item-action>
                 <v-list-item-content class="buttonText">
-                  <v-list-item-title class="bodyWiew">Edit profile details</v-list-item-title>
+                  <v-list-item-title class="bodyWiew">Edit profile details1</v-list-item-title>
                 </v-list-item-content>
                 <!-- <div class="iconBackCircle">
                   <v-icon size="17" color="#0BAFFF">mdi-pencil-outline</v-icon>
@@ -216,8 +215,7 @@
             </v-btn>
 
             <v-btn
-              v-if="this.password != ''"
-              :disabled="this.$v.$invalid"
+              v-else-if="this.confirmPassword == '' && this.password == '' && !this.$v.$invalid == false && isValid == true"
               height="50px"
               width="300px"
               class="submitButtonEdit"
@@ -227,11 +225,18 @@
                   <v-icon size="20" color>icon-user</v-icon>
                 </v-list-item-action>
                 <v-list-item-content class="buttonText">
+                  <v-list-item-title class="bodyWiew">Edit profile details2</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-btn>
+            <v-btn v-else disabled height="50px" width="300px" class="submitButtonEdit">
+              <v-list-item @click="postData()" dark>
+                <v-list-item-action>
+                  <v-icon size="20" color>icon-user</v-icon>
+                </v-list-item-action>
+                <v-list-item-content class="buttonText">
                   <v-list-item-title class="bodyWiew">Edit profile details</v-list-item-title>
                 </v-list-item-content>
-                <!-- <div class="iconBackCircle">
-                  <v-icon size="17" color="#0BAFFF">mdi-pencil-outline</v-icon>
-                </div>-->
               </v-list-item>
             </v-btn>
           </v-col>
