@@ -194,6 +194,13 @@
                               >mdi-checkbox-marked-circle</v-icon>
                               <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
                             </v-list-item-action>
+                            <v-list-item-action
+                              style="font-size: 14px; font-weight: 800; padding-right: 20px"
+                            >
+                              {{
+                              this.parentTask.secondaryTaskId
+                              }}
+                            </v-list-item-action>
                             <v-list-item-content>
                               <v-list-item-title>
                                 {{
@@ -215,7 +222,7 @@
                             <div>
                               <v-list-item-avatar size="25">
                                 <v-img
-                                  v-if="this.parentTaskUser.profileImage != null"
+                                  v-if="this.parentTaskUser.profileImage != null && this.parentTaskUser.profileImage != ''"
                                   :src="this.parentTaskUser.profileImage"
                                 ></v-img>
                                 <v-img
@@ -277,6 +284,13 @@
                                 >mdi-checkbox-marked-circle</v-icon>
                                 <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
                               </v-list-item-action>
+                              <v-list-item-action
+                                style="font-size: 14px; font-weight: 800; padding-right: 20px"
+                              >
+                                {{
+                                child.secondaryTaskId
+                                }}
+                              </v-list-item-action>
                               <v-list-item-content>
                                 <v-list-item-title>
                                   {{
@@ -295,7 +309,14 @@
                               </div>
                               <div>
                                 <v-list-item-avatar size="25">
-                                  <v-img :src="child.taskAssigneeProfileImage"></v-img>
+                                  <v-img
+                                    v-if="child.taskAssigneeProfileImage != null && child.taskAssigneeProfileImage != ''"
+                                    :src="child.taskAssigneeProfileImage"
+                                  ></v-img>
+                                  <v-img
+                                    v-else
+                                    src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                                  ></v-img>
                                 </v-list-item-avatar>
                               </div>
                               <div class="boardTabLinkIcon">
@@ -576,14 +597,25 @@
                     </v-list-item-content>
                   </v-list-item>
                   <div class="viewTaskPickerDiv">
-                    <VueCtkDateTimePicker
-                      color="#3f51b5"
-                      id="duePicker"
-                      class
-                      v-model="taskDueDate"
-                      label="Add due date"
-                      right
-                    />
+                    <v-row>
+                      <v-col md="10">
+                        <VueCtkDateTimePicker
+                          color="#3f51b5"
+                          id="duePicker"
+                          class
+                          v-model="taskDueDate"
+                          label="Add due date"
+                          right
+                        />
+                      </v-col>
+                      <v-col md="2">
+                        <v-btn v-on="on" icon color="deep-orange">
+                          <v-icon
+                            @click="updateTaskDates('dueDate')"
+                          >mdi-checkbox-marked-circle-outline</v-icon>
+                        </v-btn>
+                      </v-col>
+                    </v-row>
                   </div>
                   <!-- ----------- Reminder date section --------- -->
                   <v-list-item>
@@ -595,14 +627,25 @@
                     </v-list-item-content>
                   </v-list-item>
                   <div class="viewTaskPickerDiv">
-                    <VueCtkDateTimePicker
-                      color="#3f51b5"
-                      id="reminderPicker"
-                      class
-                      v-model="taskRemindOnDate"
-                      label="Add remind date"
-                      right
-                    />
+                    <v-row>
+                      <v-col md="10">
+                        <VueCtkDateTimePicker
+                          color="#3f51b5"
+                          id="reminderPicker"
+                          class
+                          v-model="taskRemindOnDate"
+                          label="Add remind date"
+                          right
+                        />
+                      </v-col>
+                      <v-col md="2">
+                        <v-btn v-on="on" icon color="deep-orange">
+                          <v-icon
+                            @click="updateTaskDates('remindOn')"
+                          >mdi-checkbox-marked-circle-outline</v-icon>
+                        </v-btn>
+                      </v-col>
+                    </v-row>
                   </div>
                   <v-divider class="datePickerDivider"></v-divider>
                   <!-- ----------- Files section --------- -->
@@ -1220,12 +1263,17 @@ export default {
           "/" +
           this.updatedRemindOnDate
       );
-      if (type === "dueDate" && this.updatedTaskDueDate != null) {
+      if (
+        type === "dueDate" &&
+        this.updatedTaskDueDate != "" &&
+        this.updatedTaskDueDate != null
+      ) {
         dueDate = new Date(this.updatedTaskDueDate);
         const isoDate = new Date(
           dueDate.getTime() - dueDate.getTimezoneOffset() * 60000
         ).toISOString();
         dueDate = isoDate;
+        remindDate = this.updatedRemindOnDate;
         changedDate = {
           taskDueDate: dueDate
         };
@@ -1239,6 +1287,7 @@ export default {
           remindDate.getTime() - remindDate.getTimezoneOffset() * 60000
         ).toISOString();
         remindDate = isoDate;
+        dueDate = this.updatedRemindOnDate;
         changedDate = {
           taskRemindOnDate: remindDate
         };
@@ -1258,19 +1307,19 @@ export default {
             }
           }
         );
-        // this.component = "success-popup";
-        // this.successMessage = "Date successfully updated";
-        // setTimeout(() => {
-        //   this.close();
-        // }, 3000);
-        // console.log("update task dates response", response);
+        this.component = "success-popup";
+        this.successMessage = "Date successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("update task dates response", response);
       } catch (e) {
-        // this.errorMessage = e.response.data;
-        // this.component = "error-popup";
-        // setTimeout(() => {
-        //   this.close();
-        // }, 3000);
-        // console.log("Error updating a date", e);
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error updating a date", e);
       }
     },
     getProjectDates(date) {
@@ -1535,7 +1584,7 @@ export default {
           this.updatedTaskDueDate === "1970-01-01T05:30:00.000+0000"
         )
           this.updatedTaskDueDate = this.task.taskDueDateAt;
-        this.updateTaskDates("dueDate");
+
         return this.updatedTaskDueDate;
       },
       set(value) {
@@ -1550,7 +1599,7 @@ export default {
           this.updatedRemindOnDate === "1970-01-01T05:30:00.000+0000"
         )
           this.updatedRemindOnDate = this.task.taskReminderAt;
-        this.updateTaskDates("remindOn");
+
         return this.updatedRemindOnDate;
       },
       set(value) {
