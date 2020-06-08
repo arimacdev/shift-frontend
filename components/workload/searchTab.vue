@@ -211,47 +211,52 @@
               >{{entity.charAt(0).toUpperCase() + entity.slice(1)}}</div>
 
               <div v-for="(task, index) in entityTasks" :key="index">
-                <div class="taskList restructuredWorkloadTaskFilterList">
-                  <v-list-item @click="selectTask(task); taskDialog = true;">
-                    <!-- @click.stop="drawer = !drawer" -->
-                    <v-list-item-action>
-                      <v-icon
-                        v-if="task.taskStatus == 'closed'"
-                        size="30"
-                        color="#2EC973"
-                      >mdi-checkbox-marked-circle</v-icon>
-                      <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
-                    </v-list-item-action>
-                    <div class="tasklistTaskNames restructuredMainTaskName">
-                      <div class="body-2">
-                        <span class="restructuredMainTaskCode">{{task.secondaryTaskId}}</span>
-                        {{ task.taskName }}
-                      </div>
-                    </div>
-                    <!-- <div
+                <v-tooltip top color="blue">
+                  <template v-slot:activator="{ on }">
+                    <div v-on="on" class="taskList restructuredWorkloadTaskFilterList">
+                      <v-list-item @click="selectTask(task); taskDialog = true;">
+                        <!-- @click.stop="drawer = !drawer" -->
+                        <v-list-item-action>
+                          <v-icon
+                            v-if="task.taskStatus == 'closed'"
+                            size="30"
+                            color="#2EC973"
+                          >mdi-checkbox-marked-circle</v-icon>
+                          <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                        </v-list-item-action>
+                        <div class="tasklistTaskNames restructuredMainTaskName">
+                          <div class="body-2">
+                            <span class="restructuredMainTaskCode">{{task.secondaryTaskId}}</span>
+                            {{ task.taskName }}
+                          </div>
+                        </div>
+                        <!-- <div
                         class="restStatusChip"
                         :class="statusCheck(task.issueType)"
-                    >{{ task.issueType }}</div>-->
-                    <v-list-item-content class="updatedDate">
-                      <v-list-item-title
-                        :class="dueDateCheck(task)"
-                      >{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
-                    </v-list-item-content>
-                    <div>
-                      <v-list-item-avatar>
-                        <v-img
-                          v-if="task.profileImage != null && task.profileImage != ''"
-                          :src="task.profileImage"
-                        ></v-img>
-                        <v-img
-                          v-else
-                          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                        ></v-img>
-                      </v-list-item-avatar>
+                        >{{ task.issueType }}</div>-->
+                        <v-list-item-content class="updatedDate">
+                          <v-list-item-title
+                            :class="dueDateCheck(task)"
+                          >{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
+                        </v-list-item-content>
+                        <div>
+                          <v-list-item-avatar>
+                            <v-img
+                              v-if="task.profileImage != null && task.profileImage != ''"
+                              :src="task.profileImage"
+                            ></v-img>
+                            <v-img
+                              v-else
+                              src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                            ></v-img>
+                          </v-list-item-avatar>
+                        </div>
+                        <div v-if="task.isParent == true" class="bluePart"></div>
+                      </v-list-item>
                     </div>
-                    <div v-if="task.isParent == true" class="bluePart"></div>
-                  </v-list-item>
-                </div>
+                  </template>
+                  <span>{{task.firstName}} {{task.lastName}}</span>
+                </v-tooltip>
               </div>
             </div>
           </div>
