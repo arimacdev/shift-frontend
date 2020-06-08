@@ -24,7 +24,6 @@
                 item-value="id"
                 flat
                 outlined
-                dense
                 chips
                 background-color="#FFFFFF"
                 small-chips
@@ -42,7 +41,6 @@
                 item-value="id"
                 flat
                 outlined
-                dense
                 chips
                 background-color="#FFFFFF"
                 small-chips
@@ -59,7 +57,6 @@
                 item-value="id"
                 flat
                 outlined
-                dense
                 chips
                 background-color="#FFFFFF"
                 small-chips
@@ -76,7 +73,6 @@
                 item-value="id"
                 flat
                 outlined
-                dense
                 chips
                 background-color="#FFFFFF"
                 small-chips
