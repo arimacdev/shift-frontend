@@ -200,14 +200,14 @@
           <!-- -------------- sub task design --------------- -->
           <div class="restructuredSubTaskCreate" v-if="task.parentTask.taskStatus != 'closed'">
             <v-text-field
-              v-model="subTaskName"
+              v-model="subTaskName[index]"
               background-color="#0BAFFF"
               solo
               dark
               prepend-inner-icon="mdi-plus-circle"
               label="Add a sub task..."
               class
-              @keyup.enter="addSubTask(subTaskName, task.parentTask.taskId, task.parentTask.issueType, task.parentTask.sprintId)"
+              @keyup.enter="addSubTask(index, task.parentTask.taskId, task.parentTask.issueType, task.parentTask.sprintId)"
               clearable
             ></v-text-field>
           </div>
@@ -442,7 +442,7 @@ export default {
     return {
       searchAssignee: "",
       overlay: false,
-      subTaskName: "",
+      subTaskName: [],
       projectId: "",
       jqlQuery: "",
       assigneeQuery: "",
@@ -817,14 +817,14 @@ export default {
         console.log("Error updating a status", e);
       }
     },
-    async addSubTask(subTaskName, selectedParentTask, issueType, sprintId) {
+    async addSubTask(index, selectedParentTask, issueType, sprintId) {
       this.overlay = true;
       let response;
       try {
         response = await this.$axios.$post(
           `/projects/${this.projectId}/tasks`,
           {
-            taskName: subTaskName,
+            taskName: this.subTaskName[index],
             projectId: this.projectId,
             taskInitiator: this.userId,
             taskAssignee: this.userId,
@@ -837,7 +837,7 @@ export default {
             parentTaskId: selectedParentTask
           }
         );
-        this.subTaskName = "";
+        this.subTaskName = [];
         this.component = "success-popup";
         this.successMessage = "Task added successfully";
         setTimeout(() => {
