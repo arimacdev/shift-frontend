@@ -80,14 +80,14 @@
               <div class="restructuredSubTaskCreateGroup">
                 <v-text-field
                   v-if="task.parentTask.taskStatus != 'closed'"
-                  v-model="subTaskName"
+                  v-model="subTaskName[index]"
                   background-color="#0BAFFF"
                   solo
                   dark
                   prepend-inner-icon="mdi-plus-circle"
                   label="Add a sub task..."
                   class
-                  @keyup.enter="addGroupSubTask(subTaskName, task.parentTask.taskId)"
+                  @keyup.enter="addGroupSubTask(index, task.parentTask.taskId)"
                   clearable
                 ></v-text-field>
               </div>
@@ -340,7 +340,7 @@ export default {
   },
   data() {
     return {
-      subTaskName: "",
+      subTaskName: [],
       overlay: false,
       taskObject: {},
       taskDialog: false,
@@ -485,15 +485,15 @@ export default {
         userId: "user"
       });
     },
-    async addGroupSubTask(subTaskName, selectedParentTask) {
+    async addGroupSubTask(index, selectedParentTask) {
       this.overlay = true;
       // console.log("add group task");
       this.$store.dispatch("groups/groupTask/addTaskToGroup", {
-        taskName: subTaskName,
+        taskName: this.subTaskName[index],
         taskGroupId: this.group.taskGroupId,
         parentTaskId: selectedParentTask
       });
-      this.subTaskName = "";
+      this.subTaskName = [];
       this.overlay = false;
     },
     getTaskDueDate(date) {
