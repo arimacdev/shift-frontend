@@ -891,7 +891,6 @@ export default {
       this.$store.dispatch("task/setSelectedTask", task);
       this.taskObject = taskObject;
       this.componentClose = "";
-      // console.log("selectedTask", task);
       this.$axios.get(`/users/${task.taskAssignee}`).then(async response => {
         // console.log("fetched task -->", response.data.data);
         this.assignee = response.data.data;
@@ -925,6 +924,22 @@ export default {
         this.$store.dispatch("task/setTaskFiles", taskFilesResponse.data);
       } catch (error) {
         // console.log("Error fetching data", error);
+      }
+
+      let taskLogResponse;
+      try {
+        taskLogResponse = await this.$axios.$get(
+          `/activity/task/${this.selectedTask.taskId}?startIndex=0&endIndex=10`,
+          {
+            headers: {
+              userId: this.selectedTask.taskAssignee
+            }
+          }
+        );
+        console.log("logs--->", taskLogResponse.data);
+        this.taskLogs = taskLogResponse.data;
+      } catch (error) {
+        console.log("Error fetching data", error);
       }
     },
     statusCheck(task) {
