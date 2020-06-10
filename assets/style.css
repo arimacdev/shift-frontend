@@ -1986,6 +1986,7 @@
 }
 .RestTaskLogDiv {
   width: 100%;
+  background-color: #ffffff !important;
 }
 .RestTaskLogTitle {
   width: 100%;
