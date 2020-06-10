@@ -924,7 +924,7 @@
         <v-col>
           <v-row>
             <v-col>
-              {{ this.taskLogs.activityLogList }}
+              <!-- {{ this.taskLogs }} -->
               <v-list-item
                 v-for="(log, index) in this.taskLogs.activityLogList"
                 :key="index"
@@ -942,15 +942,70 @@
                     src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                   ></v-img>
                 </v-list-item-avatar>
-                <v-list-item-content>
+                <v-list-item-content v-if="log.operation == 'UPDATE'">
                   <v-list-item-title>
                     <span class="font-weight-medium">
                       {{ log.actorFirstName }} {{ log.actorLastName }}</span
                     >
-                    <span> {{ log.operation }} </span>
-                    <span> {{ log.entityType }} </span>
+                    <span> updated the </span>
+                    <span class="font-weight-medium">
+                      {{ updateTypeCheck(log.updateType) }}
+                    </span>
+                    <span style="color: #7A8B9F">
+                      &nbsp; &nbsp;
+                      {{ getProjectDates(log.actionTimestamp) }}
+                    </span>
                   </v-list-item-title>
-                  <v-list-item-subtitle></v-list-item-subtitle>
+                  <!-- -------- for assignee ------ -->
+                  <v-list-item-subtitle v-if="log.updateType == 'ASSIGNEE'">
+                    <v-list-item-avatar size="25">
+                      <v-img
+                        v-if="
+                          log.previousValue.profileImage != null &&
+                            log.previousValue.profileImage != ''
+                        "
+                        :src="log.previousValue.profileImage"
+                      ></v-img>
+                      <v-img
+                        v-else
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                      ></v-img>
+                    </v-list-item-avatar>
+                    <span
+                      >{{ log.previousValue.displayValue }} &nbsp; &rarr;</span
+                    >
+
+                    <v-list-item-avatar size="25">
+                      <v-img
+                        v-if="
+                          log.updatedvalue.profileImage != null &&
+                            log.updatedvalue.profileImage != ''
+                        "
+                        :src="log.updatedvalue.profileImage"
+                      ></v-img>
+                      <v-img
+                        v-else
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                      ></v-img>
+                    </v-list-item-avatar>
+                    <span>{{ log.updatedvalue.displayValue }} </span>
+                  </v-list-item-subtitle>
+
+                  <!-- ------- for files -------- -->
+
+                  <v-list-item-subtitle
+                    style="margin-top: 10px"
+                    v-if="log.updateType == 'FILE'"
+                  >
+                    Uploaded file:
+                    <a
+                      style="text-decoration: none;"
+                      :href="log.updatedvalue.value"
+                      target="_blank"
+                    >
+                      {{ log.updatedvalue.displayValue }}</a
+                    >
+                  </v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
             </v-col>
@@ -991,7 +1046,7 @@ import AddChildTask from '~/components/tasks/addChildTask';
 import Progress from '~/components/popups/progress';
 
 export default {
-  props: ['projectId', 'people', 'taskObject'],
+  props: ['projectId', 'logs', 'people', 'taskObject'],
   components: {
     'success-popup': SuccessPopup,
     'error-popup': ErrorPopup,
@@ -1153,6 +1208,36 @@ export default {
         this.taskLogs = taskLogResponse.data;
       } catch (error) {
         console.log('Error fetching data', error);
+      }
+    },
+    updateTypeCheck(type) {
+      console.log('TYPE ' + type);
+      switch (type) {
+        case 'ASSIGNEE':
+          return 'Assignee';
+          break;
+        case 'ISSUE_TYPE':
+          return 'Task Type';
+          break;
+        case 'ISSUE_TYPE':
+          return 'Task Type';
+          break;
+        case 'TASK_STATUS':
+          return 'Task Status';
+          break;
+        case 'TASK_NAME':
+          return 'Task Name';
+          break;
+        case 'DUE_DATE':
+          return 'Task Due Date';
+          break;
+        case 'TASK_NOTES':
+          return 'Task Note';
+          break;
+        case 'FILE':
+          return 'Task File';
+          break;
+        default:
       }
     },
     checkUserExists() {
@@ -1792,6 +1877,7 @@ export default {
 
     taskName: {
       get() {
+        this.getLogs();
         if (this.updatedTask.taskName == '') {
           return this.selectedTask.taskName;
         } else return this.updatedTask.taskName;
