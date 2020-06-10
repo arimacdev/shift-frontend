@@ -545,7 +545,6 @@
                             <v-textarea
                               name="input-7-4"
                               auto-grow
-                              clearable
                               outlined
                               v-model="taskNote"
                             ></v-textarea>

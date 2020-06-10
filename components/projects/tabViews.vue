@@ -8,27 +8,38 @@
             @click="changeTabView('task')"
             class="tabInactiveStyle"
             active-class="tabTitleStyle"
-          >Tasks</v-tab>
+            >Tasks</v-tab
+          >
           <v-tab
             @click="changeTabView('board')"
             class="tabInactiveStyle"
             active-class="tabTitleStyle"
-          >Board</v-tab>
+            >Board</v-tab
+          >
           <v-tab
             @click="changeTabView('people')"
             class="tabInactiveStyle"
             active-class="tabTitleStyle"
-          >People</v-tab>
+            >People</v-tab
+          >
           <v-tab
             @click="changeTabView('project')"
             class="tabInactiveStyle"
             active-class="tabTitleStyle"
-          >Project</v-tab>
+            >Project</v-tab
+          >
           <v-tab
             @click="changeTabView('files')"
             class="tabInactiveStyle"
             active-class="tabTitleStyle"
-          >Files</v-tab>
+            >Files</v-tab
+          >
+          <v-tab
+            @click="changeTabView('logs')"
+            class="tabInactiveStyle"
+            active-class="tabTitleStyle"
+            >Logs</v-tab
+          >
 
           <v-tab-item>
             <v-divider class="mx-4"></v-divider>
@@ -58,6 +69,12 @@
               <files-tab />
             </v-card>
           </v-tab-item>
+          <v-tab-item>
+            <v-divider class="mx-4"></v-divider>
+            <v-card flat>
+              <project-logs :page="page" />
+            </v-card>
+          </v-tab-item>
         </v-tabs>
       </v-card>
     </div>
@@ -65,71 +82,78 @@
 </template>
 
 <script>
-import Tasks from "~/components/tabsView/tasks";
-import TaskDrawer from "~/components/projects/taskDrawer";
-import People from "~/components/people/people";
-import ProjectTab from "~/components/projects/projectTab";
-import FilesTab from "~/components/projects/filesTab";
-import BoardTab from "~/components/projects/boardTab";
-import { mapState } from "vuex";
+import Tasks from '~/components/tabsView/tasks';
+import TaskDrawer from '~/components/projects/taskDrawer';
+import People from '~/components/people/people';
+import ProjectTab from '~/components/projects/projectTab';
+import FilesTab from '~/components/projects/filesTab';
+import BoardTab from '~/components/projects/boardTab';
+import ProjectLogs from '~/components/tasks/projectLogs';
+import { mapState } from 'vuex';
 
 export default {
   data() {
     return {
+      page: 1,
       drawer: null,
       userId: this.$store.state.user.userId,
-      items: []
+      items: [],
       // taskCompletion: {}
     };
   },
   props: [
-    "name",
-    "projectSprints",
-    "projectFiles",
-    "projectId",
-    "project",
-    "users",
-    "MyTasks",
-    "people",
-    "taskLog"
+    'name',
+    'projectSprints',
+    'projectFiles',
+    'projectId',
+    'project',
+    'users',
+    'MyTasks',
+    'people',
+    'taskLog',
     // "taskCompletion"
   ],
-  name: "tabViews",
+  name: 'tabViews',
   components: {
     tasks: Tasks,
-    "task-drawer": TaskDrawer,
+    'task-drawer': TaskDrawer,
     people: People,
-    "project-tab": ProjectTab,
-    "files-tab": FilesTab,
-    "board-tab": BoardTab
+    'project-tab': ProjectTab,
+    'files-tab': FilesTab,
+    'board-tab': BoardTab,
+    'project-logs': ProjectLogs,
   },
   methods: {
     changeTabView(type) {
       switch (type) {
-        case "task":
-          this.$store.dispatch("tab/updateTabViewsTab", "task");
-          this.$emit("refreshSelectedTab", "task");
+        case 'task':
+          this.$store.dispatch('tab/updateTabViewsTab', 'task');
+          this.$emit('refreshSelectedTab', 'task');
           break;
-        case "people":
-          this.$store.dispatch("tab/updateTabViewsTab", "people");
-          this.$emit("refreshSelectedTab", "people");
+        case 'people':
+          this.$store.dispatch('tab/updateTabViewsTab', 'people');
+          this.$emit('refreshSelectedTab', 'people');
           break;
-        case "project":
-          this.$store.dispatch("tab/updateTabViewsTab", "project");
-          this.$emit("refreshSelectedTab", "project");
+        case 'project':
+          this.$store.dispatch('tab/updateTabViewsTab', 'project');
+          this.$emit('refreshSelectedTab', 'project');
           break;
-        case "board":
-          this.$store.dispatch("tab/updateTabViewsTab", "board");
-          this.$emit("refreshSelectedTab", "board");
+        case 'board':
+          this.$store.dispatch('tab/updateTabViewsTab', 'board');
+          this.$emit('refreshSelectedTab', 'board');
           break;
-        case "files":
-          this.$store.dispatch("tab/updateTabViewsTab", "files");
-          this.$emit("refreshSelectedTab", "files");
+        case 'files':
+          this.$store.dispatch('tab/updateTabViewsTab', 'files');
+          this.$emit('refreshSelectedTab', 'files');
           break;
+        //  case "logs":
+        // this.$store.dispatch("tab/updateTabViewsTab", "logs");
+        // this.$emit("refreshSelectedTab", "logs");
+        // break;
       }
     },
-    onSelectProject() {}
-  }
+    onSelectProject() {},
+  },
 };
 </script>
 
