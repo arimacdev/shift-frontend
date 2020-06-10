@@ -2586,4 +2586,13 @@
 .logSubtitle {
   margin-left: 80px !important;
   font-size: 16px !important;
+  margin-top: -15px;
+}
+
+.logItemBackground {
+  background-color: #edf0f5;
+  margin-bottom: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+  border-radius: 5px;
 }

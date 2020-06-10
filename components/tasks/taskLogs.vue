@@ -4,10 +4,17 @@
       <v-row>
         <v-col>
           <!-- {{ this.taskLogs }} -->
-          <v-text-field v-model="taskName" hidden></v-text-field>
+          <v-text-field
+            style="margin-bottom: -60px"
+            solo=""
+            flat=""
+            v-model="taskName"
+            hidden
+          ></v-text-field>
           <v-list-item
             v-for="(log, index) in this.taskLogs.activityLogList"
             :key="index"
+            class="logItemBackground"
           >
             <v-list-item-content v-if="log.operation == 'UPDATE'">
               <v-list-item-title>
