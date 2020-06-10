@@ -12,39 +12,57 @@
             <div
               class="tab-status statusOption1"
               v-if="fetchProject.projectStatus == 'presales'"
-            >Presales</div>
+            >
+              Presales
+            </div>
             <div
               class="tab-status statusOption1"
               v-if="fetchProject.projectStatus == 'presalesPD'"
-            >Project Discovery</div>
+            >
+              Project Discovery
+            </div>
             <div
               class="tab-status statusOption1"
               v-if="fetchProject.projectStatus == 'preSalesQS'"
-            >Quotation Submission</div>
+            >
+              Quotation Submission
+            </div>
             <div
               class="tab-status statusOption1"
               v-if="fetchProject.projectStatus == 'preSalesN'"
-            >Negotiation</div>
+            >
+              Negotiation
+            </div>
             <div
               class="tab-status statusOption1"
               v-if="fetchProject.projectStatus == 'preSalesC'"
-            >Confirmed</div>
+            >
+              Confirmed
+            </div>
             <div
               class="tab-status statusOption2"
               v-if="fetchProject.projectStatus == 'preSalesL'"
-            >Lost</div>
+            >
+              Lost
+            </div>
             <div
               class="tab-status statusOption3"
               v-if="fetchProject.projectStatus == 'ongoing'"
-            >Ongoing</div>
+            >
+              Ongoing
+            </div>
             <div
               class="tab-status statusOption4"
               v-if="fetchProject.projectStatus == 'support'"
-            >Support</div>
+            >
+              Support
+            </div>
             <div
               class="tab-status statusOption5"
               v-if="fetchProject.projectStatus == 'finished'"
-            >Finished</div>
+            >
+              Finished
+            </div>
 
             <div class="tab-health">Healthy</div>
 
@@ -54,7 +72,8 @@
                 size="20"
                 class="aaaaa"
                 color="#0BAFFF"
-              >mdi-pencil-outline</v-icon>
+                >mdi-pencil-outline</v-icon
+              >
             </div>
           </v-list-item>
 
@@ -97,7 +116,11 @@
                   <v-row class="mb-12 formRow projectDrawer" no-gutters>
                     <v-col sm="12" md="12">
                       <div class="editProjectLabels">Client*</div>
-                      <input v-model="clientId" placeholder="client" class="formElements" />
+                      <input
+                        v-model="clientId"
+                        placeholder="client"
+                        class="formElements"
+                      />
                     </v-col>
                   </v-row>
                   <v-row class="mb-12 formRow projectDrawer" no-gutters>
@@ -106,28 +129,46 @@
                       <div class="editProjectLabels">Project status*</div>
                       <select v-model="projectStatus" class="formElements">
                         <!-- <option value="" disabled>{{ this.projectStatus }}</option> -->
-                        <option key="presales" value="presales">Presales</option>
-                        <option key="presalesPD" value="presalesPD">Presales : Project Discovery</option>
-                        <option key="preSalesQS" value="preSalesQS">Presales : Quotation Submission</option>
-                        <option key="preSalesN" value="preSalesN">Presales : Negotiation</option>
-                        <option key="preSalesC" value="preSalesC">Presales : Confirmed</option>
-                        <option key="preSalesL" value="preSalesL">Presales : Lost</option>
+                        <option key="presales" value="presales"
+                          >Presales</option
+                        >
+                        <option key="presalesPD" value="presalesPD"
+                          >Presales : Project Discovery</option
+                        >
+                        <option key="preSalesQS" value="preSalesQS"
+                          >Presales : Quotation Submission</option
+                        >
+                        <option key="preSalesN" value="preSalesN"
+                          >Presales : Negotiation</option
+                        >
+                        <option key="preSalesC" value="preSalesC"
+                          >Presales : Confirmed</option
+                        >
+                        <option key="preSalesL" value="preSalesL"
+                          >Presales : Lost</option
+                        >
                         <option key="ongoing" value="ongoing">Ongoing</option>
                         <option key="support" value="support">Support</option>
-                        <option key="finished" value="finished">Finished</option>
+                        <option key="finished" value="finished"
+                          >Finished</option
+                        >
                       </select>
                     </v-col>
                   </v-row>
 
                   <v-row class="mb-12 formRow projectDrawer" no-gutters>
                     <v-col sm="12" md="12">
-                      <div class="editProjectLabels datesLabel">Project start date</div>
+                      <div class="editProjectLabels datesLabel">
+                        Project start date
+                      </div>
                       <!-- ------------------------------ -->
 
                       <v-list-item-group class="sideBarFormElementsForPickers">
                         <v-list-item>
                           <v-list-item-content>
-                            <div class="pickerContainer pickerDiv sideBarPickers datePickerNew">
+                            <div
+                              class="pickerContainer pickerDiv sideBarPickers datePickerNew"
+                            >
                               <!-- <input type="text" v-model="projectStartDate"> -->
 
                               <datetime
@@ -161,12 +202,16 @@
 
                   <v-row class="mb-12 formRow projectDrawer" no-gutters>
                     <v-col sm="12" md="12">
-                      <div class="editProjectLabels datesLabel">Project end date</div>
+                      <div class="editProjectLabels datesLabel">
+                        Project end date
+                      </div>
 
                       <v-list-item-group class="sideBarFormElementsForPickers">
                         <v-list-item>
                           <v-list-item-content>
-                            <div class="pickerContainer pickerDiv sideBarPickers datePickerNew">
+                            <div
+                              class="pickerContainer pickerDiv sideBarPickers datePickerNew"
+                            >
                               <datetime
                                 type="datetime"
                                 v-model="projectEndDate"
@@ -199,7 +244,9 @@
                         <v-icon size="20" color>mdi-plus-circle</v-icon>
                       </v-list-item-action>
                       <v-list-item-content class="buttonText">
-                        <v-list-item-title class="bodyWiew">Save</v-list-item-title>
+                        <v-list-item-title class="bodyWiew"
+                          >Save</v-list-item-title
+                        >
                       </v-list-item-content>
                     </v-list-item>
                   </div>
@@ -210,7 +257,9 @@
                         <v-icon size="20" color>mdi-trash-can-outline</v-icon>
                       </v-list-item-action>
                       <v-list-item-content class="buttonText">
-                        <v-list-item-title class="bodyWiew">Delete Project</v-list-item-title>
+                        <v-list-item-title class="bodyWiew"
+                          >Delete Project</v-list-item-title
+                        >
                       </v-list-item-content>
                     </v-list-item>
                   </div>
@@ -229,7 +278,8 @@
                   class="deletePopupIcon"
                   size="60"
                   color="deep-orange lighten-1"
-                >mdi-alert-outline</v-icon>
+                  >mdi-alert-outline</v-icon
+                >
                 <br />
                 <span class="alertPopupTitle">Delete Project</span>
                 <br />
@@ -244,7 +294,12 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
 
-                  <v-btn color="success" width="100px" @click="projectDialog = false">Cancel</v-btn>
+                  <v-btn
+                    color="success"
+                    width="100px"
+                    @click="projectDialog = false"
+                    >Cancel</v-btn
+                  >
                   <v-spacer></v-spacer>
                   <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
                   <v-btn
@@ -254,7 +309,8 @@
                       projectDialog = false;
                       deleteData();
                     "
-                  >Delete</v-btn>
+                    >Delete</v-btn
+                  >
                   <v-spacer></v-spacer>
                 </v-card-actions>
               </div>
@@ -269,10 +325,10 @@
                 <div class="detailTitle">Project start date :</div>
                 <div class="detailContent">
                   {{
-                  this.getProjectDates(
-                  fetchProject.projectStartDate,
-                  'startDate'
-                  )
+                    this.getProjectDates(
+                      fetchProject.projectStartDate,
+                      'startDate'
+                    )
                   }}
                 </div>
               </v-list-item>
@@ -283,7 +339,7 @@
                 <div class="detailTitle">Project end date :</div>
                 <div class="detailContent">
                   {{
-                  this.getProjectDates(fetchProject.projectEndDate, 'endDate')
+                    this.getProjectDates(fetchProject.projectEndDate, 'endDate')
                   }}
                 </div>
               </v-list-item>
@@ -299,9 +355,9 @@
             <v-col sm="6" md="6" class>
               <v-list-item class="detailList">
                 <div class="detailTitle">Actual time for now :</div>
-                <div
-                  class="detailContent"
-                >{{ this.getProjectTimeForNow(fetchProject.projectStartDate) }}</div>
+                <div class="detailContent">
+                  {{ this.getProjectTimeForNow(fetchProject.projectStartDate) }}
+                </div>
               </v-list-item>
             </v-col>
           </v-row>
@@ -310,12 +366,16 @@
 
       <v-row class="mb-12" no-gutters>
         <v-col class="projectBox due">
-          <p class="projectBoxNumber">{{ projectTaskCompletion.tasksDueToday }}</p>
+          <p class="projectBoxNumber">
+            {{ projectTaskCompletion.tasksDueToday }}
+          </p>
           <p class="projectBoxtext">Due today</p>
           <v-icon size="30" color="white">mdi-calendar-blank</v-icon>
         </v-col>
         <v-col class="projectBox overDue">
-          <p class="projectBoxNumber">{{ projectTaskCompletion.tasksOverDue }}</p>
+          <p class="projectBoxNumber">
+            {{ projectTaskCompletion.tasksOverDue }}
+          </p>
           <p class="projectBoxtext">Overdue</p>
           <v-icon size="30" color="white">mdi-alert-octagon-outline</v-icon>
         </v-col>
@@ -327,13 +387,17 @@
         </v-col>
 
         <v-col class="projectBox assign">
-          <p class="projectBoxNumber">{{ projectTaskCompletion.tasksAssigned }}</p>
+          <p class="projectBoxNumber">
+            {{ projectTaskCompletion.tasksAssigned }}
+          </p>
           <p class="projectBoxtext">Assigned to you</p>
           <v-icon size="30" color="white">mdi-account-outline</v-icon>
         </v-col>
 
         <v-col class="projectBox completed">
-          <p class="projectBoxNumber">{{ projectTaskCompletion.tasksCompleted }}</p>
+          <p class="projectBoxNumber">
+            {{ projectTaskCompletion.tasksCompleted }}
+          </p>
           <p class="projectBoxtext">Completed</p>
           <v-icon size="30" color="white">mdi-check-circle-outline</v-icon>
         </v-col>
@@ -399,42 +463,42 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
-import SuccessPopup from "~/components/popups/successPopup";
-import ErrorPopup from "~/components/popups/errorPopup";
-import Progress from "~/components/popups/progress";
+import { mapState } from 'vuex';
+import SuccessPopup from '~/components/popups/successPopup';
+import ErrorPopup from '~/components/popups/errorPopup';
+import Progress from '~/components/popups/progress';
 
 export default {
   components: {
-    "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup,
-    "progress-loading": Progress
+    'success-popup': SuccessPopup,
+    'error-popup': ErrorPopup,
+    'progress-loading': Progress,
   },
   data() {
     return {
       overlay: false,
-      successMessage: "",
-      errorMessage: "",
+      successMessage: '',
+      errorMessage: '',
       userId: this.$store.state.user.userId,
       projectDialog: false,
       updateProject: {
-        projectName: "",
-        clientId: "",
-        projectStartDate: "",
-        projectEndDate: "",
-        projectStatus: "",
-        projectAlias: ""
+        projectName: '',
+        clientId: '',
+        projectStartDate: '',
+        projectEndDate: '',
+        projectStatus: '',
+        projectAlias: '',
       },
       drawer: null,
-      prName: "project",
+      prName: 'project',
       items: [],
-      component: ""
+      component: '',
     };
   },
   computed: {
     ...mapState({
-      projectTaskCompletion: state => state.task.projectTaskCompletion,
-      fetchProject: state => state.project.project
+      projectTaskCompletion: (state) => state.task.projectTaskCompletion,
+      fetchProject: (state) => state.project.project,
     }),
     projectName: {
       get() {
@@ -442,7 +506,7 @@ export default {
       },
       set(value) {
         this.updateProject.projectName = value;
-      }
+      },
     },
     projectAlias: {
       get() {
@@ -450,7 +514,7 @@ export default {
       },
       set(value) {
         this.updateProject.projectAlias = value;
-      }
+      },
     },
     clientId: {
       get() {
@@ -458,11 +522,11 @@ export default {
       },
       set(value) {
         this.updateProject.clientId = value;
-      }
+      },
     },
     projectStartDate: {
       get() {
-        let stringDate = this.fetchProject.projectStartDate + "";
+        let stringDate = this.fetchProject.projectStartDate + '';
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 16);
         return stringDate;
@@ -474,11 +538,11 @@ export default {
         ).toISOString();
         // console.log("iso edit Start date", isoDate);
         this.updateProject.projectStartDate = isoDate;
-      }
+      },
     },
     projectEndDate: {
       get() {
-        let stringDate = this.fetchProject.projectEndDate + "";
+        let stringDate = this.fetchProject.projectEndDate + '';
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 16);
         return stringDate;
@@ -490,7 +554,7 @@ export default {
         ).toISOString();
         // console.log("iso edit end date", isoDate);
         this.updateProject.projectEndDate = isoDate;
-      }
+      },
     },
     projectStatus: {
       get() {
@@ -501,8 +565,8 @@ export default {
         // console.log("set status", this.fetchProject.projectStatus);
 
         this.updateProject.projectStatus = value;
-      }
-    }
+      },
+    },
     // ...mapState({
     // }),
   },
@@ -510,12 +574,39 @@ export default {
     updateField() {
       let projectName = this.fetchProject.projectName;
       this.updateProject.projectName = projectName;
-      return "123";
+      return '123';
     },
     async editProject() {
       this.overlay = true;
-      // console.log("update Project", this.updateProject);
+      console.log(
+        'update Project ',
+        this.fetchProject.projectStartDate +
+          ' ' +
+          this.updateProject.projectStartDate.slice(0, -1) +
+          '+0000'
+      );
       let response;
+      let startDate;
+      let endDate;
+
+      if (
+        this.updateProject.projectStartDate.slice(0, -1) + '+0000' ==
+        this.fetchProject.projectStartDate
+      ) {
+        startDate = '';
+      } else {
+        startDate = this.updateProject.projectStartDate;
+      }
+
+      if (
+        this.updateProject.projectEndDate.slice(0, -1) + '+0000' ==
+        this.fetchProject.projectEndDate
+      ) {
+        endDate = '';
+      } else {
+        endDate = this.updateProject.projectEndDate;
+      }
+
       try {
         response = await this.$axios.$put(
           `/projects/${this.fetchProject.projectId}`,
@@ -523,28 +614,28 @@ export default {
             modifierId: this.userId,
             projectName: this.updateProject.projectName,
             clientId: this.updateProject.clientId,
-            projectStartDate: this.updateProject.projectStartDate,
-            projectEndDate: this.updateProject.projectEndDate,
+            projectStartDate: startDate,
+            projectEndDate: endDate,
             projectStatus: this.updateProject.projectStatus,
-            projectAlias: this.updateProject.projectAlias.toUpperCase()
+            projectAlias: this.updateProject.projectAlias.toUpperCase(),
           }
         );
         // console.log("project edit response ----------> ", response);
         this.$store.dispatch(
-          "project/fetchProject",
+          'project/fetchProject',
           this.fetchProject.projectId
         );
         if (
-          this.updateProject.projectStatus === "" ||
+          this.updateProject.projectStatus === '' ||
           this.updateProject.projectStatus === this.fetchProject.projectStatus
         ) {
           // console.log("i won't fetch");
         } else {
           // console.log("i will fetch");
-          this.$store.dispatch("project/fetchAllProjects");
+          this.$store.dispatch('project/fetchAllProjects');
         }
-        this.component = "success-popup";
-        this.successMessage = "Project successfully updated";
+        this.component = 'success-popup';
+        this.successMessage = 'Project successfully updated';
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -552,16 +643,16 @@ export default {
         location.reload();
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
         this.overlay = false;
-        console.log("Error updating a project", e);
+        console.log('Error updating a project', e);
       }
     },
     close() {
-      this.component = "";
+      this.component = '';
     },
     async deleteData() {
       this.overlay = true;
@@ -573,27 +664,27 @@ export default {
           {
             data: {},
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         // location.reload();
-        window.location.href = "/projects/projects";
-        this.component = "success-popup";
-        this.successMessage = "Project successfully deleted";
+        window.location.href = '/projects/projects';
+        this.component = 'success-popup';
+        this.successMessage = 'Project successfully deleted';
         setTimeout(() => {
           this.close();
         }, 3000);
         this.overlay = false;
         // console.log(response.data);
       } catch (e) {
-        this.component = "error-popup";
+        this.component = 'error-popup';
         this.errorMessage = e.response.data;
         setTimeout(() => {
           this.close();
         }, 3000);
         this.overlay = false;
-        console.log("Error deleting project", e);
+        console.log('Error deleting project', e);
       }
     },
     getProjectDates(date, type) {
@@ -602,17 +693,17 @@ export default {
       // console.log(stringDate);
       let formateedDate =
         stringDate.getFullYear() +
-        "-" +
+        '-' +
         stringDate.getMonth() +
-        "-" +
+        '-' +
         stringDate.getDate();
       // console.log("formateedDate for date", formateedDate);
-      if (type === "startDate") {
+      if (type === 'startDate') {
         this.startDate = formateedDate;
       } else {
         this.endDate = formateedDate;
       }
-      stringDate = date + " ";
+      stringDate = date + ' ';
       stringDate = stringDate.toString();
       stringDate = stringDate.slice(0, 10);
       return stringDate;
@@ -628,39 +719,39 @@ export default {
       if (days > 30) {
         months = Math.floor(days / 30);
         days = days % 30;
-        return months + " month(s) " + days + " days";
+        return months + ' month(s) ' + days + ' days';
       } else if (days > 7 && days < 30) {
         weeks = Math.floor(days / 7);
         days = days % 7;
-        return weeks + " week(s) " + days + " days";
+        return weeks + ' week(s) ' + days + ' days';
       } else {
-        return days + " day(s)";
+        return days + ' day(s)';
       }
     },
     getProjectTimeForNow(date) {
       let now = new Date();
       let stringDate = new Date(date);
-      stringDate = date + " ";
+      stringDate = date + ' ';
       stringDate = stringDate.toString();
       stringDate = stringDate.slice(0, 10);
       let startDate = new Date(stringDate);
       let days = parseInt((now - startDate) / (1000 * 60 * 60 * 24), 10);
       // console.log("days", days);
-      if (days < 0) return "0 Days";
+      if (days < 0) return '0 Days';
       let months;
       let weeks;
       if (days > 30) {
         months = Math.floor(days / 30);
         days = days % 30;
-        return months + " month(s) " + days + " days";
+        return months + ' month(s) ' + days + ' days';
       } else if (days > 7 && days < 30) {
         weeks = Math.floor(days / 7);
         days = days % 7;
-        return weeks + " week(s) " + days + " days";
+        return weeks + ' week(s) ' + days + ' days';
       } else {
-        return days + " day(s)";
+        return days + ' day(s)';
       }
-    }
-  }
+    },
+  },
 };
 </script>
