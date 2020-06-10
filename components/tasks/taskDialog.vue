@@ -922,8 +922,40 @@
 
       <v-row>
         <v-col>
+          <v-row>
+            <v-col>
+              {{ this.taskLogs.activityLogList }}
+              <v-list-item
+                v-for="(log, index) in this.taskLogs.activityLogList"
+                :key="index"
+              >
+                <v-list-item-avatar>
+                  <v-img
+                    v-if="
+                      log.actorProfileImage != null &&
+                        log.actorProfileImage != ''
+                    "
+                    :src="log.actorProfileImage"
+                  ></v-img>
+                  <v-img
+                    v-else
+                    src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                  ></v-img>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    <span class="font-weight-medium">
+                      {{ log.actorFirstName }} {{ log.actorLastName }}</span
+                    >
+                    <span> {{ log.operation }} </span>
+                    <span> {{ log.entityType }} </span>
+                  </v-list-item-title>
+                  <v-list-item-subtitle></v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </v-col>
+          </v-row>
           <div class="text-center">
-            {{ this.taskLogs.activityLogList }}
             <v-pagination
               @input="getLogs()"
               v-model="page"
