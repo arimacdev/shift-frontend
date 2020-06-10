@@ -96,7 +96,7 @@
               >
                 <span>
                   {{ getProjectDisplayDates(log.previousValue.displayValue) }}
-                  &nbsp; &rarr;
+                  &nbsp; &rarr; &nbsp;
                 </span>
 
                 <span
@@ -116,9 +116,9 @@
                     v-if="log.previousValue.displayValue !== undefined"
                   >
                     <v-textarea
+                      solo
                       auto-grow
                       disabled=""
-                      outlined=""
                       v-model="log.previousValue.displayValue"
                     ></v-textarea>
                   </v-col>
@@ -131,9 +131,9 @@
 
                   <v-col md="5">
                     <v-textarea
+                      solo=""
                       auto-grow
                       disabled=""
-                      outlined=""
                       v-model="log.updatedvalue.displayValue"
                     ></v-textarea>
                   </v-col>
@@ -150,7 +150,7 @@
                     log.previousValue.displayValue.charAt(0).toUpperCase() +
                       log.previousValue.displayValue.slice(1)
                   }}
-                  &nbsp; &rarr;
+                  &nbsp; &rarr; &nbsp;
                 </span>
 
                 <span>
@@ -172,7 +172,7 @@
                     log.previousValue.displayValue.charAt(0).toUpperCase() +
                       log.previousValue.displayValue.slice(1)
                   }}
-                  &nbsp; &rarr;
+                  &nbsp; &rarr; &nbsp;
                 </span>
 
                 <span>
@@ -191,7 +191,7 @@
               >
                 <span>
                   {{ log.previousValue.displayValue }}
-                  &nbsp; &rarr;
+                  &nbsp; &rarr; &nbsp;
                 </span>
 
                 <span>
