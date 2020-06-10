@@ -953,7 +953,7 @@
                     </span>
                     <span style="color: #7A8B9F">
                       &nbsp; &nbsp;
-                      {{ getProjectDates(log.actionTimestamp) }}
+                      {{ getProjectDisplayDates(log.actionTimestamp) }}
                     </span>
                   </v-list-item-title>
                   <!-- -------- for assignee ------ -->
@@ -1017,12 +1017,16 @@
                     v-if="log.updateType == 'DUE_DATE'"
                   >
                     <span>
-                      {{ getProjectDates(log.previousValue.displayValue) }}
+                      {{
+                        getProjectDisplayDates(log.previousValue.displayValue)
+                      }}
                       &nbsp; &rarr;
                     </span>
 
                     <span
-                      >{{ getProjectDates(log.updatedvalue.displayValue) }}
+                      >{{
+                        getProjectDisplayDates(log.updatedvalue.displayValue)
+                      }}
                     </span>
                   </v-list-item-subtitle>
 
@@ -1038,7 +1042,7 @@
                         v-if="log.previousValue.displayValue !== undefined"
                       >
                         <v-textarea
-                          auto-grow=""
+                          auto-grow
                           disabled=""
                           outlined=""
                           v-model="log.previousValue.displayValue"
@@ -1053,7 +1057,7 @@
 
                       <v-col md="5">
                         <v-textarea
-                          auto-grow=""
+                          auto-grow
                           disabled=""
                           outlined=""
                           v-model="log.updatedvalue.displayValue"
