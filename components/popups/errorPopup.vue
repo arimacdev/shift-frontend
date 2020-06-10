@@ -7,28 +7,46 @@
             <v-icon size="25" color="red">mdi-alert-outline</v-icon>
           </v-list-item-action>
           <v-list-item-content class="buttonText">
-            <v-list-item-title class="popupTitle">Error occurred!</v-list-item-title>
+            <v-list-item-title class="popupTitle"
+              >Error occurred!</v-list-item-title
+            >
             <div
-              v-if="errorMessage.status != 500 && errorMessage.status != 400 && errorMessage.status != 422"
+              v-if="
+                errorMessage.status != 500 &&
+                  errorMessage.status != 400 &&
+                  errorMessage.status != 403
+              "
               class="popupSubtitle errorSubtitle"
-            >{{errorMessage.message}}</div>
+            >
+              {{ errorMessage.message }}
+            </div>
             <div
-              v-else-if="errorMessage.status == 422"
+              v-else-if="errorMessage.status == 403"
               class="popupSubtitle errorSubtitle"
-            >{{JSON.parse(errorMessage.message).errorMessage}}</div>
+            >
+              {{ JSON.parse(errorMessage.message).errorMessage }}
+            </div>
             <div
               v-else-if="errorMessage.status == 400"
               class="popupSubtitle errorSubtitle"
-            >Bad request</div>
+            >
+              Bad request
+            </div>
             <div
               v-else-if="errorMessage.status == 500"
               class="popupSubtitle errorSubtitle"
-            >Server error</div>
-            <div v-else class="popupSubtitle errorSubtitle">Please try again</div>
+            >
+              Server error
+            </div>
+            <div v-else class="popupSubtitle errorSubtitle">
+              Please try again
+            </div>
           </v-list-item-content>
 
           <div>
-            <v-icon size="15" @click class="closeButton" color="red">mdi-close-circle-outline</v-icon>
+            <v-icon size="15" @click class="closeButton" color="red"
+              >mdi-close-circle-outline</v-icon
+            >
           </div>
         </v-list-item>
       </v-card>
@@ -37,7 +55,7 @@
 </template>
 <script>
 export default {
-  props: ["errorMessage"]
+  props: ['errorMessage'],
 };
 </script>
 
