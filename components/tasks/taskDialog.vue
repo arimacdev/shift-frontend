@@ -929,25 +929,25 @@
                 v-for="(log, index) in this.taskLogs.activityLogList"
                 :key="index"
               >
-                <v-list-item-avatar>
-                  <v-img
-                    v-if="
-                      log.actorProfileImage != null &&
-                        log.actorProfileImage != ''
-                    "
-                    :src="log.actorProfileImage"
-                  ></v-img>
-                  <v-img
-                    v-else
-                    src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                  ></v-img>
-                </v-list-item-avatar>
                 <v-list-item-content v-if="log.operation == 'UPDATE'">
                   <v-list-item-title>
+                    <v-list-item-avatar>
+                      <v-img
+                        v-if="
+                          log.actorProfileImage != null &&
+                            log.actorProfileImage != ''
+                        "
+                        :src="log.actorProfileImage"
+                      ></v-img>
+                      <v-img
+                        v-else
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                      ></v-img>
+                    </v-list-item-avatar>
                     <span class="font-weight-medium">
                       {{ log.actorFirstName }} {{ log.actorLastName }}</span
                     >
-                    <span> updated the </span>
+                    <span> has updated the </span>
                     <span class="font-weight-medium">
                       {{ updateTypeCheck(log.updateType) }}
                     </span>
@@ -957,7 +957,10 @@
                     </span>
                   </v-list-item-title>
                   <!-- -------- for assignee ------ -->
-                  <v-list-item-subtitle v-if="log.updateType == 'ASSIGNEE'">
+                  <v-list-item-subtitle
+                    class="logSubtitle"
+                    v-if="log.updateType == 'ASSIGNEE'"
+                  >
                     <v-list-item-avatar size="25">
                       <v-img
                         v-if="
@@ -988,13 +991,13 @@
                         src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                       ></v-img>
                     </v-list-item-avatar>
-                    <span>{{ log.updatedvalue.displayValue }} </span>
+                    <span> &nbsp; {{ log.updatedvalue.displayValue }} </span>
                   </v-list-item-subtitle>
 
                   <!-- ------- for files -------- -->
 
                   <v-list-item-subtitle
-                    style="margin-top: 10px"
+                    class="logSubtitle"
                     v-if="log.updateType == 'FILE'"
                   >
                     Uploaded file:
@@ -1005,6 +1008,117 @@
                     >
                       {{ log.updatedvalue.displayValue }}</a
                     >
+                  </v-list-item-subtitle>
+
+                  <!-- ------- for due date -------- -->
+
+                  <v-list-item-subtitle
+                    class="logSubtitle"
+                    v-if="log.updateType == 'DUE_DATE'"
+                  >
+                    <span>
+                      {{ getProjectDates(log.previousValue.displayValue) }}
+                      &nbsp; &rarr;
+                    </span>
+
+                    <span
+                      >{{ getProjectDates(log.updatedvalue.displayValue) }}
+                    </span>
+                  </v-list-item-subtitle>
+
+                  <!-- ------- for task note -------- -->
+
+                  <v-list-item-subtitle
+                    class="logSubtitle"
+                    v-if="log.updateType == 'TASK_NOTES'"
+                  >
+                    <v-row>
+                      <v-col
+                        md="5"
+                        v-if="log.previousValue.displayValue !== undefined"
+                      >
+                        <v-textarea
+                          auto-grow=""
+                          disabled=""
+                          outlined=""
+                          v-model="log.previousValue.displayValue"
+                        ></v-textarea>
+                      </v-col>
+                      <v-col
+                        md="1"
+                        v-if="log.previousValue.displayValue !== undefined"
+                      >
+                        &rarr;
+                      </v-col>
+
+                      <v-col md="5">
+                        <v-textarea
+                          auto-grow=""
+                          disabled=""
+                          outlined=""
+                          v-model="log.updatedvalue.displayValue"
+                        ></v-textarea>
+                      </v-col>
+                    </v-row>
+                  </v-list-item-subtitle>
+                  <!-- ------- for task status -------- -->
+
+                  <v-list-item-subtitle
+                    class="logSubtitle"
+                    v-if="log.updateType == 'TASK_STATUS'"
+                  >
+                    <span>
+                      {{
+                        log.previousValue.displayValue.charAt(0).toUpperCase() +
+                          log.previousValue.displayValue.slice(1)
+                      }}
+                      &nbsp; &rarr;
+                    </span>
+
+                    <span>
+                      {{
+                        log.updatedvalue.displayValue.charAt(0).toUpperCase() +
+                          log.updatedvalue.displayValue.slice(1)
+                      }}
+                    </span>
+                  </v-list-item-subtitle>
+
+                  <!-- ------- for task type -------- -->
+
+                  <v-list-item-subtitle
+                    class="logSubtitle"
+                    v-if="log.updateType == 'ISSUE_TYPE'"
+                  >
+                    <span>
+                      {{
+                        log.previousValue.displayValue.charAt(0).toUpperCase() +
+                          log.previousValue.displayValue.slice(1)
+                      }}
+                      &nbsp; &rarr;
+                    </span>
+
+                    <span>
+                      {{
+                        log.updatedvalue.displayValue.charAt(0).toUpperCase() +
+                          log.updatedvalue.displayValue.slice(1)
+                      }}
+                    </span>
+                  </v-list-item-subtitle>
+
+                  <!-- ------- for task name -------- -->
+
+                  <v-list-item-subtitle
+                    class="logSubtitle"
+                    v-if="log.updateType == 'TASK_NAME'"
+                  >
+                    <span>
+                      {{ log.previousValue.displayValue }}
+                      &nbsp; &rarr;
+                    </span>
+
+                    <span>
+                      {{ log.updatedvalue.displayValue }}
+                    </span>
                   </v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
