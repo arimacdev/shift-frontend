@@ -218,9 +218,10 @@
 <script>
 import { mapState } from 'vuex';
 export default {
+  props: ['page'],
   data() {
     return {
-      page: 1,
+      page: this.page,
       taskLogs: {},
     };
   },
@@ -241,14 +242,12 @@ export default {
             },
           }
         );
-        console.log('logs--->', taskLogResponse.data);
         this.taskLogs = taskLogResponse.data;
       } catch (error) {
         console.log('Error fetching data', error);
       }
     },
     updateTypeCheck(type) {
-      console.log('TYPE ' + type);
       switch (type) {
         case 'ASSIGNEE':
           return 'Assignee';

@@ -925,7 +925,7 @@
           </v-list-item-content>
         </div>
 
-        <task-logs />
+        <task-logs :page="page" />
       </div>
 
       <!-- ---------------------- end popup ------------------ -->
@@ -968,7 +968,6 @@ export default {
   data() {
     return {
       page: 1,
-      taskLogs: {},
       overlay: false,
       maxdate: '2020-05-11 12:17',
       taskId: '',
@@ -1100,57 +1099,6 @@ export default {
     };
   },
   methods: {
-    async getLogs() {
-      console.log('TRIGGERED: ' + this.page);
-
-      let taskLogResponse;
-      try {
-        taskLogResponse = await this.$axios.$get(
-          `/activity/task/${this.selectedTask.taskId}?startIndex=${this.page *
-            10 -
-            10}&endIndex=${this.page * 10}`,
-          {
-            headers: {
-              userId: this.selectedTask.taskAssignee,
-            },
-          }
-        );
-        console.log('logs--->', taskLogResponse.data);
-        this.taskLogs = taskLogResponse.data;
-      } catch (error) {
-        console.log('Error fetching data', error);
-      }
-    },
-    updateTypeCheck(type) {
-      console.log('TYPE ' + type);
-      switch (type) {
-        case 'ASSIGNEE':
-          return 'Assignee';
-          break;
-        case 'ISSUE_TYPE':
-          return 'Task Type';
-          break;
-        case 'ISSUE_TYPE':
-          return 'Task Type';
-          break;
-        case 'TASK_STATUS':
-          return 'Task Status';
-          break;
-        case 'TASK_NAME':
-          return 'Task Name';
-          break;
-        case 'DUE_DATE':
-          return 'Task Due Date';
-          break;
-        case 'TASK_NOTES':
-          return 'Task Note';
-          break;
-        case 'FILE':
-          return 'Task File';
-          break;
-        default:
-      }
-    },
     checkUserExists() {
       const index = this.people.findIndex(
         (user) => user.assigneeId === this.selectedTask.taskAssignee
@@ -1788,7 +1736,6 @@ export default {
 
     taskName: {
       get() {
-        this.getLogs();
         if (this.updatedTask.taskName == '') {
           return this.selectedTask.taskName;
         } else return this.updatedTask.taskName;
