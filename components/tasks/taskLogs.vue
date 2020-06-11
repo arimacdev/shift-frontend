@@ -178,6 +178,17 @@
 
                 <span>{{ log.updatedvalue.displayValue }}</span>
               </v-list-item-subtitle>
+
+              <!-- ------- for task sprint -------- -->
+
+              <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'TASK_SPRINT'">
+                <span>
+                  {{ log.previousValue.displayValue }}
+                  &nbsp; &rarr; &nbsp;
+                </span>
+
+                <span>{{ log.updatedvalue.displayValue }}</span>
+              </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-action>
               <span style="color: #7A8B9F">
@@ -261,6 +272,10 @@ export default {
           break;
         case "TASK_NOTES":
           return "Task Note";
+          break;
+
+        case "TASK_SPRINT":
+          return "Task Sprint";
           break;
         case "FILE":
           return "Task File";

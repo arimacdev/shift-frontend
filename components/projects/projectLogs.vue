@@ -165,6 +165,17 @@
                   </span>
                 </v-list-item-subtitle>
 
+                <!-- ------- for task sprint -------- -->
+
+                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'TASK_SPRINT'">
+                  <span>
+                    {{ log.previousValue.displayValue }}
+                    &nbsp; &rarr; &nbsp;
+                  </span>
+
+                  <span>{{ log.updatedvalue.displayValue }}</span>
+                </v-list-item-subtitle>
+
                 <!-- ------- for task type -------- -->
 
                 <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ISSUE_TYPE'">
@@ -385,7 +396,7 @@
                   </span>
                 </v-list-item-subtitle>
 
-                <!-- ------- for task name -------- -->
+                <!-- ------- for project name -------- -->
 
                 <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'TASK_NAME'">
                   <span>
@@ -490,6 +501,10 @@ export default {
         case "TASK_NOTES":
           return "Task Note";
           break;
+        case "TASK_SPRINT":
+          return "Task Sprint";
+          break;
+
         case "FILE":
           return "Task File";
           break;
