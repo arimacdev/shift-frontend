@@ -46,7 +46,13 @@
                   ></v-img>
                 </v-list-item-avatar>
                 <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
-                <span>has updated the</span>
+                <span
+                  v-if="log.updateType == 'FILE' && log.previousValue.displayValue != undefined"
+                >removed a</span>
+                <span
+                  v-else-if="log.updateType == 'FILE' && log.updatedvalue.displayValue != undefined"
+                >uploaded a</span>
+                <span v-else>has updated the</span>
                 <span class="font-weight-medium">{{ updateTypeCheck(log.updateType) }}</span>
               </v-list-item-title>
               <!-- -------- for assignee ------ -->
@@ -85,13 +91,16 @@
               <!-- ------- for files -------- -->
 
               <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'FILE'">
-                Uploaded file:
                 <a
                   style="text-decoration: none;"
                   :href="log.updatedvalue.value"
                   target="_blank"
                 >{{ log.updatedvalue.displayValue }}</a>
               </v-list-item-subtitle>
+              <v-list-item-subtitle
+                class="logSubtitle"
+                v-if="log.updateType == 'FILE'"
+              >{{ log.previousValue.displayValue }}</v-list-item-subtitle>
 
               <!-- ------- for due date -------- -->
 
