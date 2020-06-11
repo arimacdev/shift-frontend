@@ -27,8 +27,8 @@
                     ></v-img>
                   </v-list-item-avatar>
                   <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
-                  <span>has deleted the</span>
-                  <span class="font-weight-medium">Task</span>
+                  <span>has deleted the task</span>
+                  <span class="font-weight-medium">{{ log.entityName }}</span>
                   <span style="color: #7A8B9F">
                     &nbsp; &nbsp;
                     {{ getProjectDisplayDates(log.actionTimestamp) }}
@@ -51,8 +51,8 @@
                     ></v-img>
                   </v-list-item-avatar>
                   <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
-                  <span>has created the</span>
-                  <span class="font-weight-medium">Task</span>
+                  <span>has created the task</span>
+                  <span class="font-weight-medium">{{ log.entityName }}</span>
                   <span style="color: #7A8B9F">
                     &nbsp; &nbsp;
                     {{ getProjectDisplayDates(log.actionTimestamp) }}
@@ -74,14 +74,18 @@
                       src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                     ></v-img>
                   </v-list-item-avatar>
+
                   <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
                   <span>has updated the</span>
                   <span class="font-weight-medium">{{ updateTypeCheck(log.updateType) }}</span>
+                  <span>of the task</span>
+                  <span class="font-weight-medium">{{ log.entityName }}</span>
                   <span style="color: #7A8B9F">
                     &nbsp; &nbsp;
                     {{ getProjectDisplayDates(log.actionTimestamp) }}
                   </span>
                 </v-list-item-title>
+                <v-list-item-subtitle></v-list-item-subtitle>
                 <!-- -------- for assignee ------ -->
                 <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ASSIGNEE'">
                   <v-list-item-avatar size="25">

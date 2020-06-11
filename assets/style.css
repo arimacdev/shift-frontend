@@ -2588,6 +2588,16 @@
   font-size: 16px !important;
   margin-top: -15px;
 }
+.logProjectSubtitle {
+  margin-left: 80px !important;
+  font-size: 16px !important;
+  margin-top: -15px;
+}
+.logNameSubtitle {
+  margin-left: 60px !important;
+  font-size: 16px !important;
+  margin-top: -20px;
+}
 
 .logItemBackground {
   background-color: #edf0f5;
