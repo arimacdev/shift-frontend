@@ -11,7 +11,7 @@
               :key="index"
               class="logItemBackground"
             >
-              <v-list-item-content v-if="log.operation == 'FLAG'">
+              <v-list-item-content v-if="log.operation == 'FLAG'  && log.entityType == 'TASK'">
                 <v-list-item-title>
                   <v-list-item-avatar>
                     <v-img
@@ -29,13 +29,9 @@
                   <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
                   <span>has deleted the task</span>
                   <span class="font-weight-medium">{{ log.entityName }}</span>
-                  <span style="color: #7A8B9F">
-                    &nbsp; &nbsp;
-                    {{ getProjectDisplayDates(log.actionTimestamp) }}
-                  </span>
                 </v-list-item-title>
               </v-list-item-content>
-              <v-list-item-content v-if="log.operation == 'CREATE'">
+              <v-list-item-content v-if="log.operation == 'CREATE'  && log.entityType == 'TASK'">
                 <v-list-item-title>
                   <v-list-item-avatar>
                     <v-img
@@ -53,13 +49,9 @@
                   <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
                   <span>has created the task</span>
                   <span class="font-weight-medium">{{ log.entityName }}</span>
-                  <span style="color: #7A8B9F">
-                    &nbsp; &nbsp;
-                    {{ getProjectDisplayDates(log.actionTimestamp) }}
-                  </span>
                 </v-list-item-title>
               </v-list-item-content>
-              <v-list-item-content v-if="log.operation == 'UPDATE'">
+              <v-list-item-content v-if="log.operation == 'UPDATE' && log.entityType == 'TASK'">
                 <v-list-item-title>
                   <v-list-item-avatar>
                     <v-img
@@ -80,10 +72,6 @@
                   <span class="font-weight-medium">{{ updateTypeCheck(log.updateType) }}</span>
                   <span>of the task</span>
                   <span class="font-weight-medium">{{ log.entityName }}</span>
-                  <span style="color: #7A8B9F">
-                    &nbsp; &nbsp;
-                    {{ getProjectDisplayDates(log.actionTimestamp) }}
-                  </span>
                 </v-list-item-title>
                 <v-list-item-subtitle></v-list-item-subtitle>
                 <!-- -------- for assignee ------ -->
@@ -207,6 +195,152 @@
                   <span>{{ log.updatedvalue.displayValue }}</span>
                 </v-list-item-subtitle>
               </v-list-item-content>
+
+              <v-list-item-content v-if="log.operation == 'UPDATE' && log.entityType == 'PROJECT'">
+                <v-list-item-title>
+                  <v-list-item-avatar>
+                    <v-img
+                      v-if="
+                      log.actorProfileImage != null &&
+                        log.actorProfileImage != ''
+                    "
+                      :src="log.actorProfileImage"
+                    ></v-img>
+                    <v-img
+                      v-else
+                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                    ></v-img>
+                  </v-list-item-avatar>
+
+                  <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
+                  <span>has updated</span>
+                  <span class="font-weight-medium">{{ updateProjectTypeCheck(log.updateType) }}</span>
+                  <span class="font-weight-medium">{{ log.entityName }}</span>
+                </v-list-item-title>
+                <v-list-item-subtitle></v-list-item-subtitle>
+                <!-- -------- for project name ------ -->
+                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'PROJECT_NAME'">
+                  <span>{{ log.previousValue.displayValue }} &nbsp; &rarr;</span>
+
+                  <span>&nbsp; {{ log.updatedvalue.displayValue }}</span>
+                </v-list-item-subtitle>
+
+                <!-- ------- for add user -------- -->
+
+                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ADD_USER'">
+                  New User:
+                  {{ log.updatedvalue.displayValue }}
+                </v-list-item-subtitle>
+                <!-- ------- for role update -------- -->
+
+                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ROLE_UPDATE'">
+                  <span v-if="log.previousValue.displayValue != undefined">
+                    {{ getProjectRoles(log.previousValue.displayValue) }}
+                    &nbsp; &rarr; &nbsp;
+                  </span>
+                  <span
+                    v-if="log.previousValue.displayValue == undefined"
+                  >No Due Date &nbsp; &rarr; &nbsp;</span>
+
+                  <span>{{ getProjectRoles(log.updatedvalue.displayValue) }}</span>
+                </v-list-item-subtitle>
+
+                <!-- ------- for start date -------- -->
+
+                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'START_DATE'">
+                  <span v-if="log.previousValue.displayValue != undefined">
+                    {{ getProjectDisplayDates(log.previousValue.displayValue) }}
+                    &nbsp; &rarr; &nbsp;
+                  </span>
+                  <span
+                    v-if="log.previousValue.displayValue == undefined"
+                  >No Due Date &nbsp; &rarr; &nbsp;</span>
+
+                  <span>{{ getProjectDisplayDates(log.updatedvalue.displayValue) }}</span>
+                </v-list-item-subtitle>
+
+                <!-- ------- for end date -------- -->
+
+                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'END_DATE'">
+                  <span v-if="log.previousValue.displayValue != undefined">
+                    {{ getProjectDisplayDates(log.previousValue.displayValue) }}
+                    &nbsp; &rarr; &nbsp;
+                  </span>
+                  <span
+                    v-if="log.previousValue.displayValue == undefined"
+                  >No Due Date &nbsp; &rarr; &nbsp;</span>
+
+                  <span>{{ getProjectDisplayDates(log.updatedvalue.displayValue) }}</span>
+                </v-list-item-subtitle>
+
+                <!-- ------- for alias -------- -->
+
+                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'PROJECT_ALIAS'">
+                  <span>{{ log.previousValue.displayValue }} &nbsp; &rarr;</span>
+
+                  <span>&nbsp; {{ log.updatedvalue.displayValue }}</span>
+                </v-list-item-subtitle>
+
+                <!-- ------- for client -------- -->
+
+                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'CLIENT'">
+                  <span>{{ log.previousValue.displayValue }} &nbsp; &rarr;</span>
+
+                  <span>&nbsp; {{ log.updatedvalue.displayValue }}</span>
+                </v-list-item-subtitle>
+                <!-- ------- for task status -------- -->
+
+                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'STATUS'">
+                  <span>
+                    {{
+                    updateProjectStatus(log.previousValue.displayValue)
+                    }}
+                    &nbsp; &rarr; &nbsp;
+                  </span>
+
+                  <span>
+                    {{
+                    updateProjectStatus(log.updatedvalue.displayValue)
+                    }}
+                  </span>
+                </v-list-item-subtitle>
+
+                <!-- ------- for task type -------- -->
+
+                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ISSUE_TYPE'">
+                  <span>
+                    {{
+                    log.previousValue.displayValue.charAt(0).toUpperCase() +
+                    log.previousValue.displayValue.slice(1)
+                    }}
+                    &nbsp; &rarr; &nbsp;
+                  </span>
+
+                  <span>
+                    {{
+                    log.updatedvalue.displayValue.charAt(0).toUpperCase() +
+                    log.updatedvalue.displayValue.slice(1)
+                    }}
+                  </span>
+                </v-list-item-subtitle>
+
+                <!-- ------- for task name -------- -->
+
+                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'TASK_NAME'">
+                  <span>
+                    {{ log.previousValue.displayValue }}
+                    &nbsp; &rarr; &nbsp;
+                  </span>
+
+                  <span>{{ log.updatedvalue.displayValue }}</span>
+                </v-list-item-subtitle>
+              </v-list-item-content>
+              <v-list-item-action>
+                <span style="color: #7A8B9F">
+                  &nbsp; &nbsp;
+                  {{ getProjectDisplayDates(log.actionTimestamp) }}
+                </span>
+              </v-list-item-action>
             </v-list-item>
           </v-col>
         </v-row>
@@ -284,6 +418,87 @@ export default {
         case "FILE":
           return "Task File";
           break;
+        default:
+      }
+    },
+
+    getProjectRoles(role) {
+      switch (role) {
+        case "1":
+          return "Owner";
+          break;
+        case "2":
+          return "Admin";
+          break;
+        case "3":
+          return "User";
+          break;
+
+        default:
+      }
+    },
+
+    updateProjectStatus(status) {
+      switch (status) {
+        case "presales":
+          return "Presales";
+          break;
+        case "presalesPD":
+          return "Presales - Project Discovery";
+          break;
+        case "preSalesQS":
+          return "Presales - Quotation Submission";
+          break;
+        case "preSalesN":
+          return "Presales - Negotiation";
+          break;
+        case "preSalesC":
+          return "Presales Confirmed";
+          break;
+        case "preSalesL":
+          return "Presales - Lost";
+          break;
+        case "ongoing":
+          return "Ongoing";
+          break;
+        case "support":
+          return "Support";
+          break;
+        case "finished":
+          return "Finished";
+          break;
+
+        default:
+      }
+    },
+
+    updateProjectTypeCheck(type) {
+      switch (type) {
+        case "PROJECT_NAME":
+          return "Project Name";
+          break;
+        case "PROJECT_ALIAS":
+          return "Project Alias";
+          break;
+        case "CLIENT":
+          return "Project Client";
+          break;
+        case "STATUS":
+          return "Project Status";
+          break;
+        case "START_DATE":
+          return "Project Start date";
+          break;
+        case "END_DATE":
+          return "Project End Date";
+          break;
+        case "ADD_USER":
+          return "Project User";
+          break;
+        case "ROLE_UPDATE":
+          return "Project User Role";
+          break;
+
         default:
       }
     },

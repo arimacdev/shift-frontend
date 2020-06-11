@@ -28,10 +28,6 @@
                 <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
                 <span>has created the</span>
                 <span class="font-weight-medium">Task</span>
-                <span style="color: #7A8B9F">
-                  &nbsp; &nbsp;
-                  {{ getProjectDisplayDates(log.actionTimestamp) }}
-                </span>
               </v-list-item-title>
             </v-list-item-content>
             <v-list-item-content v-if="log.operation == 'UPDATE'">
@@ -52,10 +48,6 @@
                 <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
                 <span>has updated the</span>
                 <span class="font-weight-medium">{{ updateTypeCheck(log.updateType) }}</span>
-                <span style="color: #7A8B9F">
-                  &nbsp; &nbsp;
-                  {{ getProjectDisplayDates(log.actionTimestamp) }}
-                </span>
               </v-list-item-title>
               <!-- -------- for assignee ------ -->
               <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ASSIGNEE'">
@@ -178,6 +170,12 @@
                 <span>{{ log.updatedvalue.displayValue }}</span>
               </v-list-item-subtitle>
             </v-list-item-content>
+            <v-list-item-action>
+              <span style="color: #7A8B9F">
+                &nbsp; &nbsp;
+                {{ getProjectDisplayDates(log.actionTimestamp) }}
+              </span>
+            </v-list-item-action>
           </v-list-item>
         </v-col>
       </v-row>
