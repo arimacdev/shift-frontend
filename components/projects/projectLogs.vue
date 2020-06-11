@@ -11,14 +11,62 @@
               :key="index"
               class="logItemBackground"
             >
+              <v-list-item-content v-if="log.operation == 'FLAG'">
+                <v-list-item-title>
+                  <v-list-item-avatar>
+                    <v-img
+                      v-if="
+                      log.actorProfileImage != null &&
+                        log.actorProfileImage != ''
+                    "
+                      :src="log.actorProfileImage"
+                    ></v-img>
+                    <v-img
+                      v-else
+                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                    ></v-img>
+                  </v-list-item-avatar>
+                  <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
+                  <span>has deleted the</span>
+                  <span class="font-weight-medium">Task</span>
+                  <span style="color: #7A8B9F">
+                    &nbsp; &nbsp;
+                    {{ getProjectDisplayDates(log.actionTimestamp) }}
+                  </span>
+                </v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-content v-if="log.operation == 'CREATE'">
+                <v-list-item-title>
+                  <v-list-item-avatar>
+                    <v-img
+                      v-if="
+                      log.actorProfileImage != null &&
+                        log.actorProfileImage != ''
+                    "
+                      :src="log.actorProfileImage"
+                    ></v-img>
+                    <v-img
+                      v-else
+                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                    ></v-img>
+                  </v-list-item-avatar>
+                  <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
+                  <span>has created the</span>
+                  <span class="font-weight-medium">Task</span>
+                  <span style="color: #7A8B9F">
+                    &nbsp; &nbsp;
+                    {{ getProjectDisplayDates(log.actionTimestamp) }}
+                  </span>
+                </v-list-item-title>
+              </v-list-item-content>
               <v-list-item-content v-if="log.operation == 'UPDATE'">
                 <v-list-item-title>
                   <v-list-item-avatar>
                     <v-img
                       v-if="
-                        log.actorProfileImage != null &&
-                          log.actorProfileImage != ''
-                      "
+                      log.actorProfileImage != null &&
+                        log.actorProfileImage != ''
+                    "
                       :src="log.actorProfileImage"
                     ></v-img>
                     <v-img
@@ -39,9 +87,9 @@
                   <v-list-item-avatar size="25">
                     <v-img
                       v-if="
-                        log.previousValue.profileImage != null &&
-                          log.previousValue.profileImage != ''
-                      "
+                      log.previousValue.profileImage != null &&
+                        log.previousValue.profileImage != ''
+                    "
                       :src="log.previousValue.profileImage"
                     ></v-img>
                     <v-img
@@ -54,9 +102,9 @@
                   <v-list-item-avatar size="25">
                     <v-img
                       v-if="
-                        log.updatedvalue.profileImage != null &&
-                          log.updatedvalue.profileImage != ''
-                      "
+                      log.updatedvalue.profileImage != null &&
+                        log.updatedvalue.profileImage != ''
+                    "
                       :src="log.updatedvalue.profileImage"
                     ></v-img>
                     <v-img
@@ -81,10 +129,13 @@
                 <!-- ------- for due date -------- -->
 
                 <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'DUE_DATE'">
-                  <span>
+                  <span v-if="log.previousValue.displayValue != undefined">
                     {{ getProjectDisplayDates(log.previousValue.displayValue) }}
                     &nbsp; &rarr; &nbsp;
                   </span>
+                  <span
+                    v-if="log.previousValue.displayValue == undefined"
+                  >No Due Date &nbsp; &rarr; &nbsp;</span>
 
                   <span>{{ getProjectDisplayDates(log.updatedvalue.displayValue) }}</span>
                 </v-list-item-subtitle>
