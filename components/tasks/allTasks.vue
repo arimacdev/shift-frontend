@@ -993,6 +993,12 @@ export default {
         // console.log("Error fetching data", error);
       }
 
+      this.$store.dispatch('activityLog/fetchTaskActivityLog', {
+        taskId: task.taskId,
+        startIndex: 0,
+        endIndex: 10
+      })
+
       // let taskLogResponse;
       // try {
       //   taskLogResponse = await this.$axios.$get(
