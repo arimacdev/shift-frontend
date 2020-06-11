@@ -160,9 +160,18 @@
         <v-row class="skillsSection">
           <v-col>
             <v-row class="text-center">
-              <v-col>Frontend</v-col>
-              <v-col>Backend</v-col>
-              <v-col>Design</v-col>
+              <v-col>
+                <div class="skillHeader">Front End</div>
+                <div class="skillBody">Body</div>
+              </v-col>
+              <v-col>
+                <div class="skillHeader">Back End</div>
+                <div class="skillBody">Body</div>
+              </v-col>
+              <v-col>
+                <div class="skillHeader">Design</div>
+                <div class="skillBody">Body</div>
+              </v-col>
             </v-row>
           </v-col>
         </v-row>

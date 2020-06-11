@@ -2621,3 +2621,21 @@
   padding-right: 5vw;
   padding-bottom: 100px;
 }
+
+.skillHeader {
+  background-color: #080848;
+  color: #ffffff;
+  height: 50px;
+  padding-top: 12px;
+  border-radius: 5px;
+  font-weight: 450;
+}
+
+.skillBody {
+  background-color: #edf0f5;
+  border-radius: 5px;
+  color: #576377;
+  font-weight: 500;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
