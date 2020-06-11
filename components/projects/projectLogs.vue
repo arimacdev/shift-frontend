@@ -196,7 +196,30 @@
                 </v-list-item-subtitle>
               </v-list-item-content>
 
-              <v-list-item-content v-if="log.operation == 'UPDATE' && log.entityType == 'PROJECT'">
+              <v-list-item-content v-if="log.operation == 'CREATE'  && log.entityType == 'PROJECT'">
+                <v-list-item-title>
+                  <v-list-item-avatar>
+                    <v-img
+                      v-if="
+                      log.actorProfileImage != null &&
+                        log.actorProfileImage != ''
+                    "
+                      :src="log.actorProfileImage"
+                    ></v-img>
+                    <v-img
+                      v-else
+                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                    ></v-img>
+                  </v-list-item-avatar>
+                  <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
+                  <span>has created the</span>
+                  <span class="font-weight-medium">Project</span>
+                </v-list-item-title>
+              </v-list-item-content>
+
+              <v-list-item-content
+                v-if="log.operation == 'UPDATE' && log.entityType == 'PROJECT'  "
+              >
                 <v-list-item-title>
                   <v-list-item-avatar>
                     <v-img
@@ -213,7 +236,15 @@
                   </v-list-item-avatar>
 
                   <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
-                  <span>has updated</span>
+                  <span v-if="log.updateType == 'REMOVE_USER'">removed a</span>
+                  <span v-else-if="log.updateType == 'ADD_USER'">added a</span>
+                  <span
+                    v-else-if="log.updateType == 'FILE' && log.previousValue.displayValue != undefined"
+                  >removed a</span>
+                  <span
+                    v-else-if="log.updateType == 'FILE' && log.updatedvalue.displayValue != undefined"
+                  >uploaded a</span>
+                  <span v-else>has updated</span>
                   <span class="font-weight-medium">{{ updateProjectTypeCheck(log.updateType) }}</span>
                   <span class="font-weight-medium">{{ log.entityName }}</span>
                 </v-list-item-title>
@@ -228,8 +259,38 @@
                 <!-- ------- for add user -------- -->
 
                 <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ADD_USER'">
-                  New User:
-                  {{ log.updatedvalue.displayValue }}
+                  <v-list-item-avatar size="25">
+                    <v-img
+                      v-if="
+                      log.updatedvalue.profileImage != null &&
+                        log.updatedvalue.profileImage != ''
+                    "
+                      :src="log.updatedvalue.profileImage"
+                    ></v-img>
+                    <v-img
+                      v-else
+                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                    ></v-img>
+                  </v-list-item-avatar>
+                  <span>{{ log.updatedvalue.displayValue }}</span>
+                </v-list-item-subtitle>
+                <!-- ------- for remove user -------- -->
+
+                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'REMOVE_USER'">
+                  <v-list-item-avatar size="25">
+                    <v-img
+                      v-if="
+                      log.previousValue.profileImage != null &&
+                        log.previousValue.profileImage != ''
+                    "
+                      :src="log.previousValue.profileImage"
+                    ></v-img>
+                    <v-img
+                      v-else
+                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                    ></v-img>
+                  </v-list-item-avatar>
+                  <span>{{ log.previousValue.displayValue }}</span>
                 </v-list-item-subtitle>
                 <!-- ------- for role update -------- -->
 
@@ -334,6 +395,20 @@
 
                   <span>{{ log.updatedvalue.displayValue }}</span>
                 </v-list-item-subtitle>
+
+                <!-- ------- for files -------- -->
+
+                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'FILE'">
+                  <a
+                    style="text-decoration: none;"
+                    :href="log.updatedvalue.value"
+                    target="_blank"
+                  >{{ log.updatedvalue.displayValue }}</a>
+                </v-list-item-subtitle>
+                <v-list-item-subtitle
+                  class="logSubtitle"
+                  v-if="log.updateType == 'FILE'"
+                >{{ log.previousValue.displayValue }}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-action>
                 <span style="color: #7A8B9F">
@@ -497,6 +572,12 @@ export default {
           break;
         case "ROLE_UPDATE":
           return "Project User Role";
+          break;
+        case "REMOVE_USER":
+          return "Project User";
+          break;
+        case "FILE":
+          return "Project File";
           break;
 
         default:

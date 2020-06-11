@@ -34,7 +34,7 @@
       >Activate User</v-btn>
     </div>
 
-    <div class="formContentAdmin">
+    <div class="formContentAdmin userUpdateSection overflow-y-auto">
       <v-form v-model="isValid" ref="form">
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="12" md="12" class="textGrid">
@@ -154,6 +154,15 @@
                 </v-row>
               </v-col>
               <v-col></v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+        <v-row class="skillsSection">
+          <v-col>
+            <v-row class="text-center">
+              <v-col>Frontend</v-col>
+              <v-col>Backend</v-col>
+              <v-col>Design</v-col>
             </v-row>
           </v-col>
         </v-row>
