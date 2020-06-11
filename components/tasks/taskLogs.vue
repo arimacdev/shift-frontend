@@ -268,22 +268,22 @@ export default {
     async getLogs() {
       console.log('TRIGGERED: ' + this.page);
 
-      let taskLogResponse;
-      try {
-        taskLogResponse = await this.$axios.$get(
-          `/activity/task/${this.selectedTask.taskId}?startIndex=${this.page *
-            10 -
-            10}&endIndex=${this.page * 10}`,
-          {
-            headers: {
-              userId: this.selectedTask.taskAssignee,
-            },
-          }
-        );
-        this.taskLogs = taskLogResponse.data;
-      } catch (error) {
-        console.log('Error fetching data', error);
-      }
+      // let taskLogResponse;
+      // try {
+      //   taskLogResponse = await this.$axios.$get(
+      //     `/activity/task/${this.selectedTask.taskId}?startIndex=${this.page *
+      //       10 -
+      //       10}&endIndex=${this.page * 10}`,
+      //     {
+      //       headers: {
+      //         userId: this.selectedTask.taskAssignee,
+      //       },
+      //     }
+      //   );
+      //   this.taskLogs = taskLogResponse.data;
+      // } catch (error) {
+      //   console.log('Error fetching data', error);
+      // }
     },
     updateTypeCheck(type) {
       switch (type) {
@@ -337,6 +337,7 @@ export default {
   computed: {
     ...mapState({
       selectedTask: (state) => state.task.selectedTask,
+      taskActivityLog: state => state.activityLog.activityLog
     }),
     taskName: {
       get() {
