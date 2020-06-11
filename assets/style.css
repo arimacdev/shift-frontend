@@ -2644,3 +2644,17 @@
   padding: 20px;
   color: #576377;
 }
+.skillsDiv {
+  width: 100%;
+  background-color: #edf0f5;
+  padding: 10px;
+  padding-left: 20px;
+  margin-top: 20px;
+  border-radius: 5px;
+}
+.skillsListItem {
+  background-color: #78cc71;
+  margin: 10px;
+  padding: 3px;
+  border-radius: 5px;
+}

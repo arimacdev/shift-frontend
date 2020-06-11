@@ -4,16 +4,16 @@
       <div class="users-list">
         <v-row>
           <v-col>
-            <button class="addUserSubmitButtonEdit userAddBottom">
+            <v-btn height="50px" class="addUserSubmitButtonEdit userAddBottom">
               <v-list-item dark>
                 <v-list-item-icon>
                   <v-icon size="20" color>mdi-thumb-up-outline</v-icon>
                 </v-list-item-icon>
-                <v-list-item-content class="userAddButtonText">
-                  <v-list-item-title class>Add new skill category</v-list-item-title>
+                <v-list-item-content class>
+                  <v-list-item-title class="text-capitalize">Add new skill category</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-            </button>
+            </v-btn>
           </v-col>
         </v-row>
         <v-row>
@@ -23,7 +23,15 @@
         </v-row>
         <v-row>
           <v-col>
-            <div class="listView overflow-y-auto">add skills here</div>
+            <div class="listView overflow-y-auto">
+              <v-list-item-group>
+                <div class="skillsListItem">
+                  <v-list-item dark>
+                    <v-list-item-title>Front End</v-list-item-title>
+                  </v-list-item>
+                </div>
+              </v-list-item-group>
+            </div>
           </v-col>
         </v-row>
       </div>
