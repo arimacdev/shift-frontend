@@ -51,7 +51,7 @@
     <v-dialog v-model="skillDialog" max-width="450">
       <v-card style=" padding-bottom: 25px">
         <v-card-title style="text-align: center">
-          <v-spacer></v-spacer>Add Skill category
+          <v-spacer></v-spacer>Add Skill Category
           <v-spacer></v-spacer>
         </v-card-title>
 
@@ -62,8 +62,13 @@
             background-color="#EDF0F5"
             label="Skill category name"
           ></v-text-field>
-          <span style="text-align: left !important">Pick a color</span>
-          {{this.colorPicker}}
+          <v-text-field
+            outlined
+            label="Category Color (Pick a color from picker)"
+            disabled
+            background-color="#EDF0F5"
+            v-model="this.colorPicker"
+          ></v-text-field>
           <v-color-picker width="100%" v-model="colorPicker" hide-canvas class="ma-2" show-swatches></v-color-picker>
         </v-card-text>
 

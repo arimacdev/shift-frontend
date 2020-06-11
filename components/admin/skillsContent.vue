@@ -11,6 +11,7 @@
         <span style="margin-left: 30px; margin-top: -20px">Color</span>
 
         <v-btn
+          @click="deleteDialog = true"
           style="margin-left: 30px; margin-top: -20px"
           color="error"
           class="text-capitalize"
@@ -33,5 +34,36 @@
         </v-btn>
       </v-col>
     </v-row>
+
+    <!-- --------- delete category dialog ------ -->
+    <v-dialog v-model="deleteDialog" max-width="350">
+      <v-card style="text-align: center ; padding-bottom: 25px">
+        <v-card-title style="text-align: center">
+          <v-spacer></v-spacer>Delete Skill Category
+          <v-spacer></v-spacer>
+        </v-card-title>
+
+        <v-card-text>If you delete the skill category, all skills will remove from the users that has been assigned.</v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn width="100px" color="#FF6161" dark @click="deleteDialog = false">Cancel</v-btn>
+
+          <v-btn width="100px" color="#2EC973" dark @click="deleteDialog = false">Ok</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      deleteDialog: false
+    };
+  }
+};
+</script>
