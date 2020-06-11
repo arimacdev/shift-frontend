@@ -281,6 +281,7 @@
   width: 30px;
   border-radius: 50%;
 }
+
 .usersForms {
   padding-left: 8% !important;
 }
@@ -2608,5 +2609,15 @@
 }
 .projectLogsSection {
   height: 80vh;
+  padding-bottom: 100px;
+}
+.skillsSection {
+  padding-bottom: 100px;
+}
+
+.userUpdateSection {
+  height: 70vh;
+  width: 70vw;
+  padding-right: 5vw;
   padding-bottom: 100px;
 }
