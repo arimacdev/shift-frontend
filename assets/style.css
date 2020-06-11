@@ -2639,3 +2639,8 @@
   padding-top: 30px;
   padding-bottom: 30px;
 }
+.skillsContentWrapper {
+  margin-left: 30%;
+  padding: 20px;
+  color: #576377;
+}
