@@ -2634,7 +2634,7 @@
   /* margin-left: 20px; */
   height: 70vh;
   /* width: 100%; */
-  padding-right: 5vw;
+  padding-right: 3vw;
   padding-bottom: 100px;
 }
 
@@ -2663,7 +2663,7 @@
 .skillsDiv {
   width: 100%;
   background-color: #edf0f5;
-  padding: 15px;
+  padding: 5px;
   padding-left: 20px;
   margin-top: 20px;
   border-radius: 5px;
