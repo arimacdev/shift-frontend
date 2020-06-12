@@ -4,10 +4,10 @@
       <v-col>
         <v-row>
           <v-col>
-            <!-- {{ this.taskLogs }} -->
+            <!-- {{ this.taskLogs.activityLogList }} -->
             <v-text-field style="margin-bottom: -60px" solo flat v-model="taskName" hidden></v-text-field>
             <v-list-item
-              v-for="(log, index) in this.projectActivityLog"
+              v-for="(log, index) in this.projectActivityLog.activityLogList"
               :key="index"
               class="logItemBackground"
             >
@@ -444,7 +444,7 @@
           <v-pagination
             @input="getLogs()"
             v-model="page"
-            :length="Math.ceil(this.taskLogs.activityLogCount / 10)"
+            :length="Math.ceil(this.projectActivityLog.activityLogCount / 10)"
             circle
             :total-visible="8"
           ></v-pagination>
@@ -470,23 +470,28 @@ export default {
 
   methods: {
     async getLogs() {
-      console.log("TRIGGERED: " + this.page);
+      this.$store.dispatch("activityLog/fetchProjectActivityLog", {
+        projectId: this.$route.params.projects,
+        startIndex: this.page * 10 - 10,
+        endIndex: this.page * 10
+      });
+      // console.log("TRIGGERED: " + this.page);
 
-      let taskLogResponse;
-      try {
-        taskLogResponse = await this.$axios.$get(
-          `/activity/project/${this.projectId}?startIndex=${this.page * 10 -
-            10}&endIndex=${this.page * 10}`,
-          {
-            headers: {
-              userId: this.$store.state.user.userId
-            }
-          }
-        );
-        this.taskLogs = taskLogResponse.data;
-      } catch (error) {
-        console.log("Error fetching data", error);
-      }
+      // let taskLogResponse;
+      // try {
+      //   taskLogResponse = await this.$axios.$get(
+      //     `/activity/project/${this.projectId}?startIndex=${this.page * 10 -
+      //       10}&endIndex=${this.page * 10}`,
+      //     {
+      //       headers: {
+      //         userId: this.$store.state.user.userId
+      //       }
+      //     }
+      //   );
+      //   this.taskLogs = taskLogResponse.data;
+      // } catch (error) {
+      //   console.log("Error fetching data", error);
+      // }
     },
     updateTypeCheck(type) {
       switch (type) {
