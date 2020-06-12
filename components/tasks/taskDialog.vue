@@ -1235,14 +1235,15 @@ export default {
             }
           }
         );
-        this.component = "success-popup";
-        this.successMessage = "Assignee successfully updated";
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
           endIndex: 10
         });
+        this.component = "success-popup";
+        this.successMessage = "Assignee successfully updated";
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+
         this.userExists = true;
         setTimeout(() => {
           this.close();
