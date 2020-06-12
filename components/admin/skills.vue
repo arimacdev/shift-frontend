@@ -77,7 +77,12 @@
 
           <v-btn width="100px" color="#FF6161" dark @click="skillDialog = false">Cancel</v-btn>
 
-          <v-btn width="100px" color="#2EC973" dark @click="skillDialog = false">Ok</v-btn>
+          <v-btn
+            width="100px"
+            color="#2EC973"
+            dark
+            @click="skillDialog = false; addSkillCategory()"
+          >Ok</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -100,15 +105,45 @@ export default {
       skillDialog: false,
       colorPicker: "",
       categoryName: "",
-      swatches: [
-        ["#FF0000", "#AA0000", "#550000"],
-        ["#FFFF00", "#AAAA00", "#555500"],
-        ["#00FF00", "#00AA00", "#005500"],
-        ["#00FFFF", "#00AAAA", "#005555"],
-        ["#0099FFFF", "#FF008CFF", "#00F7FFFF"],
-        ["#0000FF", "#0000AA", "#000055"]
-      ]
+
+      userId: this.$store.state.user.userId
     };
+  },
+  methods: {
+    close() {
+      this.component = "";
+    },
+    async addSkillCategory() {
+      let response;
+      try {
+        response = await this.$axios.$post(
+          `/category`,
+          {
+            categoryName: this.categoryName,
+            categoryColorCode: this.colorPicker
+          },
+          {
+            headers: {
+              userId: this.userId
+            }
+          }
+        );
+
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
+        // console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
+        console.log("Error updating a status", e);
+      }
+    }
   }
 };
 </script>

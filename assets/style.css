@@ -2664,11 +2664,9 @@
 }
 
 .skillDisplayDiv {
-  margin-top: 30px;
   width: 70vw;
   margin-right: 20px;
   height: 100%;
-  padding-top: 10px;
   overflow-y: scroll;
   /* overflow-y: hidden; */
   white-space: nowrap;
