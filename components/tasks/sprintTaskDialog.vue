@@ -1367,11 +1367,6 @@ export default {
           type: "dueDate",
           date: dueDate
         });
-        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
-          taskId: this.selectedTask.taskId,
-          startIndex: 0,
-          endIndex: 10
-        });
       } else if (this.updatedTask.taskRemindOnDate != "") {
         // console.log("inside remind on date");
         remindDate = new Date(this.updatedTask.taskRemindOnDate);
@@ -1402,6 +1397,12 @@ export default {
             }
           }
         );
+
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
 
         this.component = "success-popup";

@@ -1377,14 +1377,10 @@ export default {
         changedDate = {
           taskDueDate: dueDate
         };
+
         this.$store.dispatch("task/updateProjectDates", {
           type: "dueDate",
           date: dueDate
-        });
-        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
-          taskId: this.selectedTask.taskId,
-          startIndex: 0,
-          endIndex: 10
         });
       } else if (this.updatedTask.taskRemindOnDate != "") {
         // console.log("inside remind on date");
@@ -1417,6 +1413,11 @@ export default {
           }
         );
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
 
         this.component = "success-popup";
         this.successMessage = "Date successfully updated";

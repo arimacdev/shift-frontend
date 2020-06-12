@@ -52,6 +52,8 @@
                 <span
                   v-else-if="log.updateType == 'FILE' && log.updatedvalue.displayValue != undefined"
                 >uploaded a</span>
+                <span v-if="log.updateType == 'ASSIGNEE'">has changed the</span>
+                <span v-else-if="log.updateType == 'FILE'"></span>
                 <span v-else>has updated the</span>
                 <span class="font-weight-medium">{{ updateTypeCheck(log.updateType) }}</span>
               </v-list-item-title>
