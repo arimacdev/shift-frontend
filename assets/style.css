@@ -2620,8 +2620,9 @@
 }
 
 .userUpdateSection {
+  margin-left: 20px;
   height: 70vh;
-  width: 70vw;
+  width: 65vw;
   padding-right: 5vw;
   padding-bottom: 100px;
 }
@@ -2664,7 +2665,7 @@
 }
 
 .skillDisplayDiv {
-  width: 70vw;
+  width: 60vw;
   margin-right: 20px;
   height: 100%;
   overflow-y: scroll;
@@ -2693,4 +2694,10 @@
   position: absolute;
   top: 100vh;
   right: 20px;
+}
+.categoryListView {
+  margin-top: 10px;
+  height: 60vh;
+  background-color: #edf0f5;
+  padding-bottom: 100px !important;
 }
