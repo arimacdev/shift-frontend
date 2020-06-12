@@ -2657,7 +2657,7 @@
   border-radius: 5px;
 }
 .skillsListItem {
-  background-color: #78cc71;
+  /* background-color: #78cc71; */
   margin: 10px;
   padding: 3px;
   border-radius: 5px;
@@ -2685,4 +2685,12 @@
   width: 250px;
   padding-bottom: 30px;
   /* height: 100%; */
+}
+.catListName {
+  color: #ffffff;
+}
+.skillTabPopup {
+  position: absolute;
+  top: 100vh;
+  right: 20px;
 }

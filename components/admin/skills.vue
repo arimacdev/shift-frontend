@@ -29,10 +29,16 @@
           <v-col>
             <div class="listView overflow-y-auto">
               <v-list-item-group>
-                <div class="skillsListItem">
-                  <v-list-item dark>
-                    <v-list-item-title>Front End</v-list-item-title>
-                  </v-list-item>
+                <div v-for="(category, index) in skillCategory" :key="index">
+                  <div
+                    class="skillsListItem"
+                    :style="'background-color:' + category.categoryColorCode"
+                    @click="selectCategory(category)"
+                  >
+                    <v-list-item dark>
+                      <v-list-item-title class="catListName">{{category.categoryName}}</v-list-item-title>
+                    </v-list-item>
+                  </div>
                 </div>
               </v-list-item-group>
             </div>
@@ -41,7 +47,7 @@
       </div>
       <div>
         <keep-alive>
-          <skills-content />
+          <component v-bind:is="component"></component>
         </keep-alive>
       </div>
     </div>
@@ -87,31 +93,48 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <div class="skillTabPopup" @click="close">
+      <component v-bind:is="popup" :successMessage="successMessage" :errorMessage="errorMessage"></component>
+      <!-- <success-popup /> -->
+    </div>
   </div>
 </template>
 
 <script>
 import usersSearchBar from "~/components/tools/usersSearchBar";
-
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
 import skillsContent from "~/components/admin/skillsContent";
 import { mapState } from "vuex";
 export default {
   components: {
     "search-bar": usersSearchBar,
-    "skills-content": skillsContent
+    "skills-content": skillsContent,
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup
   },
   data() {
     return {
+      errorMessage: "",
+      successMessage: "",
+      component: "",
       skillDialog: false,
       colorPicker: "",
       categoryName: "",
-
+      popup: "",
       userId: this.$store.state.user.userId
     };
   },
   methods: {
     close() {
-      this.component = "";
+      this.popup = "";
+    },
+    selectCategory(category) {
+      this.component = "skills-content";
+      this.$store.dispatch(
+        "skillMatrix/fetchSelectedCategory",
+        category.categoryId
+      );
     },
     async addSkillCategory() {
       let response;
@@ -129,14 +152,20 @@ export default {
           }
         );
 
+        this.categoryName = "";
+
+        this.$store.dispatch("skillMatrix/fetchSkillCategory");
+        this.successMessage = "Category added successfully";
+        this.popup = "success-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
         this.overlay = false;
         // console.log("update task status response", response);
       } catch (e) {
+        this.categoryName = "";
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.popup = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -144,6 +173,11 @@ export default {
         console.log("Error updating a status", e);
       }
     }
+  },
+  computed: {
+    ...mapState({
+      skillCategory: state => state.skillMatrix.skillCategory
+    })
   }
 };
 </script>

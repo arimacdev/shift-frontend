@@ -5,17 +5,31 @@
     </v-row>
     <v-row>
       <v-col>
-        <span class="display-1 font-weight-bold">Front End</span>
-        &nbsp;
-        <v-divider vertical></v-divider>
-        <span style="margin-left: 30px; margin-top: -20px">Color</span>
-
-        <v-btn
-          @click="deleteDialog = true"
-          style="margin-left: 30px; margin-top: -20px"
-          color="error"
-          class="text-capitalize"
-        >Delete Skill Category</v-btn>
+        <div style="float: left">
+          <span class="display-1 font-weight-bold">{{selectedCategory.categoryName}}</span>
+          &nbsp;
+          <v-divider vertical></v-divider>
+        </div>
+        <div style="float: left">
+          <v-row>
+            <v-col>
+              <span style="margin-left: 30px; ">Color</span>
+            </v-col>
+            <v-col>
+              <div
+                :style="'height: 20px; width: 20px; border-radius: 5px; background-color:' + selectedCategory.categoryColorCode"
+              ></div>
+            </v-col>
+            <v-col>
+              <v-btn
+                @click="deleteDialog = true"
+                style="margin-left: 30px; margin-top: -10px "
+                color="error"
+                class="text-capitalize"
+              >Delete Skill Category</v-btn>
+            </v-col>
+          </v-row>
+        </div>
       </v-col>
     </v-row>
 
@@ -34,7 +48,7 @@
         </v-btn>
       </v-col>
     </v-row>
-
+    {{selectedCategory}}
     <!-- --------- delete category dialog ------ -->
     <v-dialog v-model="deleteDialog" max-width="350">
       <v-card style="text-align: center ; padding-bottom: 25px">
@@ -50,7 +64,12 @@
 
           <v-btn width="100px" color="#FF6161" dark @click="deleteDialog = false">Cancel</v-btn>
 
-          <v-btn width="100px" color="#2EC973" dark @click="deleteDialog = false">Ok</v-btn>
+          <v-btn
+            width="100px"
+            color="#2EC973"
+            dark
+            @click="deleteDialog = false; deleteCategory()"
+          >Ok</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -59,11 +78,46 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
-      deleteDialog: false
+      deleteDialog: false,
+      userId: this.$store.state.user.userId,
+      errorMessage: "",
+      successMessage: ""
     };
+  },
+  methods: {
+    close() {
+      this.component = "";
+    },
+    async deleteCategory() {
+      let response;
+      try {
+        response = await this.$axios.$delete(
+          `/category/${this.selectedCategory.categoryId}`,
+          {
+            headers: {
+              userId: this.userId
+            }
+          }
+        );
+        this.$store.dispatch("skillMatrix/fetchSkillCategory");
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error creating project", e);
+      }
+    }
+  },
+  computed: {
+    ...mapState({
+      selectedCategory: state => state.skillMatrix.selectedCategory
+    })
   }
 };
 </script>

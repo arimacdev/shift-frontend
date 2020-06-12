@@ -32,7 +32,7 @@
           <v-tab
             class="tabInactiveStyle"
             active-class="adminTabTitleStyle"
-            v-on:click="component='skills-tab'"
+            v-on:click="component='skills-tab'; "
           >Skills</v-tab>
         </v-tabs>
       </div>
@@ -86,6 +86,7 @@ export default {
   created() {
     this.$store.dispatch("user/setAllUsers");
     this.$store.dispatch("project/clearProject");
+    this.$store.dispatch("skillMatrix/fetchSkillCategory");
   }
 };
 </script>
