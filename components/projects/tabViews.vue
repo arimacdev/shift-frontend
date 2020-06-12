@@ -140,10 +140,16 @@ export default {
           this.$store.dispatch("tab/updateTabViewsTab", "files");
           this.$emit("refreshSelectedTab", "files");
           break;
-        //  case "logs":
-        // this.$store.dispatch("tab/updateTabViewsTab", "logs");
-        // this.$emit("refreshSelectedTab", "logs");
-        // break;
+        case "logs":
+        this.$store.dispatch("tab/updateTabViewsTab", "logs");
+        this.$emit("refreshSelectedTab", "logs");
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+        taskId: this.selectedTask.taskId,
+        startIndex: this.page * 10 - 10,
+        endIndex: this.page * 10
+      });
+
+        break;
       }
     },
     onSelectProject() {}

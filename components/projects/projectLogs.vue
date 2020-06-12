@@ -630,7 +630,8 @@ export default {
   },
   computed: {
     ...mapState({
-      selectedTask: state => state.task.selectedTask
+      selectedTask: state => state.task.selectedTask,
+       projectActivityLog: state => state.activityLog.activityLog
     }),
     taskName: {
       get() {
