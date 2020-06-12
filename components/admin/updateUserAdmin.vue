@@ -162,7 +162,7 @@
             <div class="skillDisplayDiv">
               <div class="skillScrollingWrapper">
                 <div class="skillCard text-center" v-for="(value, prop, index) in this.categorizedSkillMap()" :key="index">
-                  <div class="skillHeader">{{prop}}</div>
+                  <div class="skillHeader">{{value[0].categoryName}}</div>
                   <div class="skillBody" v-for="(skill, index) in value" :key="index">{{skill.skillName}}</div>
                 </div>
                 
@@ -364,7 +364,7 @@ export default {
       let skillmap = this.userSkillMap;
       console.log("skillmap", this.userSkillMap)
       const orderedSkillMap = skillmap.reduce((accumilate, current) => {
-        accumilate[current.categoryName] = (accumilate[current.categoryName] || [] ).concat(current);
+        accumilate[current.categoryId] = (accumilate[current.categoryId] || [] ).concat(current);
         return accumilate;
       }, {});
       return orderedSkillMap;
