@@ -126,6 +126,7 @@ export default {
       }
       this.$store.dispatch("admin/fetchUserRoleMapping", userData.userId);
       this.$store.dispatch("user/setSelectedUser", userData);
+      this.$store.dispatch("skillMap/fetchUserSkillMap", userData.userId);
     }
   },
 
