@@ -7,7 +7,7 @@
             <!-- {{ this.taskLogs }} -->
             <v-text-field style="margin-bottom: -60px" solo flat v-model="taskName" hidden></v-text-field>
             <v-list-item
-              v-for="(log, index) in this.taskLogs.activityLogList"
+              v-for="(log, index) in this.projectActivityLog"
               :key="index"
               class="logItemBackground"
             >
@@ -631,7 +631,7 @@ export default {
   computed: {
     ...mapState({
       selectedTask: state => state.task.selectedTask,
-       projectActivityLog: state => state.activityLog.activityLog
+      projectActivityLog: state => state.activityLog.activityLog
     }),
     taskName: {
       get() {
