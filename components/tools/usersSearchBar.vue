@@ -43,6 +43,7 @@ export default {
       if (this.select !== undefined) {
         this.$emit("searchSelected", this.select);
         console.log("selected user", this.select);
+         this.$store.dispatch("skillMap/fetchUserSkillMap", this.select.userId);
       }
     },
     querySelections(v) {
