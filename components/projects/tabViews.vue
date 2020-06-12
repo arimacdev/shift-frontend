@@ -143,7 +143,7 @@ export default {
         case "logs":
         this.$store.dispatch("tab/updateTabViewsTab", "logs");
         this.$emit("refreshSelectedTab", "logs");
-        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+        this.$store.dispatch("activityLog/fetchProjectActivityLog", {
         taskId: this.selectedTask.taskId,
         startIndex: this.page * 10 - 10,
         endIndex: this.page * 10
