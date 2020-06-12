@@ -161,27 +161,14 @@
           <v-col>
             <div class="skillDisplayDiv">
               <div class="skillScrollingWrapper">
-                <div class="skillCard text-center">
-                  <div class="skillHeader">Front End</div>
-                  <div class="skillBody">Body</div>
+                <div class="skillCard text-center" v-for="(value, prop, index) in this.categorizedSkillMap()" :key="index">
+                  <div class="skillHeader">{{prop}}</div>
+                  <div class="skillBody" v-for="(skill, index) in value" :key="index">{{skill.skillName}}</div>
                 </div>
+                
               </div>
             </div>
-            <!-- <v-col>
-            <v-row class="text-center">
-              <v-col>
-                <div class="skillHeader">Front End</div>
-                <div class="skillBody">Body</div>
-              </v-col>
-              <v-col>
-                <div class="skillHeader">Back End</div>
-                <div class="skillBody">Body</div>
-              </v-col>
-              <v-col>
-                <div class="skillHeader">Design</div>
-                <div class="skillBody">Body</div>
-              </v-col>
-            </v-row>-->
+           
           </v-col>
         </v-row>
       </v-form>
@@ -373,6 +360,15 @@ export default {
   },
 
   methods: {
+    categorizedSkillMap(){
+      let skillmap = this.userSkillMap;
+      console.log("skillmap", this.userSkillMap)
+      const orderedSkillMap = skillmap.reduce((accumilate, current) => {
+        accumilate[current.categoryName] = (accumilate[current.categoryName] || [] ).concat(current);
+        return accumilate;
+      }, {});
+      return orderedSkillMap;
+    },
     checkUser(roleName) {
       if (roleName === "USER") {
         return true;
@@ -556,7 +552,8 @@ export default {
       realmRoles: state => state.admin.realmRoles,
       userRoles: state => state.admin.userRoles,
       selectedUser: state => state.user.selectedUser,
-      organizationalRoles: state => state.user.organizationalRoles
+      organizationalRoles: state => state.user.organizationalRoles,
+      userSkillMap: state => state.skillMap.userSkillMap
     }),
     checkValidation: {
       get() {
