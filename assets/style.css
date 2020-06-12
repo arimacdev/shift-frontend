@@ -1605,7 +1605,8 @@
   display: inline-block;
   /* width: 300px; */
   margin-right: 20px;
-  margin-top: -8vh;
+  /* margin-top: -8vh; */
+  vertical-align: top;
 }
 .boardTitle {
   height: 70px;
@@ -1729,17 +1730,17 @@
 .addSprintSection {
   height: 100%;
   width: 300px;
-  padding-top: 60px;
+  /* padding-top: 60px; */
   overflow-y: hidden;
   /* background-color: burlywood; */
   padding-right: 50px;
-  padding-left: 50px;
+  /* padding-left: 50px; */
 }
 .addSprintButton {
   background-color: #2ec973;
   width: 230px;
   height: 60px;
-  margin-top: 40px;
+  /* margin-top: 40px; */
   padding-top: 5px;
   border-radius: 5px;
 }
@@ -1748,6 +1749,8 @@
   height: 80vh;
   border-radius: 5px;
   display: inline-block;
+  /* vertical-align: top; */
+  /* background-color: burlywood; */
   /* background-color: blue; */
   /* margin-left: -300px; */
 }
@@ -2472,6 +2475,7 @@
   white-space: nowrap;
   background-color: #e5e5e5;
 }
+
 .overviewScrollingWrapper {
   /* overflow-x: scroll; */
   overflow-y: hidden;
@@ -2657,4 +2661,30 @@
   margin: 10px;
   padding: 3px;
   border-radius: 5px;
+}
+
+.skillDisplayDiv {
+  margin-top: 30px;
+  width: 70vw;
+  margin-right: 20px;
+  height: 100%;
+  padding-top: 10px;
+  overflow-y: scroll;
+  /* overflow-y: hidden; */
+  white-space: nowrap;
+}
+.skillScrollingWrapper {
+  overflow-y: hidden;
+  /* white-space: nowrap; */
+  height: 95%;
+  width: 100%;
+  padding-right: 100px;
+  padding-left: 10px;
+}
+.skillCard {
+  display: inline-block;
+  vertical-align: top;
+  width: 250px;
+  padding-bottom: 30px;
+  /* height: 100%; */
 }

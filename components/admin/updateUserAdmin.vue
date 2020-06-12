@@ -159,6 +159,15 @@
         </v-row>
         <v-row class="skillsSection">
           <v-col>
+            <div class="skillDisplayDiv">
+              <div class="skillScrollingWrapper">
+                <div class="skillCard text-center">
+                  <div class="skillHeader">Front End</div>
+                  <div class="skillBody">Body</div>
+                </div>
+              </div>
+            </div>
+            <!-- <v-col>
             <v-row class="text-center">
               <v-col>
                 <div class="skillHeader">Front End</div>
@@ -172,7 +181,7 @@
                 <div class="skillHeader">Design</div>
                 <div class="skillBody">Body</div>
               </v-col>
-            </v-row>
+            </v-row>-->
           </v-col>
         </v-row>
       </v-form>
