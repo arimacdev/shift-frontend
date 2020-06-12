@@ -117,6 +117,9 @@ export default {
     "board-tab": BoardTab,
     "project-logs": ProjectLogs
   },
+  async created() {
+    this.projectId = this.$route.params.projects;
+  },
   methods: {
     changeTabView(type) {
       switch (type) {
@@ -144,7 +147,7 @@ export default {
           this.$store.dispatch("tab/updateTabViewsTab", "logs");
           this.$emit("refreshSelectedTab", "logs");
           this.$store.dispatch("activityLog/fetchProjectActivityLog", {
-            taskId: this.selectedTask.taskId,
+            projectId: this.projectId,
             startIndex: 0,
             endIndex: 10
           });
