@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="tabContent">
-      <div class="users-list">
+      <div class="adminUserList">
         <v-row>
           <v-col>
             <button v-on:click="component='add-user'" class="addUserSubmitButtonEdit userAddBottom">
@@ -62,7 +62,7 @@
           </v-col>
         </v-row>
       </div>
-      <div>
+      <div class="userContentWrapper">
         <keep-alive>
           <component v-bind:is="component" :name="name" :userData="userData"></component>
         </keep-alive>

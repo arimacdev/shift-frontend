@@ -38,9 +38,16 @@
       <v-col md="5">
         Skills
         <div v-for="(skill, index) in categorySkills" :key="index" class="skillsDiv">
-          <span>{{skill.skillName}}</span>
+          <!-- <span></span> -->
+          <v-list-item>
+            <v-list-item-content>{{skill.skillName}}</v-list-item-content>
+            <v-list-item-action>
+              <v-icon>mdi-delete-circle</v-icon>
+            </v-list-item-action>
+          </v-list-item>
         </div>
       </v-col>
+      <v-col md="2"></v-col>
       <v-col md="5">
         <v-form v-model="isValid" ref="form">
           <v-text-field outlined v-model="skillName" label="New skill" :rules="skillRules"></v-text-field>
