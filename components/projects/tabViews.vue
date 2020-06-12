@@ -147,7 +147,7 @@ export default {
           this.$store.dispatch("tab/updateTabViewsTab", "logs");
           this.$emit("refreshSelectedTab", "logs");
           this.$store.dispatch("activityLog/fetchProjectActivityLog", {
-            projectId: this.projectId,
+            projectId: this.$route.params.projects,
             startIndex: 0,
             endIndex: 10
           });

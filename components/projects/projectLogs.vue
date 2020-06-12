@@ -635,7 +635,7 @@ export default {
     }),
     taskName: {
       get() {
-        this.getLogs();
+        // this.getLogs();
       },
       set(name) {}
     }
