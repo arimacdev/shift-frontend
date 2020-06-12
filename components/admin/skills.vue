@@ -27,7 +27,7 @@
         </v-row>
         <v-row>
           <v-col>
-            <div class="listView overflow-y-auto">
+            <div class="categoryListView overflow-y-auto">
               <v-list-item-group>
                 <div v-for="(category, index) in skillCategory" :key="index">
                   <div
@@ -133,6 +133,11 @@ export default {
       this.component = "skills-content";
       this.$store.dispatch(
         "skillMatrix/fetchSelectedCategory",
+        category.categoryId
+      );
+
+      this.$store.dispatch(
+        "skillMatrix/fetchCategorySkills",
         category.categoryId
       );
     },

@@ -37,18 +37,31 @@
     <v-row>
       <v-col md="5">
         Skills
-        <div class="skillsDiv">Vue JS</div>
-        <v-btn color="#0BAFFF" dark height="45px" class="skillsDiv">
-          <v-list-item>
-            <v-list-item-content class="text-capitalize">Add New Skill</v-list-item-content>
-            <v-list-item-action>
-              <v-icon>mdi-plus-circle</v-icon>
-            </v-list-item-action>
-          </v-list-item>
-        </v-btn>
+        <div v-for="(skill, index) in categorySkills" :key="index" class="skillsDiv">
+          <span>{{skill.skillName}}</span>
+        </div>
+      </v-col>
+      <v-col md="5">
+        <v-form v-model="isValid" ref="form">
+          <v-text-field outlined v-model="skillName" label="New skill" :rules="skillRules"></v-text-field>
+          <v-btn
+            :disabled="!isValid"
+            style="margin-top: -5px"
+            color="#0BAFFF"
+            height="45px"
+            class="skillsDiv"
+            @click="addSkill()"
+          >
+            <v-list-item>
+              <v-list-item-content class="text-capitalize" style="color: #FFFFFF">Add New Skill</v-list-item-content>
+              <v-list-item-action>
+                <v-icon color="#FFFFFF">mdi-plus-circle</v-icon>
+              </v-list-item-action>
+            </v-list-item>
+          </v-btn>
+        </v-form>
       </v-col>
     </v-row>
-    {{selectedCategory}}
     <!-- --------- delete category dialog ------ -->
     <v-dialog v-model="deleteDialog" max-width="350">
       <v-card style="text-align: center ; padding-bottom: 25px">
@@ -74,23 +87,79 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <div class="skillTabPopup" @click="close">
+      <component
+        v-bind:is="component"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
+      <!-- <success-popup /> -->
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
 export default {
+  components: {
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup
+  },
   data() {
     return {
+      isValid: true,
       deleteDialog: false,
+      skillName: "",
       userId: this.$store.state.user.userId,
       errorMessage: "",
-      successMessage: ""
+      successMessage: "",
+      skillRules: [value => !!value || "Assignee is required!"],
+      component: ""
     };
   },
   methods: {
     close() {
       this.component = "";
+    },
+    async addSkill() {
+      let response;
+      try {
+        response = await this.$axios.$post(
+          `/category/${this.selectedCategory.categoryId}/skill`,
+          {
+            skillName: this.skillName
+          },
+          {
+            headers: {
+              userId: this.userId
+            }
+          }
+        );
+
+        this.skillName = "";
+
+        this.$store.dispatch(
+          "skillMatrix/fetchCategorySkills",
+          this.selectedCategory.categoryId
+        );
+        this.successMessage = "Skill added successfully";
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.$refs.form.reset();
+        // console.log("update task status response", response);
+      } catch (e) {
+        this.skillName = "";
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error updating a status", e);
+      }
     },
     async deleteCategory() {
       let response;
@@ -116,7 +185,8 @@ export default {
   },
   computed: {
     ...mapState({
-      selectedCategory: state => state.skillMatrix.selectedCategory
+      selectedCategory: state => state.skillMatrix.selectedCategory,
+      categorySkills: state => state.skillMatrix.skills
     })
   }
 };

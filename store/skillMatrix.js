@@ -1,6 +1,7 @@
 export const state = () => ({
   skillCategory: [],
   selectedCategory: {},
+  skills: [],
 });
 
 export const mutations = {
@@ -9,6 +10,9 @@ export const mutations = {
   },
   SET_SELECTED_CATEGORY(state, selectedCategory) {
     state.selectedCategory = selectedCategory;
+  },
+  SET_SKILLS(state, skills) {
+    state.skills = skills;
   },
 };
 
@@ -44,6 +48,24 @@ export const actions = {
       commit('SET_SELECTED_CATEGORY', selectedCategoryResponse.data);
     } catch (error) {
       console.log('Error fetching selected category', error);
+    }
+  },
+
+  async fetchCategorySkills({ commit, rootState }, categoryId) {
+    const user = rootState.user.userId;
+    let categorySkillResponse;
+    try {
+      categorySkillResponse = await this.$axios.$get(
+        `/category/${categoryId}/skill`,
+        {
+          headers: {
+            userId: user,
+          },
+        }
+      );
+      commit('SET_SKILLS', categorySkillResponse.data);
+    } catch (error) {
+      console.log('Error fetching selected category skills', error);
     }
   },
 };
