@@ -1,5 +1,5 @@
 <template>
-  <div class="formDiv usersForms">
+  <div class>
     <div class="adminBlackBar"></div>
     <div class="adminUserImage">
       <v-img
@@ -161,14 +161,28 @@
           <v-col>
             <div class="skillDisplayDiv">
               <div class="skillScrollingWrapper">
-                <div class="skillCard text-center" v-for="(value, prop, index) in this.categorizedSkillMap()" :key="index">
+                <div
+                  class="skillCard text-center"
+                  v-for="(value, prop, index) in this.categorizedSkillMap()"
+                  :key="index"
+                >
                   <div class="skillHeader">{{prop}}</div>
-                  <div class="skillBody" v-for="(skill, index) in value" :key="index">{{skill.skillName}}</div>
+                  <!-- <div
+                    class="skillBody"
+                    v-for="(skill, index) in value"
+                    :key="index"
+                  >{{skill.skillName}}</div>
+                  </div>-->
+                  <div class="skillBody">
+                    <div
+                      style="margin-bottom: 10px"
+                      v-for="(skill, index) in value"
+                      :key="index"
+                    >{{skill.skillName}}</div>
+                  </div>
                 </div>
-                
               </div>
             </div>
-           
           </v-col>
         </v-row>
       </v-form>
@@ -360,11 +374,13 @@ export default {
   },
 
   methods: {
-    categorizedSkillMap(){
+    categorizedSkillMap() {
       let skillmap = this.userSkillMap;
-      console.log("skillmap", this.userSkillMap)
+      console.log("skillmap", this.userSkillMap);
       const orderedSkillMap = skillmap.reduce((accumilate, current) => {
-        accumilate[current.categoryName] = (accumilate[current.categoryName] || [] ).concat(current);
+        accumilate[current.categoryName] = (
+          accumilate[current.categoryName] || []
+        ).concat(current);
         return accumilate;
       }, {});
       return orderedSkillMap;
