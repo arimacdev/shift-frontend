@@ -159,7 +159,7 @@
         </v-row>
         <v-divider></v-divider>
         <v-row>
-          <v-col md="4">
+          <v-col>
             <v-autocomplete
               v-model="filterCategory"
               :items="categoryArray"
@@ -176,10 +176,9 @@
               @click:clear="clearCategory()"
             ></v-autocomplete>
           </v-col>
-          <v-col md="4">
+          <v-col>
             <v-autocomplete
               v-if="this.filterCategory !== undefined && this.filterCategory !== ''"
-              return-object
               v-model="filterSkill"
               :items="skillArray"
               multiple
@@ -191,23 +190,11 @@
               background-color="#FFFFFF"
               small-chips
               label="Skills"
-              clearable
-              :clear-icon-cb="clearSkill()"
-            >
-              <!-- <template v-slot:selection="{ item, index }">
-                <v-chip v-if="index === 0">
-                  <span>{{ item.name }}</span>
-                </v-chip>
-                <span
-                  v-if="index === 1"
-                  class="grey--text caption"
-                >(+{{ this.filterSkill.length - 1 }} others)</span>
-              </template>-->
-            </v-autocomplete>
+            ></v-autocomplete>
           </v-col>
         </v-row>
-        <v-row v-if="this.selectedSkills != ''">
-          <v-col md="10">
+        <v-row style="margin-top: -20px" v-if="this.selectedSkills != ''">
+          <!-- <v-col md="10">
             <v-select
               auto-grow="false"
               disabled
@@ -221,9 +208,9 @@
               item-text="name"
               item-value="id"
             ></v-select>
-          </v-col>
+          </v-col>-->
           <v-col md="2">
-            <v-btn>Submit</v-btn>
+            <v-btn @click="addSkillsToUser()">Submit</v-btn>
           </v-col>
         </v-row>
 
@@ -447,6 +434,44 @@ export default {
   },
 
   methods: {
+    async addSkillsToUser() {
+      let response;
+      try {
+        response = await this.$axios.$post(
+          `/category/${this.filterCategory}/user/skill`,
+          {
+            assigneeId: this.userData.userId,
+            skills: this.selectedSkills
+          },
+          {
+            headers: {
+              userId: this.adminId
+            }
+          }
+        );
+        this.filterCategory = "";
+        this.selectedSkills = [];
+
+        this.$store.dispatch(
+          "skillMap/fetchUserSkillMap",
+          this.userData.userId
+        );
+        this.successMessage = "Skill added to user successfully";
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+      } catch (e) {
+        this.filterCategory = "";
+        this.selectedSkills = [];
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error updating a status", e);
+      }
+    },
     getSkills() {
       console.log("TRIGERRED " + this.filterCategory);
       if (this.filterCategory != undefined) {
