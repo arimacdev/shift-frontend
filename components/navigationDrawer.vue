@@ -117,6 +117,11 @@ export default {
         //   icon: "icon-users",
         //   route: "../../users/users"
         // },
+        {
+          title: "Skill Matrix",
+          icon: "icon-skills",
+          route: "../../skills/skills"
+        },
         { title: "Admin", icon: "icon-admin", route: "../../admin/admin" }
       ],
       mini: true,

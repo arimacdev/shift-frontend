@@ -159,6 +159,11 @@
         </v-row>
         <v-divider></v-divider>
         <v-row>
+          <v-col md="3">
+            <div style="color: #576377; font-weight: 450">Add New Skills</div>
+          </v-col>
+        </v-row>
+        <v-row>
           <v-col>
             <v-autocomplete
               v-model="filterCategory"
@@ -211,6 +216,11 @@
           </v-col>-->
           <v-col md="2">
             <v-btn @click="addSkillsToUser()">Submit</v-btn>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col md="3">
+            <div style="color: #576377; font-weight: 450">Skills</div>
           </v-col>
         </v-row>
 
