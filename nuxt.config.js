@@ -18,10 +18,12 @@ export default {
       },
     ],
     // allowLocalhostAsSecureOrigin: true,
-    
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     // script: [{src: '/onesignal.js'}]
-    script:[{src: 'https://cdn.onesignal.com/sdks/OneSignalSDK.js', async:""}, {innerHTML: `window.OneSignal = window.OneSignal || [];
+    script: [
+      { src: 'https://cdn.onesignal.com/sdks/OneSignalSDK.js', async: '' },
+      {
+        innerHTML: `window.OneSignal = window.OneSignal || [];
     OneSignal.push(function() {
       OneSignal.init({
         appId: "caab97bf-359f-4c09-91ad-4a6752ce1667",
@@ -31,7 +33,11 @@ export default {
         persistNotification: false 
       })
       OneSignal.showNativePrompt();
-    });`, type: 'text/javascript',  charset: 'utf-8'}]
+    });`,
+        type: 'text/javascript',
+        charset: 'utf-8',
+      },
+    ],
   },
   /*
    ** Customize the progress-bar color
@@ -47,7 +53,7 @@ export default {
   plugins: [
     '~/plugins/vuelidate.js',
     '~/plugins/datepicker.js',
-    '~/plugins/vuedatetime.js'
+    '~/plugins/vuedatetime.js',
   ],
   /*
    ** Nuxt.js dev-modules
@@ -69,6 +75,7 @@ export default {
       process.env.SLACK_CLIENT_SECRET || 'fd851b7af77e525c1700879de9b328ab',
     ORGANIZATION_URL:
       process.env.ORGANIZATION_URL || 'https://project.arimaclanka.com',
+    SYSTEM_URL: 'http://localhost:3000',
   },
   /*
    ** Base URL
@@ -84,13 +91,6 @@ export default {
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
    */
-  env: {
-    SYSTEM_URL: process.env.BASE_URL || 'http://localhost:3000',
-
-    LOGOUT_URL:
-      process.env.LOGOUT_URL ||
-      'https://project.arimaclanka.com/auth/realms/pm-tool/protocol/openid-connect/logout',
-  },
   auth: {
     strategies: {
       local: false,
