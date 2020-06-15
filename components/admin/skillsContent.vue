@@ -37,6 +37,7 @@
     <v-row>
       <v-col md="5">
         Skills
+        <div style="margin-top: 20px" v-if="categorySkills == ''">No skills to show</div>
         <div v-for="(skill, index) in categorySkills" :key="index" class="skillsDiv">
           <!-- <span></span> -->
           <v-list-item>
