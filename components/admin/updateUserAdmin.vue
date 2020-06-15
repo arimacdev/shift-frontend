@@ -233,7 +233,10 @@
                   v-for="(value, prop, index) in this.categorizedSkillMap()"
                   :key="index"
                 >
-                  <div class="skillHeader">{{value[0].categoryName}}</div>
+                  <div
+                    class="skillHeader"
+                    :style="'background-color:' + value[0].categoryColorCode"
+                  >{{value[0].categoryName}}</div>
                   <!-- <div
                     class="skillBody"
                     v-for="(skill, index) in value"
