@@ -157,6 +157,76 @@
             </v-row>
           </v-col>
         </v-row>
+        <v-divider></v-divider>
+        <v-row>
+          <v-col md="4">
+            <v-autocomplete
+              v-model="filterCategory"
+              :items="categoryArray"
+              item-text="name"
+              item-value="id"
+              flat
+              outlined
+              chips
+              background-color="#FFFFFF"
+              small-chips
+              label="Skill Category"
+              clearable
+              @change="getSkills()"
+              @click:clear="clearCategory()"
+            ></v-autocomplete>
+          </v-col>
+          <v-col md="4">
+            <v-autocomplete
+              v-if="this.filterCategory !== undefined && this.filterCategory !== ''"
+              return-object
+              v-model="filterSkill"
+              :items="skillArray"
+              multiple
+              item-text="name"
+              item-value="id"
+              flat
+              outlined
+              chips
+              background-color="#FFFFFF"
+              small-chips
+              label="Skills"
+              clearable
+              :clear-icon-cb="clearSkill()"
+            >
+              <!-- <template v-slot:selection="{ item, index }">
+                <v-chip v-if="index === 0">
+                  <span>{{ item.name }}</span>
+                </v-chip>
+                <span
+                  v-if="index === 1"
+                  class="grey--text caption"
+                >(+{{ this.filterSkill.length - 1 }} others)</span>
+              </template>-->
+            </v-autocomplete>
+          </v-col>
+        </v-row>
+        <v-row v-if="this.selectedSkills != ''">
+          <v-col md="10">
+            <v-select
+              auto-grow="false"
+              disabled
+              outlined
+              flat
+              label="Selected Skills"
+              small-chips
+              v-model="this.selectedSkills"
+              :items="this.selectedSkills"
+              multiple
+              item-text="name"
+              item-value="id"
+            ></v-select>
+          </v-col>
+          <v-col md="2">
+            <v-btn>Submit</v-btn>
+          </v-col>
+        </v-row>
+
         <v-row class="skillsSection">
           <v-col>
             <div class="skillDisplayDiv">
@@ -344,6 +414,9 @@ export default {
 
   data() {
     return {
+      filterCategory: "",
+      selectedSkills: [],
+      // skillList: [],
       isValid: true,
       firstNameRules: [value => !!value || "First name is required!"],
       lastNameRules: [value => !!value || "Last name is required!"],
@@ -374,11 +447,31 @@ export default {
   },
 
   methods: {
+    getSkills() {
+      console.log("TRIGERRED " + this.filterCategory);
+      if (this.filterCategory != undefined) {
+        this.$store.dispatch(
+          "skillMatrix/fetchCategorySkills",
+          this.filterCategory
+        );
+      } else {
+        this.selectedSkills = [];
+      }
+    },
+    clearSkill() {
+      // this.filterSkill = [];
+    },
+    clearCategory() {
+      console.log("CLEARED " + this.filterCategory);
+      this.filterCategory = "";
+    },
     categorizedSkillMap() {
       let skillmap = this.userSkillMap;
-      console.log("skillmap", this.userSkillMap);
+      // console.log("skillmap", this.userSkillMap);
       const orderedSkillMap = skillmap.reduce((accumilate, current) => {
-        accumilate[current.categoryId] = (accumilate[current.categoryId] || [] ).concat(current);
+        accumilate[current.categoryId] = (
+          accumilate[current.categoryId] || []
+        ).concat(current);
         return accumilate;
       }, {});
       return orderedSkillMap;
@@ -567,8 +660,34 @@ export default {
       userRoles: state => state.admin.userRoles,
       selectedUser: state => state.user.selectedUser,
       organizationalRoles: state => state.user.organizationalRoles,
-      userSkillMap: state => state.skillMap.userSkillMap
+      userSkillMap: state => state.skillMap.userSkillMap,
+      skillCategory: state => state.skillMatrix.skillCategory,
+      categorySkills: state => state.skillMatrix.skills
     }),
+    categoryArray() {
+      let categorySearchList = this.skillCategory;
+      let categoryList = [];
+      for (let index = 0; index < categorySearchList.length; ++index) {
+        let category = categorySearchList[index];
+        categoryList.push({
+          name: category.categoryName,
+          id: category.categoryId
+        });
+      }
+      return categoryList;
+    },
+    skillArray() {
+      let skillsSearchList = this.categorySkills;
+      let skillList = [];
+      for (let index = 0; index < skillsSearchList.length; ++index) {
+        let skill = skillsSearchList[index];
+        skillList.push({
+          name: skill.skillName,
+          id: skill.skillId
+        });
+      }
+      return skillList;
+    },
     checkValidation: {
       get() {
         if (this.$v.$invalid == true) {
@@ -588,6 +707,12 @@ export default {
         } else {
           return "addProjectButtonSuccess";
         }
+      }
+    },
+    filterSkill: {
+      get() {},
+      set(value) {
+        this.selectedSkills = value;
       }
     },
     userFirstName: {
