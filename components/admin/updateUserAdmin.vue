@@ -157,6 +157,73 @@
             </v-row>
           </v-col>
         </v-row>
+        <v-divider></v-divider>
+        <v-row>
+          <v-col md="3">
+            <div style="color: #576377; font-weight: 450">Add New Skills</div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-autocomplete
+              v-model="filterCategory"
+              :items="categoryArray"
+              item-text="name"
+              item-value="id"
+              flat
+              outlined
+              chips
+              background-color="#FFFFFF"
+              small-chips
+              label="Skill Category"
+              clearable
+              @change="getSkills()"
+              @click:clear="clearCategory()"
+            ></v-autocomplete>
+          </v-col>
+          <v-col>
+            <v-autocomplete
+              v-if="this.filterCategory !== undefined && this.filterCategory !== ''"
+              v-model="filterSkill"
+              :items="skillArray"
+              multiple
+              item-text="name"
+              item-value="id"
+              flat
+              outlined
+              chips
+              background-color="#FFFFFF"
+              small-chips
+              label="Skills"
+            ></v-autocomplete>
+          </v-col>
+        </v-row>
+        <v-row style="margin-top: -20px" v-if="this.selectedSkills != ''">
+          <!-- <v-col md="10">
+            <v-select
+              auto-grow="false"
+              disabled
+              outlined
+              flat
+              label="Selected Skills"
+              small-chips
+              v-model="this.selectedSkills"
+              :items="this.selectedSkills"
+              multiple
+              item-text="name"
+              item-value="id"
+            ></v-select>
+          </v-col>-->
+          <v-col md="2">
+            <v-btn @click="addSkillsToUser()">Submit</v-btn>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col md="3">
+            <div style="color: #576377; font-weight: 450">Skills</div>
+          </v-col>
+        </v-row>
+
         <v-row class="skillsSection">
           <v-col>
             <div class="skillDisplayDiv">
@@ -344,6 +411,9 @@ export default {
 
   data() {
     return {
+      filterCategory: "",
+      selectedSkills: [],
+      // skillList: [],
       isValid: true,
       firstNameRules: [value => !!value || "First name is required!"],
       lastNameRules: [value => !!value || "Last name is required!"],
@@ -374,11 +444,69 @@ export default {
   },
 
   methods: {
+    async addSkillsToUser() {
+      let response;
+      try {
+        response = await this.$axios.$post(
+          `/category/${this.filterCategory}/user/skill`,
+          {
+            assigneeId: this.userData.userId,
+            skills: this.selectedSkills
+          },
+          {
+            headers: {
+              userId: this.adminId
+            }
+          }
+        );
+        this.filterCategory = "";
+        this.selectedSkills = [];
+
+        this.$store.dispatch(
+          "skillMap/fetchUserSkillMap",
+          this.userData.userId
+        );
+        this.successMessage = "Skill added to user successfully";
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+      } catch (e) {
+        this.filterCategory = "";
+        this.selectedSkills = [];
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error updating a status", e);
+      }
+    },
+    getSkills() {
+      console.log("TRIGERRED " + this.filterCategory);
+      if (this.filterCategory != undefined) {
+        this.$store.dispatch(
+          "skillMatrix/fetchCategorySkills",
+          this.filterCategory
+        );
+      } else {
+        this.selectedSkills = [];
+      }
+    },
+    clearSkill() {
+      // this.filterSkill = [];
+    },
+    clearCategory() {
+      console.log("CLEARED " + this.filterCategory);
+      this.filterCategory = "";
+    },
     categorizedSkillMap() {
       let skillmap = this.userSkillMap;
-      console.log("skillmap", this.userSkillMap);
+      // console.log("skillmap", this.userSkillMap);
       const orderedSkillMap = skillmap.reduce((accumilate, current) => {
-        accumilate[current.categoryId] = (accumilate[current.categoryId] || [] ).concat(current);
+        accumilate[current.categoryId] = (
+          accumilate[current.categoryId] || []
+        ).concat(current);
         return accumilate;
       }, {});
       return orderedSkillMap;
@@ -567,8 +695,34 @@ export default {
       userRoles: state => state.admin.userRoles,
       selectedUser: state => state.user.selectedUser,
       organizationalRoles: state => state.user.organizationalRoles,
-      userSkillMap: state => state.skillMap.userSkillMap
+      userSkillMap: state => state.skillMap.userSkillMap,
+      skillCategory: state => state.skillMatrix.skillCategory,
+      categorySkills: state => state.skillMatrix.skills
     }),
+    categoryArray() {
+      let categorySearchList = this.skillCategory;
+      let categoryList = [];
+      for (let index = 0; index < categorySearchList.length; ++index) {
+        let category = categorySearchList[index];
+        categoryList.push({
+          name: category.categoryName,
+          id: category.categoryId
+        });
+      }
+      return categoryList;
+    },
+    skillArray() {
+      let skillsSearchList = this.categorySkills;
+      let skillList = [];
+      for (let index = 0; index < skillsSearchList.length; ++index) {
+        let skill = skillsSearchList[index];
+        skillList.push({
+          name: skill.skillName,
+          id: skill.skillId
+        });
+      }
+      return skillList;
+    },
     checkValidation: {
       get() {
         if (this.$v.$invalid == true) {
@@ -588,6 +742,12 @@ export default {
         } else {
           return "addProjectButtonSuccess";
         }
+      }
+    },
+    filterSkill: {
+      get() {},
+      set(value) {
+        this.selectedSkills = value;
       }
     },
     userFirstName: {

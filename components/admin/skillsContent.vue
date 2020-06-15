@@ -1,5 +1,10 @@
 <template>
   <div class="skillsContentWrapper">
+    <v-list-item-icon
+      style="position:absolute; right:10px; background-color: blue; padding: 5px; border-radius: 50%"
+    >
+      <v-icon @click="updateCategoryDialog = true" size="15" color="#FFFFFF">mdi-pencil</v-icon>
+    </v-list-item-icon>
     <v-row>
       <v-col>Skill Category Name</v-col>
     </v-row>
@@ -20,6 +25,7 @@
                 :style="'height: 20px; width: 20px; border-radius: 5px; background-color:' + selectedCategory.categoryColorCode"
               ></div>
             </v-col>
+
             <v-col>
               <v-btn
                 @click="deleteDialog = true"
@@ -37,12 +43,13 @@
     <v-row>
       <v-col md="5">
         Skills
+        <div style="margin-top: 20px" v-if="categorySkills == ''">No skills to show</div>
         <div v-for="(skill, index) in categorySkills" :key="index" class="skillsDiv">
           <!-- <span></span> -->
           <v-list-item>
             <v-list-item-content>{{skill.skillName}}</v-list-item-content>
             <v-list-item-action>
-              <v-icon>mdi-delete-circle</v-icon>
+              <v-icon @click="deleteSkillDialog = true; selectSkill(skill)">mdi-delete-circle</v-icon>
             </v-list-item-action>
           </v-list-item>
         </div>
@@ -94,6 +101,73 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <!-- ------- update skill cat dialog ------ -->
+
+    <v-dialog v-model="updateCategoryDialog" max-width="450">
+      <v-card style=" padding-bottom: 25px">
+        <v-card-title style="text-align: center">
+          <v-spacer></v-spacer>Update Skill Category
+          <v-spacer></v-spacer>
+        </v-card-title>
+
+        <v-card-text>
+          <v-text-field
+            v-model="categoryName"
+            outlined
+            background-color="#EDF0F5"
+            label="Skill category name"
+          ></v-text-field>
+          <v-text-field
+            outlined
+            label="Category Color (Pick a color from picker)"
+            disabled
+            background-color="#EDF0F5"
+            v-model="colorPicker"
+          ></v-text-field>
+          <v-color-picker width="100%" v-model="colorPicker" hide-canvas class="ma-2" show-swatches></v-color-picker>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn width="100px" color="#FF6161" dark @click="updateCategoryDialog = false">Cancel</v-btn>
+
+          <v-btn
+            width="100px"
+            color="#2EC973"
+            dark
+            @click="updateCategoryDialog = false; updateSkillCategory()"
+          >Ok</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!-- --------- delete skill dialog ------ -->
+    <v-dialog v-model="deleteSkillDialog" max-width="350">
+      <v-card style="text-align: center ; padding-bottom: 25px">
+        <v-card-title style="text-align: center">
+          <v-spacer></v-spacer>Delete Skill
+          <v-spacer></v-spacer>
+        </v-card-title>
+
+        <v-card-text>If you delete the skill, skill will remove from the users that has been assigned.</v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn width="100px" color="#FF6161" dark @click="deleteSkillDialog = false">Cancel</v-btn>
+
+          <v-btn
+            width="100px"
+            color="#2EC973"
+            dark
+            @click="deleteSkillDialog = false; deleteSkill()"
+          >Ok</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <div class="skillTabPopup" @click="close">
       <component
         v-bind:is="component"
@@ -116,19 +190,93 @@ export default {
   },
   data() {
     return {
+      updatedName: "",
+      updatedColor: "",
+      skill: {},
       isValid: true,
+      updateCategoryDialog: false,
       deleteDialog: false,
+      deleteSkillDialog: false,
       skillName: "",
       userId: this.$store.state.user.userId,
       errorMessage: "",
       successMessage: "",
-      skillRules: [value => !!value || "Assignee is required!"],
+      skillRules: [value => !!value || "Skill is required!"],
       component: ""
     };
   },
   methods: {
     close() {
       this.component = "";
+    },
+    selectSkill(skill) {
+      this.skill = skill;
+    },
+    async updateSkillCategory() {
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/category/${this.selectedCategory.categoryId}`,
+          {
+            categoryName: this.updatedName,
+            categoryColorCode: this.updatedColor
+          },
+          {
+            headers: {
+              userId: this.userId
+            }
+          }
+        );
+        this.$store.dispatch(
+          "skillMatrix/fetchSelectedCategory",
+          this.selectedCategory.categoryId
+        );
+        this.$store.dispatch("skillMatrix/fetchSkillCategory");
+        this.successMessage = "Category updated successfully";
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
+        // console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
+        console.log("Error updating a status", e);
+      }
+    },
+    async deleteSkill(skillId) {
+      let response;
+      try {
+        response = await this.$axios.$delete(
+          `/category/${this.selectedCategory.categoryId}/skill/${this.skill.skillId}`,
+          {
+            headers: {
+              userId: this.userId
+            }
+          }
+        );
+        this.$store.dispatch(
+          "skillMatrix/fetchCategorySkills",
+          this.selectedCategory.categoryId
+        );
+        this.successMessage = "Skill deleted successfully";
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error creating project", e);
+      }
     },
     async addSkill() {
       let response;
@@ -148,7 +296,7 @@ export default {
         this.skillName = "";
 
         this.$store.dispatch(
-          "skillMatrix/fetchCategorySkills",
+          "skillMatrix/fetchSelectedCategory",
           this.selectedCategory.categoryId
         );
         this.successMessage = "Skill added successfully";
@@ -194,7 +342,23 @@ export default {
     ...mapState({
       selectedCategory: state => state.skillMatrix.selectedCategory,
       categorySkills: state => state.skillMatrix.skills
-    })
+    }),
+    categoryName: {
+      get() {
+        return this.selectedCategory.categoryName;
+      },
+      set(value) {
+        this.updatedName = value;
+      }
+    },
+    colorPicker: {
+      get() {
+        return this.selectedCategory.categoryColorCode;
+      },
+      set(value) {
+        this.updatedColor = value;
+      }
+    }
   }
 };
 </script>
