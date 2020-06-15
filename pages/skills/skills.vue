@@ -63,7 +63,27 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col>Load User List here</v-col>
+          <v-col>
+            <!-- loop following row for each user -->
+            <v-row>
+              <v-col md="3">
+                <v-list-item-group>
+                  <v-list-item>
+                    <v-list-item-avatar>
+                      <v-img
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                      ></v-img>
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                      <v-list-item-title>Bahubali Karunarathne</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-divider class="mx-4"></v-divider>
+                </v-list-item-group>
+              </v-col>
+              <v-col md="9">skill list</v-col>
+            </v-row>
+          </v-col>
         </v-row>
       </div>
     </div>
