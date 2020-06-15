@@ -1,5 +1,10 @@
 <template>
   <div class="skillsContentWrapper">
+    <v-list-item-icon
+      style="position:absolute; right:10px; background-color: blue; padding: 5px; border-radius: 50%"
+    >
+      <v-icon @click="updateCategoryDialog = true" size="15" color="#FFFFFF">mdi-pencil</v-icon>
+    </v-list-item-icon>
     <v-row>
       <v-col>Skill Category Name</v-col>
     </v-row>
@@ -20,6 +25,7 @@
                 :style="'height: 20px; width: 20px; border-radius: 5px; background-color:' + selectedCategory.categoryColorCode"
               ></div>
             </v-col>
+
             <v-col>
               <v-btn
                 @click="deleteDialog = true"
@@ -95,6 +101,48 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <!-- ------- update skill cat dialog ------ -->
+
+    <v-dialog v-model="updateCategoryDialog" max-width="450">
+      <v-card style=" padding-bottom: 25px">
+        <v-card-title style="text-align: center">
+          <v-spacer></v-spacer>Update Skill Category
+          <v-spacer></v-spacer>
+        </v-card-title>
+
+        <v-card-text>
+          <v-text-field
+            v-model="categoryName"
+            outlined
+            background-color="#EDF0F5"
+            label="Skill category name"
+          ></v-text-field>
+          <v-text-field
+            outlined
+            label="Category Color (Pick a color from picker)"
+            disabled
+            background-color="#EDF0F5"
+            v-model="colorPicker"
+          ></v-text-field>
+          <v-color-picker width="100%" v-model="colorPicker" hide-canvas class="ma-2" show-swatches></v-color-picker>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn width="100px" color="#FF6161" dark @click="updateCategoryDialog = false">Cancel</v-btn>
+
+          <v-btn
+            width="100px"
+            color="#2EC973"
+            dark
+            @click="updateCategoryDialog = false; updateSkillCategory()"
+          >Ok</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <!-- --------- delete skill dialog ------ -->
     <v-dialog v-model="deleteSkillDialog" max-width="350">
       <v-card style="text-align: center ; padding-bottom: 25px">
@@ -142,8 +190,11 @@ export default {
   },
   data() {
     return {
+      updatedName: "",
+      updatedColor: "",
       skill: {},
       isValid: true,
+      updateCategoryDialog: false,
       deleteDialog: false,
       deleteSkillDialog: false,
       skillName: "",
@@ -160,6 +211,43 @@ export default {
     },
     selectSkill(skill) {
       this.skill = skill;
+    },
+    async updateSkillCategory() {
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/category/${this.selectedCategory.categoryId}`,
+          {
+            categoryName: this.updatedName,
+            categoryColorCode: this.updatedColor
+          },
+          {
+            headers: {
+              userId: this.userId
+            }
+          }
+        );
+        this.$store.dispatch(
+          "skillMatrix/fetchSelectedCategory",
+          this.selectedCategory.categoryId
+        );
+        this.$store.dispatch("skillMatrix/fetchSkillCategory");
+        this.successMessage = "Category added successfully";
+        this.popup = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
+        // console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.popup = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
+        console.log("Error updating a status", e);
+      }
     },
     async deleteSkill(skillId) {
       let response;
@@ -208,7 +296,7 @@ export default {
         this.skillName = "";
 
         this.$store.dispatch(
-          "skillMatrix/fetchCategorySkills",
+          "skillMatrix/fetchSelectedCategory",
           this.selectedCategory.categoryId
         );
         this.successMessage = "Skill added successfully";
@@ -254,7 +342,23 @@ export default {
     ...mapState({
       selectedCategory: state => state.skillMatrix.selectedCategory,
       categorySkills: state => state.skillMatrix.skills
-    })
+    }),
+    categoryName: {
+      get() {
+        return this.selectedCategory.categoryName;
+      },
+      set(value) {
+        this.updatedName = value;
+      }
+    },
+    colorPicker: {
+      get() {
+        return this.selectedCategory.categoryColorCode;
+      },
+      set(value) {
+        this.updatedColor = value;
+      }
+    }
   }
 };
 </script>
