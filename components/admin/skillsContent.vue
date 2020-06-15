@@ -42,7 +42,7 @@
           <v-list-item>
             <v-list-item-content>{{skill.skillName}}</v-list-item-content>
             <v-list-item-action>
-              <v-icon>mdi-delete-circle</v-icon>
+              <v-icon @click="deleteSkillDialog = true; selectSkill(skill)">mdi-delete-circle</v-icon>
             </v-list-item-action>
           </v-list-item>
         </div>
@@ -94,6 +94,31 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <!-- --------- delete skill dialog ------ -->
+    <v-dialog v-model="deleteSkillDialog" max-width="350">
+      <v-card style="text-align: center ; padding-bottom: 25px">
+        <v-card-title style="text-align: center">
+          <v-spacer></v-spacer>Delete Skill
+          <v-spacer></v-spacer>
+        </v-card-title>
+
+        <v-card-text>If you delete the skill, skill will remove from the users that has been assigned.</v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn width="100px" color="#FF6161" dark @click="deleteSkillDialog = false">Cancel</v-btn>
+
+          <v-btn
+            width="100px"
+            color="#2EC973"
+            dark
+            @click="deleteSkillDialog = false; deleteSkill()"
+          >Ok</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <div class="skillTabPopup" @click="close">
       <component
         v-bind:is="component"
@@ -116,19 +141,53 @@ export default {
   },
   data() {
     return {
+      skill: {},
       isValid: true,
       deleteDialog: false,
+      deleteSkillDialog: false,
       skillName: "",
       userId: this.$store.state.user.userId,
       errorMessage: "",
       successMessage: "",
-      skillRules: [value => !!value || "Assignee is required!"],
+      skillRules: [value => !!value || "Skill is required!"],
       component: ""
     };
   },
   methods: {
     close() {
       this.component = "";
+    },
+    selectSkill(skill) {
+      this.skill = skill;
+    },
+    async deleteSkill(skillId) {
+      let response;
+      try {
+        response = await this.$axios.$delete(
+          `/category/${this.selectedCategory.categoryId}/skill/${this.skill.skillId}`,
+          {
+            headers: {
+              userId: this.userId
+            }
+          }
+        );
+        this.$store.dispatch(
+          "skillMatrix/fetchCategorySkills",
+          this.selectedCategory.categoryId
+        );
+        this.successMessage = "Skill deleted successfully";
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error creating project", e);
+      }
     },
     async addSkill() {
       let response;
