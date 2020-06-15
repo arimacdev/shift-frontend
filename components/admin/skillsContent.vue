@@ -232,8 +232,8 @@ export default {
           this.selectedCategory.categoryId
         );
         this.$store.dispatch("skillMatrix/fetchSkillCategory");
-        this.successMessage = "Category added successfully";
-        this.popup = "success-popup";
+        this.successMessage = "Category updated successfully";
+        this.component = "success-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -241,7 +241,7 @@ export default {
         // console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.popup = "error-popup";
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
