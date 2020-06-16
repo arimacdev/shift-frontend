@@ -163,7 +163,7 @@
             <div style="color: #576377; font-weight: 450">Add New Skills</div>
           </v-col>
         </v-row>
-        <v-row>
+        <!-- <v-row>
           <v-col>
             <v-autocomplete
               v-model="filterCategory"
@@ -199,32 +199,18 @@
           </v-col>
         </v-row>
         <v-row style="margin-top: -20px" v-if="this.selectedSkills != ''">
-          <!-- <v-col md="10">
-            <v-select
-              auto-grow="false"
-              disabled
-              outlined
-              flat
-              label="Selected Skills"
-              small-chips
-              v-model="this.selectedSkills"
-              :items="this.selectedSkills"
-              multiple
-              item-text="name"
-              item-value="id"
-            ></v-select>
-          </v-col>-->
+        
           <v-col md="2">
             <v-btn @click="addSkillsToUser()">Submit</v-btn>
           </v-col>
-        </v-row>
+        </v-row>-->
         <v-row>
           <v-col md="3">
             <div style="color: #576377; font-weight: 450">Skills</div>
           </v-col>
         </v-row>
 
-        <v-row class="skillsSection">
+        <!-- <v-row class="skillsSection">
           <v-col>
             <div class="skillDisplayDiv">
               <div class="skillScrollingWrapper">
@@ -249,9 +235,53 @@
               </div>
             </div>
           </v-col>
+        </v-row>-->
+
+        <v-row class="skillsSection">
+          <v-col>
+            <div class="skillDisplayDiv">
+              <div class="skillScrollingWrapper">
+                <div
+                  class="skillCard text-center"
+                  v-for="(category, index) in userSkills[0].category"
+                  :key="index"
+                >
+                  <div
+                    class="skillHeader"
+                    :style="'background-color:' + category.categoryColorCode"
+                  >{{category.categoryName}}</div>
+
+                  <div class="skillBody">
+                    <div
+                      style="padding-left: 30px"
+                      v-for="(skill, index) in category.skillSet"
+                      :key="index"
+                    >
+                      <v-list-item>
+                        <v-list-item-action>
+                          <v-icon
+                            v-if="skill.isAssigned == true"
+                            size="20"
+                            color="#2EC973"
+                          >mdi-checkbox-marked-circle</v-icon>
+                          <v-icon
+                            @click="addSkillToUser(category.categoryId, skill.skillId)"
+                            v-else
+                            size="20"
+                            color="#FFFFFF"
+                          >mdi-checkbox-blank-circle</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>{{skill.skillName}}</v-list-item-content>
+                      </v-list-item>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </v-col>
         </v-row>
       </v-form>
-      {{userSkills}}
+      <!-- {{userSkills.category}} -->
     </div>
     <!-- -------- reset dialog -------- -->
     <v-dialog v-model="resetDialog" max-width="350">
@@ -443,14 +473,14 @@ export default {
   },
 
   methods: {
-    async addSkillsToUser() {
+    async addSkillToUser(categoryId, skillId) {
       let response;
       try {
         response = await this.$axios.$post(
-          `/category/${this.filterCategory}/user/skill`,
+          `/category/${categoryId}/user/skill`,
           {
             assigneeId: this.userData.userId,
-            skills: this.selectedSkills
+            skills: [skillId]
           },
           {
             headers: {
@@ -458,8 +488,11 @@ export default {
             }
           }
         );
-        this.filterCategory = "";
-        this.selectedSkills = [];
+
+        this.$store.dispatch(
+          "skillMatrix/fetchUserSkills",
+          this.userData.userId
+        );
 
         this.$store.dispatch(
           "skillMap/fetchUserSkillMap",
@@ -699,30 +732,30 @@ export default {
       categorySkills: state => state.skillMatrix.skills,
       userSkills: state => state.skillMatrix.userSkills
     }),
-    categoryArray() {
-      let categorySearchList = this.skillCategory;
-      let categoryList = [];
-      for (let index = 0; index < categorySearchList.length; ++index) {
-        let category = categorySearchList[index];
-        categoryList.push({
-          name: category.categoryName,
-          id: category.categoryId
-        });
-      }
-      return categoryList;
-    },
-    skillArray() {
-      let skillsSearchList = this.categorySkills;
-      let skillList = [];
-      for (let index = 0; index < skillsSearchList.length; ++index) {
-        let skill = skillsSearchList[index];
-        skillList.push({
-          name: skill.skillName,
-          id: skill.skillId
-        });
-      }
-      return skillList;
-    },
+    // categoryArray() {
+    //   let categorySearchList = this.skillCategory;
+    //   let categoryList = [];
+    //   for (let index = 0; index < categorySearchList.length; ++index) {
+    //     let category = categorySearchList[index];
+    //     categoryList.push({
+    //       name: category.categoryName,
+    //       id: category.categoryId
+    //     });
+    //   }
+    //   return categoryList;
+    // },
+    // skillArray() {
+    //   let skillsSearchList = this.categorySkills;
+    //   let skillList = [];
+    //   for (let index = 0; index < skillsSearchList.length; ++index) {
+    //     let skill = skillsSearchList[index];
+    //     skillList.push({
+    //       name: skill.skillName,
+    //       id: skill.skillId
+    //     });
+    //   }
+    //   return skillList;
+    // },
     checkValidation: {
       get() {
         if (this.$v.$invalid == true) {
