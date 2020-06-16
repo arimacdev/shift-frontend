@@ -1159,51 +1159,53 @@ export default {
       }
     },
     async saveEditTaskName() {
-      this.overlay = true;
-      // console.log("updatedTaskName ->", this.updatedTask.taskName);
-      let response;
-      try {
-        response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
-          {
-            taskName: this.updatedTask.taskName
-          },
-          {
-            headers: {
-              user: this.userId
+      if (this.updatedTask.taskName != "") {
+        this.overlay = true;
+        // console.log("updatedTaskName ->", this.updatedTask.taskName);
+        let response;
+        try {
+          response = await this.$axios.$put(
+            `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
+            {
+              taskName: this.updatedTask.taskName
+            },
+            {
+              headers: {
+                user: this.userId
+              }
             }
-          }
-        );
-        this.component = "success-popup";
-        this.successMessage = "Name successfully updated";
-        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
-          taskId: this.selectedTask.taskId,
-          startIndex: 0,
-          endIndex: 10
-        });
-        if (this.selectedTask.isParent) {
-          this.$store.dispatch("task/updateTask", {
+          );
+          this.component = "success-popup";
+          this.successMessage = "Name successfully updated";
+          this.$store.dispatch("activityLog/fetchTaskActivityLog", {
             taskId: this.selectedTask.taskId,
-            taskName: this.updatedTask.taskName
+            startIndex: 0,
+            endIndex: 10
           });
-        } else {
-          this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+          if (this.selectedTask.isParent) {
+            this.$store.dispatch("task/updateTask", {
+              taskId: this.selectedTask.taskId,
+              taskName: this.updatedTask.taskName
+            });
+          } else {
+            this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+          }
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          this.overlay = false;
+          this.editTask = true;
+          console.log("edit task response", response);
+        } catch (e) {
+          console.log("Error updating the name", e);
+          this.errorMessage = e.response.data;
+          this.component = "error-popup";
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          this.overlay = false;
+          this.editTask = true;
         }
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        this.overlay = false;
-        this.editTask = true;
-        console.log("edit task response", response);
-      } catch (e) {
-        console.log("Error updating the name", e);
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        this.overlay = false;
-        this.editTask = true;
       }
     },
 
@@ -1678,9 +1680,9 @@ export default {
 
     taskName: {
       get() {
-        if (this.updatedTask.taskName == "") {
-          return this.selectedTask.taskName;
-        } else return this.updatedTask.taskName;
+        // if (this.updatedTask.taskName == "") {
+        return this.selectedTask.taskName;
+        // } else return this.updatedTask.taskName;
       },
       set(name) {
         this.updatedTask.taskName = name;

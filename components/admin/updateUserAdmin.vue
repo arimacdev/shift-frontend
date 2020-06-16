@@ -237,12 +237,7 @@
                     class="skillHeader"
                     :style="'background-color:' + value[0].categoryColorCode"
                   >{{value[0].categoryName}}</div>
-                  <!-- <div
-                    class="skillBody"
-                    v-for="(skill, index) in value"
-                    :key="index"
-                  >{{skill.skillName}}</div>
-                  </div>-->
+
                   <div class="skillBody">
                     <div
                       style="margin-bottom: 10px"

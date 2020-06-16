@@ -567,36 +567,38 @@ export default {
       }
     },
     async updateTaskName() {
-      console.log("updatedTaskName ->", this.updatedTask.taskName);
-      let response;
-      try {
-        response = await this.$axios.$put(
-          `/non-project/tasks/personal/${this.selectedTask.taskId}`,
-          {
-            taskName: this.updatedTask.taskName
-          },
-          {
-            headers: {
-              user: this.userId
+      if (this.updatedTask.taskName != "") {
+        // console.log("updatedTaskName ->", this.updatedTask.taskName);
+        let response;
+        try {
+          response = await this.$axios.$put(
+            `/non-project/tasks/personal/${this.selectedTask.taskId}`,
+            {
+              taskName: this.updatedTask.taskName
+            },
+            {
+              headers: {
+                user: this.userId
+              }
             }
-          }
-        );
-        this.component = "success-popup";
-        this.successMessage = "Name successfully updated";
-        this.$store.dispatch("personalTasks/fetchAllPersonalTasks");
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        this.editTask = true;
-        // console.log("edit task response", response);
-      } catch (e) {
-        console.log("Error updating the name", e);
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        this.editTask = true;
+          );
+          this.component = "success-popup";
+          this.successMessage = "Name successfully updated";
+          this.$store.dispatch("personalTasks/fetchAllPersonalTasks");
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          this.editTask = true;
+          // console.log("edit task response", response);
+        } catch (e) {
+          console.log("Error updating the name", e);
+          this.errorMessage = e.response.data;
+          this.component = "error-popup";
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          this.editTask = true;
+        }
       }
     },
 
@@ -873,9 +875,9 @@ export default {
 
     taskName: {
       get() {
-        if (this.updatedTask.taskName == "") {
-          return this.selectedTask.taskName;
-        } else return this.updatedTask.taskName;
+        // if (this.updatedTask.taskName == "") {
+        return this.selectedTask.taskName;
+        // } else return this.updatedTask.taskName;
       },
       set(name) {
         this.updatedTask.taskName = name;
