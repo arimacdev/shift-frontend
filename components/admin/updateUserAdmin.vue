@@ -251,6 +251,7 @@
           </v-col>
         </v-row>
       </v-form>
+      {{userSkills}}
     </div>
     <!-- -------- reset dialog -------- -->
     <v-dialog v-model="resetDialog" max-width="350">
@@ -695,7 +696,8 @@ export default {
       organizationalRoles: state => state.user.organizationalRoles,
       userSkillMap: state => state.skillMap.userSkillMap,
       skillCategory: state => state.skillMatrix.skillCategory,
-      categorySkills: state => state.skillMatrix.skills
+      categorySkills: state => state.skillMatrix.skills,
+      userSkills: state => state.skillMatrix.userSkills
     }),
     categoryArray() {
       let categorySearchList = this.skillCategory;

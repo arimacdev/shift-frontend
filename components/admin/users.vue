@@ -125,6 +125,7 @@ export default {
         this.roleListCount = 0;
       }
       this.$store.dispatch("admin/fetchUserRoleMapping", userData.userId);
+      this.$store.dispatch("skillMatrix/fetchUserSkills", userData.userId);
       this.$store.dispatch("user/setSelectedUser", userData);
       this.$store.dispatch("skillMap/fetchUserSkillMap", userData.userId);
     }
