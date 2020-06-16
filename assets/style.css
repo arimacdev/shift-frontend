@@ -2726,7 +2726,7 @@
   border-radius: 5px;
   color: #ffffff;
   padding: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 .skillName {
   width: 90px;
@@ -2736,4 +2736,20 @@
   word-wrap: break-word !important;
   float: left;
   color: #576377;
+  font-size: 10px !important;
+  font-weight: 500;
+}
+.skillDisplayBox {
+  margin-right: 10px;
+  float: left;
+  width: 90px;
+  height: 70px;
+}
+.skillDisplayCheckBox {
+  background-color: #edf0f5;
+  text-align: center;
+  width: 70px;
+  height: 70px;
+  margin-left: 10px;
+  padding-top: 20px;
 }

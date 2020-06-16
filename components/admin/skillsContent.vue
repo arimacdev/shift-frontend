@@ -299,6 +299,10 @@ export default {
           "skillMatrix/fetchSelectedCategory",
           this.selectedCategory.categoryId
         );
+        this.$store.dispatch(
+          "skillMatrix/fetchCategorySkills",
+          this.selectedCategory.categoryId
+        );
         this.successMessage = "Skill added successfully";
         this.component = "success-popup";
         setTimeout(() => {

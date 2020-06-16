@@ -75,12 +75,19 @@
                         class="categoryHeader"
                         :style="'background-color:' + category.categoryColorCode"
                       >{{category.categoryName}}</div>
+
+                      <div class="skillName" v-for="(skill, index) in categorySkills" :key="index">
+                        <v-list-item-title style="font-size: 12px">{{skill.skillName}}</v-list-item-title>
+                      </div>
+                      <br />
                       <div
-                        class="skillName"
-                        v-for="(skill, index) in getSkills(category.categoryId)"
+                        class="skillDisplayBox"
+                        v-for="(skill, index) in categorySkills"
                         :key="index"
                       >
-                        <v-list-item-title>{{skill.skillName}}</v-list-item-title>
+                        <div class="skillDisplayCheckBox">
+                          <v-icon size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
+                        </div>
                       </div>
                     </div>
                   </div>
