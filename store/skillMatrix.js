@@ -7,11 +7,29 @@ export const state = () => ({
 export const mutations = {
   SET_SKILL_CATEGORY(state, skillCategory) {
     state.skillCategory = skillCategory;
+    const sorted = skillCategory.sort((a, b) => {
+      const catA = a.categoryName.toUpperCase();
+      const catB = b.categoryName.toUpperCase();
+
+      if (catA < catB) return -1;
+      if (catA > catB) return 1;
+
+      return 0;
+    });
   },
   SET_SELECTED_CATEGORY(state, selectedCategory) {
     state.selectedCategory = selectedCategory;
   },
   SET_SKILLS(state, skills) {
+    const sorted = skills.sort((a, b) => {
+      const skillA = a.skillName.toUpperCase();
+      const skillB = b.skillName.toUpperCase();
+
+      if (skillA < skillB) return -1;
+      if (skillA > skillB) return 1;
+
+      return 0;
+    });
     state.skills = skills;
   },
 };
