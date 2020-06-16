@@ -268,6 +268,9 @@
     </v-form>
 
     <div>
+      <h1>OneSignal</h1>
+      <div class='onesignal-customlink-container'></div>
+     
       <!-- ---- this is a switch button if applicable ---- -->
       <!-- <v-sheet class="pa-5">
         <v-switch v-model="switch1" inset :label="`Switch 1: ${switch1.toString()}`"></v-switch>
