@@ -281,7 +281,7 @@
           </v-col>
         </v-row>
       </v-form>
-      <!-- {{userSkills.category}} -->
+      {{userSkills}}
     </div>
     <!-- -------- reset dialog -------- -->
     <v-dialog v-model="resetDialog" max-width="350">

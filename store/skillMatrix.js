@@ -2,7 +2,10 @@ export const state = () => ({
   skillCategory: [],
   selectedCategory: {},
   skills: [],
-  userSkills: [],
+  userSkills: [{
+    userId: '',
+    category: []
+  }],
 });
 
 export const mutations = {
