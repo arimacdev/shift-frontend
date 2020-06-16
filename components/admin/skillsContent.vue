@@ -1,6 +1,7 @@
 <template>
-  <div class="skillsContentWrapper">
+  <div class="skillsContentWrapper overflow-y-auto">
     <v-list-item-icon
+      @click="updateCategoryDialog = true"
       style="position:absolute; right:10px; background-color: blue; padding: 5px; border-radius: 50%"
     >
       <v-icon @click="updateCategoryDialog = true" size="15" color="#FFFFFF">mdi-pencil</v-icon>
@@ -40,14 +41,19 @@
     </v-row>
 
     <v-divider style="margin-top: 20px"></v-divider>
+
     <v-row>
       <v-col md="5">
         Skills
         <div style="margin-top: 20px" v-if="categorySkills == ''">No skills to show</div>
+
         <div v-for="(skill, index) in categorySkills" :key="index" class="skillsDiv">
           <!-- <span></span> -->
           <v-list-item>
             <v-list-item-content>{{skill.skillName}}</v-list-item-content>
+            <v-list-item-action>
+              <v-icon @click="updateSkillDialog = true; selectSkill(skill)">mdi-pencil-circle</v-icon>
+            </v-list-item-action>
             <v-list-item-action>
               <v-icon @click="deleteSkillDialog = true; selectSkill(skill)">mdi-delete-circle</v-icon>
             </v-list-item-action>
@@ -68,6 +74,7 @@
           >
             <v-list-item>
               <v-list-item-content class="text-capitalize" style="color: #FFFFFF">Add New Skill</v-list-item-content>
+
               <v-list-item-action>
                 <v-icon color="#FFFFFF">mdi-plus-circle</v-icon>
               </v-list-item-action>
@@ -76,6 +83,7 @@
         </v-form>
       </v-col>
     </v-row>
+
     <!-- --------- delete category dialog ------ -->
     <v-dialog v-model="deleteDialog" max-width="350">
       <v-card style="text-align: center ; padding-bottom: 25px">
@@ -102,45 +110,93 @@
       </v-card>
     </v-dialog>
 
+    <!-- ------- update skill dialog ------ -->
+
+    <v-dialog v-model="updateSkillDialog" max-width="450">
+      <v-card style=" padding-bottom: 25px">
+        <v-form v-model="isValidUpdate" ref="form">
+          <v-card-title style="text-align: center">
+            <v-spacer></v-spacer>Update Skill
+            <v-spacer></v-spacer>
+          </v-card-title>
+
+          <v-card-text>
+            <v-text-field
+              :rules="skillUpdateRules"
+              v-model="skillUpdateName"
+              outlined
+              background-color="#EDF0F5"
+              label="Skill name"
+            ></v-text-field>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+
+            <v-btn width="100px" color="#FF6161" dark @click="updateSkillDialog = false">Cancel</v-btn>
+
+            <v-btn
+              :disabled="!isValidUpdate"
+              width="100px"
+              color="#2EC973"
+              style="color: #FFFFFF"
+              @click="updateSkillDialog = false; updateSkill()"
+            >Ok</v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-form>
+      </v-card>
+    </v-dialog>
+
     <!-- ------- update skill cat dialog ------ -->
 
     <v-dialog v-model="updateCategoryDialog" max-width="450">
       <v-card style=" padding-bottom: 25px">
-        <v-card-title style="text-align: center">
-          <v-spacer></v-spacer>Update Skill Category
-          <v-spacer></v-spacer>
-        </v-card-title>
+        <v-form v-model="isValidCatUpdate" ref="form">
+          <v-card-title style="text-align: center">
+            <v-spacer></v-spacer>Update Skill Category
+            <v-spacer></v-spacer>
+          </v-card-title>
 
-        <v-card-text>
-          <v-text-field
-            v-model="categoryName"
-            outlined
-            background-color="#EDF0F5"
-            label="Skill category name"
-          ></v-text-field>
-          <v-text-field
-            outlined
-            label="Category Color (Pick a color from picker)"
-            disabled
-            background-color="#EDF0F5"
-            v-model="colorPicker"
-          ></v-text-field>
-          <v-color-picker width="100%" v-model="colorPicker" hide-canvas class="ma-2" show-swatches></v-color-picker>
-        </v-card-text>
+          <v-card-text>
+            <v-text-field
+              :rules="skillCatUpdateRules"
+              v-model="categoryName"
+              outlined
+              background-color="#EDF0F5"
+              label="Skill category name"
+            ></v-text-field>
+            <v-text-field
+              outlined
+              label="Category Color (Pick a color from picker)"
+              disabled
+              background-color="#EDF0F5"
+              v-model="colorPicker"
+            ></v-text-field>
+            <v-color-picker
+              width="100%"
+              v-model="colorPicker"
+              hide-canvas
+              class="ma-2"
+              show-swatches
+            ></v-color-picker>
+          </v-card-text>
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
+          <v-card-actions>
+            <v-spacer></v-spacer>
 
-          <v-btn width="100px" color="#FF6161" dark @click="updateCategoryDialog = false">Cancel</v-btn>
+            <v-btn width="100px" color="#FF6161" dark @click="updateCategoryDialog = false">Cancel</v-btn>
 
-          <v-btn
-            width="100px"
-            color="#2EC973"
-            dark
-            @click="updateCategoryDialog = false; updateSkillCategory()"
-          >Ok</v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
+            <v-btn
+              :disabled="!isValidCatUpdate"
+              width="100px"
+              color="#2EC973"
+              style="color: #FFFFFF"
+              @click="updateCategoryDialog = false; updateSkillCategory()"
+            >Ok</v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-form>
       </v-card>
     </v-dialog>
     <!-- --------- delete skill dialog ------ -->
@@ -192,8 +248,12 @@ export default {
     return {
       updatedName: "",
       updatedColor: "",
+      updatedSkillName: "",
+      updateSkillDialog: false,
       skill: {},
       isValid: true,
+      isValidUpdate: true,
+      isValidCatUpdate: true,
       updateCategoryDialog: false,
       deleteDialog: false,
       deleteSkillDialog: false,
@@ -202,6 +262,10 @@ export default {
       errorMessage: "",
       successMessage: "",
       skillRules: [value => !!value || "Skill is required!"],
+      skillUpdateRules: [value => !!value || "Skill is required!"],
+      skillCatUpdateRules: [
+        value => !!value || "Skill category name is required!"
+      ],
       component: ""
     };
   },
@@ -211,6 +275,42 @@ export default {
     },
     selectSkill(skill) {
       this.skill = skill;
+    },
+    async updateSkill() {
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/category/${this.selectedCategory.categoryId}/skill/${this.skill.skillId}`,
+          {
+            skillName: this.updatedSkillName
+          },
+          {
+            headers: {
+              userId: this.userId
+            }
+          }
+        );
+        this.$store.dispatch(
+          "skillMatrix/fetchCategorySkills",
+          this.selectedCategory.categoryId
+        );
+
+        this.successMessage = "Skill updated successfully";
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
+        // console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
+        console.log("Error updating a status", e);
+      }
     },
     async updateSkillCategory() {
       let response;
@@ -353,6 +453,14 @@ export default {
       },
       set(value) {
         this.updatedName = value;
+      }
+    },
+    skillUpdateName: {
+      get() {
+        return this.skill.skillName;
+      },
+      set(value) {
+        this.updatedSkillName = value;
       }
     },
     colorPicker: {

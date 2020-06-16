@@ -11,7 +11,7 @@
             >
               <v-list-item dark>
                 <v-list-item-icon>
-                  <v-icon size="20" color>mdi-thumb-up-outline</v-icon>
+                  <v-icon size="20" color>icon-skills</v-icon>
                 </v-list-item-icon>
                 <v-list-item-content class>
                   <v-list-item-title class="text-capitalize">Add new skill category</v-list-item-title>

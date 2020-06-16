@@ -114,25 +114,6 @@
                         </div>
                       </div>
                       <br />
-                      <div
-                        class="skillDisplayBox"
-                        v-for="(skill, index) in categorySkills"
-                        :key="index"
-                      >
-                        <div class="skillDisplayCheckBox">
-                          <v-icon size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
-                        </div>
-                      </div>
-                      <br />
-                      <div
-                        class="skillDisplayBox"
-                        v-for="(skill, index) in categorySkills"
-                        :key="index"
-                      >
-                        <div class="skillDisplayCheckBox">
-                          <v-icon size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
