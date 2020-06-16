@@ -66,6 +66,28 @@
           <v-col>
             <!-- loop following row for each user -->
             <v-row>
+              <v-col md="3"></v-col>
+              <v-col md="9">
+                <div class="skillDisplayDiv">
+                  <div class="skillScrollingWrapper">
+                    <div class="skillCard" v-for="(category, index) in skillCategory" :key="index">
+                      <div
+                        class="categoryHeader"
+                        :style="'background-color:' + category.categoryColorCode"
+                      >{{category.categoryName}}</div>
+                      <div
+                        class="skillName"
+                        v-for="(skill, index) in getSkills(category.categoryId)"
+                        :key="index"
+                      >
+                        <v-list-item-title>{{skill.skillName}}</v-list-item-title>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </v-col>
+            </v-row>
+            <v-row>
               <v-col md="3">
                 <v-list-item-group>
                   <v-list-item>
@@ -93,6 +115,7 @@
 <script>
 import NavigationDrawer from "~/components/navigationDrawer";
 import axios from "axios";
+import { mapState } from "vuex";
 
 export default {
   components: {
@@ -125,11 +148,37 @@ export default {
       name: users[0].userId
     };
   },
+  methods: {
+    async getSkills(categoryId) {
+      let categorySkillResponse;
+      try {
+        categorySkillResponse = await this.$axios.$get(
+          `/category/${categoryId}/skill`,
+          {
+            headers: {
+              userId: this.userId
+            }
+          }
+        );
+        console.log("RETRIVED", categorySkillResponse.data);
+        return categorySkillResponse.data;
+      } catch (error) {
+        console.log("Error fetching selected category skills", error);
+      }
+    }
+  },
   created() {
     this.$store.dispatch("project/clearProject");
   },
-
-  methods: {}
+  computed: {
+    ...mapState({
+      skillCategory: state => state.skillMatrix.skillCategory,
+      categorySkills: state => state.skillMatrix.skills
+    })
+  },
+  created() {
+    this.$store.dispatch("skillMatrix/fetchSkillCategory");
+  }
 };
 </script>
 
