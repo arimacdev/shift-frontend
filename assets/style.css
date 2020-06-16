@@ -2741,6 +2741,7 @@
 }
 .skillDisplayBox {
   margin-right: 10px;
+  margin-bottom: 10px;
   float: left;
   width: 90px;
   height: 70px;
@@ -2748,8 +2749,21 @@
 .skillDisplayCheckBox {
   background-color: #edf0f5;
   text-align: center;
-  width: 70px;
-  height: 70px;
-  margin-left: 10px;
-  padding-top: 20px;
+  width: 60px;
+  height: 60px;
+  margin-left: 15px;
+  padding-top: 15px;
+}
+.titleSection {
+  height: 90px;
+}
+.matrixUserListItem {
+  height: 80px;
+  background-color: #edf0f5;
+}
+.userListTitle {
+  padding-left: 20px;
+  padding-top: 40px;
+  color: #576377;
+  font-weight: 500;
 }

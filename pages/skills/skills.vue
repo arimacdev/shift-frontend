@@ -16,7 +16,7 @@
     </v-toolbar>
     <div class="body-div">
       <div>
-        <v-row>
+        <v-row style="margin-bottom: -20px">
           <v-col md="3">
             <v-autocomplete
               background-color="#EDF0F5"
@@ -24,6 +24,7 @@
               :loading="loading"
               :search-input.sync="search"
               cache-items
+              dense
               class="mx-4 searchBar"
               flat
               hide-no-data
@@ -39,6 +40,7 @@
 
           <v-col style="margin-left: -20px" md="7">
             <v-autocomplete
+              dense
               background-color="#EDF0F5"
               v-model="select"
               :loading="loading"
@@ -66,18 +68,60 @@
           <v-col>
             <!-- loop following row for each user -->
             <v-row>
-              <v-col md="3"></v-col>
+              <v-col md="3">
+                <div class="titleSection userListTitle" style="background-color: #EDF0F5">All Users</div>
+                <v-list-item-group>
+                  <div class="matrixUserListItem" v-for="(user, index) in users" :key="index">
+                    <v-list-item>
+                      <v-list-item-avatar>
+                        <v-img
+                          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                        ></v-img>
+                      </v-list-item-avatar>
+                      <v-list-item-content>
+                        <v-list-item-title>Bahubali Karunarathne</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-divider class="mx-4"></v-divider>
+                  </div>
+                </v-list-item-group>
+              </v-col>
               <v-col md="9">
                 <div class="skillDisplayDiv">
                   <div class="skillScrollingWrapper">
                     <div class="skillCard" v-for="(category, index) in skillCategory" :key="index">
-                      <div
-                        class="categoryHeader"
-                        :style="'background-color:' + category.categoryColorCode"
-                      >{{category.categoryName}}</div>
+                      <div class="titleSection">
+                        <div
+                          class="categoryHeader"
+                          :style="'background-color:' + category.categoryColorCode"
+                        >{{category.categoryName}}</div>
 
-                      <div class="skillName" v-for="(skill, index) in categorySkills" :key="index">
-                        <v-list-item-title style="font-size: 12px">{{skill.skillName}}</v-list-item-title>
+                        <div
+                          class="skillName"
+                          v-for="(skill, index) in categorySkills"
+                          :key="index"
+                        >
+                          <v-list-item-title style="font-size: 12px">{{skill.skillName}}</v-list-item-title>
+                        </div>
+                      </div>
+                      <div
+                        class="skillDisplayBox"
+                        v-for="(skill, index) in categorySkills"
+                        :key="index"
+                      >
+                        <div class="skillDisplayCheckBox">
+                          <v-icon size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
+                        </div>
+                      </div>
+                      <br />
+                      <div
+                        class="skillDisplayBox"
+                        v-for="(skill, index) in categorySkills"
+                        :key="index"
+                      >
+                        <div class="skillDisplayCheckBox">
+                          <v-icon size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
+                        </div>
                       </div>
                       <br />
                       <div
@@ -93,24 +137,6 @@
                   </div>
                 </div>
               </v-col>
-            </v-row>
-            <v-row>
-              <v-col md="3">
-                <v-list-item-group>
-                  <v-list-item>
-                    <v-list-item-avatar>
-                      <v-img
-                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                      ></v-img>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                      <v-list-item-title>Bahubali Karunarathne</v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-divider class="mx-4"></v-divider>
-                </v-list-item-group>
-              </v-col>
-              <v-col md="9">skill list</v-col>
             </v-row>
           </v-col>
         </v-row>
