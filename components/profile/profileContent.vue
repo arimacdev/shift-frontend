@@ -241,7 +241,7 @@
             </v-btn>
           </v-col>
         </v-row>
-        <!-- <v-row class="skillsSection">
+        <v-row class="skillsSection">
           <v-col>
             <div class="skillDisplayDiv">
               <div class="skillScrollingWrapper">
@@ -250,8 +250,11 @@
                   v-for="(value, prop, index) in this.categorizedSkillMap()"
                   :key="index"
                 >
-                  <div class="skillHeader">{{value[0].categoryName}}</div>
-                 
+                  <div
+                    class="skillHeader"
+                    :style="'background-color:' + value[0].categoryColorCode"
+                  >{{value[0].categoryName}}</div>
+
                   <div class="skillBody">
                     <div
                       style="margin-bottom: 10px"
@@ -263,14 +266,14 @@
               </div>
             </div>
           </v-col>
-        </v-row>-->
+        </v-row>
       </div>
     </v-form>
 
     <div>
       <h1>OneSignal</h1>
-      <div class='onesignal-customlink-container'></div>
-     
+      <div class="onesignal-customlink-container"></div>
+
       <!-- ---- this is a switch button if applicable ---- -->
       <!-- <v-sheet class="pa-5">
         <v-switch v-model="switch1" inset :label="`Switch 1: ${switch1.toString()}`"></v-switch>
@@ -293,6 +296,7 @@
 import EditProfile from "~/components/profile/editProfile";
 import axios from "axios";
 import qs from "qs";
+import { mapState } from "vuex";
 import { required, minLength, sameAs } from "vuelidate/lib/validators";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
@@ -354,6 +358,12 @@ export default {
     }
   },
 
+  computed: {
+    ...mapState({
+      userSkillMap: state => state.skillMap.userSkillMap
+    })
+  },
+
   created: function() {
     const authCode = this.$route.query.code;
     // console.log("SLACK CODE", authCode);
@@ -404,6 +414,17 @@ export default {
   },
 
   methods: {
+    categorizedSkillMap() {
+      let skillmap = this.userSkillMap;
+      // console.log("skillmap", this.userSkillMap);
+      const orderedSkillMap = skillmap.reduce((accumilate, current) => {
+        accumilate[current.categoryId] = (
+          accumilate[current.categoryId] || []
+        ).concat(current);
+        return accumilate;
+      }, {});
+      return orderedSkillMap;
+    },
     setVisible() {
       console.log("DISABLED!");
 
