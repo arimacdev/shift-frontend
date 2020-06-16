@@ -246,7 +246,7 @@
             <div class="skillDisplayDiv">
               <div class="skillScrollingWrapper">
                 <div
-                  class="skillCard text-center"
+                  class="skillProfileCard text-center"
                   v-for="(value, prop, index) in this.categorizedSkillMap()"
                   :key="index"
                 >

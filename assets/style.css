@@ -2691,6 +2691,14 @@
   padding-right: 100px;
   padding-left: 10px;
 }
+.skillProfileCard {
+  display: inline-block;
+  vertical-align: top;
+  min-width: 250px;
+  padding-bottom: 30px;
+  margin-right: 20px;
+  /* height: 100%; */
+}
 .skillCard {
   display: inline-block;
   vertical-align: top;
