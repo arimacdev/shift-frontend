@@ -158,84 +158,12 @@
           </v-col>
         </v-row>
         <v-divider></v-divider>
-        <v-row>
-          <v-col md="3">
-            <div style="color: #576377; font-weight: 450">Add New Skills</div>
-          </v-col>
-        </v-row>
-        <!-- <v-row>
-          <v-col>
-            <v-autocomplete
-              v-model="filterCategory"
-              :items="categoryArray"
-              item-text="name"
-              item-value="id"
-              flat
-              outlined
-              chips
-              background-color="#FFFFFF"
-              small-chips
-              label="Skill Category"
-              clearable
-              @change="getSkills()"
-              @click:clear="clearCategory()"
-            ></v-autocomplete>
-          </v-col>
-          <v-col>
-            <v-autocomplete
-              v-if="this.filterCategory !== undefined && this.filterCategory !== ''"
-              v-model="filterSkill"
-              :items="skillArray"
-              multiple
-              item-text="name"
-              item-value="id"
-              flat
-              outlined
-              chips
-              background-color="#FFFFFF"
-              small-chips
-              label="Skills"
-            ></v-autocomplete>
-          </v-col>
-        </v-row>
-        <v-row style="margin-top: -20px" v-if="this.selectedSkills != ''">
-        
-          <v-col md="2">
-            <v-btn @click="addSkillsToUser()">Submit</v-btn>
-          </v-col>
-        </v-row>-->
+
         <v-row>
           <v-col md="3">
             <div style="color: #576377; font-weight: 450">Skills</div>
           </v-col>
         </v-row>
-
-        <!-- <v-row class="skillsSection">
-          <v-col>
-            <div class="skillDisplayDiv">
-              <div class="skillScrollingWrapper">
-                <div
-                  class="skillCard text-center"
-                  v-for="(value, prop, index) in this.categorizedSkillMap()"
-                  :key="index"
-                >
-                  <div
-                    class="skillHeader"
-                    :style="'background-color:' + value[0].categoryColorCode"
-                  >{{value[0].categoryName}}</div>
-
-                  <div class="skillBody">
-                    <div
-                      style="margin-bottom: 10px"
-                      v-for="(skill, index) in value"
-                      :key="index"
-                    >{{skill.skillName}}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </v-col>
-        </v-row>-->
 
         <v-row class="skillsSection">
           <v-col>
@@ -260,6 +188,7 @@
                       <v-list-item>
                         <v-list-item-action>
                           <v-icon
+                            @click="removeSkillFromUser(category.categoryId, skill.skillId)"
                             v-if="skill.isAssigned == true"
                             size="20"
                             color="#2EC973"
@@ -281,7 +210,6 @@
           </v-col>
         </v-row>
       </v-form>
-      {{userSkills}}
     </div>
     <!-- -------- reset dialog -------- -->
     <v-dialog v-model="resetDialog" max-width="350">
@@ -512,6 +440,40 @@ export default {
           this.close();
         }, 3000);
         console.log("Error updating a status", e);
+      }
+    },
+    async removeSkillFromUser(categoryId, skillId) {
+      let response;
+      try {
+        response = await this.$axios.$delete(
+          `/category/${categoryId}/user/skill`,
+          {
+            assigneeId: this.userData.userId,
+            skills: [skillId]
+          },
+          {
+            headers: {
+              userId: this.adminId
+            }
+          }
+        );
+        this.$store.dispatch(
+          "skillMatrix/fetchUserSkills",
+          this.userData.userId
+        );
+
+        this.successMessage = "Skill removed successfully";
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error creating project", e);
       }
     },
     getSkills() {

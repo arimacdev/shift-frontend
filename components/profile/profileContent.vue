@@ -241,24 +241,30 @@
             </v-btn>
           </v-col>
         </v-row>
+        <v-divider></v-divider>
+        <v-row>
+          <v-col md="3">
+            <div style="color: #576377; font-weight: 450">Skills</div>
+          </v-col>
+        </v-row>
         <v-row class="skillsSection">
           <v-col>
             <div class="skillDisplayDiv">
               <div class="skillScrollingWrapper">
                 <div
-                  class="skillProfileCard text-center"
-                  v-for="(value, prop, index) in this.categorizedSkillMap()"
+                  class="skillCard text-center"
+                  v-for="(category, index) in userSkillMap"
                   :key="index"
                 >
                   <div
                     class="skillHeader"
-                    :style="'background-color:' + value[0].categoryColorCode"
-                  >{{value[0].categoryName}}</div>
+                    :style="'background-color:' + category.categoryColorCode"
+                  >{{category.categoryName}}</div>
 
                   <div class="skillBody">
                     <div
-                      style="margin-bottom: 10px"
-                      v-for="(skill, index) in value"
+                      style="padding-bottom: 10px"
+                      v-for="(skill, index) in category.skillSet"
                       :key="index"
                     >{{skill.skillName}}</div>
                   </div>
