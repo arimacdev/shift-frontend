@@ -90,7 +90,7 @@
                 <div class="skillDisplayDiv">
                   <div class="skillScrollingWrapper">
                     <div
-                      class="skillCard"
+                      class="skillDisplayCard"
                       v-for="(categoryMap, index) in userSkills[0].category"
                       :key="index"
                     >
