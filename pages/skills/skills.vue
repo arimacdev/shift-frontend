@@ -79,7 +79,7 @@
                         ></v-img>
                       </v-list-item-avatar>
                       <v-list-item-content>
-                        <v-list-item-title>Bahubali Karunarathne</v-list-item-title>
+                        <v-list-item-title>{{user.firstName}} {{user.lastName}}</v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                     <v-divider class="mx-4"></v-divider>
@@ -89,28 +89,46 @@
               <v-col md="9">
                 <div class="skillDisplayDiv">
                   <div class="skillScrollingWrapper">
-                    <div class="skillCard" v-for="(category, index) in skillCategory" :key="index">
+                    <div
+                      class="skillCard"
+                      v-for="(categoryMap, index) in userSkills[0].category"
+                      :key="index"
+                    >
                       <div class="titleSection">
                         <div
                           class="categoryHeader"
-                          :style="'background-color:' + category.categoryColorCode"
-                        >{{category.categoryName}}</div>
+                          :style="'background-color:' + categoryMap.categoryColorCode"
+                        >{{categoryMap.categoryName}}</div>
 
                         <div
                           class="skillName"
-                          v-for="(skill, index) in categorySkills"
+                          v-for="(skill, index) in categoryMap.skillSet"
                           :key="index"
                         >
                           <v-list-item-title style="font-size: 12px">{{skill.skillName}}</v-list-item-title>
                         </div>
                       </div>
+                    </div>
+                    <br />
+                    <div v-for="(user, index) in users" :key="index">
                       <div
-                        class="skillDisplayBox"
-                        v-for="(skill, index) in categorySkills"
+                        class="skillDisplayCard"
+                        v-for="(category, index) in userSkills[0].category"
                         :key="index"
                       >
-                        <div class="skillDisplayCheckBox">
-                          <v-icon size="30" color="#2EC973">mdi-checkbox-marked-circle</v-icon>
+                        <div
+                          class="skillDisplayBox"
+                          v-for="(skill, index) in category.skillSet"
+                          :key="index"
+                        >
+                          <div class="skillDisplayCheckBox">
+                            <v-icon
+                              v-if="skill.isAssigned == true"
+                              size="30"
+                              color="#2EC973"
+                            >mdi-checkbox-marked-circle</v-icon>
+                            <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                          </div>
                         </div>
                       </div>
                       <br />
@@ -183,15 +201,17 @@ export default {
   },
   created() {
     this.$store.dispatch("project/clearProject");
+    this.$store.dispatch("skillMatrix/fetchSkillCategory");
+
+    this.$store.dispatch("skillMatrix/fetchUserSkills", this.userId);
   },
   computed: {
     ...mapState({
       skillCategory: state => state.skillMatrix.skillCategory,
-      categorySkills: state => state.skillMatrix.skills
+      categorySkills: state => state.skillMatrix.skills,
+
+      userSkills: state => state.skillMatrix.userSkills
     })
-  },
-  created() {
-    this.$store.dispatch("skillMatrix/fetchSkillCategory");
   }
 };
 </script>

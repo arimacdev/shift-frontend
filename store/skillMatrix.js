@@ -2,13 +2,28 @@ export const state = () => ({
   skillCategory: [],
   selectedCategory: {},
   skills: [],
-  userSkills: [{
-    userId: '',
-    category: []
-  }],
+  userSkills: [
+    {
+      userId: '',
+      category: [],
+    },
+  ],
+  categorySkillMapping: [],
 });
 
 export const mutations = {
+  SET_CATEGORY_SKILL_MAPPING(state, categorySkillMapping) {
+    const sorted = categorySkillMapping.sort((a, b) => {
+      const catA = a.categoryName.toUpperCase();
+      const catB = b.categoryName.toUpperCase();
+
+      if (catA < catB) return -1;
+      if (catA > catB) return 1;
+
+      return 0;
+    });
+    state.categorySkillMapping = categorySkillMapping;
+  },
   SET_SKILL_CATEGORY(state, skillCategory) {
     state.skillCategory = skillCategory;
     const sorted = skillCategory.sort((a, b) => {

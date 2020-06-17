@@ -2688,7 +2688,7 @@
 .skillScrollingWrapper {
   overflow-y: hidden;
   /* white-space: nowrap; */
-  height: 95%;
+  height: 100%;
   width: 100%;
   padding-right: 100px;
   padding-left: 10px;
@@ -2704,10 +2704,15 @@
 .skillCard {
   display: inline-block;
   vertical-align: top;
-  min-width: 250px;
-  padding-bottom: 30px;
+  /* min-width: 250px; */
   margin-right: 20px;
   /* height: 100%; */
+}
+.skillDisplayCard {
+  display: inline-block;
+  vertical-align: top;
+  /* min-width: 250px; */
+  margin-right: 20px;
 }
 .catListName {
   color: #ffffff;
