@@ -43,21 +43,26 @@
             <v-autocomplete
               dense
               background-color="#EDF0F5"
-              v-model="select"
+              v-model="searchSkills"
+              :items="skillArray"
+              item-text="name"
+              item-value="id"
               :loading="loading"
               :search-input.sync="search"
               cache-items
               class="mx-4 searchBar"
               flat
-              hide-no-data
+              hide-data
               hide-details
               append-icon
               prepend-inner-icon="mdi-magnify"
               label="Click to choose"
               outlined
               clearable
-              @click="test()"
+              multiple
+              @click="searchDialogOpen()"
             ></v-autocomplete>
+            <!-- <v-text-field @click="searchDialogOpen()" v-model="this.selectedSkills"></v-text-field> -->
           </v-col>
           <v-col md="1">
             <v-btn dark width="100%" height="100%" color="#FF6161">
@@ -174,7 +179,7 @@
                 <div class v-for="(skill, index) in categoryMap.skillSet" :key="index">
                   <v-list-item>
                     <v-list-item-action>
-                      <v-checkbox></v-checkbox>
+                      <v-checkbox multiple v-model="selectedSkills" :value="skill.skillId"></v-checkbox>
                     </v-list-item-action>
                     <v-list-item-title
                       style="font-size: 12px"
@@ -211,7 +216,9 @@ export default {
   data() {
     return {
       userId: this.$store.state.user.userId,
-      searchSkillDialog: false
+      searchSkillDialog: false,
+      skillSearchArray: [],
+      selectedSkills: ""
     };
   },
 
@@ -250,7 +257,7 @@ export default {
     });
   },
   methods: {
-    test() {
+    searchDialogOpen() {
       this.searchSkillDialog = true;
     },
     async getSkills(categoryId) {
@@ -284,7 +291,32 @@ export default {
       categorySkills: state => state.skillMatrix.skills,
       categorySkillMapping: state => state.skillMatrix.categorySkillMapping,
       userSkills: state => state.skillMatrix.userSkills
-    })
+    }),
+    skillArray() {
+      let SkillSearchList = this.categorySkillMapping;
+      let skillList = [];
+      for (let index1 = 0; index1 < SkillSearchList.length; ++index1) {
+        for (
+          let index2 = 0;
+          index2 < SkillSearchList[index1].skillSet.length;
+          ++index2
+        ) {
+          let skill = SkillSearchList[index1].skillSet[index2];
+          skillList.push({
+            name: skill.skillName,
+            id: skill.skillId
+          });
+        }
+      }
+      return skillList;
+    },
+
+    searchSkills: {
+      get() {
+        return this.selectedSkills;
+      },
+      set(value) {}
+    }
   }
 };
 </script>
