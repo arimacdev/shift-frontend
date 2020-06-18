@@ -2590,9 +2590,9 @@
   margin-left: -120px;
 }
 .updateProfilePopupDiv {
-  position: absolute;
+  position: fixed;
   right: 10px;
-  bottom: 160px;
+  bottom: 10px;
 }
 .userBlockedWarning {
   color: red;

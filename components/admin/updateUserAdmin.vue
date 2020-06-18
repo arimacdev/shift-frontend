@@ -432,14 +432,12 @@ export default {
           this.close();
         }, 3000);
       } catch (e) {
-        this.filterCategory = "";
-        this.selectedSkills = [];
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error updating a status", e);
+        console.log("Error adding a skill", e);
       }
     },
     async removeSkillFromUser(categoryId, skillId) {
@@ -448,21 +446,26 @@ export default {
         response = await this.$axios.$delete(
           `/category/${categoryId}/user/skill`,
           {
-            assigneeId: this.userData.userId,
-            skills: [skillId]
-          },
-          {
+            data: {
+              assigneeId: this.userData.userId,
+              skills: [skillId]
+            },
             headers: {
               userId: this.adminId
             }
           }
         );
+
         this.$store.dispatch(
           "skillMatrix/fetchUserSkills",
           this.userData.userId
         );
 
-        this.successMessage = "Skill removed successfully";
+        this.$store.dispatch(
+          "skillMap/fetchUserSkillMap",
+          this.userData.userId
+        );
+        this.successMessage = "Skill removed from user successfully";
         this.component = "success-popup";
         setTimeout(() => {
           this.close();
@@ -473,7 +476,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error creating project", e);
+        console.log("Error removing a skill", e);
       }
     },
     getSkills() {

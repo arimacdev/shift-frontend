@@ -14,6 +14,7 @@
         </div>
       </div>
     </v-toolbar>
+
     <div class="body-div">
       <div>
         <v-row style="margin-bottom: -20px">
@@ -91,7 +92,7 @@
                   <div class="skillScrollingWrapper">
                     <div
                       class="skillDisplayCard"
-                      v-for="(categoryMap, index) in userSkills[0].category"
+                      v-for="(categoryMap, index) in categorySkillMapping"
                       :key="index"
                     >
                       <div class="titleSection">
@@ -202,6 +203,7 @@ export default {
   created() {
     this.$store.dispatch("project/clearProject");
     this.$store.dispatch("skillMatrix/fetchSkillCategory");
+    this.$store.dispatch("skillMatrix/fetchCategorySkillMapping");
 
     this.$store.dispatch("skillMatrix/fetchUserSkills", this.userId);
   },
@@ -209,7 +211,7 @@ export default {
     ...mapState({
       skillCategory: state => state.skillMatrix.skillCategory,
       categorySkills: state => state.skillMatrix.skills,
-
+      categorySkillMapping: state => state.skillMatrix.categorySkillMapping,
       userSkills: state => state.skillMatrix.userSkills
     })
   }

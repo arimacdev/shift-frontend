@@ -18,12 +18,14 @@ export const mutations = {
       const catB = b.categoryName.toUpperCase();
 
       if (catA < catB) return -1;
+
       if (catA > catB) return 1;
 
       return 0;
     });
     state.categorySkillMapping = categorySkillMapping;
   },
+
   SET_SKILL_CATEGORY(state, skillCategory) {
     state.skillCategory = skillCategory;
     const sorted = skillCategory.sort((a, b) => {
@@ -40,6 +42,16 @@ export const mutations = {
     state.selectedCategory = selectedCategory;
   },
   SET_USER_SKILLS(state, userSkills) {
+    const sorted = userSkills[0].category.sort((a, b) => {
+      const catA = a.categoryName.toUpperCase();
+      const catB = b.categoryName.toUpperCase();
+
+      if (catA < catB) return -1;
+
+      if (catA > catB) return 1;
+
+      return 0;
+    });
     state.userSkills = userSkills;
   },
   SET_SKILLS(state, skills) {
@@ -57,6 +69,24 @@ export const mutations = {
 };
 
 export const actions = {
+  async fetchCategorySkillMapping({ commit, rootState }) {
+    const user = rootState.user.userId;
+    let categorySkillMappingResponse;
+    try {
+      categorySkillMappingResponse = await this.$axios.$get(
+        `/category/skill/mapping`,
+        {
+          headers: {
+            userId: user,
+          },
+        }
+      );
+      // console.log('skill category', skillCategoryResponse.data);
+      commit('SET_CATEGORY_SKILL_MAPPING', categorySkillMappingResponse.data);
+    } catch (error) {
+      console.log('Error fetching skill category mapping', error);
+    }
+  },
   async fetchSkillCategory({ commit, rootState }) {
     const user = rootState.user.userId;
     let skillCategoryResponse;
