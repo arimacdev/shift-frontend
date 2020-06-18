@@ -70,7 +70,7 @@
             <!-- loop following row for each user -->
             <v-row class="scroll">
               <v-col md="3">
-                <div class="titleSection userListTitle" style="background-color: #EDF0F5">All Users</div>
+                <div class="titleSection userListTitle" style="background-color: #EDF0F5">Users</div>
               </v-col>
               <v-col md="9" style="background-color:#ffffff;">
                 <div class="skillDisplayDiv">
