@@ -56,6 +56,7 @@
               label="Click to choose"
               outlined
               clearable
+              @click="test()"
             ></v-autocomplete>
           </v-col>
           <v-col md="1">
@@ -69,10 +70,10 @@
           <v-col>
             <!-- loop following row for each user -->
             <v-row class="scroll">
-              <v-col md="3">
+              <v-col md="3" sm="3">
                 <div class="titleSection userListTitle" style="background-color: #EDF0F5">Users</div>
               </v-col>
-              <v-col md="9" style="background-color:#ffffff;">
+              <v-col md="9" sm="9" style="background-color:#ffffff;">
                 <div class="skillDisplayDiv">
                   <div class="skillScrollingWrapper" id="div1">
                     <div>
@@ -102,7 +103,7 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col md="3">
+              <v-col md="3" sm="3">
                 <v-list-item-group>
                   <div class="matrixUserListItem" v-for="(user, index) in users" :key="index">
                     <v-list-item>
@@ -119,7 +120,7 @@
                   </div>
                 </v-list-item-group>
               </v-col>
-              <v-col md="9">
+              <v-col md="9" sm="9">
                 <div class="skillDisplayDiv">
                   <div class="skillScrollingWrapperScroll" id="div2">
                     <br />
@@ -154,6 +155,47 @@
         </v-row>
       </div>
     </div>
+    <!-- --------- search skill dialog ------ -->
+    <v-dialog v-model="searchSkillDialog" max-width="500">
+      <v-card style=" padding-bottom: 25px">
+        <v-card-title style="text-align: center">
+          <v-spacer></v-spacer>Search Skills
+          <v-spacer></v-spacer>
+        </v-card-title>
+        <v-card-text>
+          <div style="height: 70vh;" class="overflow-y-auto">
+            <div class v-for="(categoryMap, index) in categorySkillMapping" :key="index">
+              <div class>
+                <div
+                  class="categoryHeaderSearch"
+                  :style="'background-color:' + categoryMap.categoryColorCode"
+                >{{categoryMap.categoryName}}</div>
+
+                <div class v-for="(skill, index) in categoryMap.skillSet" :key="index">
+                  <v-list-item>
+                    <v-list-item-action>
+                      <v-checkbox></v-checkbox>
+                    </v-list-item-action>
+                    <v-list-item-title
+                      style="font-size: 12px"
+                      class="skillNameSearch"
+                    >{{skill.skillName}}</v-list-item-title>
+                  </v-list-item>
+                </div>
+              </div>
+            </div>
+          </div>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn width="100px" color="#FF6161" dark @click="searchSkillDialog = false">Cancel</v-btn>
+
+          <v-btn width="100px" color="#2EC973" @click="searchSkillDialog = false" dark>Ok</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -168,7 +210,8 @@ export default {
   },
   data() {
     return {
-      userId: this.$store.state.user.userId
+      userId: this.$store.state.user.userId,
+      searchSkillDialog: false
     };
   },
 
@@ -207,6 +250,9 @@ export default {
     });
   },
   methods: {
+    test() {
+      this.searchSkillDialog = true;
+    },
     async getSkills(categoryId) {
       let categorySkillResponse;
       try {
