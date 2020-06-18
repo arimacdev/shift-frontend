@@ -2766,6 +2766,11 @@
   margin-bottom: 15px;
   margin-top: 15px;
 }
+.skillNameSearch {
+  color: #576377;
+  font-weight: 500;
+  font-size: 14px !important;
+}
 .skillName {
   width: 90px;
   margin-right: 10px;
