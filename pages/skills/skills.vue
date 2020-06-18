@@ -17,7 +17,7 @@
 
     <div class="body-div">
       <div>
-        <v-row style="margin-bottom: -20px">
+        <v-row style=" ">
           <v-col md="3">
             <v-autocomplete
               background-color="#EDF0F5"
@@ -65,12 +65,44 @@
             </v-btn>
           </v-col>
         </v-row>
-        <v-row>
+        <v-row class="scrollContent">
           <v-col>
             <!-- loop following row for each user -->
-            <v-row>
+            <v-row class="scroll">
               <v-col md="3">
                 <div class="titleSection userListTitle" style="background-color: #EDF0F5">All Users</div>
+              </v-col>
+              <v-col md="9" style="background-color:#ffffff;">
+                <div class="skillDisplayDiv">
+                  <div class="skillScrollingWrapper" id="div1">
+                    <div>
+                      <div
+                        class="skillDisplayCard"
+                        v-for="(categoryMap, index) in categorySkillMapping"
+                        :key="index"
+                      >
+                        <div class="titleSection">
+                          <div
+                            class="categoryHeader"
+                            :style="'background-color:' + categoryMap.categoryColorCode"
+                          >{{categoryMap.categoryName}}</div>
+
+                          <div
+                            class="skillName"
+                            v-for="(skill, index) in categoryMap.skillSet"
+                            :key="index"
+                          >
+                            <v-list-item-title style="font-size: 12px">{{skill.skillName}}</v-list-item-title>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col md="3">
                 <v-list-item-group>
                   <div class="matrixUserListItem" v-for="(user, index) in users" :key="index">
                     <v-list-item>
@@ -89,27 +121,7 @@
               </v-col>
               <v-col md="9">
                 <div class="skillDisplayDiv">
-                  <div class="skillScrollingWrapper">
-                    <div
-                      class="skillDisplayCard"
-                      v-for="(categoryMap, index) in categorySkillMapping"
-                      :key="index"
-                    >
-                      <div class="titleSection">
-                        <div
-                          class="categoryHeader"
-                          :style="'background-color:' + categoryMap.categoryColorCode"
-                        >{{categoryMap.categoryName}}</div>
-
-                        <div
-                          class="skillName"
-                          v-for="(skill, index) in categoryMap.skillSet"
-                          :key="index"
-                        >
-                          <v-list-item-title style="font-size: 12px">{{skill.skillName}}</v-list-item-title>
-                        </div>
-                      </div>
-                    </div>
+                  <div class="skillScrollingWrapperScroll" id="div2">
                     <br />
                     <div v-for="(user, index) in users" :key="index">
                       <div
@@ -180,6 +192,19 @@ export default {
       users: users,
       name: users[0].userId
     };
+  },
+  mounted() {
+    $(document).ready(function() {
+      $("#div2").on("scroll", function() {
+        $("#div1").scrollLeft($(this).scrollLeft());
+      });
+    });
+
+    $(document).ready(function() {
+      $("#div1").on("scroll", function() {
+        $("#div2").scrollLeft($(this).scrollLeft());
+      });
+    });
   },
   methods: {
     async getSkills(categoryId) {

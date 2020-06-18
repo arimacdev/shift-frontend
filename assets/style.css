@@ -2693,6 +2693,22 @@
   padding-right: 100px;
   padding-left: 10px;
 }
+.skillScrollingWrapper::-webkit-scrollbar {
+  display: none;
+}
+.skillScrollingWrapperScroll {
+  overflow-y: hidden;
+  /* white-space: nowrap; */
+  height: 100%;
+  width: 100%;
+  padding-right: 100px;
+  padding-left: 10px;
+  margin-top: -30px;
+}
+.scrollContent {
+  height: 80vh;
+  overflow-y: auto;
+}
 .skillProfileCard {
   display: inline-block;
   vertical-align: top;
@@ -2701,7 +2717,13 @@
   margin-right: 20px;
   /* height: 100%; */
 }
-
+.scroll {
+  position: -webkit-sticky;
+  position: sticky !important;
+  top: -12px;
+  z-index: 100;
+  margin-top: -20px !important;
+}
 .skillCard {
   display: inline-block;
   vertical-align: top;
