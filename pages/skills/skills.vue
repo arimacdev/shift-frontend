@@ -106,7 +106,7 @@
                 </div>
               </v-col>
             </v-row>
-            <v-row>
+            <v-row style="margin-bottom: -60px" class="overflow-y-hidden">
               <v-col md="3" sm="3">
                 <v-list-item-group class="skillDisplayScreenUser overflow-y-auto" id="div3">
                   <div
@@ -165,15 +165,28 @@
                     </div>
                   </div>
                   <br />
-                  <v-btn
-                    color="blue"
-                    style="position: fixed; bottom: 10px; right: 10px; color: #FFFFFF"
-                    @click="loadMatrix()"
-                    :disabled="this.loadLimit > users.length"
-                  >
-                    Load More
-                    <v-icon>mdi-arrow-down-drop-circle-outline</v-icon>
-                  </v-btn>
+                  <div style="position: fixed; bottom: 10px; right: 10px;">
+                    <v-btn
+                      color="blue"
+                      style=" color: #FFFFFF"
+                      @click="loadMatrix()"
+                      :disabled="this.loadLimit > users.length"
+                      class="text-capitalize"
+                    >
+                      Load More
+                      <v-icon>mdi-plus-circle-outline</v-icon>
+                    </v-btn>
+                    <v-btn
+                      color="#78CC71"
+                      style="color: #FFFFFF"
+                      @click="loadAllMatrix()"
+                      :disabled="this.loadLimit > users.length"
+                      class="text-capitalize"
+                    >
+                      Load All
+                      <v-icon>mdi-arrow-down-drop-circle-outline</v-icon>
+                    </v-btn>
+                  </div>
                 </div>
               </v-col>
             </v-row>
@@ -297,6 +310,13 @@ export default {
       this.$store.dispatch("skillMatrix/fetchOrganizationSkills", {
         // limit: this.users.length,
         limit: this.loadLimit,
+        offset: 0
+      });
+    },
+    loadAllMatrix() {
+      this.loadLimit = this.users.length + 1;
+      this.$store.dispatch("skillMatrix/fetchOrganizationSkills", {
+        limit: this.users.length,
         offset: 0
       });
     },
