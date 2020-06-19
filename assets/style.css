@@ -2800,7 +2800,6 @@
   padding-top: 15px;
 }
 .titleSection {
-  height: 90px;
 }
 .matrixUserListItem {
   height: 80px;
@@ -2816,7 +2815,7 @@
   height: 60vh;
 }
 .skillDisplayScreen {
-  height: 68vh;
+  height: 69vh;
 }
 .skillDisplayScreenUser {
   height: 65vh;
