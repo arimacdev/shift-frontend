@@ -47,7 +47,7 @@
       </div>
       <div>
         <keep-alive>
-          <component v-bind:is="component"></component>
+          <component v-bind:is="component" @removeComponent="removeComponent"></component>
         </keep-alive>
       </div>
     </div>
@@ -128,6 +128,9 @@ export default {
   methods: {
     close() {
       this.popup = "";
+    },
+    removeComponent(){
+      this.component = "";
     },
     selectCategory(category) {
       this.component = "skills-content";
