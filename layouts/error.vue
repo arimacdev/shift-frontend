@@ -1,20 +1,25 @@
 <template>
-  <v-row class="errorPageContainer">
-    <v-col md="8" sm="12" class="errorPageImage">
-      <img
-        width="100%"
-        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1592549257245_Asset%202@4x.png"
-        alt
-      />
-    </v-col>
-    <v-col md="4" sm="12" class="errorPageText">
-      <div class="errorMessage" v-if="error.statusCode === 404">{{ pageNotFound }}</div>
-      <div class="errorMessage" v-else>{{ otherError }}</div>
-      <NuxtLink to="/" style="text-decoration: none">
-        <v-btn small color="red" dark>Back to home</v-btn>
-      </NuxtLink>
-    </v-col>
-  </v-row>
+  <div style="text-align: center">
+    <v-row class="errorPageContainer">
+      <v-col class="errorPageImage">
+        <img
+          align="center"
+          height="100%"
+          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1592549257245_Asset%202@4x.png"
+          alt
+        />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="errorPageText">
+        <div class="errorMessage" v-if="error.statusCode === 404">{{ pageNotFound }}</div>
+        <div class="errorMessage" v-else>{{ otherError }}</div>
+        <NuxtLink to="/" style="text-decoration: none">
+          <v-btn small color="red" dark>Back to home</v-btn>
+        </NuxtLink>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
