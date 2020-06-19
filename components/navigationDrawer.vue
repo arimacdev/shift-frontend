@@ -8,7 +8,7 @@
     app
     class="nav"
   >
-    <v-list-item @click="reload()" class="px-2 background" :to="'../../profile/profile'">
+    <v-list-item class="px-2 background" :to="'../../profile/profile'">
       <v-list-item-avatar>
         <v-img
           v-if="userProfile.profileImage != null && userProfile.profileImage != ''"
@@ -158,9 +158,6 @@ export default {
   },
 
   methods: {
-    reload() {
-      window.location.href = "/profile/profile";
-    },
     userLogOut() {
       const LOGOUT_URL =
         this.homePage +

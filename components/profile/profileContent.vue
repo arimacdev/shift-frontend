@@ -279,6 +279,9 @@
     <div>
       <h1>OneSignal</h1>
       <div class="onesignal-customlink-container"></div>
+      <v-btn v-if="this.checkActivationStatus()" @click="activateOneSignal()">Activate</v-btn>
+      <v-btn v-else @click="deactivateOneSignal()">Deactivate</v-btn>
+
 
       <!-- ---- this is a switch button if applicable ---- -->
       <!-- <v-sheet class="pa-5">
@@ -420,6 +423,26 @@ export default {
   },
 
   methods: {
+    checkActivationStatus(){
+      if(process.browser){
+      window.OneSignal.isPushNotificationsEnabled(function(isEnabled) {
+        if (isEnabled){
+          console.log("Push notifications are enabled!");
+          return false;
+        }
+        else {
+          console.log("Push notifications are not enabled yet.");   
+          return true;
+        }
+      });
+      }
+    },
+    activateOneSignal(){
+      window.OneSignal.setSubscription(true);
+    },
+    deactivateOneSignal(){
+      window.OneSignal.setSubscription(false);
+    },
     categorizedSkillMap() {
       let skillmap = this.userSkillMap;
       // console.log("skillmap", this.userSkillMap);
