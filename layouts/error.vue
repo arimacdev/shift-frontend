@@ -1,9 +1,20 @@
 <template>
-  <v-app dark>
-    <h1 v-if="error.statusCode === 404">{{ pageNotFound }}</h1>
-    <h1 v-else>{{ otherError }}</h1>
-    <NuxtLink to="/">Home page</NuxtLink>
-  </v-app>
+  <v-row class="errorPageContainer">
+    <v-col md="8" sm="12" class="errorPageImage">
+      <img
+        width="100%"
+        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1592549257245_Asset%202@4x.png"
+        alt
+      />
+    </v-col>
+    <v-col md="4" sm="12" class="errorPageText">
+      <div class="errorMessage" v-if="error.statusCode === 404">{{ pageNotFound }}</div>
+      <div class="errorMessage" v-else>{{ otherError }}</div>
+      <NuxtLink to="/" style="text-decoration: none">
+        <v-btn small color="red" dark>Back to home</v-btn>
+      </NuxtLink>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -18,7 +29,7 @@ export default {
   data() {
     return {
       pageNotFound: "404 Not Found",
-      otherError: "An error occurred"
+      otherError: "Something went wrong"
     };
   },
   head() {

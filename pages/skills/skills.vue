@@ -302,10 +302,10 @@ export default {
   },
   computed: {
     ...mapState({
-      skillCategory: state => state.skillMatrix.skillCategory,
-      categorySkills: state => state.skillMatrix.skills,
-      categorySkillMapping: state => state.skillMatrix.categorySkillMapping,
-      userSkills: state => state.skillMatrix.userSkills
+      // skillCategory: state => state.skillMatrix.skillCategory,
+      // categorySkills: state => state.skillMatrix.skills,
+      // categorySkillMapping: state => state.skillMatrix.categorySkillMapping,
+      // userSkills: state => state.skillMatrix.userSkills
     }),
     skillArray() {
       let SkillSearchList = this.categorySkillMapping;

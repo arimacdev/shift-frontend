@@ -2823,3 +2823,19 @@
 .skillDisplayScreenUser::-webkit-scrollbar {
   display: none;
 }
+.errorPageContainer {
+  width: 100vw;
+  height: 90vh;
+  margin-top: -40px;
+}
+.errorPageText {
+  text-align: center;
+  padding-top: 20% !important;
+}
+.errorPageImage {
+}
+.errorMessage {
+  font-size: 30px;
+  margin-bottom: 30px;
+  color: #576377;
+}
