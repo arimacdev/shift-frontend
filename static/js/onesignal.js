@@ -1,12 +1,12 @@
 window.OneSignal = window.OneSignal || [];
     OneSignal.push(function() {
       console.log("Hello, from Onesignal");
-      OneSignal.isPushNotificationsEnabled(function(isEnabled) {
-        if (isEnabled)
-          console.log("Push notifications are enabled!");
-        else
-          console.log("Push notifications are not enabled yet.");   
-      });
+      // OneSignal.isPushNotificationsEnabled(function(isEnabled) {
+      //   if (isEnabled)
+      //     console.log("Push notifications are enabled!");
+      //   else
+      //     console.log("Push notifications are not enabled yet.");   
+      // });
       OneSignal.getUserId().then(function(userId) {
         console.log("OneSignal User ID:", userId);
       });
