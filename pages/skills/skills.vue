@@ -83,7 +83,7 @@
                     <div>
                       <div
                         class="skillDisplayCard"
-                        v-for="(categoryMap, index) in categorySkillMapping"
+                        v-for="(categoryMap, index) in organizationSkills[0].category"
                         :key="index"
                       >
                         <div>
@@ -109,10 +109,19 @@
             <v-row>
               <v-col md="3" sm="3">
                 <v-list-item-group class="skillDisplayScreenUser overflow-y-auto" id="div3">
-                  <div class="matrixUserListItem" v-for="(user, index) in users" :key="index">
+                  <div
+                    class="matrixUserListItem"
+                    v-for="(user, index) in organizationSkills"
+                    :key="index"
+                  >
                     <v-list-item>
                       <v-list-item-avatar>
                         <v-img
+                          v-if="user.userProfileImage != null && user.userProfileImage != ''"
+                          :src="user.userProfileImage"
+                        ></v-img>
+                        <v-img
+                          v-else
                           src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                         ></v-img>
                       </v-list-item-avatar>
@@ -131,10 +140,10 @@
                     id="div2"
                   >
                     <br />
-                    <div v-for="(user, index) in users" :key="index">
+                    <div v-for="(user, index) in organizationSkills" :key="index">
                       <div
                         class="skillDisplayCard"
-                        v-for="(category, index) in userSkills[0].category"
+                        v-for="(category, index) in user.category"
                         :key="index"
                       >
                         <div
@@ -294,6 +303,10 @@ export default {
     }
   },
   created() {
+    this.$store.dispatch("skillMatrix/fetchOrganizationSkills", {
+      limit: this.users.length,
+      offset: 0
+    });
     this.$store.dispatch("project/clearProject");
     this.$store.dispatch("skillMatrix/fetchSkillCategory");
     this.$store.dispatch("skillMatrix/fetchCategorySkillMapping");
@@ -302,10 +315,11 @@ export default {
   },
   computed: {
     ...mapState({
-      // skillCategory: state => state.skillMatrix.skillCategory,
-      // categorySkills: state => state.skillMatrix.skills,
-      // categorySkillMapping: state => state.skillMatrix.categorySkillMapping,
-      // userSkills: state => state.skillMatrix.userSkills
+      skillCategory: state => state.skillMatrix.skillCategory,
+      categorySkills: state => state.skillMatrix.skills,
+      categorySkillMapping: state => state.skillMatrix.categorySkillMapping,
+      userSkills: state => state.skillMatrix.userSkills,
+      organizationSkills: state => state.skillMatrix.organizationSkills
     }),
     skillArray() {
       let SkillSearchList = this.categorySkillMapping;
