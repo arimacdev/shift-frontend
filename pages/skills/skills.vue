@@ -58,7 +58,6 @@
               prepend-inner-icon="mdi-magnify"
               label="Click to choose"
               outlined
-              clearable
               multiple
               @click="searchDialogOpen()"
             ></v-autocomplete>
@@ -109,7 +108,7 @@
             </v-row>
             <v-row>
               <v-col md="3" sm="3">
-                <v-list-item-group>
+                <v-list-item-group class="skillDisplayScreenUser overflow-y-auto" id="div3">
                   <div class="matrixUserListItem" v-for="(user, index) in users" :key="index">
                     <v-list-item>
                       <v-list-item-avatar>
@@ -127,7 +126,10 @@
               </v-col>
               <v-col md="9" sm="9">
                 <div class="skillDisplayDiv">
-                  <div class="skillScrollingWrapperScroll" id="div2">
+                  <div
+                    class="skillScrollingWrapperScroll skillDisplayScreen overflow-y-auto"
+                    id="div2"
+                  >
                     <br />
                     <div v-for="(user, index) in users" :key="index">
                       <div
@@ -255,7 +257,20 @@ export default {
         $("#div2").scrollLeft($(this).scrollLeft());
       });
     });
+
+    $(document).ready(function() {
+      $("#div2").on("scroll", function() {
+        $("#div3").scrollTop($(this).scrollTop());
+      });
+    });
+
+    $(document).ready(function() {
+      $("#div3").on("scroll", function() {
+        $("#div2").scrollTop($(this).scrollTop());
+      });
+    });
   },
+
   methods: {
     searchDialogOpen() {
       this.searchSkillDialog = true;

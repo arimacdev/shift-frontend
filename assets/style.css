@@ -2708,6 +2708,8 @@
 .scrollContent {
   height: 80vh;
   overflow-y: auto;
+  position: absolute;
+  bottom: 0px;
 }
 .skillProfileCard {
   display: inline-block;
@@ -2809,4 +2811,16 @@
   padding-top: 40px;
   color: #576377;
   font-weight: 500;
+}
+.skillMatrixScreen {
+  height: 60vh;
+}
+.skillDisplayScreen {
+  height: 68vh;
+}
+.skillDisplayScreenUser {
+  height: 65vh;
+}
+.skillDisplayScreenUser::-webkit-scrollbar {
+  display: none;
 }
