@@ -2707,7 +2707,7 @@
 }
 .scrollContent {
   height: 80vh;
-  width: 100%;
+  min-width: 100%;
   overflow-y: auto;
   position: absolute;
   bottom: 0px;

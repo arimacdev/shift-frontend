@@ -45,6 +45,7 @@
 
           <v-col style="margin-left: -20px" md="7">
             <v-autocomplete
+              :menu-props="{ maxHeight: '0' }"
               dense
               background-color="#EDF0F5"
               v-model="searchSkills"
