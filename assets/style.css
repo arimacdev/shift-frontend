@@ -2707,6 +2707,7 @@
 }
 .scrollContent {
   height: 80vh;
+  width: 100%;
   overflow-y: auto;
   position: absolute;
   bottom: 0px;
@@ -2819,6 +2820,7 @@
 }
 .skillDisplayScreenUser {
   height: 65vh;
+  background-color: #edf0f5;
 }
 .skillDisplayScreenUser::-webkit-scrollbar {
   display: none;
@@ -2838,4 +2840,10 @@
   font-size: 30px;
   margin-bottom: 20px;
   color: #576377;
+}
+.noItemText {
+  font-size: 20px;
+  color: #576377;
+  font-weight: 500;
+  padding: 20px;
 }

@@ -73,15 +73,46 @@
             </v-btn>
           </v-col>
         </v-row>
+        <v-row v-if=" skillFilter == ''">
+          <v-col>
+            <div class="noItemText">No items to show</div>
+          </v-col>
+        </v-row>
         <v-row class="scrollContent">
           <v-col>
             <!-- loop following row for each user -->
             <v-row class="scroll">
-              <v-col md="3" sm="3">
+              <v-col md="3" sm="3" v-if=" skillFilter != ''">
                 <div class="userListTitle">Users</div>
               </v-col>
               <v-col md="9" sm="9" style="background-color:#ffffff;">
-                <div v-if="this.userSearch" class="skillDisplayDiv">
+                <div v-if="this.skillSearch  && skillFilter != ''" class="skillDisplayDiv">
+                  <div class="skillScrollingWrapper" id="div1">
+                    <div>
+                      <div
+                        class="skillDisplayCard"
+                        v-for="(categoryMap, index) in skillFilter[0].category"
+                        :key="index"
+                      >
+                        <div>
+                          <div
+                            class="categoryHeader"
+                            :style="'background-color:' + categoryMap.categoryColorCode"
+                          >{{categoryMap.categoryName}}</div>
+
+                          <div
+                            class="skillName"
+                            v-for="(skill, index) in categoryMap.skillSet"
+                            :key="index"
+                          >
+                            <v-list-item-title style="font-size: 12px">{{skill.skillName}}</v-list-item-title>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div v-else-if="this.userSearch" class="skillDisplayDiv">
                   <div class="skillScrollingWrapper" id="div1">
                     <div>
                       <div
@@ -107,7 +138,7 @@
                     </div>
                   </div>
                 </div>
-                <div v-else class="skillDisplayDiv">
+                <div v-else-if="this.matrixView" class="skillDisplayDiv">
                   <div class="skillScrollingWrapper" id="div1">
                     <div>
                       <div
@@ -138,7 +169,31 @@
             <v-row style="margin-bottom: -60px" class="overflow-y-hidden">
               <v-col md="3" sm="3">
                 <v-list-item-group
-                  v-if="this.userSearch"
+                  v-if="this.skillSearch  && skillFilter != ''"
+                  class="skillDisplayScreenUser overflow-y-auto"
+                  id="div3"
+                >
+                  <div class="matrixUserListItem" v-for="(user, index) in skillFilter" :key="index">
+                    <v-list-item>
+                      <v-list-item-avatar>
+                        <v-img
+                          v-if="user.userProfileImage != null && user.userProfileImage != ''"
+                          :src="user.userProfileImage"
+                        ></v-img>
+                        <v-img
+                          v-else
+                          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                        ></v-img>
+                      </v-list-item-avatar>
+                      <v-list-item-content>
+                        <v-list-item-title>{{user.firstName}} {{user.lastName}}</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-divider class="mx-4"></v-divider>
+                  </div>
+                </v-list-item-group>
+                <v-list-item-group
+                  v-else-if="this.userSearch"
                   class="skillDisplayScreenUser overflow-y-auto"
                   id="div3"
                 >
@@ -161,7 +216,11 @@
                     <v-divider class="mx-4"></v-divider>
                   </div>
                 </v-list-item-group>
-                <v-list-item-group v-else class="skillDisplayScreenUser overflow-y-auto" id="div3">
+                <v-list-item-group
+                  v-else-if="this.matrixView"
+                  class="skillDisplayScreenUser overflow-y-auto"
+                  id="div3"
+                >
                   <div
                     class="matrixUserListItem"
                     v-for="(user, index) in organizationSkills"
@@ -189,7 +248,37 @@
               <v-col md="9" sm="9">
                 <div class="skillDisplayDiv">
                   <div
-                    v-if="this.userSearch"
+                    v-if="this.skillSearch  && skillFilter != ''"
+                    class="skillScrollingWrapperScroll skillDisplayScreen overflow-y-auto"
+                    id="div2"
+                  >
+                    <br />
+                    <div v-for="(user, index) in skillFilter" :key="index">
+                      <div
+                        class="skillDisplayCard"
+                        v-for="(category, index) in user.category"
+                        :key="index"
+                      >
+                        <div
+                          class="skillDisplayBox"
+                          v-for="(skill, index) in category.skillSet"
+                          :key="index"
+                        >
+                          <div class="skillDisplayCheckBox">
+                            <v-icon
+                              v-if="skill.isAssigned == true"
+                              size="30"
+                              color="#2EC973"
+                            >mdi-checkbox-marked-circle</v-icon>
+                            <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                          </div>
+                        </div>
+                      </div>
+                      <br />
+                    </div>
+                  </div>
+                  <div
+                    v-else-if="this.userSearch"
                     class="skillScrollingWrapperScroll skillDisplayScreen overflow-y-auto"
                     id="div2"
                   >
@@ -219,7 +308,7 @@
                     </div>
                   </div>
                   <div
-                    v-else
+                    v-else-if="this.matrixView"
                     class="skillScrollingWrapperScroll skillDisplayScreen overflow-y-auto"
                     id="div2"
                   >
@@ -249,7 +338,7 @@
                     </div>
                   </div>
                   <br />
-                  <div style="position: fixed; bottom: 10px; right: 10px;">
+                  <div style="position: fixed; bottom: 10px; right: 10px;" v-if="this.matrixView">
                     <v-btn
                       color="blue"
                       style=" color: #FFFFFF"
@@ -314,7 +403,12 @@
 
           <v-btn width="100px" color="#FF6161" dark @click="searchSkillDialog = false">Cancel</v-btn>
 
-          <v-btn width="100px" color="#2EC973" @click="searchSkillDialog = false" dark>Ok</v-btn>
+          <v-btn
+            width="100px"
+            color="#2EC973"
+            @click="searchSkillDialog = false; filterSkills()"
+            dark
+          >Ok</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -340,6 +434,8 @@ export default {
       loadLimit: 10,
       userSearch: false,
       skillSearch: false,
+      matrixView: true,
+      skillQuery: "",
       searchUser: {
         id: "",
         name: "",
@@ -396,15 +492,37 @@ export default {
   },
 
   methods: {
+    filterSkills() {
+      this.skillSearch = true;
+      this.userSearch = false;
+      this.matrixView = false;
+      if (this.searchSkills.length != 0) {
+        let skillList = "skill=";
+        for (let i = 0; i < this.searchSkills.length; i++) {
+          skillList = skillList + this.searchSkills[i];
+          if (i < this.searchSkills.length - 1) {
+            skillList = skillList + "&skill=";
+          }
+        }
+        this.skillQuery = skillList;
+        this.$store.dispatch("skillMatrix/fetchFilterSkills", this.skillQuery);
+      }
+    },
     searchByUser() {
       console.log("TRIGGERRED: " + this.searchUser);
       if (this.searchUser !== undefined) {
         this.userSearch = true;
+        this.skillSearch = false;
+        this.matrixView = false;
         this.$store.dispatch("skillMatrix/fetchUserSkills", this.searchUser.id);
       }
     },
     cancelSearch() {
+      this.searchSkills = "";
+      this.selectedSkills = " ";
       this.userSearch = false;
+      this.skillSearch = false;
+      this.matrixView = true;
     },
     loadMatrix() {
       this.loadLimit = this.loadLimit + 10;
@@ -460,7 +578,8 @@ export default {
       categorySkills: state => state.skillMatrix.skills,
       categorySkillMapping: state => state.skillMatrix.categorySkillMapping,
       userSkills: state => state.skillMatrix.userSkills,
-      organizationSkills: state => state.skillMatrix.organizationSkills
+      organizationSkills: state => state.skillMatrix.organizationSkills,
+      skillFilter: state => state.skillMatrix.skillFilter
     }),
     skillArray() {
       let SkillSearchList = this.categorySkillMapping;

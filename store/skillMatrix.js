@@ -17,14 +17,36 @@ export const state = () => ({
       category: [],
     },
   ],
+  skillFilter: [
+    {
+      userId: '',
+      firstName: '',
+      lastName: '',
+      userProfileImage: '',
+      category: [],
+    },
+  ],
   categorySkillMapping: [],
 });
 
 export const mutations = {
+  SET_FILTER_SKILLS(state, skillFilter) {
+    const sorted = skillFilter.sort((a, b) => {
+      const userA = a.firstName.toUpperCase();
+      const userB = b.firstName.toUpperCase();
+
+      if (userA < userB) return -1;
+
+      if (userA > userB) return 1;
+
+      return 0;
+    });
+    state.skillFilter = skillFilter;
+  },
   SET_ORGANIZATION_SKILLS(state, organizationSkills) {
     const sorted = organizationSkills.sort((a, b) => {
       const userA = a.firstName.toUpperCase();
-      const userB = b.lastName.toUpperCase();
+      const userB = b.firstName.toUpperCase();
 
       if (userA < userB) return -1;
 
@@ -91,6 +113,23 @@ export const mutations = {
 };
 
 export const actions = {
+  async fetchFilterSkills({ commit, rootState }, filter) {
+    const user = rootState.user.userId;
+    let filterSkillsResponse;
+    try {
+      filterSkillsResponse = await this.$axios.$get(
+        `/category/user/skills?${filter}`,
+        {
+          headers: {
+            userId: user,
+          },
+        }
+      );
+      commit('SET_FILTER_SKILLS', filterSkillsResponse.data);
+    } catch (error) {
+      console.log('Error fetching filter skills', error);
+    }
+  },
   async fetchOrganizationSkills({ commit, rootState }, { limit, offset }) {
     const user = rootState.user.userId;
     let organizationSkillsResponse;
