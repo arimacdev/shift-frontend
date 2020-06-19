@@ -51,7 +51,7 @@
           <v-img
             class="white--text align-end slackImage"
             width="100px"
-            src="https://images.squarespace-cdn.com/content/v1/59023aa1e58c62227ce776c3/1503518408354-JKWF2TL6XMAPUDUDXHB8/ke17ZwdGBToddI8pDm48kDdoBnacxb2NT7zhAvcunbkUqsxRUqqbr1mOJYKfIPR7LoDQ9mXPOjoJoqy81S2I8N_N4V1vUb5AoIIIbLZhVYxCRW4BPu10St3TBAUQYVKcnQaz6sFZ284KgYK7oqQKwCiboq4NyF9jYMWrqFYNBZyhQt1FiR_Knww7CTx6buRm/Slack_CMYK.png"
+            src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1592584626105_Slack_CMYK.png"
           ></v-img>
           <div class="cardSlogan">It's time to connect your app with slack</div>
 
@@ -63,7 +63,7 @@
                 alt="Join Slack Notifications"
                 height
                 width="120"
-                src="https://platform.slack-edge.com/img/add_to_slack.png"
+                src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1592584747849_add_to_slack.png"
                 srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"
               />
             </a>
@@ -101,7 +101,44 @@
           </div>
         </v-card>
 
-        <!-- --------------------- end slack ----------------- -->
+        <!-- --------------------- one signal ----------------- -->
+
+        <v-card class="mx-auto slackCard" max-width="344" height="250px" outlined>
+          <v-img
+            class="white--text align-end slackImage"
+            width="100px"
+            src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1592584626072_onesignal-1534463753064.png"
+          ></v-img>
+
+          <div class="cardSlogan">Get updates from all sorts of things that matter to you</div>
+          <div class="oneSignalButton">
+            <!-- <div class="onesignal-customlink-container cardOneSignalSlogan"></div> -->
+            <v-btn
+              color="teal"
+              outlined
+              depressed
+              class="text-capitalize oneSignalBtn"
+              v-if="this.checkActivationStatus()"
+              @click="activateOneSignal()"
+            >Activate</v-btn>
+            <v-btn
+              color="teal"
+              outlined
+              depressed
+              class="text-capitalize oneSignalBtn"
+              v-else
+              @click="deactivateOneSignal()"
+            >Deactivate</v-btn>
+          </div>
+        </v-card>
+
+        <div>
+          <!-- ---- this is a switch button if applicable ---- -->
+          <!-- <v-sheet class="pa-5">
+        <v-switch v-model="switch1" inset :label="`Switch 1: ${switch1.toString()}`"></v-switch>
+          </v-sheet>-->
+        </div>
+
         <!-- <v-switch v-model="switch1" inset :label="`Switch 1: ${switch1.toString()}`"></v-switch> -->
       </div>
     </div>
@@ -276,19 +313,6 @@
       </div>
     </v-form>
 
-    <div>
-      <h1>OneSignal</h1>
-      <div class="onesignal-customlink-container"></div>
-      <v-btn v-if="this.checkActivationStatus()" @click="activateOneSignal()">Activate</v-btn>
-      <v-btn v-else @click="deactivateOneSignal()">Deactivate</v-btn>
-
-
-      <!-- ---- this is a switch button if applicable ---- -->
-      <!-- <v-sheet class="pa-5">
-        <v-switch v-model="switch1" inset :label="`Switch 1: ${switch1.toString()}`"></v-switch>
-      </v-sheet>-->
-    </div>
-
     <div @click="close">
       <component
         v-bind:is="component"
@@ -423,24 +447,23 @@ export default {
   },
 
   methods: {
-    checkActivationStatus(){
-      if(process.browser){
-      window.OneSignal.isPushNotificationsEnabled(function(isEnabled) {
-        if (isEnabled){
-          console.log("Push notifications are enabled!");
-          return false;
-        }
-        else {
-          console.log("Push notifications are not enabled yet.");   
-          return true;
-        }
-      });
+    checkActivationStatus() {
+      if (process.browser) {
+        window.OneSignal.isPushNotificationsEnabled(function(isEnabled) {
+          if (isEnabled) {
+            console.log("Push notifications are enabled!");
+            return false;
+          } else {
+            console.log("Push notifications are not enabled yet.");
+            return true;
+          }
+        });
       }
     },
-    activateOneSignal(){
+    activateOneSignal() {
       window.OneSignal.setSubscription(true);
     },
-    deactivateOneSignal(){
+    deactivateOneSignal() {
       window.OneSignal.setSubscription(false);
     },
     categorizedSkillMap() {
