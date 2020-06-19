@@ -164,6 +164,16 @@
                       <br />
                     </div>
                   </div>
+                  <br />
+                  <v-btn
+                    color="blue"
+                    style="position: fixed; bottom: 10px; right: 10px; color: #FFFFFF"
+                    @click="loadMatrix()"
+                    :disabled="this.loadLimit > users.length"
+                  >
+                    Load More
+                    <v-icon>mdi-arrow-down-drop-circle-outline</v-icon>
+                  </v-btn>
                 </div>
               </v-col>
             </v-row>
@@ -229,7 +239,8 @@ export default {
       userId: this.$store.state.user.userId,
       searchSkillDialog: false,
       skillSearchArray: [],
-      selectedSkills: ""
+      selectedSkills: "",
+      loadLimit: 10
     };
   },
 
@@ -281,6 +292,14 @@ export default {
   },
 
   methods: {
+    loadMatrix() {
+      this.loadLimit = this.loadLimit + 10;
+      this.$store.dispatch("skillMatrix/fetchOrganizationSkills", {
+        // limit: this.users.length,
+        limit: this.loadLimit,
+        offset: 0
+      });
+    },
     searchDialogOpen() {
       this.searchSkillDialog = true;
     },
@@ -304,7 +323,8 @@ export default {
   },
   created() {
     this.$store.dispatch("skillMatrix/fetchOrganizationSkills", {
-      limit: this.users.length,
+      // limit: this.users.length,
+      limit: 10,
       offset: 0
     });
     this.$store.dispatch("project/clearProject");
