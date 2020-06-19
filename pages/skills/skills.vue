@@ -68,7 +68,7 @@
           </v-col>
 
           <v-col md="1">
-            <v-btn @click="cancelSearch()" dark width="100%" height="90%" color="#FF6161">
+            <v-btn @click="cancelSearch()" dark width="100%" height="80%" color="#FF6161">
               <v-icon color="#FFFFFF">mdi-cancel</v-icon>
               <!-- Cancel -->
             </v-btn>
@@ -519,6 +519,7 @@ export default {
       }
     },
     cancelSearch() {
+      this.searchUser = null;
       this.searchSkills = "";
       this.selectedSkills = " ";
       this.userSearch = false;
