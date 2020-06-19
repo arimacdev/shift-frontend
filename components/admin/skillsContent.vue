@@ -432,6 +432,7 @@ export default {
           }
         );
         this.$store.dispatch("skillMatrix/fetchSkillCategory");
+        this.$emit("removeComponent");
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
