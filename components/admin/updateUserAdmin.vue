@@ -497,17 +497,17 @@ export default {
       console.log("CLEARED " + this.filterCategory);
       this.filterCategory = "";
     },
-    categorizedSkillMap() {
-      let skillmap = this.userSkillMap;
-      // console.log("skillmap", this.userSkillMap);
-      const orderedSkillMap = skillmap.reduce((accumilate, current) => {
-        accumilate[current.categoryId] = (
-          accumilate[current.categoryId] || []
-        ).concat(current);
-        return accumilate;
-      }, {});
-      return orderedSkillMap;
-    },
+    // categorizedSkillMap() {
+    //   let skillmap = this.userSkillMap;
+    //   // console.log("skillmap", this.userSkillMap);
+    //   const orderedSkillMap = skillmap.reduce((accumilate, current) => {
+    //     accumilate[current.categoryId] = (
+    //       accumilate[current.categoryId] || []
+    //     ).concat(current);
+    //     return accumilate;
+    //   }, {});
+    //   return orderedSkillMap;
+    // },
     checkUser(roleName) {
       if (roleName === "USER") {
         return true;

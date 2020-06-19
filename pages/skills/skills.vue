@@ -75,7 +75,7 @@
             <!-- loop following row for each user -->
             <v-row class="scroll">
               <v-col md="3" sm="3">
-                <div class="titleSection userListTitle" style="background-color: #EDF0F5">Users</div>
+                <div class="userListTitle">Users</div>
               </v-col>
               <v-col md="9" sm="9" style="background-color:#ffffff;">
                 <div class="skillDisplayDiv">
@@ -86,7 +86,7 @@
                         v-for="(categoryMap, index) in categorySkillMapping"
                         :key="index"
                       >
-                        <div class="titleSection">
+                        <div>
                           <div
                             class="categoryHeader"
                             :style="'background-color:' + categoryMap.categoryColorCode"

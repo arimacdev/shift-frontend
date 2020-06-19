@@ -2799,17 +2799,17 @@
   margin-left: 15px;
   padding-top: 15px;
 }
-.titleSection {
-}
 .matrixUserListItem {
   height: 80px;
   background-color: #edf0f5;
 }
 .userListTitle {
   padding-left: 20px;
-  padding-top: 40px;
+  padding-top: 25px;
   color: #576377;
   font-weight: 500;
+  background-color: #edf0f5;
+  height: 100%;
 }
 .skillMatrixScreen {
   height: 60vh;
