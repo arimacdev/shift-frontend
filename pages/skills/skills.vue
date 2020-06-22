@@ -66,7 +66,7 @@
               label="Click to choose"
               outlined
               multiple
-              @click="searchDialogOpen()"
+              @focus="searchDialogOpen()"
             ></v-autocomplete>
             <!-- <v-text-field @click="searchDialogOpen()" v-model="this.selectedSkills"></v-text-field> -->
           </v-col>
