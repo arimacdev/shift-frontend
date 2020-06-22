@@ -76,7 +76,7 @@
               @click="cancelSearch()"
               dark
               width="100%"
-              height="80%"
+              height="40px"
               color="#FF6161"
             >
               <v-icon color="#FFFFFF">mdi-cancel</v-icon>
