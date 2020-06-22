@@ -12,29 +12,39 @@
           >
             <!-- -------- load parent tasks (default board) ------------ -->
 
-            <v-list-item @click="selectTask(task.parentTask, task); taskDialog = true ">
+            <v-list-item
+              @click="
+                selectTask(task.parentTask, task);
+                taskDialog = true;
+              "
+            >
               <!-- @click.stop="drawer = !drawer" -->
               <v-list-item-action>
-                <v-icon
-                  v-if="task.parentTask.taskStatus == 'closed'"
-                  size="25"
-                  color="#2EC973"
-                >mdi-checkbox-marked-circle</v-icon>
-                <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                <div class="text-center">
+                  <v-icon
+                    v-if="task.parentTask.taskStatus == 'closed'"
+                    size="25"
+                    color="#2EC973"
+                  >mdi-checkbox-marked-circle</v-icon>
+                  <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                  <br />
+                  <div
+                    style="font-size: 10px; font-weight: bold"
+                  >{{ task.parentTask.secondaryTaskId }}</div>
+                </div>
               </v-list-item-action>
               <v-list-item-content>
-                <v-list-item-title>
-                  {{
-                  task.parentTask.taskName
-                  }}
-                </v-list-item-title>
+                <v-list-item-title>{{ task.parentTask.taskName }}</v-list-item-title>
                 <div
                   :class="dueDateCheck(task.parentTask)"
                 >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</div>
               </v-list-item-content>
               <v-list-item-avatar size="25">
                 <v-img
-                  v-if="task.parentTask.taskAssigneeProfileImage != null && task.parentTask.taskAssigneeProfileImage != ''"
+                  v-if="
+                    task.parentTask.taskAssigneeProfileImage != null &&
+                      task.parentTask.taskAssigneeProfileImage != ''
+                  "
                   :src="task.parentTask.taskAssigneeProfileImage"
                 ></v-img>
                 <v-img
@@ -62,24 +72,47 @@
             <v-list-item
               v-if="childTask.sprintId == 'default'"
               class="boardTaskChildListItem"
-              @click="selectTask(childTask, task);  taskDialog = true"
+              @click="
+                selectTask(childTask, task);
+                taskDialog = true;
+              "
             >
               <!-- @click.stop="drawer = !drawer" -->
-              <v-list-item-action>
+              <!-- <v-list-item-action>
                 <v-icon
                   v-if="childTask.taskStatus == 'closed'"
                   size="25"
                   color="#2EC973"
-                >mdi-checkbox-marked-circle</v-icon>
-                <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                  >mdi-checkbox-marked-circle</v-icon
+                >
+                <v-icon v-else size="30" color="#EDF0F5"
+                  >mdi-checkbox-blank-circle</v-icon
+                >
+              </v-list-item-action>-->
+
+              <v-list-item-action>
+                <div class="text-center">
+                  <v-icon
+                    v-if="childTask.taskStatus == 'closed'"
+                    size="25"
+                    color="#2EC973"
+                  >mdi-checkbox-marked-circle</v-icon>
+                  <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                  <br />
+                  <div style="font-size: 10px; font-weight: bold">{{ childTask.secondaryTaskId }}</div>
+                </div>
               </v-list-item-action>
+
               <v-list-item-content>
                 <v-list-item-title>{{ childTask.taskName }}</v-list-item-title>
                 <div :class="dueDateCheck(childTask)">{{ getProjectDates(childTask.taskDueDateAt) }}</div>
               </v-list-item-content>
               <v-list-item-avatar size="25">
                 <v-img
-                  v-if="childTask.taskAssigneeProfileImage != null && childTask.taskAssigneeProfileImage != ''"
+                  v-if="
+                    childTask.taskAssigneeProfileImage != null &&
+                      childTask.taskAssigneeProfileImage != ''
+                  "
                   :src="childTask.taskAssigneeProfileImage"
                 ></v-img>
                 <v-img
@@ -123,12 +156,12 @@
                   </v-tooltip>
                 </div>
                 <div class="sprintTitleName">
-                  <v-list-item-title>{{ projectSprint.sprintName }}</v-list-item-title>
-                  <v-list-item-subtitle>
+                  <v-list-item-title>
                     {{
-                    projectSprint.sprintDescription
+                    projectSprint.sprintName
                     }}
-                  </v-list-item-subtitle>
+                  </v-list-item-title>
+                  <v-list-item-subtitle>{{ projectSprint.sprintDescription }}</v-list-item-subtitle>
                 </div>
               </div>
 
@@ -139,22 +172,42 @@
                     v-if="task.parentTask.sprintId == projectSprint.sprintId"
                     class="boardTaskListItem"
                   >
-                    <v-list-item @click="selectTask(task.parentTask, task); taskDialog = true;">
+                    <v-list-item
+                      @click="
+                        selectTask(task.parentTask, task);
+                        taskDialog = true;
+                      "
+                    >
                       <!-- @click.stop="drawer = !drawer" -->
-                      <v-list-item-action>
+                      <!-- <v-list-item-action>
                         <v-icon
                           v-if="task.parentTask.taskStatus == 'closed'"
                           size="25"
                           color="#2EC973"
-                        >mdi-checkbox-marked-circle</v-icon>
-                        <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                          >mdi-checkbox-marked-circle</v-icon
+                        >
+                        <v-icon v-else size="30" color="#EDF0F5"
+                          >mdi-checkbox-blank-circle</v-icon
+                        >
+                      </v-list-item-action>-->
+
+                      <v-list-item-action>
+                        <div class="text-center">
+                          <v-icon
+                            v-if="task.parentTask.taskStatus == 'closed'"
+                            size="25"
+                            color="#2EC973"
+                          >mdi-checkbox-marked-circle</v-icon>
+                          <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                          <br />
+                          <div
+                            style="font-size: 10px; font-weight: bold"
+                          >{{ task.parentTask.secondaryTaskId }}</div>
+                        </div>
                       </v-list-item-action>
+
                       <v-list-item-content>
-                        <v-list-item-title>
-                          {{
-                          task.parentTask.taskName
-                          }}
-                        </v-list-item-title>
+                        <v-list-item-title>{{ task.parentTask.taskName }}</v-list-item-title>
                         <div
                           :class="dueDateCheck(task.parentTask)"
                         >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</div>
@@ -162,7 +215,8 @@
                       <v-list-item-avatar size="25">
                         <v-img
                           v-if="
-                            task.parentTask.taskAssigneeProfileImage != null && task.parentTask.taskAssigneeProfileImage != ''
+                            task.parentTask.taskAssigneeProfileImage != null &&
+                              task.parentTask.taskAssigneeProfileImage != ''
                           "
                           :src="task.parentTask.taskAssigneeProfileImage"
                         ></v-img>
@@ -193,30 +247,51 @@
                     <v-list-item
                       v-if="childTask.sprintId == projectSprint.sprintId"
                       class="boardTaskListItem"
-                      @click="selectTask(childTask, task); taskDialog = true;"
+                      @click="
+                        selectTask(childTask, task);
+                        taskDialog = true;
+                      "
                     >
                       <!-- @click.stop="drawer = !drawer" -->
-                      <v-list-item-action>
+                      <!-- <v-list-item-action>
                         <v-icon
                           v-if="childTask.taskStatus == 'closed'"
                           size="25"
                           color="#2EC973"
-                        >mdi-checkbox-marked-circle</v-icon>
-                        <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                          >mdi-checkbox-marked-circle</v-icon
+                        >
+                        <v-icon v-else size="30" color="#EDF0F5"
+                          >mdi-checkbox-blank-circle</v-icon
+                        >
+                      </v-list-item-action>-->
+
+                      <v-list-item-action>
+                        <div class="text-center">
+                          <v-icon
+                            v-if="childTask.taskStatus == 'closed'"
+                            size="25"
+                            color="#2EC973"
+                          >mdi-checkbox-marked-circle</v-icon>
+                          <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                          <br />
+                          <div
+                            style="font-size: 10px; font-weight: bold"
+                          >{{ childTask.secondaryTaskId }}</div>
+                        </div>
                       </v-list-item-action>
+
                       <v-list-item-content>
-                        <v-list-item-title>
-                          {{
-                          childTask.taskName
-                          }}
-                        </v-list-item-title>
+                        <v-list-item-title>{{ childTask.taskName }}</v-list-item-title>
                         <div
                           :class="dueDateCheck(childTask)"
                         >{{ getProjectDates(childTask.taskDueDateAt) }}</div>
                       </v-list-item-content>
                       <v-list-item-avatar size="25">
                         <v-img
-                          v-if="childTask.taskAssigneeProfileImage != null && childTask.taskAssigneeProfileImage != ''"
+                          v-if="
+                            childTask.taskAssigneeProfileImage != null &&
+                              childTask.taskAssigneeProfileImage != ''
+                          "
                           :src="childTask.taskAssigneeProfileImage"
                         ></v-img>
                         <v-img
@@ -296,8 +371,8 @@
           <br />
           <span class="alertPopupText">
             You're about to permanantly delete this task, its comments and
-            attachments, and all of its data. If you're not sure, you can
-            cancel this action.
+            attachments, and all of its data. If you're not sure, you can cancel
+            this action.
           </span>
         </div>
 
@@ -312,10 +387,10 @@
               color="error"
               width="100px"
               @click="
-                      taskDeleteDialog = false;
-                      taskDialog = false;
-                      deleteTask();
-                    "
+                taskDeleteDialog = false;
+                taskDialog = false;
+                deleteTask();
+              "
             >Delete</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
@@ -485,6 +560,12 @@ export default {
         .catch(e => {
           console.log("error", e);
         });
+
+      this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+        taskId: task.taskId,
+        startIndex: 0,
+        endIndex: 10
+      });
     },
     dueDateCheck(task) {
       // console.log("check due date color", task);

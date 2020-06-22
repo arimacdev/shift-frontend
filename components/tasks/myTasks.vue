@@ -795,6 +795,12 @@ export default {
       } catch (error) {
         // console.log("Error fetching data", error);
       }
+
+      this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+        taskId: task.taskId,
+        startIndex: 0,
+        endIndex: 10
+      });
     },
     statusCheck(task) {
       if (task === "development") {

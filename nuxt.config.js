@@ -18,6 +18,12 @@ export default {
       },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    script: [
+      {
+        src: 'https://code.jquery.com/jquery-3.3.1.slim.min.js',
+        type: 'text/javascript',
+      },
+    ],
   },
   /*
    ** Customize the progress-bar color

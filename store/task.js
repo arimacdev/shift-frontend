@@ -20,11 +20,11 @@ export const mutations = {
   },
   SET_ALL_TASKS(state, event) {
     const sorted = event.sort((a, b) => {
-      const userA = a.parentTask.taskName.toUpperCase();
-      const userB = b.parentTask.taskName.toUpperCase();
+      const userA = a.parentTask.taskCreatedAt.toUpperCase();
+      const userB = b.parentTask.taskCreatedAt.toUpperCase();
 
-      if (userA < userB) return -1;
-      if (userA > userB) return 1;
+      if (userA > userB) return -1;
+      if (userA < userB) return 1;
 
       return 0;
     });

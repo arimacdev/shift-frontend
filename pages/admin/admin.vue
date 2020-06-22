@@ -29,6 +29,11 @@
             active-class="adminTabTitleStyle"
             v-on:click="component='organization-tab'"
           >Organization</v-tab>
+          <v-tab
+            class="tabInactiveStyle"
+            active-class="adminTabTitleStyle"
+            v-on:click="component='skills-tab'; "
+          >Skills</v-tab>
         </v-tabs>
       </div>
     </div>
@@ -43,11 +48,14 @@ import NavigationDrawer from "~/components/navigationDrawer";
 import Users from "~/components/admin/users";
 import Organization from "~/components/admin/organization";
 
+import Skills from "~/components/admin/skills";
+
 export default {
   components: {
     NavigationDrawer,
     "users-tab": Users,
-    "organization-tab": Organization
+    "organization-tab": Organization,
+    "skills-tab": Skills
   },
   data() {
     return {
@@ -78,6 +86,7 @@ export default {
   created() {
     this.$store.dispatch("user/setAllUsers");
     this.$store.dispatch("project/clearProject");
+    this.$store.dispatch("skillMatrix/fetchSkillCategory");
   }
 };
 </script>

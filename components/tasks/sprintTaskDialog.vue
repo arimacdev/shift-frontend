@@ -4,11 +4,7 @@
       <v-btn icon dark @click="taskDialogClosing()">
         <v-icon>mdi-close</v-icon>
       </v-btn>
-      <v-toolbar-title class="font-weight-bold">
-        {{
-        taskName
-        }}
-      </v-toolbar-title>
+      <v-toolbar-title class="font-weight-bold">{{ taskName }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <!-- <v-btn dark text @click="dialog = false">Save</v-btn> -->
@@ -38,15 +34,15 @@
             <v-col sm="2" md="2">
               <div class="taskViewTitle">
                 Task -
-                <span class="secondaryId">#{{selectedTask.secondaryTaskId}}</span>
+                <span class="secondaryId">#{{ selectedTask.secondaryTaskId }}</span>
               </div>
             </v-col>
             <v-col sm="2" md="2">
-              <div class="taskStatusDropdown">{{taskStatus}}</div>
+              <div class="taskStatusDropdown">{{ taskStatus }}</div>
             </v-col>
             <v-col sm="8" md="8" class="taskViewLinksDiv">
               <nuxt-link
-                :to="'/projects/'  +  this.projectId"
+                :to="'/projects/' + this.projectId"
                 style="text-decoration: none;"
                 target="_blank"
               >
@@ -55,21 +51,28 @@
               <nuxt-link
                 v-if="selectedTask.isParent == false"
                 target="_blank"
-                :to="'/task/' +    this.taskObject.parentTask.taskId + '/?project=' +  this.projectId"
+                :to="
+                  '/task/' +
+                    this.taskObject.parentTask.taskId +
+                    '/?project=' +
+                    this.projectId
+                "
                 style="text-decoration: none;"
               >
                 <v-icon size="18" color="#0083E2">icon-task</v-icon>
-                {{this.taskObject.parentTask.secondaryTaskId}}
+                {{ this.taskObject.parentTask.secondaryTaskId }}
               </nuxt-link>
               <span v-if="selectedTask.isParent == false">/</span>
 
               <nuxt-link
-                :to="'/task/' +  selectedTask.taskId + '/?project=' +  this.projectId"
+                :to="
+                  '/task/' + selectedTask.taskId + '/?project=' + this.projectId
+                "
                 target="_blank"
                 style="text-decoration: none; color: #B9B9B9"
               >
                 <v-icon size="18" color="#B9B9B9">icon-task</v-icon>
-                {{selectedTask.secondaryTaskId}}
+                {{ selectedTask.secondaryTaskId }}
               </nuxt-link>
             </v-col>
           </v-row>
@@ -122,14 +125,18 @@
                     <v-col sm="6" md="6" no-gutters></v-col>
                     <v-col sm="3" md="3" no-gutters>
                       <add-parent-task
-                        v-if="taskObject.childTasks.length == 0 && selectedTask.isParent == true && children.length == 0"
+                        v-if="
+                          taskObject.childTasks.length == 0 &&
+                            selectedTask.isParent == true &&
+                            children.length == 0
+                        "
                         :taskId="this.selectedTask.taskId"
                         :projectId="this.projectId"
                       />
                     </v-col>
                     <v-col sm="3" md="3" no-gutters>
                       <add-child-task
-                        v-if=" selectedTask.isParent == true"
+                        v-if="selectedTask.isParent == true"
                         :taskId="selectedTask.taskId"
                         :projectId="this.projectId"
                       />
@@ -150,9 +157,7 @@
                           <v-list-item>
                             <v-list-item-action>
                               <v-icon
-                                v-if="
-                                  parent.taskStatus == 'closed'
-                                "
+                                v-if="parent.taskStatus == 'closed'"
                                 size="25"
                                 color="#2EC973"
                               >mdi-checkbox-marked-circle</v-icon>
@@ -160,33 +165,24 @@
                             </v-list-item-action>
                             <v-list-item-action
                               style="font-size: 14px; font-weight: 800; padding-right: 20px"
-                            >
-                              {{
-                              parent.secondaryTaskId
-                              }}
-                            </v-list-item-action>
+                            >{{ parent.secondaryTaskId }}</v-list-item-action>
                             <v-list-item-content>
-                              <v-list-item-title>
-                                {{
-                                parent.taskName
-                                }}
-                              </v-list-item-title>
+                              <v-list-item-title>{{ parent.taskName }}</v-list-item-title>
                             </v-list-item-content>
                             <div>
                               <v-list-item-action>
-                                <v-list-item-sub-title :class="dueDateCheck(parent)">
-                                  {{
-                                  getProjectDates(
-                                  parent.taskDueDateAt
-                                  )
-                                  }}
-                                </v-list-item-sub-title>
+                                <v-list-item-sub-title
+                                  :class="dueDateCheck(parent)"
+                                >{{ getProjectDates(parent.taskDueDateAt) }}</v-list-item-sub-title>
                               </v-list-item-action>
                             </div>
                             <div>
                               <v-list-item-avatar size="25">
                                 <v-img
-                                  v-if="this.parentTaskUser.profileImage != null && this.parentTaskUser.profileImage != ''"
+                                  v-if="
+                                    this.parentTaskUser.profileImage != null &&
+                                      this.parentTaskUser.profileImage != ''
+                                  "
                                   :src="this.parentTaskUser.profileImage"
                                 ></v-img>
                                 <v-img
@@ -199,7 +195,7 @@
                               <nuxt-link
                                 :to="
                                   '/task/' +
-                                   parent.taskId +
+                                    parent.taskId +
                                     '/?project=' +
                                     projectId
                                 "
@@ -248,17 +244,9 @@
                               </v-list-item-action>
                               <v-list-item-action
                                 style="font-size: 14px; font-weight: 800; padding-right: 20px"
-                              >
-                                {{
-                                childTask.secondaryTaskId
-                                }}
-                              </v-list-item-action>
+                              >{{ childTask.secondaryTaskId }}</v-list-item-action>
                               <v-list-item-content>
-                                <v-list-item-title>
-                                  {{
-                                  childTask.taskName
-                                  }}
-                                </v-list-item-title>
+                                <v-list-item-title>{{ childTask.taskName }}</v-list-item-title>
                               </v-list-item-content>
                               <div>
                                 <v-list-item-action>
@@ -273,7 +261,9 @@
                                 <v-list-item-avatar size="25">
                                   <v-img
                                     v-if="
-                                      childTask.taskAssigneeProfileImage != null && childTask.taskAssigneeProfileImage != ''
+                                      childTask.taskAssigneeProfileImage !=
+                                        null &&
+                                        childTask.taskAssigneeProfileImage != ''
                                     "
                                     :src="childTask.taskAssigneeProfileImage"
                                   ></v-img>
@@ -453,7 +443,7 @@
                         <v-row class="mb-12" no-gutters>
                           <v-col sm="12" md="12">
                             <v-select
-                              v-if=" selectedTask.isParent == true"
+                              v-if="selectedTask.isParent == true"
                               :menu-props="{ maxHeight: '500' }"
                               dense
                               v-model="selectedSprint"
@@ -528,13 +518,14 @@
               </v-col>
               <!-- ------------------ right side column ------------- -->
               <v-col sm="4" md="4">
-                 <v-list-item v-if="!this.userExists">
+                <v-list-item v-if="!this.userExists">
                   <v-list-item-action>
                     <v-icon size="15" color="red">mdi-alert-outline</v-icon>
                   </v-list-item-action>
-                  <v-list-item-content
-                    class="userBlockedWarning"
-                  >Assignee is no longer a participant of the project</v-list-item-content>
+                  <v-list-item-content class="userBlockedWarning">
+                    Assignee is no longer a participant of the
+                    project
+                  </v-list-item-content>
                 </v-list-item>
                 <div class="rightSideColumn">
                   <!-- --------- assignee section ---------- -->
@@ -753,31 +744,17 @@
                             style="text-decoration: none;"
                             :href="file.taskFileUrl"
                             target="_blank"
-                          >
-                            {{
-                            file.taskFileName
-                            }}
-                          </a>
+                          >{{ file.taskFileName }}</a>
                         </v-list-item-title>
-                        <v-list-item-subtitle class="fileSubTitles">
-                          {{
-                          file.taskFileSize/1000
-                          }}KB
-                        </v-list-item-subtitle>
+                        <v-list-item-subtitle class="fileSubTitles">{{ file.taskFileSize / 1000 }}KB</v-list-item-subtitle>
                       </v-list-item-content>
                       <v-list-item-content>
-                        <v-list-item-title class="fileTitles">
-                          {{
-                          file.firstName
-                          }} {{
-                          file.lastName
-                          }}
-                        </v-list-item-title>
-                        <v-list-item-subtitle class="fileSubTitles">
-                          {{
-                          getProjectDates(file.taskFileDate)
-                          }}
-                        </v-list-item-subtitle>
+                        <v-list-item-title
+                          class="fileTitles"
+                        >{{ file.firstName }} {{ file.lastName }}</v-list-item-title>
+                        <v-list-item-subtitle
+                          class="fileSubTitles"
+                        >{{ getProjectDates(file.taskFileDate) }}</v-list-item-subtitle>
                       </v-list-item-content>
                       <div>
                         <a style="text-decoration: none;" :href="file.taskFileUrl" target="_blank">
@@ -811,8 +788,8 @@
           <br />
           <span class="alertPopupText">
             You're about to permanantly delete this task, its comments and
-            attachments, and all of its data. If you're not sure, you can
-            cancel this action.
+            attachments, and all of its data. If you're not sure, you can cancel
+            this action.
           </span>
         </div>
 
@@ -827,10 +804,10 @@
               color="error"
               width="100px"
               @click="
-                      taskDeleteDialog = false;
-                      taskDialog = false;
-                      deleteTask();
-                    "
+                taskDeleteDialog = false;
+                taskDialog = false;
+                deleteTask();
+              "
             >Delete</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
@@ -846,6 +823,8 @@
           <v-list-item-title class="font-weight-medium">Task Log</v-list-item-title>
         </v-list-item-content>
       </div>
+
+      <task-logs :page="page" />
     </div>
     <div @click="close" class="taskPopupPopups">
       <component
@@ -869,6 +848,7 @@ import ErrorPopup from "~/components/popups/errorPopup";
 import AddParentTask from "~/components/tasks/addParentTask";
 import AddChildTask from "~/components/tasks/addChildTask";
 import Progress from "~/components/popups/progress";
+import TaskLogs from "~/components/tasks/taskLogs";
 
 export default {
   props: ["projectId", "people", "taskObject"],
@@ -877,10 +857,12 @@ export default {
     "error-popup": ErrorPopup,
     "add-parent-task": AddParentTask,
     "add-child-task": AddChildTask,
-    "progress-loading": Progress
+    "progress-loading": Progress,
+    "task-logs": TaskLogs
   },
   data() {
     return {
+      page: 1,
       uploader: true,
       overlay: false,
       maxdate: "2020-05-11 12:17",
@@ -1114,6 +1096,11 @@ export default {
           }
         );
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
         this.component = "success-popup";
         this.successMessage = "Type successfully updated";
         setTimeout(() => {
@@ -1149,6 +1136,11 @@ export default {
           }
         );
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
         this.component = "success-popup";
         this.successMessage = "Status successfully updated";
         setTimeout(() => {
@@ -1167,46 +1159,53 @@ export default {
       }
     },
     async saveEditTaskName() {
-      this.overlay = true;
-      // console.log("updatedTaskName ->", this.updatedTask.taskName);
-      let response;
-      try {
-        response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
-          {
-            taskName: this.updatedTask.taskName
-          },
-          {
-            headers: {
-              user: this.userId
+      if (this.updatedTask.taskName != "") {
+        this.overlay = true;
+        // console.log("updatedTaskName ->", this.updatedTask.taskName);
+        let response;
+        try {
+          response = await this.$axios.$put(
+            `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
+            {
+              taskName: this.updatedTask.taskName
+            },
+            {
+              headers: {
+                user: this.userId
+              }
             }
-          }
-        );
-        this.component = "success-popup";
-        this.successMessage = "Name successfully updated";
-        if (this.selectedTask.isParent) {
-          this.$store.dispatch("task/updateTask", {
+          );
+          this.component = "success-popup";
+          this.successMessage = "Name successfully updated";
+          this.$store.dispatch("activityLog/fetchTaskActivityLog", {
             taskId: this.selectedTask.taskId,
-            taskName: this.updatedTask.taskName
+            startIndex: 0,
+            endIndex: 10
           });
-        } else {
-          this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+          if (this.selectedTask.isParent) {
+            this.$store.dispatch("task/updateTask", {
+              taskId: this.selectedTask.taskId,
+              taskName: this.updatedTask.taskName
+            });
+          } else {
+            this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+          }
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          this.overlay = false;
+          this.editTask = true;
+          console.log("edit task response", response);
+        } catch (e) {
+          console.log("Error updating the name", e);
+          this.errorMessage = e.response.data;
+          this.component = "error-popup";
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          this.overlay = false;
+          this.editTask = true;
         }
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        this.overlay = false;
-        this.editTask = true;
-        console.log("edit task response", response);
-      } catch (e) {
-        console.log("Error updating the name", e);
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        this.overlay = false;
-        this.editTask = true;
       }
     },
 
@@ -1230,6 +1229,11 @@ export default {
         this.component = "success-popup";
         this.successMessage = "Assignee successfully updated";
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
         this.userExists = true;
         setTimeout(() => {
           this.close();
@@ -1280,6 +1284,11 @@ export default {
           }
         );
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
         this.component = "success-popup";
         this.successMessage = "Sprint successfully updated";
         setTimeout(() => {
@@ -1316,6 +1325,11 @@ export default {
           }
         );
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
         this.component = "success-popup";
         this.successMessage = "Note successfully updated";
         setTimeout(() => {
@@ -1385,6 +1399,12 @@ export default {
             }
           }
         );
+
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
 
         this.component = "success-popup";
@@ -1427,6 +1447,11 @@ export default {
               }
             );
             this.$store.dispatch("task/appendTaskFile", fileResponse.data);
+            this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+              taskId: this.selectedTask.taskId,
+              startIndex: 0,
+              endIndex: 10
+            });
             this.uploadLoading = false;
             this.component = "success-popup";
             this.successMessage = "File(s) successfully uploaded";
@@ -1466,6 +1491,11 @@ export default {
         );
         // console.log(response.data);
         this.$store.dispatch("task/removeTaskFile", taskFileId);
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
         this.component = "success-popup";
         this.successMessage = "File successfully deleted";
         setTimeout(() => {
@@ -1650,9 +1680,9 @@ export default {
 
     taskName: {
       get() {
-        if (this.updatedTask.taskName == "") {
-          return this.selectedTask.taskName;
-        } else return this.updatedTask.taskName;
+        // if (this.updatedTask.taskName == "") {
+        return this.selectedTask.taskName;
+        // } else return this.updatedTask.taskName;
       },
       set(name) {
         this.updatedTask.taskName = name;

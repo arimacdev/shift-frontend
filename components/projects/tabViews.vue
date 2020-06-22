@@ -29,6 +29,11 @@
             class="tabInactiveStyle"
             active-class="tabTitleStyle"
           >Files</v-tab>
+          <v-tab
+            @click="changeTabView('logs')"
+            class="tabInactiveStyle"
+            active-class="tabTitleStyle"
+          >Logs</v-tab>
 
           <v-tab-item>
             <v-divider class="mx-4"></v-divider>
@@ -58,6 +63,12 @@
               <files-tab />
             </v-card>
           </v-tab-item>
+          <v-tab-item>
+            <v-divider class="mx-4"></v-divider>
+            <v-card flat>
+              <project-logs :page="page" />
+            </v-card>
+          </v-tab-item>
         </v-tabs>
       </v-card>
     </div>
@@ -71,11 +82,13 @@ import People from "~/components/people/people";
 import ProjectTab from "~/components/projects/projectTab";
 import FilesTab from "~/components/projects/filesTab";
 import BoardTab from "~/components/projects/boardTab";
+import ProjectLogs from "~/components/projects/projectLogs";
 import { mapState } from "vuex";
 
 export default {
   data() {
     return {
+      page: 1,
       drawer: null,
       userId: this.$store.state.user.userId,
       items: []
@@ -101,7 +114,11 @@ export default {
     people: People,
     "project-tab": ProjectTab,
     "files-tab": FilesTab,
-    "board-tab": BoardTab
+    "board-tab": BoardTab,
+    "project-logs": ProjectLogs
+  },
+  async created() {
+    this.projectId = this.$route.params.projects;
   },
   methods: {
     changeTabView(type) {
@@ -125,6 +142,16 @@ export default {
         case "files":
           this.$store.dispatch("tab/updateTabViewsTab", "files");
           this.$emit("refreshSelectedTab", "files");
+          break;
+        case "logs":
+          this.$store.dispatch("tab/updateTabViewsTab", "logs");
+          this.$emit("refreshSelectedTab", "logs");
+          this.$store.dispatch("activityLog/fetchProjectActivityLog", {
+            projectId: this.$route.params.projects,
+            startIndex: 0,
+            endIndex: 10
+          });
+
           break;
       }
     },

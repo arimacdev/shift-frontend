@@ -1,5 +1,5 @@
 <template>
-  <div class="formDiv usersForms">
+  <div class>
     <div class="adminBlackBar"></div>
     <div class="adminUserImage">
       <v-img
@@ -34,7 +34,7 @@
       >Activate User</v-btn>
     </div>
 
-    <div class="formContentAdmin">
+    <div class="formContentAdmin userUpdateSection overflow-y-auto">
       <v-form v-model="isValid" ref="form">
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="12" md="12" class="textGrid">
@@ -155,6 +155,58 @@
               </v-col>
               <v-col></v-col>
             </v-row>
+          </v-col>
+        </v-row>
+        <v-divider></v-divider>
+
+        <v-row>
+          <v-col md="3">
+            <div style="color: #576377; font-weight: 450">Skills</div>
+          </v-col>
+        </v-row>
+
+        <v-row class="skillsSection">
+          <v-col>
+            <div class="skillDisplayDiv">
+              <div class="skillScrollingWrapper">
+                <div
+                  class="skillCard text-center"
+                  v-for="(category, index) in userSkills[0].category"
+                  :key="index"
+                >
+                  <div
+                    class="skillHeader"
+                    :style="'background-color:' + category.categoryColorCode"
+                  >{{category.categoryName}}</div>
+
+                  <div class="skillBody">
+                    <div
+                      style="padding-left: 30px"
+                      v-for="(skill, index) in category.skillSet"
+                      :key="index"
+                    >
+                      <v-list-item>
+                        <v-list-item-action>
+                          <v-icon
+                            @click="removeSkillFromUser(category.categoryId, skill.skillId)"
+                            v-if="skill.isAssigned == true"
+                            size="20"
+                            color="#2EC973"
+                          >mdi-checkbox-marked-circle</v-icon>
+                          <v-icon
+                            @click="addSkillToUser(category.categoryId, skill.skillId)"
+                            v-else
+                            size="20"
+                            color="#FFFFFF"
+                          >mdi-checkbox-blank-circle</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>{{skill.skillName}}</v-list-item-content>
+                      </v-list-item>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </v-col>
         </v-row>
       </v-form>
@@ -316,6 +368,9 @@ export default {
 
   data() {
     return {
+      filterCategory: "",
+      selectedSkills: [],
+      // skillList: [],
       isValid: true,
       firstNameRules: [value => !!value || "First name is required!"],
       lastNameRules: [value => !!value || "Last name is required!"],
@@ -346,6 +401,113 @@ export default {
   },
 
   methods: {
+    async addSkillToUser(categoryId, skillId) {
+      let response;
+      try {
+        response = await this.$axios.$post(
+          `/category/${categoryId}/user/skill`,
+          {
+            assigneeId: this.userData.userId,
+            skills: [skillId]
+          },
+          {
+            headers: {
+              userId: this.adminId
+            }
+          }
+        );
+
+        this.$store.dispatch(
+          "skillMatrix/fetchUserSkills",
+          this.userData.userId
+        );
+
+        this.$store.dispatch(
+          "skillMap/fetchUserSkillMap",
+          this.userData.userId
+        );
+        this.successMessage = "Skill added to user successfully";
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error adding a skill", e);
+      }
+    },
+    async removeSkillFromUser(categoryId, skillId) {
+      let response;
+      try {
+        response = await this.$axios.$delete(
+          `/category/${categoryId}/user/skill`,
+          {
+            data: {
+              assigneeId: this.userData.userId,
+              skills: [skillId]
+            },
+            headers: {
+              userId: this.adminId
+            }
+          }
+        );
+
+        this.$store.dispatch(
+          "skillMatrix/fetchUserSkills",
+          this.userData.userId
+        );
+
+        this.$store.dispatch(
+          "skillMap/fetchUserSkillMap",
+          this.userData.userId
+        );
+        this.successMessage = "Skill removed from user successfully";
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error removing a skill", e);
+      }
+    },
+    getSkills() {
+      console.log("TRIGERRED " + this.filterCategory);
+      if (this.filterCategory != undefined) {
+        this.$store.dispatch(
+          "skillMatrix/fetchCategorySkills",
+          this.filterCategory
+        );
+      } else {
+        this.selectedSkills = [];
+      }
+    },
+    clearSkill() {
+      // this.filterSkill = [];
+    },
+    clearCategory() {
+      console.log("CLEARED " + this.filterCategory);
+      this.filterCategory = "";
+    },
+    // categorizedSkillMap() {
+    //   let skillmap = this.userSkillMap;
+    //   // console.log("skillmap", this.userSkillMap);
+    //   const orderedSkillMap = skillmap.reduce((accumilate, current) => {
+    //     accumilate[current.categoryId] = (
+    //       accumilate[current.categoryId] || []
+    //     ).concat(current);
+    //     return accumilate;
+    //   }, {});
+    //   return orderedSkillMap;
+    // },
     checkUser(roleName) {
       if (roleName === "USER") {
         return true;
@@ -529,8 +691,36 @@ export default {
       realmRoles: state => state.admin.realmRoles,
       userRoles: state => state.admin.userRoles,
       selectedUser: state => state.user.selectedUser,
-      organizationalRoles: state => state.user.organizationalRoles
+      organizationalRoles: state => state.user.organizationalRoles,
+      userSkillMap: state => state.skillMap.userSkillMap,
+      skillCategory: state => state.skillMatrix.skillCategory,
+      categorySkills: state => state.skillMatrix.skills,
+      userSkills: state => state.skillMatrix.userSkills
     }),
+    // categoryArray() {
+    //   let categorySearchList = this.skillCategory;
+    //   let categoryList = [];
+    //   for (let index = 0; index < categorySearchList.length; ++index) {
+    //     let category = categorySearchList[index];
+    //     categoryList.push({
+    //       name: category.categoryName,
+    //       id: category.categoryId
+    //     });
+    //   }
+    //   return categoryList;
+    // },
+    // skillArray() {
+    //   let skillsSearchList = this.categorySkills;
+    //   let skillList = [];
+    //   for (let index = 0; index < skillsSearchList.length; ++index) {
+    //     let skill = skillsSearchList[index];
+    //     skillList.push({
+    //       name: skill.skillName,
+    //       id: skill.skillId
+    //     });
+    //   }
+    //   return skillList;
+    // },
     checkValidation: {
       get() {
         if (this.$v.$invalid == true) {
@@ -550,6 +740,12 @@ export default {
         } else {
           return "addProjectButtonSuccess";
         }
+      }
+    },
+    filterSkill: {
+      get() {},
+      set(value) {
+        this.selectedSkills = value;
       }
     },
     userFirstName: {

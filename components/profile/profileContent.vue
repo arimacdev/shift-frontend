@@ -51,7 +51,7 @@
           <v-img
             class="white--text align-end slackImage"
             width="100px"
-            src="https://images.squarespace-cdn.com/content/v1/59023aa1e58c62227ce776c3/1503518408354-JKWF2TL6XMAPUDUDXHB8/ke17ZwdGBToddI8pDm48kDdoBnacxb2NT7zhAvcunbkUqsxRUqqbr1mOJYKfIPR7LoDQ9mXPOjoJoqy81S2I8N_N4V1vUb5AoIIIbLZhVYxCRW4BPu10St3TBAUQYVKcnQaz6sFZ284KgYK7oqQKwCiboq4NyF9jYMWrqFYNBZyhQt1FiR_Knww7CTx6buRm/Slack_CMYK.png"
+            src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1592584626105_Slack_CMYK.png"
           ></v-img>
           <div class="cardSlogan">It's time to connect your app with slack</div>
 
@@ -63,7 +63,7 @@
                 alt="Join Slack Notifications"
                 height
                 width="120"
-                src="https://platform.slack-edge.com/img/add_to_slack.png"
+                src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1592584747849_add_to_slack.png"
                 srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"
               />
             </a>
@@ -101,7 +101,44 @@
           </div>
         </v-card>
 
-        <!-- --------------------- end slack ----------------- -->
+        <!-- --------------------- one signal ----------------- -->
+
+        <v-card class="mx-auto slackCard" max-width="344" height="250px" outlined>
+          <v-img
+            class="white--text align-end slackImage"
+            width="100px"
+            src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1592584626072_onesignal-1534463753064.png"
+          ></v-img>
+
+          <div class="cardSlogan">Get updates from all sorts of things that matter to you</div>
+          <div class="oneSignalButton">
+            <!-- <div class="onesignal-customlink-container cardOneSignalSlogan"></div> -->
+            <v-btn
+              color="teal"
+              outlined
+              depressed
+              class="text-capitalize oneSignalBtn"
+              v-if="this.checkActivationStatus()"
+              @click="activateOneSignal()"
+            >Activate</v-btn>
+            <v-btn
+              color="teal"
+              outlined
+              depressed
+              class="text-capitalize oneSignalBtn"
+              v-else
+              @click="deactivateOneSignal()"
+            >Deactivate</v-btn>
+          </div>
+        </v-card>
+
+        <div>
+          <!-- ---- this is a switch button if applicable ---- -->
+          <!-- <v-sheet class="pa-5">
+        <v-switch v-model="switch1" inset :label="`Switch 1: ${switch1.toString()}`"></v-switch>
+          </v-sheet>-->
+        </div>
+
         <!-- <v-switch v-model="switch1" inset :label="`Switch 1: ${switch1.toString()}`"></v-switch> -->
       </div>
     </div>
@@ -241,15 +278,40 @@
             </v-btn>
           </v-col>
         </v-row>
+        <v-divider></v-divider>
+        <v-row>
+          <v-col md="3">
+            <div style="color: #576377; font-weight: 450">Skills</div>
+          </v-col>
+        </v-row>
+        <v-row class="skillsSection">
+          <v-col>
+            <div class="skillDisplayDiv">
+              <div class="skillScrollingWrapper">
+                <div
+                  class="skillCard text-center"
+                  v-for="(category, index) in userSkillMap"
+                  :key="index"
+                >
+                  <div
+                    class="skillHeader"
+                    :style="'background-color:' + category.categoryColorCode"
+                  >{{category.categoryName}}</div>
+
+                  <div class="skillBody">
+                    <div
+                      style="padding-bottom: 10px"
+                      v-for="(skill, index) in category.skillSet"
+                      :key="index"
+                    >{{skill.skillName}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </v-col>
+        </v-row>
       </div>
     </v-form>
-
-    <div>
-      <!-- ---- this is a switch button if applicable ---- -->
-      <!-- <v-sheet class="pa-5">
-        <v-switch v-model="switch1" inset :label="`Switch 1: ${switch1.toString()}`"></v-switch>
-      </v-sheet>-->
-    </div>
 
     <div @click="close">
       <component
@@ -267,6 +329,7 @@
 import EditProfile from "~/components/profile/editProfile";
 import axios from "axios";
 import qs from "qs";
+import { mapState } from "vuex";
 import { required, minLength, sameAs } from "vuelidate/lib/validators";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
@@ -328,6 +391,12 @@ export default {
     }
   },
 
+  computed: {
+    ...mapState({
+      userSkillMap: state => state.skillMap.userSkillMap
+    })
+  },
+
   created: function() {
     const authCode = this.$route.query.code;
     // console.log("SLACK CODE", authCode);
@@ -378,6 +447,45 @@ export default {
   },
 
   methods: {
+    checkActivationStatus(){
+      console.log("check")
+      if(process.browser){
+      console.log("browser")
+
+      window.OneSignal.isPushNotificationsEnabled(function(isEnabled) {
+        if (isEnabled){
+          console.log("false")
+          console.log("Push notifications are enabled!");
+          return false;
+        }
+        else {
+          console.log("true")
+
+          console.log("Push notifications are not enabled yet.");   
+          return true;
+        }
+      });
+      }
+    },
+    activateOneSignal(){
+      console.log("activate")
+      window.OneSignal.setSubscription(true);
+    },
+    deactivateOneSignal(){
+      console.log("deactivate")
+      window.OneSignal.setSubscription(false);
+    },
+    categorizedSkillMap() {
+      let skillmap = this.userSkillMap;
+      // console.log("skillmap", this.userSkillMap);
+      const orderedSkillMap = skillmap.reduce((accumilate, current) => {
+        accumilate[current.categoryId] = (
+          accumilate[current.categoryId] || []
+        ).concat(current);
+        return accumilate;
+      }, {});
+      return orderedSkillMap;
+    },
     setVisible() {
       console.log("DISABLED!");
 

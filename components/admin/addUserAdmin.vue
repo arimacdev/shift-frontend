@@ -1,5 +1,5 @@
 <template>
-  <div class="formDiv usersForms">
+  <div class>
     <form @submit.prevent="handleSubmit">
       <v-row class="mb-12 formRow" no-gutters>
         <v-col sm="12" md="12" class="textGrid">

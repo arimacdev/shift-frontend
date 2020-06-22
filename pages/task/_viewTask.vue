@@ -561,7 +561,7 @@
                   <v-list-item-content
                     class="userBlockedWarning"
                   >Assignee is no longer a participant of the project</v-list-item-content>
-                </v-list-item> -->
+                </v-list-item>-->
                 <div class="rightSideColumn">
                   <!-- --------- assignee section ---------- -->
                   <v-list-item>
@@ -1200,36 +1200,38 @@ export default {
       }
     },
     async saveEditTaskName() {
-      // console.log("updatedTaskName ->", this.updatedTask.taskName);
-      let response;
-      try {
-        response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
-          {
-            taskName: this.updatedTask.taskName
-          },
-          {
-            headers: {
-              user: this.userId
+      if (this.updatedTask.taskName != "") {
+        // console.log("updatedTaskName ->", this.updatedTask.taskName);
+        let response;
+        try {
+          response = await this.$axios.$put(
+            `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+            {
+              taskName: this.updatedTask.taskName
+            },
+            {
+              headers: {
+                user: this.userId
+              }
             }
-          }
-        );
-        this.component = "success-popup";
-        this.successMessage = "Name successfully updated";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        // console.log("UPDATED", this.$store.state.task.myTasks);
-        this.editTask = true;
-        // console.log("edit task response", response);
-      } catch (e) {
-        console.log("Error updating the name", e);
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        this.editTask = true;
+          );
+          this.component = "success-popup";
+          this.successMessage = "Name successfully updated";
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          // console.log("UPDATED", this.$store.state.task.myTasks);
+          this.editTask = true;
+          // console.log("edit task response", response);
+        } catch (e) {
+          console.log("Error updating the name", e);
+          this.errorMessage = e.response.data;
+          this.component = "error-popup";
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          this.editTask = true;
+        }
       }
     },
     dueDateCheck(task) {
@@ -1623,9 +1625,9 @@ export default {
 
     taskName: {
       get() {
-        if (this.updatedTask.taskName == "") {
-          return this.task.taskName;
-        } else return this.updatedTask.taskName;
+        // if (this.updatedTask.taskName == "") {
+        return this.task.taskName;
+        // } else return this.updatedTask.taskName;
       },
       set(name) {
         this.updatedTask.taskName = name;
