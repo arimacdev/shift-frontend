@@ -2689,6 +2689,15 @@
   border-radius: 5px;
 }
 
+.skillDisplayDivProfile {
+  margin-right: 20px;
+  height: 100%;
+  overflow-y: scroll;
+  /* overflow-y: hidden; */
+  width: 100%;
+  white-space: nowrap;
+}
+
 .skillDisplayDiv {
   width: 70vw;
   float: right;
