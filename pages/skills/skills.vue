@@ -126,9 +126,19 @@
                               v-for="(skill, index) in categoryMap.skillSet"
                               :key="index"
                             >
-                              <v-list-item-title style="font-size: 12px">{{
-                                skill.skillName
-                              }}</v-list-item-title>
+                              <v-tooltip
+                                :color="categoryMap.categoryColorCode"
+                                bottom=""
+                              >
+                                <template v-slot:activator="{ on }">
+                                  <v-list-item-title
+                                    v-on="on"
+                                    style="font-size: 12px"
+                                    >{{ skill.skillName }}</v-list-item-title
+                                  >
+                                </template>
+                                <span>{{ skill.skillName }}</span>
+                              </v-tooltip>
                             </div>
                           </div>
                         </div>
@@ -160,9 +170,19 @@
                             v-for="(skill, index) in categoryMap.skillSet"
                             :key="index"
                           >
-                            <v-list-item-title style="font-size: 12px">{{
-                              skill.skillName
-                            }}</v-list-item-title>
+                            <v-tooltip
+                              :color="categoryMap.categoryColorCode"
+                              bottom=""
+                            >
+                              <template v-slot:activator="{ on }">
+                                <v-list-item-title
+                                  v-on="on"
+                                  style="font-size: 12px"
+                                  >{{ skill.skillName }}</v-list-item-title
+                                >
+                              </template>
+                              <span>{{ skill.skillName }}</span>
+                            </v-tooltip>
                           </div>
                         </div>
                       </div>
@@ -194,9 +214,23 @@
                             v-for="(skill, index) in categoryMap.skillSet"
                             :key="index"
                           >
-                            <v-list-item-title style="font-size: 12px">{{
+                            <!-- <v-list-item-title style="font-size: 12px">{{
                               skill.skillName
-                            }}</v-list-item-title>
+                            }}</v-list-item-title> -->
+
+                            <v-tooltip
+                              :color="categoryMap.categoryColorCode"
+                              bottom=""
+                            >
+                              <template v-slot:activator="{ on }">
+                                <v-list-item-title
+                                  v-on="on"
+                                  style="font-size: 12px"
+                                  >{{ skill.skillName }}</v-list-item-title
+                                >
+                              </template>
+                              <span>{{ skill.skillName }}</span>
+                            </v-tooltip>
                           </div>
                         </div>
                       </div>
