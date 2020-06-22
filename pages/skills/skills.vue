@@ -611,6 +611,8 @@ export default {
       }
     },
     searchByUser() {
+      this.searchSkills = '';
+      this.selectedSkills = ' ';
       console.log('TRIGGERRED: ' + this.searchUser);
       if (this.searchUser !== undefined) {
         this.userSearch = true;

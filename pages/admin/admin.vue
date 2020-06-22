@@ -2,12 +2,21 @@
   <div class="top-nav">
     <navigation-drawer :user="user" />
 
-    <v-toolbar app color dark fixed :clipped-left="clipped" class="toolBarFilter tool-bar">
+    <v-toolbar
+      app
+      color
+      dark
+      fixed
+      :clipped-left="clipped"
+      class="toolBarFilter tool-bar"
+    >
       <div class="title-div">
         <div class="name-div">
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title class="font-weight-bold">Admin</v-list-item-title>
+              <v-list-item-title class="font-weight-bold"
+                >Admin</v-list-item-title
+              >
             </v-list-item-content>
 
             <v-divider class="mx-4" inset vertical></v-divider>
@@ -22,18 +31,21 @@
           <v-tab
             class="tabInactiveStyle"
             active-class="adminTabTitleStyle"
-            v-on:click="component='users-tab' "
-          >Users</v-tab>
+            v-on:click="component = 'users-tab'"
+            >Users</v-tab
+          >
           <v-tab
             class="tabInactiveStyle"
             active-class="adminTabTitleStyle"
-            v-on:click="component='organization-tab'"
-          >Organization</v-tab>
+            v-on:click="component = 'skills-tab'"
+            >Skills</v-tab
+          >
           <v-tab
             class="tabInactiveStyle"
             active-class="adminTabTitleStyle"
-            v-on:click="component='skills-tab'; "
-          >Skills</v-tab>
+            v-on:click="component = 'organization-tab'"
+            >Organization</v-tab
+          >
         </v-tabs>
       </div>
     </div>
@@ -44,28 +56,28 @@
   </div>
 </template>
 <script>
-import NavigationDrawer from "~/components/navigationDrawer";
-import Users from "~/components/admin/users";
-import Organization from "~/components/admin/organization";
+import NavigationDrawer from '~/components/navigationDrawer';
+import Users from '~/components/admin/users';
+import Organization from '~/components/admin/organization';
 
-import Skills from "~/components/admin/skills";
+import Skills from '~/components/admin/skills';
 
 export default {
   components: {
     NavigationDrawer,
-    "users-tab": Users,
-    "organization-tab": Organization,
-    "skills-tab": Skills
+    'users-tab': Users,
+    'organization-tab': Organization,
+    'skills-tab': Skills,
   },
   data() {
     return {
-      component: "users-tab"
+      component: 'users-tab',
     };
   },
   async asyncData({ $axios, store }) {
     let userId = store.state.user.userId;
     const { data: projects } = await $axios.$get(`/projects?userId=${userId}`);
-    const { data: users } = await $axios.$get("/users");
+    const { data: users } = await $axios.$get('/users');
     const sorted = users.sort((a, b) => {
       const userA = a.firstName.toUpperCase();
       const userB = b.firstName.toUpperCase();
@@ -80,13 +92,13 @@ export default {
     return {
       projects: projects,
       users: users,
-      name: users[0].userId
+      name: users[0].userId,
     };
   },
   created() {
-    this.$store.dispatch("user/setAllUsers");
-    this.$store.dispatch("project/clearProject");
-    this.$store.dispatch("skillMatrix/fetchSkillCategory");
-  }
+    this.$store.dispatch('user/setAllUsers');
+    this.$store.dispatch('project/clearProject');
+    this.$store.dispatch('skillMatrix/fetchSkillCategory');
+  },
 };
 </script>
