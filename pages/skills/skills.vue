@@ -96,7 +96,11 @@
               <v-col md="3" sm="3">
                 <div class="userListTitle">Users</div>
               </v-col>
-              <v-col md="9" sm="9" style="background-color:#ffffff;">
+              <v-col
+                md="9"
+                sm="9"
+                style="background-color:#ffffff; z-index: -100"
+              >
                 <div
                   v-if="this.skillSearch && skillFilter != ''"
                   class="skillDisplayDiv"
@@ -239,8 +243,8 @@
                 </div>
               </v-col>
             </v-row>
-            <v-row style="margin-bottom: -60px" class="overflow-y-hidden">
-              <v-col md="3" sm="3">
+            <v-row style="margin-bottom: -60px; " class="overflow-y-hidden">
+              <v-col md="3" sm="3" style="z-index: 100">
                 <v-list-item-group
                   v-if="this.skillSearch && skillFilter != ''"
                   class="skillDisplayScreenUser overflow-y-auto"

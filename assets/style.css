@@ -2846,7 +2846,8 @@
   font-weight: 500;
   background-color: #edf0f5;
   height: 100%;
-  width: 30vw;
+  width: 100%;
+  /* width: 30vw; */
   float: left;
 }
 .skillMatrixScreen {
