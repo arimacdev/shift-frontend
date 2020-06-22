@@ -40,6 +40,7 @@ export default {
     '~/plugins/vuelidate.js',
     '~/plugins/datepicker.js',
     '~/plugins/vuedatetime.js',
+    '~/plugins/textEditor.js',
   ],
   /*
    ** Nuxt.js dev-modules
