@@ -2705,6 +2705,14 @@
   padding-right: 100px;
   padding-left: 10px;
 }
+.skillProfileScrollingWrapper {
+  overflow-y: hidden;
+  /* white-space: nowrap; */
+  height: 100%;
+  width: 100%;
+  padding-right: 100px;
+  padding-left: 10px;
+}
 .skillScrollingWrapper::-webkit-scrollbar {
   display: none;
 }
