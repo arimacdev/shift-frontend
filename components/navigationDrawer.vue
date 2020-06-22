@@ -122,7 +122,12 @@ export default {
           icon: "icon-skills",
           route: "../../skills/skills"
         },
-        { title: "Admin", icon: "icon-admin", route: "../../admin/admin" }
+        { title: "Admin", icon: "icon-admin", route: "../../admin/admin" },
+        {
+          title: "Comments",
+          icon: "mdi-comment-processing-outline",
+          route: "../../comment/comment"
+        }
       ],
       mini: true,
       userItems: [
