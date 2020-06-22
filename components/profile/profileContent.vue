@@ -103,7 +103,7 @@
 
         <!-- --------------------- one signal ----------------- -->
 
-        <v-card class="mx-auto slackCard" max-width="344" height="250px" outlined>
+        <!-- <v-card class="mx-auto slackCard" max-width="344" height="250px" outlined>
           <v-img
             class="white--text align-end slackImage"
             width="100px"
@@ -111,9 +111,9 @@
           ></v-img>
 
           <div class="cardSlogan">Get updates from all sorts of things that matter to you</div>
-          <div class="oneSignalButton">
-            <!-- <div class="onesignal-customlink-container cardOneSignalSlogan"></div> -->
-            <v-btn
+        <div class="oneSignalButton">-->
+        <!-- <div class="onesignal-customlink-container cardOneSignalSlogan"></div> -->
+        <!-- <v-btn
               color="teal"
               outlined
               depressed
@@ -130,7 +130,7 @@
               @click="deactivateOneSignal()"
             >Deactivate</v-btn>
           </div>
-        </v-card>
+        </v-card>-->
 
         <div>
           <!-- ---- this is a switch button if applicable ---- -->
@@ -447,34 +447,34 @@ export default {
   },
 
   methods: {
-    checkActivationStatus(){
-      console.log("check")
-      if(process.browser){
-      console.log("browser")
+    // checkActivationStatus(){
+    //   console.log("check")
+    //   if(process.browser){
+    //   console.log("browser")
 
-      window.OneSignal.isPushNotificationsEnabled(function(isEnabled) {
-        if (isEnabled){
-          console.log("false")
-          console.log("Push notifications are enabled!");
-          return false;
-        }
-        else {
-          console.log("true")
+    //   window.OneSignal.isPushNotificationsEnabled(function(isEnabled) {
+    //     if (isEnabled){
+    //       console.log("false")
+    //       console.log("Push notifications are enabled!");
+    //       return false;
+    //     }
+    //     else {
+    //       console.log("true")
 
-          console.log("Push notifications are not enabled yet.");   
-          return true;
-        }
-      });
-      }
-    },
-    activateOneSignal(){
-      console.log("activate")
-      window.OneSignal.setSubscription(true);
-    },
-    deactivateOneSignal(){
-      console.log("deactivate")
-      window.OneSignal.setSubscription(false);
-    },
+    //       console.log("Push notifications are not enabled yet.");
+    //       return true;
+    //     }
+    //   });
+    //   }
+    // },
+    // activateOneSignal(){
+    //   console.log("activate")
+    //   window.OneSignal.setSubscription(true);
+    // },
+    // deactivateOneSignal(){
+    //   console.log("deactivate")
+    //   window.OneSignal.setSubscription(false);
+    // },
     categorizedSkillMap() {
       let skillmap = this.userSkillMap;
       // console.log("skillmap", this.userSkillMap);
