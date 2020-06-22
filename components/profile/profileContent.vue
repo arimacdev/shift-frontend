@@ -447,23 +447,32 @@ export default {
   },
 
   methods: {
-    checkActivationStatus() {
-      if (process.browser) {
-        window.OneSignal.isPushNotificationsEnabled(function(isEnabled) {
-          if (isEnabled) {
-            console.log("Push notifications are enabled!");
-            return false;
-          } else {
-            console.log("Push notifications are not enabled yet.");
-            return true;
-          }
-        });
+    checkActivationStatus(){
+      console.log("check")
+      if(process.browser){
+      console.log("browser")
+
+      window.OneSignal.isPushNotificationsEnabled(function(isEnabled) {
+        if (isEnabled){
+          console.log("false")
+          console.log("Push notifications are enabled!");
+          return false;
+        }
+        else {
+          console.log("true")
+
+          console.log("Push notifications are not enabled yet.");   
+          return true;
+        }
+      });
       }
     },
-    activateOneSignal() {
+    activateOneSignal(){
+      console.log("activate")
       window.OneSignal.setSubscription(true);
     },
-    deactivateOneSignal() {
+    deactivateOneSignal(){
+      console.log("deactivate")
       window.OneSignal.setSubscription(false);
     },
     categorizedSkillMap() {
