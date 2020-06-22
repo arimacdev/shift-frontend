@@ -2690,12 +2690,23 @@
 }
 
 .skillDisplayDiv {
-  width: 100%;
+  width: 70vw;
+  float: right;
+  /* background-color: darkkhaki; */
   margin-right: 20px;
   height: 100%;
   overflow-y: scroll;
   /* overflow-y: hidden; */
   white-space: nowrap;
+}
+.skillScrollingWrapperScroll {
+  overflow-y: hidden;
+  /* white-space: nowrap; */
+  height: 100%;
+  width: 100%;
+  padding-right: 100px;
+  padding-left: 10px;
+  margin-top: -30px;
 }
 .skillScrollingWrapper {
   overflow-y: hidden;
@@ -2704,6 +2715,10 @@
   width: 100%;
   padding-right: 100px;
   padding-left: 10px;
+}
+.skillScrollingWrapper1 {
+  overflow-y: hidden;
+  width: 100%;
 }
 .skillProfileScrollingWrapper {
   overflow-y: hidden;
@@ -2716,15 +2731,7 @@
 .skillScrollingWrapper::-webkit-scrollbar {
   display: none;
 }
-.skillScrollingWrapperScroll {
-  overflow-y: hidden;
-  /* white-space: nowrap; */
-  height: 100%;
-  width: 100%;
-  padding-right: 100px;
-  padding-left: 10px;
-  margin-top: -30px;
-}
+
 .scrollContent {
   height: 80vh;
   min-width: 100%;
@@ -2759,6 +2766,14 @@
   vertical-align: top;
   /* min-width: 250px; */
   margin-right: 20px;
+}
+.skillDisplayCard1 {
+  display: inline-block;
+  margin-right: 20px;
+}
+.card123 {
+  background-color: darkmagenta;
+  min-width: 250px !;
 }
 .catListName {
   color: #ffffff;
@@ -2800,15 +2815,15 @@
   text-align: center;
   white-space: normal;
   word-wrap: break-word !important;
-  float: left;
   color: #576377;
+  /* float: left; */
   font-size: 10px !important;
   font-weight: 500;
 }
 .skillDisplayBox {
   margin-right: 10px;
   margin-bottom: 10px;
-  float: left;
+  /* float: left; */
   width: 90px;
   height: 70px;
 }
@@ -2831,6 +2846,8 @@
   font-weight: 500;
   background-color: #edf0f5;
   height: 100%;
+  width: 30vw;
+  float: left;
 }
 .skillMatrixScreen {
   height: 60vh;
@@ -2840,6 +2857,7 @@
 }
 .skillDisplayScreenUser {
   height: 65vh;
+  width: 30vw !important;
   background-color: #edf0f5;
 }
 .skillDisplayScreenUser::-webkit-scrollbar {
