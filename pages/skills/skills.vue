@@ -83,7 +83,7 @@
           <v-col>
             <!-- loop following row for each user -->
             <v-row class="scroll">
-              <v-col md="3" sm="3" v-if=" skillFilter != ''">
+              <v-col md="3" sm="3">
                 <div class="userListTitle">Users</div>
               </v-col>
               <v-col md="9" sm="9" style="background-color:#ffffff;">
@@ -496,7 +496,6 @@ export default {
     filterSkills() {
       this.skillSearch = true;
       this.userSearch = false;
-      this.matrixView = false;
       if (this.searchSkills.length != 0) {
         let skillList = "skill=";
         for (let i = 0; i < this.searchSkills.length; i++) {
@@ -514,11 +513,14 @@ export default {
       if (this.searchUser !== undefined) {
         this.userSearch = true;
         this.skillSearch = false;
-        this.matrixView = false;
         this.$store.dispatch("skillMatrix/fetchUserSkills", this.searchUser.id);
       }
     },
     cancelSearch() {
+      this.$store.dispatch("skillMatrix/fetchOrganizationSkills", {
+        limit: 10,
+        offset: 0
+      });
       this.searchUser = null;
       this.searchSkills = "";
       this.selectedSkills = " ";
