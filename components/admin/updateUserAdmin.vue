@@ -178,7 +178,7 @@
 
         <v-row class="skillsSection">
           <v-col>
-            <div class="skillDisplayDiv">
+            <div class="skillDisplayDivProfile">
               <div class="skillProfileScrollingWrapper">
                 <div
                   class="skillCard text-center"

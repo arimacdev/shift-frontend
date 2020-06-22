@@ -2689,6 +2689,15 @@
   border-radius: 5px;
 }
 
+.skillDisplayDivProfile {
+  margin-right: 20px;
+  height: 100%;
+  overflow-y: scroll;
+  /* overflow-y: hidden; */
+  width: 100%;
+  white-space: nowrap;
+}
+
 .skillDisplayDiv {
   width: 70vw;
   float: right;
@@ -2846,7 +2855,8 @@
   font-weight: 500;
   background-color: #edf0f5;
   height: 100%;
-  width: 30vw;
+  width: 100%;
+  /* width: 30vw; */
   float: left;
 }
 .skillMatrixScreen {

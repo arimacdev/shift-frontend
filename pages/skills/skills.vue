@@ -66,7 +66,7 @@
               label="Click to choose"
               outlined
               multiple
-              @click="searchDialogOpen()"
+              @focus="searchDialogOpen()"
             ></v-autocomplete>
             <!-- <v-text-field @click="searchDialogOpen()" v-model="this.selectedSkills"></v-text-field> -->
           </v-col>
@@ -76,7 +76,7 @@
               @click="cancelSearch()"
               dark
               width="100%"
-              height="80%"
+              height="40px"
               color="#FF6161"
             >
               <v-icon color="#FFFFFF">mdi-cancel</v-icon>
@@ -96,37 +96,54 @@
               <v-col md="3" sm="3">
                 <div class="userListTitle">Users</div>
               </v-col>
-              <v-col md="9" sm="9" style="background-color:#ffffff;">
+              <v-col
+                md="9"
+                sm="9"
+                style="background-color:#ffffff; z-index: -100"
+              >
                 <div
                   v-if="this.skillSearch && skillFilter != ''"
                   class="skillDisplayDiv"
                 >
                   <div class="skillScrollingWrapper" id="div1">
-                    <div class="skillScrollingWrapper1">
-                      <div
-                        class="skillDisplayCard "
-                        v-for="(categoryMap, index) in skillFilter[0].category"
-                        :key="index"
-                      >
-                        <div>
-                          <div
-                            class="categoryHeader"
-                            :style="
-                              'background-color:' +
-                                categoryMap.categoryColorCode
-                            "
-                          >
-                            {{ categoryMap.categoryName }}
-                          </div>
+                    <div>
+                      <div>
+                        <div
+                          class="skillDisplayCard "
+                          v-for="(categoryMap, index) in skillFilter[0]
+                            .category"
+                          :key="index"
+                        >
+                          <div class="skillScrollingWrapper1">
+                            <div
+                              class="categoryHeader"
+                              :style="
+                                'background-color:' +
+                                  categoryMap.categoryColorCode
+                              "
+                            >
+                              {{ categoryMap.categoryName }}
+                            </div>
 
-                          <div
-                            class="skillName skillDisplayCard1"
-                            v-for="(skill, index) in categoryMap.skillSet"
-                            :key="index"
-                          >
-                            <v-list-item-title style="font-size: 12px">{{
-                              skill.skillName
-                            }}</v-list-item-title>
+                            <div
+                              class="skillName skillDisplayCard1"
+                              v-for="(skill, index) in categoryMap.skillSet"
+                              :key="index"
+                            >
+                              <v-tooltip
+                                :color="categoryMap.categoryColorCode"
+                                bottom=""
+                              >
+                                <template v-slot:activator="{ on }">
+                                  <v-list-item-title
+                                    v-on="on"
+                                    style="font-size: 12px"
+                                    >{{ skill.skillName }}</v-list-item-title
+                                  >
+                                </template>
+                                <span>{{ skill.skillName }}</span>
+                              </v-tooltip>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -157,9 +174,19 @@
                             v-for="(skill, index) in categoryMap.skillSet"
                             :key="index"
                           >
-                            <v-list-item-title style="font-size: 12px">{{
-                              skill.skillName
-                            }}</v-list-item-title>
+                            <v-tooltip
+                              :color="categoryMap.categoryColorCode"
+                              bottom=""
+                            >
+                              <template v-slot:activator="{ on }">
+                                <v-list-item-title
+                                  v-on="on"
+                                  style="font-size: 12px"
+                                  >{{ skill.skillName }}</v-list-item-title
+                                >
+                              </template>
+                              <span>{{ skill.skillName }}</span>
+                            </v-tooltip>
                           </div>
                         </div>
                       </div>
@@ -191,9 +218,23 @@
                             v-for="(skill, index) in categoryMap.skillSet"
                             :key="index"
                           >
-                            <v-list-item-title style="font-size: 12px">{{
+                            <!-- <v-list-item-title style="font-size: 12px">{{
                               skill.skillName
-                            }}</v-list-item-title>
+                            }}</v-list-item-title> -->
+
+                            <v-tooltip
+                              :color="categoryMap.categoryColorCode"
+                              bottom=""
+                            >
+                              <template v-slot:activator="{ on }">
+                                <v-list-item-title
+                                  v-on="on"
+                                  style="font-size: 12px"
+                                  >{{ skill.skillName }}</v-list-item-title
+                                >
+                              </template>
+                              <span>{{ skill.skillName }}</span>
+                            </v-tooltip>
                           </div>
                         </div>
                       </div>
@@ -202,8 +243,8 @@
                 </div>
               </v-col>
             </v-row>
-            <v-row style="margin-bottom: -60px" class="overflow-y-hidden">
-              <v-col md="3" sm="3">
+            <v-row style="margin-bottom: -60px; " class="overflow-y-hidden">
+              <v-col md="3" sm="3" style="z-index: 100">
                 <v-list-item-group
                   v-if="this.skillSearch && skillFilter != ''"
                   class="skillDisplayScreenUser overflow-y-auto"
@@ -611,6 +652,8 @@ export default {
       }
     },
     searchByUser() {
+      this.searchSkills = '';
+      this.selectedSkills = ' ';
       console.log('TRIGGERRED: ' + this.searchUser);
       if (this.searchUser !== undefined) {
         this.userSearch = true;
