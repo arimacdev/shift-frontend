@@ -19,7 +19,6 @@
 </template>
 <script>
 import NavigationDrawer from '~/components/navigationDrawer';
-import Vue from 'vue';
 import {
   RichTextEditorPlugin,
   Toolbar,
@@ -29,8 +28,6 @@ import {
   HtmlEditor,
   QuickToolbar,
 } from '@syncfusion/ej2-vue-richtexteditor';
-
-Vue.use(RichTextEditorPlugin);
 
 export default {
   provide: {
