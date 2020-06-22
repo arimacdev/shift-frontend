@@ -102,31 +102,34 @@
                   class="skillDisplayDiv"
                 >
                   <div class="skillScrollingWrapper" id="div1">
-                    <div class="skillScrollingWrapper1">
-                      <div
-                        class="skillDisplayCard "
-                        v-for="(categoryMap, index) in skillFilter[0].category"
-                        :key="index"
-                      >
-                        <div>
-                          <div
-                            class="categoryHeader"
-                            :style="
-                              'background-color:' +
-                                categoryMap.categoryColorCode
-                            "
-                          >
-                            {{ categoryMap.categoryName }}
-                          </div>
+                    <div>
+                      <div>
+                        <div
+                          class="skillDisplayCard "
+                          v-for="(categoryMap, index) in skillFilter[0]
+                            .category"
+                          :key="index"
+                        >
+                          <div class="skillScrollingWrapper1">
+                            <div
+                              class="categoryHeader"
+                              :style="
+                                'background-color:' +
+                                  categoryMap.categoryColorCode
+                              "
+                            >
+                              {{ categoryMap.categoryName }}
+                            </div>
 
-                          <div
-                            class="skillName skillDisplayCard1"
-                            v-for="(skill, index) in categoryMap.skillSet"
-                            :key="index"
-                          >
-                            <v-list-item-title style="font-size: 12px">{{
-                              skill.skillName
-                            }}</v-list-item-title>
+                            <div
+                              class="skillName skillDisplayCard1"
+                              v-for="(skill, index) in categoryMap.skillSet"
+                              :key="index"
+                            >
+                              <v-list-item-title style="font-size: 12px">{{
+                                skill.skillName
+                              }}</v-list-item-title>
+                            </div>
                           </div>
                         </div>
                       </div>
