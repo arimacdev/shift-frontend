@@ -1,11 +1,10 @@
-
-export default function(context) {
-  console.log('store is', context.store);
-  OneSignal.getUserId().then(function(userId) {
-    console.log('OneSignal User ID:', userId);
-    context.store.dispatch('notification/addNotificationDevice', userId);
-  });
-}
+// export default function(context) {
+//   console.log('store is', context.store);
+//   OneSignal.getUserId().then(function(userId) {
+//     console.log('OneSignal User ID:', userId);
+//     context.store.dispatch('notification/addNotificationDevice', userId);
+//   });
+// }
 
 window.OneSignal = window.OneSignal || [];
 OneSignal.push(function() {
