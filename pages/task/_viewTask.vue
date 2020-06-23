@@ -780,6 +780,7 @@
           <v-list-item-title class="font-weight-medium">Task Log</v-list-item-title>
         </v-list-item-content>
       </div>
+      <task-logs :page="page" />
     </div>
     <div @click="close" class="taskPopupPopups">
       <component
@@ -800,6 +801,7 @@ import AddChildTask from "~/components/tasks/addChildTask";
 import NavigationDrawer from "~/components/navigationDrawer";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
+import TaskLogs from "~/components/tasks/taskLogs";
 
 export default {
   components: {
@@ -807,10 +809,12 @@ export default {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
     "add-parent-task": AddParentTask,
-    "add-child-task": AddChildTask
+    "add-child-task": AddChildTask,
+    "task-logs": TaskLogs
   },
   data() {
     return {
+      page: 1,
       taskDeleteDialog: false,
       taskId: "",
       projectId: "",

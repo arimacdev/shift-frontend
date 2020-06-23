@@ -368,6 +368,10 @@
       ></component>
     </div>
     <!-- <success-popup /> -->
+    <v-btn @click="websock">Connect</v-btn>
+    
+    <v-btn @click="sendMessage">Send</v-btn>
+
   </div>
 </template>
 
@@ -379,6 +383,8 @@ import { mapState } from 'vuex';
 import { required, minLength, sameAs } from 'vuelidate/lib/validators';
 import SuccessPopup from '~/components/popups/successPopup';
 import ErrorPopup from '~/components/popups/errorPopup';
+import Stomp from 'stompjs';
+import SockJS from 'sockjs-client';
 
 export default {
   props: ['user'],
@@ -424,6 +430,7 @@ export default {
       dismissSecs: 5,
       dismissCountDown: 0,
       component: '',
+      stompClient: null
     };
   },
   watch: {
@@ -443,56 +450,104 @@ export default {
     }),
   },
 
-  created: function() {
-    const authCode = this.$route.query.code;
-    // console.log("SLACK CODE", authCode);
-    if (authCode !== undefined) {
-      // console.log("Slack Auth code present");
-      axios({
-        method: 'post',
-        url: 'https://slack.com/api/oauth.v2.access',
-        data: qs.stringify({
-          client_id: '345426929140.1020110511447',
-          client_secret: 'fd851b7af77e525c1700879de9b328ab',
-          code: authCode,
-        }),
-        headers: {
-          'content-type': 'application/x-www-form-urlencoded',
-        },
-      })
-        .then(async (resp) => {
-          // console.log("Slack Token Response", resp.data);
-          const slackId = resp.data.authed_user.id;
-          // console.log("User Slack Id", slackId);
-          let response;
-          try {
-            response = await this.$axios.$put(
-              `/users/${this.userId}/slack`,
-              {
-                slackAssignerId: this.userId,
-                slackAssigneeId: this.user.userId,
-                assigneeSlackId: slackId,
-              },
-              {
-                headers: {
-                  userId: this.userId,
-                },
-              }
-            );
-            console.log('Slack Id saved successfuly', response);
-          } catch (e) {
-            console.log('Error saving slack Id in database', e);
-          }
-        })
-        .catch((e) => {
-          console.log('error from slack', e);
-        });
-    } else {
-      console.log('No Slack Auth Code Present');
-    }
+  async created() {
+ 
+    // const authCode = this.$route.query.code;
+    // // console.log("SLACK CODE", authCode);
+    // if (authCode !== undefined) {
+    //   // console.log("Slack Auth code present");
+    //   axios({
+    //     method: 'post',
+    //     url: 'https://slack.com/api/oauth.v2.access',
+    //     data: qs.stringify({
+    //       client_id: '345426929140.1020110511447',
+    //       client_secret: 'fd851b7af77e525c1700879de9b328ab',
+    //       code: authCode,
+    //     }),
+    //     headers: {
+    //       'content-type': 'application/x-www-form-urlencoded',
+    //     },
+    //   })
+    //     .then(async (resp) => {
+    //       // console.log("Slack Token Response", resp.data);
+    //       const slackId = resp.data.authed_user.id;
+    //       // console.log("User Slack Id", slackId);
+    //       let response;
+    //       try {
+    //         response = await this.$axios.$put(
+    //           `/users/${this.userId}/slack`,
+    //           {
+    //             slackAssignerId: this.userId,
+    //             slackAssigneeId: this.user.userId,
+    //             assigneeSlackId: slackId,
+    //           },
+    //           {
+    //             headers: {
+    //               userId: this.userId,
+    //             },
+    //           }
+    //         );
+    //         console.log('Slack Id saved successfuly', response);
+    //       } catch (e) {
+    //         console.log('Error saving slack Id in database', e);
+    //       }
+    //     })
+    //     .catch((e) => {
+    //       console.log('error from slack', e);
+    //     });
+    // } else {
+    //   console.log('No Slack Auth Code Present');
+    // }
   },
 
   methods: {
+    websock(){
+      console.log("====WEBSOCKET=====");
+         // let stompClient;
+  let selectedUser;
+  const url = 'http://pmtool.devops.arimac.xyz/api/pm-service';
+  let newMessages = new Map();
+        let chatResponse;
+          try {
+              // chatResponse = await this.$axios.$get(
+              //   `registration/heyyyy `,
+              //   {
+              //     headers: {
+              //       user: this.userId,
+              //     }
+              //   }
+              // );
+              // console.log("chat response", chatResponse.data);
+
+    console.log("connecting to chat...")
+    let socket = new SockJS(url + '/chat');
+    this.stompClient = Stomp.over(socket);
+    const client = this.stompClient;
+    client.connect({}, function (frame) {
+        console.log("connected to: " + frame);
+        client.subscribe("/topic/messages/" + "task", function (response) {
+          console.log("Response", response)
+            // let data = JSON.parse(response.body);
+            // if (selectedUser === data.fromLogin) {
+            //     render(data.message, data.fromLogin);
+            // } else {
+            //     newMessages.set(data.fromLogin, data.message);
+            //     $('#userNameAppender_' + data.fromLogin).append('<span id="newMessage_' + data.fromLogin + '" style="color: red">+1</span>');
+            // }
+        });
+    });
+
+
+            } catch (error) {
+              console.log("Error fetching data", error);
+            }
+    },
+    sendMessage(){
+       this.stompClient.send("/app/chat/" + 'task', {}, JSON.stringify({
+        fromLogin: "from",
+        message: "Hi!!"
+    }));
+    },
     // checkActivationStatus(){
     //   console.log("check")
     //   if(process.browser){

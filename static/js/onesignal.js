@@ -1,3 +1,5 @@
+//import * as notification from "../../store/notification"
+
 window.OneSignal = window.OneSignal || [];
     OneSignal.push(function() {
       console.log("Hello, from Onesignal");
@@ -9,6 +11,55 @@ window.OneSignal = window.OneSignal || [];
       // });
       OneSignal.getUserId().then(function(userId) {
         console.log("OneSignal User ID:", userId);
+
+        //notification.dispatch("addNotificationDevice", userId)
+        //   try {
+      //     response = await this.$axios.$post(
+      //       `/notification/register`,
+      //       {
+      //         headers: {
+      //           user: "14",
+      //         },
+      //       },
+      //       {
+      //         data: {
+      //           subscriptionId: userId,
+      //           subscriberId: this.$store.state.user.userId,
+      //           provider: "OneSignal",
+      //           platform: "Web"
+      //         },
+      //       }
+      //     );
+      //   } catch (e) {
+      //   console.log("error", e)
+      // }
+
+      // axios.post(`/notification/register`, {
+      //   headers: {
+      //     user: userId,
+      //   },
+      // },
+      //   {
+      //             data: {
+      //               subscriptionId: userId,
+      //               subscriberId: this.$store.state.user.userId,
+      //               provider: "OneSignal",
+      //               platform: "Web"
+      //             },
+      //           }
+      // )
+      // .then((response) => {
+      //   // console.log(
+      //   //   'CHILD TASKS ARE RETRIEVED SUCCESSFULLY-->',
+      //   //   response.data.data
+      //   // );
+       
+      // })
+      // .catch((e) => {
+      //   console.log('error retrieving children', e);
+      // });
+     
+
       });
       OneSignal.init({
         appId: "fe6df906-c5cf-4c5e-bc1f-21003be4b2d5",
