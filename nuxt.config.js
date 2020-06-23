@@ -18,15 +18,16 @@ export default {
       },
     ],
     // allowLocalhostAsSecureOrigin: true,
-    
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     // script: [{src: '/onesignal.js'}]
-    script:[{src: 'https://cdn.onesignal.com/sdks/OneSignalSDK.js', async:""},{
-      src: 'https://code.jquery.com/jquery-3.3.1.slim.min.js',
-      type: 'text/javascript',
-    }
-  //  , {src: '/js/onesignal.js'}
-  ]
+    script: [
+      { src: 'https://cdn.onesignal.com/sdks/OneSignalSDK.js', async: '' },
+      {
+        src: 'https://code.jquery.com/jquery-3.3.1.slim.min.js',
+        type: 'text/javascript',
+      },
+      //  , {src: '/js/onesignal.js'}
+    ],
   },
   /*
    ** Customize the progress-bar color
@@ -43,8 +44,8 @@ export default {
     '~/plugins/vuelidate.js',
     '~/plugins/datepicker.js',
     '~/plugins/vuedatetime.js',
-    {src: '~/plugins/onesignal.js', mode: 'client'}
-    ],
+    { src: '~/plugins/onesignal.js', mode: 'client' },
+  ],
   /*
    ** Nuxt.js dev-modules
    */
@@ -82,7 +83,6 @@ export default {
    */
   env: {
     SYSTEM_URL: process.env.BASE_URL || 'http://localhost:3000',
-
     LOGOUT_URL:
       process.env.LOGOUT_URL ||
       'https://project.arimaclanka.com/auth/realms/pm-tool/protocol/openid-connect/logout',
