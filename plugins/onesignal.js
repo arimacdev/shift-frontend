@@ -2,10 +2,10 @@ import * as notification from '../store/notification';
 
 export default function(context) {
   console.log('store is', context.store);
-  context.store.dispatch(
-    'notification/addNotificationDevice',
-    'f8510995-8d9e-45bb-8337-442a2185a5c0'
-  );
+  OneSignal.getUserId().then(function(userId) {
+    console.log('OneSignal User ID:', userId);
+    context.store.dispatch('notification/addNotificationDevice', userId);
+  });
 }
 
 window.OneSignal = window.OneSignal || [];
@@ -18,9 +18,8 @@ OneSignal.push(function() {
   //     console.log("Push notifications are not enabled yet.");
   // });
   OneSignal.getUserId().then(function(userId) {
-    console.log('OneSignal User ID:', userId);
-
-    notification.dispatch('notification/addNotificationDevice', userId);
+    // console.log('OneSignal User ID:', userId);
+    // notification.dispatch('notification/addNotificationDevice', userId);
     //   try {
     //     response = await this.$axios.$post(
     //       `/notification/register`,
@@ -41,7 +40,6 @@ OneSignal.push(function() {
     //   } catch (e) {
     //   console.log("error", e)
     // }
-
     // axios.post(`/notification/register`, {
     //   headers: {
     //     user: userId,
@@ -61,7 +59,6 @@ OneSignal.push(function() {
     //   //   'CHILD TASKS ARE RETRIEVED SUCCESSFULLY-->',
     //   //   response.data.data
     //   // );
-
     // })
     // .catch((e) => {
     //   console.log('error retrieving children', e);
