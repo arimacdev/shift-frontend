@@ -1,5 +1,4 @@
 import colors from 'vuetify/es5/util/colors';
-
 export default {
   mode: 'universal',
   /*
@@ -40,6 +39,7 @@ export default {
     '~/plugins/vuelidate.js',
     '~/plugins/datepicker.js',
     '~/plugins/vuedatetime.js',
+    { src: '~/plugins/onesignal.js', mode: 'client' }
   ],
   /*
    ** Nuxt.js dev-modules
@@ -89,17 +89,14 @@ export default {
     },
     localStorage: false,
   },
-
   router: {
     middleware: ['auth', 'token'],
   },
-
   constants: {
     hostUrl: `${process.env.BASE_URL}`,
     appUrl: `${process.env.BASE_URL}`,
     realm: `${process.env.KEYCLOAK_REALM}`,
   },
-
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
