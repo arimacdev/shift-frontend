@@ -368,6 +368,10 @@
       ></component>
     </div>
     <!-- <success-popup /> -->
+    <v-btn @click="websock">Click</v-btn>
+    
+    <v-btn @click="sendMessage">Send</v-btn>
+
   </div>
 </template>
 
@@ -426,6 +430,7 @@ export default {
       dismissSecs: 5,
       dismissCountDown: 0,
       component: '',
+      stompClient: null
     };
   },
   watch: {
@@ -446,44 +451,7 @@ export default {
   },
 
   async created() {
-    let stompClient;
-let selectedUser;
-let newMessages = new Map();
-        let chatResponse;
-          try {
-              chatResponse = await this.$axios.$get(
-                `registration/nav `,
-                {
-                  headers: {
-                    user: this.userId,
-                  }
-                }
-              );
-              console.log("chat response", chatResponse.data);
-
-    console.log("connecting to chat...")
-    let socket = new SockJS(url + '/chat');
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
-        console.log("connected to: " + frame);
-        stompClient.subscribe("/topic/messages/" + userName, function (response) {
-            let data = JSON.parse(response.body);
-            if (selectedUser === data.fromLogin) {
-                render(data.message, data.fromLogin);
-            } else {
-                newMessages.set(data.fromLogin, data.message);
-                $('#userNameAppender_' + data.fromLogin).append('<span id="newMessage_' + data.fromLogin + '" style="color: red">+1</span>');
-            }
-        });
-    });
-
-
-
-
-            } catch (error) {
-              console.log("Error fetching data", error);
-            }
-
+ 
     // const authCode = this.$route.query.code;
     // // console.log("SLACK CODE", authCode);
     // if (authCode !== undefined) {
@@ -533,6 +501,53 @@ let newMessages = new Map();
   },
 
   methods: {
+    websock(){
+      console.log("====WEBSOCKET=====");
+         // let stompClient;
+  let selectedUser;
+  const url = 'http://localhost:8080/api/pm-service';
+  let newMessages = new Map();
+        let chatResponse;
+          try {
+              // chatResponse = await this.$axios.$get(
+              //   `registration/heyyyy `,
+              //   {
+              //     headers: {
+              //       user: this.userId,
+              //     }
+              //   }
+              // );
+              // console.log("chat response", chatResponse.data);
+
+    console.log("connecting to chat...")
+    let socket = new SockJS(url + '/chat');
+    this.stompClient = Stomp.over(socket);
+    const client = this.stompClient;
+    client.connect({}, function (frame) {
+        console.log("connected to: " + frame);
+        client.subscribe("/topic/messages/" + "task", function (response) {
+          console.log("Response", response)
+            // let data = JSON.parse(response.body);
+            // if (selectedUser === data.fromLogin) {
+            //     render(data.message, data.fromLogin);
+            // } else {
+            //     newMessages.set(data.fromLogin, data.message);
+            //     $('#userNameAppender_' + data.fromLogin).append('<span id="newMessage_' + data.fromLogin + '" style="color: red">+1</span>');
+            // }
+        });
+    });
+
+
+            } catch (error) {
+              console.log("Error fetching data", error);
+            }
+    },
+    sendMessage(){
+       this.stompClient.send("/app/chat/" + 'task', {}, JSON.stringify({
+        fromLogin: "from",
+        message: "Hi!!"
+    }));
+    },
     // checkActivationStatus(){
     //   console.log("check")
     //   if(process.browser){

@@ -1,4 +1,4 @@
-import * as notification from "../../store/notification"
+//import * as notification from "../../store/notification"
 
 window.OneSignal = window.OneSignal || [];
     OneSignal.push(function() {

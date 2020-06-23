@@ -1,4 +1,4 @@
-import * as notification from "../store/notification"
+// import * as notification from "../store/notification"
 
 window.OneSignal = window.OneSignal || [];
     OneSignal.push(function() {
@@ -12,7 +12,7 @@ window.OneSignal = window.OneSignal || [];
       OneSignal.getUserId().then(function(userId) {
         console.log("OneSignal User ID:", userId);
 
-    notification.dispatch("addNotificationDevice", userId)
+   // notification.dispatch("addNotificationDevice", userId)
         //   try {
       //     response = await this.$axios.$post(
       //       `/notification/register`,
