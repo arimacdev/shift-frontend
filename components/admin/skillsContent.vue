@@ -277,40 +277,45 @@ export default {
       this.skill = skill;
     },
     async updateSkill() {
-      let response;
-      try {
-        response = await this.$axios.$put(
-          `/category/${this.selectedCategory.categoryId}/skill/${this.skill.skillId}`,
-          {
-            skillName: this.updatedSkillName
-          },
-          {
-            headers: {
-              userId: this.userId
+      let skillName = "";
+      if (this.updatedSkillName != "") {
+        let response;
+        try {
+          response = await this.$axios.$put(
+            `/category/${this.selectedCategory.categoryId}/skill/${this.skill.skillId}`,
+            {
+              skillName: this.updatedSkillName
+            },
+            {
+              headers: {
+                userId: this.userId
+              }
             }
-          }
-        );
-        this.$store.dispatch(
-          "skillMatrix/fetchCategorySkills",
-          this.selectedCategory.categoryId
-        );
+          );
+          this.$store.dispatch(
+            "skillMatrix/fetchCategorySkills",
+            this.selectedCategory.categoryId
+          );
 
-        this.successMessage = "Skill updated successfully";
-        this.component = "success-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        this.overlay = false;
+          this.successMessage = "Skill updated successfully";
+          this.component = "success-popup";
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          this.overlay = false;
+          this.updatedSkillName = "";
 
-        // console.log("update task status response", response);
-      } catch (e) {
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        this.overlay = false;
-        console.log("Error updating a status", e);
+          // console.log("update task status response", response);
+        } catch (e) {
+          this.errorMessage = e.response.data;
+          this.component = "error-popup";
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          this.overlay = false;
+          console.log("Error updating a status", e);
+          this.updatedSkillName = "";
+        }
       }
     },
     async updateSkillCategory() {
