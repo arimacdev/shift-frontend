@@ -368,7 +368,7 @@
       ></component>
     </div>
     <!-- <success-popup /> -->
-    <v-btn @click="websock">Click</v-btn>
+    <v-btn @click="websock">Connect</v-btn>
     
     <v-btn @click="sendMessage">Send</v-btn>
 
@@ -505,7 +505,7 @@ export default {
       console.log("====WEBSOCKET=====");
          // let stompClient;
   let selectedUser;
-  const url = 'http://localhost:8080/api/pm-service';
+  const url = 'http://pmtool.devops.arimac.xyz/api/pm-service';
   let newMessages = new Map();
         let chatResponse;
           try {
