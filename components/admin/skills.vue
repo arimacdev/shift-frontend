@@ -14,9 +14,7 @@
                   <v-icon size="20" color>icon-skills</v-icon>
                 </v-list-item-icon>
                 <v-list-item-content class>
-                  <v-list-item-title class="text-capitalize"
-                    >Add new skill category</v-list-item-title
-                  >
+                  <v-list-item-title class="text-capitalize">Add new skill category</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-btn>
@@ -30,19 +28,17 @@
               :items="catArray"
               item-text="name"
               item-value="id"
-              :loading="loading"
-              :search-input.sync="search"
-              cache-items
               class="mx-4 searchBar"
               flat
               hide-no-data
               hide-details
               append-icon
+              clearable
               prepend-inner-icon="mdi-magnify"
               label="Search Here"
               outlined
-              clearable=""
               @change="selectCat()"
+              @focus="getCatArray()"
             ></v-autocomplete>
           </v-col>
         </v-row>
@@ -57,9 +53,11 @@
                     @click="selectCategory(category)"
                   >
                     <v-list-item dark>
-                      <v-list-item-title class="catListName">{{
+                      <v-list-item-title class="catListName">
+                        {{
                         category.categoryName
-                      }}</v-list-item-title>
+                        }}
+                      </v-list-item-title>
                     </v-list-item>
                   </div>
                 </div>
@@ -70,10 +68,7 @@
       </div>
       <div>
         <keep-alive>
-          <component
-            v-bind:is="component"
-            @removeComponent="removeComponent"
-          ></component>
+          <component v-bind:is="component" @removeComponent="removeComponent"></component>
         </keep-alive>
       </div>
     </div>
@@ -101,21 +96,13 @@
             background-color="#EDF0F5"
             v-model="this.colorPicker"
           ></v-text-field>
-          <v-color-picker
-            width="100%"
-            v-model="colorPicker"
-            hide-canvas
-            class="ma-2"
-            show-swatches
-          ></v-color-picker>
+          <v-color-picker width="100%" v-model="colorPicker" hide-canvas class="ma-2" show-swatches></v-color-picker>
         </v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn width="100px" color="#FF6161" dark @click="skillDialog = false"
-            >Cancel</v-btn
-          >
+          <v-btn width="100px" color="#FF6161" dark @click="skillDialog = false">Cancel</v-btn>
 
           <v-btn
             width="100px"
@@ -125,73 +112,85 @@
               skillDialog = false;
               addSkillCategory();
             "
-            >Ok</v-btn
-          >
+          >Ok</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
     </v-dialog>
     <div class="skillTabPopup" @click="close">
-      <component
-        v-bind:is="popup"
-        :successMessage="successMessage"
-        :errorMessage="errorMessage"
-      ></component>
+      <component v-bind:is="popup" :successMessage="successMessage" :errorMessage="errorMessage"></component>
       <!-- <success-popup /> -->
     </div>
   </div>
 </template>
 
 <script>
-import usersSearchBar from '~/components/tools/usersSearchBar';
-import SuccessPopup from '~/components/popups/successPopup';
-import ErrorPopup from '~/components/popups/errorPopup';
-import skillsContent from '~/components/admin/skillsContent';
-import { mapState } from 'vuex';
+import usersSearchBar from "~/components/tools/usersSearchBar";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
+import skillsContent from "~/components/admin/skillsContent";
+import { mapState } from "vuex";
 export default {
   components: {
-    'search-bar': usersSearchBar,
-    'skills-content': skillsContent,
-    'success-popup': SuccessPopup,
-    'error-popup': ErrorPopup,
+    "search-bar": usersSearchBar,
+    "skills-content": skillsContent,
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup
   },
   data() {
     return {
-      searchCat: '',
-      errorMessage: '',
-      successMessage: '',
-      component: '',
+      catArray: [],
+      searchCat: "",
+      errorMessage: "",
+      successMessage: "",
+      component: "",
       skillDialog: false,
-      colorPicker: '',
-      categoryName: '',
-      popup: '',
-      userId: this.$store.state.user.userId,
+      colorPicker: "",
+      categoryName: "",
+      popup: "",
+      userId: this.$store.state.user.userId
     };
   },
   methods: {
+    getCatArray() {
+      this.component = "";
+      console.log("FOCUSED " + this.skillCategory);
+      let catSearchList = this.skillCategory;
+      let catList = [];
+      for (let index = 0; index < catSearchList.length; ++index) {
+        let category = catSearchList[index];
+        this.catArray.push({
+          name: category.categoryName,
+          id: category.categoryId
+        });
+      }
+      return catList;
+    },
     close() {
-      this.popup = '';
+      this.popup = "";
     },
     removeComponent() {
-      this.component = '';
+      this.catArray = [];
+      this.$store.dispatch("skillMatrix/fetchSkillCategory");
+      this.component = "";
     },
     selectCategory(category) {
-      this.component = 'skills-content';
+      this.component = "skills-content";
       this.$store.dispatch(
-        'skillMatrix/fetchSelectedCategory',
+        "skillMatrix/fetchSelectedCategory",
         category.categoryId
       );
 
       this.$store.dispatch(
-        'skillMatrix/fetchCategorySkills',
+        "skillMatrix/fetchCategorySkills",
         category.categoryId
       );
     },
     selectCat() {
-      this.component = 'skills-content';
-      this.$store.dispatch('skillMatrix/fetchSelectedCategory', this.searchCat);
+      this.component = "skills-content";
+      this.$store.dispatch("skillMatrix/fetchSelectedCategory", this.searchCat);
 
-      this.$store.dispatch('skillMatrix/fetchCategorySkills', this.searchCat);
+      this.$store.dispatch("skillMatrix/fetchCategorySkills", this.searchCat);
     },
     async addSkillCategory() {
       let response;
@@ -200,53 +199,53 @@ export default {
           `/category`,
           {
             categoryName: this.categoryName,
-            categoryColorCode: this.colorPicker,
+            categoryColorCode: this.colorPicker
           },
           {
             headers: {
-              userId: this.userId,
-            },
+              userId: this.userId
+            }
           }
         );
 
-        this.categoryName = '';
+        this.categoryName = "";
 
-        this.$store.dispatch('skillMatrix/fetchSkillCategory');
-        this.successMessage = 'Category added successfully';
-        this.popup = 'success-popup';
+        this.$store.dispatch("skillMatrix/fetchSkillCategory");
+        this.successMessage = "Category added successfully";
+        this.popup = "success-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
         this.overlay = false;
         // console.log("update task status response", response);
       } catch (e) {
-        this.categoryName = '';
+        this.categoryName = "";
         this.errorMessage = e.response.data;
-        this.popup = 'error-popup';
+        this.popup = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
         this.overlay = false;
-        console.log('Error updating a status', e);
+        console.log("Error updating a status", e);
       }
-    },
+    }
   },
   computed: {
     ...mapState({
-      skillCategory: (state) => state.skillMatrix.skillCategory,
-    }),
-    catArray() {
-      let catSearchList = this.skillCategory;
-      let catList = [];
-      for (let index = 0; index < catSearchList.length; ++index) {
-        let category = catSearchList[index];
-        catList.push({
-          name: category.categoryName,
-          id: category.categoryId,
-        });
-      }
-      return catList;
-    },
-  },
+      skillCategory: state => state.skillMatrix.skillCategory
+    })
+    // catArray() {
+    //   let catSearchList = this.skillCategory;
+    //   let catList = [];
+    //   for (let index = 0; index < catSearchList.length; ++index) {
+    //     let category = catSearchList[index];
+    //     catList.push({
+    //       name: category.categoryName,
+    //       id: category.categoryId,
+    //     });
+    //   }
+    //   return catList;
+    // },
+  }
 };
 </script>
