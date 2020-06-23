@@ -6,9 +6,7 @@
         <div class="name-div">
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title class="font-weight-medium"
-                >Skill Matrix</v-list-item-title
-              >
+              <v-list-item-title class="font-weight-medium">Skill Matrix</v-list-item-title>
             </v-list-item-content>
 
             <v-divider class="mx-4" inset vertical></v-divider>
@@ -43,9 +41,7 @@
               @change="searchByUser()"
             ></v-autocomplete>
           </v-col>
-          <v-col md="1" style="color: #7A8B9F; font-weight: 500; "
-            >Filter by Skills</v-col
-          >
+          <v-col md="1" style="color: #7A8B9F; font-weight: 500; ">Filter by Skills</v-col>
 
           <v-col style="margin-left: -20px" md="7">
             <v-autocomplete
@@ -72,23 +68,45 @@
           </v-col>
 
           <v-col md="1">
-            <v-btn
-              @click="cancelSearch()"
-              dark
-              width="100%"
-              height="40px"
-              color="#FF6161"
-            >
+            <v-btn @click="cancelSearch()" dark width="100%" height="40px" color="#FF6161">
               <v-icon color="#FFFFFF">mdi-cancel</v-icon>
               <!-- Cancel -->
             </v-btn>
           </v-col>
         </v-row>
-        <v-row v-if="skillFilter == ''">
+        <div
+          v-if="this.skillSearch && skillFilter == ''"
+          class="popupDiv"
+          style="position: absolute"
+        >
+          <transition>
+            <v-card class="errorPopupContent">
+              <v-list-item>
+                <v-list-item-action>
+                  <v-icon size="25" color="red">mdi-alert-outline</v-icon>
+                </v-list-item-action>
+                <v-list-item-content class="buttonText">
+                  <v-list-item-title class="popupTitle">No items to show</v-list-item-title>
+                  <div class="popupSubtitle errorSubtitle">No allocated users for selected skills</div>
+                </v-list-item-content>
+
+                <div>
+                  <v-icon
+                    size="15"
+                    @click="cancelSearch()"
+                    class="closeButton"
+                    color="red"
+                  >mdi-close-circle-outline</v-icon>
+                </div>
+              </v-list-item>
+            </v-card>
+          </transition>
+        </div>
+        <!-- <v-row style="z-index: 1000" v-if="this.skillSearch && skillFilter == ''">
           <v-col>
-            <div class="noItemText">No items to show</div>
+            <div class="noItemText">No items to show {{skillFilter}}</div>
           </v-col>
-        </v-row>
+        </v-row>-->
         <v-row class="scrollContent">
           <v-col>
             <!-- loop following row for each user -->
@@ -96,20 +114,13 @@
               <v-col md="3" sm="3">
                 <div class="userListTitle">Users</div>
               </v-col>
-              <v-col
-                md="9"
-                sm="9"
-                style="background-color:#ffffff; z-index: -100"
-              >
-                <div
-                  v-if="this.skillSearch && skillFilter != ''"
-                  class="skillDisplayDiv"
-                >
+              <v-col md="9" sm="9" style="background-color:#ffffff; z-index: -100">
+                <div v-if="this.skillSearch && skillFilter != ''" class="skillDisplayDiv">
                   <div class="skillScrollingWrapper" id="div1">
                     <div>
                       <div>
                         <div
-                          class="skillDisplayCard "
+                          class="skillDisplayCard"
                           v-for="(categoryMap, index) in skillFilter[0]
                             .category"
                           :key="index"
@@ -121,25 +132,19 @@
                                 'background-color:' +
                                   categoryMap.categoryColorCode
                               "
-                            >
-                              {{ categoryMap.categoryName }}
-                            </div>
+                            >{{ categoryMap.categoryName }}</div>
 
                             <div
                               class="skillName skillDisplayCard1"
                               v-for="(skill, index) in categoryMap.skillSet"
                               :key="index"
                             >
-                              <v-tooltip
-                                :color="categoryMap.categoryColorCode"
-                                bottom=""
-                              >
+                              <v-tooltip :color="categoryMap.categoryColorCode" bottom>
                                 <template v-slot:activator="{ on }">
                                   <v-list-item-title
                                     v-on="on"
                                     style="font-size: 12px"
-                                    >{{ skill.skillName }}</v-list-item-title
-                                  >
+                                  >{{ skill.skillName }}</v-list-item-title>
                                 </template>
                                 <span>{{ skill.skillName }}</span>
                               </v-tooltip>
@@ -150,6 +155,7 @@
                     </div>
                   </div>
                 </div>
+                <!-- <div v-if="this.skillSearch && skillFilter == ''">no items</div> -->
                 <div v-else-if="this.userSearch" class="skillDisplayDiv">
                   <div class="skillScrollingWrapper" id="div1">
                     <div>
@@ -165,25 +171,19 @@
                               'background-color:' +
                                 categoryMap.categoryColorCode
                             "
-                          >
-                            {{ categoryMap.categoryName }}
-                          </div>
+                          >{{ categoryMap.categoryName }}</div>
 
                           <div
                             class="skillName skillDisplayCard1"
                             v-for="(skill, index) in categoryMap.skillSet"
                             :key="index"
                           >
-                            <v-tooltip
-                              :color="categoryMap.categoryColorCode"
-                              bottom=""
-                            >
+                            <v-tooltip :color="categoryMap.categoryColorCode" bottom>
                               <template v-slot:activator="{ on }">
                                 <v-list-item-title
                                   v-on="on"
                                   style="font-size: 12px"
-                                  >{{ skill.skillName }}</v-list-item-title
-                                >
+                                >{{ skill.skillName }}</v-list-item-title>
                               </template>
                               <span>{{ skill.skillName }}</span>
                             </v-tooltip>
@@ -209,9 +209,7 @@
                               'background-color:' +
                                 categoryMap.categoryColorCode
                             "
-                          >
-                            {{ categoryMap.categoryName }}
-                          </div>
+                          >{{ categoryMap.categoryName }}</div>
 
                           <div
                             class="skillName skillDisplayCard1"
@@ -220,18 +218,14 @@
                           >
                             <!-- <v-list-item-title style="font-size: 12px">{{
                               skill.skillName
-                            }}</v-list-item-title> -->
+                            }}</v-list-item-title>-->
 
-                            <v-tooltip
-                              :color="categoryMap.categoryColorCode"
-                              bottom=""
-                            >
+                            <v-tooltip :color="categoryMap.categoryColorCode" bottom>
                               <template v-slot:activator="{ on }">
                                 <v-list-item-title
                                   v-on="on"
                                   style="font-size: 12px"
-                                  >{{ skill.skillName }}</v-list-item-title
-                                >
+                                >{{ skill.skillName }}</v-list-item-title>
                               </template>
                               <span>{{ skill.skillName }}</span>
                             </v-tooltip>
@@ -250,11 +244,7 @@
                   class="skillDisplayScreenUser overflow-y-auto"
                   id="div3"
                 >
-                  <div
-                    class="matrixUserListItem"
-                    v-for="(user, index) in skillFilter"
-                    :key="index"
-                  >
+                  <div class="matrixUserListItem" v-for="(user, index) in skillFilter" :key="index">
                     <v-list-item>
                       <v-list-item-avatar>
                         <v-img
@@ -270,10 +260,10 @@
                         ></v-img>
                       </v-list-item-avatar>
                       <v-list-item-content>
-                        <v-list-item-title
-                          >{{ user.firstName }}
-                          {{ user.lastName }}</v-list-item-title
-                        >
+                        <v-list-item-title>
+                          {{ user.firstName }}
+                          {{ user.lastName }}
+                        </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                     <v-divider class="mx-4"></v-divider>
@@ -300,9 +290,11 @@
                         ></v-img>
                       </v-list-item-avatar>
                       <v-list-item-content>
-                        <v-list-item-title>{{
+                        <v-list-item-title>
+                          {{
                           this.searchUser.name
-                        }}</v-list-item-title>
+                          }}
+                        </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                     <v-divider class="mx-4"></v-divider>
@@ -333,10 +325,10 @@
                         ></v-img>
                       </v-list-item-avatar>
                       <v-list-item-content>
-                        <v-list-item-title
-                          >{{ user.firstName }}
-                          {{ user.lastName }}</v-list-item-title
-                        >
+                        <v-list-item-title>
+                          {{ user.firstName }}
+                          {{ user.lastName }}
+                        </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                     <v-divider class="mx-4"></v-divider>
@@ -368,11 +360,8 @@
                                 v-if="skill.isAssigned == true"
                                 size="30"
                                 color="#2EC973"
-                                >mdi-checkbox-marked-circle</v-icon
-                              >
-                              <v-icon v-else size="30" color="#FFFFFF"
-                                >mdi-checkbox-blank-circle</v-icon
-                              >
+                              >mdi-checkbox-marked-circle</v-icon>
+                              <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
                             </div>
                           </div>
                         </div>
@@ -403,11 +392,8 @@
                                 v-if="skill.isAssigned == true"
                                 size="30"
                                 color="#2EC973"
-                                >mdi-checkbox-marked-circle</v-icon
-                              >
-                              <v-icon v-else size="30" color="#FFFFFF"
-                                >mdi-checkbox-blank-circle</v-icon
-                              >
+                              >mdi-checkbox-marked-circle</v-icon>
+                              <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
                             </div>
                           </div>
                         </div>
@@ -421,10 +407,7 @@
                     id="div2"
                   >
                     <br />
-                    <div
-                      v-for="(user, index) in organizationSkills"
-                      :key="index"
-                    >
+                    <div v-for="(user, index) in organizationSkills" :key="index">
                       <div
                         class="skillDisplayCard"
                         v-for="(category, index) in user.category"
@@ -441,11 +424,8 @@
                                 v-if="skill.isAssigned == true"
                                 size="30"
                                 color="#2EC973"
-                                >mdi-checkbox-marked-circle</v-icon
-                              >
-                              <v-icon v-else size="30" color="#FFFFFF"
-                                >mdi-checkbox-blank-circle</v-icon
-                              >
+                              >mdi-checkbox-marked-circle</v-icon>
+                              <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
                             </div>
                           </div>
                         </div>
@@ -454,10 +434,7 @@
                     </div>
                   </div>
                   <br />
-                  <div
-                    style="position: fixed; bottom: 10px; right: 10px;"
-                    v-if="this.matrixView"
-                  >
+                  <div style="position: fixed; bottom: 10px; right: 10px;" v-if="this.matrixView">
                     <v-btn
                       color="blue"
                       style=" color: #FFFFFF"
@@ -495,37 +472,22 @@
         </v-card-title>
         <v-card-text>
           <div style="height: 70vh;" class="overflow-y-auto">
-            <div
-              class
-              v-for="(categoryMap, index) in categorySkillMapping"
-              :key="index"
-            >
+            <div class v-for="(categoryMap, index) in categorySkillMapping" :key="index">
               <div class>
                 <div
                   class="categoryHeaderSearch"
                   :style="'background-color:' + categoryMap.categoryColorCode"
-                >
-                  {{ categoryMap.categoryName }}
-                </div>
+                >{{ categoryMap.categoryName }}</div>
 
-                <div
-                  class
-                  v-for="(skill, index) in categoryMap.skillSet"
-                  :key="index"
-                >
+                <div class v-for="(skill, index) in categoryMap.skillSet" :key="index">
                   <v-list-item>
                     <v-list-item-action>
-                      <v-checkbox
-                        multiple
-                        v-model="selectedSkills"
-                        :value="skill.skillId"
-                      ></v-checkbox>
+                      <v-checkbox multiple v-model="selectedSkills" :value="skill.skillId"></v-checkbox>
                     </v-list-item-action>
                     <v-list-item-title
                       style="font-size: 12px"
                       class="skillNameSearch"
-                      >{{ skill.skillName }}</v-list-item-title
-                    >
+                    >{{ skill.skillName }}</v-list-item-title>
                   </v-list-item>
                 </div>
               </div>
@@ -535,13 +497,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn
-            width="100px"
-            color="#FF6161"
-            dark
-            @click="searchSkillDialog = false"
-            >Cancel</v-btn
-          >
+          <v-btn width="100px" color="#FF6161" dark @click="searchSkillDialog = false">Cancel</v-btn>
 
           <v-btn
             width="100px"
@@ -551,8 +507,7 @@
               filterSkills();
             "
             dark
-            >Ok</v-btn
-          >
+          >Ok</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -561,37 +516,38 @@
 </template>
 
 <script>
-import NavigationDrawer from '~/components/navigationDrawer';
-import axios from 'axios';
-import { mapState } from 'vuex';
+import NavigationDrawer from "~/components/navigationDrawer";
+import axios from "axios";
+import { mapState } from "vuex";
 
 export default {
   components: {
-    NavigationDrawer,
+    NavigationDrawer
   },
   data() {
     return {
+      empty: true,
       userId: this.$store.state.user.userId,
       searchSkillDialog: false,
       skillSearchArray: [],
-      selectedSkills: '',
+      selectedSkills: "",
       loadLimit: 10,
       userSearch: false,
       skillSearch: false,
       matrixView: true,
-      skillQuery: '',
+      skillQuery: "",
       searchUser: {
-        id: '',
-        name: '',
-        profileImage: '',
-      },
+        id: "",
+        name: "",
+        profileImage: ""
+      }
     };
   },
 
   async asyncData({ $axios, store }) {
     let userId = store.state.user.userId;
     const { data: projects } = await $axios.$get(`/projects?userId=${userId}`);
-    const { data: users } = await $axios.$get('/users');
+    const { data: users } = await $axios.$get("/users");
     const sorted = users.sort((a, b) => {
       const userA = a.firstName.toUpperCase();
       const userB = b.firstName.toUpperCase();
@@ -606,86 +562,91 @@ export default {
     return {
       projects: projects,
       users: users,
-      name: users[0].userId,
+      name: users[0].userId
     };
   },
   mounted() {
     $(document).ready(function() {
-      $('#div2').on('scroll', function() {
-        $('#div1').scrollLeft($(this).scrollLeft());
+      $("#div2").on("scroll", function() {
+        $("#div1").scrollLeft($(this).scrollLeft());
       });
     });
 
     $(document).ready(function() {
-      $('#div1').on('scroll', function() {
-        $('#div2').scrollLeft($(this).scrollLeft());
+      $("#div1").on("scroll", function() {
+        $("#div2").scrollLeft($(this).scrollLeft());
       });
     });
 
     $(document).ready(function() {
-      $('#div2').on('scroll', function() {
-        $('#div3').scrollTop($(this).scrollTop());
+      $("#div2").on("scroll", function() {
+        $("#div3").scrollTop($(this).scrollTop());
       });
     });
 
     $(document).ready(function() {
-      $('#div3').on('scroll', function() {
-        $('#div2').scrollTop($(this).scrollTop());
+      $("#div3").on("scroll", function() {
+        $("#div2").scrollTop($(this).scrollTop());
       });
     });
   },
 
   methods: {
+    emptyList() {
+      if (this.skillFilter[0] != undefined) {
+        return true;
+      }
+    },
     filterSkills() {
       this.skillSearch = true;
       this.userSearch = false;
       if (this.searchSkills.length != 0) {
-        let skillList = 'skill=';
+        let skillList = "skill=";
         for (let i = 0; i < this.searchSkills.length; i++) {
           skillList = skillList + this.searchSkills[i];
           if (i < this.searchSkills.length - 1) {
-            skillList = skillList + '&skill=';
+            skillList = skillList + "&skill=";
           }
         }
         this.skillQuery = skillList;
-        this.$store.dispatch('skillMatrix/fetchFilterSkills', this.skillQuery);
+        this.$store.dispatch("skillMatrix/fetchFilterSkills", this.skillQuery);
       }
     },
     searchByUser() {
-      this.searchSkills = '';
-      this.selectedSkills = ' ';
-      console.log('TRIGGERRED: ' + this.searchUser);
+      this.searchSkills = "";
+      this.selectedSkills = " ";
+      console.log("TRIGGERRED: " + this.searchUser);
       if (this.searchUser !== undefined) {
         this.userSearch = true;
         this.skillSearch = false;
-        this.$store.dispatch('skillMatrix/fetchUserSkills', this.searchUser.id);
+        this.$store.dispatch("skillMatrix/fetchUserSkills", this.searchUser.id);
       }
     },
     cancelSearch() {
-      this.$store.dispatch('skillMatrix/fetchOrganizationSkills', {
+      this.$store.dispatch("skillMatrix/fetchOrganizationSkills", {
         limit: 10,
-        offset: 0,
+        offset: 0
       });
       this.searchUser = null;
-      this.searchSkills = '';
-      this.selectedSkills = ' ';
+      this.searchSkills = "";
+      this.selectedSkills = " ";
       this.userSearch = false;
       this.skillSearch = false;
       this.matrixView = true;
     },
     loadMatrix() {
       this.loadLimit = this.loadLimit + 10;
-      this.$store.dispatch('skillMatrix/fetchOrganizationSkills', {
+      this.$store.dispatch("skillMatrix/fetchOrganizationSkills", {
         // limit: this.users.length,
         limit: this.loadLimit,
-        offset: 0,
+        offset: 0
       });
     },
     loadAllMatrix() {
       this.loadLimit = this.users.length + 1;
-      this.$store.dispatch('skillMatrix/fetchOrganizationSkills', {
+      this.$store.dispatch("skillMatrix/fetchOrganizationSkills", {
         limit: this.users.length,
-        offset: 0,
+        offset: 0
       });
     },
     searchDialogOpen() {
@@ -698,37 +659,37 @@ export default {
           `/category/${categoryId}/skill`,
           {
             headers: {
-              userId: this.userId,
-            },
+              userId: this.userId
+            }
           }
         );
-        console.log('RETRIVED', categorySkillResponse.data);
+        console.log("RETRIVED", categorySkillResponse.data);
         return categorySkillResponse.data;
       } catch (error) {
-        console.log('Error fetching selected category skills', error);
+        console.log("Error fetching selected category skills", error);
       }
-    },
+    }
   },
   created() {
-    this.$store.dispatch('skillMatrix/fetchOrganizationSkills', {
+    this.$store.dispatch("skillMatrix/fetchOrganizationSkills", {
       // limit: this.users.length,
       limit: 10,
-      offset: 0,
+      offset: 0
     });
-    this.$store.dispatch('project/clearProject');
-    this.$store.dispatch('skillMatrix/fetchSkillCategory');
-    this.$store.dispatch('skillMatrix/fetchCategorySkillMapping');
+    this.$store.dispatch("project/clearProject");
+    this.$store.dispatch("skillMatrix/fetchSkillCategory");
+    this.$store.dispatch("skillMatrix/fetchCategorySkillMapping");
 
-    this.$store.dispatch('skillMatrix/fetchUserSkills', this.userId);
+    this.$store.dispatch("skillMatrix/fetchUserSkills", this.userId);
   },
   computed: {
     ...mapState({
-      skillCategory: (state) => state.skillMatrix.skillCategory,
-      categorySkills: (state) => state.skillMatrix.skills,
-      categorySkillMapping: (state) => state.skillMatrix.categorySkillMapping,
-      userSkills: (state) => state.skillMatrix.userSkills,
-      organizationSkills: (state) => state.skillMatrix.organizationSkills,
-      skillFilter: (state) => state.skillMatrix.skillFilter,
+      skillCategory: state => state.skillMatrix.skillCategory,
+      categorySkills: state => state.skillMatrix.skills,
+      categorySkillMapping: state => state.skillMatrix.categorySkillMapping,
+      userSkills: state => state.skillMatrix.userSkills,
+      organizationSkills: state => state.skillMatrix.organizationSkills,
+      skillFilter: state => state.skillMatrix.skillFilter
     }),
     skillArray() {
       let SkillSearchList = this.categorySkillMapping;
@@ -742,7 +703,7 @@ export default {
           let skill = SkillSearchList[index1].skillSet[index2];
           skillList.push({
             name: skill.skillName,
-            id: skill.skillId,
+            id: skill.skillId
           });
         }
       }
@@ -754,9 +715,9 @@ export default {
       for (let index = 0; index < userSearchList.length; ++index) {
         let user = userSearchList[index];
         userList.push({
-          name: user.firstName + ' ' + user.lastName,
+          name: user.firstName + " " + user.lastName,
           id: user.userId,
-          profileImage: user.profileImage,
+          profileImage: user.profileImage
         });
       }
       return userList;
@@ -766,8 +727,8 @@ export default {
       get() {
         return this.selectedSkills;
       },
-      set(value) {},
-    },
-  },
+      set(value) {}
+    }
+  }
 };
 </script>
