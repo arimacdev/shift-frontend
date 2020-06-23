@@ -301,6 +301,7 @@ export default {
           this.close();
         }, 3000);
         this.overlay = false;
+
         // console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
@@ -313,12 +314,20 @@ export default {
       }
     },
     async updateSkillCategory() {
-      let response;
+      let catName = "";
+      if (this.updatedName == "") {
+        catName = this.selectedCategory.categoryName;
+      } else {
+        catName = this.updatedName;
+      }
       try {
+        console.log(this.selectedCategory.categoryName + "/" + catName);
+        let response;
+
         response = await this.$axios.$put(
           `/category/${this.selectedCategory.categoryId}`,
           {
-            categoryName: this.updatedName,
+            categoryName: catName,
             categoryColorCode: this.updatedColor
           },
           {

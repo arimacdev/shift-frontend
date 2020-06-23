@@ -26,7 +26,6 @@
               :items="userArray"
               item-text="name"
               item-value="id"
-              :loading="loading"
               :search-input.sync="search"
               cache-items
               dense
