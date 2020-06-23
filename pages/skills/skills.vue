@@ -18,7 +18,7 @@
     <div class="body-div">
       <div>
         <v-row style=" ">
-          <v-col md="3">
+          <v-col md="3" style="z-index:100">
             <v-autocomplete
               return-object
               background-color="#EDF0F5"
@@ -265,7 +265,7 @@
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
-                    <v-divider class="mx-4"></v-divider>
+                    <v-divider style="margin-top: 10px" class="mx-4"></v-divider>
                   </div>
                 </v-list-item-group>
                 <v-list-item-group
@@ -296,7 +296,7 @@
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
-                    <v-divider class="mx-4"></v-divider>
+                    <v-divider style="margin-top: 10px" class="mx-4"></v-divider>
                   </div>
                 </v-list-item-group>
                 <v-list-item-group
@@ -330,7 +330,7 @@
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
-                    <v-divider class="mx-4"></v-divider>
+                    <v-divider style="margin-top: 10px" class="mx-4"></v-divider>
                   </div>
                 </v-list-item-group>
               </v-col>
