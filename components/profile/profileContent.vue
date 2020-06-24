@@ -41,22 +41,13 @@
               <v-icon right dark>mdi-upload</v-icon>
             </v-btn>
 
-            <v-progress-circular
-              v-if="uploadLoading == true"
-              indeterminate
-              color="primary"
-            ></v-progress-circular>
+            <v-progress-circular v-if="uploadLoading == true" indeterminate color="primary"></v-progress-circular>
           </div>
         </form>
 
         <!-- ----------------------- slack --------------------- -->
 
-        <v-card
-          class="mx-auto slackCard"
-          max-width="344"
-          height="220px"
-          outlined
-        >
+        <v-card class="mx-auto slackCard" max-width="344" height="220px" outlined>
           <v-img
             class="white--text align-end slackImage"
             width="100px"
@@ -73,10 +64,7 @@
                 height
                 width="120"
                 src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1592584747849_add_to_slack.png"
-                srcset="
-                  https://platform.slack-edge.com/img/add_to_slack.png    1x,
-                  https://platform.slack-edge.com/img/add_to_slack@2x.png 2x
-                "
+                srcset="https://platform.slack-edge.com/img/add_to_slack.png    1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"
               />
             </a>
           </div>
@@ -87,9 +75,7 @@
             <!-- <v-btn x-small depressed color="primary" v-if="user.userSlackId != null && user.notification == false" v-show="enableNotification"  @click='changeNotificationStatus(user.notification)' >Enable Notifications</v-btn>  
             <v-btn x-small depressed   v-if="user.userSlackId != null && user.notification == true" v-show="disableNotification"  @click='changeNotificationStatus(user.notification)'>Disable Notifications</v-btn>-->
 
-            <div class="notiTitle" v-if="user.userSlackId != null">
-              Enable Notifications
-            </div>
+            <div class="notiTitle" v-if="user.userSlackId != null">Enable Notifications</div>
             <div class="notiButton">
               <v-switch
                 inset
@@ -100,8 +86,7 @@
                 v-if="user.userSlackId != null && user.notification == false"
                 v-show="enableNotification"
                 @click="changeNotificationStatus(user.notification)"
-                >Enable Notifications</v-switch
-              >
+              >Enable Notifications</v-switch>
               <v-switch
                 inset
                 v-model="switch1"
@@ -111,8 +96,7 @@
                 v-if="user.userSlackId != null && user.notification == true"
                 v-show="disableNotification"
                 @click="changeNotificationStatus(user.notification)"
-                >Disable Notifications</v-switch
-              >
+              >Disable Notifications</v-switch>
             </div>
           </div>
         </v-card>
@@ -159,9 +143,7 @@
       </div>
     </div>
     <v-form @submit.prevent="handleSubmit" v-model="isValid" ref="form">
-      <div class="profileUserName">
-        {{ user.firstName }} {{ user.lastName }}
-      </div>
+      <div class="profileUserName">{{ user.firstName }} {{ user.lastName }}</div>
 
       <div class="userDetails">
         <p class="userName"></p>
@@ -231,9 +213,7 @@
             <div
               v-if="$v.password.$error && !$v.password.minLength"
               class="errorText"
-            >
-              Password must be at least 6 characters
-            </div>
+            >Password must be at least 6 characters</div>
           </v-col>
           <v-col sm="6" md="6">
             <v-text-field
@@ -247,9 +227,7 @@
             <div
               v-if="$v.confirmPassword.$error && !$v.confirmPassword.sameAs"
               class="errorText"
-            >
-              Passwords must be identical
-            </div>
+            >Passwords must be identical</div>
           </v-col>
         </v-row>
         <v-row>
@@ -269,9 +247,7 @@
                   <v-icon size="20" color>icon-user</v-icon>
                 </v-list-item-action>
                 <v-list-item-content class="buttonText">
-                  <v-list-item-title class="bodyWiew"
-                    >Edit profile details</v-list-item-title
-                  >
+                  <v-list-item-title class="bodyWiew">Edit profile details</v-list-item-title>
                 </v-list-item-content>
                 <!-- <div class="iconBackCircle">
                   <v-icon size="17" color="#0BAFFF">mdi-pencil-outline</v-icon>
@@ -295,27 +271,17 @@
                   <v-icon size="20" color>icon-user</v-icon>
                 </v-list-item-action>
                 <v-list-item-content class="buttonText">
-                  <v-list-item-title class="bodyWiew"
-                    >Edit profile details</v-list-item-title
-                  >
+                  <v-list-item-title class="bodyWiew">Edit profile details</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-btn>
-            <v-btn
-              v-else
-              disabled
-              height="50px"
-              width="300px"
-              class="submitButtonEdit"
-            >
+            <v-btn v-else disabled height="50px" width="300px" class="submitButtonEdit">
               <v-list-item @click="postData()" dark>
                 <v-list-item-action>
                   <v-icon size="20" color>icon-user</v-icon>
                 </v-list-item-action>
                 <v-list-item-content class="buttonText">
-                  <v-list-item-title class="bodyWiew"
-                    >Edit profile details</v-list-item-title
-                  >
+                  <v-list-item-title class="bodyWiew">Edit profile details</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-btn>
@@ -339,18 +305,14 @@
                   <div
                     class="skillHeader"
                     :style="'background-color:' + category.categoryColorCode"
-                  >
-                    {{ category.categoryName }}
-                  </div>
+                  >{{ category.categoryName }}</div>
 
                   <div class="skillBody">
                     <div
                       style="padding-bottom: 10px"
                       v-for="(skill, index) in category.skillSet"
                       :key="index"
-                    >
-                      {{ skill.skillName }}
-                    </div>
+                    >{{ skill.skillName }}</div>
                   </div>
                 </div>
               </div>
@@ -368,30 +330,29 @@
       ></component>
     </div>
     <!-- <success-popup /> -->
-    <v-btn @click="websock">Connect</v-btn>
+    <!-- <v-btn @click="websock">Connect</v-btn>
     
-    <v-btn @click="sendMessage">Send</v-btn>
-
+    <v-btn @click="sendMessage">Send</v-btn>-->
   </div>
 </template>
 
 <script>
-import EditProfile from '~/components/profile/editProfile';
-import axios from 'axios';
-import qs from 'qs';
-import { mapState } from 'vuex';
-import { required, minLength, sameAs } from 'vuelidate/lib/validators';
-import SuccessPopup from '~/components/popups/successPopup';
-import ErrorPopup from '~/components/popups/errorPopup';
-import Stomp from 'stompjs';
-import SockJS from 'sockjs-client';
+import EditProfile from "~/components/profile/editProfile";
+import axios from "axios";
+import qs from "qs";
+import { mapState } from "vuex";
+import { required, minLength, sameAs } from "vuelidate/lib/validators";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
+import Stomp from "stompjs";
+import SockJS from "sockjs-client";
 
 export default {
-  props: ['user'],
+  props: ["user"],
   components: {
-    'edit-profile': EditProfile,
-    'success-popup': SuccessPopup,
-    'error-popup': ErrorPopup,
+    "edit-profile": EditProfile,
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup
   },
   // data: function(){
   // return{
@@ -401,11 +362,11 @@ export default {
   data() {
     return {
       isValid: true,
-      firstNameRules: [(value) => !!value || 'First name is required!'],
-      lastNameRules: [(value) => !!value || 'Last name is required!'],
+      firstNameRules: [value => !!value || "First name is required!"],
+      lastNameRules: [value => !!value || "Last name is required!"],
       emailRules: [
-        (value) => !!value || 'E-mail is required',
-        (value) => /.+@.+\..+/.test(value) || 'E-mail must be valid',
+        value => !!value || "E-mail is required",
+        value => /.+@.+\..+/.test(value) || "E-mail must be valid"
       ],
 
       disableButton: true,
@@ -413,8 +374,8 @@ export default {
       switch2: false,
       uploadLoading: false,
       files: [],
-      errorMessage: '',
-      successMessage: '',
+      errorMessage: "",
+      successMessage: "",
       userName: this.user.userName,
       firstName: this.user.firstName,
       lastName: this.user.lastName,
@@ -423,13 +384,13 @@ export default {
       disableNotification: !this.user.notificationStatus,
       loader: null,
       loading: false,
-      password: '',
-      confirmPassword: '',
-      file: '',
+      password: "",
+      confirmPassword: "",
+      file: "",
       userId: this.$store.state.user.userId,
       dismissSecs: 5,
       dismissCountDown: 0,
-      component: '',
+      component: "",
       stompClient: null
     };
   },
@@ -441,17 +402,16 @@ export default {
       setTimeout(() => (this[l] = false), 3000);
 
       this.loader = null;
-    },
+    }
   },
 
   computed: {
     ...mapState({
-      userSkillMap: (state) => state.skillMap.userSkillMap,
-    }),
+      userSkillMap: state => state.skillMap.userSkillMap
+    })
   },
 
   async created() {
- 
     // const authCode = this.$route.query.code;
     // // console.log("SLACK CODE", authCode);
     // if (authCode !== undefined) {
@@ -501,32 +461,32 @@ export default {
   },
 
   methods: {
-    websock(){
+    websock() {
       console.log("====WEBSOCKET=====");
-         // let stompClient;
-  let selectedUser;
-  const url = 'http://pmtool.devops.arimac.xyz/api/pm-service';
-  let newMessages = new Map();
-        let chatResponse;
-          try {
-              // chatResponse = await this.$axios.$get(
-              //   `registration/heyyyy `,
-              //   {
-              //     headers: {
-              //       user: this.userId,
-              //     }
-              //   }
-              // );
-              // console.log("chat response", chatResponse.data);
+      // let stompClient;
+      let selectedUser;
+      const url = "http://pmtool.devops.arimac.xyz/api/pm-service";
+      let newMessages = new Map();
+      let chatResponse;
+      try {
+        // chatResponse = await this.$axios.$get(
+        //   `registration/heyyyy `,
+        //   {
+        //     headers: {
+        //       user: this.userId,
+        //     }
+        //   }
+        // );
+        // console.log("chat response", chatResponse.data);
 
-    console.log("connecting to chat...")
-    let socket = new SockJS(url + '/chat');
-    this.stompClient = Stomp.over(socket);
-    const client = this.stompClient;
-    client.connect({}, function (frame) {
-        console.log("connected to: " + frame);
-        client.subscribe("/topic/messages/" + "task", function (response) {
-          console.log("Response", response)
+        console.log("connecting to chat...");
+        let socket = new SockJS(url + "/chat");
+        this.stompClient = Stomp.over(socket);
+        const client = this.stompClient;
+        client.connect({}, function(frame) {
+          console.log("connected to: " + frame);
+          client.subscribe("/topic/messages/" + "task", function(response) {
+            console.log("Response", response);
             // let data = JSON.parse(response.body);
             // if (selectedUser === data.fromLogin) {
             //     render(data.message, data.fromLogin);
@@ -534,19 +494,21 @@ export default {
             //     newMessages.set(data.fromLogin, data.message);
             //     $('#userNameAppender_' + data.fromLogin).append('<span id="newMessage_' + data.fromLogin + '" style="color: red">+1</span>');
             // }
+          });
         });
-    });
-
-
-            } catch (error) {
-              console.log("Error fetching data", error);
-            }
+      } catch (error) {
+        console.log("Error fetching data", error);
+      }
     },
-    sendMessage(){
-       this.stompClient.send("/app/chat/" + 'task', {}, JSON.stringify({
-        fromLogin: "from",
-        message: "Hi!!"
-    }));
+    sendMessage() {
+      this.stompClient.send(
+        "/app/chat/" + "task",
+        {},
+        JSON.stringify({
+          fromLogin: "from",
+          message: "Hi!!"
+        })
+      );
     },
     // checkActivationStatus(){
     //   console.log("check")
@@ -588,7 +550,7 @@ export default {
       return orderedSkillMap;
     },
     setVisible() {
-      console.log('DISABLED!');
+      console.log("DISABLED!");
 
       this.disableButton = false;
     },
@@ -600,12 +562,12 @@ export default {
           {
             slackAssignerId: this.userId,
             slackAssigneeId: this.user.userId,
-            notificationStatus: !status,
+            notificationStatus: !status
           },
           {
             headers: {
-              userId: this.userId,
-            },
+              userId: this.userId
+            }
           }
         );
         location.reload();
@@ -620,39 +582,39 @@ export default {
         }
         // this.enableNotification = ;
         // this.disableNotification = ;
-        console.log('Notification Status updated successfuly', response);
+        console.log("Notification Status updated successfuly", response);
       } catch (e) {
-        console.log('Error Updating Notification Status', e);
+        console.log("Error Updating Notification Status", e);
       }
     },
 
     async postData() {
       let response;
       try {
-        if (this.password == '') {
+        if (this.password == "") {
           response = await this.$axios.$put(`/users/${this.userId}`, {
             firstName: this.user.firstName,
             lastName: this.user.lastName,
-            email: this.user.email,
+            email: this.user.email
           });
         } else {
           response = await this.$axios.$put(`/users/${this.userId}`, {
             firstName: this.user.firstName,
             lastName: this.user.lastName,
             email: this.user.email,
-            password: this.password,
+            password: this.password
           });
         }
 
-        this.component = 'success-popup';
-        this.successMessage = 'Profile successfully updated';
+        this.component = "success-popup";
+        this.successMessage = "Profile successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
         // console.log(response.message);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -669,13 +631,13 @@ export default {
       }
     },
     close() {
-      this.component = '';
+      this.component = "";
     },
     async submit() {
       this.uploadLoading = true;
       let formData = new FormData();
-      formData.append('files', this.files);
-      formData.append('type', 'profileImage');
+      formData.append("files", this.files);
+      formData.append("type", "profileImage");
       this.files = null;
 
       let fileResponse;
@@ -685,20 +647,20 @@ export default {
           formData,
           {
             headers: {
-              'Content-Type': 'multipart/form-data',
-              user: this.userId,
-            },
+              "Content-Type": "multipart/form-data",
+              user: this.userId
+            }
           }
         );
         this.uploadLoading = false;
-        this.component = 'success-popup';
-        this.successMessage = 'Profile successfully updated';
-        console.log('group people response', this.taskFiles);
+        this.component = "success-popup";
+        this.successMessage = "Profile successfully updated";
+        console.log("group people response", this.taskFiles);
         location.reload();
       } catch (e) {
-        console.log('Error uploading prof pic: ', e);
-        this.component = 'error-popup';
-        console.log('File Upload Failed: ' + e);
+        console.log("Error uploading prof pic: ", e);
+        this.component = "error-popup";
+        console.log("File Upload Failed: " + e);
         this.errorMessage = e.response.data;
         this.uploadLoading = false;
       }
@@ -710,16 +672,16 @@ export default {
       } catch (e) {
         console.log(e);
       }
-    },
+    }
   },
   validations: {
     password: {
       required,
-      minLength: minLength(6),
+      minLength: minLength(6)
     },
     confirmPassword: {
-      sameAsPassword: sameAs('password'),
-    },
-  },
+      sameAsPassword: sameAs("password")
+    }
+  }
 };
 </script>
