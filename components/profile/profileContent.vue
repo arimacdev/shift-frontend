@@ -465,7 +465,7 @@ export default {
       console.log("====WEBSOCKET=====");
       // let stompClient;
       let selectedUser;
-      const url = "http://pmtool.devops.arimac.xyz/api/pm-service";
+      const url = "https://pmtool.devops.arimac.xyz/api/pm-service";
       let newMessages = new Map();
       let chatResponse;
       try {
