@@ -122,7 +122,12 @@ export default {
           icon: "icon-skills",
           route: "../../skills/skills"
         },
-        { title: "Admin", icon: "icon-admin", route: "../../admin/admin" }
+        { title: "Admin", icon: "icon-admin", route: "../../admin/admin" },
+        {
+          title: "Comments",
+          icon: "mdi-comment-processing-outline",
+          route: "../../comments/comments"
+        }
       ],
       mini: true,
       userItems: [
@@ -177,5 +182,3 @@ export default {
   color: rgb(231, 231, 240);
 }
 </style>
-
-
