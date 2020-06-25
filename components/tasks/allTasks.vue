@@ -935,9 +935,15 @@ export default {
           this.stomp.subscribe("/topic/messages/" + taskId, (response) => {
             console.log("Response", response);
             let data = JSON.parse(response.body);
-            if(data.actionType === 'typing'){
+              console.log("outside----->")
+            if(data.actionType === 'comment'){
               console.log("inside----->")
-              this.commentContent = "Someone is typing a comment....."
+              this.$store.dispatch("comments/fetchTaskActivityComment", {
+                  taskId: this.selectedTask.taskId,
+                  startIndex: 0,
+                  endIndex: 200
+                });
+              //this.commentContent = "Someone is typing a comment....."
             }            
           });
         });

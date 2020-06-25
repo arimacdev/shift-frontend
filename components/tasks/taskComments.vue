@@ -213,7 +213,7 @@ export default {
       sendCommentedMessage(taskId) {
         console.log("sending message", this.stomp)
       this.stomp.send(
-        "/app/chat/" + "task",
+        "/app/chat/" + taskId,
         {},
         JSON.stringify({
           fromLogin: "from",
