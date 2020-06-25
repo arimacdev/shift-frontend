@@ -37,9 +37,18 @@
                   <div class="commentContent" v-html="comment.content"></div>
 
                   <div class="commentFunctionSection">
-                    <div class="text-capitalize addEmojiButton">
-                      <span style="font-size: 14px">&#128077; 5</span>
+                    <div v-if="comment.reactions != ''">
+                      <div
+                        v-for="(react, index) in comment.reactions"
+                        :key="index"
+                        class="text-capitalize addEmojiButton"
+                      >
+                        <span style="font-size: 14px" v-html="react.reactionId"></span>
+                      </div>
                     </div>
+                    <!-- <div class="text-capitalize addEmojiButton">
+                      <span style="font-size: 14px">&#128077; 5</span>
+                    </div>-->
                     <v-menu class="emojiMenu" open-on-hover top offset-y>
                       <template v-slot:activator="{ on, attrs }">
                         <div class="text-capitalize addEmojiButton" v-bind="attrs" v-on="on" @click>
