@@ -158,6 +158,9 @@ export default {
     console.log("created---->", this.stomp);
   },
   methods: {
+    close() {
+      this.component = "";
+    },
     async addReact(commentId, reactId) {
       let response;
       try {
@@ -205,14 +208,13 @@ export default {
           endIndex: 200
         });
         this.sendCommentedMessage(this.selectedTask.taskId);
-        this.component = "success-popup";
-        this.successMessage = "Assignee successfully updated";
 
+        this.component = "success-popup";
+        this.successMessage = "Comment successfully added";
         this.userExists = true;
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
         console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
