@@ -2,7 +2,9 @@
   <div class="top-nav">
     <navigation-drawer :user="user" />
 
-    <div id="defaultRTE">
+    <task-comments />
+
+    <!-- <div id="defaultRTE">
       <ejs-richtexteditor
         ref="rteObj"
         :quickToolbarSettings="quickToolbarSettings"
@@ -11,7 +13,7 @@
         v-model="textEditor"
       >
       </ejs-richtexteditor>
-    </div>
+    </div> -->
     <div>
       <!-- {{ this.textEditor }} -->
       <div v-html="this.textEditor"></div>
@@ -20,6 +22,8 @@
 </template>
 <script>
 import NavigationDrawer from '~/components/navigationDrawer';
+
+import TaskComments from '~/components/tasks/taskComments';
 import {
   RichTextEditorPlugin,
   Toolbar,
@@ -36,6 +40,8 @@ export default {
   },
   components: {
     NavigationDrawer,
+
+    'task-comments': TaskComments,
   },
   data: function() {
     return {
