@@ -99,6 +99,10 @@ import {
   QuickToolbar,
 } from '@syncfusion/ej2-vue-richtexteditor';
 export default {
+  props: ['stomp'],
+  created(){
+    console.log("created---->", this.stomp)
+  },
   methods: {
     async addComment() {
       this.overlay = true;
@@ -119,12 +123,13 @@ export default {
             },
           }
         );
-        this.textEditor = '';
+        this.textEditor = '';        
         this.$store.dispatch('comments/fetchTaskActivityComment', {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
           endIndex: 200,
         });
+        this.sendCommentedMessage(this.selectedTask.taskId);
         // this.component = 'success-popup';
         // this.successMessage = 'Assignee successfully updated';
 
@@ -143,6 +148,18 @@ export default {
         // this.overlay = false;
         console.log('Error updating a status', e);
       }
+    },
+      sendCommentedMessage(taskId) {
+        console.log("sending message", this.stomp)
+      this.stomp.send(
+        "/app/chat/" + "task",
+        {},
+        JSON.stringify({
+          fromLogin: "from",
+          message: "Hi!!",
+          actionType: "comment"
+        })
+      );
     },
     getTooltipDate(date) {
       let stringDate = date + '';

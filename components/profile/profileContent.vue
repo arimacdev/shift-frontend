@@ -477,15 +477,7 @@ export default {
       let newMessages = new Map();
       let chatResponse;
       try {
-        // chatResponse = await this.$axios.$get(
-        //   `registration/heyyyy `,
-        //   {
-        //     headers: {
-        //       user: this.userId,
-        //     }
-        //   }
-        // );
-        // console.log("chat response", chatResponse.data);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
 
         console.log("connecting to chat...");
         let socket = new SockJS(url + "/chat");

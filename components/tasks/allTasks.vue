@@ -399,6 +399,7 @@
         :taskFiles="taskFiles"
         :componentClose="componentClose"
         :taskObject="taskObject"
+        :stomp="stomp"
         @taskDialogClosing="taskDialogClosing()"
       />
     </v-dialog>
@@ -465,6 +466,8 @@ import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import Progress from "~/components/popups/progress";
 import { mapState } from "vuex";
+import Stomp from "stompjs";
+import SockJS from "sockjs-client";
 export default {
   data() {
     return {
@@ -565,7 +568,8 @@ export default {
       userId: this.$store.state.user.userId,
       taskSelect: "all",
       taskFilter: "none",
-      componentClose: null
+      componentClose: null,
+      stomp: null
     };
   },
   components: {
@@ -915,7 +919,35 @@ export default {
     taskFilterHandler() {
       // console.log("-----------> changed" + this.taskSelect);
     },
+    websocketConnectInit(taskId){
+      console.log("initalize websocket connection for task", taskId);
+      const url = "http://localhost:8080/api/pm-service";
+       try {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+        console.log("connecting to ws...");
+        let socket = new SockJS(url + "/chat");
+        //this.stompClient = Stomp.over(socket);
+        this.stomp = Stomp.over(socket);       
+       //this.$store.dispatch("stompClient/setStompClient", taskId);
+        //let client = this.stompClient;
+        this.stomp.connect({}, (frame) => {
+          console.log("connected to: " + frame);
+          console.log("subscribing to topic: " + "/topic/messages/" + taskId);
+          this.stomp.subscribe("/topic/messages/" + taskId, (response) => {
+            console.log("Response", response);
+            let data = JSON.parse(response.body);
+            if(data.actionType === 'typing'){
+              console.log("inside----->")
+              this.commentContent = "Someone is typing a comment....."
+            }            
+          });
+        });
+      } catch (error) {
+        console.log("Error fetching data", error);
+      }
+    },
     async selectTask(task, taskObject) {
+      console.log("select________>")
+      this.websocketConnectInit(task.taskId);
       this.task = task;
       this.$store.dispatch("task/setSelectedTask", task);
       this.taskObject = taskObject;
@@ -1071,7 +1103,8 @@ export default {
       people: state => state.task.userCompletionTasks,
       projectAllTasks: state => state.task.allTasks,
       // projectId: state => state.project.project.projectId,
-      selectedTask: state => state.task.selectedTask
+      selectedTask: state => state.task.selectedTask,
+     // stompClient: state => state.stompClient.stompClient
     }),
     assigneeArray() {
       let AssigneeSearchList = this.people;
