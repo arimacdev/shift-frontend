@@ -125,10 +125,20 @@
         </div>
       </v-col>
     </v-row>
+    <div @click="close" class="taskPopupPopups">
+      <component
+        v-bind:is="component"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
+      <!-- <success-popup /> -->
+    </div>
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
 import {
   RichTextEditorPlugin,
   Toolbar,
@@ -139,6 +149,10 @@ import {
   QuickToolbar
 } from "@syncfusion/ej2-vue-richtexteditor";
 export default {
+  components: {
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup
+  },
   methods: {
     async addReact(commentId, reactId) {
       let response;
@@ -186,24 +200,27 @@ export default {
           startIndex: 0,
           endIndex: 200
         });
-        // this.component = 'success-popup';
-        // this.successMessage = 'Assignee successfully updated';
+        this.component = "success-popup";
+        this.successMessage = "Comment successfully added";
 
-        // this.userExists = true;
-        // setTimeout(() => {
-        //   this.close();
-        // }, 3000);
-        // this.overlay = false;
-        // console.log("update task status response", response);
+        this.userExists = true;
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
+        console.log("update task status response", response);
       } catch (e) {
-        // this.errorMessage = e.response.data;
-        // this.component = 'error-popup';
-        // setTimeout(() => {
-        //   this.close();
-        // }, 3000);
-        // this.overlay = false;
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
         console.log("Error updating a status", e);
       }
+    },
+    close() {
+      this.component = "";
     },
     getTooltipDate(date) {
       let stringDate = date + "";
@@ -219,14 +236,14 @@ export default {
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
 
-      console.log(
-        "Today | ",
-        now,
-        now.getHours(),
-        "| DueDate | ",
-        dueToUtcDate,
-        dueToUtcDate.getHours()
-      );
+      // console.log(
+      //   "Today | ",
+      //   now,
+      //   now.getHours(),
+      //   "| DueDate | ",
+      //   dueToUtcDate,
+      //   dueToUtcDate.getHours()
+      // );
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
         return "Add Due Date";
@@ -273,7 +290,7 @@ export default {
   },
   data: function() {
     return {
-      s1: "U+1F600",
+      component: "",
       addCommentSection: false,
       items: [
         { title: "Click Me" },

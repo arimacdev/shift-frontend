@@ -2198,6 +2198,7 @@
   position: fixed;
   bottom: 0;
   right: 40px;
+  z-index: 1000;
 }
 .allTaskPopupPlacements {
   position: absolute;
@@ -2971,6 +2972,7 @@
   float: left;
   height: 22px;
   color: #576377;
+  cursor: pointer;
 }
 .addEmojiButton:hover {
   /* border: solid black 1px; */
