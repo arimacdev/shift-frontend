@@ -4,7 +4,11 @@
       <v-col>
         <div v-if="taskComments == ''">No comments to show</div>
         <div v-else>
-          <div v-for="(comment, index) in this.taskComments" :key="index">
+          <div
+            class="commentBody"
+            v-for="(comment, index) in this.taskComments"
+            :key="index"
+          >
             <v-row>
               <v-col sm="1" md="1" style="padding-left: 40px">
                 <v-avatar>
@@ -22,20 +26,67 @@
                 </v-avatar>
               </v-col>
               <v-col sm="10" md="10">
-                <div class="commenterName">
-                  {{ comment.commenterFistName }}
-                  {{ comment.commenterLatName }}
-                </div>
-                <v-tooltip color="#0BAFFF" right>
-                  <template v-slot:activator="{ on }">
-                    <div v-on="on" class="commentTime">
-                      {{ getCommentTime(comment.commentedAt) }}
+                <div>
+                  <div class="commenterName">
+                    {{ comment.commenterFistName }}
+                    {{ comment.commenterLatName }}
+                  </div>
+                  <v-tooltip right>
+                    <template v-slot:activator="{ on }">
+                      <div v-on="on" class="commentTime">
+                        {{ getCommentTime(comment.commentedAt) }}
+                      </div>
+                    </template>
+                    <span>{{ getTooltipDate(comment.commentedAt) }}</span>
+                  </v-tooltip>
+                  <br />
+                  <div class="commentContent" v-html="comment.content"></div>
+
+                  <div class="commentFunctionSection">
+                    <div class="text-capitalize addEmojiButton">
+                      <span style="font-size: 14px">&#128077; 5</span>
                     </div>
-                  </template>
-                  <span>{{ getTooltipDate(comment.commentedAt) }}</span>
-                </v-tooltip>
-                <br />
-                <div class="commentContent" v-html="comment.content"></div>
+                    <v-menu class="emojiMenu" open-on-hover top offset-y>
+                      <template v-slot:activator="{ on, attrs }">
+                        <div
+                          class="text-capitalize addEmojiButton"
+                          v-bind="attrs"
+                          v-on="on"
+                          @click=""
+                        >
+                          <span style="font-size: 14px"
+                            ><v-icon size="16" style="margin-top: -6px"
+                              >mdi-emoticon-outline</v-icon
+                            ></span
+                          >
+                        </div>
+                      </template>
+                      <div class="emoji">&#128077;</div>
+
+                      <div class="emoji">&#128154;</div>
+                      <div class="emoji">&#128514;</div>
+                      <div class="emoji">&#128545;</div>
+                      <div class="emoji">&#128546;</div>
+                    </v-menu>
+                    <div class="text-capitalize addEmojiButton">
+                      <span
+                        ><v-icon size="16" style="margin-top: -5px"
+                          >mdi-pencil-outline</v-icon
+                        ></span
+                      >
+                    </div>
+                    <div class="text-capitalize addEmojiButton">
+                      <span
+                        ><v-icon size="16" style="margin-top: -5px"
+                          >mdi-trash-can-outline</v-icon
+                        ></span
+                      >
+                    </div>
+                    <div class="commentDivider">
+                      <v-divider></v-divider>
+                    </div>
+                  </div>
+                </div>
               </v-col>
             </v-row>
           </div>
@@ -212,7 +263,14 @@ export default {
   },
   data: function() {
     return {
+      s1: '\U+1F600',
       addCommentSection: false,
+      items: [
+        { title: 'Click Me' },
+        { title: 'Click Me' },
+        { title: 'Click Me' },
+        { title: 'Click Me 2' },
+      ],
       // insertImageSettings: {
       //           saveUrl : 'https://aspnetmvc.syncfusion.com/services/api/uploadbox/Save'
       //       },
