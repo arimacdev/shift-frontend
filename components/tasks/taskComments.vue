@@ -1,12 +1,25 @@
 <template>
   <div class="taskCommentsSection">
     <v-row>
-      <v-col>Added taskComments {{ taskComments }}</v-col>
+      <v-col>
+        <div v-if="taskComments == ''">No comments to show</div>
+        <div v-else>{{ taskComments }}</div>
+      </v-col>
     </v-row>
     <v-divider></v-divider>
+
+    <v-btn
+      v-if="addCommentSection == false"
+      v-on:click="addCommentSection = true"
+      class="ma-2"
+      text=""
+      color="primary"
+    >
+      <v-icon left>mdi-comment-processing-outline</v-icon> Add a comment
+    </v-btn>
     <v-row>
       <v-col>
-        <div class="commentEditor">
+        <div v-if="this.addCommentSection == true" class="commentEditor">
           <v-row>
             <v-col sm="1" md="1" style="padding-left: 40px">
               <v-avatar>
@@ -18,7 +31,6 @@
                 <ejs-richtexteditor
                   ref="rteObj"
                   :quickToolbarSettings="quickToolbarSettings"
-                  :height="340"
                   :toolbarSettings="toolbarSettings"
                   v-model="textEditor"
                 >
@@ -72,6 +84,11 @@ export default {
           }
         );
         this.textEditor = '';
+        this.$store.dispatch('comments/fetchTaskActivityComment', {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 200,
+        });
         // this.component = 'success-popup';
         // this.successMessage = 'Assignee successfully updated';
 
@@ -101,6 +118,7 @@ export default {
   },
   data: function() {
     return {
+      addCommentSection: false,
       // insertImageSettings: {
       //           saveUrl : 'https://aspnetmvc.syncfusion.com/services/api/uploadbox/Save'
       //       },
@@ -145,14 +163,14 @@ export default {
           '|',
           'CreateLink',
           'Image',
-          '|',
-          'ClearFormat',
-          'Print',
-          'SourceCode',
-          'FullScreen',
-          '|',
-          'Undo',
-          'Redo',
+          // '|',
+          // 'ClearFormat',
+          // 'Print',
+          // 'SourceCode',
+          // 'FullScreen',
+          // '|',
+          // 'Undo',
+          // 'Redo',
         ],
       },
 
