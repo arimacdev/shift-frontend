@@ -1,12 +1,61 @@
 <template>
   <div class="taskCommentsSection">
     <v-row>
-      <v-col>Added taskComments {{ taskComments }}</v-col>
+      <v-col>
+        <div v-if="taskComments == ''">No comments to show</div>
+        <div v-else>
+          <div v-for="(comment, index) in this.taskComments" :key="index">
+            <v-row>
+              <v-col sm="1" md="1" style="padding-left: 40px">
+                <v-avatar>
+                  <v-img
+                    v-if="
+                      comment.commenterProfileImage != null &&
+                        comment.commenterProfileImage != ''
+                    "
+                    :src="comment.commenterProfileImage"
+                  ></v-img>
+                  <v-img
+                    v-else
+                    src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                  ></v-img>
+                </v-avatar>
+              </v-col>
+              <v-col sm="10" md="10">
+                <div class="commenterName">
+                  {{ comment.commenterFistName }}
+                  {{ comment.commenterLatName }}
+                </div>
+                <v-tooltip color="#0BAFFF" right>
+                  <template v-slot:activator="{ on }">
+                    <div v-on="on" class="commentTime">
+                      {{ getCommentTime(comment.commentedAt) }}
+                    </div>
+                  </template>
+                  <span>{{ getTooltipDate(comment.commentedAt) }}</span>
+                </v-tooltip>
+                <br />
+                <div class="commentContent" v-html="comment.content"></div>
+              </v-col>
+            </v-row>
+          </div>
+        </div>
+      </v-col>
     </v-row>
     <v-divider></v-divider>
+
+    <v-btn
+      v-if="addCommentSection == false"
+      v-on:click="addCommentSection = true"
+      class="ma-2"
+      text=""
+      color="primary"
+    >
+      <v-icon left>mdi-comment-processing-outline</v-icon> Add a comment
+    </v-btn>
     <v-row>
       <v-col>
-        <div class="commentEditor">
+        <div v-if="this.addCommentSection == true" class="commentEditor">
           <v-row>
             <v-col sm="1" md="1" style="padding-left: 40px">
               <v-avatar>
@@ -18,7 +67,6 @@
                 <ejs-richtexteditor
                   ref="rteObj"
                   :quickToolbarSettings="quickToolbarSettings"
-                  :height="340"
                   :toolbarSettings="toolbarSettings"
                   v-model="textEditor"
                 >
@@ -72,6 +120,11 @@ export default {
           }
         );
         this.textEditor = '';
+        this.$store.dispatch('comments/fetchTaskActivityComment', {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 200,
+        });
         // this.component = 'success-popup';
         // this.successMessage = 'Assignee successfully updated';
 
@@ -91,6 +144,64 @@ export default {
         console.log('Error updating a status', e);
       }
     },
+    getTooltipDate(date) {
+      let stringDate = date + '';
+      stringDate = stringDate.toString();
+      stringDate = stringDate.slice(0, 10) + ' ' + stringDate.slice(11, 16);
+      return stringDate;
+    },
+    getCommentTime(date) {
+      const dueDate = new Date(date);
+      const dueToUtc = new Date(
+        dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
+      );
+      const dueToUtcDate = new Date(dueToUtc);
+      const now = new Date();
+
+      console.log(
+        'Today | ',
+        now,
+        now.getHours(),
+        '| DueDate | ',
+        dueToUtcDate,
+        dueToUtcDate.getHours()
+      );
+
+      if (date === null || date === '1970-01-01T05:30:00.000+0000') {
+        return 'Add Due Date';
+      } else if (
+        now.getHours() === dueToUtcDate.getHours() &&
+        now.getDate() === dueToUtcDate.getDate() &&
+        now.getMonth() === dueToUtcDate.getMonth() &&
+        now.getFullYear() === dueToUtcDate.getFullYear()
+      ) {
+        return now.getMinutes() - dueToUtcDate.getMinutes() + ' min ago';
+      } else if (
+        now.getHours() !== dueToUtcDate.getHours() &&
+        now.getDate() === dueToUtcDate.getDate() &&
+        now.getMonth() === dueToUtcDate.getMonth() &&
+        now.getFullYear() === dueToUtcDate.getFullYear()
+      ) {
+        return now.getHours() - dueToUtcDate.getHours() + ' h ago';
+      } else if (
+        now.getDate() - 1 === dueToUtcDate.getDate() &&
+        now.getMonth() - 1 === dueToUtcDate.getMonth() &&
+        now.getFullYear() - 1 === dueToUtcDate.getFullYear()
+      ) {
+        return 'Yesterday';
+      } else if (
+        now.getDate() + 1 === dueToUtcDate.getDate() &&
+        now.getMonth() + 1 === dueToUtcDate.getMonth() &&
+        now.getFullYear() + 1 === dueToUtcDate.getFullYear()
+      ) {
+        return 'Tomorrow';
+      } else {
+        let stringDate = date + '';
+        stringDate = stringDate.toString();
+        stringDate = stringDate.slice(0, 10) + ' ' + stringDate.slice(11, 16);
+        return stringDate;
+      }
+    },
   },
   computed: {
     ...mapState({
@@ -101,6 +212,7 @@ export default {
   },
   data: function() {
     return {
+      addCommentSection: false,
       // insertImageSettings: {
       //           saveUrl : 'https://aspnetmvc.syncfusion.com/services/api/uploadbox/Save'
       //       },
@@ -145,14 +257,14 @@ export default {
           '|',
           'CreateLink',
           'Image',
-          '|',
-          'ClearFormat',
-          'Print',
-          'SourceCode',
-          'FullScreen',
-          '|',
-          'Undo',
-          'Redo',
+          // '|',
+          // 'ClearFormat',
+          // 'Print',
+          // 'SourceCode',
+          // 'FullScreen',
+          // '|',
+          // 'Undo',
+          // 'Redo',
         ],
       },
 
