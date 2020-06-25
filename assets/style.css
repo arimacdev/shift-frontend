@@ -5,6 +5,15 @@
 @import './css/base/typo.css';
 @import 'circular-std';
 
+@import '../node_modules/@syncfusion/ej2-base/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-inputs/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-lists/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-popups/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-buttons/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-navigations/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-vue-richtexteditor/styles/material.css';
+
 @import './icons.css'; /* -------------- common --------------- */
 * {
   font-family: CircularStd;
@@ -2858,4 +2867,23 @@
   color: #576377;
   font-weight: 500;
   padding: 20px;
+}
+.activityTabs {
+  background-color: #cdcfd2;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.activityInactiveTabs {
+  background-color: #e5e5e5;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  margin-right: 10px;
+}
+.taskCommentsSection {
+  padding: 20px;
+  background-color: #ffffff;
+  padding-bottom: 300px;
+}
+.commentEditor {
+  /* width: 70vw; */
 }
