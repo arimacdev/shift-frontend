@@ -2936,7 +2936,52 @@
   padding-left: 20px;
   float: left;
 }
+.commentFunctionSection {
+  margin-top: 20px;
+  margin-left: 20px;
+}
 .commentContent {
   padding-top: 10px;
   padding-left: 20px;
 }
+.emojiMenu {
+  border-radius: 40px !important;
+}
+.emoji {
+  background-color: #ffffff;
+  width: 50px;
+  height: 35px;
+  float: left;
+  font-size: 25px;
+  text-align: center;
+  cursor: pointer;
+}
+.emoji:hover {
+  background-color: #e5e5e5;
+  border-radius: 5px;
+}
+.addEmojiButton {
+  border: solid #e5e5e5 1px;
+  width: 40px;
+  font-size: 15px;
+  margin-right: 10px;
+  /* background-color: #e5e5e5; */
+  border-radius: 10px;
+  text-align: center;
+  float: left;
+  height: 22px;
+  color: #576377;
+}
+.addEmojiButton:hover {
+  /* border: solid black 1px; */
+  background-color: #e5e5e5;
+}
+.commentDivider {
+  float: left;
+  width: 100%;
+  margin-top: 5px;
+}
+/* .commentBody:hover {
+  background-color: #f3f1f1;
+  border-radius: 5px;
+} */
