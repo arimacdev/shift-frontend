@@ -140,7 +140,7 @@ export default {
       }
     },
     getCommentTime(date) {
-      const dueDate = new Date('2020-06-25T12:20:39.000+0000');
+      const dueDate = new Date(date);
       const dueToUtc = new Date(
         dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
       );
@@ -158,25 +158,34 @@ export default {
 
       if (date === null || date === '1970-01-01T05:30:00.000+0000') {
         return 'Add Due Date';
-      } else if (
+      }
+      // else if (
+      //   now.getDate() === dueToUtcDate.getDate() &&
+      //   now.getMonth() === dueToUtcDate.getMonth() &&
+      //   now.getFullYear() === dueToUtcDate.getFullYear()
+      // ) {
+      //   return 'Today';
+      // }
+      else if (
+        now.getHours() === dueToUtcDate.getHours() &&
         now.getDate() === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
         now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
-        return 'Today';
+        return now.getMinutes() - dueToUtcDate.getMinutes() + ' min ago';
+      } else if (
+        now.getHours() !== dueToUtcDate.getHours() &&
+        now.getDate() === dueToUtcDate.getDate() &&
+        now.getMonth() === dueToUtcDate.getMonth() &&
+        now.getFullYear() === dueToUtcDate.getFullYear()
+      ) {
+        return now.getHours() - dueToUtcDate.getHours() + ' h ago';
       } else if (
         now.getDate() - 1 === dueToUtcDate.getDate() &&
         now.getMonth() - 1 === dueToUtcDate.getMonth() &&
         now.getFullYear() - 1 === dueToUtcDate.getFullYear()
       ) {
         return 'Yesterday';
-      } else if (
-        now.getHours() === dueToUtcDate.getHours() &&
-        now.getDate() === dueToUtcDate.getDate() &&
-        now.getMonth() === dueToUtcDate.getMonth() &&
-        now.getFullYear() === dueToUtcDate.getFullYear()
-      ) {
-        return now.getMinutes() - dueToUtcDate.getMinutes() + ' minutes ago';
       } else if (
         now.getDate() + 1 === dueToUtcDate.getDate() &&
         now.getMonth() + 1 === dueToUtcDate.getMonth() &&

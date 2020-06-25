@@ -8,8 +8,8 @@ export const mutations = {
       const commentA = a.commentedAt.toUpperCase();
       const commentB = b.commentedAt.toUpperCase();
 
-      if (commentA > commentB) return -1;
-      if (commentA < commentB) return 1;
+      if (commentA < commentB) return -1;
+      if (commentA > commentB) return 1;
 
       return 0;
     });
