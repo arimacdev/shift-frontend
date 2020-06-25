@@ -3,7 +3,38 @@
     <v-row>
       <v-col>
         <div v-if="taskComments == ''">No comments to show</div>
-        <div v-else>{{ taskComments }}</div>
+        <div v-else>
+          <div v-for="(comment, index) in this.taskComments" :key="index">
+            <v-row>
+              <v-col sm="1" md="1" style="padding-left: 40px">
+                <v-avatar>
+                  <v-img
+                    v-if="
+                      comment.commenterProfileImage != null &&
+                        comment.commenterProfileImage != ''
+                    "
+                    :src="comment.commenterProfileImage"
+                  ></v-img>
+                  <v-img
+                    v-else
+                    src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                  ></v-img>
+                </v-avatar>
+              </v-col>
+              <v-col sm="10" md="10">
+                <div class="commenterName">
+                  {{ comment.commenterFistName }}
+                  {{ comment.commenterLatName }}
+                </div>
+                <div class="commentTime">
+                  {{ getCommentTime(comment.commentedAt) }}
+                </div>
+                <br />
+                <div class="commentContent" v-html="comment.content"></div>
+              </v-col>
+            </v-row>
+          </div>
+        </div>
       </v-col>
     </v-row>
     <v-divider></v-divider>
@@ -106,6 +137,57 @@ export default {
         // }, 3000);
         // this.overlay = false;
         console.log('Error updating a status', e);
+      }
+    },
+    getCommentTime(date) {
+      const dueDate = new Date('2020-06-25T12:20:39.000+0000');
+      const dueToUtc = new Date(
+        dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
+      );
+      const dueToUtcDate = new Date(dueToUtc);
+      const now = new Date();
+
+      console.log(
+        'Today | ',
+        now,
+        now.getHours(),
+        '| DueDate | ',
+        dueToUtcDate,
+        dueToUtcDate.getHours()
+      );
+
+      if (date === null || date === '1970-01-01T05:30:00.000+0000') {
+        return 'Add Due Date';
+      } else if (
+        now.getDate() === dueToUtcDate.getDate() &&
+        now.getMonth() === dueToUtcDate.getMonth() &&
+        now.getFullYear() === dueToUtcDate.getFullYear()
+      ) {
+        return 'Today';
+      } else if (
+        now.getDate() - 1 === dueToUtcDate.getDate() &&
+        now.getMonth() - 1 === dueToUtcDate.getMonth() &&
+        now.getFullYear() - 1 === dueToUtcDate.getFullYear()
+      ) {
+        return 'Yesterday';
+      } else if (
+        now.getHours() === dueToUtcDate.getHours() &&
+        now.getDate() === dueToUtcDate.getDate() &&
+        now.getMonth() === dueToUtcDate.getMonth() &&
+        now.getFullYear() === dueToUtcDate.getFullYear()
+      ) {
+        return now.getMinutes() - dueToUtcDate.getMinutes() + ' minutes ago';
+      } else if (
+        now.getDate() + 1 === dueToUtcDate.getDate() &&
+        now.getMonth() + 1 === dueToUtcDate.getMonth() &&
+        now.getFullYear() + 1 === dueToUtcDate.getFullYear()
+      ) {
+        return 'Tomorrow';
+      } else {
+        let stringDate = date + '';
+        stringDate = stringDate.toString();
+        stringDate = stringDate.slice(0, 10) + ' ' + stringDate.slice(11, 16);
+        return stringDate;
       }
     },
   },

@@ -4,6 +4,15 @@ export const state = () => ({
 
 export const mutations = {
   SET_ACTIVITY_COMMENT(state, activityComment) {
+    const sorted = activityComment.sort((a, b) => {
+      const commentA = a.commentedAt.toUpperCase();
+      const commentB = b.commentedAt.toUpperCase();
+
+      if (commentA > commentB) return -1;
+      if (commentA < commentB) return 1;
+
+      return 0;
+    });
     state.activityComment = activityComment;
   },
 };
