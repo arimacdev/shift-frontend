@@ -46,10 +46,6 @@ export default {
     '~/plugins/datepicker.js',
     '~/plugins/vuedatetime.js',
     '~/plugins/textEditor.js',
-<<<<<<< Updated upstream
-=======
-    { src: '~/plugins/onesignal.js', mode: 'client' },
->>>>>>> Stashed changes
   ],
   /*
    ** Nuxt.js dev-modules
