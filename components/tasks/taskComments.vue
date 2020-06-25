@@ -68,7 +68,10 @@
                         <v-icon size="16" style="margin-top: -5px">mdi-pencil-outline</v-icon>
                       </span>
                     </div>
-                    <div class="text-capitalize addEmojiButton">
+                    <div
+                      @click="deleteCommentDialog = true; selectComment(comment)"
+                      class="text-capitalize addEmojiButton"
+                    >
                       <span>
                         <v-icon size="16" style="margin-top: -5px">mdi-trash-can-outline</v-icon>
                       </span>
@@ -125,6 +128,34 @@
         </div>
       </v-col>
     </v-row>
+    <!-- --------- delete comment dialog ------ -->
+    <v-dialog v-model="deleteCommentDialog" max-width="350">
+      <v-card style="text-align: center ; padding-bottom: 25px">
+        <v-card-title style="text-align: center">
+          <v-spacer></v-spacer>Delete Comment
+          <v-spacer></v-spacer>
+        </v-card-title>
+
+        <v-card-text>
+          You are about to delete your comment. You will loose all its contents.
+          Are you sure that you wish to continue?
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn width="100px" color="#FF6161" dark @click="deleteCommentDialog = false">Cancel</v-btn>
+
+          <v-btn
+            width="100px"
+            color="#2EC973"
+            dark
+            @click="deleteCommentDialog = false; deleteComment()"
+          >Ok</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <div @click="close" class="taskPopupPopups">
       <component
         v-bind:is="component"
@@ -161,6 +192,9 @@ export default {
     close() {
       this.component = "";
     },
+    selectComment(comment) {
+      this.selectedComment = comment;
+    },
     async addReact(commentId, reactId) {
       let response;
       try {
@@ -181,7 +215,43 @@ export default {
           endIndex: 200
         });
       } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error creating project", e);
         console.log("Error updating a status", e);
+      }
+    },
+    async deleteComment() {
+      let response;
+      try {
+        response = await this.$axios.$delete(
+          `/task/comment/${this.selectedComment.commentId}`,
+          {
+            headers: {
+              userId: this.userId
+            }
+          }
+        );
+        this.$store.dispatch("comments/fetchTaskActivityComment", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 200
+        });
+        this.successMessage = "Comment deleted successfully";
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error creating project", e);
       }
     },
     async addComment() {
@@ -306,6 +376,10 @@ export default {
   },
   data: function() {
     return {
+      selectedComment: {},
+      errorMessage: "",
+      successMessage: "",
+      deleteCommentDialog: false,
       component: "",
       addCommentSection: false,
       items: [
