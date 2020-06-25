@@ -149,9 +149,9 @@ import {
   QuickToolbar
 } from "@syncfusion/ej2-vue-richtexteditor";
 export default {
-  components: {
-    "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+  props: ["stomp"],
+  created() {
+    console.log("created---->", this.stomp);
   },
   methods: {
     async addReact(commentId, reactId) {
@@ -200,8 +200,9 @@ export default {
           startIndex: 0,
           endIndex: 200
         });
-        this.component = "success-popup";
-        this.successMessage = "Comment successfully added";
+        this.sendCommentedMessage(this.selectedTask.taskId);
+        // this.component = 'success-popup';
+        // this.successMessage = 'Assignee successfully updated';
 
         this.userExists = true;
         setTimeout(() => {
@@ -219,8 +220,17 @@ export default {
         console.log("Error updating a status", e);
       }
     },
-    close() {
-      this.component = "";
+    sendCommentedMessage(taskId) {
+      console.log("sending message", this.stomp);
+      this.stomp.send(
+        "/app/chat/" + taskId,
+        {},
+        JSON.stringify({
+          fromLogin: "from",
+          message: "Hi!!",
+          actionType: "comment"
+        })
+      );
     },
     getTooltipDate(date) {
       let stringDate = date + "";

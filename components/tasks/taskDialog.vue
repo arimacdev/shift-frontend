@@ -938,7 +938,7 @@
         </div>-->
 
         <task-logs v-if="this.activity == 'logs'" :page="page" />
-        <task-comments v-if="this.activity == 'comments'" />
+        <task-comments v-if="this.activity == 'comments'" :stomp="this.stomp"/>
         <div></div>
       </div>
 
@@ -971,7 +971,7 @@ import TaskLogs from '~/components/tasks/taskLogs';
 import TaskComments from '~/components/tasks/taskComments';
 
 export default {
-  props: ['projectId', 'logs', 'people', 'taskObject'],
+  props: ['projectId', 'logs', 'people', 'taskObject', 'stomp'],
   components: {
     'success-popup': SuccessPopup,
     'error-popup': ErrorPopup,
@@ -980,6 +980,10 @@ export default {
     'progress-loading': Progress,
     'task-logs': TaskLogs,
     'task-comments': TaskComments,
+  },
+  created(){
+     console.log("props--------->");
+    //console.log("props", this.selectedTask);
   },
   data() {
     return {
@@ -1116,7 +1120,7 @@ export default {
     };
   },
   methods: {
-    getUser() {
+      getUser() {
       this.$store.dispatch('user/fetchOwnUser', this.userId);
     },
     checkUserExists() {
