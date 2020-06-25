@@ -149,6 +149,10 @@ import {
   QuickToolbar
 } from "@syncfusion/ej2-vue-richtexteditor";
 export default {
+  components: {
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup
+  },
   props: ["stomp"],
   created() {
     console.log("created---->", this.stomp);
@@ -201,8 +205,8 @@ export default {
           endIndex: 200
         });
         this.sendCommentedMessage(this.selectedTask.taskId);
-        // this.component = 'success-popup';
-        // this.successMessage = 'Assignee successfully updated';
+        this.component = "success-popup";
+        this.successMessage = "Assignee successfully updated";
 
         this.userExists = true;
         setTimeout(() => {
