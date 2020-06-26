@@ -45,7 +45,10 @@
                       >
                         <v-tooltip color="black" right>
                           <template v-slot:activator="{ on }">
-                            <div v-on="on">
+                            <div
+                              @click="removeReaction(comment.commentId, react.reactionId)"
+                              v-on="on"
+                            >
                               <span style="font-size: 14px" v-html="react.reactionId"></span>
                               <span>{{react.respondants.length}}</span>
                             </div>
@@ -58,10 +61,7 @@
                             <div style="float: left">
                               <v-avatar size="20">
                                 <v-img
-                                  v-if="
-                      responder.responderProfileImage != null &&
-                        responder.responderProfileImage  != ''
-                    "
+                                  v-if="responder.responderProfileImage != null && responder.responderProfileImage  != ''"
                                   :src="responder.responderProfileImage "
                                 ></v-img>
                                 <v-img
@@ -315,13 +315,17 @@ export default {
           endIndex: 200
         });
       } catch (e) {
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        console.log("Error creating project", e);
-        console.log("Error updating a status", e);
+        // this.errorMessage = e.response.data;
+        // this.component = "error-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 3000);
+        // console.log("Error creating project", e);
+
+        // console.log("Error updating a status", e);
+        if (e.response.status == 422) {
+          this.removeReaction(commentId, reactId);
+        }
       }
     },
     async deleteComment() {
@@ -352,6 +356,37 @@ export default {
           this.close();
         }, 3000);
         console.log("Error creating project", e);
+      }
+    },
+    async removeReaction(commentId, reactId) {
+      let response;
+      try {
+        response = await this.$axios.$delete(
+          `/task/comment/${commentId}/reaction`,
+          {
+            data: {
+              reactionId: reactId
+            },
+            headers: {
+              userId: this.userId
+            }
+          }
+        );
+        this.$store.dispatch("comments/fetchTaskActivityComment", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 200
+        });
+      } catch (e) {
+        // this.errorMessage = e.response.data;
+        // this.component = "error-popup";
+        // setTimeout(() => {
+        //   this.close();
+        // }, 3000);
+        // console.log("Error creating project", e);
+        if (e.response.status == 404) {
+          this.addReact(commentId, reactId);
+        }
       }
     },
     async addComment() {
