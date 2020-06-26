@@ -227,7 +227,7 @@ export default {
 
   methods: {
     async getLogs() {
-      console.log("TRIGGERED: " + this.page);
+      // console.log("TRIGGERED: " + this.page);
 
       this.$store.dispatch("activityLog/fetchTaskActivityLog", {
         taskId: this.selectedTask.taskId,
