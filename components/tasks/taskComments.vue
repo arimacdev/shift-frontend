@@ -138,7 +138,18 @@
           <v-row>
             <v-col sm="1" md="1" style="padding-left: 40px">
               <v-avatar>
-                <v-img :src="this.ownUser.profileImage"></v-img>
+                <!-- <v-img :src="this.ownUser.profileImage"></v-img> -->
+                <v-img
+                  v-if="
+                      this.ownUser.profileImage != null &&
+                       this.ownUser.profileImage != ''
+                    "
+                  :src="this.ownUser.profileImage"
+                ></v-img>
+                <v-img
+                  v-else
+                  src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                ></v-img>
               </v-avatar>
             </v-col>
             <v-col sm="10" md="10">
