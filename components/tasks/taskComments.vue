@@ -94,7 +94,7 @@
                       <div @click="addReact(comment.commentId, '&#128077;')" class="emoji">&#128077;</div>
                       <div @click="addReact(comment.commentId, '&#128154;')" class="emoji">&#128154;</div>
                       <div @click="addReact(comment.commentId, '&#128514;')" class="emoji">&#128514;</div>
-                      <div @click="addReact(comment.commentId, '&#128154;')" class="emoji">&#128545;</div>
+                      <div @click="addReact(comment.commentId, '&#128545;')" class="emoji">&#128545;</div>
                       <div @click="addReact(comment.commentId, '&#128546;')" class="emoji">&#128546;</div>
                     </v-menu>
                     <div
