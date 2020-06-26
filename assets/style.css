@@ -2743,6 +2743,12 @@
 .skillScrollingWrapper1::-webkit-scrollbar {
   display: none;
 }
+.skillCard::-webkit-scrollbar {
+  display: none;
+}
+.skillDisplayDivProfile::-webkit-scrollbar {
+  display: none;
+}
 .skillDisplayCard::-webkit-scrollbar {
   display: none;
 }
