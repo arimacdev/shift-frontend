@@ -97,31 +97,78 @@
                       <div @click="addReact(comment.commentId, '&#128154;')" class="emoji">&#128545;</div>
                       <div @click="addReact(comment.commentId, '&#128546;')" class="emoji">&#128546;</div>
                     </v-menu>
-                    <div class="text-capitalize addEmojiButton">
+                    <div
+                      @click="commentEditor = true; selectComment(comment)"
+                      class="text-capitalize addEmojiButton"
+                    >
                       <span>
                         <v-icon size="16" style="margin-top: -5px">mdi-pencil-outline</v-icon>
                       </span>
                     </div>
                     <div
-                      @click="deleteCommentDialog = true; selectComment(comment)"
+                      @click="deleteCommentDialog = true; selectComment(comment); "
                       class="text-capitalize addEmojiButton"
                     >
                       <span>
                         <v-icon size="16" style="margin-top: -5px">mdi-trash-can-outline</v-icon>
                       </span>
                     </div>
-                    <div class="commentDivider">
-                      <v-divider></v-divider>
-                    </div>
+                    <div class="commentDivider"></div>
                   </div>
                 </div>
               </v-col>
             </v-row>
+            <!-- ----------- update comment section ------------- -->
+            <v-row v-if="commentEditor == true && selectedComment.commentId == comment.commentId">
+              <v-col sm="1" md="1"></v-col>
+              <v-col sm="10" md="10">
+                <div id="defaultRTE">
+                  <ejs-richtexteditor
+                    :insertImageSettings="insertImageSettings"
+                    ref="rteObj"
+                    :quickToolbarSettings="quickToolbarSettings"
+                    :toolbarSettings="toolbarSettings"
+                    v-model="updatedComment"
+                  ></ejs-richtexteditor>
+                </div>
+                <div style="float: left">
+                  <v-btn
+                    @click="updateComment(comment.commentId)"
+                    class="text-capitalize"
+                    style="margin-top: 10px"
+                    color="primary"
+                  >Update</v-btn>
+                  <v-btn
+                    @click="commentEditor = false"
+                    class="text-capitalize"
+                    style="margin-top: 10px"
+                    color="error"
+                  >Cancel</v-btn>
+                </div>
+                <v-tooltip right>
+                  <template v-slot:activator="{ on }">
+                    <div v-on="on" class="fileAttachSection" style>
+                      <v-file-input
+                        accept="image/png, image/jpeg, image/bmp"
+                        hide-input
+                        v-model="files"
+                        @change="submit('updateComment')"
+                      ></v-file-input>
+                    </div>
+                  </template>
+                  <span>Attach an image</span>
+                </v-tooltip>
+                <!--  -->
+                <div style="margin-top: 15px; padding-left: 30px">
+                  <v-progress-circular v-if="uploadLoading == true" indeterminate color="primary"></v-progress-circular>
+                </div>
+              </v-col>
+            </v-row>
+            <v-divider></v-divider>
           </div>
         </div>
       </v-col>
     </v-row>
-    <v-divider></v-divider>
 
     <v-btn
       v-if="addCommentSection == false"
@@ -177,7 +224,7 @@
                       accept="image/png, image/jpeg, image/bmp"
                       hide-input
                       v-model="files"
-                      @change="submit()"
+                      @change="submit('addComment')"
                     ></v-file-input>
                   </div>
                 </template>
@@ -259,7 +306,7 @@ export default {
     this.projectId = this.$route.params.projects;
   },
   methods: {
-    async submit() {
+    async submit(type) {
       if (this.files != null) {
         this.uploadLoading = true;
         let formData = new FormData();
@@ -283,11 +330,19 @@ export default {
           this.uploadLoading = false;
           // this.component = "success-popup";
           // this.successMessage = "Profile successfully updated";
-          this.textEditor =
-            this.textEditor +
-            "<img src='" +
-            fileResponse.data.taskFileUrl +
-            "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'>";
+          if (type == "addComment") {
+            this.textEditor =
+              this.textEditor +
+              "<img src='" +
+              fileResponse.data.taskFileUrl +
+              "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'>";
+          } else {
+            this.updatedComment =
+              this.updatedComment +
+              "<img src='" +
+              fileResponse.data.taskFileUrl +
+              "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'>";
+          }
           console.log("File response", fileResponse.data.taskFileUrl);
           // location.reload();
         } catch (e) {
@@ -305,6 +360,7 @@ export default {
     },
     selectComment(comment) {
       this.selectedComment = comment;
+      this.updatedComment = comment.content;
     },
     async addReact(commentId, reactId) {
       let response;
@@ -442,6 +498,46 @@ export default {
         console.log("Error updating a status", e);
       }
     },
+    async updateComment(commentId) {
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/task/comment/${commentId}`,
+          {
+            content: this.updatedComment,
+            commenter: this.userId
+          },
+          {
+            headers: {
+              userId: this.userId
+            }
+          }
+        );
+        this.commentEditor = false;
+        this.$store.dispatch("comments/fetchTaskActivityComment", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 200
+        });
+        this.sendCommentedMessage(this.selectedTask.taskId);
+
+        this.component = "success-popup";
+        this.successMessage = "Comment successfully updated";
+        this.userExists = true;
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
+        console.log("Error updating a status", e);
+      }
+    },
     sendCommentedMessage(taskId) {
       console.log("sending message", this.stomp);
       this.stomp.send(
@@ -523,6 +619,8 @@ export default {
   data: function() {
     return {
       file: "",
+      updatedComment: "",
+      commentEditor: false,
       selectedComment: {},
       uploadLoading: false,
       errorMessage: "",
