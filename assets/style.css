@@ -2740,6 +2740,18 @@
 .skillScrollingWrapper::-webkit-scrollbar {
   display: none;
 }
+.skillScrollingWrapper1::-webkit-scrollbar {
+  display: none;
+}
+.skillCard::-webkit-scrollbar {
+  display: none;
+}
+.skillDisplayDivProfile::-webkit-scrollbar {
+  display: none;
+}
+.skillDisplayCard::-webkit-scrollbar {
+  display: none;
+}
 
 .scrollContent {
   height: 80vh;
