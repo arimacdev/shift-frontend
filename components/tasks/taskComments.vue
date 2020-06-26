@@ -43,7 +43,41 @@
                         :key="index"
                         class="text-capitalize addEmojiButton"
                       >
-                        <span style="font-size: 14px" v-html="react.reactionId"></span>
+                        <v-tooltip color="black" right>
+                          <template v-slot:activator="{ on }">
+                            <div v-on="on">
+                              <span style="font-size: 14px" v-html="react.reactionId"></span>
+                              <span>{{react.respondants.length}}</span>
+                            </div>
+                          </template>
+                          <v-list-item
+                            style="margin-top: -10px; margin-bottom: -10px; margin-left: -20px"
+                            v-for="(responder, index) in react.respondants"
+                            :key="index"
+                          >
+                            <div style="float: left">
+                              <v-avatar size="20">
+                                <v-img
+                                  v-if="
+                      responder.responderProfileImage != null &&
+                        responder.responderProfileImage  != ''
+                    "
+                                  :src="responder.responderProfileImage "
+                                ></v-img>
+                                <v-img
+                                  v-else
+                                  src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                                ></v-img>
+                              </v-avatar>
+                            </div>
+                            <div style="float: left; padding-left: 20px">
+                              <div
+                                style="color:#FFFFFF"
+                              >{{responder.responderFirstName}} {{responder.responderLastName}}</div>
+                            </div>
+                            <!-- <v-divider color="#FFFFFF"></v-divider> -->
+                          </v-list-item>
+                        </v-tooltip>
                       </div>
                     </div>
                     <!-- <div class="text-capitalize addEmojiButton">
@@ -110,19 +144,42 @@
             <v-col sm="10" md="10">
               <div id="defaultRTE">
                 <ejs-richtexteditor
+                  :insertImageSettings="insertImageSettings"
                   ref="rteObj"
                   :quickToolbarSettings="quickToolbarSettings"
                   :toolbarSettings="toolbarSettings"
                   v-model="textEditor"
                 ></ejs-richtexteditor>
               </div>
-
-              <v-btn
-                @click="addComment()"
-                class="text-capitalize"
-                style="margin-top: 10px"
-                color="primary"
-              >Comment</v-btn>
+              <div style="float: left">
+                <v-btn
+                  @click="addComment()"
+                  class="text-capitalize"
+                  style="margin-top: 10px"
+                  color="primary"
+                >Comment</v-btn>
+              </div>
+              <v-tooltip right>
+                <template v-slot:activator="{ on }">
+                  <div v-on="on" class="fileAttachSection" style>
+                    <v-file-input
+                      accept="image/png, image/jpeg, image/bmp"
+                      hide-input
+                      v-model="files"
+                      @change="submit()"
+                    ></v-file-input>
+                  </div>
+                </template>
+                <span>Attach an image</span>
+              </v-tooltip>
+              <!--  -->
+              <div style="margin-top: 15px; padding-left: 30px">
+                <v-progress-circular
+                  v-if="this.uploadLoading == true"
+                  indeterminate
+                  color="primary"
+                ></v-progress-circular>
+              </div>
             </v-col>
           </v-row>
         </div>
@@ -152,6 +209,7 @@
             dark
             @click="deleteCommentDialog = false; deleteComment()"
           >Ok</v-btn>
+
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -187,8 +245,50 @@ export default {
   props: ["stomp"],
   created() {
     console.log("created---->", this.stomp);
+    this.projectId = this.$route.params.projects;
   },
   methods: {
+    async submit() {
+      if (this.files != null) {
+        this.uploadLoading = true;
+        let formData = new FormData();
+        formData.append("files", this.files);
+        formData.append("type", "profileImage");
+        formData.append("taskType", "project");
+        this.files = null;
+
+        let fileResponse;
+        try {
+          fileResponse = await this.$axios.$post(
+            `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}/upload`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                user: this.userId
+              }
+            }
+          );
+          this.uploadLoading = false;
+          // this.component = "success-popup";
+          // this.successMessage = "Profile successfully updated";
+          this.textEditor =
+            this.textEditor +
+            "<img src='" +
+            fileResponse.data.taskFileUrl +
+            "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'>";
+          console.log("File response", fileResponse.data.taskFileUrl);
+          // location.reload();
+        } catch (e) {
+          console.log("Error uploading prof pic: ", e);
+          // this.component = "error-popup";
+          // console.log("File Upload Failed: " + e);
+          // this.errorMessage = e.response.data;
+          this.uploadLoading = false;
+        }
+      }
+      this.files = null;
+    },
     close() {
       this.component = "";
     },
@@ -376,7 +476,9 @@ export default {
   },
   data: function() {
     return {
+      file: "",
       selectedComment: {},
+      uploadLoading: false,
       errorMessage: "",
       successMessage: "",
       deleteCommentDialog: false,
@@ -388,9 +490,9 @@ export default {
         { title: "Click Me" },
         { title: "Click Me 2" }
       ],
-      // insertImageSettings: {
-      //           saveUrl : 'https://aspnetmvc.syncfusion.com/services/api/uploadbox/Save'
-      //       },
+      insertImageSettings: {
+        display: "break"
+      },
       userId: this.$store.state.user.userId,
       textEditor: "",
       height: 400,
@@ -420,8 +522,8 @@ export default {
           "FontSize",
           "FontColor",
           "BackgroundColor",
-          "LowerCase",
-          "UpperCase",
+          // "LowerCase",
+          // "UpperCase",
           "|",
           "Formats",
           "Alignments",
@@ -431,11 +533,11 @@ export default {
           "Indent",
           "|",
           "CreateLink",
-          "Image"
+          "Image",
           // '|',
           // 'ClearFormat',
           // 'Print',
-          // 'SourceCode',
+          "SourceCode"
           // 'FullScreen',
           // '|',
           // 'Undo',
