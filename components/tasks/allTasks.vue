@@ -950,9 +950,9 @@ export default {
                   startIndex: 0,
                   endIndex: 200
                 });
-            } else if(data.actionType === 'typing'){
+            } else if(data.actionType === 'typing' && data.sender !== this.userId){
               this.$store.dispatch("stompClient/setTypingStatus", true);
-            } else if(data.actionType === 'notTyping'){
+            } else if(data.actionType === 'notTyping' && data.sender !== this.userId){
               this.$store.dispatch("stompClient/setTypingStatus", false);
             }
           });
