@@ -392,6 +392,7 @@ export default {
             }
           }
         );
+        this.sendCommentedMessage(this.selectedTask.taskId, this.textEditor, this.userId);
         this.$store.dispatch("comments/fetchTaskActivityComment", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
@@ -422,6 +423,7 @@ export default {
             }
           }
         );
+        this.sendCommentedMessage(this.selectedTask.taskId, this.textEditor, this.userId);
         this.$store.dispatch("comments/fetchTaskActivityComment", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
@@ -455,6 +457,7 @@ export default {
             }
           }
         );
+        this.sendCommentedMessage(this.selectedTask.taskId, this.textEditor, this.userId);
         this.$store.dispatch("comments/fetchTaskActivityComment", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
