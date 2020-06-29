@@ -2,7 +2,8 @@ import Stomp from "stompjs";
 import SockJS from "sockjs-client";
 
 export const state = () => ({
-    client: null
+    client: null,
+    typingStatus: false
   });
 
   export const mutations = {
@@ -10,6 +11,9 @@ export const state = () => ({
         console.log("mutation", val)
         state.client = val
     },
+    SET_TYPING_STATUS(state, status) {
+      state.typingStatus = status
+  },
   };
 
 
@@ -22,5 +26,8 @@ export const actions = {
           let stompClient = Stomp.over(socket);
           commit('SET_STOMP_CLIENT',stompClient)     
     },
+    setTypingStatus({ commit }, status) {          
+        commit('SET_TYPING_STATUS',status)     
+  },
 };
   

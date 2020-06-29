@@ -570,7 +570,7 @@ export default {
       taskFilter: "none",
       componentClose: null,
       stomp: null,
-      baseUrl: process.env.BASE_URL
+      baseUrl: process.env.SYSTEM_URL
     };
   },
   components: {
@@ -927,8 +927,8 @@ export default {
     },
     websocketConnectInit(taskId){
       console.log("initalize websocket connection for task", taskId);
-      // const url =  this.baseUrl + "/api/pm-service";
-      const url = "https://pmtool.devops.arimac.xyz/api/pm-service"
+      const url =  this.baseUrl + "/api/pm-service"
+      //const url = "https://pmtool.devops.arimac.xyz/api/pm-service"
        try {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
         console.log("connecting to ws...");
         let socket = new SockJS(url + "/chat");
@@ -950,8 +950,11 @@ export default {
                   startIndex: 0,
                   endIndex: 200
                 });
-              //this.commentContent = "Someone is typing a comment....."
-            }            
+            } else if(data.actionType === 'typing'){
+              this.$store.dispatch("stompClient/setTypingStatus", true);
+            } else if(data.actionType === 'notTyping'){
+              this.$store.dispatch("stompClient/setTypingStatus", false);
+            }
           });
         });
       } catch (error) {

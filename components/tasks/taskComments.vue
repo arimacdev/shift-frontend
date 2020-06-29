@@ -169,7 +169,10 @@
         </div>
       </v-col>
     </v-row>
+    <v-btn @click="typingText()">FocusIn</v-btn>   
+    <v-btn @click="notTyping()">FocusOut</v-btn>    
 
+    <h4 v-show="this.showTypingStatus()">Someone is typing a comment ....!!</h4>
     <v-btn
       v-if="addCommentSection == false"
       v-on:click="addCommentSection = true"
@@ -217,6 +220,7 @@
                   color="primary"
                 >Comment</v-btn>
               </div>
+              
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
                   <div v-on="on" class="fileAttachSection" style>
@@ -306,6 +310,18 @@ export default {
     this.projectId = this.$route.params.projects;
   },
   methods: {
+    showTypingStatus(){
+      console.log("typing", this.typingStatus)
+      return this.typingStatus;
+    },
+    typingText(){
+      console.log("typing......")
+      this.sendTypingMessage(this.selectedTask.taskId, this.userId, "typing");
+    },
+    notTyping(){
+      console.log("not typing......")
+      this.sendTypingMessage(this.selectedTask.taskId, this.userId, "notTyping");
+    },
     async submit(type) {
       if (this.files != null) {
         this.uploadLoading = true;
@@ -376,6 +392,7 @@ export default {
             }
           }
         );
+        this.sendCommentedMessage(this.selectedTask.taskId, this.textEditor, this.userId);
         this.$store.dispatch("comments/fetchTaskActivityComment", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
@@ -406,6 +423,7 @@ export default {
             }
           }
         );
+        this.sendCommentedMessage(this.selectedTask.taskId, this.textEditor, this.userId);
         this.$store.dispatch("comments/fetchTaskActivityComment", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
@@ -439,6 +457,7 @@ export default {
             }
           }
         );
+        this.sendCommentedMessage(this.selectedTask.taskId, this.textEditor, this.userId);
         this.$store.dispatch("comments/fetchTaskActivityComment", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
@@ -479,7 +498,7 @@ export default {
           startIndex: 0,
           endIndex: 200
         });
-        this.sendCommentedMessage(this.selectedTask.taskId, this.textEditor);
+        this.sendCommentedMessage(this.selectedTask.taskId, this.textEditor, this.userId);
 
         this.component = "success-popup";
         this.successMessage = "Comment successfully added";
@@ -519,7 +538,7 @@ export default {
           startIndex: 0,
           endIndex: 200
         });
-        this.sendCommentedMessage(this.selectedTask.taskId);
+        this.sendCommentedMessage(this.selectedTask.taskId, this.updatedComment, this.userId);
 
         this.component = "success-popup";
         this.successMessage = "Comment successfully updated";
@@ -538,15 +557,28 @@ export default {
         console.log("Error updating a status", e);
       }
     },
-    sendCommentedMessage(taskId, comment) {
+    sendCommentedMessage(taskId, comment, sender) {
       console.log("sending message", this.stomp, comment);
       this.stomp.send(
         "/app/chat/" + taskId,
         {},
         JSON.stringify({
-          fromLogin: "from",
+          sender: sender,
           message: comment,
           actionType: "comment"
+        })
+      );
+    },
+
+    sendTypingMessage(taskId, sender, event){
+       console.log("sending message", this.stomp);
+      this.stomp.send(
+        "/app/chat/" + taskId,
+        {},
+        JSON.stringify({
+          sender: sender,
+          message: sender + "is typing",
+          actionType: event
         })
       );
     },
@@ -614,7 +646,8 @@ export default {
     ...mapState({
       selectedTask: state => state.task.selectedTask,
       ownUser: state => state.user.ownUser,
-      taskComments: state => state.comments.activityComment
+      taskComments: state => state.comments.activityComment,
+      typingStatus: state => state.stompClient.typingStatus
     })
   },
   data: function() {
