@@ -479,7 +479,7 @@ export default {
           startIndex: 0,
           endIndex: 200
         });
-        this.sendCommentedMessage(this.selectedTask.taskId);
+        this.sendCommentedMessage(this.selectedTask.taskId, this.textEditor);
 
         this.component = "success-popup";
         this.successMessage = "Comment successfully added";
@@ -538,14 +538,14 @@ export default {
         console.log("Error updating a status", e);
       }
     },
-    sendCommentedMessage(taskId) {
-      console.log("sending message", this.stomp);
+    sendCommentedMessage(taskId, comment) {
+      console.log("sending message", this.stomp, comment);
       this.stomp.send(
         "/app/chat/" + taskId,
         {},
         JSON.stringify({
           fromLogin: "from",
-          message: "Hi!!",
+          message: comment,
           actionType: "comment"
         })
       );
@@ -559,9 +559,10 @@ export default {
     getCommentTime(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+        dueDate.toLocaleString("en-US", { timeZone: "Asia/Colombo" })
       );
-      const dueToUtcDate = new Date(dueToUtc);
+      const dueToUtcDate = new Date(dueToUtc);     
+
       const now = new Date();
 
       // console.log(

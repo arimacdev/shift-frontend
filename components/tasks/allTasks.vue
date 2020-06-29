@@ -749,7 +749,12 @@ export default {
       }
     },
     taskDialogClosing() {
-      // console.log("Task Dialog Closing");
+      console.log("Task Dialog Closing");
+      if(this.stomp !== null){
+      this.stomp.disconnect(()=> {
+        console.log("client disconnected");
+      });
+      }
       this.taskDialog = false;
     },
     // async filterTasks(filterType, assignee, from, to, issueType) {
