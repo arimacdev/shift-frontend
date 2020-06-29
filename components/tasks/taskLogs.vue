@@ -227,7 +227,7 @@ export default {
 
   methods: {
     async getLogs() {
-      console.log("TRIGGERED: " + this.page);
+      // console.log("TRIGGERED: " + this.page);
 
       this.$store.dispatch("activityLog/fetchTaskActivityLog", {
         taskId: this.selectedTask.taskId,
@@ -289,19 +289,20 @@ export default {
     getProjectDisplayDates(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+        dueDate.toLocaleString("en-US", { timeZone: "Asia/Colombo" })
       );
-      const dueToUtcDate = new Date(dueToUtc);
+
+     // const dueToUtcDate = new Date(dueToUtc);
+
       const now = new Date();
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
-
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
         return "Add Task Date";
       } else {
-        let stringDate = date + "";
-        stringDate = stringDate.toString();
-        stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 16);
-        return stringDate;
+        // let stringDate = date + "";
+        // stringDate = stringDate.toString();
+        // stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 16);
+        return dueToUtc.toLocaleString();
       }
     }
   },

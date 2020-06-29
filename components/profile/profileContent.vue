@@ -330,9 +330,17 @@
       ></component>
     </div>
     <!-- <success-popup /> -->
-    <!-- <v-btn @click="websock">Connect</v-btn>
+     <v-text-field
+            flat
+            outlined
+            v-model="commentContent"
+            label="Type a Comment Here...."
+            autocomplete="off"
+            @focus="typingEvent"
+          />
+    <v-btn @click="websock">Connect</v-btn>
     
-    <v-btn @click="sendMessage">Send</v-btn>-->
+    <v-btn @click="sendMessage">Send</v-btn>
   </div>
 </template>
 
@@ -368,7 +376,7 @@ export default {
         value => !!value || "E-mail is required",
         value => /.+@.+\..+/.test(value) || "E-mail must be valid"
       ],
-
+      commentContent:"Type something.....",
       disableButton: true,
       switch1: true,
       switch2: false,
@@ -461,33 +469,29 @@ export default {
   },
 
   methods: {
-    websock() {
+     websock() {
       console.log("====WEBSOCKET=====");
       // let stompClient;
       let selectedUser;
-      const url = "https://pmtool.devops.arimac.xyz/api/pm-service";
+      const url = "http://localhost:8080/api/pm-service";
       let newMessages = new Map();
       let chatResponse;
       try {
-        // chatResponse = await this.$axios.$get(
-        //   `registration/heyyyy `,
-        //   {
-        //     headers: {
-        //       user: this.userId,
-        //     }
-        //   }
-        // );
-        // console.log("chat response", chatResponse.data);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
 
         console.log("connecting to chat...");
         let socket = new SockJS(url + "/chat");
         this.stompClient = Stomp.over(socket);
         const client = this.stompClient;
-        client.connect({}, function(frame) {
+        client.connect({}, (frame) => {
           console.log("connected to: " + frame);
-          client.subscribe("/topic/messages/" + "task", function(response) {
+          client.subscribe("/topic/messages/" + "task", (response) => {
             console.log("Response", response);
-            // let data = JSON.parse(response.body);
+            let data = JSON.parse(response.body);
+            if(data.actionType === 'typing'){
+              console.log("inside----->")
+              this.commentContent = "Someone is typing a comment....."
+            }
             // if (selectedUser === data.fromLogin) {
             //     render(data.message, data.fromLogin);
             // } else {
@@ -506,7 +510,21 @@ export default {
         {},
         JSON.stringify({
           fromLogin: "from",
-          message: "Hi!!"
+          message: "Hi!!",
+          actionType: "comment"
+        })
+      );
+    },
+
+    typingEvent() {
+      console.log("event fired", this.commentContent)
+      this.stompClient.send(
+        "/app/chat/" + "task",
+        {},
+        JSON.stringify({
+          fromLogin: "from",
+          message: "Hi!!",
+          actionType: "typing"
         })
       );
     },

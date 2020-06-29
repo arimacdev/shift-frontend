@@ -752,9 +752,10 @@
                           >{{ file.taskFileSize / 1000 }}KB</v-list-item-subtitle>
                         </v-list-item-content>
                         <v-list-item-content>
-                          <v-list-item-title
-                            class="fileTitles"
-                          >{{ file.firstName }} {{ file.lastName }}</v-list-item-title>
+                          <v-list-item-title class="fileTitles">
+                            {{ file.firstName }}
+                            {{ file.lastName }}
+                          </v-list-item-title>
                           <v-list-item-subtitle
                             class="fileSubTitles"
                           >{{ getProjectDates(file.taskFileDate) }}</v-list-item-subtitle>
@@ -827,14 +828,29 @@
         </v-card>
       </v-dialog>
 
+      <v-tabs height="40px" style="padding-left: 20px" slider-size="3">
+        <v-tab
+          class="text-capitalize activityInactiveTabs"
+          active-class="activityTabs"
+          v-on:click="activity = 'comments'"
+        >Comments</v-tab>
+        <v-tab
+          class="text-capitalize activityInactiveTabs"
+          active-class="activityTabs"
+          v-on:click="activity = 'logs'"
+        >Logs</v-tab>
+      </v-tabs>
+
       <div class="RestTaskLogDiv">
-        <div class="RestTaskLogTitle">
+        <!-- <div class="RestTaskLogTitle">
           <v-list-item-content>
             <v-list-item-title class="font-weight-medium">Task Log</v-list-item-title>
           </v-list-item-content>
-        </div>
+        </div>-->
 
-        <task-logs :page="page" />
+        <task-logs v-if="this.activity == 'logs'" :page="page" />
+        <task-comments v-if="this.activity == 'comments'" :stomp="this.stomp" />
+        <div></div>
       </div>
 
       <!-- ---------------------- end popup ------------------ -->
@@ -863,19 +879,26 @@ import AddParentTask from "~/components/tasks/addParentTask";
 import AddChildTask from "~/components/tasks/addChildTask";
 import Progress from "~/components/popups/progress";
 import TaskLogs from "~/components/tasks/taskLogs";
+import TaskComments from "~/components/tasks/taskComments";
 
 export default {
-  props: ["projectId", "logs", "people", "taskObject"],
+  props: ["projectId", "logs", "people", "taskObject", "stomp"],
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
     "add-parent-task": AddParentTask,
     "add-child-task": AddChildTask,
     "progress-loading": Progress,
-    "task-logs": TaskLogs
+    "task-logs": TaskLogs,
+    "task-comments": TaskComments
+  },
+  created() {
+    console.log("props--------->");
+    //console.log("props", this.selectedTask);
   },
   data() {
     return {
+      activity: "comments",
       page: 1,
       overlay: false,
       maxdate: "2020-05-11 12:17",
@@ -1008,6 +1031,9 @@ export default {
     };
   },
   methods: {
+    getUser() {
+      this.$store.dispatch("user/fetchOwnUser", this.userId);
+    },
     checkUserExists() {
       const index = this.people.findIndex(
         user => user.assigneeId === this.selectedTask.taskAssignee
