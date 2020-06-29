@@ -828,15 +828,15 @@
         </v-card>
       </v-dialog>
 
-      <v-tabs height="40px" style="padding-left: 20px" slider-size="3">
+      <v-tabs height="40px" style="padding-left: 20px" slider-size="3" v-model="selectedTab">
         <v-tab
           class="text-capitalize activityInactiveTabs"
-          active-class="activityTabs"
+          key="comments"
           v-on:click="activity = 'comments'"
         >Comments</v-tab>
         <v-tab
           class="text-capitalize activityInactiveTabs"
-          active-class="activityTabs"
+          key="logs"
           v-on:click="activity = 'logs'"
         >Logs</v-tab>
       </v-tabs>
@@ -848,7 +848,7 @@
           </v-list-item-content>
         </div>-->
 
-        <task-logs v-if="this.activity == 'logs'" :page="page" />
+        <task-logs v-if="this.activity == 'logs'" :pageNum="page" />
         <task-comments v-if="this.activity == 'comments'" :stomp="this.stomp" />
         <div></div>
       </div>
@@ -898,6 +898,7 @@ export default {
   },
   data() {
     return {
+      selectedTab: "comments",
       activity: "comments",
       page: 1,
       overlay: false,
@@ -1112,8 +1113,10 @@ export default {
       }
     },
     taskDialogClosing() {
-      this.$emit("taskDialogClosing");
+      this.$emit("taskDialogClosing");    
       Object.assign(this.$data, this.$options.data.apply(this));
+      this.selectedTab = "comments";
+
     },
     async updateIssueType() {
       this.overlay = true;
