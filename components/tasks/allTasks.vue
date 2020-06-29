@@ -569,7 +569,8 @@ export default {
       taskSelect: "all",
       taskFilter: "none",
       componentClose: null,
-      stomp: null
+      stomp: null,
+      baseUrl: process.env.BASE_URL
     };
   },
   components: {
@@ -926,7 +927,7 @@ export default {
     },
     websocketConnectInit(taskId){
       console.log("initalize websocket connection for task", taskId);
-      const url = "http://localhost:8080/api/pm-service";
+      const url =  this.baseUrl + "/api/pm-service";
        try {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
         console.log("connecting to ws...");
         let socket = new SockJS(url + "/chat");

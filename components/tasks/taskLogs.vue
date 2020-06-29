@@ -217,10 +217,10 @@
 <script>
 import { mapState } from "vuex";
 export default {
-  props: ["page"],
+  props: ["pageNum"],
   data() {
     return {
-      page: this.page
+      page: this.pageNum
       // taskLogs: {},
     };
   },
