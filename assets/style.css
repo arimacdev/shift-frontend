@@ -2992,3 +2992,14 @@
   float: left;
   margin-left: 20px;
 }
+.typingProgress {
+  float: left;
+  margin-left: 40px;
+  color: #a7a2a2;
+  font-size: 14px;
+}
+.loadingProgress {
+  width: 25px;
+  float: left;
+  margin-top: -38px;
+}
