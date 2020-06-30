@@ -475,50 +475,52 @@ export default {
       }
     },
     async addComment() {
-      let response;
-      try {
-        response = await this.$axios.$post(
-          `/task/comment`,
-          {
-            entityId: this.selectedTask.taskId,
-            content: this.textEditor,
-            commenter: this.userId,
-            parentId: ""
-          },
-          {
-            headers: {
-              userId: this.userId
+      if (this.textEditor != "") {
+        let response;
+        try {
+          response = await this.$axios.$post(
+            `/task/comment`,
+            {
+              entityId: this.selectedTask.taskId,
+              content: this.textEditor,
+              commenter: this.userId,
+              parentId: ""
+            },
+            {
+              headers: {
+                userId: this.userId
+              }
             }
-          }
-        );
-        this.textEditor = "";
-        // this.$store.dispatch("comments/fetchTaskActivityComment", {
-        //   taskId: this.selectedTask.taskId,
-        //   startIndex: 0,
-        //   endIndex: 200
-        // });
-        this.sendCommentedMessage(
-          this.selectedTask.taskId,
-          this.textEditor,
-          this.userId
-        );
-        this.getComments();
+          );
+          this.textEditor = "";
+          // this.$store.dispatch("comments/fetchTaskActivityComment", {
+          //   taskId: this.selectedTask.taskId,
+          //   startIndex: 0,
+          //   endIndex: 200
+          // });
+          this.sendCommentedMessage(
+            this.selectedTask.taskId,
+            this.textEditor,
+            this.userId
+          );
+          this.getComments();
 
-        this.component = "success-popup";
-        this.successMessage = "Comment successfully added";
-        this.userExists = true;
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        console.log("update task status response", response);
-      } catch (e) {
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        this.overlay = false;
-        console.log("Error updating a status", e);
+          this.component = "success-popup";
+          this.successMessage = "Comment successfully added";
+          this.userExists = true;
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          console.log("update task status response", response);
+        } catch (e) {
+          this.errorMessage = e.response.data;
+          this.component = "error-popup";
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          this.overlay = false;
+          console.log("Error updating a status", e);
+        }
       }
     },
     async updateComment(commentId) {
