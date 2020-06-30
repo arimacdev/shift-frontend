@@ -367,7 +367,7 @@ export default {
         let fileResponse;
         try {
           fileResponse = await this.$axios.$post(
-            `/task/comment/${this.selectedTask.taskId}/file`,
+            `/task/${this.selectedTask.taskId}/comment/file`,
             formData,
             {
               headers: {
@@ -383,16 +383,16 @@ export default {
             this.textEditor =
               this.textEditor +
               "<img src='" +
-              fileResponse.data.taskFileUrl +
+              fileResponse.data +
               "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'>";
           } else {
             this.updatedComment =
               this.updatedComment +
               "<img src='" +
-              fileResponse.data.taskFileUrl +
+              fileResponse.data +
               "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'>";
           }
-          console.log("File response", fileResponse.data.taskFileUrl);
+          console.log("File response", fileResponse.data);
           // location.reload();
         } catch (e) {
           console.log("Error uploading prof pic: ", e);
