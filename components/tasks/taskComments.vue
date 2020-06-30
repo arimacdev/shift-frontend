@@ -722,7 +722,7 @@ export default {
           "Indent",
           "|",
           "CreateLink",
-          "Image",
+          // "Image",
           // '|',
           // 'ClearFormat',
           // 'Print',
@@ -732,10 +732,6 @@ export default {
           // 'Undo',
           // 'Redo',
         ]
-      },
-
-      iframeConfig: {
-        enable: true
       }
     };
   },
