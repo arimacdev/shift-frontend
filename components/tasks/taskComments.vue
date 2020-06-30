@@ -321,7 +321,7 @@ export default {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup
   },
-  props: ["stomp", "pageNum"],
+  props: ["stomp", "pageNum", "commentPage"],
   created() {
     console.log("created---->", this.stomp);
     this.projectId = this.$route.params.projects;
@@ -367,7 +367,7 @@ export default {
         let fileResponse;
         try {
           fileResponse = await this.$axios.$post(
-            `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}/upload`,
+            `/task/comment/${this.selectedTask.taskId}/file`,
             formData,
             {
               headers: {
@@ -663,7 +663,7 @@ export default {
   data: function() {
     return {
       file: "",
-      commentPage: this.pageNum,
+      commentPage: this.commentPage,
       updatedComment: "",
       commentEditor: false,
       selectedComment: {},

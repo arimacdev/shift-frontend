@@ -217,10 +217,10 @@
 <script>
 import { mapState } from "vuex";
 export default {
-  props: ["pageNum"],
+  props: ["pageNum", "page"],
   data() {
     return {
-      page: this.pageNum
+      page: this.page
       // taskLogs: {},
     };
   },
@@ -292,7 +292,7 @@ export default {
         dueDate.toLocaleString("en-US", { timeZone: "Asia/Colombo" })
       );
 
-     // const dueToUtcDate = new Date(dueToUtc);
+      // const dueToUtcDate = new Date(dueToUtc);
 
       const now = new Date();
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());

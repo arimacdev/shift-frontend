@@ -848,8 +848,12 @@
           </v-list-item-content>
         </div>-->
 
-        <task-logs v-if="this.activity == 'logs'" :pageNum="page" />
-        <task-comments v-if="this.activity == 'comments'" :stomp="this.stomp" :pageNum="this.pageNum"/>
+        <task-logs v-if="this.activity == 'logs'" :pageNum="page" :page="page" />
+        <task-comments
+          v-if="this.activity == 'comments'"
+          :stomp="this.stomp"
+          :commentPage="commentPage"
+        />
         <div></div>
       </div>
 
@@ -900,7 +904,8 @@ export default {
     return {
       selectedTab: "comments",
       activity: "comments",
-      page: this.pageNum,
+      page: 1,
+      commentPage: 1,
       overlay: false,
       maxdate: "2020-05-11 12:17",
       taskId: "",
@@ -1113,10 +1118,9 @@ export default {
       }
     },
     taskDialogClosing() {
-      this.$emit("taskDialogClosing");    
+      this.$emit("taskDialogClosing");
       Object.assign(this.$data, this.$options.data.apply(this));
       this.selectedTab = "comments";
-
     },
     async updateIssueType() {
       this.overlay = true;
