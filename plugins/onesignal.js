@@ -83,8 +83,8 @@ OneSignal.push(function() {
             'Subscribe to push notifications' /* Prompt's text when not subscribed */,
           unsubscribe:
             'Unsubscribe from push notifications' /* Prompt's text when subscribed */,
-          explanation:
-            'Get updates from all sorts of things that matter to you' /* Optional text appearing before the prompt button */,
+          // explanation:
+          //   'Get updates from all sorts of things that matter to you' /* Optional text appearing before the prompt button */,
         },
         unsubscribeEnabled: true /* Controls whether the prompt is visible after subscription */,
       },
