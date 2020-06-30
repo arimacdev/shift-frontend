@@ -129,7 +129,6 @@
                     :quickToolbarSettings="quickToolbarSettings"
                     :toolbarSettings="toolbarSettings"
                     v-model="updatedComment"
-                    
                   ></ejs-richtexteditor>
                 </div>
                 <div style="float: left">
@@ -159,7 +158,6 @@
                   </template>
                   <span>Attach an image</span>
                 </v-tooltip>
-                <!--  -->
                 <div style="margin-top: 15px; padding-left: 30px">
                   <v-progress-circular v-if="uploadLoading == true" indeterminate color="primary"></v-progress-circular>
                 </div>
@@ -170,10 +168,7 @@
         </div>
       </v-col>
     </v-row>
-    <v-btn @click="typingText()">FocusIn</v-btn>   
-    <v-btn @click="notTyping()">FocusOut</v-btn>    
 
-    <h4 v-show="this.showTypingStatus()">Someone is typing a comment ....!!</h4>
     <v-btn
       v-if="addCommentSection == false"
       v-on:click="addCommentSection = true"
@@ -212,6 +207,7 @@
                   :toolbarSettings="toolbarSettings"
                   v-model="textEditor"
                 ></ejs-richtexteditor>
+                <!-- <ejs-richtexteditor :valueTemplate="vueTemplate" ref="defaultRTE" :height="340"></ejs-richtexteditor> -->
               </div>
               <div style="float: left">
                 <v-btn
@@ -221,7 +217,6 @@
                   color="primary"
                 >Comment</v-btn>
               </div>
-              
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
                   <div v-on="on" class="fileAttachSection" style>
@@ -248,6 +243,9 @@
         </div>
       </v-col>
     </v-row>
+    <div class="text-center">
+      <v-pagination @input="getLogs()" v-model="page" :length="10" circle :total-visible="8"></v-pagination>
+    </div>
     <!-- --------- delete comment dialog ------ -->
     <v-dialog v-model="deleteCommentDialog" max-width="350">
       <v-card style="text-align: center ; padding-bottom: 25px">
@@ -311,18 +309,6 @@ export default {
     this.projectId = this.$route.params.projects;
   },
   methods: {
-    showTypingStatus(){
-      console.log("typing", this.typingStatus)
-      return this.typingStatus;
-    },
-    typingText(){
-      console.log("typing......")
-      this.sendTypingMessage(this.selectedTask.taskId, this.userId, "typing");
-    },
-    notTyping(){
-      console.log("not typing......")
-      this.sendTypingMessage(this.selectedTask.taskId, this.userId, "notTyping");
-    },
     async submit(type) {
       if (this.files != null) {
         this.uploadLoading = true;
@@ -393,7 +379,6 @@ export default {
             }
           }
         );
-        this.sendCommentedMessage(this.selectedTask.taskId, this.textEditor, this.userId);
         this.$store.dispatch("comments/fetchTaskActivityComment", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
@@ -424,7 +409,6 @@ export default {
             }
           }
         );
-        this.sendCommentedMessage(this.selectedTask.taskId, this.textEditor, this.userId);
         this.$store.dispatch("comments/fetchTaskActivityComment", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
@@ -458,7 +442,6 @@ export default {
             }
           }
         );
-        this.sendCommentedMessage(this.selectedTask.taskId, this.textEditor, this.userId);
         this.$store.dispatch("comments/fetchTaskActivityComment", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
@@ -499,7 +482,7 @@ export default {
           startIndex: 0,
           endIndex: 200
         });
-        this.sendCommentedMessage(this.selectedTask.taskId, this.textEditor, this.userId);
+        this.sendCommentedMessage(this.selectedTask.taskId);
 
         this.component = "success-popup";
         this.successMessage = "Comment successfully added";
@@ -539,7 +522,7 @@ export default {
           startIndex: 0,
           endIndex: 200
         });
-        this.sendCommentedMessage(this.selectedTask.taskId, this.updatedComment, this.userId);
+        this.sendCommentedMessage(this.selectedTask.taskId);
 
         this.component = "success-popup";
         this.successMessage = "Comment successfully updated";
@@ -558,28 +541,15 @@ export default {
         console.log("Error updating a status", e);
       }
     },
-    sendCommentedMessage(taskId, comment, sender) {
-      console.log("sending message", this.stomp, comment);
+    sendCommentedMessage(taskId) {
+      console.log("sending message", this.stomp);
       this.stomp.send(
         "/app/chat/" + taskId,
         {},
         JSON.stringify({
-          sender: sender,
-          message: comment,
+          fromLogin: "from",
+          message: "Hi!!",
           actionType: "comment"
-        })
-      );
-    },
-
-    sendTypingMessage(taskId, sender, event){
-       console.log("sending message", this.stomp);
-      this.stomp.send(
-        "/app/chat/" + taskId,
-        {},
-        JSON.stringify({
-          sender: sender,
-          message: sender + "is typing",
-          actionType: event
         })
       );
     },
@@ -592,10 +562,9 @@ export default {
     getCommentTime(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString("en-US", { timeZone: "Asia/Colombo" })
+        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
       );
-      const dueToUtcDate = new Date(dueToUtc);     
-
+      const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
 
       // console.log(
@@ -647,8 +616,7 @@ export default {
     ...mapState({
       selectedTask: state => state.task.selectedTask,
       ownUser: state => state.user.ownUser,
-      taskComments: state => state.comments.activityComment,
-      typingStatus: state => state.stompClient.typingStatus
+      taskComments: state => state.comments.activityComment
     })
   },
   data: function() {
