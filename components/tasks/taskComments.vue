@@ -248,6 +248,13 @@
         </div>
       </v-col>
     </v-row>
+    <v-pagination
+      @input="getComments()"
+      v-model="commentPage"
+      :length="Math.ceil(this.allCommentsLength/10)"
+      circle
+      :total-visible="10">
+      </v-pagination>
     <!-- --------- delete comment dialog ------ -->
     <v-dialog v-model="deleteCommentDialog" max-width="350">
       <v-card style="text-align: center ; padding-bottom: 25px">
@@ -305,12 +312,21 @@ export default {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup
   },
-  props: ["stomp"],
+  props: ["stomp", "pageNum"],
   created() {
     console.log("created---->", this.stomp);
     this.projectId = this.$route.params.projects;
   },
   methods: {
+    getComments(){
+       this.$store.dispatch("comments/fetchTaskCommentLength",this.selectedTask.taskId);
+
+        this.$store.dispatch("comments/fetchTaskActivityComment", {
+                  taskId: this.selectedTask.taskId,
+                  startIndex: this.commentPage * 10 - 10,
+                  endIndex: this.commentPage * 10
+                });
+    },
     showTypingStatus(){
       console.log("typing", this.typingStatus)
       return this.typingStatus;
@@ -394,11 +410,12 @@ export default {
           }
         );
         this.sendCommentedMessage(this.selectedTask.taskId, this.textEditor, this.userId);
-        this.$store.dispatch("comments/fetchTaskActivityComment", {
-          taskId: this.selectedTask.taskId,
-          startIndex: 0,
-          endIndex: 200
-        });
+        this.getComments();
+        // this.$store.dispatch("comments/fetchTaskActivityComment", {
+        //   taskId: this.selectedTask.taskId,
+        //   startIndex: 0,
+        //   endIndex: 200
+        // });
       } catch (e) {
         // this.errorMessage = e.response.data;
         // this.component = "error-popup";
@@ -425,11 +442,12 @@ export default {
           }
         );
         this.sendCommentedMessage(this.selectedTask.taskId, this.textEditor, this.userId);
-        this.$store.dispatch("comments/fetchTaskActivityComment", {
-          taskId: this.selectedTask.taskId,
-          startIndex: 0,
-          endIndex: 200
-        });
+        // this.$store.dispatch("comments/fetchTaskActivityComment", {
+        //   taskId: this.selectedTask.taskId,
+        //   startIndex: 0,
+        //   endIndex: 200
+        // });
+        this.getComments();
         this.successMessage = "Comment deleted successfully";
         this.component = "success-popup";
         setTimeout(() => {
@@ -459,11 +477,12 @@ export default {
           }
         );
         this.sendCommentedMessage(this.selectedTask.taskId, this.textEditor, this.userId);
-        this.$store.dispatch("comments/fetchTaskActivityComment", {
-          taskId: this.selectedTask.taskId,
-          startIndex: 0,
-          endIndex: 200
-        });
+        this.getComments();
+        // this.$store.dispatch("comments/fetchTaskActivityComment", {
+        //   taskId: this.selectedTask.taskId,
+        //   startIndex: 0,
+        //   endIndex: 200
+        // });
       } catch (e) {
         // this.errorMessage = e.response.data;
         // this.component = "error-popup";
@@ -494,12 +513,13 @@ export default {
           }
         );
         this.textEditor = "";
-        this.$store.dispatch("comments/fetchTaskActivityComment", {
-          taskId: this.selectedTask.taskId,
-          startIndex: 0,
-          endIndex: 200
-        });
+        // this.$store.dispatch("comments/fetchTaskActivityComment", {
+        //   taskId: this.selectedTask.taskId,
+        //   startIndex: 0,
+        //   endIndex: 200
+        // });
         this.sendCommentedMessage(this.selectedTask.taskId, this.textEditor, this.userId);
+        this.getComments();
 
         this.component = "success-popup";
         this.successMessage = "Comment successfully added";
@@ -534,12 +554,13 @@ export default {
           }
         );
         this.commentEditor = false;
-        this.$store.dispatch("comments/fetchTaskActivityComment", {
-          taskId: this.selectedTask.taskId,
-          startIndex: 0,
-          endIndex: 200
-        });
+        // this.$store.dispatch("comments/fetchTaskActivityComment", {
+        //   taskId: this.selectedTask.taskId,
+        //   startIndex: 0,
+        //   endIndex: 200
+        // });
         this.sendCommentedMessage(this.selectedTask.taskId, this.updatedComment, this.userId);
+        this.getComments();
 
         this.component = "success-popup";
         this.successMessage = "Comment successfully updated";
@@ -646,6 +667,7 @@ export default {
   computed: {
     ...mapState({
       selectedTask: state => state.task.selectedTask,
+      allCommentsLength: state => state.comments.allCommentsLength,
       ownUser: state => state.user.ownUser,
       taskComments: state => state.comments.activityComment,
       typingStatus: state => state.stompClient.typingStatus
@@ -654,6 +676,7 @@ export default {
   data: function() {
     return {
       file: "",
+      commentPage: this.pageNum,
       updatedComment: "",
       commentEditor: false,
       selectedComment: {},

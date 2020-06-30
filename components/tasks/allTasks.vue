@@ -401,6 +401,7 @@
         :taskObject="taskObject"
         :stomp="stomp"
         @taskDialogClosing="taskDialogClosing()"
+        :pageNum="1"
       />
     </v-dialog>
 
@@ -1012,8 +1013,10 @@ export default {
       this.$store.dispatch("comments/fetchTaskActivityComment", {
         taskId: task.taskId,
         startIndex: 0,
-        endIndex: 200
+        endIndex: 10
       });
+
+       this.$store.dispatch("comments/fetchTaskCommentLength",task.taskId);
 
       this.$store.dispatch("user/fetchOwnUser", this.userId);
 
