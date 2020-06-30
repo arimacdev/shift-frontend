@@ -123,6 +123,7 @@ export default {
           route: "../../skills/skills"
         },
         { title: "Admin", icon: "icon-admin", route: "../../admin/admin" }
+        // { title: "Admin", icon: "icon-admin", route: "../../comments/comments" }
       ],
       mini: true,
       userItems: [
