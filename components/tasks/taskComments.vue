@@ -129,7 +129,8 @@
                     :quickToolbarSettings="quickToolbarSettings"
                     :toolbarSettings="toolbarSettings"
                     v-model="updatedComment"
-                    
+                    @focus="typingText()"
+                    @blur="notTyping()"
                   ></ejs-richtexteditor>
                 </div>
                 <div style="float: left">
@@ -170,9 +171,6 @@
         </div>
       </v-col>
     </v-row>
-    <v-btn @click="typingText()">FocusIn</v-btn>   
-    <v-btn @click="notTyping()">FocusOut</v-btn>    
-
     <h4 v-show="this.showTypingStatus()">Someone is typing a comment ....!!</h4>
     <v-btn
       v-if="addCommentSection == false"
@@ -211,6 +209,8 @@
                   :quickToolbarSettings="quickToolbarSettings"
                   :toolbarSettings="toolbarSettings"
                   v-model="textEditor"
+                   @focus="typingText()"
+                    @blur="notTyping()"
                 ></ejs-richtexteditor>
               </div>
               <div style="float: left">
