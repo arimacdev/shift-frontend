@@ -18,9 +18,13 @@
 /* * {
   font-family: CircularStd;
 }
+
 .body-2 {
   font-family: CircularStd !important;
 } */
+* {
+  font-family: Roboto, sans-serif !important;
+}
 .listView {
   margin-top: 10px;
   height: 80vh;
