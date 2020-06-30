@@ -129,6 +129,7 @@
                     :quickToolbarSettings="quickToolbarSettings"
                     :toolbarSettings="toolbarSettings"
                     v-model="updatedComment"
+                    
                   ></ejs-richtexteditor>
                 </div>
                 <div style="float: left">
