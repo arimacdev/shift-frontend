@@ -129,7 +129,8 @@
                     :quickToolbarSettings="quickToolbarSettings"
                     :toolbarSettings="toolbarSettings"
                     v-model="updatedComment"
-                    
+                    @focus="typingText()"
+                    @blur="notTyping()"
                   ></ejs-richtexteditor>
                 </div>
                 <div style="float: left">
@@ -170,10 +171,19 @@
         </div>
       </v-col>
     </v-row>
-    <v-btn @click="typingText()">FocusIn</v-btn>   
-    <v-btn @click="notTyping()">FocusOut</v-btn>    
-
-    <h4 v-show="this.showTypingStatus()">Someone is typing a comment ....!!</h4>
+    <!-- <h4 v-show="this.showTypingStatus()">Someone is typing a comment ....!!</h4> -->
+    <div v-show="this.showTypingStatus()">
+      <div class="loadingProgress">
+        <img
+          height="100px"
+          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1593502941285_unnamed.gif"
+        />
+        <!-- <v-progress-linear color="red lighten-2" buffer-value="0" stream></v-progress-linear> -->
+      </div>
+      <div class="typingProgress">Someone is typing a comment ...</div>
+    </div>
+    <br />
+    <h4></h4>
     <v-btn
       v-if="addCommentSection == false"
       v-on:click="addCommentSection = true"
@@ -211,6 +221,8 @@
                   :quickToolbarSettings="quickToolbarSettings"
                   :toolbarSettings="toolbarSettings"
                   v-model="textEditor"
+                  @focus="typingText()"
+                  @blur="notTyping()"
                 ></ejs-richtexteditor>
               </div>
               <div style="float: left">
@@ -221,7 +233,7 @@
                   color="primary"
                 >Comment</v-btn>
               </div>
-              
+
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
                   <div v-on="on" class="fileAttachSection" style>
@@ -248,6 +260,13 @@
         </div>
       </v-col>
     </v-row>
+    <v-pagination
+      @input="getComments()"
+      v-model="commentPage"
+      :length="Math.ceil(this.allCommentsLength/10)"
+      circle
+      :total-visible="10"
+    ></v-pagination>
     <!-- --------- delete comment dialog ------ -->
     <v-dialog v-model="deleteCommentDialog" max-width="350">
       <v-card style="text-align: center ; padding-bottom: 25px">
@@ -305,23 +324,39 @@ export default {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup
   },
-  props: ["stomp"],
+  props: ["stomp", "pageNum"],
   created() {
     console.log("created---->", this.stomp);
     this.projectId = this.$route.params.projects;
   },
   methods: {
-    showTypingStatus(){
-      console.log("typing", this.typingStatus)
+    getComments() {
+      this.$store.dispatch(
+        "comments/fetchTaskCommentLength",
+        this.selectedTask.taskId
+      );
+
+      this.$store.dispatch("comments/fetchTaskActivityComment", {
+        taskId: this.selectedTask.taskId,
+        startIndex: this.commentPage * 10 - 10,
+        endIndex: this.commentPage * 10
+      });
+    },
+    showTypingStatus() {
+      console.log("typing", this.typingStatus);
       return this.typingStatus;
     },
-    typingText(){
-      console.log("typing......")
+    typingText() {
+      console.log("typing......");
       this.sendTypingMessage(this.selectedTask.taskId, this.userId, "typing");
     },
-    notTyping(){
-      console.log("not typing......")
-      this.sendTypingMessage(this.selectedTask.taskId, this.userId, "notTyping");
+    notTyping() {
+      console.log("not typing......");
+      this.sendTypingMessage(
+        this.selectedTask.taskId,
+        this.userId,
+        "notTyping"
+      );
     },
     async submit(type) {
       if (this.files != null) {
@@ -393,12 +428,17 @@ export default {
             }
           }
         );
-        this.sendCommentedMessage(this.selectedTask.taskId, this.textEditor, this.userId);
-        this.$store.dispatch("comments/fetchTaskActivityComment", {
-          taskId: this.selectedTask.taskId,
-          startIndex: 0,
-          endIndex: 200
-        });
+        this.sendCommentedMessage(
+          this.selectedTask.taskId,
+          this.textEditor,
+          this.userId
+        );
+        this.getComments();
+        // this.$store.dispatch("comments/fetchTaskActivityComment", {
+        //   taskId: this.selectedTask.taskId,
+        //   startIndex: 0,
+        //   endIndex: 200
+        // });
       } catch (e) {
         // this.errorMessage = e.response.data;
         // this.component = "error-popup";
@@ -424,12 +464,17 @@ export default {
             }
           }
         );
-        this.sendCommentedMessage(this.selectedTask.taskId, this.textEditor, this.userId);
-        this.$store.dispatch("comments/fetchTaskActivityComment", {
-          taskId: this.selectedTask.taskId,
-          startIndex: 0,
-          endIndex: 200
-        });
+        this.sendCommentedMessage(
+          this.selectedTask.taskId,
+          this.textEditor,
+          this.userId
+        );
+        // this.$store.dispatch("comments/fetchTaskActivityComment", {
+        //   taskId: this.selectedTask.taskId,
+        //   startIndex: 0,
+        //   endIndex: 200
+        // });
+        this.getComments();
         this.successMessage = "Comment deleted successfully";
         this.component = "success-popup";
         setTimeout(() => {
@@ -458,12 +503,17 @@ export default {
             }
           }
         );
-        this.sendCommentedMessage(this.selectedTask.taskId, this.textEditor, this.userId);
-        this.$store.dispatch("comments/fetchTaskActivityComment", {
-          taskId: this.selectedTask.taskId,
-          startIndex: 0,
-          endIndex: 200
-        });
+        this.sendCommentedMessage(
+          this.selectedTask.taskId,
+          this.textEditor,
+          this.userId
+        );
+        this.getComments();
+        // this.$store.dispatch("comments/fetchTaskActivityComment", {
+        //   taskId: this.selectedTask.taskId,
+        //   startIndex: 0,
+        //   endIndex: 200
+        // });
       } catch (e) {
         // this.errorMessage = e.response.data;
         // this.component = "error-popup";
@@ -494,12 +544,17 @@ export default {
           }
         );
         this.textEditor = "";
-        this.$store.dispatch("comments/fetchTaskActivityComment", {
-          taskId: this.selectedTask.taskId,
-          startIndex: 0,
-          endIndex: 200
-        });
-        this.sendCommentedMessage(this.selectedTask.taskId, this.textEditor, this.userId);
+        // this.$store.dispatch("comments/fetchTaskActivityComment", {
+        //   taskId: this.selectedTask.taskId,
+        //   startIndex: 0,
+        //   endIndex: 200
+        // });
+        this.sendCommentedMessage(
+          this.selectedTask.taskId,
+          this.textEditor,
+          this.userId
+        );
+        this.getComments();
 
         this.component = "success-popup";
         this.successMessage = "Comment successfully added";
@@ -534,12 +589,17 @@ export default {
           }
         );
         this.commentEditor = false;
-        this.$store.dispatch("comments/fetchTaskActivityComment", {
-          taskId: this.selectedTask.taskId,
-          startIndex: 0,
-          endIndex: 200
-        });
-        this.sendCommentedMessage(this.selectedTask.taskId, this.updatedComment, this.userId);
+        // this.$store.dispatch("comments/fetchTaskActivityComment", {
+        //   taskId: this.selectedTask.taskId,
+        //   startIndex: 0,
+        //   endIndex: 200
+        // });
+        this.sendCommentedMessage(
+          this.selectedTask.taskId,
+          this.updatedComment,
+          this.userId
+        );
+        this.getComments();
 
         this.component = "success-popup";
         this.successMessage = "Comment successfully updated";
@@ -571,8 +631,8 @@ export default {
       );
     },
 
-    sendTypingMessage(taskId, sender, event){
-       console.log("sending message", this.stomp);
+    sendTypingMessage(taskId, sender, event) {
+      console.log("sending message", this.stomp);
       this.stomp.send(
         "/app/chat/" + taskId,
         {},
@@ -594,7 +654,7 @@ export default {
       const dueToUtc = new Date(
         dueDate.toLocaleString("en-US", { timeZone: "Asia/Colombo" })
       );
-      const dueToUtcDate = new Date(dueToUtc);     
+      const dueToUtcDate = new Date(dueToUtc);
 
       const now = new Date();
 
@@ -646,6 +706,7 @@ export default {
   computed: {
     ...mapState({
       selectedTask: state => state.task.selectedTask,
+      allCommentsLength: state => state.comments.allCommentsLength,
       ownUser: state => state.user.ownUser,
       taskComments: state => state.comments.activityComment,
       typingStatus: state => state.stompClient.typingStatus
@@ -654,6 +715,7 @@ export default {
   data: function() {
     return {
       file: "",
+      commentPage: this.pageNum,
       updatedComment: "",
       commentEditor: false,
       selectedComment: {},

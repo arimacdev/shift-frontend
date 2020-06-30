@@ -849,7 +849,7 @@
         </div>-->
 
         <task-logs v-if="this.activity == 'logs'" :pageNum="page" />
-        <task-comments v-if="this.activity == 'comments'" :stomp="this.stomp" />
+        <task-comments v-if="this.activity == 'comments'" :stomp="this.stomp" :pageNum="this.pageNum"/>
         <div></div>
       </div>
 
@@ -882,7 +882,7 @@ import TaskLogs from "~/components/tasks/taskLogs";
 import TaskComments from "~/components/tasks/taskComments";
 
 export default {
-  props: ["projectId", "logs", "people", "taskObject", "stomp"],
+  props: ["projectId", "logs", "people", "taskObject", "stomp", "pageNum"],
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
@@ -900,7 +900,7 @@ export default {
     return {
       selectedTab: "comments",
       activity: "comments",
-      page: 1,
+      page: this.pageNum,
       overlay: false,
       maxdate: "2020-05-11 12:17",
       taskId: "",
