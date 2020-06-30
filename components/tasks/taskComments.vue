@@ -45,10 +45,7 @@
                       >
                         <v-tooltip color="black" right>
                           <template v-slot:activator="{ on }">
-                            <div
-                              @click="addReact(comment.commentId, react.reactionId)"
-                              v-on="on"
-                            >
+                            <div @click="addReact(comment.commentId, react.reactionId)" v-on="on">
                               <span style="font-size: 14px" v-html="react.reactionId"></span>
                               <span>{{react.respondants.length}}</span>
                             </div>
@@ -439,9 +436,7 @@ export default {
         //   startIndex: 0,
         //   endIndex: 200
         // });
-      } catch (e) {
-      
-      }
+      } catch (e) {}
     },
     async deleteComment() {
       let response;
