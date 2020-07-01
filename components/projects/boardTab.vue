@@ -637,6 +637,7 @@ export default {
               }
             );
             this.$store.dispatch('user/setSelectedTaskUser', task.taskAssignee);
+            this.$store.dispatch('user/fetchOwnUser', this.userId);
             // console.log("subtasks--->", subTaskResponse.data);
             this.subTasks = subTaskResponse.data;
             //get files related to task

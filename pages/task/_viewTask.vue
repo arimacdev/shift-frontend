@@ -783,15 +783,15 @@
       <task-logs :page="page" />
     </div> -->
     <v-tabs height="40px" style="padding-left: 20px" slider-size="3" v-model="selectedTab">
-        <v-tab
+         <v-tab
           class="text-capitalize activityInactiveTabs"
-          key="comments"
-          v-on:click="activity = 'comments'"
+          key="comments"          
+          @click="selectedVTab('comments')"
         >Comments</v-tab>
         <v-tab
           class="text-capitalize activityInactiveTabs"
           key="logs"
-          v-on:click="activity = 'logs'"
+           @click="selectedVTab('logs')"
         >Logs</v-tab>
       </v-tabs>
 
@@ -832,6 +832,8 @@ import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import TaskLogs from "~/components/tasks/taskLogs";
 import TaskComments from "~/components/tasks/taskComments";
+import Stomp from "stompjs";
+import SockJS from "sockjs-client";
 
 export default {
   components: {
@@ -845,11 +847,14 @@ export default {
   },
   data() {
     return {
+      baseUrl: '',
       page: 1,
+      commentPage: 1,
       taskDeleteDialog: false,
       taskId: "",
       projectId: "",
       userId: "",
+      stomp: null,
       sprints: [],
       activity: "comments",
       assignees: [],
@@ -978,6 +983,8 @@ export default {
     this.taskId = this.$route.params.viewTask;
     this.projectId = this.$route.query.project;
     this.userId = this.$store.state.user.userId;
+    this.baseUrl = process.env.SYSTEM_URL;
+    this.websocketConnectInit(this.taskId);
     this.$store.dispatch(
       "task/fetchProjectUserCompletionTasks",
       this.$route.query.project
@@ -999,6 +1006,13 @@ export default {
     } catch (e) {
       console.log("Error fetching task", e);
     }
+    this.$store.dispatch("comments/fetchTaskActivityComment", {
+        taskId: this.$route.params.viewTask,
+        startIndex: 0,
+        endIndex: 10
+      });
+
+       this.$store.dispatch("comments/fetchTaskCommentLength",this.$route.params.viewTask);
     if (this.task.isParent) {
       // console.log("parent task");
       this.$store.dispatch("task/fetchChildren", {
@@ -1012,8 +1026,61 @@ export default {
         taskId: this.task.parentId
       });
     }
+      this.$store.dispatch("user/fetchOwnUser", this.$store.state.user.userId);
   },
   methods: {
+      selectedVTab(component){
+      this.activity = component;
+      if(component === "logs"){
+        
+      } else {
+        this.$store.dispatch("comments/fetchTaskActivityComment", {
+        taskId: this.$route.params.viewTask,
+        startIndex: 0,
+        endIndex: 10
+      });
+
+       this.$store.dispatch("comments/fetchTaskCommentLength",this.$route.params.viewTask);
+      }
+    },
+     websocketConnectInit(taskId){
+      console.log("initalize websocket connection for task", taskId);
+      const url =  this.baseUrl + "/api/pm-service"
+      // const url =  "http://localhost:8080" + "/api/pm-service"
+
+       try {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+        console.log("connecting to ws...");
+        let socket = new SockJS(url + "/chat");
+        //this.stompClient = Stomp.over(socket);
+        this.stomp = Stomp.over(socket);       
+       //this.$store.dispatch("stompClient/setStompClient", "this.stomp");
+        //let client = this.stompClient;
+        this.stomp.connect({}, (frame) => {
+          console.log("connected to: " + frame);
+          console.log("subscribing to topic: " + "/topic/messages/" + taskId);
+          this.stomp.subscribe("/topic/messages/" + taskId, (response) => {
+            console.log("Response", response);
+            let data = JSON.parse(response.body);
+              console.log("outside----->")
+            if(data.actionType === 'comment'){
+              console.log("inside----->")
+              this.$store.dispatch("comments/fetchTaskActivityComment", {
+                  taskId: this.selectedTask.taskId,
+                  startIndex: 0,
+                  endIndex: 200
+                });
+            } else if(data.actionType === 'typing' && data.sender !== this.userId){
+              this.$store.dispatch("stompClient/setTypingStatus", true);
+              this.$store.dispatch("stompClient/setTypingUser", data.message);
+            } else if(data.actionType === 'notTyping' && data.sender !== this.userId){
+              this.$store.dispatch("stompClient/setTypingStatus", false);
+            }
+          });
+        });
+      } catch (error) {
+        console.log("Error fetching data", error);
+      }
+    },
     checkUserExists() {
       const index = this.people.findIndex(
         user => user.assigneeId === this.selectedTask.taskAssignee
