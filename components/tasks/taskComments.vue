@@ -104,7 +104,6 @@
                           class="text-capitalize addEmojiButton"
                           v-bind="attrs"
                           v-on="on"
-                          @click
                         >
                           <span style="font-size: 14px">
                             <v-icon size="16" style="margin-top: -6px"

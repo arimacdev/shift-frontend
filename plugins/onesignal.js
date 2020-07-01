@@ -7,7 +7,7 @@
 // }
 
 window.OneSignal = window.OneSignal || [];
-OneSignal.push(function() {
+OneSignal.push(() => {
   console.log('Hello, from Onesignal');
   // OneSignal.isPushNotificationsEnabled(function(isEnabled) {
   //   if (isEnabled)
@@ -15,8 +15,8 @@ OneSignal.push(function() {
   //   else
   //     console.log("Push notifications are not enabled yet.");
   // });
-  OneSignal.getUserId().then(function(userId) {
-    // console.log('OneSignal User ID:', userId);
+  OneSignal.getUserId().then((userId)=> {
+    console.log('OneSignal User ID:', userId);
     // notification.dispatch('notification/addNotificationDevice', userId);
     //   try {
     //     response = await this.$axios.$post(
