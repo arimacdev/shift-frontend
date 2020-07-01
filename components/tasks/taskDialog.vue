@@ -831,13 +831,13 @@
       <v-tabs height="40px" style="padding-left: 20px" slider-size="3" v-model="selectedTab">
         <v-tab
           class="text-capitalize activityInactiveTabs"
-          key="comments"
-          v-on:click="activity = 'comments'"
+          key="comments"          
+          @click="selectedVTab('comments')"
         >Comments</v-tab>
         <v-tab
           class="text-capitalize activityInactiveTabs"
           key="logs"
-          v-on:click="activity = 'logs'"
+           @click="selectedVTab('logs')"
         >Logs</v-tab>
       </v-tabs>
 
@@ -1037,6 +1037,20 @@ export default {
     };
   },
   methods: {
+    selectedVTab(component){
+      this.activity = component;
+      if(component === "logs"){
+        
+      } else {
+        this.$store.dispatch("comments/fetchTaskActivityComment", {
+        taskId: this.selectedTask.taskId,
+        startIndex: 0,
+        endIndex: 10
+      });
+
+       this.$store.dispatch("comments/fetchTaskCommentLength",this.selectedTask.taskId);
+      }
+    },
     getUser() {
       this.$store.dispatch("user/fetchOwnUser", this.userId);
     },

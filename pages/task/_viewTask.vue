@@ -783,15 +783,15 @@
       <task-logs :page="page" />
     </div> -->
     <v-tabs height="40px" style="padding-left: 20px" slider-size="3" v-model="selectedTab">
-        <v-tab
+         <v-tab
           class="text-capitalize activityInactiveTabs"
-          key="comments"
-          v-on:click="activity = 'comments'"
+          key="comments"          
+          @click="selectedVTab('comments')"
         >Comments</v-tab>
         <v-tab
           class="text-capitalize activityInactiveTabs"
           key="logs"
-          v-on:click="activity = 'logs'"
+           @click="selectedVTab('logs')"
         >Logs</v-tab>
       </v-tabs>
 
@@ -847,6 +847,7 @@ export default {
   },
   data() {
     return {
+      baseUrl: '',
       page: 1,
       commentPage: 1,
       taskDeleteDialog: false,
@@ -982,6 +983,7 @@ export default {
     this.taskId = this.$route.params.viewTask;
     this.projectId = this.$route.query.project;
     this.userId = this.$store.state.user.userId;
+    this.baseUrl = process.env.SYSTEM_URL;
     this.websocketConnectInit(this.taskId);
     this.$store.dispatch(
       "task/fetchProjectUserCompletionTasks",
@@ -1024,11 +1026,28 @@ export default {
         taskId: this.task.parentId
       });
     }
+      this.$store.dispatch("user/fetchOwnUser", this.$store.state.user.userId);
   },
   methods: {
+      selectedVTab(component){
+      this.activity = component;
+      if(component === "logs"){
+        
+      } else {
+        this.$store.dispatch("comments/fetchTaskActivityComment", {
+        taskId: this.$route.params.viewTask,
+        startIndex: 0,
+        endIndex: 10
+      });
+
+       this.$store.dispatch("comments/fetchTaskCommentLength",this.$route.params.viewTask);
+      }
+    },
      websocketConnectInit(taskId){
       console.log("initalize websocket connection for task", taskId);
-      const url =  "http://localhost:8080/" + "/api/pm-service"
+      const url =  this.baseUrl + "/api/pm-service"
+      // const url =  "http://localhost:8080" + "/api/pm-service"
+
        try {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
         console.log("connecting to ws...");
         let socket = new SockJS(url + "/chat");

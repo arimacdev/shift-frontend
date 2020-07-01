@@ -916,18 +916,16 @@
       slider-size="3"
       v-model="selectedTab"
     >
-      <v-tab
-        class="text-capitalize activityInactiveTabs"
-        key="comments"
-        v-on:click="activity = 'comments'"
-        >Comments</v-tab
-      >
-      <v-tab
-        class="text-capitalize activityInactiveTabs"
-        key="logs"
-        v-on:click="activity = 'logs'"
-        >Logs</v-tab
-      >
+       <v-tab
+          class="text-capitalize activityInactiveTabs"
+          key="comments"          
+          @click="selectedVTab('comments')"
+        >Comments</v-tab>
+        <v-tab
+          class="text-capitalize activityInactiveTabs"
+          key="logs"
+           @click="selectedVTab('logs')"
+        >Logs</v-tab>
     </v-tabs>
 
     <div class="RestTaskLogDiv">
@@ -1129,6 +1127,20 @@ export default {
     };
   },
   methods: {
+    selectedVTab(component){
+      this.activity = component;
+      if(component === "logs"){
+        
+      } else {
+        this.$store.dispatch("comments/fetchTaskActivityComment", {
+        taskId: this.selectedTask.taskId,
+        startIndex: 0,
+        endIndex: 10
+      });
+
+       this.$store.dispatch("comments/fetchTaskCommentLength",this.selectedTask.taskId);
+      }
+    },
     checkUserExists() {
       const index = this.people.findIndex(
         (user) => user.assigneeId === this.selectedTask.taskAssignee
