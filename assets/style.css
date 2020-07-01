@@ -16,7 +16,7 @@
 
 @import './icons.css'; /* -------------- common --------------- */
 * {
-  font-family: 'Roboto', sans-serif !important;
+  font-family: 'Roboto', sans-serif;
 }
 
 .body-2 {
