@@ -1,10 +1,5 @@
-// export default function(context) {
-//   console.log('store is', context.store);
-//   OneSignal.getUserId().then(function(userId) {
-//     console.log('OneSignal User ID:', userId);
-//     context.store.dispatch('notification/addNotificationDevice', userId);
-//   });
-// }
+export default function(context) {
+
 
 window.OneSignal = window.OneSignal || [];
 OneSignal.push(() => {
@@ -17,6 +12,7 @@ OneSignal.push(() => {
   // });
   OneSignal.getUserId().then((userId)=> {
     console.log('OneSignal User ID:', userId);
+    context.store.dispatch('notification/addNotificationDevice', userId);
     // notification.dispatch('notification/addNotificationDevice', userId);
     //   try {
     //     response = await this.$axios.$post(
@@ -92,3 +88,5 @@ OneSignal.push(() => {
   });
   OneSignal.showNativePrompt();
 });
+
+}

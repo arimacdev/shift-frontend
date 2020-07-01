@@ -9,12 +9,12 @@ export const actions = {
       response = await this.$axios.$post(
         `/notification/register`,
         {
-          data: {
+          
             subscriptionId: subscriptionId,
             subscriberId: user,
             provider: 'OneSignal',
             platform: 'Web',
-          },
+       
         },
         {
           headers: {

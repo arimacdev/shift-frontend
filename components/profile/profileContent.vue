@@ -471,65 +471,7 @@ export default {
   },
 
   methods: {
-     websock() {
-      console.log("====WEBSOCKET=====");
-      // let stompClient;
-      let selectedUser;
-      const url = "http://localhost:8080/api/pm-service";
-      let newMessages = new Map();
-      let chatResponse;
-      try {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
-
-        console.log("connecting to chat...");
-        let socket = new SockJS(url + "/chat");
-        this.stompClient = Stomp.over(socket);
-        const client = this.stompClient;
-        client.connect({}, (frame) => {
-          console.log("connected to: " + frame);
-          client.subscribe("/topic/messages/" + "task", (response) => {
-            console.log("Response", response);
-            let data = JSON.parse(response.body);
-            if(data.actionType === 'typing'){
-              console.log("inside----->")
-              this.commentContent = "Someone is typing a comment....."
-            }
-            // if (selectedUser === data.fromLogin) {
-            //     render(data.message, data.fromLogin);
-            // } else {
-            //     newMessages.set(data.fromLogin, data.message);
-            //     $('#userNameAppender_' + data.fromLogin).append('<span id="newMessage_' + data.fromLogin + '" style="color: red">+1</span>');
-            // }
-          });
-        });
-      } catch (error) {
-        console.log("Error fetching data", error);
-      }
-    },
-    sendMessage() {
-      this.stompClient.send(
-        "/app/chat/" + "task",
-        {},
-        JSON.stringify({
-          fromLogin: "from",
-          message: "Hi!!",
-          actionType: "comment"
-        })
-      );
-    },
-
-    typingEvent() {
-      console.log("event fired", this.commentContent)
-      this.stompClient.send(
-        "/app/chat/" + "task",
-        {},
-        JSON.stringify({
-          fromLogin: "from",
-          message: "Hi!!",
-          actionType: "typing"
-        })
-      );
-    },
+    
     checkActivationStatus(){
       if(process.browser){
       window.OneSignal.isPushNotificationsEnabled((isEnabled) => {
