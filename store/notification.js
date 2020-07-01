@@ -5,6 +5,7 @@ export const mutations = {};
 export const actions = {
   async addNotificationDevice({ commit, rootState }, subscriptionId) {
     const user = rootState.user.userId;
+    let response;
     try {
       response = await this.$axios.$post(
         `/notification/register`,
