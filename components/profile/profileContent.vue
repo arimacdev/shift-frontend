@@ -121,14 +121,14 @@
               v-show="getstatus"
               @click="activateOneSignal()"
             >Activate</v-btn>
-            <!-- <v-btn
+            <v-btn
               color="teal"
               outlined
               depressed
               class="text-capitalize oneSignalBtn"
-              v-else
+              v-show="!getstatus"
               @click="deactivateOneSignal()"
-            >Deactivate</v-btn> -->
+            >Deactivate</v-btn>
           </div>
         </v-card>
 
@@ -559,11 +559,17 @@ export default {
     },
     activateOneSignal(){
       console.log("activate")
+      if(process.browser){
       window.OneSignal.setSubscription(true);
+      this.getstatus = false;
+      }
     },
     deactivateOneSignal(){
       console.log("deactivate")
+      if(process.browser){
       window.OneSignal.setSubscription(false);
+      this.getstatus = true
+      }
     },
     categorizedSkillMap() {
       let skillmap = this.userSkillMap;
