@@ -934,7 +934,7 @@ export default {
         let socket = new SockJS(url + "/chat");
         //this.stompClient = Stomp.over(socket);
         this.stomp = Stomp.over(socket);       
-       this.$store.dispatch("stompClient/setStompClient", this.stomp);
+       //this.$store.dispatch("stompClient/setStompClient", "this.stomp");
         //let client = this.stompClient;
         this.stomp.connect({}, (frame) => {
           console.log("connected to: " + frame);
