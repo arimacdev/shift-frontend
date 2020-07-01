@@ -953,6 +953,7 @@ export default {
                 });
             } else if(data.actionType === 'typing' && data.sender !== this.userId){
               this.$store.dispatch("stompClient/setTypingStatus", true);
+              this.$store.dispatch("stompClient/setTypingUser", data.message);
             } else if(data.actionType === 'notTyping' && data.sender !== this.userId){
               this.$store.dispatch("stompClient/setTypingStatus", false);
             }

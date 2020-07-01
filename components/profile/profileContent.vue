@@ -121,14 +121,14 @@
               v-show="getstatus"
               @click="activateOneSignal()"
             >Activate</v-btn>
-            <!-- <v-btn
+            <v-btn
               color="teal"
               outlined
               depressed
               class="text-capitalize oneSignalBtn"
-              v-else
+              v-show="!getstatus"
               @click="deactivateOneSignal()"
-            >Deactivate</v-btn> -->
+            >Deactivate</v-btn>
           </div>
         </v-card>
 
@@ -531,39 +531,66 @@ export default {
       );
     },
     checkActivationStatus(){
-      console.log("check")
-      // setTimeout(() => {
-      //     console.log("timeout");
-
-      //      this.getstatus = true;
-      //     return true;
-      //   }, 5000);
       if(process.browser){
-      console.log("browser")
-
       window.OneSignal.isPushNotificationsEnabled((isEnabled) => {
         if (isEnabled){
-          console.log("false")
           console.log("Push notifications are enabled!");
-         // return false;
          this.getstatus = false;
         }
         else {
-          console.log("true")
           this.getstatus = true;
           console.log("Push notifications are not enabled yet.");
-          //return true;
         }
       });
       }
     },
     activateOneSignal(){
       console.log("activate")
-      window.OneSignal.setSubscription(true);
+      if(process.browser){
+      window.OneSignal.getUserId().then((userId) => {
+        if(userId){
+        console.log("userId", userId);
+        this.changeOneSignalActivationStatus(userId, true);
+        window.OneSignal.setSubscription(true);
+        this.getstatus = false;
+      }
+      });
+      }
     },
     deactivateOneSignal(){
       console.log("deactivate")
-      window.OneSignal.setSubscription(false);
+      if(process.browser){
+        window.OneSignal.getUserId().then((userId) => {
+          if(userId){
+            console.log("userId", userId);
+            this.changeOneSignalActivationStatus(userId, false);
+            window.OneSignal.setSubscription(false);
+            this.getstatus = true
+          }    
+     });
+    }
+    },
+    async changeOneSignalActivationStatus(subscriptionId, notificationStatus){
+      let response;
+          try {
+        response = await this.$axios.$put(
+          `/notification/status`,      
+          {           
+              subscriptionId: subscriptionId,
+              subscriberId: this.$store.state.user.userId,
+              provider: "OneSignal",
+              platform: "Web",
+              notificationStatus: notificationStatus            
+          },
+             {
+            headers: {
+              userId: this.$store.state.user.userId,
+            },
+          },
+        );
+      } catch (e) {
+      console.log("error", e)
+    }
     },
     categorizedSkillMap() {
       let skillmap = this.userSkillMap;
