@@ -4,59 +4,9 @@ export default function(context) {
 window.OneSignal = window.OneSignal || [];
 OneSignal.push(() => {
   console.log('Hello, from Onesignal');
-  // OneSignal.isPushNotificationsEnabled(function(isEnabled) {
-  //   if (isEnabled)
-  //     console.log("Push notifications are enabled!");
-  //   else
-  //     console.log("Push notifications are not enabled yet.");
-  // });
   OneSignal.getUserId().then((userId)=> {
     console.log('OneSignal User ID:', userId);
     context.store.dispatch('notification/addNotificationDevice', userId);
-    // notification.dispatch('notification/addNotificationDevice', userId);
-    //   try {
-    //     response = await this.$axios.$post(
-    //       `/notification/register`,
-    //       {
-    //         headers: {
-    //           user: "14",
-    //         },
-    //       },
-    //       {
-    //         data: {
-    //           subscriptionId: userId,
-    //           subscriberId: this.$store.state.user.userId,
-    //           provider: "OneSignal",
-    //           platform: "Web"
-    //         },
-    //       }
-    //     );
-    //   } catch (e) {
-    //   console.log("error", e)
-    // }
-    // axios.post(`/notification/register`, {
-    //   headers: {
-    //     user: userId,
-    //   },
-    // },
-    //   {
-    //             data: {
-    //               subscriptionId: userId,
-    //               subscriberId: this.$store.state.user.userId,
-    //               provider: "OneSignal",
-    //               platform: "Web"
-    //             },
-    //           }
-    // )
-    // .then((response) => {
-    //   // console.log(
-    //   //   'CHILD TASKS ARE RETRIEVED SUCCESSFULLY-->',
-    //   //   response.data.data
-    //   // );
-    // })
-    // .catch((e) => {
-    //   console.log('error retrieving children', e);
-    // });
   });
   OneSignal.init({
     appId: 'fe6df906-c5cf-4c5e-bc1f-21003be4b2d5',

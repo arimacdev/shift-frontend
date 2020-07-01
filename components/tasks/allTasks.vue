@@ -929,13 +929,12 @@ export default {
     websocketConnectInit(taskId){
       console.log("initalize websocket connection for task", taskId);
       const url =  this.baseUrl + "/api/pm-service"
-      //const url = "https://pmtool.devops.arimac.xyz/api/pm-service"
        try {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
         console.log("connecting to ws...");
         let socket = new SockJS(url + "/chat");
         //this.stompClient = Stomp.over(socket);
         this.stomp = Stomp.over(socket);       
-       //this.$store.dispatch("stompClient/setStompClient", taskId);
+       this.$store.dispatch("stompClient/setStompClient", this.stomp);
         //let client = this.stompClient;
         this.stomp.connect({}, (frame) => {
           console.log("connected to: " + frame);
