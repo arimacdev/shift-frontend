@@ -177,7 +177,7 @@
         />
         <!-- <v-progress-linear color="red lighten-2" buffer-value="0" stream></v-progress-linear> -->
       </div>
-      <div class="typingProgress">Someone is typing a comment ...</div>
+      <div class="typingProgress">{{this.typingUser}} is typing a comment ...</div>
     </div>
     <br />
     <h4></h4>
@@ -582,13 +582,13 @@ export default {
     },
 
     sendTypingMessage(taskId, sender, event) {
-      console.log("sending message", this.stomp);
+      console.log("typing message", this.stomp);
       this.stomp.send(
         "/app/chat/" + taskId,
         {},
         JSON.stringify({
           sender: sender,
-          message: sender + "is typing",
+          message: this.ownUser.firstName + " " + this.ownUser.lastName ,
           actionType: event
         })
       );
@@ -659,7 +659,9 @@ export default {
       allCommentsLength: state => state.comments.allCommentsLength,
       ownUser: state => state.user.ownUser,
       taskComments: state => state.comments.activityComment,
-      typingStatus: state => state.stompClient.typingStatus
+      typingStatus: state => state.stompClient.typingStatus,
+      typingUser: state => state.stompClient.typingUser,
+      selectedUser: state => state.user.selectedUser
     })
   },
   data: function() {
