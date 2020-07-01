@@ -776,6 +776,7 @@ export default {
       height: 400,
       placeholder: 'Add a new comment',
       quickToolbarSettings: {
+        link: [],
         image: [
           // 'Replace',
           // 'Align',
