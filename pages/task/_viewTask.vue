@@ -1010,7 +1010,7 @@ export default {
         endIndex: 10
       });
 
-       this.$store.dispatch("comments/fetchTaskCommentLength",task.taskId);
+       this.$store.dispatch("comments/fetchTaskCommentLength",this.$route.params.viewTask);
     if (this.task.isParent) {
       // console.log("parent task");
       this.$store.dispatch("task/fetchChildren", {
