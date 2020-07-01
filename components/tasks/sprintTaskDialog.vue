@@ -997,7 +997,6 @@ export default {
       commentPage: 1,
       uploader: true,
       overlay: false,
-      maxdate: '2020-05-11 12:17',
       taskId: '',
       projectId: '',
       taskDeleteDialog: false,

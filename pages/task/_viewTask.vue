@@ -1014,13 +1014,11 @@ export default {
 
        this.$store.dispatch("comments/fetchTaskCommentLength",this.$route.params.viewTask);
     if (this.task.isParent) {
-      // console.log("parent task");
       this.$store.dispatch("task/fetchChildren", {
         projectId: this.$route.query.project,
         taskId: this.$route.params.viewTask
       });
     } else {
-      // console.log("child task");
       this.$store.dispatch("task/fetchParentTask", {
         projectId: this.$route.query.project,
         taskId: this.task.parentId

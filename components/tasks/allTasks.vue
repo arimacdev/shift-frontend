@@ -940,7 +940,7 @@ export default {
           console.log("connected to: " + frame);
           console.log("subscribing to topic: " + "/topic/messages/" + taskId);
           this.stomp.subscribe("/topic/messages/" + taskId, (response) => {
-            console.log("Response", response);
+            // console.log("Response", response);
             let data = JSON.parse(response.body);
               console.log("outside----->")
             if(data.actionType === 'comment'){
