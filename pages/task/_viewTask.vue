@@ -774,14 +774,43 @@
       </div>
     </div>
 
-    <div class="RestTaskLogDiv">
+    <!-- <div class="RestTaskLogDiv">
       <div class="RestTaskLogTitle">
         <v-list-item-content>
           <v-list-item-title class="font-weight-medium">Task Log</v-list-item-title>
         </v-list-item-content>
       </div>
       <task-logs :page="page" />
-    </div>
+    </div> -->
+    <v-tabs height="40px" style="padding-left: 20px" slider-size="3" v-model="selectedTab">
+        <v-tab
+          class="text-capitalize activityInactiveTabs"
+          key="comments"
+          v-on:click="activity = 'comments'"
+        >Comments</v-tab>
+        <v-tab
+          class="text-capitalize activityInactiveTabs"
+          key="logs"
+          v-on:click="activity = 'logs'"
+        >Logs</v-tab>
+      </v-tabs>
+
+      <div class="RestTaskLogDiv">
+        <!-- <div class="RestTaskLogTitle">
+          <v-list-item-content>
+            <v-list-item-title class="font-weight-medium">Task Log</v-list-item-title>
+          </v-list-item-content>
+        </div>-->
+
+        <task-logs v-if="this.activity == 'logs'" :pageNum="page" :page="page" />
+        <task-comments
+          v-if="this.activity == 'comments'"
+          :stomp="this.stomp"
+          :commentPage="commentPage"
+        />
+        <div></div>
+      </div>
+
     <div @click="close" class="taskPopupPopups">
       <component
         v-bind:is="component"
@@ -802,6 +831,7 @@ import NavigationDrawer from "~/components/navigationDrawer";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import TaskLogs from "~/components/tasks/taskLogs";
+import TaskComments from "~/components/tasks/taskComments";
 
 export default {
   components: {
@@ -810,7 +840,8 @@ export default {
     "error-popup": ErrorPopup,
     "add-parent-task": AddParentTask,
     "add-child-task": AddChildTask,
-    "task-logs": TaskLogs
+    "task-logs": TaskLogs,
+    "task-comments": TaskComments
   },
   data() {
     return {
@@ -820,7 +851,7 @@ export default {
       projectId: "",
       userId: "",
       sprints: [],
-
+      activity: "comments",
       assignees: [],
       editTask: true,
       // parentTask: {},
