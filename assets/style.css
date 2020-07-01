@@ -15,12 +15,13 @@
 @import '../node_modules/@syncfusion/ej2-vue-richtexteditor/styles/material.css';
 
 @import './icons.css'; /* -------------- common --------------- */
-/* * {
-  font-family: CircularStd;
+* {
+  font-family: 'Roboto', sans-serif !important;
 }
+
 .body-2 {
-  font-family: CircularStd !important;
-} */
+  font-family: 'Roboto', sans-serif !important;
+}
 .listView {
   margin-top: 10px;
   height: 80vh;
@@ -3007,7 +3008,7 @@
 .typingProgress {
   float: left;
   margin-left: 40px;
-  color: #a7a2a2;
+  color: #666464;
   font-size: 14px;
 }
 .loadingProgress {
