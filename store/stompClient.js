@@ -3,7 +3,8 @@ import SockJS from "sockjs-client";
 
 export const state = () => ({
     client: null,
-    typingStatus: false
+    typingStatus: false,
+    typingUser : ""
   });
 
   export const mutations = {
@@ -14,6 +15,9 @@ export const state = () => ({
     SET_TYPING_STATUS(state, status) {
       state.typingStatus = status
   },
+  SET_TYPING_USER(state, typingUser) {
+    state.typingUser = typingUser
+},
   };
 
 
@@ -29,5 +33,8 @@ export const actions = {
     setTypingStatus({ commit }, status) {          
         commit('SET_TYPING_STATUS',status)     
   },
+  setTypingUser({ commit }, typingUser) {          
+    commit('SET_TYPING_USER',typingUser)     
+},
 };
   
