@@ -802,6 +802,7 @@ export default {
           // 'FontSize',
           // 'FontColor',
           // 'BackgroundColor',
+          '|',
           'LowerCase',
           'UpperCase',
           '|',
