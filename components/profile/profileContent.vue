@@ -118,17 +118,17 @@
               outlined
               depressed
               class="text-capitalize oneSignalBtn"
-              v-if="this.checkActivationStatus()"
+              v-show="getstatus"
               @click="activateOneSignal()"
             >Activate</v-btn>
-            <v-btn
+            <!-- <v-btn
               color="teal"
               outlined
               depressed
               class="text-capitalize oneSignalBtn"
               v-else
               @click="deactivateOneSignal()"
-            >Deactivate</v-btn>
+            >Deactivate</v-btn> -->
           </div>
         </v-card>
 
@@ -376,6 +376,7 @@ export default {
         value => !!value || "E-mail is required",
         value => /.+@.+\..+/.test(value) || "E-mail must be valid"
       ],
+      getstatus : false,
       disableButton: true,
       switch1: true,
       switch2: false,
@@ -418,7 +419,9 @@ export default {
     })
   },
 
-  async created() {
+  created() {
+    console.log("CREATED");
+    this.checkActivationStatus();
     // const authCode = this.$route.query.code;
     // // console.log("SLACK CODE", authCode);
     // if (authCode !== undefined) {
@@ -529,24 +532,30 @@ export default {
     },
     checkActivationStatus(){
       console.log("check")
-     // return true;
-      // if(process.browser){
+      // setTimeout(() => {
+      //     console.log("timeout");
+
+      //      this.getstatus = true;
+      //     return true;
+      //   }, 5000);
+      if(process.browser){
       console.log("browser")
 
-      window.OneSignal.isPushNotificationsEnabled(function(isEnabled) {
+      window.OneSignal.isPushNotificationsEnabled((isEnabled) => {
         if (isEnabled){
           console.log("false")
           console.log("Push notifications are enabled!");
-          return false;
+         // return false;
+         this.getstatus = false;
         }
         else {
           console.log("true")
-
+          this.getstatus = true;
           console.log("Push notifications are not enabled yet.");
-          return true;
+          //return true;
         }
       });
-      // }
+      }
     },
     activateOneSignal(){
       console.log("activate")
