@@ -638,6 +638,10 @@ export default {
             );
             this.$store.dispatch('user/setSelectedTaskUser', task.taskAssignee);
             this.$store.dispatch('user/fetchOwnUser', this.userId);
+            this.$store.dispatch(
+              'comments/fetchTaskCommentLength',
+              task.taskId
+            );
             // console.log("subtasks--->", subTaskResponse.data);
             this.subTasks = subTaskResponse.data;
             //get files related to task
