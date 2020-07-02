@@ -605,13 +605,13 @@
       </div>
     </div>
 
-    <div class="RestTaskLogDiv">
+    <!-- <div class="RestTaskLogDiv">
       <div class="RestTaskLogTitle">
         <v-list-item-content>
           <v-list-item-title class="font-weight-medium">Task Log</v-list-item-title>
         </v-list-item-content>
       </div>
-    </div>
+    </div>-->
 
     <!-- --------------------- delete task popup --------------- -->
 
