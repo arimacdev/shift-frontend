@@ -752,10 +752,10 @@ export default {
     },
     taskDialogClosing() {
       console.log("Task Dialog Closing");
-      if(this.stomp !== null){
-      this.stomp.disconnect(()=> {
-        console.log("client disconnected");
-      });
+      if (this.stomp !== null) {
+        this.stomp.disconnect(() => {
+          console.log("client disconnected");
+        });
       }
       this.taskDialog = false;
     },
@@ -926,34 +926,40 @@ export default {
     taskFilterHandler() {
       // console.log("-----------> changed" + this.taskSelect);
     },
-    websocketConnectInit(taskId){
+    websocketConnectInit(taskId) {
       console.log("initalize websocket connection for task", taskId);
-      const url =  this.baseUrl + "/api/pm-service"
-       try {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+      const url = this.baseUrl + "/api/pm-service";
+      try {
         console.log("connecting to ws...");
         let socket = new SockJS(url + "/chat");
         //this.stompClient = Stomp.over(socket);
-        this.stomp = Stomp.over(socket);       
-       //this.$store.dispatch("stompClient/setStompClient", "this.stomp");
+        this.stomp = Stomp.over(socket);
+        //this.$store.dispatch("stompClient/setStompClient", "this.stomp");
         //let client = this.stompClient;
-        this.stomp.connect({}, (frame) => {
+        this.stomp.connect({}, frame => {
           console.log("connected to: " + frame);
           console.log("subscribing to topic: " + "/topic/messages/" + taskId);
-          this.stomp.subscribe("/topic/messages/" + taskId, (response) => {
+          this.stomp.subscribe("/topic/messages/" + taskId, response => {
             // console.log("Response", response);
             let data = JSON.parse(response.body);
-              console.log("outside----->")
-            if(data.actionType === 'comment'){
-              console.log("inside----->")
+            console.log("outside----->");
+            if (data.actionType === "comment") {
+              console.log("inside----->");
               this.$store.dispatch("comments/fetchTaskActivityComment", {
-                  taskId: this.selectedTask.taskId,
-                  startIndex: 0,
-                  endIndex: 200
-                });
-            } else if(data.actionType === 'typing' && data.sender !== this.userId){
+                taskId: this.selectedTask.taskId,
+                startIndex: 0,
+                endIndex: 200
+              });
+            } else if (
+              data.actionType === "typing" &&
+              data.sender !== this.userId
+            ) {
               this.$store.dispatch("stompClient/setTypingStatus", true);
               this.$store.dispatch("stompClient/setTypingUser", data.message);
-            } else if(data.actionType === 'notTyping' && data.sender !== this.userId){
+            } else if (
+              data.actionType === "notTyping" &&
+              data.sender !== this.userId
+            ) {
               this.$store.dispatch("stompClient/setTypingStatus", false);
             }
           });
@@ -963,7 +969,7 @@ export default {
       }
     },
     async selectTask(task, taskObject) {
-      console.log("select________>")
+      console.log("select________>");
       this.websocketConnectInit(task.taskId);
       this.task = task;
       this.$store.dispatch("task/setSelectedTask", task);
@@ -1016,7 +1022,7 @@ export default {
         endIndex: 10
       });
 
-       this.$store.dispatch("comments/fetchTaskCommentLength",task.taskId);
+      this.$store.dispatch("comments/fetchTaskCommentLength", task.taskId);
 
       this.$store.dispatch("user/fetchOwnUser", this.userId);
 
@@ -1096,14 +1102,14 @@ export default {
         return "Today";
       } else if (
         now.getDate() - 1 === dueToUtcDate.getDate() &&
-        now.getMonth() - 1 === dueToUtcDate.getMonth() &&
-        now.getFullYear() - 1 === dueToUtcDate.getFullYear()
+        now.getMonth() === dueToUtcDate.getMonth() &&
+        now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
         return "Yesterday";
       } else if (
         now.getDate() + 1 === dueToUtcDate.getDate() &&
-        now.getMonth() + 1 === dueToUtcDate.getMonth() &&
-        now.getFullYear() + 1 === dueToUtcDate.getFullYear()
+        now.getMonth() === dueToUtcDate.getMonth() &&
+        now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
         return "Tomorrow";
       } else {
@@ -1122,8 +1128,8 @@ export default {
       people: state => state.task.userCompletionTasks,
       projectAllTasks: state => state.task.allTasks,
       // projectId: state => state.project.project.projectId,
-      selectedTask: state => state.task.selectedTask,
-     // stompClient: state => state.stompClient.stompClient
+      selectedTask: state => state.task.selectedTask
+      // stompClient: state => state.stompClient.stompClient
     }),
     assigneeArray() {
       let AssigneeSearchList = this.people;

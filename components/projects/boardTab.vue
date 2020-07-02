@@ -25,24 +25,23 @@
                     v-if="task.parentTask.taskStatus == 'closed'"
                     size="25"
                     color="#2EC973"
-                    >mdi-checkbox-marked-circle</v-icon
-                  >
-                  <v-icon v-else size="25" color="#EDF0F5"
-                    >mdi-checkbox-blank-circle</v-icon
-                  >
+                  >mdi-checkbox-marked-circle</v-icon>
+                  <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                   <br />
-                  <div style="font-size: 10px; font-weight: bold">
-                    {{ task.parentTask.secondaryTaskId }}
-                  </div>
+                  <div
+                    style="font-size: 10px; font-weight: bold"
+                  >{{ task.parentTask.secondaryTaskId }}</div>
                 </div>
               </v-list-item-action>
               <v-list-item-content>
-                <v-list-item-title>{{
+                <v-list-item-title>
+                  {{
                   task.parentTask.taskName
-                }}</v-list-item-title>
-                <div :class="dueDateCheck(task.parentTask)">
-                  {{ getProjectDates(task.parentTask.taskDueDateAt) }}
-                </div>
+                  }}
+                </v-list-item-title>
+                <div
+                  :class="dueDateCheck(task.parentTask)"
+                >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</div>
               </v-list-item-content>
               <v-list-item-avatar size="25">
                 <v-img
@@ -101,23 +100,16 @@
                     v-if="childTask.taskStatus == 'closed'"
                     size="25"
                     color="#2EC973"
-                    >mdi-checkbox-marked-circle</v-icon
-                  >
-                  <v-icon v-else size="25" color="#EDF0F5"
-                    >mdi-checkbox-blank-circle</v-icon
-                  >
+                  >mdi-checkbox-marked-circle</v-icon>
+                  <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                   <br />
-                  <div style="font-size: 10px; font-weight: bold">
-                    {{ childTask.secondaryTaskId }}
-                  </div>
+                  <div style="font-size: 10px; font-weight: bold">{{ childTask.secondaryTaskId }}</div>
                 </div>
               </v-list-item-action>
 
               <v-list-item-content>
                 <v-list-item-title>{{ childTask.taskName }}</v-list-item-title>
-                <div :class="dueDateCheck(childTask)">
-                  {{ getProjectDates(childTask.taskDueDateAt) }}
-                </div>
+                <div :class="dueDateCheck(childTask)">{{ getProjectDates(childTask.taskDueDateAt) }}</div>
               </v-list-item-content>
               <v-list-item-avatar size="25">
                 <v-img
@@ -149,11 +141,7 @@
     <div class>
       <div class="boardBodyDiv">
         <div class="scrolling-wrapper">
-          <div
-            class="card"
-            v-for="(projectSprint, index) in projectSprints"
-            :key="index"
-          >
+          <div class="card" v-for="(projectSprint, index) in projectSprints" :key="index">
             <div class="actualBoard" v-if="projectSprint.sprintId != 'default'">
               <div class="sprintTitle">
                 <div class="sprintUpdateButton">
@@ -172,12 +160,12 @@
                   </v-tooltip>
                 </div>
                 <div class="sprintTitleName">
-                  <v-list-item-title>
-                    {{ projectSprint.sprintName }}
-                  </v-list-item-title>
-                  <v-list-item-subtitle>{{
+                  <v-list-item-title>{{ projectSprint.sprintName }}</v-list-item-title>
+                  <v-list-item-subtitle>
+                    {{
                     projectSprint.sprintDescription
-                  }}</v-list-item-subtitle>
+                    }}
+                  </v-list-item-subtitle>
                 </div>
               </div>
 
@@ -213,25 +201,24 @@
                             v-if="task.parentTask.taskStatus == 'closed'"
                             size="25"
                             color="#2EC973"
-                            >mdi-checkbox-marked-circle</v-icon
-                          >
-                          <v-icon v-else size="25" color="#EDF0F5"
-                            >mdi-checkbox-blank-circle</v-icon
-                          >
+                          >mdi-checkbox-marked-circle</v-icon>
+                          <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                           <br />
-                          <div style="font-size: 10px; font-weight: bold">
-                            {{ task.parentTask.secondaryTaskId }}
-                          </div>
+                          <div
+                            style="font-size: 10px; font-weight: bold"
+                          >{{ task.parentTask.secondaryTaskId }}</div>
                         </div>
                       </v-list-item-action>
 
                       <v-list-item-content>
-                        <v-list-item-title>{{
+                        <v-list-item-title>
+                          {{
                           task.parentTask.taskName
-                        }}</v-list-item-title>
-                        <div :class="dueDateCheck(task.parentTask)">
-                          {{ getProjectDates(task.parentTask.taskDueDateAt) }}
-                        </div>
+                          }}
+                        </v-list-item-title>
+                        <div
+                          :class="dueDateCheck(task.parentTask)"
+                        >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</div>
                       </v-list-item-content>
                       <v-list-item-avatar size="25">
                         <v-img
@@ -257,19 +244,14 @@
                           style="text-decoration: none;"
                           target="_blank"
                         >
-                          <v-icon size="15" color="blue"
-                            >mdi-link-variant</v-icon
-                          >
+                          <v-icon size="15" color="blue">mdi-link-variant</v-icon>
                         </nuxt-link>
                       </div>
                       <div class="bluePart"></div>
                     </v-list-item>
                   </div>
                   <!-- -------- load child tasks (project boards) ------------ -->
-                  <div
-                    v-for="(childTask, index) in task.childTasks"
-                    :key="index"
-                  >
+                  <div v-for="(childTask, index) in task.childTasks" :key="index">
                     <v-list-item
                       v-if="childTask.sprintId == projectSprint.sprintId"
                       class="boardTaskListItem"
@@ -297,25 +279,24 @@
                             v-if="childTask.taskStatus == 'closed'"
                             size="25"
                             color="#2EC973"
-                            >mdi-checkbox-marked-circle</v-icon
-                          >
-                          <v-icon v-else size="25" color="#EDF0F5"
-                            >mdi-checkbox-blank-circle</v-icon
-                          >
+                          >mdi-checkbox-marked-circle</v-icon>
+                          <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                           <br />
-                          <div style="font-size: 10px; font-weight: bold">
-                            {{ childTask.secondaryTaskId }}
-                          </div>
+                          <div
+                            style="font-size: 10px; font-weight: bold"
+                          >{{ childTask.secondaryTaskId }}</div>
                         </div>
                       </v-list-item-action>
 
                       <v-list-item-content>
-                        <v-list-item-title>{{
+                        <v-list-item-title>
+                          {{
                           childTask.taskName
-                        }}</v-list-item-title>
-                        <div :class="dueDateCheck(childTask)">
-                          {{ getProjectDates(childTask.taskDueDateAt) }}
-                        </div>
+                          }}
+                        </v-list-item-title>
+                        <div
+                          :class="dueDateCheck(childTask)"
+                        >{{ getProjectDates(childTask.taskDueDateAt) }}</div>
                       </v-list-item-content>
                       <v-list-item-avatar size="25">
                         <v-img
@@ -341,9 +322,7 @@
                           style="text-decoration: none;"
                           target="_blank"
                         >
-                          <v-icon size="15" color="blue"
-                            >mdi-link-variant</v-icon
-                          >
+                          <v-icon size="15" color="blue">mdi-link-variant</v-icon>
                         </nuxt-link>
                       </div>
                     </v-list-item>
@@ -383,12 +362,7 @@
     </v-navigation-drawer>-->
     <!-- ------------ task dialog --------- -->
 
-    <v-dialog
-      persistent
-      v-model="taskDialog"
-      width="90vw"
-      transition="dialog-bottom-transition"
-    >
+    <v-dialog persistent v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
       <task-dialog
         :task="task"
         :stomp="stomp"
@@ -404,12 +378,7 @@
     <v-dialog v-model="taskDeleteDialog" max-width="380">
       <v-card>
         <div class="popupConfirmHeadline">
-          <v-icon
-            class="deletePopupIcon"
-            size="60"
-            color="deep-orange lighten-1"
-            >mdi-alert-outline</v-icon
-          >
+          <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
           <br />
           <span class="alertPopupTitle">Delete Task</span>
           <br />
@@ -424,12 +393,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn
-              color="success"
-              width="100px"
-              @click="taskDeleteDialog = false"
-              >Cancel</v-btn
-            >
+            <v-btn color="success" width="100px" @click="taskDeleteDialog = false">Cancel</v-btn>
             <v-spacer></v-spacer>
             <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
             <v-btn
@@ -440,8 +404,7 @@
                 taskDialog = false;
                 deleteTask();
               "
-              >Delete</v-btn
-            >
+            >Delete</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
         </div>
@@ -457,32 +420,32 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 // import TaskSideBar from "~/components/tasks/taskSideBar";
-import AddSprint from '~/components/projects/addSprint';
-import UpdateSprint from '~/components/projects/updateSprint';
-import TaskDialog from '~/components/tasks/sprintTaskDialog';
-import SuccessPopup from '~/components/popups/successPopup';
-import ErrorPopup from '~/components/popups/errorPopup';
-import Stomp from 'stompjs';
-import SockJS from 'sockjs-client';
+import AddSprint from "~/components/projects/addSprint";
+import UpdateSprint from "~/components/projects/updateSprint";
+import TaskDialog from "~/components/tasks/sprintTaskDialog";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
+import Stomp from "stompjs";
+import SockJS from "sockjs-client";
 export default {
   components: {
     // "task-side-bar": TaskSideBar,
-    'add-sprint': AddSprint,
-    'task-dialog': TaskDialog,
-    'success-popup': SuccessPopup,
-    'error-popup': ErrorPopup,
-    'update-sprint': UpdateSprint,
+    "add-sprint": AddSprint,
+    "task-dialog": TaskDialog,
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup,
+    "update-sprint": UpdateSprint
   },
   data() {
     return {
       stomp: null,
       componentClose: null,
-      projectId: '',
-      errorMessage: '',
-      successMessage: '',
-      component: '',
+      projectId: "",
+      errorMessage: "",
+      successMessage: "",
+      component: "",
       drawer: null,
       taskObject: {},
       taskDialog: false,
@@ -493,7 +456,7 @@ export default {
       assignee: {},
       userId: this.$store.state.user.userId,
       taskSelect: null,
-      baseUrl: process.env.SYSTEM_URL,
+      baseUrl: process.env.SYSTEM_URL
     };
   },
   async created() {
@@ -501,26 +464,26 @@ export default {
   },
   computed: {
     ...mapState({
-      projectAllTasks: (state) => state.task.allTasks,
-      projectSprints: (state) => state.sprints.sprint.sprints,
+      projectAllTasks: state => state.task.allTasks,
+      projectSprints: state => state.sprints.sprint.sprints,
       // projectId: state => state.project.project.projectId,
-      selectedTask: (state) => state.task.selectedTask,
+      selectedTask: state => state.task.selectedTask
       // people: (state) => state.
-    }),
+    })
   },
   methods: {
     taskDialogClosing() {
       // console.log("Task Dialog Closing");
       if (this.stomp !== null) {
         this.stomp.disconnect(() => {
-          console.log('client disconnected');
+          console.log("client disconnected");
         });
       }
       this.taskDialog = false;
     },
     // ------- popup close ----------
     close() {
-      this.component = '';
+      this.component = "";
     },
     async deleteTask() {
       let response;
@@ -531,71 +494,71 @@ export default {
             data: {},
             headers: {
               user: this.userId,
-              type: 'project',
-            },
+              type: "project"
+            }
           }
         );
         // this.component = 'success-popup'
-        this.$emit('listenChange');
-        this.$emit('shrinkSideBar');
+        this.$emit("listenChange");
+        this.$emit("shrinkSideBar");
 
         console.log(response.data);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error creating project', e);
+        console.log("Error creating project", e);
       }
     },
     listenChange() {
-      this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
+      this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
     },
     shrinkSideBar() {
       this.drawer = false;
     },
     websocketConnectInit(taskId) {
-      console.log('initalize websocket connection for task', taskId);
-      const url = this.baseUrl + '/api/pm-service';
+      console.log("initalize websocket connection for task", taskId);
+      const url = this.baseUrl + "/api/pm-service";
       //const url = "https://pmtool.devops.arimac.xyz/api/pm-service"
       try {
-        console.log('connecting to ws...');
-        let socket = new SockJS(url + '/chat');
+        console.log("connecting to ws...");
+        let socket = new SockJS(url + "/chat");
         //this.stompClient = Stomp.over(socket);
         this.stomp = Stomp.over(socket);
         //this.$store.dispatch("stompClient/setStompClient", taskId);
         //let client = this.stompClient;
-        this.stomp.connect({}, (frame) => {
-          console.log('connected to: ' + frame);
-          console.log('subscribing to topic: ' + '/topic/messages/' + taskId);
-          this.stomp.subscribe('/topic/messages/' + taskId, (response) => {
-            console.log('Response', response);
+        this.stomp.connect({}, frame => {
+          console.log("connected to: " + frame);
+          console.log("subscribing to topic: " + "/topic/messages/" + taskId);
+          this.stomp.subscribe("/topic/messages/" + taskId, response => {
+            console.log("Response", response);
             let data = JSON.parse(response.body);
-            console.log('outside----->');
-            if (data.actionType === 'comment') {
-              console.log('inside----->');
-              this.$store.dispatch('comments/fetchTaskActivityComment', {
+            console.log("outside----->");
+            if (data.actionType === "comment") {
+              console.log("inside----->");
+              this.$store.dispatch("comments/fetchTaskActivityComment", {
                 taskId: this.selectedTask.taskId,
                 startIndex: 0,
-                endIndex: 200,
+                endIndex: 200
               });
             } else if (
-              data.actionType === 'typing' &&
+              data.actionType === "typing" &&
               data.sender !== this.userId
             ) {
-              this.$store.dispatch('stompClient/setTypingStatus', true);
-              this.$store.dispatch('stompClient/setTypingUser', data.message);
+              this.$store.dispatch("stompClient/setTypingStatus", true);
+              this.$store.dispatch("stompClient/setTypingUser", data.message);
             } else if (
-              data.actionType === 'notTyping' &&
+              data.actionType === "notTyping" &&
               data.sender !== this.userId
             ) {
-              this.$store.dispatch('stompClient/setTypingStatus', false);
+              this.$store.dispatch("stompClient/setTypingStatus", false);
             }
           });
         });
       } catch (error) {
-        console.log('Error fetching data', error);
+        console.log("Error fetching data", error);
       }
     },
     async selectTask(task, taskObject) {
@@ -604,25 +567,25 @@ export default {
       // console.log("selectedTask sprint", task.sprintId);
       //  if(task.sprintId !== "default")
       this.task = task;
-      this.$store.dispatch('task/setSelectedTask', task);
+      this.$store.dispatch("task/setSelectedTask", task);
       // console.log("selectedTask", task);
 
-      this.$store.dispatch('user/setSelectedTaskUser', task.taskAssignee);
+      this.$store.dispatch("user/setSelectedTaskUser", task.taskAssignee);
       if (this.task.isParent) {
         // console.log("parent task");
-        this.$store.dispatch('task/fetchChildren', {
+        this.$store.dispatch("task/fetchChildren", {
           projectId: this.projectId,
-          taskId: this.task.taskId,
+          taskId: this.task.taskId
         });
       } else {
-        this.$store.dispatch('task/fetchParentTask', {
+        this.$store.dispatch("task/fetchParentTask", {
           projectId: this.projectId,
-          taskId: this.task.parentId,
+          taskId: this.task.parentId
         });
       }
       this.$axios
         .get(`/users/${this.task.taskAssignee}`)
-        .then(async (response) => {
+        .then(async response => {
           // console.log("fetched task -->", response.data.data);
           this.assignee = response.data.data;
           //if task fetch is successful,
@@ -632,14 +595,14 @@ export default {
               `/projects/${this.projectId}/tasks/${task.taskId}/subtask?userId=${this.userId}`,
               {
                 headers: {
-                  type: 'project',
-                },
+                  type: "project"
+                }
               }
             );
-            this.$store.dispatch('user/setSelectedTaskUser', task.taskAssignee);
-            this.$store.dispatch('user/fetchOwnUser', this.userId);
+            this.$store.dispatch("user/setSelectedTaskUser", task.taskAssignee);
+            this.$store.dispatch("user/fetchOwnUser", this.userId);
             this.$store.dispatch(
-              'comments/fetchTaskCommentLength',
+              "comments/fetchTaskCommentLength",
               task.taskId
             );
             // console.log("subtasks--->", subTaskResponse.data);
@@ -652,87 +615,87 @@ export default {
                 {
                   headers: {
                     user: this.userId,
-                    type: 'project',
-                  },
+                    type: "project"
+                  }
                 }
               );
               // console.log("files--->", taskFilesResponse.data);
               this.taskFiles = taskFilesResponse.data;
             } catch (error) {
-              console.log('Error fetching data', error);
+              console.log("Error fetching data", error);
             }
           } catch (error) {
-            console.log('Error fetching data', error);
+            console.log("Error fetching data", error);
           }
         })
-        .catch((e) => {
-          console.log('error', e);
+        .catch(e => {
+          console.log("error", e);
         });
 
-      this.$store.dispatch('activityLog/fetchTaskActivityLog', {
+      this.$store.dispatch("activityLog/fetchTaskActivityLog", {
         taskId: task.taskId,
         startIndex: 0,
-        endIndex: 10,
+        endIndex: 10
       });
     },
     dueDateCheck(task) {
       // console.log("check due date color", task);
-      if (task.taskStatus === 'closed') {
-        return 'boardTaskDone';
+      if (task.taskStatus === "closed") {
+        return "boardTaskDone";
       } else if (task.taskDueDateAt == null) {
-        return 'boardTaskDefault';
+        return "boardTaskDefault";
       } else {
         const dueDate = new Date(task.taskDueDateAt);
         const dueToUtc = new Date(
-          dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
+          dueDate.toLocaleString("en-US", { timeZone: "UTC" })
         );
         const dueToUtcDate = new Date(dueToUtc);
         const now = new Date();
         // console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
         if (now.getTime() > dueToUtcDate.getTime()) {
           // console.log("overdue");
-          return 'boardTaskOverDue';
+          return "boardTaskOverDue";
         } else {
-          return 'boardTaskHealthy';
+          return "boardTaskHealthy";
         }
       }
     },
     getProjectDates(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
+        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
       );
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
-      if (date === null || date === '1970-01-01T05:30:00.000+0000') {
-        return 'Add Due Date';
+      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
+        return "Add Due Date";
       } else if (
         now.getDate() === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
         now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
-        return 'Today';
+        return "Today";
       } else if (
         now.getDate() - 1 === dueToUtcDate.getDate() &&
-        now.getMonth() - 1 === dueToUtcDate.getMonth() &&
-        now.getFullYear() - 1 === dueToUtcDate.getFullYear()
+        now.getMonth() === dueToUtcDate.getMonth() &&
+        now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
-        return 'Yesterday';
+        return "Yesterday";
       } else if (
         now.getDate() + 1 === dueToUtcDate.getDate() &&
-        now.getMonth() + 1 === dueToUtcDate.getMonth() &&
-        now.getFullYear() + 1 === dueToUtcDate.getFullYear()
+        now.getMonth() === dueToUtcDate.getMonth() &&
+        now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
-        return 'Tomorrow';
+        return "Tomorrow";
       } else {
-        let stringDate = date + '';
+        let stringDate = date + "";
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 10);
         return stringDate;
       }
-    },
-  },
+    }
+  }
 };
 </script>
