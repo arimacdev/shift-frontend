@@ -201,7 +201,7 @@
                               this.parentTask.secondaryTaskId
                               }}
                             </v-list-item-action>
-                            <v-list-item-content>
+                            <v-list-item-content style="width: 200px">
                               <v-list-item-title>
                                 {{
                                 this.parentTask.taskName
@@ -291,7 +291,7 @@
                                 child.secondaryTaskId
                                 }}
                               </v-list-item-action>
-                              <v-list-item-content>
+                              <v-list-item-content style="width: 200px">
                                 <v-list-item-title>
                                   {{
                                   child.taskName
@@ -781,35 +781,35 @@
         </v-list-item-content>
       </div>
       <task-logs :page="page" />
-    </div> -->
+    </div>-->
     <v-tabs height="40px" style="padding-left: 20px" slider-size="3" v-model="selectedTab">
-         <v-tab
-          class="text-capitalize activityInactiveTabs"
-          key="comments"          
-          @click="selectedVTab('comments')"
-        >Comments</v-tab>
-        <v-tab
-          class="text-capitalize activityInactiveTabs"
-          key="logs"
-           @click="selectedVTab('logs')"
-        >Logs</v-tab>
-      </v-tabs>
+      <v-tab
+        class="text-capitalize activityInactiveTabs"
+        key="comments"
+        @click="selectedVTab('comments')"
+      >Comments</v-tab>
+      <v-tab
+        class="text-capitalize activityInactiveTabs"
+        key="logs"
+        @click="selectedVTab('logs')"
+      >Logs</v-tab>
+    </v-tabs>
 
-      <div class="RestTaskLogDiv">
-        <!-- <div class="RestTaskLogTitle">
+    <div class="RestTaskLogDiv">
+      <!-- <div class="RestTaskLogTitle">
           <v-list-item-content>
             <v-list-item-title class="font-weight-medium">Task Log</v-list-item-title>
           </v-list-item-content>
-        </div>-->
+      </div>-->
 
-        <task-logs v-if="this.activity == 'logs'" :pageNum="page" :page="page" />
-        <task-comments
-          v-if="this.activity == 'comments'"
-          :stomp="this.stomp"
-          :commentPage="commentPage"
-        />
-        <div></div>
-      </div>
+      <task-logs v-if="this.activity == 'logs'" :pageNum="page" :page="page" />
+      <task-comments
+        v-if="this.activity == 'comments'"
+        :stomp="this.stomp"
+        :commentPage="commentPage"
+      />
+      <div></div>
+    </div>
 
     <div @click="close" class="taskPopupPopups">
       <component
@@ -847,7 +847,7 @@ export default {
   },
   data() {
     return {
-      baseUrl: '',
+      baseUrl: "",
       page: 1,
       commentPage: 1,
       taskDeleteDialog: false,
@@ -1007,12 +1007,15 @@ export default {
       console.log("Error fetching task", e);
     }
     this.$store.dispatch("comments/fetchTaskActivityComment", {
-        taskId: this.$route.params.viewTask,
-        startIndex: 0,
-        endIndex: 10
-      });
+      taskId: this.$route.params.viewTask,
+      startIndex: 0,
+      endIndex: 10
+    });
 
-       this.$store.dispatch("comments/fetchTaskCommentLength",this.$route.params.viewTask);
+    this.$store.dispatch(
+      "comments/fetchTaskCommentLength",
+      this.$route.params.viewTask
+    );
     if (this.task.isParent) {
       this.$store.dispatch("task/fetchChildren", {
         projectId: this.$route.query.project,
@@ -1024,53 +1027,61 @@ export default {
         taskId: this.task.parentId
       });
     }
-      this.$store.dispatch("user/fetchOwnUser", this.$store.state.user.userId);
+    this.$store.dispatch("user/fetchOwnUser", this.$store.state.user.userId);
   },
   methods: {
-      selectedVTab(component){
+    selectedVTab(component) {
       this.activity = component;
-      if(component === "logs"){
-        
+      if (component === "logs") {
       } else {
         this.$store.dispatch("comments/fetchTaskActivityComment", {
-        taskId: this.$route.params.viewTask,
-        startIndex: 0,
-        endIndex: 10
-      });
+          taskId: this.$route.params.viewTask,
+          startIndex: 0,
+          endIndex: 10
+        });
 
-       this.$store.dispatch("comments/fetchTaskCommentLength",this.$route.params.viewTask);
+        this.$store.dispatch(
+          "comments/fetchTaskCommentLength",
+          this.$route.params.viewTask
+        );
       }
     },
-     websocketConnectInit(taskId){
+    websocketConnectInit(taskId) {
       console.log("initalize websocket connection for task", taskId);
-      const url =  this.baseUrl + "/api/pm-service"
+      const url = this.baseUrl + "/api/pm-service";
       // const url =  "http://localhost:8080" + "/api/pm-service"
 
-       try {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+      try {
         console.log("connecting to ws...");
         let socket = new SockJS(url + "/chat");
         //this.stompClient = Stomp.over(socket);
-        this.stomp = Stomp.over(socket);       
-       //this.$store.dispatch("stompClient/setStompClient", "this.stomp");
+        this.stomp = Stomp.over(socket);
+        //this.$store.dispatch("stompClient/setStompClient", "this.stomp");
         //let client = this.stompClient;
-        this.stomp.connect({}, (frame) => {
+        this.stomp.connect({}, frame => {
           console.log("connected to: " + frame);
           console.log("subscribing to topic: " + "/topic/messages/" + taskId);
-          this.stomp.subscribe("/topic/messages/" + taskId, (response) => {
+          this.stomp.subscribe("/topic/messages/" + taskId, response => {
             console.log("Response", response);
             let data = JSON.parse(response.body);
-              console.log("outside----->")
-            if(data.actionType === 'comment'){
-              console.log("inside----->")
+            console.log("outside----->");
+            if (data.actionType === "comment") {
+              console.log("inside----->");
               this.$store.dispatch("comments/fetchTaskActivityComment", {
-                  taskId: this.selectedTask.taskId,
-                  startIndex: 0,
-                  endIndex: 200
-                });
-            } else if(data.actionType === 'typing' && data.sender !== this.userId){
+                taskId: this.selectedTask.taskId,
+                startIndex: 0,
+                endIndex: 200
+              });
+            } else if (
+              data.actionType === "typing" &&
+              data.sender !== this.userId
+            ) {
               this.$store.dispatch("stompClient/setTypingStatus", true);
               this.$store.dispatch("stompClient/setTypingUser", data.message);
-            } else if(data.actionType === 'notTyping' && data.sender !== this.userId){
+            } else if (
+              data.actionType === "notTyping" &&
+              data.sender !== this.userId
+            ) {
               this.$store.dispatch("stompClient/setTypingStatus", false);
             }
           });
@@ -1315,6 +1326,7 @@ export default {
               }
             }
           );
+          this.$store.dispatch("task/setSelectedTask", this.selectedTask);
           this.component = "success-popup";
           this.successMessage = "Name successfully updated";
           setTimeout(() => {
