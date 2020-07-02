@@ -51,7 +51,12 @@
                               "
                               v-on="on"
                             >
-                              <span style="font-size: 14px" v-html="react.reactionId"></span>
+                              <span
+                                v-if="react.reactionId == '&#128154;'"
+                                style="font-size: 14px"
+                                v-html="'❤️'"
+                              ></span>
+                              <span v-else style="font-size: 14px" v-html="react.reactionId"></span>
                               <span>{{ react.respondants.length }}</span>
                             </div>
                           </template>
@@ -98,7 +103,7 @@
                         </div>
                       </template>
                       <div @click="addReact(comment.commentId, '&#128077;')" class="emoji">&#128077;</div>
-                      <div @click="addReact(comment.commentId, '&#128154;')" class="emoji">&#128154;</div>
+                      <div @click="addReact(comment.commentId, '&#128154;')" class="emoji">❤️</div>
                       <div @click="addReact(comment.commentId, '&#128514;')" class="emoji">&#128514;</div>
                       <div @click="addReact(comment.commentId, '&#128545;')" class="emoji">&#128545;</div>
                       <div @click="addReact(comment.commentId, '&#128546;')" class="emoji">&#128546;</div>
