@@ -605,13 +605,13 @@
       </div>
     </div>
 
-    <div class="RestTaskLogDiv">
+    <!-- <div class="RestTaskLogDiv">
       <div class="RestTaskLogTitle">
         <v-list-item-content>
           <v-list-item-title class="font-weight-medium">Task Log</v-list-item-title>
         </v-list-item-content>
       </div>
-    </div>
+    </div>-->
 
     <!-- --------------------- delete task popup --------------- -->
 
@@ -1123,14 +1123,14 @@ export default {
         return "Today";
       } else if (
         now.getDate() - 1 === dueToUtcDate.getDate() &&
-        now.getMonth() - 1 === dueToUtcDate.getMonth() &&
-        now.getFullYear() - 1 === dueToUtcDate.getFullYear()
+        now.getMonth() === dueToUtcDate.getMonth() &&
+        now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
         return "Yesterday";
       } else if (
         now.getDate() + 1 === dueToUtcDate.getDate() &&
-        now.getMonth() + 1 === dueToUtcDate.getMonth() &&
-        now.getFullYear() + 1 === dueToUtcDate.getFullYear()
+        now.getMonth() === dueToUtcDate.getMonth() &&
+        now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
         return "Tomorrow";
       } else {

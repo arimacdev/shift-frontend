@@ -94,14 +94,21 @@ export const mutations = {
     }
     // console.log('selectedtask', selectedTask);
     state.selectedTask = selectedTask;
-    console.log('selectedtask', state.selectedTask);
   },
+  UPDATE_SELECTED_TASK_NAME(state, taskName){
+    state.selectedTask.taskName = taskName
+
+  }
 };
 
 export const actions = {
   setSelectedTask({ commit }, task) {
     // console.log('selected->>>', task);
     commit('SET_SELECTED_TASK', task);
+  },
+  setSelectedTaskName({ commit }, taskName) {
+    // console.log('selected->>>', task);
+    commit('UPDATE_SELECTED_TASK_NAME', taskName);
   },
   async setCurrentTask({ commit, rootState }, { projectId, taskId }) {
     const userId = rootState.user.userId;

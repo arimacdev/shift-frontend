@@ -3001,7 +3001,7 @@
   border-radius: 5px;
 } */
 .fileAttachSection {
-  width: 30px;
+  /* width: 60px !important; */
   float: left;
   margin-left: 20px;
 }

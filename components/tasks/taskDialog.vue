@@ -170,7 +170,7 @@
                               <v-list-item-action
                                 style="font-size: 14px; font-weight: 800; padding-right: 20px"
                               >{{ parent.secondaryTaskId }}</v-list-item-action>
-                              <v-list-item-content>
+                              <v-list-item-content style="width: 200px">
                                 <v-list-item-title>{{ parent.taskName }}</v-list-item-title>
                               </v-list-item-content>
                               <div>
@@ -250,9 +250,11 @@
                                 <v-list-item-action
                                   style="font-size: 14px; font-weight: 800; padding-right: 20px"
                                 >{{ childTask.secondaryTaskId }}</v-list-item-action>
-                                <v-list-item-content>
+
+                                <v-list-item-content style="width: 200px">
                                   <v-list-item-title>{{ childTask.taskName }}</v-list-item-title>
                                 </v-list-item-content>
+
                                 <div>
                                   <v-list-item-action>
                                     <v-list-item-sub-title :class="dueDateCheck(childTask)">
@@ -831,13 +833,13 @@
       <v-tabs height="40px" style="padding-left: 20px" slider-size="3" v-model="selectedTab">
         <v-tab
           class="text-capitalize activityInactiveTabs"
-          key="comments"          
+          key="comments"
           @click="selectedVTab('comments')"
         >Comments</v-tab>
         <v-tab
           class="text-capitalize activityInactiveTabs"
           key="logs"
-           @click="selectedVTab('logs')"
+          @click="selectedVTab('logs')"
         >Logs</v-tab>
       </v-tabs>
 
@@ -1037,18 +1039,20 @@ export default {
     };
   },
   methods: {
-    selectedVTab(component){
+    selectedVTab(component) {
       this.activity = component;
-      if(component === "logs"){
-        
+      if (component === "logs") {
       } else {
         this.$store.dispatch("comments/fetchTaskActivityComment", {
-        taskId: this.selectedTask.taskId,
-        startIndex: 0,
-        endIndex: 10
-      });
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
 
-       this.$store.dispatch("comments/fetchTaskCommentLength",this.selectedTask.taskId);
+        this.$store.dispatch(
+          "comments/fetchTaskCommentLength",
+          this.selectedTask.taskId
+        );
       }
     },
     getUser() {
@@ -1627,14 +1631,14 @@ export default {
         return "Today";
       } else if (
         now.getDate() - 1 === dueToUtcDate.getDate() &&
-        now.getMonth() - 1 === dueToUtcDate.getMonth() &&
-        now.getFullYear() - 1 === dueToUtcDate.getFullYear()
+        now.getMonth() === dueToUtcDate.getMonth() &&
+        now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
         return "Yesterday";
       } else if (
         now.getDate() + 1 === dueToUtcDate.getDate() &&
-        now.getMonth() + 1 === dueToUtcDate.getMonth() &&
-        now.getFullYear() + 1 === dueToUtcDate.getFullYear()
+        now.getMonth() === dueToUtcDate.getMonth() &&
+        now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
         return "Tomorrow";
       } else {
