@@ -473,10 +473,18 @@ export default {
   },
   methods: {
     addEmoji(emoji) {
-      this.textEditor = this.textEditor + emoji.data;
+      if (this.textEditor != null) {
+        this.textEditor = this.textEditor + emoji.data;
+      } else {
+        this.textEditor = emoji.data;
+      }
     },
     updateEmoji(emoji) {
-      this.updatedComment = this.updatedComment + emoji.data;
+      if (this.updatedComment != null) {
+        this.updatedComment = this.updatedComment + emoji.data;
+      } else {
+        this.updatedComment = emoji.data;
+      }
     },
     getComments() {
       this.$store.dispatch(
@@ -529,17 +537,31 @@ export default {
           // this.component = "success-popup";
           // this.successMessage = "Profile successfully updated";
           if (type == 'addComment') {
-            this.textEditor =
-              this.textEditor +
-              "<img src='" +
-              fileResponse.data +
-              "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'>";
+            if (this.textEditor != null) {
+              this.textEditor =
+                this.textEditor +
+                "<img src='" +
+                fileResponse.data +
+                "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'>";
+            } else {
+              this.textEditor =
+                "<img src='" +
+                fileResponse.data +
+                "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'>";
+            }
           } else {
-            this.updatedComment =
-              this.updatedComment +
-              "<img src='" +
-              fileResponse.data +
-              "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'>";
+            if (this.updatedComment != null) {
+              this.updatedComment =
+                this.updatedComment +
+                "<img src='" +
+                fileResponse.data +
+                "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'>";
+            } else {
+              this.updatedComment =
+                "<img src='" +
+                fileResponse.data +
+                "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'>";
+            }
           }
           console.log('File response', fileResponse.data);
           // location.reload();
