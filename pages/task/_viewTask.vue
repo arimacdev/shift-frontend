@@ -1326,7 +1326,7 @@ export default {
               }
             }
           );
-          this.$store.dispatch("task/setSelectedTask", this.selectedTask);
+          this.$store.dispatch("task/setSelectedTaskName", this.updatedTask.taskName);          
           this.component = "success-popup";
           this.successMessage = "Name successfully updated";
           setTimeout(() => {
