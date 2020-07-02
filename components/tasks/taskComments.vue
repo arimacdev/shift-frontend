@@ -35,7 +35,7 @@
                   </v-tooltip>
                   <br />
                   <div class="commentContent" v-html="comment.content"></div>
-
+                  <v-row></v-row>
                   <div class="commentFunctionSection">
                     <div v-if="comment.reactions != ''">
                       <div
@@ -773,7 +773,7 @@ export default {
           "CreateLink",
           // "Image",
           // '|',
-          // 'ClearFormat',
+          "ClearFormat",
           // 'Print',
           "SourceCode",
           // 'FullScreen',
