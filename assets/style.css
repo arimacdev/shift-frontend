@@ -3003,7 +3003,13 @@
 .fileAttachSection {
   /* width: 60px !important; */
   float: left;
-  margin-left: 20px;
+  margin-top: 5px;
+  /* margin-left: 20px; */
+}
+.emojiSection {
+  float: left;
+  padding-top: 10px;
+  /* margin-left: 20px; */
 }
 .typingProgress {
   float: left;

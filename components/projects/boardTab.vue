@@ -541,7 +541,7 @@ export default {
               this.$store.dispatch("comments/fetchTaskActivityComment", {
                 taskId: this.selectedTask.taskId,
                 startIndex: 0,
-                endIndex: 200
+                endIndex: 9
               });
             } else if (
               data.actionType === "typing" &&
