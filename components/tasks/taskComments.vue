@@ -168,8 +168,10 @@
                   <template v-slot:activator="{ on }">
                     <div v-on="on" class="fileAttachSection" style>
                       <v-file-input
+                        solo
+                        flat
+                        hide-details
                         accept="image/png, image/jpeg, image/bmp"
-                        hide-input
                         v-model="files"
                         @change="submit('updateComment')"
                       ></v-file-input>
@@ -257,8 +259,8 @@
                     <v-file-input
                       solo
                       flat
+                      hide-details
                       accept="image/png, image/jpeg, image/bmp"
-                      hide-input
                       v-model="files"
                       @change="submit('addComment')"
                     ></v-file-input>
@@ -387,8 +389,6 @@ export default {
         formData.append("files", this.files);
         formData.append("type", "profileImage");
         formData.append("taskType", "project");
-        this.files = null;
-
         let fileResponse;
         try {
           fileResponse = await this.$axios.$post(
@@ -428,6 +428,7 @@ export default {
         }
       }
       this.files = "";
+      this.files = null;
     },
     close() {
       this.component = "";
@@ -706,7 +707,7 @@ export default {
   },
   data: function() {
     return {
-      file: "",
+      files: null,
       commentPage: this.commentPage,
       updatedComment: "",
       commentEditor: false,
