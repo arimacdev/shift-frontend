@@ -190,7 +190,7 @@
                   </template>
                   <span>Emoji</span>
                 </v-tooltip>
-                <v-tooltip right>
+                <!-- <v-tooltip right>
                   <template v-slot:activator="{ on }">
                     <div v-on="on" class="emojiSection">
                       <v-menu
@@ -244,7 +244,7 @@
                     </div>
                   </template>
                   <span>Mention Someone</span>
-                </v-tooltip>
+                </v-tooltip>-->
                 <v-tooltip right>
                   <template v-slot:activator="{ on }">
                     <div v-on="on" class="fileAttachSection" style>
@@ -355,7 +355,7 @@
                 </template>
                 <span>Emoji</span>
               </v-tooltip>
-              <v-tooltip right>
+              <!-- <v-tooltip right>
                 <template v-slot:activator="{ on }">
                   <div v-on="on" class="emojiSection">
                     <v-menu
@@ -409,7 +409,7 @@
                   </div>
                 </template>
                 <span>Mention Someone</span>
-              </v-tooltip>
+              </v-tooltip>-->
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
                   <div v-on="on" class="fileAttachSection">
@@ -510,7 +510,7 @@ export default {
   },
   props: ["stomp", "pageNum", "commentPage"],
   created() {
-    console.log("created---->", this.stomp);
+    // console.log("created---->", this.stomp);
     this.projectId = this.$route.params.projects;
   },
   methods: {
@@ -584,15 +584,15 @@ export default {
       });
     },
     showTypingStatus() {
-      console.log("typing", this.typingStatus);
+      // console.log("typing", this.typingStatus);
       return this.typingStatus;
     },
     typingText() {
-      console.log("typing......");
+      // console.log("typing......");
       this.sendTypingMessage(this.selectedTask.taskId, this.userId, "typing");
     },
     notTyping() {
-      console.log("not typing......");
+      // console.log("not typing......");
       this.sendTypingMessage(
         this.selectedTask.taskId,
         this.userId,
@@ -853,7 +853,7 @@ export default {
     getTooltipDate(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+        dueDate.toLocaleString("en-US", { timeZone: "Asia/Colombo" })
       );
       const dueToUtcDate = new Date(dueToUtc);
       let stringDate = dueToUtcDate + "";
@@ -862,7 +862,7 @@ export default {
       return stringDate;
     },
     getCommentTime(date) {
-        let now = new Date();
+      let now = new Date();
       let dueDate = new Date(date);
       const dueToUtc = new Date(
         dueDate.toLocaleString("en-US", { timeZone: "UTC" })
@@ -870,33 +870,32 @@ export default {
       const nowUtc = new Date(
         now.toLocaleString("en-US", { timeZone: "Asia/Colombo" })
       );
-        console.log("commentedAt", date)
-        console.log("now", now);
-        console.log("nowUtc", nowUtc);
-        console.log("due", dueDate);
-        console.log("dueUtc", dueToUtc);
-      let seconds = Math.floor((now - (dueDate))/1000);
-      let minutes = Math.floor(seconds/60);
-      console.log("mintes", minutes)
-    let hours;
-    let days;
-    if(minutes == 0){
-      return "< One Minute"
-    }
-    else if(minutes > 0){
-      if(minutes < 60){
-        let text = minutes + " " + "ago"
-        console.log("minutres")
-      return minutes + " minutes ago";
-    } else if(minutes > 60 && minutes < 1440){
-      hours = Math.floor(minutes/60);
-      let mins = minutes  - hours*60;
-      return hours + " hour " + mins + " minutes ago";
-    } else if (minutes > 1440){
-      days = Math.floor(minutes/(60*24))
-      return days + " days ago"
-    }
-    }
+      // console.log("commentedAt", date);
+      // console.log("now", now);
+      // console.log("nowUtc", nowUtc);
+      // console.log("due", dueDate);
+      // console.log("dueUtc", dueToUtc);
+      let seconds = Math.floor((now - dueDate) / 1000);
+      let minutes = Math.floor(seconds / 60);
+      // console.log("mintes", minutes);
+      let hours;
+      let days;
+      if (minutes == 0) {
+        return "Just now";
+      } else if (minutes > 0) {
+        if (minutes < 60) {
+          let text = minutes + " " + "ago";
+          // console.log("minutres");
+          return minutes + " minutes ago";
+        } else if (minutes > 60 && minutes < 1440) {
+          hours = Math.floor(minutes / 60);
+          let mins = minutes - hours * 60;
+          return hours + " hour " + mins + " minutes ago";
+        } else if (minutes > 1440) {
+          days = Math.floor(minutes / (60 * 24));
+          return days + " days ago";
+        }
+      }
 
       //return minutes + " minutes"
       // const dueDate = new Date(date);
