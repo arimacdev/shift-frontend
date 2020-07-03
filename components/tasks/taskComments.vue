@@ -188,7 +188,62 @@
                       </v-menu>
                     </div>
                   </template>
-                  <span>Add emojies</span>
+                  <span>Emoji</span>
+                </v-tooltip>
+                <v-tooltip right>
+                  <template v-slot:activator="{ on }">
+                    <div v-on="on" class="emojiSection">
+                      <v-menu
+                        :close-on-content-click="false"
+                        origin="center center"
+                        transition="scale-transition"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn style="margin-right: 12px" text v-bind="attrs" v-on="on">
+                            <v-text style="font-size: 20px; margin-top:-5px">@</v-text>
+                          </v-btn>
+                        </template>
+                        <v-list style="height: 65px; width: 250px">
+                          <v-autocomplete
+                            v-model="filterAssignee"
+                            background-color="#FFFFFF"
+                            return-object
+                            solo
+                            :items="assigneeArray"
+                            item-text="name"
+                            item-value="id"
+                            flat
+                            chips
+                            small-chips
+                            label="Mention Someone"
+                            @change="mentionSomeoneUpdate()"
+                          >
+                            <template v-slot:item="data">
+                              <template>
+                                <v-list-item-avatar size="22">
+                                  <v-img
+                                    v-if="
+                                data.item.img != null &&
+                                   data.item.img != ''
+                              "
+                                    :src=" data.item.img"
+                                  ></v-img>
+                                  <v-img
+                                    v-else
+                                    src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                                  ></v-img>
+                                </v-list-item-avatar>
+                                <v-list-item-content>
+                                  <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                                </v-list-item-content>
+                              </template>
+                            </template>
+                          </v-autocomplete>
+                        </v-list>
+                      </v-menu>
+                    </div>
+                  </template>
+                  <span>Mention Someone</span>
                 </v-tooltip>
                 <v-tooltip right>
                   <template v-slot:activator="{ on }">
@@ -298,9 +353,63 @@
                     </v-menu>
                   </div>
                 </template>
-                <span>Add emojies</span>
+                <span>Emoji</span>
               </v-tooltip>
-
+              <v-tooltip right>
+                <template v-slot:activator="{ on }">
+                  <div v-on="on" class="emojiSection">
+                    <v-menu
+                      :close-on-content-click="false"
+                      origin="center center"
+                      transition="scale-transition"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn style="margin-right: 12px" text v-bind="attrs" v-on="on">
+                          <v-text style="font-size: 20px; margin-top:-5px">@</v-text>
+                        </v-btn>
+                      </template>
+                      <v-list style="height: 65px; width: 250px">
+                        <v-autocomplete
+                          v-model="filterAssignee"
+                          background-color="#FFFFFF"
+                          return-object
+                          solo
+                          :items="assigneeArray"
+                          item-text="name"
+                          item-value="id"
+                          flat
+                          chips
+                          small-chips
+                          label="Mention Someone"
+                          @change="mentionSomeone()"
+                        >
+                          <template v-slot:item="data">
+                            <template>
+                              <v-list-item-avatar size="22">
+                                <v-img
+                                  v-if="
+                                data.item.img != null &&
+                                   data.item.img != ''
+                              "
+                                  :src=" data.item.img"
+                                ></v-img>
+                                <v-img
+                                  v-else
+                                  src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                                ></v-img>
+                              </v-list-item-avatar>
+                              <v-list-item-content>
+                                <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                              </v-list-item-content>
+                            </template>
+                          </template>
+                        </v-autocomplete>
+                      </v-list>
+                    </v-menu>
+                  </div>
+                </template>
+                <span>Mention Someone</span>
+              </v-tooltip>
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
                   <div v-on="on" class="fileAttachSection">
@@ -405,6 +514,48 @@ export default {
     this.projectId = this.$route.params.projects;
   },
   methods: {
+    mentionSomeone() {
+      if (this.filterAssignee != null) {
+        if (this.textEditor != null) {
+          this.textEditor =
+            this.textEditor.slice(0, -4) +
+            "<span class=''>" +
+            "<span class='annotations'>  @" +
+            this.filterAssignee.name +
+            "</span> &nbsp;" +
+            "</span></p>";
+        } else {
+          this.textEditor =
+            "<span class=''>" +
+            "<span class='annotations'>  @" +
+            this.filterAssignee.name +
+            "</span> &nbsp;" +
+            "</span></p>";
+        }
+      }
+      this.filterAssignee == "";
+    },
+    mentionSomeoneUpdate() {
+      if (this.filterAssignee != null) {
+        if (this.updatedComment != null) {
+          this.updatedComment =
+            this.updatedComment.slice(0, -4) +
+            "<span class=''>" +
+            "<span class='annotations'>  @" +
+            this.filterAssignee.name +
+            "</span> &nbsp;" +
+            "</span></p>";
+        } else {
+          this.updatedComment =
+            "<span class=''>" +
+            "<span class='annotations'>  @" +
+            this.filterAssignee.name +
+            "</span> &nbsp;" +
+            "</span></p>";
+        }
+      }
+      this.filterAssignee == "";
+    },
     addEmoji(emoji) {
       if (this.textEditor != null) {
         this.textEditor = this.textEditor.slice(0, -4) + emoji.data + "</p>";
@@ -711,62 +862,94 @@ export default {
       return stringDate;
     },
     getCommentTime(date) {
-      const dueDate = new Date(date);
+        let now = new Date();
+      let dueDate = new Date(date);
       const dueToUtc = new Date(
         dueDate.toLocaleString("en-US", { timeZone: "UTC" })
       );
-      const dueToUtcDate = new Date(dueToUtc);
+      const nowUtc = new Date(
+        now.toLocaleString("en-US", { timeZone: "Asia/Colombo" })
+      );
+        console.log("commentedAt", date)
+        console.log("now", now);
+        console.log("nowUtc", nowUtc);
+        console.log("due", dueDate);
+        console.log("dueUtc", dueToUtc);
+      let seconds = Math.floor((nowUtc - (dueToUtc))/1000);
+      let minutes = Math.floor(seconds/60);
+      console.log("mintes", minutes)
+    let hours;
+    let days;
+    if(minutes > 0){
+      if(minutes < 60){
+        let text = minutes + " " + "ago"
+      return minutes + " minutes ago";
+    } else if(minutes > 60 && minutes < 1440){
+      hours = Math.floor(minutes/60);
+      return hours + " hour ago";
+    } else if (minutes > 1440){
+      days = Math.floor(minutes/(60*24))
+      return days + " days ago"
+    }
+    }
 
-      const now = new Date();
+      //return minutes + " minutes"
+      // const dueDate = new Date(date);
+      // const dueToUtc = new Date(
+      //   dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+      // );
+      // const dueToUtcDate = new Date(dueToUtc);
 
-      console.log("Today | ", now, "DueDate | ", dueDate);
+      // const now = new Date();
 
-      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "Add Due Date";
-      } else if (
-        now.getDate() === dueToUtcDate.getDate() &&
-        now.getMonth() === dueToUtcDate.getMonth() &&
-        now.getFullYear() === dueToUtcDate.getFullYear() &&
-        Math.floor((now.getTime() - dueToUtcDate.getTime()) / 60000) < 60
-      ) {
-        return (
-          Math.floor((now.getTime() - dueToUtcDate.getTime()) / 60000) +
-          " min ago"
-        );
-      } else if (
-        Math.floor((now.getTime() - dueToUtcDate.getTime()) / 60000) >= 60 &&
-        Math.floor((now.getTime() - dueToUtcDate.getTime()) / 60000 / 60) <
-          24 &&
-        now.getDate() === dueToUtcDate.getDate() &&
-        now.getMonth() === dueToUtcDate.getMonth() &&
-        now.getFullYear() === dueToUtcDate.getFullYear()
-      ) {
-        return (
-          Math.floor((now.getTime() - dueToUtcDate.getTime()) / 60000 / 60) +
-          " h " +
-          (Math.floor((now.getTime() - dueToUtcDate.getTime()) / 60000) -
-            Math.floor((now.getTime() - dueToUtcDate.getTime()) / 60000 / 60) *
-              60) +
-          " min ago"
-        );
-      } else if (
-        now.getDate() - 1 === dueToUtcDate.getDate() &&
-        now.getMonth() === dueToUtcDate.getMonth() &&
-        now.getFullYear() === dueToUtcDate.getFullYear()
-      ) {
-        return "1 day ago";
-      } else if (
-        now.getDate() + 1 === dueToUtcDate.getDate() &&
-        now.getMonth() === dueToUtcDate.getMonth() &&
-        now.getFullYear() === dueToUtcDate.getFullYear()
-      ) {
-        return "Tomorrow";
-      } else {
-        let stringDate = dueToUtcDate + "";
-        stringDate = stringDate.toString();
-        stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 21);
-        return stringDate;
-      }
+      // console.log("Today | ", now, "DueDate | ", dueDate);
+
+      // if (date === null || date === "1970-01-01T05:30:00.000+0000") {
+      //   return "Add Due Date";
+      // } else if (
+      //   now.getDate() === dueToUtcDate.getDate() &&
+      //   now.getMonth() === dueToUtcDate.getMonth() &&
+      //   now.getFullYear() === dueToUtcDate.getFullYear() &&
+      //   Math.floor((now.getTime() - dueToUtcDate.getTime()) / 60000) < 60
+      // ) {
+      //   return (
+      //     Math.floor((now.getTime() - dueToUtcDate.getTime()) / 60000) +
+      //     " min ago"
+      //   );
+      // } else if (
+      //   Math.floor((now.getTime() - dueToUtcDate.getTime()) / 60000) >= 60 &&
+      //   Math.floor((now.getTime() - dueToUtcDate.getTime()) / 60000 / 60) <
+      //     24 &&
+      //   now.getDate() === dueToUtcDate.getDate() &&
+      //   now.getMonth() === dueToUtcDate.getMonth() &&
+      //   now.getFullYear() === dueToUtcDate.getFullYear()
+      // ) {
+      //   return (
+      //     Math.floor((now.getTime() - dueToUtcDate.getTime()) / 60000 / 60) +
+      //     " h " +
+      //     (Math.floor((now.getTime() - dueToUtcDate.getTime()) / 60000) -
+      //       Math.floor((now.getTime() - dueToUtcDate.getTime()) / 60000 / 60) *
+      //         60) +
+      //     " min ago"
+      //   );
+      // } else if (
+      //   now.getDate() - 1 === dueToUtcDate.getDate() &&
+      //   now.getMonth() === dueToUtcDate.getMonth() &&
+      //   now.getFullYear() === dueToUtcDate.getFullYear()
+      // ) {
+      //   return "1 day ago";
+      // } else if (
+      //   now.getDate() + 1 === dueToUtcDate.getDate() &&
+      //   now.getMonth() === dueToUtcDate.getMonth() &&
+      //   now.getFullYear() === dueToUtcDate.getFullYear()
+      // ) {
+      //   return "Tomorrow";
+      // } else {
+      //   let stringDate = dueToUtcDate + "";
+      //   stringDate = stringDate.toString();
+      //   stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 21);
+      //   return stringDate;
+      // }
     }
   },
   computed: {
@@ -777,11 +960,26 @@ export default {
       taskComments: state => state.comments.activityComment,
       typingStatus: state => state.stompClient.typingStatus,
       typingUser: state => state.stompClient.typingUser,
-      selectedUser: state => state.user.selectedUser
-    })
+      selectedUser: state => state.user.selectedUser,
+      users: state => state.user.users
+    }),
+    assigneeArray() {
+      let AssigneeSearchList = this.users;
+      let assigneeList = [];
+      for (let index = 0; index < AssigneeSearchList.length; ++index) {
+        let user = AssigneeSearchList[index];
+        assigneeList.push({
+          name: user.firstName + " " + user.lastName,
+          id: user.userId,
+          img: user.profileImage
+        });
+      }
+      return assigneeList;
+    }
   },
   data: function() {
     return {
+      filterAssignee: "",
       files: null,
       commentPage: this.commentPage,
       updatedComment: "",
