@@ -889,8 +889,8 @@ export default {
         console.log("minutres")
       return minutes + " minutes ago";
     } else if(minutes > 60 && minutes < 1440){
-      let mins = minutes % 60;
       hours = Math.floor(minutes/60);
+      let mins = minutes  - hours*60;
       return hours + " hour " + mins + " minutes ago";
     } else if (minutes > 1440){
       days = Math.floor(minutes/(60*24))
