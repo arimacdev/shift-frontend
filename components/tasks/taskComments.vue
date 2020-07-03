@@ -880,9 +880,13 @@ export default {
       console.log("mintes", minutes)
     let hours;
     let days;
-    if(minutes > 0){
+    if(minutes == 0){
+      return "< 1 Minute"
+    }
+    else if(minutes > 0){
       if(minutes < 60){
         let text = minutes + " " + "ago"
+        console.log("minutres")
       return minutes + " minutes ago";
     } else if(minutes > 60 && minutes < 1440){
       hours = Math.floor(minutes/60);
