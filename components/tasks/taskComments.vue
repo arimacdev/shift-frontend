@@ -188,7 +188,62 @@
                       </v-menu>
                     </div>
                   </template>
-                  <span>Add emojies</span>
+                  <span>Emoji</span>
+                </v-tooltip>
+                <v-tooltip right>
+                  <template v-slot:activator="{ on }">
+                    <div v-on="on" class="emojiSection">
+                      <v-menu
+                        :close-on-content-click="false"
+                        origin="center center"
+                        transition="scale-transition"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn style="margin-right: 12px" text v-bind="attrs" v-on="on">
+                            <v-text style="font-size: 20px; margin-top:-5px">@</v-text>
+                          </v-btn>
+                        </template>
+                        <v-list style="height: 65px; width: 250px">
+                          <v-autocomplete
+                            v-model="filterAssignee"
+                            background-color="#FFFFFF"
+                            return-object
+                            solo
+                            :items="assigneeArray"
+                            item-text="name"
+                            item-value="id"
+                            flat
+                            chips
+                            small-chips
+                            label="Mention Someone"
+                            @change="mentionSomeoneUpdate()"
+                          >
+                            <template v-slot:item="data">
+                              <template>
+                                <v-list-item-avatar size="22">
+                                  <v-img
+                                    v-if="
+                                data.item.img != null &&
+                                   data.item.img != ''
+                              "
+                                    :src=" data.item.img"
+                                  ></v-img>
+                                  <v-img
+                                    v-else
+                                    src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                                  ></v-img>
+                                </v-list-item-avatar>
+                                <v-list-item-content>
+                                  <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                                </v-list-item-content>
+                              </template>
+                            </template>
+                          </v-autocomplete>
+                        </v-list>
+                      </v-menu>
+                    </div>
+                  </template>
+                  <span>Mention Someone</span>
                 </v-tooltip>
                 <v-tooltip right>
                   <template v-slot:activator="{ on }">
@@ -298,9 +353,63 @@
                     </v-menu>
                   </div>
                 </template>
-                <span>Add emojies</span>
+                <span>Emoji</span>
               </v-tooltip>
-
+              <v-tooltip right>
+                <template v-slot:activator="{ on }">
+                  <div v-on="on" class="emojiSection">
+                    <v-menu
+                      :close-on-content-click="false"
+                      origin="center center"
+                      transition="scale-transition"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn style="margin-right: 12px" text v-bind="attrs" v-on="on">
+                          <v-text style="font-size: 20px; margin-top:-5px">@</v-text>
+                        </v-btn>
+                      </template>
+                      <v-list style="height: 65px; width: 250px">
+                        <v-autocomplete
+                          v-model="filterAssignee"
+                          background-color="#FFFFFF"
+                          return-object
+                          solo
+                          :items="assigneeArray"
+                          item-text="name"
+                          item-value="id"
+                          flat
+                          chips
+                          small-chips
+                          label="Mention Someone"
+                          @change="mentionSomeone()"
+                        >
+                          <template v-slot:item="data">
+                            <template>
+                              <v-list-item-avatar size="22">
+                                <v-img
+                                  v-if="
+                                data.item.img != null &&
+                                   data.item.img != ''
+                              "
+                                  :src=" data.item.img"
+                                ></v-img>
+                                <v-img
+                                  v-else
+                                  src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                                ></v-img>
+                              </v-list-item-avatar>
+                              <v-list-item-content>
+                                <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                              </v-list-item-content>
+                            </template>
+                          </template>
+                        </v-autocomplete>
+                      </v-list>
+                    </v-menu>
+                  </div>
+                </template>
+                <span>Mention Someone</span>
+              </v-tooltip>
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
                   <div v-on="on" class="fileAttachSection">
@@ -405,6 +514,48 @@ export default {
     this.projectId = this.$route.params.projects;
   },
   methods: {
+    mentionSomeone() {
+      if (this.filterAssignee != null) {
+        if (this.textEditor != null) {
+          this.textEditor =
+            this.textEditor.slice(0, -4) +
+            "<span class=''>" +
+            "<span class='annotations'>  @" +
+            this.filterAssignee.name +
+            "</span> &nbsp;" +
+            "</span></p>";
+        } else {
+          this.textEditor =
+            "<span class=''>" +
+            "<span class='annotations'>  @" +
+            this.filterAssignee.name +
+            "</span> &nbsp;" +
+            "</span></p>";
+        }
+      }
+      this.filterAssignee == "";
+    },
+    mentionSomeoneUpdate() {
+      if (this.filterAssignee != null) {
+        if (this.updatedComment != null) {
+          this.updatedComment =
+            this.updatedComment.slice(0, -4) +
+            "<span class=''>" +
+            "<span class='annotations'>  @" +
+            this.filterAssignee.name +
+            "</span> &nbsp;" +
+            "</span></p>";
+        } else {
+          this.updatedComment =
+            "<span class=''>" +
+            "<span class='annotations'>  @" +
+            this.filterAssignee.name +
+            "</span> &nbsp;" +
+            "</span></p>";
+        }
+      }
+      this.filterAssignee == "";
+    },
     addEmoji(emoji) {
       if (this.textEditor != null) {
         this.textEditor = this.textEditor.slice(0, -4) + emoji.data + "</p>";
@@ -777,11 +928,26 @@ export default {
       taskComments: state => state.comments.activityComment,
       typingStatus: state => state.stompClient.typingStatus,
       typingUser: state => state.stompClient.typingUser,
-      selectedUser: state => state.user.selectedUser
-    })
+      selectedUser: state => state.user.selectedUser,
+      users: state => state.user.users
+    }),
+    assigneeArray() {
+      let AssigneeSearchList = this.users;
+      let assigneeList = [];
+      for (let index = 0; index < AssigneeSearchList.length; ++index) {
+        let user = AssigneeSearchList[index];
+        assigneeList.push({
+          name: user.firstName + " " + user.lastName,
+          id: user.userId,
+          img: user.profileImage
+        });
+      }
+      return assigneeList;
+    }
   },
   data: function() {
     return {
+      filterAssignee: "",
       files: null,
       commentPage: this.commentPage,
       updatedComment: "",
