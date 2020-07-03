@@ -701,7 +701,7 @@ export default {
     getTooltipDate(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString("en-US", { timeZone: "Asia/Colombo" })
+        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
       );
       const dueToUtcDate = new Date(dueToUtc);
       let stringDate = dueToUtcDate + "";
@@ -712,18 +712,13 @@ export default {
     getCommentTime(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString("en-US", { timeZone: "Asia/Colombo" })
+        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
       );
       const dueToUtcDate = new Date(dueToUtc);
 
       const now = new Date();
 
-      // console.log(
-      //   'Today | ',
-      //   now.getHours(),
-      //   'DueDate | ',
-      //   Math.floor((now.getTime() - dueToUtcDate.getTime()) / 60000 / 60)
-      // );
+      console.log("Today | ", now, "DueDate | ", dueDate);
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
         return "Add Due Date";
