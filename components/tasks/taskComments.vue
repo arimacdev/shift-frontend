@@ -875,7 +875,7 @@ export default {
         console.log("nowUtc", nowUtc);
         console.log("due", dueDate);
         console.log("dueUtc", dueToUtc);
-      let seconds = Math.floor((nowUtc - (dueToUtc))/1000);
+      let seconds = Math.floor((now - (dueDate))/1000);
       let minutes = Math.floor(seconds/60);
       console.log("mintes", minutes)
     let hours;
