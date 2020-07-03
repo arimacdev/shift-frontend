@@ -289,7 +289,7 @@ export default {
     getProjectDisplayDates(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString("en-US", { timeZone: "Asia/Colombo" })
+        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
       );
 
       // const dueToUtcDate = new Date(dueToUtc);
