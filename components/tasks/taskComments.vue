@@ -4,11 +4,7 @@
       <v-col>
         <div v-if="taskComments == ''">No comments to show</div>
         <div v-else>
-          <div
-            class="commentBody"
-            v-for="(comment, index) in this.taskComments"
-            :key="index"
-          >
+          <div class="commentBody" v-for="(comment, index) in this.taskComments" :key="index">
             <v-row>
               <v-col sm="1" md="1" style="padding-left: 40px">
                 <v-avatar>
@@ -33,9 +29,7 @@
                   </div>
                   <v-tooltip right>
                     <template v-slot:activator="{ on }">
-                      <div v-on="on" class="commentTime">
-                        {{ getCommentTime(comment.commentedAt) }}
-                      </div>
+                      <div v-on="on" class="commentTime">{{ getCommentTime(comment.commentedAt) }}</div>
                     </template>
                     <span>{{ getTooltipDate(comment.commentedAt) }}</span>
                   </v-tooltip>
@@ -62,11 +56,7 @@
                                 style="font-size: 14px"
                                 v-html="'❤️'"
                               ></span>
-                              <span
-                                v-else
-                                style="font-size: 14px"
-                                v-html="react.reactionId"
-                              ></span>
+                              <span v-else style="font-size: 14px" v-html="react.reactionId"></span>
                               <span>{{ react.respondants.length }}</span>
                             </div>
                           </template>
@@ -106,48 +96,17 @@
                     </div>-->
                     <v-menu class="emojiMenu" open-on-hover top offset-y>
                       <template v-slot:activator="{ on, attrs }">
-                        <div
-                          class="text-capitalize addEmojiButton"
-                          v-bind="attrs"
-                          v-on="on"
-                        >
+                        <div class="text-capitalize addEmojiButton" v-bind="attrs" v-on="on">
                           <span style="font-size: 14px">
-                            <v-icon size="16" style="margin-top: -6px"
-                              >mdi-emoticon-outline</v-icon
-                            >
+                            <v-icon size="16" style="margin-top: -6px">mdi-emoticon-outline</v-icon>
                           </span>
                         </div>
                       </template>
-                      <div
-                        @click="addReact(comment.commentId, '&#128077;')"
-                        class="emoji"
-                      >
-                        &#128077;
-                      </div>
-                      <div
-                        @click="addReact(comment.commentId, '&#128154;')"
-                        class="emoji"
-                      >
-                        ❤️
-                      </div>
-                      <div
-                        @click="addReact(comment.commentId, '&#128514;')"
-                        class="emoji"
-                      >
-                        &#128514;
-                      </div>
-                      <div
-                        @click="addReact(comment.commentId, '&#128545;')"
-                        class="emoji"
-                      >
-                        &#128545;
-                      </div>
-                      <div
-                        @click="addReact(comment.commentId, '&#128546;')"
-                        class="emoji"
-                      >
-                        &#128546;
-                      </div>
+                      <div @click="addReact(comment.commentId, '&#128077;')" class="emoji">&#128077;</div>
+                      <div @click="addReact(comment.commentId, '&#128154;')" class="emoji">❤️</div>
+                      <div @click="addReact(comment.commentId, '&#128514;')" class="emoji">&#128514;</div>
+                      <div @click="addReact(comment.commentId, '&#128545;')" class="emoji">&#128545;</div>
+                      <div @click="addReact(comment.commentId, '&#128546;')" class="emoji">&#128546;</div>
                     </v-menu>
                     <div
                       @click="
@@ -157,9 +116,7 @@
                       class="text-capitalize addEmojiButton"
                     >
                       <span>
-                        <v-icon size="16" style="margin-top: -5px"
-                          >mdi-pencil-outline</v-icon
-                        >
+                        <v-icon size="16" style="margin-top: -5px">mdi-pencil-outline</v-icon>
                       </span>
                     </div>
                     <div
@@ -170,9 +127,7 @@
                       class="text-capitalize addEmojiButton"
                     >
                       <span>
-                        <v-icon size="16" style="margin-top: -5px"
-                          >mdi-trash-can-outline</v-icon
-                        >
+                        <v-icon size="16" style="margin-top: -5px">mdi-trash-can-outline</v-icon>
                       </span>
                     </div>
                     <div class="commentDivider"></div>
@@ -206,15 +161,13 @@
                     class="text-capitalize"
                     style="margin-top: 10px"
                     color="primary"
-                    >Update</v-btn
-                  >
+                  >Update</v-btn>
                   <v-btn
                     @click="commentEditor = false"
                     class="text-capitalize"
                     style="margin-top: 10px"
                     color="error"
-                    >Cancel</v-btn
-                  >
+                  >Cancel</v-btn>
                 </div>
                 <v-tooltip right>
                   <template v-slot:activator="{ on }">
@@ -225,15 +178,12 @@
                         transition="scale-transition"
                       >
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn text="" v-bind="attrs" v-on="on">
+                          <v-btn text v-bind="attrs" v-on="on">
                             <v-icon size="22">mdi-emoticon-outline</v-icon>
                           </v-btn>
                         </template>
                         <v-list>
-                          <VEmojiPicker
-                            style="background-color: #FFFFFF"
-                            @select="updateEmoji"
-                          />
+                          <VEmojiPicker style="background-color: #FFFFFF" @select="updateEmoji" />
                         </v-list>
                       </v-menu>
                     </div>
@@ -257,11 +207,7 @@
                 </v-tooltip>
                 <!--  -->
                 <div style="margin-top: 15px; padding-left: 30px">
-                  <v-progress-circular
-                    v-if="uploadLoading == true"
-                    indeterminate
-                    color="primary"
-                  ></v-progress-circular>
+                  <v-progress-circular v-if="uploadLoading == true" indeterminate color="primary"></v-progress-circular>
                 </div>
               </v-col>
             </v-row>
@@ -279,9 +225,7 @@
         />
         <!-- <v-progress-linear color="red lighten-2" buffer-value="0" stream></v-progress-linear> -->
       </div>
-      <div class="typingProgress">
-        {{ this.typingUser }} is typing a comment ...
-      </div>
+      <div class="typingProgress">{{ this.typingUser }} is typing a comment ...</div>
     </div>
     <br />
     <h4></h4>
@@ -332,8 +276,7 @@
                   class="text-capitalize"
                   style="margin-top: 10px"
                   color="primary"
-                  >Comment</v-btn
-                >
+                >Comment</v-btn>
               </div>
 
               <v-tooltip right>
@@ -345,15 +288,12 @@
                       transition="scale-transition"
                     >
                       <template v-slot:activator="{ on, attrs }">
-                        <v-btn text="" v-bind="attrs" v-on="on">
+                        <v-btn text v-bind="attrs" v-on="on">
                           <v-icon size="22">mdi-emoticon-outline</v-icon>
                         </v-btn>
                       </template>
                       <v-list>
-                        <VEmojiPicker
-                          style="background-color: #FFFFFF"
-                          @select="addEmoji"
-                        />
+                        <VEmojiPicker style="background-color: #FFFFFF" @select="addEmoji" />
                       </v-list>
                     </v-menu>
                   </div>
@@ -413,13 +353,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn
-            width="100px"
-            color="#FF6161"
-            dark
-            @click="deleteCommentDialog = false"
-            >Cancel</v-btn
-          >
+          <v-btn width="100px" color="#FF6161" dark @click="deleteCommentDialog = false">Cancel</v-btn>
 
           <v-btn
             width="100px"
@@ -429,8 +363,7 @@
               deleteCommentDialog = false;
               deleteComment();
             "
-            >Ok</v-btn
-          >
+          >Ok</v-btn>
 
           <v-spacer></v-spacer>
         </v-card-actions>
@@ -447,10 +380,10 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex';
-import SuccessPopup from '~/components/popups/successPopup';
-import ErrorPopup from '~/components/popups/errorPopup';
-import VEmojiPicker from 'v-emoji-picker';
+import { mapState } from "vuex";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
+import VEmojiPicker from "v-emoji-picker";
 import {
   RichTextEditorPlugin,
   Toolbar,
@@ -458,23 +391,23 @@ import {
   Image,
   Count,
   HtmlEditor,
-  QuickToolbar,
-} from '@syncfusion/ej2-vue-richtexteditor';
+  QuickToolbar
+} from "@syncfusion/ej2-vue-richtexteditor";
 export default {
   components: {
-    'success-popup': SuccessPopup,
-    'error-popup': ErrorPopup,
-    VEmojiPicker,
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup,
+    VEmojiPicker
   },
-  props: ['stomp', 'pageNum', 'commentPage'],
+  props: ["stomp", "pageNum", "commentPage"],
   created() {
-    console.log('created---->', this.stomp);
+    console.log("created---->", this.stomp);
     this.projectId = this.$route.params.projects;
   },
   methods: {
     addEmoji(emoji) {
       if (this.textEditor != null) {
-        this.textEditor = this.textEditor + emoji.data;
+        this.textEditor = this.textEditor.slice(0, -4) + emoji.data + "</p>";
       } else {
         this.textEditor = emoji.data;
       }
@@ -488,39 +421,39 @@ export default {
     },
     getComments() {
       this.$store.dispatch(
-        'comments/fetchTaskCommentLength',
+        "comments/fetchTaskCommentLength",
         this.selectedTask.taskId
       );
 
-      this.$store.dispatch('comments/fetchTaskActivityComment', {
+      this.$store.dispatch("comments/fetchTaskActivityComment", {
         taskId: this.selectedTask.taskId,
         startIndex: this.commentPage * 10 - 10,
-        endIndex: this.commentPage * 10,
+        endIndex: this.commentPage * 10
       });
     },
     showTypingStatus() {
-      console.log('typing', this.typingStatus);
+      console.log("typing", this.typingStatus);
       return this.typingStatus;
     },
     typingText() {
-      console.log('typing......');
-      this.sendTypingMessage(this.selectedTask.taskId, this.userId, 'typing');
+      console.log("typing......");
+      this.sendTypingMessage(this.selectedTask.taskId, this.userId, "typing");
     },
     notTyping() {
-      console.log('not typing......');
+      console.log("not typing......");
       this.sendTypingMessage(
         this.selectedTask.taskId,
         this.userId,
-        'notTyping'
+        "notTyping"
       );
     },
     async submit(type) {
       if (this.files != null) {
         this.uploadLoading = true;
         let formData = new FormData();
-        formData.append('files', this.files);
-        formData.append('type', 'profileImage');
-        formData.append('taskType', 'project');
+        formData.append("files", this.files);
+        formData.append("type", "profileImage");
+        formData.append("taskType", "project");
         let fileResponse;
         try {
           fileResponse = await this.$axios.$post(
@@ -528,15 +461,15 @@ export default {
             formData,
             {
               headers: {
-                'Content-Type': 'multipart/form-data',
-                user: this.userId,
-              },
+                "Content-Type": "multipart/form-data",
+                user: this.userId
+              }
             }
           );
           this.uploadLoading = false;
           // this.component = "success-popup";
           // this.successMessage = "Profile successfully updated";
-          if (type == 'addComment') {
+          if (type == "addComment") {
             if (this.textEditor != null) {
               this.textEditor =
                 this.textEditor +
@@ -563,21 +496,21 @@ export default {
                 "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'>";
             }
           }
-          console.log('File response', fileResponse.data);
+          console.log("File response", fileResponse.data);
           // location.reload();
         } catch (e) {
-          console.log('Error uploading prof pic: ', e);
+          console.log("Error uploading prof pic: ", e);
           // this.component = "error-popup";
           // console.log("File Upload Failed: " + e);
           // this.errorMessage = e.response.data;
           this.uploadLoading = false;
         }
       }
-      this.files = '';
+      this.files = "";
       this.files = null;
     },
     close() {
-      this.component = '';
+      this.component = "";
     },
     selectComment(comment) {
       this.selectedComment = comment;
@@ -589,12 +522,12 @@ export default {
         response = await this.$axios.$post(
           `/task/comment/${commentId}/reaction`,
           {
-            reactionId: reactId,
+            reactionId: reactId
           },
           {
             headers: {
-              userId: this.userId,
-            },
+              userId: this.userId
+            }
           }
         );
         this.sendCommentedMessage(
@@ -617,8 +550,8 @@ export default {
           `/task/comment/${this.selectedComment.commentId}`,
           {
             headers: {
-              userId: this.userId,
-            },
+              userId: this.userId
+            }
           }
         );
         this.sendCommentedMessage(
@@ -632,22 +565,22 @@ export default {
         //   endIndex: 200
         // });
         this.getComments();
-        this.successMessage = 'Comment deleted successfully';
-        this.component = 'success-popup';
+        this.successMessage = "Comment deleted successfully";
+        this.component = "success-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error creating project', e);
+        console.log("Error creating project", e);
       }
     },
     async addComment() {
-      if (this.textEditor != '') {
+      if (this.textEditor != "") {
         let response;
         try {
           response = await this.$axios.$post(
@@ -656,15 +589,15 @@ export default {
               entityId: this.selectedTask.taskId,
               content: this.textEditor,
               commenter: this.userId,
-              parentId: '',
+              parentId: ""
             },
             {
               headers: {
-                userId: this.userId,
-              },
+                userId: this.userId
+              }
             }
           );
-          this.textEditor = '';
+          this.textEditor = "";
           // this.$store.dispatch("comments/fetchTaskActivityComment", {
           //   taskId: this.selectedTask.taskId,
           //   startIndex: 0,
@@ -677,21 +610,21 @@ export default {
           );
           this.getComments();
 
-          this.component = 'success-popup';
-          this.successMessage = 'Comment successfully added';
+          this.component = "success-popup";
+          this.successMessage = "Comment successfully added";
           this.userExists = true;
           setTimeout(() => {
             this.close();
           }, 3000);
-          console.log('update task status response', response);
+          console.log("update task status response", response);
         } catch (e) {
           this.errorMessage = e.response.data;
-          this.component = 'error-popup';
+          this.component = "error-popup";
           setTimeout(() => {
             this.close();
           }, 3000);
           this.overlay = false;
-          console.log('Error updating a status', e);
+          console.log("Error updating a status", e);
         }
       }
     },
@@ -702,12 +635,12 @@ export default {
           `/task/comment/${commentId}`,
           {
             content: this.updatedComment,
-            commenter: this.userId,
+            commenter: this.userId
           },
           {
             headers: {
-              userId: this.userId,
-            },
+              userId: this.userId
+            }
           }
         );
         this.commentEditor = false;
@@ -723,63 +656,63 @@ export default {
         );
         this.getComments();
 
-        this.component = 'success-popup';
-        this.successMessage = 'Comment successfully updated';
+        this.component = "success-popup";
+        this.successMessage = "Comment successfully updated";
         this.userExists = true;
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('update task status response', response);
+        console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
         this.overlay = false;
-        console.log('Error updating a status', e);
+        console.log("Error updating a status", e);
       }
     },
     sendCommentedMessage(taskId, comment, sender) {
-      console.log('sending message', this.stomp, comment);
+      console.log("sending message", this.stomp, comment);
       this.stomp.send(
-        '/app/chat/' + taskId,
+        "/app/chat/" + taskId,
         {},
         JSON.stringify({
           sender: sender,
           message: comment,
-          actionType: 'comment',
+          actionType: "comment"
         })
       );
     },
 
     sendTypingMessage(taskId, sender, event) {
-      console.log('typing message', this.stomp);
+      console.log("typing message", this.stomp);
       this.stomp.send(
-        '/app/chat/' + taskId,
+        "/app/chat/" + taskId,
         {},
         JSON.stringify({
           sender: sender,
-          message: this.ownUser.firstName + ' ' + this.ownUser.lastName,
-          actionType: event,
+          message: this.ownUser.firstName + " " + this.ownUser.lastName,
+          actionType: event
         })
       );
     },
     getTooltipDate(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString('en-US', { timeZone: 'Asia/Colombo' })
+        dueDate.toLocaleString("en-US", { timeZone: "Asia/Colombo" })
       );
       const dueToUtcDate = new Date(dueToUtc);
-      let stringDate = dueToUtcDate + '';
+      let stringDate = dueToUtcDate + "";
       stringDate = stringDate.toString();
-      stringDate = stringDate.slice(0, 10) + ' ' + stringDate.slice(11, 21);
+      stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 21);
       return stringDate;
     },
     getCommentTime(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString('en-US', { timeZone: 'Asia/Colombo' })
+        dueDate.toLocaleString("en-US", { timeZone: "Asia/Colombo" })
       );
       const dueToUtcDate = new Date(dueToUtc);
 
@@ -792,8 +725,8 @@ export default {
       //   Math.floor((now.getTime() - dueToUtcDate.getTime()) / 60000 / 60)
       // );
 
-      if (date === null || date === '1970-01-01T05:30:00.000+0000') {
-        return 'Add Due Date';
+      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
+        return "Add Due Date";
       } else if (
         now.getDate() === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
@@ -802,7 +735,7 @@ export default {
       ) {
         return (
           Math.floor((now.getTime() - dueToUtcDate.getTime()) / 60000) +
-          ' min ago'
+          " min ago"
         );
       } else if (
         Math.floor((now.getTime() - dueToUtcDate.getTime()) / 60000) >= 60 &&
@@ -814,70 +747,70 @@ export default {
       ) {
         return (
           Math.floor((now.getTime() - dueToUtcDate.getTime()) / 60000 / 60) +
-          ' h ' +
+          " h " +
           (Math.floor((now.getTime() - dueToUtcDate.getTime()) / 60000) -
             Math.floor((now.getTime() - dueToUtcDate.getTime()) / 60000 / 60) *
               60) +
-          ' min ago'
+          " min ago"
         );
       } else if (
         now.getDate() - 1 === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
         now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
-        return '1 day ago';
+        return "1 day ago";
       } else if (
         now.getDate() + 1 === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
         now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
-        return 'Tomorrow';
+        return "Tomorrow";
       } else {
-        let stringDate = dueToUtcDate + '';
+        let stringDate = dueToUtcDate + "";
         stringDate = stringDate.toString();
-        stringDate = stringDate.slice(0, 10) + ' ' + stringDate.slice(11, 21);
+        stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 21);
         return stringDate;
       }
-    },
+    }
   },
   computed: {
     ...mapState({
-      selectedTask: (state) => state.task.selectedTask,
-      allCommentsLength: (state) => state.comments.allCommentsLength,
-      ownUser: (state) => state.user.ownUser,
-      taskComments: (state) => state.comments.activityComment,
-      typingStatus: (state) => state.stompClient.typingStatus,
-      typingUser: (state) => state.stompClient.typingUser,
-      selectedUser: (state) => state.user.selectedUser,
-    }),
+      selectedTask: state => state.task.selectedTask,
+      allCommentsLength: state => state.comments.allCommentsLength,
+      ownUser: state => state.user.ownUser,
+      taskComments: state => state.comments.activityComment,
+      typingStatus: state => state.stompClient.typingStatus,
+      typingUser: state => state.stompClient.typingUser,
+      selectedUser: state => state.user.selectedUser
+    })
   },
   data: function() {
     return {
       files: null,
       commentPage: this.commentPage,
-      updatedComment: '',
+      updatedComment: "",
       commentEditor: false,
       selectedComment: {},
       uploadLoading: false,
-      errorMessage: '',
-      successMessage: '',
+      errorMessage: "",
+      successMessage: "",
       deleteCommentDialog: false,
-      component: '',
+      component: "",
       addCommentSection: false,
 
       items: [
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me 2' },
+        { title: "Click Me" },
+        { title: "Click Me" },
+        { title: "Click Me" },
+        { title: "Click Me 2" }
       ],
       insertImageSettings: {
-        display: 'break',
+        display: "break"
       },
       userId: this.$store.state.user.userId,
-      textEditor: '',
+      textEditor: "",
       height: 400,
-      placeholder: 'Add a new comment',
+      placeholder: "Add a new comment",
       quickToolbarSettings: {
         link: [],
         image: [
@@ -893,45 +826,45 @@ export default {
           // 'Display',
           // 'AltText',
           // 'Dimension',
-        ],
+        ]
       },
       toolbarSettings: {
         items: [
-          'Bold',
-          'Italic',
-          'Underline',
-          'StrikeThrough',
+          "Bold",
+          "Italic",
+          "Underline",
+          "StrikeThrough",
           // 'FontName',
           // 'FontSize',
           // 'FontColor',
           // 'BackgroundColor',
-          '|',
-          'LowerCase',
-          'UpperCase',
-          '|',
+          "|",
+          "LowerCase",
+          "UpperCase",
+          "|",
           // 'Formats',
           // 'Alignments',
-          'OrderedList',
-          'UnorderedList',
-          'Outdent',
-          'Indent',
-          '|',
-          'CreateLink',
+          "OrderedList",
+          "UnorderedList",
+          "Outdent",
+          "Indent",
+          "|",
+          "CreateLink",
           // "Image",
           // '|',
-          'ClearFormat',
+          "ClearFormat",
           // 'Print',
-          'SourceCode',
+          "SourceCode",
           // 'FullScreen',
           // '|',
-          'Undo',
-          'Redo',
-        ],
-      },
+          "Undo",
+          "Redo"
+        ]
+      }
     };
   },
   provide: {
-    richtexteditor: [Toolbar, Link, Image, Count, HtmlEditor, QuickToolbar],
-  },
+    richtexteditor: [Toolbar, Link, Image, Count, HtmlEditor, QuickToolbar]
+  }
 };
 </script>
