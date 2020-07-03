@@ -414,7 +414,8 @@ export default {
     },
     updateEmoji(emoji) {
       if (this.updatedComment != null) {
-        this.updatedComment = this.updatedComment + emoji.data;
+        this.updatedComment =
+          this.updatedComment.slice(0, -4) + emoji.data + "</p>";
       } else {
         this.updatedComment = emoji.data;
       }
