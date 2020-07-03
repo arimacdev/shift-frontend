@@ -3,14 +3,24 @@
 @import './css/tasks.css';
 
 @import './css/base/typo.css';
-@import 'circular-std';
+/* @import 'circular-std'; */
+
+@import '../node_modules/@syncfusion/ej2-base/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-inputs/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-lists/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-popups/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-buttons/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-navigations/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-vue-richtexteditor/styles/material.css';
 
 @import './icons.css'; /* -------------- common --------------- */
 * {
-  font-family: CircularStd;
+  font-family: 'Roboto', sans-serif;
 }
+
 .body-2 {
-  font-family: CircularStd !important;
+  font-family: 'Roboto', sans-serif !important;
 }
 .listView {
   margin-top: 10px;
@@ -248,6 +258,17 @@
   /* background-color: #ffffff; */
   margin-top: -20px;
 }
+.adminUserList {
+  width: 30vw;
+  float: left;
+  /* padding-left: -12px; */
+  padding-top: 40px;
+  margin-top: -20px;
+}
+.userContentWrapper {
+  width: 65vw;
+  margin-left: 30vw;
+}
 .tabContent {
   /* background-color: khaki; */
   margin-left: -30px;
@@ -281,6 +302,7 @@
   width: 30px;
   border-radius: 50%;
 }
+
 .usersForms {
   padding-left: 8% !important;
 }
@@ -1114,6 +1136,12 @@
   padding-bottom: 10px;
   margin-top: -10px;
 }
+.oneSignalButton {
+  text-align: center;
+}
+.oneSignalBtn {
+  margin-top: 20px;
+}
 
 .slackButton {
   padding-left: 40px !important;
@@ -1140,6 +1168,12 @@
   margin-top: 20px;
   font-size: 12px;
   font-weight: 600;
+}
+.cardOneSignalSlogan {
+  text-align: center !important;
+  margin-top: 20px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
 }
 
 /* ----------------- popups styling --------------- */
@@ -1604,7 +1638,8 @@
   display: inline-block;
   /* width: 300px; */
   margin-right: 20px;
-  margin-top: -8vh;
+  /* margin-top: -8vh; */
+  vertical-align: top;
 }
 .boardTitle {
   height: 70px;
@@ -1728,17 +1763,17 @@
 .addSprintSection {
   height: 100%;
   width: 300px;
-  padding-top: 60px;
+  /* padding-top: 60px; */
   overflow-y: hidden;
   /* background-color: burlywood; */
   padding-right: 50px;
-  padding-left: 50px;
+  /* padding-left: 50px; */
 }
 .addSprintButton {
   background-color: #2ec973;
   width: 230px;
   height: 60px;
-  margin-top: 40px;
+  /* margin-top: 40px; */
   padding-top: 5px;
   border-radius: 5px;
 }
@@ -1747,6 +1782,8 @@
   height: 80vh;
   border-radius: 5px;
   display: inline-block;
+  /* vertical-align: top; */
+  /* background-color: burlywood; */
   /* background-color: blue; */
   /* margin-left: -300px; */
 }
@@ -1986,6 +2023,7 @@
 }
 .RestTaskLogDiv {
   width: 100%;
+  background-color: #ffffff !important;
 }
 .RestTaskLogTitle {
   width: 100%;
@@ -2161,6 +2199,7 @@
   position: fixed;
   bottom: 0;
   right: 40px;
+  z-index: 1000;
 }
 .allTaskPopupPlacements {
   position: absolute;
@@ -2470,6 +2509,7 @@
   white-space: nowrap;
   background-color: #e5e5e5;
 }
+
 .overviewScrollingWrapper {
   /* overflow-x: scroll; */
   overflow-y: hidden;
@@ -2573,12 +2613,419 @@
   margin-left: -120px;
 }
 .updateProfilePopupDiv {
-  position: absolute;
+  position: fixed;
   right: 10px;
-  bottom: 160px;
+  bottom: 10px;
 }
 .userBlockedWarning {
   color: red;
   font-size: 12px !important;
   margin-left: -30px;
+}
+.logSubtitle {
+  margin-left: 80px !important;
+  font-size: 16px !important;
+  margin-top: -15px;
+}
+.logProjectSubtitle {
+  margin-left: 80px !important;
+  font-size: 16px !important;
+  margin-top: -15px;
+}
+.logNameSubtitle {
+  margin-left: 60px !important;
+  font-size: 16px !important;
+  margin-top: -20px;
+}
+
+.logItemBackground {
+  background-color: #edf0f5;
+  margin-bottom: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+  border-radius: 5px;
+}
+.projectLogsSection {
+  height: 80vh;
+  padding-bottom: 100px;
+}
+.skillsSection {
+  padding-bottom: 100px;
+}
+
+.userUpdateSection {
+  /* margin-left: 20px; */
+  height: 70vh;
+  /* width: 100%; */
+  padding-right: 3vw;
+  padding-bottom: 100px;
+}
+
+.skillHeader {
+  /* background-color: #080848; */
+  color: #ffffff;
+  height: 50px;
+  padding-top: 12px;
+  border-radius: 5px;
+  font-weight: 450;
+}
+
+.skillBody {
+  background-color: #edf0f5;
+  border-radius: 5px;
+  color: #576377;
+  font-weight: 500;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.skillsContentWrapper {
+  height: 85vh;
+  width: 70%;
+  margin-left: 30%;
+  padding: 20px;
+  color: #576377;
+}
+.skillsDiv {
+  width: 100%;
+  background-color: #edf0f5;
+  padding: 5px;
+  padding-left: 20px;
+  margin-top: 20px;
+  border-radius: 5px;
+}
+.skillsListItem {
+  /* background-color: #78cc71; */
+  margin: 10px;
+  padding: 3px;
+  border-radius: 5px;
+}
+
+.skillDisplayDivProfile {
+  margin-right: 20px;
+  height: 100%;
+  overflow-y: scroll;
+  /* overflow-y: hidden; */
+  width: 100%;
+  white-space: nowrap;
+}
+
+.skillDisplayDiv {
+  width: 70vw;
+  float: right;
+  /* background-color: darkkhaki; */
+  margin-right: 20px;
+  height: 100%;
+  overflow-y: scroll;
+  /* overflow-y: hidden; */
+  white-space: nowrap;
+}
+.skillScrollingWrapperScroll {
+  overflow-y: hidden;
+  /* white-space: nowrap; */
+  height: 100%;
+  width: 100%;
+  padding-right: 100px;
+  padding-left: 10px;
+  margin-top: -30px;
+}
+.skillScrollingWrapper {
+  overflow-y: hidden;
+  /* white-space: nowrap; */
+  height: 100%;
+  width: 100%;
+  padding-right: 100px;
+  padding-left: 10px;
+}
+.skillScrollingWrapper1 {
+  overflow-y: hidden;
+  width: 100%;
+}
+.skillProfileScrollingWrapper {
+  overflow-y: hidden;
+  /* white-space: nowrap; */
+  height: 100%;
+  width: 100%;
+  padding-right: 100px;
+  padding-left: 10px;
+}
+.skillScrollingWrapper::-webkit-scrollbar {
+  display: none;
+}
+.skillScrollingWrapper1::-webkit-scrollbar {
+  display: none;
+}
+.skillCard::-webkit-scrollbar {
+  display: none;
+}
+.skillDisplayDivProfile::-webkit-scrollbar {
+  display: none;
+}
+.skillDisplayCard::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollContent {
+  height: 80vh;
+  min-width: 100%;
+  overflow-y: auto;
+  position: absolute;
+  bottom: 0px;
+}
+.skillProfileCard {
+  display: inline-block;
+  vertical-align: top;
+  min-width: 250px;
+  padding-bottom: 30px;
+  margin-right: 20px;
+  /* height: 100%; */
+}
+.scroll {
+  position: -webkit-sticky;
+  position: sticky !important;
+  top: -12px;
+  z-index: 1;
+  margin-top: -20px !important;
+}
+.skillCard {
+  display: inline-block;
+  vertical-align: top;
+  min-width: 250px;
+  margin-right: 20px;
+  /* height: 100%; */
+}
+.skillDisplayCard {
+  display: inline-block;
+  vertical-align: top;
+  /* min-width: 250px; */
+  margin-right: 20px;
+}
+.skillDisplayCard1 {
+  display: inline-block;
+  margin-right: 20px;
+}
+.card123 {
+  background-color: darkmagenta;
+  min-width: 250px !;
+}
+.catListName {
+  color: #ffffff;
+}
+.skillTabPopup {
+  position: absolute;
+  top: 100vh;
+  right: 20px;
+}
+.categoryListView {
+  margin-top: 10px;
+  height: 60vh;
+  padding-bottom: 100px !important;
+}
+
+.categoryHeader {
+  text-align: center;
+  border-radius: 5px;
+  color: #ffffff;
+  padding: 8px;
+  margin-bottom: 15px;
+}
+.categoryHeaderSearch {
+  border-radius: 5px;
+  color: #ffffff;
+  padding: 8px;
+  padding-left: 15px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+.skillNameSearch {
+  color: #576377;
+  font-weight: 500;
+  font-size: 14px !important;
+}
+.skillName {
+  width: 90px;
+  margin-right: 10px;
+  text-align: center;
+  white-space: normal;
+  word-wrap: break-word !important;
+  color: #576377;
+  /* float: left; */
+  font-size: 10px !important;
+  font-weight: 500;
+}
+.skillDisplayBox {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  /* float: left; */
+  width: 90px;
+  height: 70px;
+}
+.skillDisplayCheckBox {
+  background-color: #edf0f5;
+  text-align: center;
+  width: 60px;
+  height: 60px;
+  margin-left: 15px;
+  padding-top: 15px;
+}
+.matrixUserListItem {
+  height: 80px;
+  background-color: #edf0f5;
+}
+.userListTitle {
+  padding-left: 20px;
+  padding-top: 25px;
+  color: #576377;
+  font-weight: 500;
+  background-color: #edf0f5;
+  height: 100%;
+  width: 100%;
+  /* width: 30vw; */
+  float: left;
+}
+.skillMatrixScreen {
+  height: 60vh;
+}
+.skillDisplayScreen {
+  height: 69vh;
+}
+.skillDisplayScreenUser {
+  height: 65vh;
+  width: 30vw !important;
+  background-color: #edf0f5;
+}
+.skillDisplayScreenUser::-webkit-scrollbar {
+  display: none;
+}
+.errorPageContainer {
+  margin-top: -40px;
+}
+.errorPageText {
+  text-align: center;
+  /* padding-top: 20% !important; */
+}
+.errorPageImage {
+  height: 70vh;
+}
+.errorMessage {
+  margin-top: 30px;
+  font-size: 30px;
+  margin-bottom: 20px;
+  color: #576377;
+}
+.noItemText {
+  font-size: 20px;
+  color: #576377;
+  font-weight: 500;
+  padding: 20px;
+}
+.activityTabs {
+  background-color: #cdcfd2;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.activityInactiveTabs {
+  background-color: #e5e5e5;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  margin-right: 10px;
+}
+.taskCommentsSection {
+  padding: 20px;
+  background-color: #ffffff;
+  padding-bottom: 300px;
+}
+.commentEditor {
+  /* width: 70vw; */
+}
+
+.commenterName {
+  color: #576377;
+  font-weight: 500;
+  float: left;
+}
+.commentTime {
+  padding-top: 5px;
+  font-size: 12px;
+  color: #576377;
+  padding-left: 20px;
+  float: left;
+}
+.commentFunctionSection {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+.commentContent {
+  padding-top: 10px;
+  padding-left: 20px;
+}
+.emojiMenu {
+  border-radius: 40px !important;
+}
+.emoji {
+  background-color: #ffffff;
+  width: 50px;
+  height: 35px;
+  float: left;
+  font-size: 25px;
+  text-align: center;
+  cursor: pointer;
+}
+.emoji:hover {
+  background-color: #e5e5e5;
+  border-radius: 5px;
+}
+.addEmojiButton {
+  border: solid #e5e5e5 1px;
+  width: 40px;
+  font-size: 15px;
+  margin-right: 10px;
+  /* background-color: #e5e5e5; */
+  border-radius: 10px;
+  text-align: center;
+  float: left;
+  height: 22px;
+  color: #576377;
+  cursor: pointer;
+}
+.addEmojiButton:hover {
+  /* border: solid black 1px; */
+  background-color: #e5e5e5;
+}
+.commentDivider {
+  float: left;
+  width: 100%;
+  margin-top: 5px;
+}
+/* .commentBody:hover {
+  background-color: #f3f1f1;
+  border-radius: 5px;
+} */
+.fileAttachSection {
+  /* width: 60px !important; */
+  float: left;
+  margin-top: 5px;
+  /* margin-left: 20px; */
+}
+.emojiSection {
+  float: left;
+  padding-top: 10px;
+  /* margin-left: 20px; */
+}
+.typingProgress {
+  float: left;
+  margin-left: 40px;
+  color: #666464;
+  font-size: 14px;
+  font-weight: 500;
+}
+.loadingProgress {
+  width: 25px;
+  float: left;
+  margin-top: -38px;
+}
+.annotations {
+  font-weight: 500;
+  background-color: #2600ff0e;
+  border-radius: 5px;
+  padding: 2px;
 }

@@ -795,6 +795,12 @@ export default {
       } catch (error) {
         // console.log("Error fetching data", error);
       }
+
+      this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+        taskId: task.taskId,
+        startIndex: 0,
+        endIndex: 10
+      });
     },
     statusCheck(task) {
       if (task === "development") {
@@ -856,14 +862,14 @@ export default {
         return "Today";
       } else if (
         now.getDate() - 1 === dueToUtcDate.getDate() &&
-        now.getMonth() - 1 === dueToUtcDate.getMonth() &&
-        now.getFullYear() - 1 === dueToUtcDate.getFullYear()
+        now.getMonth() === dueToUtcDate.getMonth() &&
+        now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
         return "Yesterday";
       } else if (
         now.getDate() + 1 === dueToUtcDate.getDate() &&
-        now.getMonth() + 1 === dueToUtcDate.getMonth() &&
-        now.getFullYear() + 1 === dueToUtcDate.getFullYear()
+        now.getMonth() === dueToUtcDate.getMonth() &&
+        now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
         return "Tomorrow";
       } else {

@@ -344,14 +344,14 @@ export default {
         return "Today";
       } else if (
         now.getDate() - 1 === dueToUtcDate.getDate() &&
-        now.getMonth() - 1 === dueToUtcDate.getMonth() &&
-        now.getFullYear() - 1 === dueToUtcDate.getFullYear()
+        now.getMonth() === dueToUtcDate.getMonth() &&
+        now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
         return "Yesterday";
       } else if (
         now.getDate() + 1 === dueToUtcDate.getDate() &&
-        now.getMonth() + 1 === dueToUtcDate.getMonth() &&
-        now.getFullYear() + 1 === dueToUtcDate.getFullYear()
+        now.getMonth() === dueToUtcDate.getMonth() &&
+        now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
         return "Tomorrow";
       } else {

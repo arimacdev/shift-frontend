@@ -41,8 +41,11 @@ export default {
   methods: {
     onSelectedUser() {
       if (this.select !== undefined) {
-        this.$emit("searchSelected", this.select);
-        console.log("selected user", this.select);
+      this.$emit("searchSelected", this.select);
+      this.$store.dispatch("admin/fetchUserRoleMapping", this.select.userId);
+      this.$store.dispatch("skillMatrix/fetchUserSkills", this.select.userId);
+      this.$store.dispatch("user/setSelectedUser", this.select);
+      this.$store.dispatch("skillMap/fetchUserSkillMap", this.select.userId);
       }
     },
     querySelections(v) {

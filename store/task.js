@@ -20,11 +20,11 @@ export const mutations = {
   },
   SET_ALL_TASKS(state, event) {
     const sorted = event.sort((a, b) => {
-      const userA = a.parentTask.taskName.toUpperCase();
-      const userB = b.parentTask.taskName.toUpperCase();
+      const userA = a.parentTask.taskCreatedAt.toUpperCase();
+      const userB = b.parentTask.taskCreatedAt.toUpperCase();
 
-      if (userA < userB) return -1;
-      if (userA > userB) return 1;
+      if (userA > userB) return -1;
+      if (userA < userB) return 1;
 
       return 0;
     });
@@ -94,14 +94,21 @@ export const mutations = {
     }
     // console.log('selectedtask', selectedTask);
     state.selectedTask = selectedTask;
-    console.log('selectedtask', state.selectedTask);
   },
+  UPDATE_SELECTED_TASK_NAME(state, taskName){
+    state.selectedTask.taskName = taskName
+
+  }
 };
 
 export const actions = {
   setSelectedTask({ commit }, task) {
     // console.log('selected->>>', task);
     commit('SET_SELECTED_TASK', task);
+  },
+  setSelectedTaskName({ commit }, taskName) {
+    // console.log('selected->>>', task);
+    commit('UPDATE_SELECTED_TASK_NAME', taskName);
   },
   async setCurrentTask({ commit, rootState }, { projectId, taskId }) {
     const userId = rootState.user.userId;

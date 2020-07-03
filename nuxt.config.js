@@ -1,5 +1,4 @@
 import colors from 'vuetify/es5/util/colors';
-
 export default {
   mode: 'universal',
   /*
@@ -18,6 +17,13 @@ export default {
       },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    script: [
+      { src: 'https://cdn.onesignal.com/sdks/OneSignalSDK.js', async: '' },
+      {
+        src: 'https://code.jquery.com/jquery-3.3.1.slim.min.js',
+        type: 'text/javascript',
+      },
+    ],
   },
   /*
    ** Customize the progress-bar color
@@ -34,6 +40,8 @@ export default {
     '~/plugins/vuelidate.js',
     '~/plugins/datepicker.js',
     '~/plugins/vuedatetime.js',
+    '~/plugins/textEditor.js',
+    { src: '~/plugins/onesignal.js', mode: 'client' },
   ],
   /*
    ** Nuxt.js dev-modules
@@ -83,17 +91,14 @@ export default {
     },
     localStorage: false,
   },
-
   router: {
     middleware: ['auth', 'token'],
   },
-
   constants: {
     hostUrl: `${process.env.BASE_URL}`,
     appUrl: `${process.env.BASE_URL}`,
     realm: `${process.env.KEYCLOAK_REALM}`,
   },
-
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {

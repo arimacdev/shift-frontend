@@ -15,6 +15,15 @@ export const mutations = {
     state.workloadTasks = [];
   },
   SET_TEMPLATES(state, templates) {
+    const sorted = templates.sort((a, b) => {
+      const templateA = a.templateName.toUpperCase();
+      const templateB = b.templateName.toUpperCase();
+
+      if (templateA < templateB) return -1;
+      if (templateA > templateB) return 1;
+
+      return 0;
+    });
     state.templates = templates;
   },
   ADD_TEMPLATE(state, template) {

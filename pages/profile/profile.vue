@@ -50,6 +50,10 @@ export default {
   },
   created() {
     this.$store.dispatch("project/clearProject");
+    this.$store.dispatch(
+      "skillMap/fetchUserSkillMap",
+      this.$store.state.user.userId
+    );
   },
 
   methods: {
