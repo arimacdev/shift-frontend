@@ -190,7 +190,7 @@
                   </template>
                   <span>Emoji</span>
                 </v-tooltip>
-                <!-- <v-tooltip right>
+                <v-tooltip right>
                   <template v-slot:activator="{ on }">
                     <div v-on="on" class="emojiSection">
                       <v-menu
@@ -244,7 +244,7 @@
                     </div>
                   </template>
                   <span>Mention Someone</span>
-                </v-tooltip>-->
+                </v-tooltip>
                 <v-tooltip right>
                   <template v-slot:activator="{ on }">
                     <div v-on="on" class="fileAttachSection" style>
@@ -355,7 +355,7 @@
                 </template>
                 <span>Emoji</span>
               </v-tooltip>
-              <!-- <v-tooltip right>
+              <v-tooltip right>
                 <template v-slot:activator="{ on }">
                   <div v-on="on" class="emojiSection">
                     <v-menu
@@ -409,7 +409,7 @@
                   </div>
                 </template>
                 <span>Mention Someone</span>
-              </v-tooltip>-->
+              </v-tooltip>
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
                   <div v-on="on" class="fileAttachSection">
@@ -438,7 +438,7 @@
         </div>
       </v-col>
     </v-row>
-
+    {{this.annotations}}
     <v-pagination
       @input="getComments()"
       v-model="commentPage"
@@ -519,18 +519,20 @@ export default {
         if (this.textEditor != null) {
           this.textEditor =
             this.textEditor.slice(0, -4) +
-            "<span class=''>" +
-            "<span class='annotations'>  @" +
+            "&nbsp;<span class=''>" +
+            "<span tabindex='-2' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'><span class='v-chip__content'>  @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
-            "</span></p>";
+            "</span>&nbsp;&nbsp;</p>";
+          this.annotations.push(this.filterAssignee.name);
         } else {
           this.textEditor =
-            "<span class=''>" +
-            "<span class='annotations'>  @" +
+            "&nbsp;<span class=''>" +
+            "<span tabindex='-2' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'><span class='v-chip__content'>  @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
-            "</span></p>";
+            "</span>&nbsp;&nbsp;</p>";
+          this.annotations.push(this.filterAssignee.name);
         }
       }
       this.filterAssignee == "";
@@ -540,18 +542,20 @@ export default {
         if (this.updatedComment != null) {
           this.updatedComment =
             this.updatedComment.slice(0, -4) +
-            "<span class=''>" +
-            "<span class='annotations'>  @" +
+            "&nbsp;<span class=''>" +
+            "<span tabindex='-2' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'><span class='v-chip__content'>  @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
-            "</span></p>";
+            "</span>&nbsp;&nbsp;</p>";
+          this.annotations.push(this.filterAssignee.name);
         } else {
           this.updatedComment =
-            "<span class=''>" +
-            "<span class='annotations'>  @" +
+            "&nbsp;<span class=''>" +
+            "<span tabindex='-2' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'><span class='v-chip__content'>  @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
-            "</span></p>";
+            "</span>&nbsp;&nbsp;</p>";
+          this.annotations.push(this.filterAssignee.name);
         }
       }
       this.filterAssignee == "";
@@ -983,6 +987,7 @@ export default {
   },
   data: function() {
     return {
+      annotations: [],
       filterAssignee: "",
       files: null,
       commentPage: this.commentPage,
