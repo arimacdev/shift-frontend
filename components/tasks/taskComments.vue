@@ -520,7 +520,7 @@ export default {
           this.textEditor =
             this.textEditor.slice(0, -4) +
             "&nbsp;<span class=''>" +
-            "<span tabindex='-2' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'><span class='v-chip__content'>  @" +
+            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>  @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
             "</span>&nbsp;&nbsp;</p>";
@@ -528,7 +528,7 @@ export default {
         } else {
           this.textEditor =
             "&nbsp;<span class=''>" +
-            "<span tabindex='-2' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'><span class='v-chip__content'>  @" +
+            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>  @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
             "</span>&nbsp;&nbsp;</p>";
@@ -543,7 +543,7 @@ export default {
           this.updatedComment =
             this.updatedComment.slice(0, -4) +
             "&nbsp;<span class=''>" +
-            "<span tabindex='-2' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'><span class='v-chip__content'>  @" +
+            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'> @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
             "</span>&nbsp;&nbsp;</p>";
@@ -551,7 +551,7 @@ export default {
         } else {
           this.updatedComment =
             "&nbsp;<span class=''>" +
-            "<span tabindex='-2' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'><span class='v-chip__content'>  @" +
+            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'> @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
             "</span>&nbsp;&nbsp;</p>";
