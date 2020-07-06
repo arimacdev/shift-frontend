@@ -125,13 +125,19 @@
                           :key="index"
                         >
                           <div class="skillScrollingWrapper1">
-                            <div
-                              class="categoryHeader"
-                              :style="
-                                'background-color:' +
-                                  categoryMap.categoryColorCode
-                              "
-                            >{{ categoryMap.categoryName }}</div>
+                            <v-tooltip :color="categoryMap.categoryColorCode" bottom>
+                              <template v-slot:activator="{ on }">
+                                <div
+                                  v-on="on"
+                                  class="categoryHeader"
+                                  :style="
+                              'background-color:' +
+                                  categoryMap.categoryColorCode + '; width:' + categoryMap.skillSet.length * 90 + 'px; !important'
+                            "
+                                >{{ categoryMap.categoryName }}</div>
+                              </template>
+                              <span>{{ categoryMap.categoryName }}</span>
+                            </v-tooltip>
 
                             <div
                               class="skillName skillDisplayCard1"
@@ -164,13 +170,19 @@
                         :key="index"
                       >
                         <div class="skillScrollingWrapper1">
-                          <div
-                            class="categoryHeader"
-                            :style="
+                          <v-tooltip :color="categoryMap.categoryColorCode" bottom>
+                            <template v-slot:activator="{ on }">
+                              <div
+                                v-on="on"
+                                class="categoryHeader"
+                                :style="
                               'background-color:' +
-                                categoryMap.categoryColorCode
+                                  categoryMap.categoryColorCode + '; width:' + categoryMap.skillSet.length * 90 + 'px; !important'
                             "
-                          >{{ categoryMap.categoryName }}</div>
+                              >{{ categoryMap.categoryName }}</div>
+                            </template>
+                            <span>{{ categoryMap.categoryName }}</span>
+                          </v-tooltip>
 
                           <div
                             class="skillName skillDisplayCard1"
@@ -202,13 +214,19 @@
                         :key="index"
                       >
                         <div class="skillScrollingWrapper1">
-                          <div
-                            class="categoryHeader"
-                            :style="
+                          <v-tooltip :color="categoryMap.categoryColorCode" bottom>
+                            <template v-slot:activator="{ on }">
+                              <div
+                                v-on="on"
+                                class="categoryHeader"
+                                :style="
                               'background-color:' +
-                                categoryMap.categoryColorCode
+                                  categoryMap.categoryColorCode + '; width:' + categoryMap.skillSet.length * 90 + 'px; !important'
                             "
-                          >{{ categoryMap.categoryName }}</div>
+                              >{{ categoryMap.categoryName }}</div>
+                            </template>
+                            <span>{{ categoryMap.categoryName }}</span>
+                          </v-tooltip>
 
                           <div
                             class="skillName skillDisplayCard1"
