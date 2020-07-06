@@ -519,7 +519,7 @@ export default {
         if (this.textEditor != null) {
           this.textEditor =
             this.textEditor.slice(0, -4) +
-            "&nbsp;<span class=''>" +
+            "&nbsp;<span >" +
             "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>  @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
