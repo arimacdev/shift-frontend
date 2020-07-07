@@ -2215,7 +2215,7 @@
 .allTaskPopupPlacements {
   position: absolute;
   right: 30px;
-  bottom: 100px;
+  bottom: 20px;
 }
 .filterTaskPopupPlacements {
   position: absolute;
