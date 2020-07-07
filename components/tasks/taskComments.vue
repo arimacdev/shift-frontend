@@ -438,7 +438,6 @@
         </div>
       </v-col>
     </v-row>
-    {{this.annotations}}
     <v-pagination
       @input="getComments()"
       v-model="commentPage"
@@ -524,7 +523,7 @@ export default {
             this.filterAssignee.name +
             "</span> &nbsp;" +
             "</span>&nbsp;&nbsp;</p>";
-          this.annotations.push(this.filterAssignee.name);
+          this.annotations.push(this.filterAssignee.id);
         } else {
           this.textEditor =
             "&nbsp;<span class=''>" +
@@ -532,7 +531,7 @@ export default {
             this.filterAssignee.name +
             "</span> &nbsp;" +
             "</span>&nbsp;&nbsp;</p>";
-          this.annotations.push(this.filterAssignee.name);
+          this.annotations.push(this.filterAssignee.id);
         }
       }
       this.filterAssignee == "";
@@ -547,7 +546,7 @@ export default {
             this.filterAssignee.name +
             "</span> &nbsp;" +
             "</span>&nbsp;&nbsp;</p>";
-          this.annotations.push(this.filterAssignee.name);
+          this.annotations.push(this.filterAssignee.id);
         } else {
           this.updatedComment =
             "&nbsp;<span class=''>" +
@@ -555,7 +554,7 @@ export default {
             this.filterAssignee.name +
             "</span> &nbsp;" +
             "</span>&nbsp;&nbsp;</p>";
-          this.annotations.push(this.filterAssignee.name);
+          this.annotations.push(this.filterAssignee.id);
         }
       }
       this.filterAssignee == "";
@@ -738,6 +737,7 @@ export default {
     async addComment() {
       if (this.textEditor != "") {
         let response;
+        let mentionResponse;
         try {
           response = await this.$axios.$post(
             `/task/comment`,
@@ -753,6 +753,7 @@ export default {
               }
             }
           );
+
           this.textEditor = "";
           // this.$store.dispatch("comments/fetchTaskActivityComment", {
           //   taskId: this.selectedTask.taskId,
@@ -772,7 +773,26 @@ export default {
           setTimeout(() => {
             this.close();
           }, 3000);
-          console.log("update task status response", response);
+
+          if (response.message == "success") {
+            mentionResponse = await this.$axios.$post(
+              `/notification/mention`,
+              {
+                commentId: response.data.commentId,
+                entityId: this.selectedTask.taskId,
+                recipients: this.annotations
+              },
+              {
+                headers: {
+                  userId: this.userId
+                }
+              }
+            );
+            console.log("Annotations: " + mentionResponse);
+          }
+
+          this.annotations = [];
+          // console.log("update task status response", response);
         } catch (e) {
           this.errorMessage = e.response.data;
           this.component = "error-popup";
