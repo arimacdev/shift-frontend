@@ -132,7 +132,7 @@
                                   class="categoryHeader"
                                   :style="
                               'background-color:' +
-                                  categoryMap.categoryColorCode + '; width:' + categoryMap.skillSet.length * 90 + 'px; !important'
+                                  categoryMap.categoryColorCode + '; width:' + categoryMap.skillSet.length * 95 + 'px; !important'
                             "
                                 >{{ categoryMap.categoryName }}</div>
                               </template>
@@ -177,7 +177,7 @@
                                 class="categoryHeader"
                                 :style="
                               'background-color:' +
-                                  categoryMap.categoryColorCode + '; width:' + categoryMap.skillSet.length * 90 + 'px; !important'
+                                  categoryMap.categoryColorCode + '; width:' + categoryMap.skillSet.length * 95 + 'px; !important'
                             "
                               >{{ categoryMap.categoryName }}</div>
                             </template>
@@ -221,7 +221,7 @@
                                 class="categoryHeader"
                                 :style="
                               'background-color:' +
-                                  categoryMap.categoryColorCode + '; width:' + categoryMap.skillSet.length * 90 + 'px; !important'
+                                  categoryMap.categoryColorCode + '; width:' + categoryMap.skillSet.length * 95 + 'px; !important'
                             "
                               >{{ categoryMap.categoryName }}</div>
                             </template>
