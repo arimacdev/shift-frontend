@@ -12,7 +12,7 @@ export const state = () => ({
 });
 
 export const mutations = {
-  SET_INDEX(state, startIndex, endIndex) {
+  SET_INDEX(state, { startIndex, endIndex }) {
     state.startIndex = startIndex;
     state.endIndex = endIndex;
   },
@@ -108,8 +108,8 @@ export const mutations = {
 
 export const actions = {
   setIndex({ commit }, { startIndex, endIndex }) {
-    // console.log('selected->>>', task);
-    commit('SET_INDEX', startIndex, endIndex);
+    // console.log('SETINDEX->>>', startIndex, endIndex);
+    commit('SET_INDEX', { startIndex, endIndex });
   },
   setSelectedTask({ commit }, task) {
     // console.log('selected->>>', task);
@@ -191,14 +191,11 @@ export const actions = {
         console.log('error retrieving children', e);
       });
   },
-  fetchTasksAllTasks(
-    { commit, rootState },
-    { projectId, startIndex, endIndex }
-  ) {
+  fetchTasksAllTasks({ commit, rootState }, projectId) {
     const userId = rootState.user.userId;
     this.$axios
       .get(
-        `projects/${projectId}/tasks?userId=${userId}&startIndex=${startIndex}&endIndex=${endIndex}`,
+        `projects/${projectId}/tasks?userId=${userId}&startIndex=${rootState.task.startIndex}&endIndex=${rootState.task.endIndex}`,
         {
           headers: {
             type: 'project',
