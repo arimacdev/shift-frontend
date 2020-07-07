@@ -2796,12 +2796,12 @@
 .skillDisplayCard {
   display: inline-block;
   vertical-align: top;
-  /* min-width: 250px; */
   margin-right: 20px;
 }
 .skillDisplayCard1 {
   display: inline-block;
   margin-right: 20px;
+  /* min-width: 250px; */
 }
 .card123 {
   background-color: darkmagenta;
