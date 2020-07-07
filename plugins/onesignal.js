@@ -38,6 +38,12 @@ OneSignal.push(() => {
       },
     },
   });
+  OneSignal.getUserId().then((userId)=> {
+    console.log('OneSignal User ID: ===>', userId);
+    if(userId != null){
+    context.store.dispatch('notification/addNotificationDevice', userId);
+    }
+  });
   OneSignal.showNativePrompt();
 });
 
