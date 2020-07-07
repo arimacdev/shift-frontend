@@ -212,11 +212,11 @@
 
 .taskFormDiv {
   position: absolute;
-  width: 90%;
-  margin-top: 7%;
+  width: 98%;
+  /* margin-top: 7%; */
   padding-top: 10px;
   padding-right: 10px;
-  height: 70vh;
+  height: 80vh;
   padding-bottom: 100px;
 }
 .fileUpload::-webkit-file-upload-button {
@@ -970,13 +970,14 @@
 }
 
 .taskListViewContent {
-  height: 60vh;
+  height: 70vh;
   z-index: -100;
-  margin-top: 25px;
+  margin-top: 10px;
   padding-bottom: 100px;
 }
 .allTaskCreateTab {
-  margin-bottom: -40px !important;
+  margin-top: 5px;
+  margin-bottom: -30px !important;
 }
 .filterListTop {
   margin-top: 25px;
@@ -1834,6 +1835,7 @@
 /* ----------------------- task restructure ---------------- */
 
 .filterSection {
+  margin-top: -15px;
   height: 60px;
 }
 .taskFilterTypeDiv {
@@ -1876,7 +1878,7 @@
 
 .restructuredMainTaskList {
   border: 2px #e5e5e5 solid;
-  margin-top: 30px;
+  margin-top: 20px;
   background-color: #ffffff;
   overflow: hidden;
 }
@@ -1904,7 +1906,7 @@
 }
 .backPannelAllTask {
   background-color: #edf0f5;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
   border-radius: 5px;
 }
 .restructuredMySubTaskList {
@@ -1921,7 +1923,7 @@
   margin-right: 10px;
 }
 .restructuredTaskCreate {
-  margin-top: 20px;
+  /* margin-top: 20px; */
   margin-bottom: -20px;
 }
 .restructuredSubTaskList {
@@ -3044,4 +3046,7 @@
   margin-left: -25px;
   margin-right: -25px;
   border-radius: 5px;
+}
+.taskActionContents {
+  /* margin-top: -70px; */
 }

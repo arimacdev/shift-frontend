@@ -1,5 +1,5 @@
 <template>
-  <div class="taskContent">
+  <div class>
     <div class="filterSection">
       <v-row>
         <v-col md="2">
@@ -103,25 +103,13 @@
           ></VueCtkDateTimePicker>
         </v-col>
         <v-col md="1">
-          <v-btn
-            @click="jqlSearch()"
-            dark
-            width="100%"
-            height="40px"
-            color="#080848"
-          >
+          <v-btn @click="jqlSearch()" dark width="100%" height="40px" color="#080848">
             <v-icon color="#FFFFFF">mdi-filter-outline</v-icon>
             <!-- Filter -->
           </v-btn>
         </v-col>
         <v-col md="1">
-          <v-btn
-            @click="filterChange()"
-            dark
-            width="100%"
-            height="40px"
-            color="#FF6161"
-          >
+          <v-btn @click="filterChange()" dark width="100%" height="40px" color="#FF6161">
             <v-icon color="#FFFFFF">mdi-cancel</v-icon>
             <!-- Cancel -->
           </v-btn>
@@ -129,28 +117,22 @@
       </v-row>
     </div>
 
-    <div
-      v-if="this.taskFilter == 'none'"
-      class="restructuredTaskCreate allTaskCreateTab"
-    >
-      <v-form onsubmit="return false" ref="form">
-        <v-text-field
-          v-model="taskName"
-          background-color="#EDF0F5"
-          solo
-          prepend-inner-icon="mdi-plus-circle"
-          label="Add a main task..."
-          class
-          @keyup.enter="addTask(null, 'general')"
-          clearable
-          hint="Type a task name and hit enter"
-        ></v-text-field>
-      </v-form>
-    </div>
-    <div
-      v-if="this.taskFilter == 'none'"
-      class="taskListViewContent overflow-y-auto"
-    >
+    <div v-if="this.taskFilter == 'none'" class="taskListViewContent overflow-y-auto">
+      <div v-if="this.taskFilter == 'none'" class="restructuredTaskCreate allTaskCreateTab">
+        <v-form onsubmit="return false" ref="form">
+          <v-text-field
+            v-model="taskName"
+            background-color="#EDF0F5"
+            solo
+            prepend-inner-icon="mdi-plus-circle"
+            label="Add a main task..."
+            class
+            @keyup.enter="addTask(null, 'general')"
+            clearable
+            hint="Type a task name and hit enter"
+          ></v-text-field>
+        </v-form>
+      </div>
       <!-- ------ start task list ------- -->
       <div v-for="(task, index) in projectAllTasks" :key="index">
         <div class="backPannelAllTask">
@@ -169,30 +151,23 @@
                     v-if="task.parentTask.taskStatus == 'closed'"
                     size="30"
                     color="#2EC973"
-                    >mdi-checkbox-marked-circle</v-icon
-                  >
-                  <v-icon v-else size="30" color="#EDF0F5"
-                    >mdi-checkbox-blank-circle</v-icon
-                  >
+                  >mdi-checkbox-marked-circle</v-icon>
+                  <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                 </v-list-item-action>
                 <div class="tasklistTaskNames restructuredMainTaskName">
                   <div class="body-2">
-                    <span class="restructuredMainTaskCode">
-                      {{ task.parentTask.secondaryTaskId }}
-                    </span>
+                    <span class="restructuredMainTaskCode">{{ task.parentTask.secondaryTaskId }}</span>
                     {{ task.parentTask.taskName }}
                   </div>
                 </div>
                 <div
                   class="restStatusChip"
                   :class="statusCheck(task.parentTask.issueType)"
-                >
-                  {{ task.parentTask.issueType }}
-                </div>
+                >{{ task.parentTask.issueType }}</div>
                 <v-list-item-content class="updatedDate">
-                  <v-list-item-title :class="dueDateCheck(task.parentTask)">
-                    {{ getProjectDates(task.parentTask.taskDueDateAt) }}
-                  </v-list-item-title>
+                  <v-list-item-title
+                    :class="dueDateCheck(task.parentTask)"
+                  >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</v-list-item-title>
                 </v-list-item-content>
                 <div>
                   <v-list-item-avatar>
@@ -226,10 +201,7 @@
           </div>
 
           <!-- -------------- sub task design --------------- -->
-          <div
-            class="restructuredSubTaskCreate"
-            v-if="task.parentTask.taskStatus != 'closed'"
-          >
+          <div class="restructuredSubTaskCreate" v-if="task.parentTask.taskStatus != 'closed'">
             <v-text-field
               v-model="subTaskName[index]"
               background-color="#0BAFFF"
@@ -269,30 +241,23 @@
                       v-if="childTask.taskStatus == 'closed'"
                       size="30"
                       color="#2EC973"
-                      >mdi-checkbox-marked-circle</v-icon
-                    >
-                    <v-icon v-else size="30" color="#EDF0F5"
-                      >mdi-checkbox-blank-circle</v-icon
-                    >
+                    >mdi-checkbox-marked-circle</v-icon>
+                    <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                   </v-list-item-action>
                   <div class="tasklistTaskNames restructuredSubTaskName">
                     <div class="body-2">
-                      <span class="restructuredMainTaskCode">
-                        {{ childTask.secondaryTaskId }}
-                      </span>
+                      <span class="restructuredMainTaskCode">{{ childTask.secondaryTaskId }}</span>
                       {{ childTask.taskName }}
                     </div>
                   </div>
                   <div
                     class="restStatusChip"
                     :class="statusCheck(childTask.issueType)"
-                  >
-                    {{ childTask.issueType }}
-                  </div>
+                  >{{ childTask.issueType }}</div>
                   <v-list-item-content class="updatedDate">
-                    <v-list-item-title :class="dueDateCheck(childTask)">
-                      {{ getProjectDates(childTask.taskDueDateAt) }}
-                    </v-list-item-title>
+                    <v-list-item-title
+                      :class="dueDateCheck(childTask)"
+                    >{{ getProjectDates(childTask.taskDueDateAt) }}</v-list-item-title>
                   </v-list-item-content>
                   <div>
                     <v-list-item-avatar>
@@ -329,9 +294,7 @@
     </div>
     <!-- -------------- filter list -------------- -->
     <div v-else class="taskListViewContent filterListTop overflow-y-auto">
-      <div v-if="this.filterList == ''" class="filterTitleDiv headline">
-        No items to show
-      </div>
+      <div v-if="this.filterList == ''" class="filterTitleDiv headline">No items to show</div>
       <div v-for="(task, index) in filterList" :key="index">
         <div class="taskList" :class="filterStyles(task.isParent)">
           <nuxt-link
@@ -346,27 +309,24 @@
                   v-if="task.taskStatus == 'closed'"
                   size="30"
                   color="#2EC973"
-                  >mdi-checkbox-marked-circle</v-icon
-                >
-                <v-icon v-else size="30" :color="checkBoxColor(task.isParent)"
-                  >mdi-checkbox-blank-circle</v-icon
-                >
+                >mdi-checkbox-marked-circle</v-icon>
+                <v-icon
+                  v-else
+                  size="30"
+                  :color="checkBoxColor(task.isParent)"
+                >mdi-checkbox-blank-circle</v-icon>
               </v-list-item-action>
               <div class="tasklistTaskNames restructuredMainTaskName">
                 <div class="body-2">
-                  <span class="restructuredMainTaskCode">
-                    {{ task.secondaryTaskId }}
-                  </span>
+                  <span class="restructuredMainTaskCode">{{ task.secondaryTaskId }}</span>
                   {{ task.taskName }}
                 </div>
               </div>
-              <div class="restStatusChip" :class="statusCheck(task.issueType)">
-                {{ task.issueType }}
-              </div>
+              <div class="restStatusChip" :class="statusCheck(task.issueType)">{{ task.issueType }}</div>
               <v-list-item-content class="updatedDate">
-                <v-list-item-title :class="dueDateCheck(task)">
-                  {{ getProjectDates(task.taskDueDateAt) }}
-                </v-list-item-title>
+                <v-list-item-title
+                  :class="dueDateCheck(task)"
+                >{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
               </v-list-item-content>
               <div>
                 <v-list-item-avatar>
@@ -412,12 +372,7 @@
     </v-navigation-drawer>-->
     <!-- ------------ task dialog --------- -->
 
-    <v-dialog
-      v-model="taskDialog"
-      width="90vw"
-      transition="dialog-bottom-transition"
-      persistent
-    >
+    <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition" persistent>
       <task-dialog
         :task="task"
         :logs="logs"
@@ -437,12 +392,7 @@
     <v-dialog v-model="taskDeleteDialog" max-width="380">
       <v-card>
         <div class="popupConfirmHeadline">
-          <v-icon
-            class="deletePopupIcon"
-            size="60"
-            color="deep-orange lighten-1"
-            >mdi-alert-outline</v-icon
-          >
+          <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
           <br />
           <span class="alertPopupTitle">Delete Task</span>
           <br />
@@ -457,12 +407,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn
-              color="success"
-              width="100px"
-              @click="taskDeleteDialog = false"
-              >Cancel</v-btn
-            >
+            <v-btn color="success" width="100px" @click="taskDeleteDialog = false">Cancel</v-btn>
             <v-spacer></v-spacer>
             <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
             <v-btn
@@ -473,8 +418,7 @@
                 taskDialog = false;
                 deleteTask();
               "
-              >Delete</v-btn
-            >
+            >Delete</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
         </div>
@@ -499,42 +443,42 @@
 </template>
 
 <script>
-import TaskSideBar from '~/components/tasks/taskSideBar';
-import TaskDialog from '~/components/tasks/taskDialog';
-import SuccessPopup from '~/components/popups/successPopup';
-import ErrorPopup from '~/components/popups/errorPopup';
-import Progress from '~/components/popups/progress';
-import { mapState } from 'vuex';
-import Stomp from 'stompjs';
-import SockJS from 'sockjs-client';
+import TaskSideBar from "~/components/tasks/taskSideBar";
+import TaskDialog from "~/components/tasks/taskDialog";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
+import Progress from "~/components/popups/progress";
+import { mapState } from "vuex";
+import Stomp from "stompjs";
+import SockJS from "sockjs-client";
 export default {
   data() {
     return {
       logs: {},
-      searchAssignee: '',
+      searchAssignee: "",
       overlay: false,
       subTaskName: [],
-      projectId: '',
-      jqlQuery: '',
-      assigneeQuery: '',
-      projectQuery: '',
-      typeQuery: '',
-      statusQuery: '',
-      orderByQuery: '',
-      dateQuery: '',
-      taskNameQuery: '',
+      projectId: "",
+      jqlQuery: "",
+      assigneeQuery: "",
+      projectQuery: "",
+      typeQuery: "",
+      statusQuery: "",
+      orderByQuery: "",
+      dateQuery: "",
+      taskNameQuery: "",
       // assigneeArray: [],
       templateArray: [],
       filterAssignee: [],
       filterProject: [],
-      filterTemplate: '',
+      filterTemplate: "",
       filterType: [],
       filterStatus: [],
       filterResult: [],
 
-      errorMessage: '',
-      successMessage: '',
-      component: '',
+      errorMessage: "",
+      successMessage: "",
+      component: "",
       taskDialog: false,
       taskDeleteDialog: false,
       dateRange: null,
@@ -544,60 +488,60 @@ export default {
       widgets: false,
       states: [],
       filterList: {},
-      taskAssigneeFilter: '',
+      taskAssigneeFilter: "",
       updatedTask: {
-        taskName: '',
+        taskName: ""
       },
-      nameOfTask: '',
+      nameOfTask: "",
       taskTypeArray: [
-        { name: 'Development', id: 'development' },
-        { name: 'QA', id: 'qa' },
-        { name: 'Design', id: 'design' },
-        { name: 'Bug', id: 'bug' },
-        { name: 'Operational', id: 'operational' },
-        { name: 'Pre-sales', id: 'preSales' },
-        { name: 'General', id: 'general' },
+        { name: "Development", id: "development" },
+        { name: "QA", id: "qa" },
+        { name: "Design", id: "design" },
+        { name: "Bug", id: "bug" },
+        { name: "Operational", id: "operational" },
+        { name: "Pre-sales", id: "preSales" },
+        { name: "General", id: "general" }
       ],
       taskStatusArray: [
-        { name: 'Pending', id: 'pending' },
-        { name: 'On hold', id: 'onHold' },
-        { name: 'Open', id: 'open' },
-        { name: 'Cancel', id: 'cancel' },
-        { name: 'ReOpened', id: 'reOpened' },
-        { name: 'Fixing', id: 'fixing' },
-        { name: 'Testing', id: 'testing' },
-        { name: 'Resolved', id: 'resolved' },
-        { name: 'In progress', id: 'inprogress' },
-        { name: 'Completed', id: 'completed' },
-        { name: 'Implementing', id: 'implementing' },
-        { name: 'Under review', id: 'underReview' },
-        { name: 'Weiting for approval', id: 'waitingForApproval' },
-        { name: 'Review', id: 'review' },
-        { name: 'Discussion', id: 'discussion' },
-        { name: 'Waiting response', id: 'waitingResponse' },
-        { name: 'Ready', id: 'ready' },
-        { name: 'Deployed', id: 'deployed' },
-        { name: 'Fixed', id: 'fixed' },
-        { name: 'Rejected', id: 'rejected' },
-        { name: 'Closed', id: 'closed' },
+        { name: "Pending", id: "pending" },
+        { name: "On hold", id: "onHold" },
+        { name: "Open", id: "open" },
+        { name: "Cancel", id: "cancel" },
+        { name: "ReOpened", id: "reOpened" },
+        { name: "Fixing", id: "fixing" },
+        { name: "Testing", id: "testing" },
+        { name: "Resolved", id: "resolved" },
+        { name: "In progress", id: "inprogress" },
+        { name: "Completed", id: "completed" },
+        { name: "Implementing", id: "implementing" },
+        { name: "Under review", id: "underReview" },
+        { name: "Weiting for approval", id: "waitingForApproval" },
+        { name: "Review", id: "review" },
+        { name: "Discussion", id: "discussion" },
+        { name: "Waiting response", id: "waitingResponse" },
+        { name: "Ready", id: "ready" },
+        { name: "Deployed", id: "deployed" },
+        { name: "Fixed", id: "fixed" },
+        { name: "Rejected", id: "rejected" },
+        { name: "Closed", id: "closed" }
       ],
 
       items: [
-        { name: 'Development', id: 'development' },
-        { name: 'QA', id: 'qa' },
-        { name: 'Design', id: 'design' },
-        { name: 'Bug', id: 'bug' },
-        { name: 'Operational', id: 'operational' },
-        { name: 'Pre-sales', id: 'preSales' },
-        { name: 'General', id: 'general' },
+        { name: "Development", id: "development" },
+        { name: "QA", id: "qa" },
+        { name: "Design", id: "design" },
+        { name: "Bug", id: "bug" },
+        { name: "Operational", id: "operational" },
+        { name: "Pre-sales", id: "preSales" },
+        { name: "General", id: "general" }
       ],
       filterOptions: [
-        { id: 'none', name: 'None' },
-        { id: 'assignee', name: 'Assignee' },
-        { id: 'issueType', name: 'Task type' },
-        { id: 'dueDate', name: 'Date Range' },
+        { id: "none", name: "None" },
+        { id: "assignee", name: "Assignee" },
+        { id: "issueType", name: "Task type" },
+        { id: "dueDate", name: "Date Range" }
       ],
-      projects: ['pr1'],
+      projects: ["pr1"],
       drawer: null,
       task: {},
       taskObject: {},
@@ -605,73 +549,73 @@ export default {
       taskFiles: [],
       assignee: {},
       userId: this.$store.state.user.userId,
-      taskSelect: 'all',
-      taskFilter: 'none',
+      taskSelect: "all",
+      taskFilter: "none",
       componentClose: null,
       stomp: null,
-      baseUrl: process.env.SYSTEM_URL,
+      baseUrl: process.env.SYSTEM_URL
     };
   },
   components: {
-    'task-side-bar': TaskSideBar,
-    'task-dialog': TaskDialog,
-    'success-popup': SuccessPopup,
-    'error-popup': ErrorPopup,
-    'progress-loading': Progress,
+    "task-side-bar": TaskSideBar,
+    "task-dialog": TaskDialog,
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup,
+    "progress-loading": Progress
   },
   watch: {
     searchAssignee(val) {
       val && val !== this.selectAssignee && this.loadAssignee(val);
-    },
+    }
   },
   methods: {
     filterChange() {
-      this.nameOfTask = '';
+      this.nameOfTask = "";
       this.assigneeOfTask = [];
       this.taskType = [];
       this.taskStatus = [];
       this.dateRange = null;
-      this.taskFilter = 'none';
+      this.taskFilter = "none";
 
-      this.taskNameQuery = '';
-      this.assigneeQuery = '';
-      this.typeQuery = '';
-      this.statusQuery = '';
+      this.taskNameQuery = "";
+      this.assigneeQuery = "";
+      this.typeQuery = "";
+      this.statusQuery = "";
       this.dateRange = null;
-      this.jqlQuery = '';
+      this.jqlQuery = "";
     },
     jqlSearch() {
       this.overlay = true;
       if (this.filterAssignee.length != 0) {
-        let assigneeList = '';
+        let assigneeList = "";
         for (let i = 0; i < this.filterAssignee.length; i++) {
           assigneeList = assigneeList + '"' + this.filterAssignee[i].id + '"';
           if (i < this.filterAssignee.length - 1) {
-            assigneeList = assigneeList + ',';
+            assigneeList = assigneeList + ",";
           }
         }
-        this.assigneeQuery = 'taskAssignee IN ' + '(' + assigneeList + ') AND ';
+        this.assigneeQuery = "taskAssignee IN " + "(" + assigneeList + ") AND ";
       }
       this.projectQuery = 'projectId IN ("' + this.projectId + '")  AND ';
       if (this.filterType.length != 0) {
-        let typeList = '';
+        let typeList = "";
         for (let i = 0; i < this.filterType.length; i++) {
           typeList = typeList + '"' + this.filterType[i].id + '"';
           if (i < this.filterType.length - 1) {
-            typeList = typeList + ',';
+            typeList = typeList + ",";
           }
         }
-        this.typeQuery = 'issueType IN ' + '(' + typeList + ')  AND ';
+        this.typeQuery = "issueType IN " + "(" + typeList + ")  AND ";
       }
       if (this.filterStatus.length != 0) {
-        let statusList = '';
+        let statusList = "";
         for (let i = 0; i < this.filterStatus.length; i++) {
           statusList = statusList + '"' + this.filterStatus[i].id + '"';
           if (i < this.filterStatus.length - 1) {
-            statusList = statusList + ',';
+            statusList = statusList + ",";
           }
         }
-        this.statusQuery = 'taskStatus IN ' + '(' + statusList + ')  AND ';
+        this.statusQuery = "taskStatus IN " + "(" + statusList + ")  AND ";
       }
       if (this.dateRange != null) {
         if (
@@ -698,9 +642,9 @@ export default {
             '" AND ';
         }
       }
-      this.orderByQuery = 'ORDER BY projectName ASC';
+      this.orderByQuery = "ORDER BY projectName ASC";
 
-      if (this.nameOfTask != '' && this.nameOfTask != null) {
+      if (this.nameOfTask != "" && this.nameOfTask != null) {
         this.taskNameQuery =
           'taskName LIKE "%25' + this.nameOfTask + '%25"  AND ';
       }
@@ -725,8 +669,8 @@ export default {
           `/projects/workload/filter?query=${this.jqlQuery}`,
           {
             headers: {
-              user: this.$store.state.user.userId,
-            },
+              user: this.$store.state.user.userId
+            }
           }
         );
         // console.log("tasks--->", taskFilterResponse.data);
@@ -736,63 +680,63 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error fetching data', error);
+        console.log("Error fetching data", error);
       }
     },
     clearAssignee() {
-      this.assigneeQuery = '';
-      this.jqlQuery = '';
+      this.assigneeQuery = "";
+      this.jqlQuery = "";
     },
     clearType() {
-      this.typeQuery = '';
-      this.jqlQuery = '';
+      this.typeQuery = "";
+      this.jqlQuery = "";
     },
     clearStatus() {
-      this.statusQuery = '';
-      this.jqlQuery = '';
+      this.statusQuery = "";
+      this.jqlQuery = "";
     },
     clearDate() {
-      this.dateQuery = '';
-      this.jqlQuery = '';
+      this.dateQuery = "";
+      this.jqlQuery = "";
     },
     clearName() {
-      this.taskNameQuery = '';
-      this.jqlQuery = '';
+      this.taskNameQuery = "";
+      this.jqlQuery = "";
     },
     loadAssignee(v) {
       let AssigneeSearchList = this.people;
       for (let index = 0; index < AssigneeSearchList.length; ++index) {
         let user = AssigneeSearchList[index];
         this.assigneeArray.push({
-          name: user.assigneeFirstName + ' ' + user.assigneeLastName,
+          name: user.assigneeFirstName + " " + user.assigneeLastName,
           id: user.assigneeId,
-          img: user.assigneeProfileImage,
+          img: user.assigneeProfileImage
         });
       }
     },
     filterStyles(isParent) {
       if (isParent == true) {
-        return 'restructuredMainTaskFilterList';
+        return "restructuredMainTaskFilterList";
       } else {
-        return 'restructuredChildTaskFilterList';
+        return "restructuredChildTaskFilterList";
       }
     },
     checkBoxColor(isParent) {
       if (isParent == true) {
-        return '#EDF0F5';
+        return "#EDF0F5";
       } else {
-        return '#FFFFFF';
+        return "#FFFFFF";
       }
     },
     taskDialogClosing() {
-      console.log('Task Dialog Closing');
+      console.log("Task Dialog Closing");
       if (this.stomp !== null) {
         this.stomp.disconnect(() => {
-          console.log('client disconnected');
+          console.log("client disconnected");
         });
       }
       this.taskDialog = false;
@@ -836,27 +780,27 @@ export default {
             data: {},
             headers: {
               user: this.userId,
-              type: 'project',
-            },
+              type: "project"
+            }
           }
         );
         // this.component = 'success-popup'
-        this.$emit('listenChange');
-        this.$emit('shrinkSideBar');
+        this.$emit("listenChange");
+        this.$emit("shrinkSideBar");
 
         // console.log(response.data);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error creating project', e);
+        console.log("Error creating project", e);
       }
     },
     // ------- popup close ----------
     close() {
-      this.component = '';
+      this.component = "";
     },
     async addTask(selectedParentTask, issueType) {
       this.overlay = true;
@@ -869,30 +813,30 @@ export default {
             projectId: this.projectId,
             taskInitiator: this.userId,
             taskAssignee: this.userId,
-            taskDueDate: '',
-            taskRemindOnDate: '',
+            taskDueDate: "",
+            taskRemindOnDate: "",
             taskStatus: null,
-            taskNotes: '',
+            taskNotes: "",
             issueType: issueType,
-            parentTaskId: selectedParentTask,
+            parentTaskId: selectedParentTask
           }
         );
         this.$refs.form.reset();
-        this.component = 'success-popup';
-        this.successMessage = 'Task added successfully';
+        this.component = "success-popup";
+        this.successMessage = "Task added successfully";
         setTimeout(() => {
           this.close();
         }, 3000);
         this.overlay = false;
-        this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error updating a status', e);
+        console.log("Error updating a status", e);
       }
     },
     async addSubTask(index, selectedParentTask, issueType, sprintId) {
@@ -906,31 +850,31 @@ export default {
             projectId: this.projectId,
             taskInitiator: this.userId,
             taskAssignee: this.userId,
-            taskDueDate: '',
-            taskRemindOnDate: '',
+            taskDueDate: "",
+            taskRemindOnDate: "",
             taskStatus: null,
-            taskNotes: '',
+            taskNotes: "",
             issueType: issueType,
             sprintId: sprintId,
-            parentTaskId: selectedParentTask,
+            parentTaskId: selectedParentTask
           }
         );
         this.subTaskName = [];
-        this.component = 'success-popup';
-        this.successMessage = 'Task added successfully';
+        this.component = "success-popup";
+        this.successMessage = "Task added successfully";
         setTimeout(() => {
           this.close();
         }, 3000);
         this.overlay = false;
-        this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
         this.overlay = false;
-        console.log('Error updating a status', e);
+        console.log("Error updating a status", e);
       }
     },
     clearFilter() {
@@ -944,9 +888,9 @@ export default {
       for (let index = 0; index < projectSearchList.length; ++index) {
         let user = projectSearchList[index];
         this.states.push({
-          name: user.assigneeFirstName + ' ' + user.assigneeLastName,
+          name: user.assigneeFirstName + " " + user.assigneeLastName,
           id: user,
-          img: user.assigneeProfileImage,
+          img: user.assigneeProfileImage
         });
       }
       // console.log("nameList", this.states);
@@ -954,9 +898,9 @@ export default {
     },
     listenToChange() {
       // console.log("listened to changes ------->");
-      this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
-      this.$store.dispatch('task/fetchTasksMyTasks', this.projectId);
-      this.$store.dispatch('task/fetchProjectTaskCompletion', this.projectId);
+      this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+      this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
+      this.$store.dispatch("task/fetchProjectTaskCompletion", this.projectId);
     },
     shrinkSideBar() {
       this.drawer = false;
@@ -965,69 +909,69 @@ export default {
       // console.log("-----------> changed" + this.taskSelect);
     },
     websocketConnectInit(taskId) {
-      console.log('initalize websocket connection for task', taskId);
-      const url = this.baseUrl + '/api/pm-service';
+      console.log("initalize websocket connection for task", taskId);
+      const url = this.baseUrl + "/api/pm-service";
       try {
-        console.log('connecting to ws...');
-        let socket = new SockJS(url + '/chat');
+        console.log("connecting to ws...");
+        let socket = new SockJS(url + "/chat");
         //this.stompClient = Stomp.over(socket);
         this.stomp = Stomp.over(socket);
         //this.$store.dispatch("stompClient/setStompClient", "this.stomp");
         //let client = this.stompClient;
-        this.stomp.connect({}, (frame) => {
-          console.log('connected to: ' + frame);
-          console.log('subscribing to topic: ' + '/topic/messages/' + taskId);
-          this.stomp.subscribe('/topic/messages/' + taskId, (response) => {
+        this.stomp.connect({}, frame => {
+          console.log("connected to: " + frame);
+          console.log("subscribing to topic: " + "/topic/messages/" + taskId);
+          this.stomp.subscribe("/topic/messages/" + taskId, response => {
             // console.log("Response", response);
             let data = JSON.parse(response.body);
-            console.log('outside----->');
-            if (data.actionType === 'comment') {
-              console.log('inside----->');
-              this.$store.dispatch('comments/fetchTaskActivityComment', {
+            console.log("outside----->");
+            if (data.actionType === "comment") {
+              console.log("inside----->");
+              this.$store.dispatch("comments/fetchTaskActivityComment", {
                 taskId: this.selectedTask.taskId,
                 startIndex: 0,
-                endIndex: 9,
+                endIndex: 9
               });
             } else if (
-              data.actionType === 'typing' &&
+              data.actionType === "typing" &&
               data.sender !== this.userId
             ) {
-              this.$store.dispatch('stompClient/setTypingStatus', true);
-              this.$store.dispatch('stompClient/setTypingUser', data.message);
+              this.$store.dispatch("stompClient/setTypingStatus", true);
+              this.$store.dispatch("stompClient/setTypingUser", data.message);
             } else if (
-              data.actionType === 'notTyping' &&
+              data.actionType === "notTyping" &&
               data.sender !== this.userId
             ) {
-              this.$store.dispatch('stompClient/setTypingStatus', false);
+              this.$store.dispatch("stompClient/setTypingStatus", false);
             }
           });
         });
       } catch (error) {
-        console.log('Error fetching data', error);
+        console.log("Error fetching data", error);
       }
     },
     async selectTask(task, taskObject) {
-      console.log('select________>');
+      console.log("select________>");
       this.websocketConnectInit(task.taskId);
       this.task = task;
-      this.$store.dispatch('task/setSelectedTask', task);
+      this.$store.dispatch("task/setSelectedTask", task);
       this.taskObject = taskObject;
-      this.componentClose = '';
-      this.$axios.get(`/users/${task.taskAssignee}`).then(async (response) => {
+      this.componentClose = "";
+      this.$axios.get(`/users/${task.taskAssignee}`).then(async response => {
         // console.log("fetched task -->", response.data.data);
         this.assignee = response.data.data;
       });
-      this.$store.dispatch('user/setSelectedTaskUser', task.taskAssignee);
+      this.$store.dispatch("user/setSelectedTaskUser", task.taskAssignee);
       if (this.task.isParent) {
         // console.log("parent task");
-        this.$store.dispatch('task/fetchChildren', {
+        this.$store.dispatch("task/fetchChildren", {
           projectId: this.projectId,
-          taskId: this.task.taskId,
+          taskId: this.task.taskId
         });
       } else {
-        this.$store.dispatch('task/fetchParentTask', {
+        this.$store.dispatch("task/fetchParentTask", {
           projectId: this.projectId,
-          taskId: this.task.parentId,
+          taskId: this.task.parentId
         });
       }
       let taskFilesResponse;
@@ -1037,32 +981,32 @@ export default {
           {
             headers: {
               user: this.userId,
-              type: 'project',
-            },
+              type: "project"
+            }
           }
         );
         // console.log("files--->", taskFilesResponse.data);
         this.taskFiles = taskFilesResponse.data;
-        this.$store.dispatch('task/setTaskFiles', taskFilesResponse.data);
+        this.$store.dispatch("task/setTaskFiles", taskFilesResponse.data);
       } catch (error) {
         // console.log("Error fetching data", error);
       }
 
-      this.$store.dispatch('activityLog/fetchTaskActivityLog', {
+      this.$store.dispatch("activityLog/fetchTaskActivityLog", {
         taskId: task.taskId,
         startIndex: 0,
-        endIndex: 10,
+        endIndex: 10
       });
 
-      this.$store.dispatch('comments/fetchTaskActivityComment', {
+      this.$store.dispatch("comments/fetchTaskActivityComment", {
         taskId: task.taskId,
         startIndex: 0,
-        endIndex: 10,
+        endIndex: 10
       });
 
-      this.$store.dispatch('comments/fetchTaskCommentLength', task.taskId);
+      this.$store.dispatch("comments/fetchTaskCommentLength", task.taskId);
 
-      this.$store.dispatch('user/fetchOwnUser', this.userId);
+      this.$store.dispatch("user/fetchOwnUser", this.userId);
 
       // let taskLogResponse;
       // try {
@@ -1081,92 +1025,92 @@ export default {
       // }
     },
     statusCheck(task) {
-      if (task === 'development') {
-        return 'developmentStatus';
-      } else if (task === 'qa') {
-        return 'qaStatus';
-      } else if (task === 'design') {
-        return 'designStatus';
-      } else if (task === 'bug') {
-        return 'bugStatus';
-      } else if (task === 'operational') {
-        return 'operationalStatus';
-      } else if (task === 'preSales') {
-        return 'preSalesStatus';
-      } else if (task === 'general') {
-        return 'generalStatus';
+      if (task === "development") {
+        return "developmentStatus";
+      } else if (task === "qa") {
+        return "qaStatus";
+      } else if (task === "design") {
+        return "designStatus";
+      } else if (task === "bug") {
+        return "bugStatus";
+      } else if (task === "operational") {
+        return "operationalStatus";
+      } else if (task === "preSales") {
+        return "preSalesStatus";
+      } else if (task === "general") {
+        return "generalStatus";
       } else {
-        return 'otherStatus';
+        return "otherStatus";
       }
     },
     dueDateCheck(task) {
       // console.log("check due date color", task);
-      if (task.taskStatus === 'closed') {
-        return 'workLoadTaskDone';
+      if (task.taskStatus === "closed") {
+        return "workLoadTaskDone";
       } else if (task.taskDueDateAt == null) {
-        return 'workLoadTaskDefault';
+        return "workLoadTaskDefault";
       } else {
         const dueDate = new Date(task.taskDueDateAt);
         const dueToUtc = new Date(
-          dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
+          dueDate.toLocaleString("en-US", { timeZone: "UTC" })
         );
         const dueToUtcDate = new Date(dueToUtc);
         const now = new Date();
         // console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
         if (now.getTime() > dueToUtcDate.getTime()) {
           // console.log("overdue");
-          return 'workLoadTaskOverDue';
+          return "workLoadTaskOverDue";
         } else {
-          return 'workLoadTaskHealthy';
+          return "workLoadTaskHealthy";
         }
       }
     },
     getProjectDates(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
+        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
       );
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
-      if (date === null || date === '1970-01-01T05:30:00.000+0000') {
-        return 'Add Due Date';
+      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
+        return "Add Due Date";
       } else if (
         now.getDate() === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
         now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
-        return 'Today';
+        return "Today";
       } else if (
         now.getDate() - 1 === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
         now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
-        return 'Yesterday';
+        return "Yesterday";
       } else if (
         now.getDate() + 1 === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
         now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
-        return 'Tomorrow';
+        return "Tomorrow";
       } else {
-        let stringDate = date + '';
+        let stringDate = date + "";
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 10);
         return stringDate;
       }
-    },
+    }
   },
   async created() {
     this.projectId = this.$route.params.projects;
   },
   computed: {
     ...mapState({
-      people: (state) => state.task.userCompletionTasks,
-      projectAllTasks: (state) => state.task.allTasks,
+      people: state => state.task.userCompletionTasks,
+      projectAllTasks: state => state.task.allTasks,
       // projectId: state => state.project.project.projectId,
-      selectedTask: (state) => state.task.selectedTask,
+      selectedTask: state => state.task.selectedTask
       // stompClient: state => state.stompClient.stompClient
     }),
     assigneeArray() {
@@ -1175,9 +1119,9 @@ export default {
       for (let index = 0; index < AssigneeSearchList.length; ++index) {
         let user = AssigneeSearchList[index];
         assigneeList.push({
-          name: user.assigneeFirstName + ' ' + user.assigneeLastName,
+          name: user.assigneeFirstName + " " + user.assigneeLastName,
           id: user.assigneeId,
-          img: user.assigneeProfileImage,
+          img: user.assigneeProfileImage
         });
       }
       return assigneeList;
@@ -1188,19 +1132,19 @@ export default {
       },
       set(value) {
         this.filterAssignee = value;
-      },
+      }
     },
     taskType: {
       get() {},
       set(value) {
         this.filterType = value;
-      },
+      }
     },
     taskStatus: {
       get() {},
       set(value) {
         this.filterStatus = value;
-      },
+      }
     },
     taskName: {
       get() {
@@ -1208,9 +1152,9 @@ export default {
       },
       set(value) {
         this.updatedTask.taskName = value;
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>
 
