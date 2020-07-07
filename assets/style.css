@@ -22,6 +22,15 @@
 .body-2 {
   font-family: 'Roboto', sans-serif !important;
 }
+.projectListView {
+  margin-top: 10px;
+  height: 80vh;
+  background-color: #edf0f5;
+  border-radius: 5px;
+  padding-bottom: 100px !important;
+  border-right: 1px #e5e5e5 solid;
+  padding-top: 10px;
+}
 .listView {
   margin-top: 10px;
   height: 80vh;
@@ -3026,4 +3035,13 @@
 .annotations {
   font-weight: 500;
   background-color: #2600ff0e;
+}
+
+/* ------ project page restructure ------- */
+.projectPanelContent {
+}
+.selectedProjectPanel {
+  margin-left: -25px;
+  margin-right: -25px;
+  border-radius: 5px;
 }
