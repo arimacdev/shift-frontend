@@ -1,7 +1,7 @@
 <template>
   <div>
     <div style="position: fixed; right: 20px; top: 100px">
-      <v-menu bottom left open-on-hover>
+      <v-menu bottom left>
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon v-bind="attrs" v-on="on">
             <v-icon>mdi-dots-vertical</v-icon>
@@ -9,7 +9,7 @@
         </template>
 
         <v-list>
-          <v-list-item v-on:click="setTaskTab('all-tasks')">
+          <v-list-item v-on:click="setTaskTab('all-tasks'); fetchAllTasks()">
             <v-list-item-action>
               <v-icon size="17" color="#0c0c5a">icon-task</v-icon>
             </v-list-item-action>
@@ -128,6 +128,7 @@ export default {
     };
   },
   methods: {
+    fetchAllTasks() {},
     setTaskTab(tabType) {
       this.component = tabType;
     }

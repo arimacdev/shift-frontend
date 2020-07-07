@@ -411,10 +411,11 @@ export default {
           "sprints/sprint/fetchAllProjectSprints",
           this.$route.params.projects
         );
-        this.$store.dispatch(
-          "task/fetchTasksAllTasks",
-          this.$route.params.projects
-        );
+        this.$store.dispatch("task/fetchTasksAllTasks", {
+          projectId: this.$route.params.projects,
+          startIndex: 0,
+          endIndex: 10
+        });
         break;
       case "files":
         this.$store.dispatch(

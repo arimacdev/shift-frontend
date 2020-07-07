@@ -7,9 +7,15 @@ export const state = () => ({
   childTasks: [],
   selectedTask: {},
   parentTask: {},
+  startIndex: 0,
+  endIndex: 10,
 });
 
 export const mutations = {
+  SET_INDEX(state, startIndex, endIndex) {
+    state.startIndex = startIndex;
+    state.endIndex = endIndex;
+  },
   SET_SELECTED_TASK(state, task) {
     if (state.selectedTask.taskId === task.taskId) {
       state.selectedTask = {};
@@ -95,13 +101,16 @@ export const mutations = {
     // console.log('selectedtask', selectedTask);
     state.selectedTask = selectedTask;
   },
-  UPDATE_SELECTED_TASK_NAME(state, taskName){
-    state.selectedTask.taskName = taskName
-
-  }
+  UPDATE_SELECTED_TASK_NAME(state, taskName) {
+    state.selectedTask.taskName = taskName;
+  },
 };
 
 export const actions = {
+  setIndex({ commit }, { startIndex, endIndex }) {
+    // console.log('selected->>>', task);
+    commit('SET_INDEX', startIndex, endIndex);
+  },
   setSelectedTask({ commit }, task) {
     // console.log('selected->>>', task);
     commit('SET_SELECTED_TASK', task);
@@ -182,14 +191,20 @@ export const actions = {
         console.log('error retrieving children', e);
       });
   },
-  fetchTasksAllTasks({ commit, rootState }, projectId) {
+  fetchTasksAllTasks(
+    { commit, rootState },
+    { projectId, startIndex, endIndex }
+  ) {
     const userId = rootState.user.userId;
     this.$axios
-      .get(`projects/${projectId}/tasks?userId=${userId}`, {
-        headers: {
-          type: 'project',
-        },
-      })
+      .get(
+        `projects/${projectId}/tasks?userId=${userId}&startIndex=${startIndex}&endIndex=${endIndex}`,
+        {
+          headers: {
+            type: 'project',
+          },
+        }
+      )
       .then((response) => {
         // console.log(
         //   'ALL TASKS ARE RETRIEVED SUCCESSFULLY-->',
