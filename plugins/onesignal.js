@@ -4,12 +4,7 @@ export default function(context) {
 window.OneSignal = window.OneSignal || [];
 OneSignal.push(() => {
   console.log('Hello, from Onesignal');
-  OneSignal.getUserId().then((userId)=> {
-    console.log('OneSignal User ID:', userId);
-    if(userId != null){
-    context.store.dispatch('notification/addNotificationDevice', userId);
-    }
-  });
+
   OneSignal.init({
     appId: 'fe6df906-c5cf-4c5e-bc1f-21003be4b2d5',
     notifyButton: {
@@ -37,6 +32,12 @@ OneSignal.push(() => {
         unsubscribeEnabled: true /* Controls whether the prompt is visible after subscription */,
       },
     },
+  });
+  OneSignal.getUserId().then((userId)=> {
+    console.log('OneSignal User ID: ===>', userId);
+    if(userId != null){
+    context.store.dispatch('notification/addNotificationDevice', userId);
+    }
   });
   OneSignal.showNativePrompt();
 });
