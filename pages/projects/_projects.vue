@@ -376,10 +376,11 @@ export default {
     switch (this.selectedTab) {
       case "task":
         if (this.$route.params.projects != "projects") {
-          this.$store.dispatch(
-            "task/fetchTasksAllTasks",
-            this.$route.params.projects
-          );
+          this.$store.dispatch("task/fetchTasksAllTasks", {
+            projectId: this.$route.params.projects,
+            startIndex: 0,
+            endIndex: 10
+          });
           this.$store.dispatch(
             "task/fetchTasksMyTasks",
             this.$route.params.projects
@@ -411,6 +412,7 @@ export default {
           "sprints/sprint/fetchAllProjectSprints",
           this.$route.params.projects
         );
+
         this.$store.dispatch("task/fetchTasksAllTasks", {
           projectId: this.$route.params.projects,
           startIndex: 0,
@@ -481,10 +483,11 @@ export default {
           );
           break;
         case "task":
-          this.$store.dispatch(
-            "task/fetchTasksAllTasks",
-            this.$route.params.projects
-          );
+          this.$store.dispatch("task/fetchTasksAllTasks", {
+            projectId: this.$route.params.projects,
+            startIndex: 0,
+            endIndex: 10
+          });
           this.$store.dispatch(
             "task/fetchTasksMyTasks",
             this.$route.params.projects
@@ -509,10 +512,11 @@ export default {
             "sprints/sprint/fetchAllProjectSprints",
             this.$route.params.projects
           );
-          this.$store.dispatch(
-            "task/fetchTasksAllTasks",
-            this.$route.params.projects
-          );
+          this.$store.dispatch("task/fetchTasksAllTasks", {
+            projectId: this.$route.params.projects,
+            startIndex: 0,
+            endIndex: 10
+          });
           break;
         case "files":
           this.$store.dispatch(
@@ -530,10 +534,11 @@ export default {
       this.$store.dispatch("project/fetchProject", this.$route.params.projects);
       switch (this.selectedTab) {
         case "task":
-          this.$store.dispatch(
-            "task/fetchTasksAllTasks",
-            this.$route.params.projects
-          );
+          this.$store.dispatch("task/fetchTasksAllTasks", {
+            projectId: this.$route.params.projects,
+            startIndex: 0,
+            endIndex: 10
+          });
           this.$store.dispatch(
             "task/fetchTasksMyTasks",
             this.$route.params.projects
@@ -564,10 +569,11 @@ export default {
             "sprints/sprint/fetchAllProjectSprints",
             this.$route.params.projects
           );
-          this.$store.dispatch(
-            "task/fetchTasksAllTasks",
-            this.$route.params.projects
-          );
+          this.$store.dispatch("task/fetchTasksAllTasks", {
+            projectId: this.$route.params.projects,
+            startIndex: 0,
+            endIndex: 10
+          });
           break;
         case "files":
           this.$store.dispatch(
