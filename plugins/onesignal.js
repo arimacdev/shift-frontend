@@ -4,18 +4,14 @@ export default function(context) {
 window.OneSignal = window.OneSignal || [];
 OneSignal.push(() => {
   console.log('Hello, from Onesignal');
-  OneSignal.getUserId().then((userId)=> {
-    console.log('OneSignal User ID:', userId);
-    if(userId != null){
-    context.store.dispatch('notification/addNotificationDevice', userId);
-    }
-  });
+
   OneSignal.init({
     appId: 'fe6df906-c5cf-4c5e-bc1f-21003be4b2d5',
     notifyButton: {
       enable: false,
     },
     allowLocalhostAsSecureOrigin: true,
+    persistNotification: false,
     promptOptions: {
       customlink: {
         enabled: true /* Required to use the Custom Link */,
@@ -42,6 +38,15 @@ OneSignal.push(() => {
     console.log('OneSignal User ID: ===>', userId);
     if(userId != null){
     context.store.dispatch('notification/addNotificationDevice', userId);
+    } else {
+      console.log("Registering for OneSignal")
+      OneSignal.registerForPushNotifications();
+      OneSignal.getUserId().then((userId)=> {
+        console.log("oneSignal UserId: ", userId)
+        if(userId != null){
+        context.store.dispatch('notification/addNotificationDevice', userId);
+        }
+      });
     }
   });
   OneSignal.showNativePrompt();
