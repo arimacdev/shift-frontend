@@ -989,17 +989,18 @@ export default {
       typingStatus: state => state.stompClient.typingStatus,
       typingUser: state => state.stompClient.typingUser,
       selectedUser: state => state.user.selectedUser,
-      users: state => state.user.users
+      users: state => state.user.users,
+      people: state => state.task.userCompletionTasks
     }),
     assigneeArray() {
-      let AssigneeSearchList = this.users;
+      let AssigneeSearchList = this.people;
       let assigneeList = [];
       for (let index = 0; index < AssigneeSearchList.length; ++index) {
         let user = AssigneeSearchList[index];
         assigneeList.push({
-          name: user.firstName + " " + user.lastName,
-          id: user.userId,
-          img: user.profileImage
+          name: user.assigneeFirstName + " " + user.assigneeLastName,
+          id: user.assigneeId,
+          img: user.assigneeProfileImage
         });
       }
       return assigneeList;
