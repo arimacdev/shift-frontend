@@ -522,9 +522,9 @@ export default {
             "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
-            "<span @userId=' # " +
+            "<span @userId='# " +
             this.filterAssignee.id +
-            " # '></span></span>&nbsp;&nbsp;</p>";
+            "#'></span></span>&nbsp;&nbsp;</p>";
           this.annotations.push(this.filterAssignee.id);
         } else {
           this.textEditor =
@@ -532,9 +532,9 @@ export default {
             "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
-            "<span @userId=' # " +
+            "<span @userId='# " +
             this.filterAssignee.id +
-            " # '></span></span>&nbsp;&nbsp;</p>";
+            "#'></span></span>&nbsp;&nbsp;</p>";
           this.annotations.push(this.filterAssignee.id);
         }
       }
@@ -549,9 +549,9 @@ export default {
             "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
-            "<span @userId=' # " +
+            "<span @userId='# " +
             this.filterAssignee.id +
-            " # '></span></span>&nbsp;&nbsp;</p>";
+            "#'></span></span>&nbsp;&nbsp;</p>";
           this.annotations.push(this.filterAssignee.id);
         } else {
           this.updatedComment =
@@ -559,9 +559,9 @@ export default {
             "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
-            "<span @userId=' # " +
+            "<span @userId='# " +
             this.filterAssignee.id +
-            " # '></span></span>&nbsp;&nbsp;</p>";
+            "#'></span></span>&nbsp;&nbsp;</p>";
           this.annotations.push(this.filterAssignee.id);
         }
       }
