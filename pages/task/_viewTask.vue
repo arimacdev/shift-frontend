@@ -6,18 +6,14 @@
         <div class="name-div">
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title class="font-weight-medium"
-                >Task</v-list-item-title
-              >
+              <v-list-item-title class="font-weight-medium">Task</v-list-item-title>
             </v-list-item-content>
 
             <v-divider class="mx-4" inset vertical></v-divider>
           </v-list-item>
         </div>
         <div class="content-div">
-          <v-list-item-title class="font-weight-bold">
-            {{ this.taskName }}
-          </v-list-item-title>
+          <v-list-item-title class="font-weight-bold">{{ this.taskName }}</v-list-item-title>
           <v-list-item-action class="viewTaskDelete">
             <v-tooltip left>
               <template v-slot:activator="{ on }">
@@ -26,8 +22,7 @@
                   v-on="on"
                   @click="taskDeleteDialog = true"
                   color="#FFFFFF"
-                  >mdi-delete-circle</v-icon
-                >
+                >mdi-delete-circle</v-icon>
               </template>
               <span>Delete task</span>
             </v-tooltip>
@@ -40,12 +35,7 @@
     <v-dialog v-model="taskDeleteDialog" max-width="380">
       <v-card>
         <div class="popupConfirmHeadline">
-          <v-icon
-            class="deletePopupIcon"
-            size="60"
-            color="deep-orange lighten-1"
-            >mdi-alert-outline</v-icon
-          >
+          <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
           <br />
           <span class="alertPopupTitle">Delete Task</span>
           <br />
@@ -60,12 +50,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn
-              color="success"
-              width="100px"
-              @click="taskDeleteDialog = false"
-              >Cancel</v-btn
-            >
+            <v-btn color="success" width="100px" @click="taskDeleteDialog = false">Cancel</v-btn>
             <v-spacer></v-spacer>
             <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
             <v-btn
@@ -76,8 +61,7 @@
                 taskDialog = false;
                 deleteTask();
               "
-              >Delete</v-btn
-            >
+            >Delete</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
         </div>
@@ -92,22 +76,16 @@
             <v-col sm="2" md="2">
               <div class="taskViewTitle">
                 Task -
-                <span class="secondaryId"
-                  >#{{ this.task.secondaryTaskId }}</span
-                >
+                <span class="secondaryId">#{{ this.task.secondaryTaskId }}</span>
               </div>
             </v-col>
             <v-col sm="2" md="2">
               <div class="taskStatusDropdown">{{ this.task.taskStatus }}</div>
             </v-col>
             <v-col sm="8" md="8" class="taskViewLinksDiv">
-              <nuxt-link
-                :to="'/projects/' + this.projectId"
-                style="text-decoration: none;"
-              >
-                <v-icon size="18" color="#0083E2">icon-project</v-icon
-                >Project </nuxt-link
-              >/
+              <nuxt-link :to="'/projects/' + this.projectId" style="text-decoration: none;">
+                <v-icon size="18" color="#0083E2">icon-project</v-icon>Project
+              </nuxt-link>/
               <nuxt-link
                 v-if="this.task.isParent == false"
                 :to="
@@ -165,8 +143,7 @@
                         color="#424F64"
                         class="editIcon"
                         @click="EditTaskName"
-                        >mdi-pencil-circle</v-icon
-                      >
+                      >mdi-pencil-circle</v-icon>
                     </template>
                     <span>Edit task name</span>
                   </v-tooltip>
@@ -207,13 +184,9 @@
                     <div class="expansionViewHeader topItemTaskView">
                       <v-list-item class="taskViewTitleSection">
                         <v-list-item-icon>
-                          <v-icon size="30" color="#2EC973"
-                            >mdi-package-variant-closed</v-icon
-                          >
+                          <v-icon size="30" color="#2EC973">mdi-package-variant-closed</v-icon>
                         </v-list-item-icon>
-                        <v-list-item-title class="viewTaskFontColors"
-                          >Parent Task</v-list-item-title
-                        >
+                        <v-list-item-title class="viewTaskFontColors">Parent Task</v-list-item-title>
                       </v-list-item>
                       <v-list-item-content class="parentChildTaskList">
                         <!-- ---------- task list --------- -->
@@ -224,31 +197,22 @@
                                 v-if="this.parentTask.taskStatus == 'closed'"
                                 size="25"
                                 color="#2EC973"
-                                >mdi-checkbox-marked-circle</v-icon
-                              >
-                              <v-icon v-else size="30" color="#FFFFFF"
-                                >mdi-checkbox-blank-circle</v-icon
-                              >
+                              >mdi-checkbox-marked-circle</v-icon>
+                              <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
                             </v-list-item-action>
                             <v-list-item-action
                               style="font-size: 14px; font-weight: 800; padding-right: 20px"
-                            >
-                              {{ this.parentTask.secondaryTaskId }}
-                            </v-list-item-action>
+                            >{{ this.parentTask.secondaryTaskId }}</v-list-item-action>
                             <v-list-item-content style="width: 200px">
-                              <v-list-item-title>
-                                {{ this.parentTask.taskName }}
-                              </v-list-item-title>
+                              <v-list-item-title>{{ this.parentTask.taskName }}</v-list-item-title>
                             </v-list-item-content>
                             <div>
                               <v-list-item-action>
-                                <v-list-item-sub-title
-                                  :class="dueDateCheck(this.parentTask)"
-                                >
+                                <v-list-item-sub-title :class="dueDateCheck(this.parentTask)">
                                   {{
-                                    getProjectDates(
-                                      this.parentTask.taskDueDateAt
-                                    )
+                                  getProjectDates(
+                                  this.parentTask.taskDueDateAt
+                                  )
                                   }}
                                 </v-list-item-sub-title>
                               </v-list-item-action>
@@ -279,9 +243,7 @@
                                 style="text-decoration: none;"
                                 target="_blank"
                               >
-                                <v-icon size="20" color="blue"
-                                  >mdi-link-variant</v-icon
-                                >
+                                <v-icon size="20" color="blue">mdi-link-variant</v-icon>
                               </nuxt-link>
                             </div>
                           </v-list-item>
@@ -297,9 +259,7 @@
                       <v-list-group>
                         <template v-slot:activator>
                           <v-list-item-icon>
-                            <v-icon size="30" color="#2EC973"
-                              >mdi-package-variant-closed</v-icon
-                            >
+                            <v-icon size="30" color="#2EC973">mdi-package-variant-closed</v-icon>
                           </v-list-item-icon>
                           <v-list-item-title class="viewTaskFontColors">
                             Child Tasks:
@@ -322,27 +282,18 @@
                                   v-if="child.taskStatus == 'closed'"
                                   size="25"
                                   color="#2EC973"
-                                  >mdi-checkbox-marked-circle</v-icon
-                                >
-                                <v-icon v-else size="30" color="#FFFFFF"
-                                  >mdi-checkbox-blank-circle</v-icon
-                                >
+                                >mdi-checkbox-marked-circle</v-icon>
+                                <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
                               </v-list-item-action>
                               <v-list-item-action
                                 style="font-size: 14px; font-weight: 800; padding-right: 20px"
-                              >
-                                {{ child.secondaryTaskId }}
-                              </v-list-item-action>
+                              >{{ child.secondaryTaskId }}</v-list-item-action>
                               <v-list-item-content style="width: 200px">
-                                <v-list-item-title>
-                                  {{ child.taskName }}
-                                </v-list-item-title>
+                                <v-list-item-title>{{ child.taskName }}</v-list-item-title>
                               </v-list-item-content>
                               <div>
                                 <v-list-item-action>
-                                  <v-list-item-sub-title>
-                                    {{ getProjectDates(child.taskDueDateAt) }}
-                                  </v-list-item-sub-title>
+                                  <v-list-item-sub-title>{{ getProjectDates(child.taskDueDateAt) }}</v-list-item-sub-title>
                                 </v-list-item-action>
                               </div>
                               <div>
@@ -371,9 +322,7 @@
                                   style="text-decoration: none;"
                                   target="_blank"
                                 >
-                                  <v-icon size="20" color="blue"
-                                    >mdi-link-variant</v-icon
-                                  >
+                                  <v-icon size="20" color="blue">mdi-link-variant</v-icon>
                                 </nuxt-link>
                               </div>
                             </v-list-item>
@@ -390,9 +339,7 @@
                       <v-list-item-icon>
                         <v-icon size="25" color="#0BAFFF">icon-task</v-icon>
                       </v-list-item-icon>
-                      <v-list-item-title class="viewTaskFontColors"
-                        >Task Type</v-list-item-title
-                      >
+                      <v-list-item-title class="viewTaskFontColors">Task Type</v-list-item-title>
                     </v-list-item>
                     <v-list-item-content class="parentChildTaskList">
                       <!-- ---------- task list --------- -->
@@ -518,9 +465,7 @@
                       <v-list-item-icon>
                         <v-icon size="25" color="#6FCD17">icon-board</v-icon>
                       </v-list-item-icon>
-                      <v-list-item-title class="viewTaskFontColors"
-                        >Board</v-list-item-title
-                      >
+                      <v-list-item-title class="viewTaskFontColors">Board</v-list-item-title>
                     </v-list-item>
                     <v-list-item-content class="parentChildTaskList">
                       <!-- ---------- task list --------- -->
@@ -565,13 +510,9 @@
                   <div class="expansionViewHeader">
                     <v-list-item class="taskViewTitleSection">
                       <v-list-item-icon>
-                        <v-icon size="30" color="#FF6767"
-                          >mdi-square-edit-outline</v-icon
-                        >
+                        <v-icon size="30" color="#FF6767">mdi-square-edit-outline</v-icon>
                       </v-list-item-icon>
-                      <v-list-item-title class="viewTaskFontColors"
-                        >Notes</v-list-item-title
-                      >
+                      <v-list-item-title class="viewTaskFontColors">Notes</v-list-item-title>
                     </v-list-item>
                     <v-list-item>
                       <v-list-item-content>
@@ -622,9 +563,7 @@
                       <v-icon size="25" color="#FFFFFF">icon-assignee</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                      <v-list-item-subtitle class="rightColumnItemsSubTitle"
-                        >Task Assignee</v-list-item-subtitle
-                      >
+                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
                       <v-list-item-title>
                         <!-- <select
                           v-model="taskAssignee"
@@ -667,14 +606,10 @@
                     <v-list-item-icon
                       style="background-color: #7CDD00; padding: 10px; border-radius: 50%"
                     >
-                      <v-icon size="25" color="#FFFFFF"
-                        >mdi-calendar-blank-outline</v-icon
-                      >
+                      <v-icon size="25" color="#FFFFFF">mdi-calendar-blank-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                      <v-list-item-subtitle class="rightColumnItemsSubTitle"
-                        >Due Date</v-list-item-subtitle
-                      >
+                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Due Date</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
                   <div class="viewPageTaskPickerDiv">
@@ -691,9 +626,9 @@
                       </v-col>
                       <v-col md="2">
                         <v-btn v-on="on" icon color="deep-orange">
-                          <v-icon @click="updateTaskDates('dueDate')"
-                            >mdi-checkbox-marked-circle-outline</v-icon
-                          >
+                          <v-icon
+                            @click="updateTaskDates('dueDate')"
+                          >mdi-checkbox-marked-circle-outline</v-icon>
                         </v-btn>
                       </v-col>
                     </v-row>
@@ -704,14 +639,10 @@
                     <v-list-item-icon
                       style="background-color: #7CDD00; padding: 10px; border-radius: 50%"
                     >
-                      <v-icon size="25" color="#FFFFFF"
-                        >mdi-clock-outline</v-icon
-                      >
+                      <v-icon size="25" color="#FFFFFF">mdi-clock-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                      <v-list-item-subtitle class="rightColumnItemsSubTitle"
-                        >Remind Date</v-list-item-subtitle
-                      >
+                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Remind Date</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
                   <div class="viewPageTaskPickerDiv">
@@ -728,9 +659,9 @@
                       </v-col>
                       <v-col md="2">
                         <v-btn v-on="on" icon color="deep-orange">
-                          <v-icon @click="updateTaskDates('remindOn')"
-                            >mdi-checkbox-marked-circle-outline</v-icon
-                          >
+                          <v-icon
+                            @click="updateTaskDates('remindOn')"
+                          >mdi-checkbox-marked-circle-outline</v-icon>
                         </v-btn>
                       </v-col>
                     </v-row>
@@ -744,9 +675,7 @@
                       <v-icon size="25" color="#FFFFFF">mdi-paperclip</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                      <v-list-item-title class="rightColumnItemsTitle"
-                        >Files</v-list-item-title
-                      >
+                      <v-list-item-title class="rightColumnItemsTitle">Files</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
                   <div class="viewTaskPickerDiv">
@@ -783,11 +712,7 @@
                     </div>
                   </div>
                   <!-- ------------- file viewer ------------ -->
-                  <div
-                    class="filesViewDiv"
-                    v-for="(file, index) in fileList"
-                    :key="index"
-                  >
+                  <div class="filesViewDiv" v-for="(file, index) in fileList" :key="index">
                     <v-list-item>
                       <div>
                         <v-icon size="30">mdi-file-document-outline</v-icon>
@@ -798,32 +723,22 @@
                             style="text-decoration: none;"
                             :href="file.taskFileUrl"
                             target="_blank"
-                          >
-                            {{ file.taskFileName }}
-                          </a>
+                          >{{ file.taskFileName }}</a>
                         </v-list-item-title>
-                        <v-list-item-subtitle class="fileSubTitles"
-                          >125.54kB</v-list-item-subtitle
-                        >
+                        <v-list-item-subtitle class="fileSubTitles">125.54kB</v-list-item-subtitle>
                       </v-list-item-content>
                       <v-list-item-content>
-                        <v-list-item-title class="fileTitles">
-                          {{ getUserDetails(file.taskFileCreator) }}
-                        </v-list-item-title>
+                        <v-list-item-title
+                          class="fileTitles"
+                        >{{ getUserDetails(file.taskFileCreator) }}</v-list-item-title>
 
-                        <v-list-item-subtitle class="fileSubTitles">
-                          {{ getProjectDates(file.taskFileDate) }}
-                        </v-list-item-subtitle>
+                        <v-list-item-subtitle
+                          class="fileSubTitles"
+                        >{{ getProjectDates(file.taskFileDate) }}</v-list-item-subtitle>
                       </v-list-item-content>
                       <div>
-                        <a
-                          style="text-decoration: none;"
-                          :href="file.taskFileUrl"
-                          target="_blank"
-                        >
-                          <v-icon size="25" color="#0BAFFF"
-                            >mdi-cloud-download</v-icon
-                          >
+                        <a style="text-decoration: none;" :href="file.taskFileUrl" target="_blank">
+                          <v-icon size="25" color="#0BAFFF">mdi-cloud-download</v-icon>
                         </a>
                       </div>
                       <div>
@@ -831,8 +746,7 @@
                           @click="handleFileDelete(file.taskFileId)"
                           size="25"
                           color="#FF6161"
-                          >mdi-delete-circle</v-icon
-                        >
+                        >mdi-delete-circle</v-icon>
                       </div>
                     </v-list-item>
                   </div>
@@ -852,24 +766,17 @@
       </div>
       <task-logs :page="page" />
     </div>-->
-    <v-tabs
-      height="40px"
-      style="padding-left: 20px"
-      slider-size="3"
-      v-model="selectedTab"
-    >
+    <v-tabs height="40px" style="padding-left: 20px" slider-size="3" v-model="selectedTab">
       <v-tab
         class="text-capitalize activityInactiveTabs"
         key="comments"
         @click="selectedVTab('comments')"
-        >Comments</v-tab
-      >
+      >Comments</v-tab>
       <v-tab
         class="text-capitalize activityInactiveTabs"
         key="logs"
         @click="selectedVTab('logs')"
-        >Logs</v-tab
-      >
+      >Logs</v-tab>
     </v-tabs>
 
     <div class="RestTaskLogDiv">
@@ -900,40 +807,40 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { mapGetters } from 'vuex';
-import AddParentTask from '~/components/tasks/addParentTask';
-import AddChildTask from '~/components/tasks/addChildTask';
-import NavigationDrawer from '~/components/navigationDrawer';
-import SuccessPopup from '~/components/popups/successPopup';
-import ErrorPopup from '~/components/popups/errorPopup';
-import TaskLogs from '~/components/tasks/taskLogs';
-import TaskComments from '~/components/tasks/taskComments';
-import Stomp from 'stompjs';
-import SockJS from 'sockjs-client';
+import { mapState } from "vuex";
+import { mapGetters } from "vuex";
+import AddParentTask from "~/components/tasks/addParentTask";
+import AddChildTask from "~/components/tasks/addChildTask";
+import NavigationDrawer from "~/components/navigationDrawer";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
+import TaskLogs from "~/components/tasks/taskLogs";
+import TaskComments from "~/components/tasks/taskComments";
+import Stomp from "stompjs";
+import SockJS from "sockjs-client";
 
 export default {
   components: {
     NavigationDrawer,
-    'success-popup': SuccessPopup,
-    'error-popup': ErrorPopup,
-    'add-parent-task': AddParentTask,
-    'add-child-task': AddChildTask,
-    'task-logs': TaskLogs,
-    'task-comments': TaskComments,
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup,
+    "add-parent-task": AddParentTask,
+    "add-child-task": AddChildTask,
+    "task-logs": TaskLogs,
+    "task-comments": TaskComments
   },
   data() {
     return {
-      baseUrl: '',
+      baseUrl: "",
       page: 1,
       commentPage: 1,
       taskDeleteDialog: false,
-      taskId: '',
-      projectId: '',
-      userId: '',
+      taskId: "",
+      projectId: "",
+      userId: "",
       stomp: null,
       sprints: [],
-      activity: 'comments',
+      activity: "comments",
       assignees: [],
       editTask: true,
       // parentTask: {},
@@ -942,118 +849,118 @@ export default {
       updatedRemindOnDate: null,
       // taskAssignee: "",
       task: {},
-      updatedTaskName: '',
+      updatedTaskName: "",
       updatedTask: {
-        taskName: '',
-        taskAssignee: '',
+        taskName: "",
+        taskAssignee: ""
       },
-      updatedIssue: '',
-      updatedStatus: '',
-      issueTypes: '',
-      issueStatus: '',
+      updatedIssue: "",
+      updatedStatus: "",
+      issueTypes: "",
+      issueStatus: "",
       componentUsers: [],
       userExists: true,
       files: [],
-      component: '',
-      errorMessage: '',
-      successMessage: '',
+      component: "",
+      errorMessage: "",
+      successMessage: "",
       // issueTypes: ['development', 'qa', 'bug', 'operational'],
       // taskStatuses: ['open', 'pending', 'closed'],
-      allSprints: [{ sprintId: 'default', sprintName: 'Default' }],
+      allSprints: [{ sprintId: "default", sprintName: "Default" }],
       fetchSprintCount: 0,
       fetchFilesCount: 0,
       issueTypeList: [
-        { name: 'Development', id: 'development' },
-        { name: 'QA', id: 'qa' },
-        { name: 'Design', id: 'design' },
-        { name: 'Bug', id: 'bug' },
-        { name: 'Operational', id: 'operational' },
-        { name: 'Pre-sales', id: 'preSales' },
-        { name: 'General', id: 'general' },
+        { name: "Development", id: "development" },
+        { name: "QA", id: "qa" },
+        { name: "Design", id: "design" },
+        { name: "Bug", id: "bug" },
+        { name: "Operational", id: "operational" },
+        { name: "Pre-sales", id: "preSales" },
+        { name: "General", id: "general" }
       ],
       development: [
-        { name: 'Pending', id: 'pending' },
-        { name: 'On hold', id: 'onHold' },
-        { name: 'Open', id: 'open' },
-        { name: 'Completed', id: 'completed' },
-        { name: 'Implementing', id: 'implementing' },
-        { name: 'Deployed', id: 'deployed' },
-        { name: 'Closed', id: 'closed' },
+        { name: "Pending", id: "pending" },
+        { name: "On hold", id: "onHold" },
+        { name: "Open", id: "open" },
+        { name: "Completed", id: "completed" },
+        { name: "Implementing", id: "implementing" },
+        { name: "Deployed", id: "deployed" },
+        { name: "Closed", id: "closed" }
       ],
       qa: [
-        { name: 'Pending', id: 'pending' },
-        { name: 'Testing', id: 'testing' },
-        { name: 'Review', id: 'review' },
-        { name: 'Closed', id: 'closed' },
+        { name: "Pending", id: "pending" },
+        { name: "Testing", id: "testing" },
+        { name: "Review", id: "review" },
+        { name: "Closed", id: "closed" }
       ],
       design: [
-        { name: 'Pending', id: 'pending' },
-        { name: 'On hold', id: 'onHold' },
-        { name: 'Cancel', id: 'cancel' },
-        { name: 'Fixing', id: 'fixing' },
-        { name: 'Resolved', id: 'resolved' },
-        { name: 'In progress', id: 'inprogress' },
-        { name: 'Completed', id: 'completed' },
-        { name: 'Under review', id: 'underReview' },
-        { name: 'Weiting for approval', id: 'waitingForApproval' },
-        { name: 'Review', id: 'review' },
-        { name: 'Waiting response', id: 'waitingResponse' },
-        { name: 'Rejected', id: 'rejected' },
-        { name: 'Closed', id: 'closed' },
+        { name: "Pending", id: "pending" },
+        { name: "On hold", id: "onHold" },
+        { name: "Cancel", id: "cancel" },
+        { name: "Fixing", id: "fixing" },
+        { name: "Resolved", id: "resolved" },
+        { name: "In progress", id: "inprogress" },
+        { name: "Completed", id: "completed" },
+        { name: "Under review", id: "underReview" },
+        { name: "Weiting for approval", id: "waitingForApproval" },
+        { name: "Review", id: "review" },
+        { name: "Waiting response", id: "waitingResponse" },
+        { name: "Rejected", id: "rejected" },
+        { name: "Closed", id: "closed" }
       ],
       bug: [
-        { name: 'Pending', id: 'pending' },
-        { name: 'On hold', id: 'onHold' },
-        { name: 'Open', id: 'open' },
-        { name: 'Cancel', id: 'cancel' },
-        { name: 'ReOpened', id: 'reOpened' },
-        { name: 'Fixing', id: 'fixing' },
-        { name: 'Testing', id: 'testing' },
-        { name: 'Resolved', id: 'resolved' },
-        { name: 'Under review', id: 'underReview' },
-        { name: 'Review', id: 'review' },
-        { name: 'Waiting response', id: 'waitingResponse' },
-        { name: 'Closed', id: 'closed' },
+        { name: "Pending", id: "pending" },
+        { name: "On hold", id: "onHold" },
+        { name: "Open", id: "open" },
+        { name: "Cancel", id: "cancel" },
+        { name: "ReOpened", id: "reOpened" },
+        { name: "Fixing", id: "fixing" },
+        { name: "Testing", id: "testing" },
+        { name: "Resolved", id: "resolved" },
+        { name: "Under review", id: "underReview" },
+        { name: "Review", id: "review" },
+        { name: "Waiting response", id: "waitingResponse" },
+        { name: "Closed", id: "closed" }
       ],
       operational: [
-        { name: 'Pending', id: 'pending' },
-        { name: 'On hold', id: 'onHold' },
-        { name: 'Open', id: 'open' },
-        { name: 'Cancel', id: 'cancel' },
-        { name: 'Resolved', id: 'resolved' },
-        { name: 'In progress', id: 'inprogress' },
-        { name: 'Completed', id: 'completed' },
-        { name: 'Under review', id: 'underReview' },
-        { name: 'Weiting for approval', id: 'waitingForApproval' },
-        { name: 'Discussion', id: 'discussion' },
-        { name: 'Waiting response', id: 'waitingResponse' },
-        { name: 'Ready', id: 'ready' },
-        { name: 'Rejected', id: 'rejected' },
-        { name: 'Closed', id: 'closed' },
+        { name: "Pending", id: "pending" },
+        { name: "On hold", id: "onHold" },
+        { name: "Open", id: "open" },
+        { name: "Cancel", id: "cancel" },
+        { name: "Resolved", id: "resolved" },
+        { name: "In progress", id: "inprogress" },
+        { name: "Completed", id: "completed" },
+        { name: "Under review", id: "underReview" },
+        { name: "Weiting for approval", id: "waitingForApproval" },
+        { name: "Discussion", id: "discussion" },
+        { name: "Waiting response", id: "waitingResponse" },
+        { name: "Ready", id: "ready" },
+        { name: "Rejected", id: "rejected" },
+        { name: "Closed", id: "closed" }
       ],
       preSales: [
-        { name: 'Pending', id: 'pending' },
-        { name: 'On hold', id: 'onHold' },
-        { name: 'Open', id: 'open' },
-        { name: 'Cancel', id: 'cancel' },
-        { name: 'Resolved', id: 'resolved' },
-        { name: 'In progress', id: 'inprogress' },
-        { name: 'Under review', id: 'underReview' },
-        { name: 'Weiting for approval', id: 'waitingForApproval' },
-        { name: 'Discussion', id: 'discussion' },
-        { name: 'Waiting response', id: 'waitingResponse' },
-        { name: 'Rejected', id: 'rejected' },
-        { name: 'Closed', id: 'closed' },
+        { name: "Pending", id: "pending" },
+        { name: "On hold", id: "onHold" },
+        { name: "Open", id: "open" },
+        { name: "Cancel", id: "cancel" },
+        { name: "Resolved", id: "resolved" },
+        { name: "In progress", id: "inprogress" },
+        { name: "Under review", id: "underReview" },
+        { name: "Weiting for approval", id: "waitingForApproval" },
+        { name: "Discussion", id: "discussion" },
+        { name: "Waiting response", id: "waitingResponse" },
+        { name: "Rejected", id: "rejected" },
+        { name: "Closed", id: "closed" }
       ],
       general: [
-        { name: 'Pending', id: 'pending' },
-        { name: 'On hold', id: 'onHold' },
-        { name: 'Open', id: 'open' },
-        { name: 'Cancel', id: 'cancel' },
-        { name: 'In progress', id: 'inprogress' },
-        { name: 'Completed', id: 'completed' },
-        { name: 'Closed', id: 'closed' },
-      ],
+        { name: "Pending", id: "pending" },
+        { name: "On hold", id: "onHold" },
+        { name: "Open", id: "open" },
+        { name: "Cancel", id: "cancel" },
+        { name: "In progress", id: "inprogress" },
+        { name: "Completed", id: "completed" },
+        { name: "Closed", id: "closed" }
+      ]
     };
   },
   async created() {
@@ -1062,8 +969,13 @@ export default {
     this.userId = this.$store.state.user.userId;
     this.baseUrl = process.env.SYSTEM_URL;
     this.websocketConnectInit(this.taskId);
+    this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+      taskId: this.selectedTask.taskId,
+      startIndex: 0,
+      endIndex: 10
+    });
     this.$store.dispatch(
-      'task/fetchProjectUserCompletionTasks',
+      "task/fetchProjectUserCompletionTasks",
       this.$route.query.project
     );
     let taskResponse;
@@ -1073,103 +985,103 @@ export default {
         {
           headers: {
             user: this.userId,
-            type: 'project',
-          },
+            type: "project"
+          }
         }
       );
       this.task = taskResponse.data;
-      this.$store.dispatch('task/setSelectedTask', taskResponse.data);
+      this.$store.dispatch("task/setSelectedTask", taskResponse.data);
       // console.log("Selected Task get response", this.task);
     } catch (e) {
-      console.log('Error fetching task', e);
+      console.log("Error fetching task", e);
     }
-    this.$store.dispatch('comments/fetchTaskActivityComment', {
+    this.$store.dispatch("comments/fetchTaskActivityComment", {
       taskId: this.$route.params.viewTask,
       startIndex: 0,
-      endIndex: 10,
+      endIndex: 10
     });
 
     this.$store.dispatch(
-      'comments/fetchTaskCommentLength',
+      "comments/fetchTaskCommentLength",
       this.$route.params.viewTask
     );
     if (this.task.isParent) {
-      this.$store.dispatch('task/fetchChildren', {
+      this.$store.dispatch("task/fetchChildren", {
         projectId: this.$route.query.project,
-        taskId: this.$route.params.viewTask,
+        taskId: this.$route.params.viewTask
       });
     } else {
-      this.$store.dispatch('task/fetchParentTask', {
+      this.$store.dispatch("task/fetchParentTask", {
         projectId: this.$route.query.project,
-        taskId: this.task.parentId,
+        taskId: this.task.parentId
       });
     }
-    this.$store.dispatch('user/fetchOwnUser', this.$store.state.user.userId);
+    this.$store.dispatch("user/fetchOwnUser", this.$store.state.user.userId);
   },
   methods: {
     selectedVTab(component) {
       this.activity = component;
-      if (component === 'logs') {
+      if (component === "logs") {
       } else {
-        this.$store.dispatch('comments/fetchTaskActivityComment', {
+        this.$store.dispatch("comments/fetchTaskActivityComment", {
           taskId: this.$route.params.viewTask,
           startIndex: 0,
-          endIndex: 10,
+          endIndex: 10
         });
 
         this.$store.dispatch(
-          'comments/fetchTaskCommentLength',
+          "comments/fetchTaskCommentLength",
           this.$route.params.viewTask
         );
       }
     },
     websocketConnectInit(taskId) {
-      console.log('initalize websocket connection for task', taskId);
-      const url = this.baseUrl + '/api/pm-service';
+      console.log("initalize websocket connection for task", taskId);
+      const url = this.baseUrl + "/api/pm-service";
       // const url =  "http://localhost:8080" + "/api/pm-service"
 
       try {
-        console.log('connecting to ws...');
-        let socket = new SockJS(url + '/chat');
+        console.log("connecting to ws...");
+        let socket = new SockJS(url + "/chat");
         //this.stompClient = Stomp.over(socket);
         this.stomp = Stomp.over(socket);
         //this.$store.dispatch("stompClient/setStompClient", "this.stomp");
         //let client = this.stompClient;
-        this.stomp.connect({}, (frame) => {
-          console.log('connected to: ' + frame);
-          console.log('subscribing to topic: ' + '/topic/messages/' + taskId);
-          this.stomp.subscribe('/topic/messages/' + taskId, (response) => {
-            console.log('Response', response);
+        this.stomp.connect({}, frame => {
+          console.log("connected to: " + frame);
+          console.log("subscribing to topic: " + "/topic/messages/" + taskId);
+          this.stomp.subscribe("/topic/messages/" + taskId, response => {
+            console.log("Response", response);
             let data = JSON.parse(response.body);
-            console.log('outside----->');
-            if (data.actionType === 'comment') {
-              console.log('inside----->');
-              this.$store.dispatch('comments/fetchTaskActivityComment', {
+            console.log("outside----->");
+            if (data.actionType === "comment") {
+              console.log("inside----->");
+              this.$store.dispatch("comments/fetchTaskActivityComment", {
                 taskId: this.selectedTask.taskId,
                 startIndex: 0,
-                endIndex: 9,
+                endIndex: 9
               });
             } else if (
-              data.actionType === 'typing' &&
+              data.actionType === "typing" &&
               data.sender !== this.userId
             ) {
-              this.$store.dispatch('stompClient/setTypingStatus', true);
-              this.$store.dispatch('stompClient/setTypingUser', data.message);
+              this.$store.dispatch("stompClient/setTypingStatus", true);
+              this.$store.dispatch("stompClient/setTypingUser", data.message);
             } else if (
-              data.actionType === 'notTyping' &&
+              data.actionType === "notTyping" &&
               data.sender !== this.userId
             ) {
-              this.$store.dispatch('stompClient/setTypingStatus', false);
+              this.$store.dispatch("stompClient/setTypingStatus", false);
             }
           });
         });
       } catch (error) {
-        console.log('Error fetching data', error);
+        console.log("Error fetching data", error);
       }
     },
     checkUserExists() {
       const index = this.people.findIndex(
-        (user) => user.assigneeId === this.selectedTask.taskAssignee
+        user => user.assigneeId === this.selectedTask.taskAssignee
       );
       if (index === -1) {
         this.userExists = false;
@@ -1186,18 +1098,18 @@ export default {
             data: {},
             headers: {
               user: this.userId,
-              type: 'project',
-            },
+              type: "project"
+            }
           }
         );
-        this.$emit('listenChange');
-        this.$emit('shrinkSideBar');
-        window.location.href = '/projects/' + this.projectId;
+        this.$emit("listenChange");
+        this.$emit("shrinkSideBar");
+        window.location.href = "/projects/" + this.projectId;
 
         // console.log(response.data);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -1211,23 +1123,28 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            taskStatus: this.updatedTask.taskStatus,
+            taskStatus: this.updatedTask.taskStatus
           },
           {
             headers: {
-              user: this.userId,
-            },
+              user: this.userId
+            }
           }
         );
-        this.component = 'success-popup';
-        this.successMessage = 'Status successfully updated';
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
+        this.component = "success-popup";
+        this.successMessage = "Status successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
         // console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -1242,23 +1159,28 @@ export default {
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
             taskStatus: this.taskStatus,
-            issueType: this.updatedIssue,
+            issueType: this.updatedIssue
           },
           {
             headers: {
-              user: this.userId,
-            },
+              user: this.userId
+            }
           }
         );
-        this.component = 'success-popup';
-        this.successMessage = 'Status successfully updated';
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
+        this.component = "success-popup";
+        this.successMessage = "Status successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
         // console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -1266,7 +1188,7 @@ export default {
       }
     },
     close() {
-      this.component = '';
+      this.component = "";
     },
     async changeTaskSprint() {
       // console.log("onchange sprint", this.updatedTask.sprintId);
@@ -1276,28 +1198,33 @@ export default {
           `/projects/${this.projectId}/tasks/${this.task.taskId}/sprint`,
           {
             previousSprint: this.task.sprintId,
-            newSprint: this.updatedTask.sprintId,
+            newSprint: this.updatedTask.sprintId
           },
           {
             headers: {
-              user: this.userId,
-            },
+              user: this.userId
+            }
           }
         );
-        this.component = 'success-popup';
-        this.successMessage = 'Sprint successfully updated';
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
+        this.component = "success-popup";
+        this.successMessage = "Sprint successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
         // console.log("update sprint status response", response);
       } catch (e) {
-        console.log('Error updating a sprint', e);
+        console.log("Error updating a sprint", e);
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error updating a sprint', e);
+        console.log("Error updating a sprint", e);
       }
     },
     async changeAssignee() {
@@ -1307,27 +1234,32 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            taskAssignee: this.updatedTask.taskAssignee,
+            taskAssignee: this.updatedTask.taskAssignee
           },
           {
             headers: {
-              user: this.userId,
-            },
+              user: this.userId
+            }
           }
         );
-        this.component = 'success-popup';
-        this.successMessage = 'Assignee successfully updated';
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
+        this.component = "success-popup";
+        this.successMessage = "Assignee successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
         // console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error updating a status', e);
+        console.log("Error updating a status", e);
       }
     },
     getAssigneeDetails(v) {
@@ -1339,8 +1271,8 @@ export default {
       for (let index = 0; index < assigneeSearchList.length; ++index) {
         let assignee = assigneeSearchList[index];
         this.assignees.push({
-          name: assignee.assigneeFirstName + ' ' + assignee.assigneeLastName,
-          id: assignee.assigneeId,
+          name: assignee.assigneeFirstName + " " + assignee.assigneeLastName,
+          id: assignee.assigneeId
         });
       }
       // console.log("nameList", this.states);
@@ -1364,51 +1296,61 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            taskNotes: this.updatedTask.taskNote,
+            taskNotes: this.updatedTask.taskNote
           },
           {
             headers: {
-              user: this.userId,
-            },
+              user: this.userId
+            }
           }
         );
-        this.component = 'success-popup';
-        this.successMessage = 'Note successfully updated';
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
+        this.component = "success-popup";
+        this.successMessage = "Note successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
         // console.log("edit task response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error updating a note', e);
+        console.log("Error updating a note", e);
       }
     },
     async saveEditTaskName() {
-      if (this.updatedTask.taskName != '') {
+      if (this.updatedTask.taskName != "") {
         // console.log("updatedTaskName ->", this.updatedTask.taskName);
         let response;
         try {
           response = await this.$axios.$put(
             `/projects/${this.projectId}/tasks/${this.task.taskId}`,
             {
-              taskName: this.updatedTask.taskName,
+              taskName: this.updatedTask.taskName
             },
             {
               headers: {
-                user: this.userId,
-              },
+                user: this.userId
+              }
             }
           );
+          this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+            taskId: this.selectedTask.taskId,
+            startIndex: 0,
+            endIndex: 10
+          });
           this.$store.dispatch(
-            'task/setSelectedTaskName',
+            "task/setSelectedTaskName",
             this.updatedTask.taskName
           );
-          this.component = 'success-popup';
-          this.successMessage = 'Name successfully updated';
+          this.component = "success-popup";
+          this.successMessage = "Name successfully updated";
           setTimeout(() => {
             this.close();
           }, 3000);
@@ -1416,9 +1358,9 @@ export default {
           this.editTask = true;
           // console.log("edit task response", response);
         } catch (e) {
-          console.log('Error updating the name', e);
+          console.log("Error updating the name", e);
           this.errorMessage = e.response.data;
-          this.component = 'error-popup';
+          this.component = "error-popup";
           setTimeout(() => {
             this.close();
           }, 3000);
@@ -1428,57 +1370,57 @@ export default {
     },
     dueDateCheck(task) {
       // console.log("check due date color", task);
-      if (task.taskStatus === 'closed') {
-        return 'workLoadTaskDone';
+      if (task.taskStatus === "closed") {
+        return "workLoadTaskDone";
       } else if (task.taskDueDateAt == null) {
-        return 'workLoadTaskDefault';
+        return "workLoadTaskDefault";
       } else {
         const dueDate = new Date(task.taskDueDateAt);
         const dueToUtc = new Date(
-          dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
+          dueDate.toLocaleString("en-US", { timeZone: "UTC" })
         );
         const dueToUtcDate = new Date(dueToUtc);
         const now = new Date();
         // console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
         if (now.getTime() > dueToUtcDate.getTime()) {
           // console.log("overdue");
-          return 'workLoadTaskOverDue';
+          return "workLoadTaskOverDue";
         } else {
-          return 'workLoadTaskHealthy';
+          return "workLoadTaskHealthy";
         }
       }
     },
     getProjectDates(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
+        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
       );
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
-      if (date === null || date === '1970-01-01T05:30:00.000+0000') {
-        return 'Add Due Date';
+      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
+        return "Add Due Date";
       } else if (
         now.getDate() === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
         now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
-        return 'Today';
+        return "Today";
       } else if (
         now.getDate() - 1 === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
         now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
-        return 'Yesterday';
+        return "Yesterday";
       } else if (
         now.getDate() + 1 === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
         now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
-        return 'Tomorrow';
+        return "Tomorrow";
       } else {
-        let stringDate = date + '';
+        let stringDate = date + "";
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 10);
         return stringDate;
@@ -1492,7 +1434,7 @@ export default {
       }
     },
     statusCheck() {
-      return 'pendingStatus';
+      return "pendingStatus";
     },
     EditTaskName() {
       this.editTask = false;
@@ -1506,14 +1448,14 @@ export default {
           let sprint = sprints[index];
           sprintList.push({
             name: sprint.sprintName,
-            id: sprint.sprintId,
+            id: sprint.sprintId
           });
         }
         return sprintList;
       } else if (this.fetchSprintCount < 1) {
         // console.log("sprint dispatched actually");
         this.$store.dispatch(
-          'sprints/sprint/fetchAllProjectSprints',
+          "sprints/sprint/fetchAllProjectSprints",
           this.$route.query.project
         );
         this.fetchSprintCount += 1;
@@ -1521,19 +1463,19 @@ export default {
       // return [];
     },
     async updateTaskDates(type) {
-      console.log('triggered');
+      console.log("triggered");
       let dueDate;
       let remindDate;
       let changedDate = {};
       console.log(
-        'dates ========> ' +
+        "dates ========> " +
           this.updatedTaskDueDate +
-          '/' +
+          "/" +
           this.updatedRemindOnDate
       );
       if (
-        type === 'dueDate' &&
-        this.updatedTaskDueDate != '' &&
+        type === "dueDate" &&
+        this.updatedTaskDueDate != "" &&
         this.updatedTaskDueDate != null
       ) {
         dueDate = new Date(this.updatedTaskDueDate);
@@ -1543,13 +1485,13 @@ export default {
         dueDate = isoDate;
         remindDate = this.updatedRemindOnDate;
         changedDate = {
-          taskDueDate: dueDate,
+          taskDueDate: dueDate
         };
-        this.$store.dispatch('task/updateProjectDates', {
-          type: 'dueDate',
-          date: dueDate,
+        this.$store.dispatch("task/updateProjectDates", {
+          type: "dueDate",
+          date: dueDate
         });
-      } else if (type === 'remindOn' && this.updatedRemindOnDate != null) {
+      } else if (type === "remindOn" && this.updatedRemindOnDate != null) {
         remindDate = new Date(this.updatedRemindOnDate);
         const isoDate = new Date(
           remindDate.getTime() - remindDate.getTimezoneOffset() * 60000
@@ -1557,11 +1499,11 @@ export default {
         remindDate = isoDate;
         dueDate = this.updatedRemindOnDate;
         changedDate = {
-          taskRemindOnDate: remindDate,
+          taskRemindOnDate: remindDate
         };
-        this.$store.dispatch('task/updateProjectDates', {
-          type: 'remindDate',
-          date: remindDate,
+        this.$store.dispatch("task/updateProjectDates", {
+          type: "remindDate",
+          date: remindDate
         });
       }
       let response;
@@ -1571,56 +1513,61 @@ export default {
           changedDate,
           {
             headers: {
-              user: this.userId,
-            },
+              user: this.userId
+            }
           }
         );
-        this.component = 'success-popup';
-        this.successMessage = 'Date successfully updated';
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
+        this.component = "success-popup";
+        this.successMessage = "Date successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
         // console.log("update task dates response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error updating a date', e);
+        console.log("Error updating a date", e);
       }
     },
     getProjectDates(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
+        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
       );
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
-      if (date === null || date === '1970-01-01T05:30:00.000+0000') {
-        return 'Add Due Date';
+      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
+        return "Add Due Date";
       } else if (
         now.getDate() === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
         now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
-        return 'Today';
+        return "Today";
       } else if (
         now.getDate() - 1 === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
         now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
-        return 'Yesterday';
+        return "Yesterday";
       } else if (
         now.getDate() + 1 === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
         now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
-        return 'Tomorrow';
+        return "Tomorrow";
       } else {
-        let stringDate = date + '';
+        let stringDate = date + "";
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 10);
         return stringDate;
@@ -1631,9 +1578,9 @@ export default {
         for (let index = 0; index < this.files.length; ++index) {
           this.uploadLoading = true;
           let formData = new FormData();
-          formData.append('files', this.files[index]);
-          formData.append('type', 'profileImage');
-          formData.append('taskType', 'project');
+          formData.append("files", this.files[index]);
+          formData.append("type", "profileImage");
+          formData.append("taskType", "project");
           let fileResponse;
           try {
             fileResponse = await this.$axios.$post(
@@ -1641,14 +1588,19 @@ export default {
               formData,
               {
                 headers: {
-                  user: this.userId,
-                },
+                  user: this.userId
+                }
               }
             );
-            this.$store.dispatch('task/appendTaskFile', fileResponse.data);
+            this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+              taskId: this.selectedTask.taskId,
+              startIndex: 0,
+              endIndex: 10
+            });
+            this.$store.dispatch("task/appendTaskFile", fileResponse.data);
             this.uploadLoading = false;
-            this.component = 'success-popup';
-            this.successMessage = 'File(s) successfully uploaded';
+            this.component = "success-popup";
+            this.successMessage = "File(s) successfully uploaded";
             setTimeout(() => {
               this.close();
             }, 3000);
@@ -1656,7 +1608,7 @@ export default {
           } catch (e) {
             // console.log("Error adding group file", e);
             this.errorMessage = e.response.data;
-            this.component = 'error-popup';
+            this.component = "error-popup";
             setTimeout(() => {
               this.close();
             }, 3000);
@@ -1674,24 +1626,29 @@ export default {
           {
             data: {},
             headers: {
-              user: this.userId,
-            },
+              user: this.userId
+            }
           }
         );
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
         // console.log(response.data);
-        this.$store.dispatch('task/removeTaskFile', taskFileId);
-        this.component = 'success-popup';
-        this.successMessage = 'File successfully deleted';
+        this.$store.dispatch("task/removeTaskFile", taskFileId);
+        this.component = "success-popup";
+        this.successMessage = "File successfully deleted";
         setTimeout(() => {
           this.close();
         }, 3000);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error deleting task', e);
+        console.log("Error deleting task", e);
       }
     },
 
@@ -1700,7 +1657,7 @@ export default {
 
       if (userId == this.selectedTaskUser.userId) {
         return (
-          this.selectedTaskUser.firstName + ' ' + this.selectedTaskUser.lastName
+          this.selectedTaskUser.firstName + " " + this.selectedTaskUser.lastName
         );
       } else if (
         userId != this.selectedTaskUser.userId &&
@@ -1708,11 +1665,11 @@ export default {
       ) {
         // this.$store.dispatch("user/setComponentUser", userId);
         let fileUser;
-        const index = this.componentUsers.findIndex((i) => i.userId === userId);
+        const index = this.componentUsers.findIndex(i => i.userId === userId);
         if (index === -1) {
           this.$axios
             .get(`/users/${userId}`)
-            .then((response) => {
+            .then(response => {
               // console.log("component user---->", response.data.data);
               // this.userList = response.data.data;
               // console.log("another user", response.data.data);
@@ -1720,43 +1677,43 @@ export default {
               let fileUser = response.data.data;
               return fileUser.firstName;
             })
-            .catch((e) => {
-              console.log('error', e);
+            .catch(e => {
+              console.log("error", e);
             });
         }
       } else {
-        const index = this.componentUsers.findIndex((i) => i.userId === userId);
+        const index = this.componentUsers.findIndex(i => i.userId === userId);
         if (index > -1) {
           const user = this.componentUsers[index];
-          return user.firstName + ' ' + user.lastName;
+          return user.firstName + " " + user.lastName;
         }
       }
-    },
+    }
   },
   computed: {
     ...mapState({
-      selectedTask: (state) => state.task.selectedTask,
-      selectedTaskUser: (state) => state.user.selectedTaskUser,
-      parentTaskUser: (state) => state.user.parentTaskUser,
-      componentUser: (state) => state.user.componentUser,
-      people: (state) => state.task.userCompletionTasks,
-      projectSprints: (state) => state.sprints.sprint.sprints,
-      taskFiles: (state) => state.task.taskFiles,
-      children: (state) => state.task.childTasks,
-      parentTask: (state) => state.task.parentTask,
+      selectedTask: state => state.task.selectedTask,
+      selectedTaskUser: state => state.user.selectedTaskUser,
+      parentTaskUser: state => state.user.parentTaskUser,
+      componentUser: state => state.user.componentUser,
+      people: state => state.task.userCompletionTasks,
+      projectSprints: state => state.sprints.sprint.sprints,
+      taskFiles: state => state.task.taskFiles,
+      children: state => state.task.childTasks,
+      parentTask: state => state.task.parentTask
     }),
-    ...mapGetters(['getuserCompletionTasks']),
+    ...mapGetters(["getuserCompletionTasks"]),
 
     taskUser() {
       if (Object.keys(this.selectedTaskUser).length === 0) {
         this.$store.dispatch(
-          'user/setSelectedTaskUser',
+          "user/setSelectedTaskUser",
           this.task.taskAssignee
         );
-        return '';
+        return "";
       } else {
         return (
-          this.selectedTaskUser.firstName + ' ' + this.selectedTaskUser.lastName
+          this.selectedTaskUser.firstName + " " + this.selectedTaskUser.lastName
         );
       }
     },
@@ -1765,7 +1722,7 @@ export default {
       // console.log("people list", this.people);
       if (this.people.length === undefined || this.people.length === 0) {
         this.$store.dispatch(
-          'task/fetchProjectUserCompletionTasks',
+          "task/fetchProjectUserCompletionTasks",
           this.$route.query.project
         );
       } else {
@@ -1776,9 +1733,9 @@ export default {
     fileList() {
       if (this.taskFiles.length == 0 && this.fetchFilesCount < 1) {
         // console.log("file length dispatch", this.taskFiles.length);
-        this.$store.dispatch('task/fetchTaskFiles', {
+        this.$store.dispatch("task/fetchTaskFiles", {
           projectId: this.projectId,
-          taskId: this.taskId,
+          taskId: this.taskId
         });
         this.fetchFilesCount += 1;
       } else {
@@ -1802,7 +1759,7 @@ export default {
     taskAssignee: {
       get() {
         this.getAssigneeDetails();
-        if (this.updatedTask.taskAssignee == '') {
+        if (this.updatedTask.taskAssignee == "") {
           return this.selectedTask.taskAssignee;
         } else {
           return this.updatedTask.taskAssignee;
@@ -1812,7 +1769,7 @@ export default {
       set(assignee) {
         // console.log("spid", sprintId);
         this.updatedTask.taskAssignee = assignee;
-      },
+      }
     },
 
     taskName: {
@@ -1823,12 +1780,12 @@ export default {
       },
       set(name) {
         this.updatedTask.taskName = name;
-      },
+      }
     },
     taskStatus: {
       get() {
         // console.log("issueStatus", this.issueStatus);
-        if (this.issueStatus == '') {
+        if (this.issueStatus == "") {
           return this.task.taskStatus;
         } else {
           return this.issueStatus;
@@ -1839,7 +1796,7 @@ export default {
       },
       set(value) {
         this.updatedTask.taskStatus = value;
-      },
+      }
     },
     issueType: {
       get() {
@@ -1849,9 +1806,9 @@ export default {
       set(value) {
         this.updatedIssue = value;
         this.issueTypes = value;
-        this.issueStatus = 'pending';
+        this.issueStatus = "pending";
         // console.log("issue type", this.updatedIssue);
-      },
+      }
     },
     selectedSprint: {
       get() {
@@ -1860,7 +1817,7 @@ export default {
       },
       set(value) {
         this.updatedTask.sprintId = value;
-      },
+      }
     },
     taskNote: {
       get() {
@@ -1868,13 +1825,13 @@ export default {
       },
       set(value) {
         this.updatedTask.taskNote = value;
-      },
+      }
     },
     taskDueDate: {
       get() {
         if (
           this.updatedTaskDueDate == null ||
-          this.updatedTaskDueDate === '1970-01-01T05:30:00.000+0000'
+          this.updatedTaskDueDate === "1970-01-01T05:30:00.000+0000"
         )
           this.updatedTaskDueDate = this.task.taskDueDateAt;
 
@@ -1883,13 +1840,13 @@ export default {
       set(value) {
         // console.log("set updated", value);
         this.updatedTaskDueDate = value;
-      },
+      }
     },
     taskRemindOnDate: {
       get() {
         if (
           this.updatedRemindOnDate == null ||
-          this.updatedRemindOnDate === '1970-01-01T05:30:00.000+0000'
+          this.updatedRemindOnDate === "1970-01-01T05:30:00.000+0000"
         )
           this.updatedRemindOnDate = this.task.taskReminderAt;
 
@@ -1898,8 +1855,8 @@ export default {
       set(value) {
         // console.log("updated remind on ->", value);
         this.updatedRemindOnDate = value;
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>
