@@ -552,7 +552,7 @@ export default {
             "<span @userId='# " +
             this.filterAssignee.id +
             "#'></span></span>&nbsp;&nbsp;</p>";
-          this.annotations.push(this.filterAssignee.id);
+         // this.annotations.push(this.filterAssignee.id);
         } else {
           this.updatedComment =
             "&nbsp;<span >" +
@@ -562,7 +562,7 @@ export default {
             "<span @userId='# " +
             this.filterAssignee.id +
             "#'></span></span>&nbsp;&nbsp;</p>";
-          this.annotations.push(this.filterAssignee.id);
+         // this.annotations.push(this.filterAssignee.id);
         }
       }
       this.filterAssignee == "";
@@ -761,13 +761,7 @@ export default {
               }
             }
           );
-
-          this.textEditor = "";
-          // this.$store.dispatch("comments/fetchTaskActivityComment", {
-          //   taskId: this.selectedTask.taskId,
-          //   startIndex: 0,
-          //   endIndex: 200
-          // });
+        
           this.sendCommentedMessage(
             this.selectedTask.taskId,
             this.textEditor,
@@ -782,13 +776,21 @@ export default {
             this.close();
           }, 3000);
 
+          console.log("textEditor", this.textEditor)
+          let mentionedUsers = [], m, rx = /# (.*?)#/g;
+            while ((m=rx.exec(this.textEditor)) !== null) {
+              result.push(m[1]);
+            }
+          console.log("result", mentionedUsers);
+
+          this.textEditor = "";
           if (response.message == "success") {
             mentionResponse = await this.$axios.$post(
               `/notification/mention`,
               {
                 commentId: response.data.commentId,
                 entityId: this.selectedTask.taskId,
-                recipients: this.annotations
+                recipients: mentionedUsers
               },
               {
                 headers: {
