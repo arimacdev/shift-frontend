@@ -519,18 +519,22 @@ export default {
           this.textEditor =
             this.textEditor.slice(0, -4) +
             "&nbsp;<span >" +
-            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>  @" +
+            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
-            "</span>&nbsp;&nbsp;</p>";
+            "<span @userId='" +
+            this.filterAssignee.id +
+            "'></span></span>&nbsp;&nbsp;</p>";
           this.annotations.push(this.filterAssignee.id);
         } else {
           this.textEditor =
-            "&nbsp;<span class=''>" +
-            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>  @" +
+            "&nbsp;<span >" +
+            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
-            "</span>&nbsp;&nbsp;</p>";
+            "<span @userId='" +
+            this.filterAssignee.id +
+            "'></span></span>&nbsp;&nbsp;</p>";
           this.annotations.push(this.filterAssignee.id);
         }
       }
@@ -541,19 +545,23 @@ export default {
         if (this.updatedComment != null) {
           this.updatedComment =
             this.updatedComment.slice(0, -4) +
-            "&nbsp;<span class=''>" +
-            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'> @" +
+            "&nbsp;<span >" +
+            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
-            "</span>&nbsp;&nbsp;</p>";
+            "<span @userId='" +
+            this.filterAssignee.id +
+            "'></span></span>&nbsp;&nbsp;</p>";
           this.annotations.push(this.filterAssignee.id);
         } else {
           this.updatedComment =
-            "&nbsp;<span class=''>" +
-            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'> @" +
+            "&nbsp;<span >" +
+            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
-            "</span>&nbsp;&nbsp;</p>";
+            "<span @userId='" +
+            this.filterAssignee.id +
+            "'></span></span>&nbsp;&nbsp;</p>";
           this.annotations.push(this.filterAssignee.id);
         }
       }
