@@ -135,9 +135,9 @@
             Get updates from all sorts of things that matter to you
           </div>
           <div class="oneSignalButton">
-            <!-- <div
+            <div
               class="onesignal-customlink-container cardOneSignalSlogan"
-            ></div> -->
+            ></div>
             <v-btn
               color="teal"
               outlined

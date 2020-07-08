@@ -11,6 +11,7 @@ OneSignal.push(() => {
       enable: false,
     },
     allowLocalhostAsSecureOrigin: true,
+    persistNotification: false,
     promptOptions: {
       customlink: {
         enabled: true /* Required to use the Custom Link */,
@@ -37,6 +38,15 @@ OneSignal.push(() => {
     console.log('OneSignal User ID: ===>', userId);
     if(userId != null){
     context.store.dispatch('notification/addNotificationDevice', userId);
+    } else {
+      console.log("Registering for OneSignal")
+      OneSignal.registerForPushNotifications()
+      OneSignal.getUserId().then((userId)=> {
+        if(userId != null){
+          console.log("OneSignal UserId", userId)
+        context.store.dispatch('notification/addNotificationDevice', userId);
+        }
+      });
     }
   });
   OneSignal.showNativePrompt();
