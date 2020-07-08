@@ -17,7 +17,7 @@
               <v-list-item-title class="bodyWiew">All tasks</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item v-on:click="setTaskTab('my-tasks')">
+          <v-list-item v-on:click="setTaskTab('my-tasks'); fetchMyTasks()">
             <v-list-item-action>
               <v-icon size="17" color="#2EC973">icon-task</v-icon>
             </v-list-item-action>
@@ -129,7 +129,34 @@ export default {
     };
   },
   methods: {
-    fetchAllTasks() {},
+    fetchAllTasks() {
+      this.$store.dispatch("task/setIndex", {
+        startIndex: 0,
+        endIndex: 10
+      });
+      this.$store.dispatch(
+        "task/fetchTasksAllTasks",
+        this.$route.params.projects
+      );
+      this.$store.dispatch(
+        "task/fetchTotalTaskCount",
+        this.$route.params.projects
+      );
+    },
+    fetchMyTasks() {
+      this.$store.dispatch("task/setIndex", {
+        startIndex: 0,
+        endIndex: 10
+      });
+      this.$store.dispatch(
+        "task/fetchTasksAllTasks",
+        this.$route.params.projects
+      );
+      this.$store.dispatch(
+        "task/fetchTotalTaskCount",
+        this.$route.params.projects
+      );
+    },
     setTaskTab(tabType) {
       this.component = tabType;
     }
