@@ -83,6 +83,17 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+      <v-list-item>
+        <img
+          style="margin-bottom: 10px; margin-left: -10px"
+          width="50px"
+          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1594213015436_1.png"
+        />
+        <v-list-item-content style="margin-left: 12px; margin-top: -10px">
+          <v-list-item-title class="navText">Arimac Digital</v-list-item-title>
+          <v-list-item-subtitle style="font-size: 10px">Arimac Lanka PVT LTD</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
     </div>
   </v-navigation-drawer>
 </template>
