@@ -779,7 +779,7 @@ export default {
           console.log("textEditor", this.textEditor)
           let mentionedUsers = [], m, rx = /# (.*?)#/g;
             while ((m=rx.exec(this.textEditor)) !== null) {
-              result.push(m[1]);
+              mentionedUsers.push(m[1]);
             }
           console.log("result", mentionedUsers);
 
