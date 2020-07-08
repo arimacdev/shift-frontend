@@ -552,7 +552,7 @@ export default {
             "<span @userId='# " +
             this.filterAssignee.id +
             "#'></span></span>&nbsp;&nbsp;</p>";
-         // this.annotations.push(this.filterAssignee.id);
+          // this.annotations.push(this.filterAssignee.id);
         } else {
           this.updatedComment =
             "&nbsp;<span >" +
@@ -562,7 +562,7 @@ export default {
             "<span @userId='# " +
             this.filterAssignee.id +
             "#'></span></span>&nbsp;&nbsp;</p>";
-         // this.annotations.push(this.filterAssignee.id);
+          // this.annotations.push(this.filterAssignee.id);
         }
       }
       this.filterAssignee == "";
@@ -761,7 +761,7 @@ export default {
               }
             }
           );
-        
+
           this.sendCommentedMessage(
             this.selectedTask.taskId,
             this.textEditor,
@@ -776,11 +776,13 @@ export default {
             this.close();
           }, 3000);
 
-          console.log("textEditor", this.textEditor)
-          let mentionedUsers = [], m, rx = /# (.*?)#/g;
-            while ((m=rx.exec(this.textEditor)) !== null) {
-              result.push(m[1]);
-            }
+          console.log("textEditor", this.textEditor);
+          let mentionedUsers = [],
+            m,
+            rx = /# (.*?)#/g;
+          while ((m = rx.exec(this.textEditor)) !== null) {
+            mentionedUsers.push(m[1]);
+          }
           console.log("result", mentionedUsers);
 
           this.textEditor = "";
