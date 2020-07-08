@@ -291,6 +291,15 @@
           <!-- -------------- end sub task design -------------- -->
         </div>
       </div>
+      <div style="margin-top: 50px">
+        <v-pagination
+          @input="getAllTasks()"
+          v-model="pagination"
+          :length="Math.ceil(this.allTaskCount / 10)"
+          circle
+          :total-visible="8"
+        ></v-pagination>
+      </div>
     </div>
     <!-- -------------- filter list -------------- -->
     <div v-else class="taskListViewContent filterListTop overflow-y-auto">
@@ -346,7 +355,6 @@
         </div>
       </div>
     </div>
-
     <!-- -------------- start side bar ----------------- -->
 
     <!-- <v-navigation-drawer
@@ -452,8 +460,10 @@ import { mapState } from "vuex";
 import Stomp from "stompjs";
 import SockJS from "sockjs-client";
 export default {
+  props: ["pagination"],
   data() {
     return {
+      pagination: this.pagination,
       logs: {},
       searchAssignee: "",
       overlay: false,
@@ -569,6 +579,20 @@ export default {
     }
   },
   methods: {
+    getAllTasks() {
+      this.$store.dispatch("task/setIndex", {
+        startIndex: this.pagination * 10 - 10,
+        endIndex: this.pagination * 10
+      });
+      this.$store.dispatch(
+        "task/fetchTasksAllTasks",
+        this.$route.params.projects
+      );
+      this.$store.dispatch(
+        "task/fetchTotalTaskCount",
+        this.$route.params.projects
+      );
+    },
     filterChange() {
       this.nameOfTask = "";
       this.assigneeOfTask = [];
@@ -1107,6 +1131,7 @@ export default {
   },
   computed: {
     ...mapState({
+      allTaskCount: state => state.task.totalCount,
       people: state => state.task.userCompletionTasks,
       projectAllTasks: state => state.task.allTasks,
       // projectId: state => state.project.project.projectId,

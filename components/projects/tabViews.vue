@@ -37,7 +37,12 @@
 
           <v-tab-item>
             <v-divider class="mx-4"></v-divider>
-            <tasks :MyTasks="MyTasks" :projectId="projectId" :people="people" />
+            <tasks
+              :pagination="pagination"
+              :MyTasks="MyTasks"
+              :projectId="projectId"
+              :people="people"
+            />
           </v-tab-item>
           <v-tab-item>
             <v-divider class="mx-4"></v-divider>
@@ -104,7 +109,8 @@ export default {
     "users",
     "MyTasks",
     "people",
-    "taskLog"
+    "taskLog",
+    "pagination"
     // "taskCompletion"
   ],
   name: "tabViews",

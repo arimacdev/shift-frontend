@@ -9,9 +9,13 @@ export const state = () => ({
   parentTask: {},
   startIndex: 0,
   endIndex: 10,
+  totalCount: 0,
 });
 
 export const mutations = {
+  SET_TOTAL_COUNT(state, count) {
+    state.totalCount = count;
+  },
   SET_INDEX(state, { startIndex, endIndex }) {
     state.startIndex = startIndex;
     state.endIndex = endIndex;
@@ -107,6 +111,24 @@ export const mutations = {
 };
 
 export const actions = {
+  async fetchTotalTaskCount({ commit, rootState }, projectId) {
+    const user = rootState.user.userId;
+    let taskLength;
+    try {
+      taskLength = await this.$axios.$get(
+        `/projects/${projectId}/tasks/count`,
+        {
+          headers: {
+            userId: user,
+          },
+        }
+      );
+      console.log('task length', taskLength.data);
+      commit('SET_TOTAL_COUNT', taskLength.data);
+    } catch (error) {
+      console.log('Error fetching task count length', error);
+    }
+  },
   setIndex({ commit }, { startIndex, endIndex }) {
     // console.log('SETINDEX->>>', startIndex, endIndex);
     commit('SET_INDEX', { startIndex, endIndex });
@@ -119,6 +141,7 @@ export const actions = {
     // console.log('selected->>>', task);
     commit('UPDATE_SELECTED_TASK_NAME', taskName);
   },
+
   async setCurrentTask({ commit, rootState }, { projectId, taskId }) {
     const userId = rootState.user.userId;
     let taskResponse;

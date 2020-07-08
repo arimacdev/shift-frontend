@@ -96,6 +96,7 @@
             :Alltasks="Alltasks"
             :MyTasks="MyTasks"
             :people="people"
+            :pagination="pagination"
           ></component>
         </div>
         <!-- </keep-alive> -->
@@ -110,7 +111,7 @@ import MyTasks from "~/components/tasks/myTasks";
 import AddTask from "~/components/tasks/addTask";
 
 export default {
-  props: ["name", "projectId", "Alltasks", "MyTasks", "people"],
+  props: ["name", "projectId", "Alltasks", "MyTasks", "people", "pagination"],
   data() {
     return {
       key: value

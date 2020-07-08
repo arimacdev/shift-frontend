@@ -320,6 +320,7 @@
           "
           v-bind:is="component"
           :project="project"
+          :pagination="pagination"
           @refreshSelectedTab="refreshSelectedTab"
         ></component>
         <component v-else-if="this.component == 'add-project'" v-bind:is="component"></component>
@@ -345,6 +346,7 @@ export default {
   },
   data() {
     return {
+      pagination: 1,
       component: "tab-views",
       project: {},
       taskLog: [],
@@ -385,6 +387,10 @@ export default {
             this.$route.params.projects
           );
           this.$store.dispatch(
+            "task/fetchTotalTaskCount",
+            this.$route.params.projects
+          );
+          this.$store.dispatch(
             "task/fetchTasksMyTasks",
             this.$route.params.projects
           );
@@ -421,6 +427,10 @@ export default {
         });
         this.$store.dispatch(
           "task/fetchTasksAllTasks",
+          this.$route.params.projects
+        );
+        this.$store.dispatch(
+          "task/fetchTotalTaskCount",
           this.$route.params.projects
         );
         break;
@@ -497,6 +507,10 @@ export default {
             this.$route.params.projects
           );
           this.$store.dispatch(
+            "task/fetchTotalTaskCount",
+            this.$route.params.projects
+          );
+          this.$store.dispatch(
             "task/fetchTasksMyTasks",
             this.$route.params.projects
           );
@@ -528,6 +542,10 @@ export default {
             "task/fetchTasksAllTasks",
             this.$route.params.projects
           );
+          this.$store.dispatch(
+            "task/fetchTotalTaskCount",
+            this.$route.params.projects
+          );
           break;
         case "files":
           this.$store.dispatch(
@@ -551,6 +569,10 @@ export default {
           });
           this.$store.dispatch(
             "task/fetchTasksAllTasks",
+            this.$route.params.projects
+          );
+          this.$store.dispatch(
+            "task/fetchTotalTaskCount",
             this.$route.params.projects
           );
           this.$store.dispatch(
@@ -589,6 +611,10 @@ export default {
           });
           this.$store.dispatch(
             "task/fetchTasksAllTasks",
+            this.$route.params.projects
+          );
+          this.$store.dispatch(
+            "task/fetchTotalTaskCount",
             this.$route.params.projects
           );
           break;
