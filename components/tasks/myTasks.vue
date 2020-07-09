@@ -301,7 +301,7 @@
             style="text-decoration: none;"
             target="_blank"
           >
-            <v-list-item @click="selectTask(task, task)">
+            <v-list-item>
               <!-- @click.stop="drawer = !drawer" -->
               <v-list-item-action>
                 <v-icon
@@ -409,7 +409,7 @@
 
 <script>
 // import TaskSideBar from "~/components/tasks/taskSideBar";
-import TaskDialog from '~/components/tasks/taskDialog';
+import TaskDialog from '~/components/tasks/myTaskDialog';
 import SuccessPopup from '~/components/popups/successPopup';
 import ErrorPopup from '~/components/popups/errorPopup';
 import Progress from '~/components/popups/progress';
@@ -821,10 +821,10 @@ export default {
     taskFilterHandler() {
       // console.log("-----------> changed" + this.taskSelect);
     },
-    async selectTask(task, taskObject) {
+    async selectTask(task) {
       this.task = task;
       this.$store.dispatch('task/setSelectedTask', task);
-      this.taskObject = taskObject;
+      // this.taskObject = taskObject;
       this.componentClose = '';
       // console.log("selectedTask", task);
       this.$axios.get(`/users/${task.taskAssignee}`).then(async (response) => {
