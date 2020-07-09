@@ -138,12 +138,7 @@ export const actions = {
     let taskLength;
     try {
       taskLength = await this.$axios.$get(
-        `/projects/${projectId}/tasks/user/count?userId=${user}`,
-        {
-          headers: {
-            userId: user,
-          },
-        }
+        `/projects/${projectId}/tasks/user/count?userId=${user}`
       );
       console.log('task length', taskLength.data);
       commit('SET_MY_TASK_COUNT', taskLength.data);
