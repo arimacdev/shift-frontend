@@ -109,6 +109,7 @@
                       <div @click="addReact(comment.commentId, '&#128546;')" class="emoji">&#128546;</div>
                     </v-menu>
                     <div
+                      v-if="userId == comment.commenter"
                       @click="
                         commentEditor = true;
                         selectComment(comment);
@@ -120,6 +121,7 @@
                       </span>
                     </div>
                     <div
+                      v-if="userId == comment.commenter"
                       @click="
                         deleteCommentDialog = true;
                         selectComment(comment);
