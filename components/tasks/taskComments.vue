@@ -788,7 +788,7 @@ export default {
           console.log("result", mentionedUsers);
 
           this.textEditor = "";
-          if (response.message == "success") {
+          if (mentionedUsers.length > 0) {
             mentionResponse = await this.$axios.$post(
               `/notification/mention`,
               {
@@ -839,12 +839,38 @@ export default {
         //   startIndex: 0,
         //   endIndex: 200
         // });
+        console.log("updated--->", this.updatedComment)
         this.sendCommentedMessage(
           this.selectedTask.taskId,
           this.updatedComment,
           this.userId
         );
         this.getComments();
+        
+            let mentionedUsers = [],
+            m,
+            rx = /# (.*?)#/g;
+          while ((m = rx.exec(this.updatedComment)) !== null) {
+            mentionedUsers.push(m[1]);
+          }
+          console.log("result", mentionedUsers);
+
+           if (mentionedUsers.length > 0) {
+            let mentionResponse = await this.$axios.$post(
+              `/notification/mention`,
+              {
+                commentId: commentId,
+                entityId: this.selectedTask.taskId,
+                recipients: mentionedUsers
+              },
+              {
+                headers: {
+                  userId: this.userId
+                }
+              }
+            );
+            console.log("Annotations: " + mentionResponse);
+          }
 
         this.component = "success-popup";
         this.successMessage = "Comment successfully updated";
