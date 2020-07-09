@@ -16,10 +16,16 @@
           :key="index"
           class="taskList peopleListItems"
         >
-          <v-list-item v-if="assignee.projectRoleId == 1" class="peopleContainer">
+          <v-list-item
+            v-if="assignee.projectRoleId == 1"
+            class="peopleContainer"
+          >
             <v-list-item-avatar>
               <v-img
-                v-if="assignee.assigneeProfileImage != null && assignee.assigneeProfileImage != ''"
+                v-if="
+                  assignee.assigneeProfileImage != null &&
+                    assignee.assigneeProfileImage != ''
+                "
                 :src="assignee.assigneeProfileImage"
               ></v-img>
               <v-img
@@ -32,15 +38,17 @@
                 {{ assignee.assigneeFirstName }}
                 {{ assignee.assigneeLastName }}
               </v-list-item-title>
-              <v-list-item-title class="peopleName">{{ assignee.projectJobRoleName }}</v-list-item-title>
+              <v-list-item-title class="peopleName">{{
+                assignee.projectJobRoleName
+              }}</v-list-item-title>
             </v-list-item-content>
             <v-list-item-content class="projectProgressSection">
               <v-list-item-title class="completedStatus">
                 {{
-                assignee.tasksCompleted +
-                '/' +
-                assignee.totalTasks +
-                ' Tasks completed'
+                  assignee.tasksCompleted +
+                    '/' +
+                    assignee.totalTasks +
+                    ' Tasks completed'
                 }}
               </v-list-item-title>
               <v-list-item-title class="projectProgress">
@@ -68,7 +76,10 @@
               <editProjectUser :editUser="assignee" :projectId="projectId" />
             </v-list-item-action>
             <v-list-item-action>
-              <deleteProjectUser :blockedUserId="assignee.assigneeId" :projectId="projectId" />
+              <deleteProjectUser
+                :blockedUserId="assignee.assigneeId"
+                :projectId="projectId"
+              />
             </v-list-item-action>
           </v-list-item>
         </div>
@@ -86,12 +97,17 @@
           class="taskList peopleListItems"
         >
           <v-list-item
-            v-if="assignee.projectRoleId == 2 && assignee.isUserBlocked == false"
+            v-if="
+              assignee.projectRoleId == 2 && assignee.isUserBlocked == false
+            "
             class="peopleContainer"
           >
             <v-list-item-avatar>
               <v-img
-                v-if="assignee.assigneeProfileImage != null && assignee.assigneeProfileImage != ''"
+                v-if="
+                  assignee.assigneeProfileImage != null &&
+                    assignee.assigneeProfileImage != ''
+                "
                 :src="assignee.assigneeProfileImage"
               ></v-img>
               <v-img
@@ -105,15 +121,17 @@
                 {{ assignee.assigneeFirstName }}
                 {{ assignee.assigneeLastName }}
               </v-list-item-title>
-              <v-list-item-title class="peopleName">{{ assignee.projectJobRoleName }}</v-list-item-title>
+              <v-list-item-title class="peopleName">{{
+                assignee.projectJobRoleName
+              }}</v-list-item-title>
             </v-list-item-content>
             <v-list-item-content class="projectProgressSection">
               <v-list-item-title class="completedStatus">
                 {{
-                assignee.tasksCompleted +
-                '/' +
-                assignee.totalTasks +
-                ' Tasks completed'
+                  assignee.tasksCompleted +
+                    '/' +
+                    assignee.totalTasks +
+                    ' Tasks completed'
                 }}
               </v-list-item-title>
               <v-list-item-title class="projectProgress">
@@ -141,7 +159,10 @@
               <editProjectUser :editUser="assignee" :projectId="projectId" />
             </v-list-item-action>
             <v-list-item-action>
-              <deleteProjectUser :blockedUserId="assignee.assigneeId" :projectId="projectId" />
+              <deleteProjectUser
+                :blockedUserId="assignee.assigneeId"
+                :projectId="projectId"
+              />
             </v-list-item-action>
           </v-list-item>
         </div>
@@ -159,12 +180,17 @@
             class="taskList peopleListItems"
           >
             <v-list-item
-              v-if="assignee.projectRoleId == 3 && assignee.isUserBlocked == false"
+              v-if="
+                assignee.projectRoleId == 3 && assignee.isUserBlocked == false
+              "
               class="peopleContainer"
             >
               <v-list-item-avatar>
                 <v-img
-                  v-if="assignee.assigneeProfileImage != null && assignee.assigneeProfileImage != ''"
+                  v-if="
+                    assignee.assigneeProfileImage != null &&
+                      assignee.assigneeProfileImage != ''
+                  "
                   :src="assignee.assigneeProfileImage"
                 ></v-img>
                 <v-img
@@ -177,15 +203,17 @@
                   {{ assignee.assigneeFirstName }}
                   {{ assignee.assigneeLastName }}
                 </v-list-item-title>
-                <v-list-item-title class="peopleName">{{ assignee.projectJobRoleName }}</v-list-item-title>
+                <v-list-item-title class="peopleName">{{
+                  assignee.projectJobRoleName
+                }}</v-list-item-title>
               </v-list-item-content>
               <v-list-item-content class="projectProgressSection">
                 <v-list-item-title class="completedStatus">
                   {{
-                  assignee.tasksCompleted +
-                  '/' +
-                  assignee.totalTasks +
-                  ' Tasks completed'
+                    assignee.tasksCompleted +
+                      '/' +
+                      assignee.totalTasks +
+                      ' Tasks completed'
                   }}
                 </v-list-item-title>
                 <v-list-item-title class="projectProgress">
@@ -213,7 +241,10 @@
                 <editProjectUser :editUser="assignee" :projectId="projectId" />
               </v-list-item-action>
               <v-list-item-action>
-                <deleteProjectUser :blockedUserId="assignee.assigneeId" :projectId="projectId" />
+                <deleteProjectUser
+                  :blockedUserId="assignee.assigneeId"
+                  :projectId="projectId"
+                />
               </v-list-item-action>
             </v-list-item>
           </div>
@@ -230,35 +261,35 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import deleteProjectUser from "@/components/people/deleteProjectUser.vue";
-import editProjectUser from "@/components/people/editProjectUser.vue";
-import addProjectUser from "@/components/people/addProjectUser.vue";
+import { mapState } from 'vuex';
+import deleteProjectUser from '@/components/people/deleteProjectUser.vue';
+import editProjectUser from '@/components/people/editProjectUser.vue';
+import addProjectUser from '@/components/people/addProjectUser.vue';
 export default {
   components: {
     deleteProjectUser,
     editProjectUser,
-    addProjectUser
+    addProjectUser,
   },
   data() {
     return {
       assignee: {},
       // userList: this.people,
       skill: 0,
-      progress: this.progress
+      progress: this.progress,
     };
   },
   methods: {
     fetchUsers() {
       // console.log("projectId", this.projectId);
-    }
+    },
   },
   computed: {
     ...mapState({
-      userCompletionTasks: state => state.task.userCompletionTasks,
-      projectId: state => state.project.project.projectId
-    })
-  }
+      userCompletionTasks: (state) => state.task.userCompletionTasks,
+      projectId: (state) => state.project.project.projectId,
+    }),
+  },
 };
 </script>
 
