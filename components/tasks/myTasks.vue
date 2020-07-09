@@ -179,7 +179,7 @@
                     ></v-img>
                   </v-list-item-avatar>
                 </div>
-                <div class="bluePartMyTask"></div>
+                <div v-if="task.isParent == true" class="bluePartMyTask"></div>
               </v-list-item>
               <div class="boardTabLinkIcon">
                 <nuxt-link
