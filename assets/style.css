@@ -1935,7 +1935,7 @@
 .restructuredSubTaskCreate {
   padding-left: 30px;
   padding-right: 30px;
-  margin-bottom: -20px;
+  /* margin-bottom: -20px; */
 }
 .restructuredSubTaskCreateGroup {
   padding-left: 30px;
