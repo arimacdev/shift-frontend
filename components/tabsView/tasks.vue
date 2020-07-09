@@ -9,7 +9,12 @@
         </template>
 
         <v-list>
-          <v-list-item v-on:click="setTaskTab('all-tasks'); fetchAllTasks()">
+          <v-list-item
+            v-on:click="
+              setTaskTab('all-tasks');
+              fetchAllTasks();
+            "
+          >
             <v-list-item-action>
               <v-icon size="17" color="#0c0c5a">icon-task</v-icon>
             </v-list-item-action>
@@ -17,7 +22,12 @@
               <v-list-item-title class="bodyWiew">All tasks</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item v-on:click="setTaskTab('my-tasks'); fetchMyTasks()">
+          <v-list-item
+            v-on:click="
+              setTaskTab('my-tasks');
+              fetchMyTasks();
+            "
+          >
             <v-list-item-action>
               <v-icon size="17" color="#2EC973">icon-task</v-icon>
             </v-list-item-action>
@@ -97,6 +107,7 @@
             :MyTasks="MyTasks"
             :people="people"
             :pagination="pagination"
+            :myTaskPagination="myTaskPagination"
           ></component>
         </div>
         <!-- </keep-alive> -->
@@ -106,61 +117,62 @@
 </template>
 
 <script>
-import AllTasks from "~/components/tasks/allTasks";
-import MyTasks from "~/components/tasks/myTasks";
-import AddTask from "~/components/tasks/addTask";
+import AllTasks from '~/components/tasks/allTasks';
+import MyTasks from '~/components/tasks/myTasks';
+import AddTask from '~/components/tasks/addTask';
 
 export default {
-  props: ["name", "projectId", "Alltasks", "MyTasks", "people", "pagination"],
+  props: ['name', 'projectId', 'Alltasks', 'MyTasks', 'people', 'pagination'],
   data() {
     return {
-      key: value
+      key: value,
     };
   },
-  name: "tasks",
+  name: 'tasks',
   components: {
-    "all-tasks": AllTasks,
-    "my-tasks": MyTasks,
-    "add-task": AddTask
+    'all-tasks': AllTasks,
+    'my-tasks': MyTasks,
+    'add-task': AddTask,
   },
   data() {
     return {
-      component: "all-tasks"
+      myTaskPagination: 1,
+      component: 'all-tasks',
     };
   },
   methods: {
     fetchAllTasks() {
-      this.$store.dispatch("task/setIndex", {
+      this.$store.dispatch('task/setIndex', {
         startIndex: 0,
-        endIndex: 10
+        endIndex: 10,
       });
       this.$store.dispatch(
-        "task/fetchTasksAllTasks",
+        'task/fetchTasksAllTasks',
         this.$route.params.projects
       );
       this.$store.dispatch(
-        "task/fetchTotalTaskCount",
+        'task/fetchTotalTaskCount',
         this.$route.params.projects
       );
     },
     fetchMyTasks() {
-      this.$store.dispatch("task/setIndex", {
+      this.$store.dispatch('task/setIndex', {
         startIndex: 0,
-        endIndex: 10
+        endIndex: 10,
       });
       this.$store.dispatch(
-        "task/fetchTasksAllTasks",
+        'task/fetchTasksMyTasks',
         this.$route.params.projects
       );
       this.$store.dispatch(
-        "task/fetchTotalTaskCount",
+        'task/fetchMyTaskCount',
         this.$route.params.projects
       );
     },
     setTaskTab(tabType) {
       this.component = tabType;
-    }
-  }
+    },
+  },
 };
 </script>
 
