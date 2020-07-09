@@ -86,8 +86,8 @@
       <v-list-item>
         <img
           style="margin-bottom: 10px; margin-left: -10px"
-          width="50px"
-          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1594213015436_1.png"
+          width="45px"
+          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1594269856114_1.png"
         />
         <v-list-item-content style="margin-left: 12px; margin-top: -10px">
           <v-list-item-title class="navText">Arimac Digital</v-list-item-title>
