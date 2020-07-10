@@ -3050,3 +3050,10 @@
 .taskActionContents {
   /* margin-top: -70px; */
 }
+.taggingPopupBox {
+  background-color: #f7f2f2 !important;
+  border-radius: 5px;
+  width: 80%;
+  height: 200px;
+  margin-top: -200px;
+}
