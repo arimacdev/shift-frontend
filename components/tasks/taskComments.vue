@@ -156,7 +156,7 @@
                     :quickToolbarSettings="quickToolbarSettings"
                     :toolbarSettings="toolbarSettings"
                     v-model="updatedComment"
-                    @focus="typingText()"
+                    @focus="typingText(); selectTextEditor('updateCommentEditor')"
                     @blur="notTyping()"
                   ></ejs-richtexteditor>
                 </div>
@@ -319,7 +319,10 @@
               </v-avatar>
             </v-col>
             <v-col sm="10" md="10" style="z-index: 100">
-              <div v-if="tagging" class="taggingPopupBox overflow-y-auto">
+              <div
+                v-if="tagging && editorType == 'addCommentEditor'"
+                class="taggingPopupBox overflow-y-auto"
+              >
                 <div>
                   <v-list-item-group>
                     <div v-for="(user, index) in this.assigneeArray" :key="index">
@@ -352,7 +355,7 @@
                   :quickToolbarSettings="quickToolbarSettings"
                   :toolbarSettings="toolbarSettings"
                   v-model="textEditor"
-                  @focus="typingText()"
+                  @focus="typingText(); selectTextEditor('addCommentEditor')"
                   @blur="notTyping()"
                 ></ejs-richtexteditor>
               </div>
@@ -547,10 +550,13 @@ export default {
     document.addEventListener("keyup", this.onKeyUp);
   },
   methods: {
+    selectTextEditor(editor) {
+      this.editorType = editor;
+    },
     onKeyUp(e) {
       if (e.keyCode === 50) {
         this.tagging = true;
-        console.log("KEYUPENTER!" + e.keyCode);
+        // console.log("KEYUPENTER!" + e.keyCode);
         // this.$refs.defaultRTE.ej2Instances.focusIn();
       } else {
         this.tagging = false;
@@ -1119,6 +1125,7 @@ export default {
   },
   data: function() {
     return {
+      editorType: "",
       tagging: false,
       annotations: [],
       filterAssignee: "",
