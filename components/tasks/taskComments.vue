@@ -557,7 +557,9 @@ export default {
       }
     },
     tagPeople(assignee) {
+      // console.log("TEXT EDIT: " + this.textEditor);
       this.tagging = false;
+      this.textEditor = this.textEditor.slice(0, -1);
       if (assignee != null) {
         if (this.textEditor != null) {
           this.textEditor =
