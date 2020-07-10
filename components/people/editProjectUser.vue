@@ -70,21 +70,26 @@
     <div @click="close" class="editProjectUserPopup">
       <component v-bind:is="component" :errorMessage="errorMessage"></component>
     </div>
-    <!-- <success-popup /> -->
+    <v-overlay :value="overlay">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 
 <script>
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
+import Progress from "~/components/popups/progress";
 export default {
   props: ["editUser", "projectId"],
   components: {
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
+    "progress-loading": Progress,
   },
   data() {
     return {
+      overlay: false,
       isValid: true,
       errorMessage: "",
       userId: this.$store.state.user.userId,
@@ -108,6 +113,7 @@ export default {
       } else {
         roleIdValue = 3;
       }
+      this.overlay = true
       let response;
       try {
         // console.log("edituser", this.editUser);
@@ -122,7 +128,9 @@ export default {
         this.$store.dispatch(
           "task/fetchProjectUserCompletionTasks",
           this.projectId
-        );
+        ).finally(()=> {
+          this.overlay = false
+        })
         this.component = "success-popup";
       } catch (e) {
         console.log("Error blocking user", e);
