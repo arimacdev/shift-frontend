@@ -156,9 +156,38 @@
                     :quickToolbarSettings="quickToolbarSettings"
                     :toolbarSettings="toolbarSettings"
                     v-model="updatedComment"
-                    @focus="typingText()"
+                    @focus="typingText(); selectTextEditor('updateCommentEditor')"
                     @blur="notTyping()"
                   ></ejs-richtexteditor>
+                </div>
+                <div
+                  v-if="tagging && editorType == 'updateCommentEditor'"
+                  class="taggingPopupBox overflow-y-auto"
+                >
+                  <div>
+                    <v-list-item-group>
+                      <div v-for="(user, index) in assigneeArray" :key="index">
+                        <v-list-item @click="tagPeopleUpdate(user)" dense>
+                          <v-list-item-avatar size="20">
+                            <v-img
+                              v-if="
+                    user.img != null &&
+                      user.img != ''
+                  "
+                              :src="user.img"
+                            ></v-img>
+                            <v-img
+                              v-else
+                              src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                            ></v-img>
+                          </v-list-item-avatar>
+                          <v-list-item-content>
+                            <v-list-item-subtitle>{{user.name}}</v-list-item-subtitle>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </div>
+                    </v-list-item-group>
+                  </div>
                 </div>
                 <div style="float: left">
                   <v-btn
@@ -168,7 +197,7 @@
                     color="primary"
                   >Update</v-btn>
                   <v-btn
-                    @click="commentEditor = false"
+                    @click="commentEditor = false; editorType = ''; tagging = false"
                     class="text-capitalize"
                     style="margin-top: 10px"
                     color="error"
@@ -319,7 +348,21 @@
               </v-avatar>
             </v-col>
             <v-col sm="10" md="10" style="z-index: 100">
-              <div v-if="tagging" class="taggingPopupBox overflow-y-auto">
+              <div id="defaultRTE">
+                <ejs-richtexteditor
+                  :placeholder="placeholder"
+                  ref="rteObj"
+                  :quickToolbarSettings="quickToolbarSettings"
+                  :toolbarSettings="toolbarSettings"
+                  v-model="textEditor"
+                  @focus="typingText(); selectTextEditor('addCommentEditor')"
+                  @blur="notTyping()"
+                ></ejs-richtexteditor>
+              </div>
+              <div
+                v-if="tagging && editorType == 'addCommentEditor'"
+                class="taggingPopupBox overflow-y-auto"
+              >
                 <div>
                   <v-list-item-group>
                     <div v-for="(user, index) in this.assigneeArray" :key="index">
@@ -344,17 +387,6 @@
                     </div>
                   </v-list-item-group>
                 </div>
-              </div>
-              <div id="defaultRTE">
-                <ejs-richtexteditor
-                  :placeholder="placeholder"
-                  ref="rteObj"
-                  :quickToolbarSettings="quickToolbarSettings"
-                  :toolbarSettings="toolbarSettings"
-                  v-model="textEditor"
-                  @focus="typingText()"
-                  @blur="notTyping()"
-                ></ejs-richtexteditor>
               </div>
               <div style="float: left">
                 <v-btn
@@ -547,14 +579,47 @@ export default {
     document.addEventListener("keyup", this.onKeyUp);
   },
   methods: {
+    selectTextEditor(editor) {
+      this.editorType = editor;
+    },
     onKeyUp(e) {
       if (e.keyCode === 50) {
         this.tagging = true;
-        console.log("KEYUPENTER!" + e.keyCode);
+        // console.log("KEYUPENTER!" + e.keyCode);
         // this.$refs.defaultRTE.ej2Instances.focusIn();
       } else {
         this.tagging = false;
       }
+    },
+    tagPeopleUpdate(assignee) {
+      this.tagging = false;
+
+      this.updatedComment = this.updatedComment.slice(0, -1);
+      if (assignee != null) {
+        if (this.updatedComment != null) {
+          this.updatedComment =
+            this.updatedComment.slice(0, -4) +
+            "&nbsp;<span >" +
+            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
+            assignee.name +
+            "</span> &nbsp;" +
+            "<span @userId='# " +
+            assignee.id +
+            "#'></span></span>&nbsp;&nbsp;</p>";
+          // this.annotations.push(this.filterAssignee.id);
+        } else {
+          this.updatedComment =
+            "&nbsp;<span >" +
+            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
+            assignee.name +
+            "</span> &nbsp;" +
+            "<span @userId='# " +
+            assignee.id +
+            "#'></span></span>&nbsp;&nbsp;</p>";
+          // this.annotations.push(this.filterAssignee.id);
+        }
+      }
+      this.filterAssignee == "";
     },
     tagPeople(assignee) {
       // console.log("TEXT EDIT: " + this.textEditor);
@@ -1119,6 +1184,7 @@ export default {
   },
   data: function() {
     return {
+      editorType: "",
       tagging: false,
       annotations: [],
       filterAssignee: "",
