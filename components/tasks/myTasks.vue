@@ -798,7 +798,7 @@ export default {
           this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         } else {
           // console.log("assignee is NOT me", this.taskAssignee);
-          this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+          this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
         }
         (this.taskName = ""),
           (this.taskAssignee = ""),
