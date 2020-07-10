@@ -385,7 +385,6 @@ export default {
     switch (this.selectedTab) {
       case "task":       
         if (this.$route.params.projects != "projects") {
-          console.log("TASK ___>")
            this.overlay = true;
           Promise.all([
              this.$store.dispatch("task/setIndex", {
@@ -430,22 +429,28 @@ export default {
         );
         break;
       case "board":
+        console.log("board -------->")
+        this.overlay = true
+        Promise.all([
         this.$store.dispatch(
           "sprints/sprint/fetchAllProjectSprints",
           this.$route.params.projects
-        );
+        ),
         this.$store.dispatch("task/setIndex", {
           startIndex: 0,
           endIndex: 10
-        });
+        }),
         this.$store.dispatch(
           "task/fetchTasksAllTasks",
           this.$route.params.projects
-        );
+        ),
         this.$store.dispatch(
           "task/fetchTotalTaskCount",
           this.$route.params.projects
-        );
+        )
+        ]).finally(()=> {
+          this.overlay = false;
+        })
         break;
       case "files":
         this.$store.dispatch(
@@ -508,66 +513,95 @@ export default {
     refreshSelectedTab(tab) {
       switch (tab) {
         case "people":
-          this.$store.dispatch(
+          this.overlay = true;
+          console.log("people")
+          // Promise.all([
+             this.$store.dispatch(
             "task/fetchProjectUserCompletionTasks",
             this.$route.params.projects
-          );
+          ).finally( ()=> {
+            this.overlay = false
+            console.log("finally")
+          })
+          // ]).finally( ()=> {
+          //  this.overlay = false;
+          // });         
           break;
         case "task":
-          this.$store.dispatch("task/setIndex", {
+          this.overlay = true;
+          Promise.all([
+            this.$store.dispatch("task/setIndex", {
             startIndex: 0,
             endIndex: 10
-          });
+          }),
           this.$store.dispatch(
             "task/fetchTasksAllTasks",
             this.$route.params.projects
-          );
+          ),
           this.$store.dispatch(
             "task/fetchTotalTaskCount",
             this.$route.params.projects
-          );
+          ),
           this.$store.dispatch(
             "task/fetchTasksMyTasks",
             this.$route.params.projects
-          );
+          ),
           this.$store.dispatch(
             "task/fetchProjectUserCompletionTasks",
             this.$route.params.projects
-          );
+          ),
           this.$store.dispatch(
             "sprints/sprint/fetchAllProjectSprints",
             this.$route.params.projects
-          );
+          ),
+          ]).finally(()=> {
+            this.overlay = false;
+          })
           break;
         case "project":
-          this.$store.dispatch(
+            this.overlay = true;
+          Promise.all([
+                this.$store.dispatch(
             "task/fetchProjectTaskCompletion",
             this.$route.params.projects
-          );
+          )
+          ]).finally(()=> {
+            this.overlay = false;
+          })
           break;
         case "board":
-          this.$store.dispatch(
+          this.overlay = true;
+          Promise.all([
+             this.$store.dispatch(
             "sprints/sprint/fetchAllProjectSprints",
             this.$route.params.projects
-          );
+          ),
           this.$store.dispatch("task/setIndex", {
             startIndex: 0,
             endIndex: 10
-          });
+          }),
           this.$store.dispatch(
             "task/fetchTasksAllTasks",
             this.$route.params.projects
-          );
+          ),
           this.$store.dispatch(
             "task/fetchTotalTaskCount",
             this.$route.params.projects
-          );
+          )
+          ]).finally( ()=> {
+            this.overlay = false;
+          })         
           break;
         case "files":
-          this.$store.dispatch(
+          this.overlay = true;
+          Promise.all([
+            this.$store.dispatch(
             "project/fetchAllProjectFiles",
             this.$route.params.projects
-          );
+          )
+          ]).finally(()=> {
+            this.overlay = false;
+          })
           break;
       }
     },
