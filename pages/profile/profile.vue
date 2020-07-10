@@ -19,6 +19,9 @@
         <component v-bind:is="component" :name="name" :user="user"></component>
       </keep-alive>
     </div>
+    <v-overlay :value="overlay">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 
@@ -27,6 +30,7 @@ import NavigationDrawer from "~/components/navigationDrawer";
 import Logo from "~/components/Logo.vue";
 import VuetifyLogo from "~/components/VuetifyLogo.vue";
 import ProfileContent from "~/components/profile/profileContent";
+import Progress from "~/components/popups/progress";
 import axios from "axios";
 
 export default {
@@ -36,6 +40,7 @@ export default {
   },
   data() {
     return {
+      overlay: false,
       component: "profile-content"
     };
   },
@@ -49,11 +54,16 @@ export default {
     };
   },
   created() {
-    this.$store.dispatch("project/clearProject");
+    this.overlay = true;
+    Promise.all([
+    this.$store.dispatch("project/clearProject"),
     this.$store.dispatch(
       "skillMap/fetchUserSkillMap",
       this.$store.state.user.userId
-    );
+    )
+    ]).finally(()=>{
+      this.overlay = false;
+    })
   },
 
   methods: {
