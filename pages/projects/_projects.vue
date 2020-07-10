@@ -326,6 +326,9 @@
         <component v-else-if="this.component == 'add-project'" v-bind:is="component"></component>
       </keep-alive>
     </div>
+      <v-overlay :value="overlay">
+        <progress-loading />
+      </v-overlay>
   </div>
 </template>
 
@@ -337,15 +340,19 @@ import VuetifyLogo from "~/components/VuetifyLogo.vue";
 import TabViews from "~/components/projects/tabViews";
 import SearchBar from "~/components/tools/searchBar";
 import AddProject from "~/components/projects/addProject";
+import Progress from "~/components/popups/progress";
+
 export default {
   components: {
     NavigationDrawer,
     "tab-views": TabViews,
     "search-bar": SearchBar,
-    "add-project": AddProject
+    "add-project": AddProject,
+    "progress-loading": Progress,
   },
   data() {
     return {
+      overlay: false,
       pagination: 1,
       component: "tab-views",
       project: {},
@@ -376,32 +383,38 @@ export default {
       this.$store.dispatch("project/fetchProject", this.$route.params.projects);
     }
     switch (this.selectedTab) {
-      case "task":
+      case "task":       
         if (this.$route.params.projects != "projects") {
-          this.$store.dispatch("task/setIndex", {
+          console.log("TASK ___>")
+           this.overlay = true;
+          Promise.all([
+             this.$store.dispatch("task/setIndex", {
             startIndex: 0,
             endIndex: 10
-          });
-          this.$store.dispatch(
+          }),
+            this.$store.dispatch(
             "task/fetchTasksAllTasks",
             this.$route.params.projects
-          );
+          ),
           this.$store.dispatch(
             "task/fetchTotalTaskCount",
             this.$route.params.projects
-          );
-          this.$store.dispatch(
+          ),
+           this.$store.dispatch(
             "task/fetchTasksMyTasks",
             this.$route.params.projects
-          );
+          ),
           this.$store.dispatch(
             "task/fetchProjectUserCompletionTasks",
             this.$route.params.projects
-          );
+          ),
           this.$store.dispatch(
             "sprints/sprint/fetchAllProjectSprints",
             this.$route.params.projects
-          );
+          )
+          ]).finally(() => {
+            this.overlay = false;
+          }) 
         }
         break;
       case "people":
@@ -441,8 +454,11 @@ export default {
         );
         break;
       default:
-        console.log("Home Page");
+        console.log("Home Page");        
     }
+          console.log("OVERLAy ___>")
+
+    //this.overlay = false
   },
 
   methods: {
