@@ -49,17 +49,19 @@
         </v-tabs>
       </div>
     </div>
-
     <div class="workloadV2Body">
       <component v-bind:is="component"></component>
     </div>
+     <v-overlay :value="overlay" style="z-index:1008">
+        <progress-loading />
+      </v-overlay>
   </div>
 </template>
 <script>
 import NavigationDrawer from '~/components/navigationDrawer';
 import Users from '~/components/admin/users';
 import Organization from '~/components/admin/organization';
-
+import Progress from "~/components/popups/progress";
 import Skills from '~/components/admin/skills';
 
 export default {
@@ -68,9 +70,11 @@ export default {
     'users-tab': Users,
     'organization-tab': Organization,
     'skills-tab': Skills,
+    "progress-loading": Progress
   },
   data() {
     return {
+      overlay: false,
       component: 'users-tab',
     };
   },
@@ -96,9 +100,15 @@ export default {
     };
   },
   created() {
-    this.$store.dispatch('user/setAllUsers');
-    this.$store.dispatch('project/clearProject');
-    this.$store.dispatch('skillMatrix/fetchSkillCategory');
+    this.overlay = true;
+    Promise.all([
+    this.$store.dispatch('user/setAllUsers'),
+    this.$store.dispatch('project/clearProject'),
+    this.$store.dispatch('skillMatrix/fetchSkillCategory')
+    ]).finally(()=> {
+      this.overlay = false;
+    })
+  
   },
 };
 </script>

@@ -39,13 +39,16 @@
         <component v-bind:is="component"></component>
       </div>
     </div>
+     <v-overlay :value="overlay">
+        <progress-loading />
+      </v-overlay>
   </div>
 </template>
 <script>
 import NavigationDrawer from "~/components/navigationDrawer";
 import usersSearchBar from "~/components/tools/usersSearchBar";
 import WorkloadContent from "~/components/workload/workloadContent";
-
+import Progress from "~/components/popups/progress";
 import MyWorkload from "~/components/workload/myWorkload";
 import OrgWorkload from "~/components/workload/orgWorkload";
 
@@ -56,10 +59,24 @@ export default {
     NavigationDrawer,
     "workload-content": WorkloadContent,
     "my-workload": MyWorkload,
-    "org-workload": OrgWorkload
+    "org-workload": OrgWorkload,
+    "progress-loading": Progress    
+  },
+   created() {
+     console.log("cretad")
+    this.overlay = true;
+    Promise.all([
+    this.$store.dispatch("user/setAllUsers"),
+    this.$store.dispatch("project/fetchAllProjects"),
+    this.$store.dispatch("workload/fetchAllTaskLoadUsers"),
+    this.$store.dispatch("project/clearProject")
+    ]).finally(()=> {
+      this.overlay = false
+    });
   },
   data() {
     return {
+      overlay : false,
       component: "my-workload",
       userId: this.$store.state.user.userId,
       workLoad: {},
@@ -75,9 +92,7 @@ export default {
     };
   },
 
-  created() {
-    this.$store.dispatch("workload/fetchAllTaskLoadUsers");
-    this.$store.dispatch("project/clearProject");
+   created() {
   },
 
   watch: {
@@ -150,9 +165,6 @@ export default {
       organizationalRoles: state => state.user.organizationalRoles
     })
   },
-  created() {
-    this.$store.dispatch("project/fetchAllProjects");
-    this.$store.dispatch("user/setAllUsers");
-  }
+ 
 };
 </script>

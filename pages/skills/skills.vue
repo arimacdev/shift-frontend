@@ -529,6 +529,9 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+     <v-overlay :value="overlay" style="z-index:1008">
+        <progress-loading />
+      </v-overlay>
   </div>
 </template>
 
@@ -536,13 +539,16 @@
 import NavigationDrawer from "~/components/navigationDrawer";
 import axios from "axios";
 import { mapState } from "vuex";
+import Progress from "~/components/popups/progress";
 
 export default {
   components: {
-    NavigationDrawer
+    NavigationDrawer,
+    "progress-loading": Progress
   },
   data() {
     return {
+      overlay: false,
       empty: true,
       userId: this.$store.state.user.userId,
       searchSkillDialog: false,
@@ -688,16 +694,19 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("skillMatrix/fetchOrganizationSkills", {
-      // limit: this.users.length,
+    this.overlay = true;
+    Promise.all([
+      this.$store.dispatch("skillMatrix/fetchOrganizationSkills", {
       limit: 10,
       offset: 0
-    });
-    this.$store.dispatch("project/clearProject");
-    this.$store.dispatch("skillMatrix/fetchSkillCategory");
-    this.$store.dispatch("skillMatrix/fetchCategorySkillMapping");
-
-    this.$store.dispatch("skillMatrix/fetchUserSkills", this.userId);
+    }),
+    this.$store.dispatch("project/clearProject"),
+    this.$store.dispatch("skillMatrix/fetchSkillCategory"),
+    this.$store.dispatch("skillMatrix/fetchCategorySkillMapping"),
+    this.$store.dispatch("skillMatrix/fetchUserSkills", this.userId)
+    ]).finally(()=> {
+      this.overlay = false;
+    })
   },
   computed: {
     ...mapState({
