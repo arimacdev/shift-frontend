@@ -599,18 +599,23 @@ export default {
   },
   methods: {
     getAllTasks() {
-      this.$store.dispatch("task/setIndex", {
+      this.overlay = true;
+      Promise.all([
+        this.$store.dispatch("task/setIndex", {
         startIndex: this.pagination * 10 - 10,
         endIndex: this.pagination * 10
-      });
+      }),
       this.$store.dispatch(
         "task/fetchTasksAllTasks",
         this.$route.params.projects
-      );
+      ),
       this.$store.dispatch(
         "task/fetchTotalTaskCount",
         this.$route.params.projects
-      );
+      )
+      ]).finally(()=> {
+        this.overlay = false
+      })
     },
     filterChange() {
       this.nameOfTask = "";
