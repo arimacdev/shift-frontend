@@ -98,7 +98,10 @@
                       <template v-slot:activator="{ on, attrs }">
                         <div class="text-capitalize addEmojiButton" v-bind="attrs" v-on="on">
                           <span style="font-size: 14px">
-                            <v-icon size="16" style="margin-top: -6px">mdi-emoticon-outline</v-icon>
+                            <v-icon
+                              size="16"
+                              style="margin-top: -6px; z-index: 0"
+                            >mdi-emoticon-outline</v-icon>
                           </span>
                         </div>
                       </template>
@@ -315,7 +318,33 @@
                 ></v-img>
               </v-avatar>
             </v-col>
-            <v-col sm="10" md="10">
+            <v-col sm="10" md="10" style="z-index: 100">
+              <div v-if="tagging" class="taggingPopupBox overflow-y-auto">
+                <div>
+                  <v-list-item-group>
+                    <div v-for="(user, index) in this.assigneeArray" :key="index">
+                      <v-list-item dense>
+                        <v-list-item-avatar size="20">
+                          <v-img
+                            v-if="
+                    user.img != null &&
+                      user.img != ''
+                  "
+                            :src="user.img"
+                          ></v-img>
+                          <v-img
+                            v-else
+                            src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                          ></v-img>
+                        </v-list-item-avatar>
+                        <v-list-item-content>
+                          <v-list-item-subtitle>{{user.name}}</v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </div>
+                  </v-list-item-group>
+                </div>
+              </div>
               <div id="defaultRTE">
                 <ejs-richtexteditor
                   :placeholder="placeholder"
@@ -520,8 +549,11 @@ export default {
   methods: {
     onKeyUp(e) {
       if (e.keyCode === 50) {
+        this.tagging = true;
         console.log("KEYUPENTER!" + e.keyCode);
         // this.$refs.defaultRTE.ej2Instances.focusIn();
+      } else {
+        this.tagging = false;
       }
     },
     mentionSomeone() {
@@ -670,7 +702,7 @@ export default {
                 "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'>";
             }
           }
-          console.log("File response", fileResponse.data);
+          // console.log("File response", fileResponse.data);
           // location.reload();
         } catch (e) {
           console.log("Error uploading prof pic: ", e);
@@ -787,14 +819,14 @@ export default {
             this.close();
           }, 3000);
 
-          console.log("textEditor", this.textEditor);
+          // console.log("textEditor", this.textEditor);
           let mentionedUsers = [],
             m,
             rx = /# (.*?)#/g;
           while ((m = rx.exec(this.textEditor)) !== null) {
             mentionedUsers.push(m[1]);
           }
-          console.log("result", mentionedUsers);
+          // console.log("result", mentionedUsers);
 
           this.textEditor = "";
           if (mentionedUsers.length > 0) {
@@ -811,7 +843,7 @@ export default {
                 }
               }
             );
-            console.log("Annotations: " + mentionResponse);
+            // console.log("Annotations: " + mentionResponse);
           }
 
           this.annotations = [];
@@ -848,7 +880,7 @@ export default {
         //   startIndex: 0,
         //   endIndex: 200
         // });
-        console.log("updated--->", this.updatedComment);
+        // console.log("updated--->", this.updatedComment);
         this.sendCommentedMessage(
           this.selectedTask.taskId,
           this.updatedComment,
@@ -862,7 +894,7 @@ export default {
         while ((m = rx.exec(this.updatedComment)) !== null) {
           mentionedUsers.push(m[1]);
         }
-        console.log("result", mentionedUsers);
+        // console.log("result", mentionedUsers);
 
         if (mentionedUsers.length > 0) {
           let mentionResponse = await this.$axios.$post(
@@ -878,7 +910,7 @@ export default {
               }
             }
           );
-          console.log("Annotations: " + mentionResponse);
+          // console.log("Annotations: " + mentionResponse);
         }
 
         this.component = "success-popup";
@@ -887,7 +919,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("update task status response", response);
+        // console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
@@ -899,7 +931,7 @@ export default {
       }
     },
     sendCommentedMessage(taskId, comment, sender) {
-      console.log("sending message", this.stomp, comment);
+      // console.log("sending message", this.stomp, comment);
       this.stomp.send(
         "/app/chat/" + taskId,
         {},
@@ -912,7 +944,7 @@ export default {
     },
 
     sendTypingMessage(taskId, sender, event) {
-      console.log("typing message", this.stomp);
+      // console.log("typing message", this.stomp);
       this.stomp.send(
         "/app/chat/" + taskId,
         {},
@@ -1057,6 +1089,7 @@ export default {
   },
   data: function() {
     return {
+      tagging: false,
       annotations: [],
       filterAssignee: "",
       files: null,
