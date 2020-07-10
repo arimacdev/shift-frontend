@@ -368,6 +368,7 @@
         :taskFiles="taskFiles"
         :componentClose="componentClose"
         :taskObject="taskObject"
+        :stomp="stomp"
         @taskDialogClosing="taskDialogClosing()"
       />
     </v-dialog>
@@ -394,6 +395,8 @@ import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import Progress from "~/components/popups/progress";
 import { mapState } from "vuex";
+import Stomp from "stompjs";
+import SockJS from "sockjs-client";
 export default {
   props: ["myTaskPagination"],
   data() {
@@ -493,7 +496,9 @@ export default {
       userId: this.$store.state.user.userId,
       taskSelect: "all",
       taskFilter: "none",
-      componentClose: null
+      componentClose: null,
+      baseUrl: process.env.SYSTEM_URL
+
     };
   },
   async created() {
