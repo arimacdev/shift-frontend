@@ -323,7 +323,7 @@
                 <div>
                   <v-list-item-group>
                     <div v-for="(user, index) in this.assigneeArray" :key="index">
-                      <v-list-item dense>
+                      <v-list-item @click="tagPeople(user)" dense>
                         <v-list-item-avatar size="20">
                           <v-img
                             v-if="
@@ -555,6 +555,36 @@ export default {
       } else {
         this.tagging = false;
       }
+    },
+    tagPeople(assignee) {
+      // console.log("TEXT EDIT: " + this.textEditor);
+      this.tagging = false;
+      this.textEditor = this.textEditor.slice(0, -1);
+      if (assignee != null) {
+        if (this.textEditor != null) {
+          this.textEditor =
+            this.textEditor.slice(0, -4) +
+            "&nbsp;<span >" +
+            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
+            assignee.name +
+            "</span> &nbsp;" +
+            "<span @userId='# " +
+            assignee.id +
+            "#'></span></span>&nbsp;&nbsp;</p>";
+          this.annotations.push(assignee.id);
+        } else {
+          this.textEditor =
+            "&nbsp;<span >" +
+            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
+            assignee.name +
+            "</span> &nbsp;" +
+            "<span @userId='# " +
+            assignee.id +
+            "#'></span></span>&nbsp;&nbsp;</p>";
+          assignee.push(assignee.id);
+        }
+      }
+      this.filterAssignee == "";
     },
     mentionSomeone() {
       if (this.filterAssignee != null) {
