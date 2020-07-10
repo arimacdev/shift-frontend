@@ -26,21 +26,26 @@
       <component v-bind:is="component" :errorMessage="errorMessage"></component>
       <!-- <success-popup /> -->
     </div>
+     <v-overlay :value="overlay">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 
 <script>
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
-
+import Progress from "~/components/popups/progress";
 export default {
   props: ["blockedUserId", "projectId"],
   components: {
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
+    "progress-loading": Progress,
   },
   data() {
     return {
+      overlay: false,
       errorMessage: "",
       successMessage: "",
       component: "",
@@ -55,6 +60,7 @@ export default {
     },
     async changeHandler() {
       this.dialog = false;
+      this.overlay = true;
       let response;
       try {
         response = await this.$axios.$post(
@@ -73,8 +79,11 @@ export default {
         this.$store.dispatch(
           "task/fetchProjectUserCompletionTasks",
           this.projectId
-        );
+        ).finally(()=> {
+          this.overlay = false;
+        })
       } catch (e) {
+        this.overlay = false
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {

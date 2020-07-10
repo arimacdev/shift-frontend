@@ -95,22 +95,29 @@
       ></component>
     </div>
     <!--  <success-popup /> -->
+      <v-overlay :value="overlay">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 
 <script>
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
+import TaskComments from "~/components/tasks/taskComments";
 import { required } from "vuelidate/lib/validators";
 import { mapState } from "vuex";
+import Progress from "~/components/popups/progress";
 
 export default {
   components: {
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
+     "progress-loading": Progress,
   },
   data() {
     return {
+      overlay: false,
       errorMessage: "",
       successMessage: "",
       isValid: true,
@@ -154,6 +161,7 @@ export default {
       let assigneeProjectRoleId = this.getProjectRole();
       this.addUser.assigneeProjectRole = assigneeProjectRoleId;
       let response;
+      this.overlay = true;
       try {
         response = await this.$axios.$post(
           `/projects/${this.projectId}/users`,
@@ -162,7 +170,9 @@ export default {
         this.$store.dispatch(
           "task/fetchProjectUserCompletionTasks",
           this.projectId
-        );
+        ).finally( ()=> {
+          this.overlay = false
+        })
         this.addUser.assigneeId = "";
         this.addUser.assigneeJobRole = "";
         this.selected = false;
@@ -174,6 +184,7 @@ export default {
         this.success = response.message;
         this.$refs.form.reset();
       } catch (e) {
+        this.overlay = false
         console.log("Error adding a User", e);
         this.errorMessage = e.response.data;
         this.component = "error-popup";
