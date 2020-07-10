@@ -498,7 +498,6 @@ export default {
       taskFilter: "none",
       componentClose: null,
       baseUrl: process.env.SYSTEM_URL
-
     };
   },
   async created() {
@@ -889,7 +888,7 @@ export default {
       } catch (error) {
         // console.log("Error fetching data", error);
       }
-
+      this.$store.dispatch("user/fetchOwnUser", this.userId);
       this.$store.dispatch("activityLog/fetchTaskActivityLog", {
         taskId: task.taskId,
         startIndex: 0,
