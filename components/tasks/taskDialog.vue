@@ -1040,19 +1040,25 @@ export default {
   },
   methods: {
     selectedVTab(component) {
+      this.overlay = true;
       this.activity = component;
       if (component === "logs") {
+        this.overlay = false;
       } else {
+        
+        Promise.all([
         this.$store.dispatch("comments/fetchTaskActivityComment", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
           endIndex: 10
-        });
-
+        }),
         this.$store.dispatch(
           "comments/fetchTaskCommentLength",
           this.selectedTask.taskId
-        );
+        )
+        ]).finally( ()=> {
+          this.overlay = false
+        })
       }
     },
     getUser() {

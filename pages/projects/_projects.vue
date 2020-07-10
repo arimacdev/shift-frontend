@@ -376,10 +376,15 @@ export default {
   },
 
   created() {
-    this.$store.dispatch("project/fetchAllProjects");
-    this.$store.dispatch("user/setAllUsers");
-    this.$store.dispatch("project/clearProject");
-    if (this.$route.params.projects != "projects") {
+    this.overlay = true
+    Promise.all([
+    this.$store.dispatch("project/fetchAllProjects"),
+    this.$store.dispatch("user/setAllUsers"),
+    this.$store.dispatch("project/clearProject"), 
+    ]).finally( ()=> {
+      this.overlay = false
+    })
+       if (this.$route.params.projects != "projects") {
       this.$store.dispatch("project/fetchProject", this.$route.params.projects);
     }
     switch (this.selectedTab) {
@@ -461,9 +466,6 @@ export default {
       default:
         console.log("Home Page");        
     }
-          console.log("OVERLAy ___>")
-
-    //this.overlay = false
   },
 
   methods: {

@@ -1,4 +1,5 @@
 <template>
+<div>
   <v-row>
     <v-col>
       <v-row>
@@ -212,28 +213,38 @@
       </div>
     </v-col>
   </v-row>
+  <v-overlay :value="overlay">
+        <progress-loading />
+      </v-overlay>
+</div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import Progress from "~/components/popups/progress";
+
 export default {
   props: ["pageNum", "page"],
+  components : {
+    "progress-loading": Progress,
+  },
   data() {
     return {
-      page: this.page
-      // taskLogs: {},
+      page: this.page,
+      overlay: false
     };
   },
 
   methods: {
-    async getLogs() {
-      // console.log("TRIGGERED: " + this.page);
-
+     getLogs() {
+       this.overlay = true
       this.$store.dispatch("activityLog/fetchTaskActivityLog", {
         taskId: this.selectedTask.taskId,
         startIndex: this.page * 10 - 10,
         endIndex: this.page * 10
-      });
+      }).finally( ()=> {
+        this.overlay = false
+      })
 
       // let taskLogResponse;
       // try {
