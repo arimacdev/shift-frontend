@@ -514,7 +514,16 @@ export default {
     // console.log("created---->", this.stomp);
     this.projectId = this.$route.params.projects;
   },
+  mounted() {
+    document.addEventListener("keyup", this.onKeyUp);
+  },
   methods: {
+    onKeyUp(e) {
+      if (e.keyCode === 50) {
+        console.log("KEYUPENTER!" + e.keyCode);
+        // this.$refs.defaultRTE.ej2Instances.focusIn();
+      }
+    },
     mentionSomeone() {
       if (this.filterAssignee != null) {
         if (this.textEditor != null) {
@@ -839,38 +848,38 @@ export default {
         //   startIndex: 0,
         //   endIndex: 200
         // });
-        console.log("updated--->", this.updatedComment)
+        console.log("updated--->", this.updatedComment);
         this.sendCommentedMessage(
           this.selectedTask.taskId,
           this.updatedComment,
           this.userId
         );
         this.getComments();
-        
-            let mentionedUsers = [],
-            m,
-            rx = /# (.*?)#/g;
-          while ((m = rx.exec(this.updatedComment)) !== null) {
-            mentionedUsers.push(m[1]);
-          }
-          console.log("result", mentionedUsers);
 
-           if (mentionedUsers.length > 0) {
-            let mentionResponse = await this.$axios.$post(
-              `/notification/mention`,
-              {
-                commentId: commentId,
-                entityId: this.selectedTask.taskId,
-                recipients: mentionedUsers
-              },
-              {
-                headers: {
-                  userId: this.userId
-                }
+        let mentionedUsers = [],
+          m,
+          rx = /# (.*?)#/g;
+        while ((m = rx.exec(this.updatedComment)) !== null) {
+          mentionedUsers.push(m[1]);
+        }
+        console.log("result", mentionedUsers);
+
+        if (mentionedUsers.length > 0) {
+          let mentionResponse = await this.$axios.$post(
+            `/notification/mention`,
+            {
+              commentId: commentId,
+              entityId: this.selectedTask.taskId,
+              recipients: mentionedUsers
+            },
+            {
+              headers: {
+                userId: this.userId
               }
-            );
-            console.log("Annotations: " + mentionResponse);
-          }
+            }
+          );
+          console.log("Annotations: " + mentionResponse);
+        }
 
         this.component = "success-popup";
         this.successMessage = "Comment successfully updated";
