@@ -39,9 +39,9 @@
         <component v-bind:is="component"></component>
       </div>
     </div>
-     <v-overlay :value="overlay">
-        <progress-loading />
-      </v-overlay>
+    <v-overlay :value="overlay">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 <script>
@@ -60,23 +60,23 @@ export default {
     "workload-content": WorkloadContent,
     "my-workload": MyWorkload,
     "org-workload": OrgWorkload,
-    "progress-loading": Progress    
+    "progress-loading": Progress
   },
-   created() {
-     console.log("cretad")
+  created() {
+    console.log("cretad");
     this.overlay = true;
     Promise.all([
-    this.$store.dispatch("user/setAllUsers"),
-    this.$store.dispatch("project/fetchAllProjects"),
-    this.$store.dispatch("workload/fetchAllTaskLoadUsers"),
-    this.$store.dispatch("project/clearProject")
-    ]).finally(()=> {
-      this.overlay = false
+      this.$store.dispatch("user/setAllUsers"),
+      this.$store.dispatch("project/fetchAllProjects"),
+      this.$store.dispatch("workload/fetchAllTaskLoadUsers"),
+      this.$store.dispatch("project/clearProject")
+    ]).finally(() => {
+      this.overlay = false;
     });
   },
   data() {
     return {
-      overlay : false,
+      overlay: false,
       component: "my-workload",
       userId: this.$store.state.user.userId,
       workLoad: {},
@@ -90,9 +90,6 @@ export default {
       states: [],
       drawer: null
     };
-  },
-
-   created() {
   },
 
   watch: {
@@ -164,7 +161,6 @@ export default {
       taskWorkLoadUsers: state => state.workload.taskWorkLoadUsers,
       organizationalRoles: state => state.user.organizationalRoles
     })
-  },
- 
+  }
 };
 </script>
