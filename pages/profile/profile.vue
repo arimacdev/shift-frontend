@@ -36,7 +36,9 @@ import axios from "axios";
 export default {
   components: {
     NavigationDrawer,
-    "profile-content": ProfileContent
+    "profile-content": ProfileContent,
+
+    "progress-loading": Progress
   },
   data() {
     return {
@@ -56,14 +58,14 @@ export default {
   created() {
     this.overlay = true;
     Promise.all([
-    this.$store.dispatch("project/clearProject"),
-    this.$store.dispatch(
-      "skillMap/fetchUserSkillMap",
-      this.$store.state.user.userId
-    )
-    ]).finally(()=>{
+      this.$store.dispatch("project/clearProject"),
+      this.$store.dispatch(
+        "skillMap/fetchUserSkillMap",
+        this.$store.state.user.userId
+      )
+    ]).finally(() => {
       this.overlay = false;
-    })
+    });
   },
 
   methods: {
