@@ -422,10 +422,15 @@ export default {
         }
         break;
       case "people":
-        this.$store.dispatch(
+        this.overlay = true;
+        Promise.all([
+          this.$store.dispatch(
           "task/fetchProjectUserCompletionTasks",
           this.$route.params.projects
-        );
+        )
+        ]).finally(()=>{
+          this.overlay = false;
+        })        
         break;
       case "project":
         this.$store.dispatch(
@@ -516,18 +521,15 @@ export default {
       switch (tab) {
         case "people":
           this.overlay = true;
-          console.log("people")
-          // Promise.all([
+          Promise.all([
+          console.log("people"),
+
              this.$store.dispatch(
             "task/fetchProjectUserCompletionTasks",
             this.$route.params.projects
-          ).finally( ()=> {
+          )]).finally(()=> {
             this.overlay = false
-            console.log("finally")
-          })
-          // ]).finally( ()=> {
-          //  this.overlay = false;
-          // });         
+          })       
           break;
         case "task":
           this.overlay = true;

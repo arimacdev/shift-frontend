@@ -149,7 +149,7 @@
             >
               <v-col sm="1" md="1"></v-col>
               <v-col sm="10" md="10">
-                <div id="defaultRTE">
+                <div id="defaultRTE" @paste="pasteFile">
                   <ejs-richtexteditor
                     :insertImageSettings="insertImageSettings"
                     ref="rteObj"
@@ -348,7 +348,7 @@
               </v-avatar>
             </v-col>
             <v-col sm="10" md="10" style="z-index: 100">
-              <div id="defaultRTE">
+              <div id="defaultRTE" @paste="pasteFile">
                 <ejs-richtexteditor
                   :placeholder="placeholder"
                   ref="rteObj"
@@ -579,6 +579,19 @@ export default {
     document.addEventListener("keyup", this.onKeyUp);
   },
   methods: {
+    pasteFile(e){
+        const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+  let file = null;
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].type.indexOf("image") === 0) {
+      file = items[i].getAsFile();
+    }
+      console.log("file", file)
+   this.files = file;
+   this.submit('addComment');   
+  }
+   
+    },
     selectTextEditor(editor) {
       this.editorType = editor;
     },
