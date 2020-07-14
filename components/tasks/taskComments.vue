@@ -766,8 +766,7 @@ export default {
         this.uploadLoading = true;
         let formData = new FormData();
         formData.append("files", this.files);
-        formData.append("type", "profileImage");
-        formData.append("taskType", "project");
+        formData.append("type", "comment");
         let fileResponse;
         try {
           fileResponse = await this.$axios.$post(
