@@ -579,18 +579,18 @@ export default {
     document.addEventListener("keyup", this.onKeyUp);
   },
   methods: {
-    pasteFile(e){
-        const items = (event.clipboardData || event.originalEvent.clipboardData).items;
-  let file = null;
-  for (let i = 0; i < items.length; i++) {
-    if (items[i].type.indexOf("image") === 0) {
-      file = items[i].getAsFile();
-    }
-      console.log("file", file)
-   this.files = file;
-   this.submit('addComment');   
-  }
-   
+    pasteFile(e) {
+      const items = (event.clipboardData || event.originalEvent.clipboardData)
+        .items;
+      let file = null;
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf("image") === 0) {
+          file = items[i].getAsFile();
+        }
+        console.log("file", file);
+        this.files = file;
+        this.submit("addComment");
+      }
     },
     selectTextEditor(editor) {
       this.editorType = editor;
@@ -787,27 +787,35 @@ export default {
             if (this.textEditor != null) {
               this.textEditor =
                 this.textEditor +
-                "<img src='" +
+                "<a href='" +
                 fileResponse.data +
-                "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'>";
+                "' target='_blank'><img src='" +
+                fileResponse.data +
+                "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'></a>";
             } else {
               this.textEditor =
-                "<img src='" +
+                "<a href='" +
                 fileResponse.data +
-                "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'>";
+                "' target='_blank'><img src='" +
+                fileResponse.data +
+                "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'></a>";
             }
           } else {
             if (this.updatedComment != null) {
               this.updatedComment =
                 this.updatedComment +
-                "<img src='" +
+                "<a href='" +
                 fileResponse.data +
-                "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'>";
+                "' target='_blank'><img src='" +
+                fileResponse.data +
+                "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'></a>";
             } else {
               this.updatedComment =
-                "<img src='" +
+                "<a href='" +
                 fileResponse.data +
-                "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'>";
+                "' target='_blank'><img src='" +
+                fileResponse.data +
+                "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'></a>";
             }
           }
           // console.log("File response", fileResponse.data);
