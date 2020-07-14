@@ -4,7 +4,11 @@
       <v-col>
         <div v-if="taskComments == ''">No comments to show</div>
         <div v-else>
-          <div class="commentBody" v-for="(comment, index) in this.taskComments" :key="index">
+          <div
+            class="commentBody"
+            v-for="(comment, index) in this.taskComments"
+            :key="index"
+          >
             <v-row>
               <v-col sm="1" md="1" style="padding-left: 40px">
                 <v-avatar>
@@ -29,7 +33,9 @@
                   </div>
                   <v-tooltip right>
                     <template v-slot:activator="{ on }">
-                      <div v-on="on" class="commentTime">{{ getCommentTime(comment.commentedAt) }}</div>
+                      <div v-on="on" class="commentTime">
+                        {{ getCommentTime(comment.commentedAt) }}
+                      </div>
                     </template>
                     <span>{{ getTooltipDate(comment.commentedAt) }}</span>
                   </v-tooltip>
@@ -56,7 +62,11 @@
                                 style="font-size: 14px"
                                 v-html="'❤️'"
                               ></span>
-                              <span v-else style="font-size: 14px" v-html="react.reactionId"></span>
+                              <span
+                                v-else
+                                style="font-size: 14px"
+                                v-html="react.reactionId"
+                              ></span>
                               <span>{{ react.respondants.length }}</span>
                             </div>
                           </template>
@@ -96,20 +106,50 @@
                     </div>-->
                     <v-menu class="emojiMenu" open-on-hover top offset-y>
                       <template v-slot:activator="{ on, attrs }">
-                        <div class="text-capitalize addEmojiButton" v-bind="attrs" v-on="on">
+                        <div
+                          class="text-capitalize addEmojiButton"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
                           <span style="font-size: 14px">
                             <v-icon
                               size="16"
                               style="margin-top: -6px; z-index: 0"
-                            >mdi-emoticon-outline</v-icon>
+                              >mdi-emoticon-outline</v-icon
+                            >
                           </span>
                         </div>
                       </template>
-                      <div @click="addReact(comment.commentId, '&#128077;')" class="emoji">&#128077;</div>
-                      <div @click="addReact(comment.commentId, '&#128154;')" class="emoji">❤️</div>
-                      <div @click="addReact(comment.commentId, '&#128514;')" class="emoji">&#128514;</div>
-                      <div @click="addReact(comment.commentId, '&#128545;')" class="emoji">&#128545;</div>
-                      <div @click="addReact(comment.commentId, '&#128546;')" class="emoji">&#128546;</div>
+                      <div
+                        @click="addReact(comment.commentId, '&#128077;')"
+                        class="emoji"
+                      >
+                        &#128077;
+                      </div>
+                      <div
+                        @click="addReact(comment.commentId, '&#128154;')"
+                        class="emoji"
+                      >
+                        ❤️
+                      </div>
+                      <div
+                        @click="addReact(comment.commentId, '&#128514;')"
+                        class="emoji"
+                      >
+                        &#128514;
+                      </div>
+                      <div
+                        @click="addReact(comment.commentId, '&#128545;')"
+                        class="emoji"
+                      >
+                        &#128545;
+                      </div>
+                      <div
+                        @click="addReact(comment.commentId, '&#128546;')"
+                        class="emoji"
+                      >
+                        &#128546;
+                      </div>
                     </v-menu>
                     <div
                       v-if="userId == comment.commenter"
@@ -120,7 +160,9 @@
                       class="text-capitalize addEmojiButton"
                     >
                       <span>
-                        <v-icon size="16" style="margin-top: -5px">mdi-pencil-outline</v-icon>
+                        <v-icon size="16" style="margin-top: -5px"
+                          >mdi-pencil-outline</v-icon
+                        >
                       </span>
                     </div>
                     <div
@@ -132,7 +174,9 @@
                       class="text-capitalize addEmojiButton"
                     >
                       <span>
-                        <v-icon size="16" style="margin-top: -5px">mdi-trash-can-outline</v-icon>
+                        <v-icon size="16" style="margin-top: -5px"
+                          >mdi-trash-can-outline</v-icon
+                        >
                       </span>
                     </div>
                     <div class="commentDivider"></div>
@@ -156,7 +200,10 @@
                     :quickToolbarSettings="quickToolbarSettings"
                     :toolbarSettings="toolbarSettings"
                     v-model="updatedComment"
-                    @focus="typingText(); selectTextEditor('updateCommentEditor')"
+                    @focus="
+                      typingText();
+                      selectTextEditor('updateCommentEditor');
+                    "
                     @blur="notTyping()"
                   ></ejs-richtexteditor>
                 </div>
@@ -170,10 +217,7 @@
                         <v-list-item @click="tagPeopleUpdate(user)" dense>
                           <v-list-item-avatar size="20">
                             <v-img
-                              v-if="
-                    user.img != null &&
-                      user.img != ''
-                  "
+                              v-if="user.img != null && user.img != ''"
                               :src="user.img"
                             ></v-img>
                             <v-img
@@ -182,7 +226,9 @@
                             ></v-img>
                           </v-list-item-avatar>
                           <v-list-item-content>
-                            <v-list-item-subtitle>{{user.name}}</v-list-item-subtitle>
+                            <v-list-item-subtitle>{{
+                              user.name
+                            }}</v-list-item-subtitle>
                           </v-list-item-content>
                         </v-list-item>
                       </div>
@@ -195,13 +241,19 @@
                     class="text-capitalize"
                     style="margin-top: 10px"
                     color="primary"
-                  >Update</v-btn>
+                    >Update</v-btn
+                  >
                   <v-btn
-                    @click="commentEditor = false; editorType = ''; tagging = false"
+                    @click="
+                      commentEditor = false;
+                      editorType = '';
+                      tagging = false;
+                    "
                     class="text-capitalize"
                     style="margin-top: 10px"
                     color="error"
-                  >Cancel</v-btn>
+                    >Cancel</v-btn
+                  >
                 </div>
                 <v-tooltip right>
                   <template v-slot:activator="{ on }">
@@ -217,7 +269,10 @@
                           </v-btn>
                         </template>
                         <v-list>
-                          <VEmojiPicker style="background-color: #FFFFFF" @select="updateEmoji" />
+                          <VEmojiPicker
+                            style="background-color: #FFFFFF"
+                            @select="updateEmoji"
+                          />
                         </v-list>
                       </v-menu>
                     </div>
@@ -233,8 +288,15 @@
                         transition="scale-transition"
                       >
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn style="margin-right: 12px" text v-bind="attrs" v-on="on">
-                            <v-text style="font-size: 20px; margin-top:-5px">@</v-text>
+                          <v-btn
+                            style="margin-right: 12px"
+                            text
+                            v-bind="attrs"
+                            v-on="on"
+                          >
+                            <v-text style="font-size: 20px; margin-top:-5px"
+                              >@</v-text
+                            >
                           </v-btn>
                         </template>
                         <v-list style="height: 65px; width: 250px">
@@ -257,10 +319,10 @@
                                 <v-list-item-avatar size="22">
                                   <v-img
                                     v-if="
-                                data.item.img != null &&
-                                   data.item.img != ''
-                              "
-                                    :src=" data.item.img"
+                                      data.item.img != null &&
+                                        data.item.img != ''
+                                    "
+                                    :src="data.item.img"
                                   ></v-img>
                                   <v-img
                                     v-else
@@ -268,7 +330,9 @@
                                   ></v-img>
                                 </v-list-item-avatar>
                                 <v-list-item-content>
-                                  <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                                  <v-list-item-title
+                                    v-html="data.item.name"
+                                  ></v-list-item-title>
                                 </v-list-item-content>
                               </template>
                             </template>
@@ -296,7 +360,11 @@
                 </v-tooltip>
                 <!--  -->
                 <div style="margin-top: 15px; padding-left: 30px">
-                  <v-progress-circular v-if="uploadLoading == true" indeterminate color="primary"></v-progress-circular>
+                  <v-progress-circular
+                    v-if="uploadLoading == true"
+                    indeterminate
+                    color="primary"
+                  ></v-progress-circular>
                 </div>
               </v-col>
             </v-row>
@@ -314,7 +382,9 @@
         />
         <!-- <v-progress-linear color="red lighten-2" buffer-value="0" stream></v-progress-linear> -->
       </div>
-      <div class="typingProgress">{{ this.typingUser }} is typing a comment ...</div>
+      <div class="typingProgress">
+        {{ this.typingUser }} is typing a comment ...
+      </div>
     </div>
     <br />
     <h4></h4>
@@ -355,7 +425,10 @@
                   :quickToolbarSettings="quickToolbarSettings"
                   :toolbarSettings="toolbarSettings"
                   v-model="textEditor"
-                  @focus="typingText(); selectTextEditor('addCommentEditor')"
+                  @focus="
+                    typingText();
+                    selectTextEditor('addCommentEditor');
+                  "
                   @blur="notTyping()"
                 ></ejs-richtexteditor>
               </div>
@@ -365,14 +438,14 @@
               >
                 <div>
                   <v-list-item-group>
-                    <div v-for="(user, index) in this.assigneeArray" :key="index">
+                    <div
+                      v-for="(user, index) in this.assigneeArray"
+                      :key="index"
+                    >
                       <v-list-item @click="tagPeople(user)" dense>
                         <v-list-item-avatar size="20">
                           <v-img
-                            v-if="
-                    user.img != null &&
-                      user.img != ''
-                  "
+                            v-if="user.img != null && user.img != ''"
                             :src="user.img"
                           ></v-img>
                           <v-img
@@ -381,7 +454,9 @@
                           ></v-img>
                         </v-list-item-avatar>
                         <v-list-item-content>
-                          <v-list-item-subtitle>{{user.name}}</v-list-item-subtitle>
+                          <v-list-item-subtitle>{{
+                            user.name
+                          }}</v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
                     </div>
@@ -394,7 +469,8 @@
                   class="text-capitalize"
                   style="margin-top: 10px"
                   color="primary"
-                >Comment</v-btn>
+                  >Comment</v-btn
+                >
               </div>
 
               <v-tooltip right>
@@ -411,7 +487,10 @@
                         </v-btn>
                       </template>
                       <v-list>
-                        <VEmojiPicker style="background-color: #FFFFFF" @select="addEmoji" />
+                        <VEmojiPicker
+                          style="background-color: #FFFFFF"
+                          @select="addEmoji"
+                        />
                       </v-list>
                     </v-menu>
                   </div>
@@ -427,8 +506,15 @@
                       transition="scale-transition"
                     >
                       <template v-slot:activator="{ on, attrs }">
-                        <v-btn style="margin-right: 12px" text v-bind="attrs" v-on="on">
-                          <v-text style="font-size: 20px; margin-top:-5px">@</v-text>
+                        <v-btn
+                          style="margin-right: 12px"
+                          text
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-text style="font-size: 20px; margin-top:-5px"
+                            >@</v-text
+                          >
                         </v-btn>
                       </template>
                       <v-list style="height: 65px; width: 250px">
@@ -451,10 +537,9 @@
                               <v-list-item-avatar size="22">
                                 <v-img
                                   v-if="
-                                data.item.img != null &&
-                                   data.item.img != ''
-                              "
-                                  :src=" data.item.img"
+                                    data.item.img != null && data.item.img != ''
+                                  "
+                                  :src="data.item.img"
                                 ></v-img>
                                 <v-img
                                   v-else
@@ -462,7 +547,9 @@
                                 ></v-img>
                               </v-list-item-avatar>
                               <v-list-item-content>
-                                <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                                <v-list-item-title
+                                  v-html="data.item.name"
+                                ></v-list-item-title>
                               </v-list-item-content>
                             </template>
                           </template>
@@ -524,7 +611,13 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn width="100px" color="#FF6161" dark @click="deleteCommentDialog = false">Cancel</v-btn>
+          <v-btn
+            width="100px"
+            color="#FF6161"
+            dark
+            @click="deleteCommentDialog = false"
+            >Cancel</v-btn
+          >
 
           <v-btn
             width="100px"
@@ -534,7 +627,8 @@
               deleteCommentDialog = false;
               deleteComment();
             "
-          >Ok</v-btn>
+            >Ok</v-btn
+          >
 
           <v-spacer></v-spacer>
         </v-card-actions>
@@ -551,10 +645,10 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
-import SuccessPopup from "~/components/popups/successPopup";
-import ErrorPopup from "~/components/popups/errorPopup";
-import VEmojiPicker from "v-emoji-picker";
+import { mapState } from 'vuex';
+import SuccessPopup from '~/components/popups/successPopup';
+import ErrorPopup from '~/components/popups/errorPopup';
+import VEmojiPicker from 'v-emoji-picker';
 import {
   RichTextEditorPlugin,
   Toolbar,
@@ -562,21 +656,21 @@ import {
   Image,
   Count,
   HtmlEditor,
-  QuickToolbar
-} from "@syncfusion/ej2-vue-richtexteditor";
+  QuickToolbar,
+} from '@syncfusion/ej2-vue-richtexteditor';
 export default {
   components: {
-    "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup,
-    VEmojiPicker
+    'success-popup': SuccessPopup,
+    'error-popup': ErrorPopup,
+    VEmojiPicker,
   },
-  props: ["stomp", "pageNum", "commentPage"],
+  props: ['stomp', 'pageNum', 'commentPage'],
   created() {
     // console.log("created---->", this.stomp);
     this.projectId = this.$route.params.projects;
   },
   mounted() {
-    document.addEventListener("keyup", this.onKeyUp);
+    document.addEventListener('keyup', this.onKeyUp);
   },
   methods: {
     pasteFile(e) {
@@ -584,12 +678,12 @@ export default {
         .items;
       let file = null;
       for (let i = 0; i < items.length; i++) {
-        if (items[i].type.indexOf("image") === 0) {
+        if (items[i].type.indexOf('image') === 0) {
           file = items[i].getAsFile();
         }
-        console.log("file", file);
+        console.log('file', file);
         this.files = file;
-        this.submit("addComment");
+        this.submit('addComment');
       }
     },
     selectTextEditor(editor) {
@@ -612,27 +706,27 @@ export default {
         if (this.updatedComment != null) {
           this.updatedComment =
             this.updatedComment.slice(0, -4) +
-            "&nbsp;<span >" +
+            '&nbsp;<span >' +
             "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
             assignee.name +
-            "</span> &nbsp;" +
+            '</span> &nbsp;' +
             "<span @userId='# " +
             assignee.id +
             "#'></span></span>&nbsp;&nbsp;</p>";
           // this.annotations.push(this.filterAssignee.id);
         } else {
           this.updatedComment =
-            "&nbsp;<span >" +
+            '&nbsp;<span >' +
             "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
             assignee.name +
-            "</span> &nbsp;" +
+            '</span> &nbsp;' +
             "<span @userId='# " +
             assignee.id +
             "#'></span></span>&nbsp;&nbsp;</p>";
           // this.annotations.push(this.filterAssignee.id);
         }
       }
-      this.filterAssignee == "";
+      this.filterAssignee == '';
     },
     tagPeople(assignee) {
       // console.log("TEXT EDIT: " + this.textEditor);
@@ -642,85 +736,85 @@ export default {
         if (this.textEditor != null) {
           this.textEditor =
             this.textEditor.slice(0, -4) +
-            "&nbsp;<span >" +
+            '&nbsp;<span >' +
             "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
             assignee.name +
-            "</span> &nbsp;" +
+            '</span> &nbsp;' +
             "<span @userId='# " +
             assignee.id +
             "#'></span></span>&nbsp;&nbsp;</p>";
           this.annotations.push(assignee.id);
         } else {
           this.textEditor =
-            "&nbsp;<span >" +
+            '&nbsp;<span >' +
             "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
             assignee.name +
-            "</span> &nbsp;" +
+            '</span> &nbsp;' +
             "<span @userId='# " +
             assignee.id +
             "#'></span></span>&nbsp;&nbsp;</p>";
           assignee.push(assignee.id);
         }
       }
-      this.filterAssignee == "";
+      this.filterAssignee == '';
     },
     mentionSomeone() {
       if (this.filterAssignee != null) {
         if (this.textEditor != null) {
           this.textEditor =
             this.textEditor.slice(0, -4) +
-            "&nbsp;<span >" +
+            '&nbsp;<span >' +
             "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
             this.filterAssignee.name +
-            "</span> &nbsp;" +
+            '</span> &nbsp;' +
             "<span @userId='# " +
             this.filterAssignee.id +
             "#'></span></span>&nbsp;&nbsp;</p>";
           this.annotations.push(this.filterAssignee.id);
         } else {
           this.textEditor =
-            "&nbsp;<span >" +
+            '&nbsp;<span >' +
             "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
             this.filterAssignee.name +
-            "</span> &nbsp;" +
+            '</span> &nbsp;' +
             "<span @userId='# " +
             this.filterAssignee.id +
             "#'></span></span>&nbsp;&nbsp;</p>";
           this.annotations.push(this.filterAssignee.id);
         }
       }
-      this.filterAssignee == "";
+      this.filterAssignee == '';
     },
     mentionSomeoneUpdate() {
       if (this.filterAssignee != null) {
         if (this.updatedComment != null) {
           this.updatedComment =
             this.updatedComment.slice(0, -4) +
-            "&nbsp;<span >" +
+            '&nbsp;<span >' +
             "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
             this.filterAssignee.name +
-            "</span> &nbsp;" +
+            '</span> &nbsp;' +
             "<span @userId='# " +
             this.filterAssignee.id +
             "#'></span></span>&nbsp;&nbsp;</p>";
           // this.annotations.push(this.filterAssignee.id);
         } else {
           this.updatedComment =
-            "&nbsp;<span >" +
+            '&nbsp;<span >' +
             "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
             this.filterAssignee.name +
-            "</span> &nbsp;" +
+            '</span> &nbsp;' +
             "<span @userId='# " +
             this.filterAssignee.id +
             "#'></span></span>&nbsp;&nbsp;</p>";
           // this.annotations.push(this.filterAssignee.id);
         }
       }
-      this.filterAssignee == "";
+      this.filterAssignee == '';
     },
     addEmoji(emoji) {
       if (this.textEditor != null) {
-        this.textEditor = this.textEditor.slice(0, -4) + emoji.data + "</p>";
+        this.textEditor = this.textEditor.slice(0, -4) + emoji.data + '</p>';
       } else {
         this.textEditor = emoji.data;
       }
@@ -728,21 +822,21 @@ export default {
     updateEmoji(emoji) {
       if (this.updatedComment != null) {
         this.updatedComment =
-          this.updatedComment.slice(0, -4) + emoji.data + "</p>";
+          this.updatedComment.slice(0, -4) + emoji.data + '</p>';
       } else {
         this.updatedComment = emoji.data;
       }
     },
     getComments() {
       this.$store.dispatch(
-        "comments/fetchTaskCommentLength",
+        'comments/fetchTaskCommentLength',
         this.selectedTask.taskId
       );
 
-      this.$store.dispatch("comments/fetchTaskActivityComment", {
+      this.$store.dispatch('comments/fetchTaskActivityComment', {
         taskId: this.selectedTask.taskId,
         startIndex: this.commentPage * 10 - 10,
-        endIndex: this.commentPage * 10
+        endIndex: this.commentPage * 10,
       });
     },
     showTypingStatus() {
@@ -751,22 +845,22 @@ export default {
     },
     typingText() {
       // console.log("typing......");
-      this.sendTypingMessage(this.selectedTask.taskId, this.userId, "typing");
+      this.sendTypingMessage(this.selectedTask.taskId, this.userId, 'typing');
     },
     notTyping() {
       // console.log("not typing......");
       this.sendTypingMessage(
         this.selectedTask.taskId,
         this.userId,
-        "notTyping"
+        'notTyping'
       );
     },
     async submit(type) {
       if (this.files != null) {
         this.uploadLoading = true;
         let formData = new FormData();
-        formData.append("files", this.files);
-        formData.append("type", "comment");
+        formData.append('files', this.files);
+        formData.append('type', 'comment');
         let fileResponse;
         try {
           fileResponse = await this.$axios.$post(
@@ -774,15 +868,15 @@ export default {
             formData,
             {
               headers: {
-                "Content-Type": "multipart/form-data",
-                user: this.userId
-              }
+                'Content-Type': 'multipart/form-data',
+                user: this.userId,
+              },
             }
           );
           this.uploadLoading = false;
           // this.component = "success-popup";
           // this.successMessage = "Profile successfully updated";
-          if (type == "addComment") {
+          if (type == 'addComment') {
             if (this.textEditor != null) {
               this.textEditor =
                 this.textEditor +
@@ -820,18 +914,18 @@ export default {
           // console.log("File response", fileResponse.data);
           // location.reload();
         } catch (e) {
-          console.log("Error uploading prof pic: ", e);
+          console.log('Error uploading prof pic: ', e);
           // this.component = "error-popup";
           // console.log("File Upload Failed: " + e);
           // this.errorMessage = e.response.data;
           this.uploadLoading = false;
         }
       }
-      this.files = "";
+      this.files = '';
       this.files = null;
     },
     close() {
-      this.component = "";
+      this.component = '';
     },
     selectComment(comment) {
       this.selectedComment = comment;
@@ -843,12 +937,12 @@ export default {
         response = await this.$axios.$post(
           `/task/comment/${commentId}/reaction`,
           {
-            reactionId: reactId
+            reactionId: reactId,
           },
           {
             headers: {
-              userId: this.userId
-            }
+              userId: this.userId,
+            },
           }
         );
         this.sendCommentedMessage(
@@ -871,8 +965,8 @@ export default {
           `/task/comment/${this.selectedComment.commentId}`,
           {
             headers: {
-              userId: this.userId
-            }
+              userId: this.userId,
+            },
           }
         );
         this.sendCommentedMessage(
@@ -886,22 +980,22 @@ export default {
         //   endIndex: 200
         // });
         this.getComments();
-        this.successMessage = "Comment deleted successfully";
-        this.component = "success-popup";
+        this.successMessage = 'Comment deleted successfully';
+        this.component = 'success-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error creating project", e);
+        console.log('Error creating project', e);
       }
     },
     async addComment() {
-      if (this.textEditor != "") {
+      if (this.textEditor != '') {
         let response;
         let mentionResponse;
         try {
@@ -911,12 +1005,12 @@ export default {
               entityId: this.selectedTask.taskId,
               content: this.textEditor,
               commenter: this.userId,
-              parentId: ""
+              parentId: '',
             },
             {
               headers: {
-                userId: this.userId
-              }
+                userId: this.userId,
+              },
             }
           );
 
@@ -927,8 +1021,8 @@ export default {
           );
           this.getComments();
 
-          this.component = "success-popup";
-          this.successMessage = "Comment successfully added";
+          this.component = 'success-popup';
+          this.successMessage = 'Comment successfully added';
           this.userExists = true;
           setTimeout(() => {
             this.close();
@@ -943,19 +1037,19 @@ export default {
           }
           // console.log("result", mentionedUsers);
 
-          this.textEditor = "";
+          this.textEditor = '';
           if (mentionedUsers.length > 0) {
             mentionResponse = await this.$axios.$post(
               `/notification/mention`,
               {
                 commentId: response.data.commentId,
                 entityId: this.selectedTask.taskId,
-                recipients: mentionedUsers
+                recipients: mentionedUsers,
               },
               {
                 headers: {
-                  userId: this.userId
-                }
+                  userId: this.userId,
+                },
               }
             );
             // console.log("Annotations: " + mentionResponse);
@@ -965,12 +1059,12 @@ export default {
           // console.log("update task status response", response);
         } catch (e) {
           this.errorMessage = e.response.data;
-          this.component = "error-popup";
+          this.component = 'error-popup';
           setTimeout(() => {
             this.close();
           }, 3000);
           this.overlay = false;
-          console.log("Error updating a status", e);
+          console.log('Error updating a status', e);
         }
       }
     },
@@ -981,12 +1075,12 @@ export default {
           `/task/comment/${commentId}`,
           {
             content: this.updatedComment,
-            commenter: this.userId
+            commenter: this.userId,
           },
           {
             headers: {
-              userId: this.userId
-            }
+              userId: this.userId,
+            },
           }
         );
         this.commentEditor = false;
@@ -1017,19 +1111,19 @@ export default {
             {
               commentId: commentId,
               entityId: this.selectedTask.taskId,
-              recipients: mentionedUsers
+              recipients: mentionedUsers,
             },
             {
               headers: {
-                userId: this.userId
-              }
+                userId: this.userId,
+              },
             }
           );
           // console.log("Annotations: " + mentionResponse);
         }
 
-        this.component = "success-popup";
-        this.successMessage = "Comment successfully updated";
+        this.component = 'success-popup';
+        this.successMessage = 'Comment successfully updated';
         this.userExists = true;
         setTimeout(() => {
           this.close();
@@ -1037,23 +1131,23 @@ export default {
         // console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
         this.overlay = false;
-        console.log("Error updating a status", e);
+        console.log('Error updating a status', e);
       }
     },
     sendCommentedMessage(taskId, comment, sender) {
       // console.log("sending message", this.stomp, comment);
       this.stomp.send(
-        "/app/chat/" + taskId,
+        '/app/chat/' + taskId,
         {},
         JSON.stringify({
           sender: sender,
           message: comment,
-          actionType: "comment"
+          actionType: 'comment',
         })
       );
     },
@@ -1061,34 +1155,34 @@ export default {
     sendTypingMessage(taskId, sender, event) {
       // console.log("typing message", this.stomp);
       this.stomp.send(
-        "/app/chat/" + taskId,
+        '/app/chat/' + taskId,
         {},
         JSON.stringify({
           sender: sender,
-          message: this.ownUser.firstName + " " + this.ownUser.lastName,
-          actionType: event
+          message: this.ownUser.firstName + ' ' + this.ownUser.lastName,
+          actionType: event,
         })
       );
     },
     getTooltipDate(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString("en-US", { timeZone: "Asia/Colombo" })
+        dueDate.toLocaleString('en-US', { timeZone: 'Asia/Colombo' })
       );
       const dueToUtcDate = new Date(dueToUtc);
-      let stringDate = dueToUtcDate + "";
+      let stringDate = dueToUtcDate + '';
       stringDate = stringDate.toString();
-      stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 21);
+      stringDate = stringDate.slice(0, 10) + ' ' + stringDate.slice(11, 21);
       return stringDate;
     },
     getCommentTime(date) {
       let now = new Date();
       let dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+        dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
       );
       const nowUtc = new Date(
-        now.toLocaleString("en-US", { timeZone: "Asia/Colombo" })
+        now.toLocaleString('en-US', { timeZone: 'Asia/Colombo' })
       );
       // console.log("commentedAt", date);
       // console.log("now", now);
@@ -1101,19 +1195,19 @@ export default {
       let hours;
       let days;
       if (minutes == 0) {
-        return "Just now";
+        return 'Just now';
       } else if (minutes > 0) {
         if (minutes < 60) {
-          let text = minutes + " " + "ago";
+          let text = minutes + ' ' + 'ago';
           // console.log("minutres");
-          return minutes + " minutes ago";
+          return minutes + ' minutes ago';
         } else if (minutes > 60 && minutes < 1440) {
           hours = Math.floor(minutes / 60);
           let mins = minutes - hours * 60;
-          return hours + " hour " + mins + " minutes ago";
+          return hours + ' hour ' + mins + ' minutes ago';
         } else if (minutes > 1440) {
           days = Math.floor(minutes / (60 * 24));
-          return days + " days ago";
+          return days + ' days ago';
         }
       }
 
@@ -1174,19 +1268,19 @@ export default {
       //   stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 21);
       //   return stringDate;
       // }
-    }
+    },
   },
   computed: {
     ...mapState({
-      selectedTask: state => state.task.selectedTask,
-      allCommentsLength: state => state.comments.allCommentsLength,
-      ownUser: state => state.user.ownUser,
-      taskComments: state => state.comments.activityComment,
-      typingStatus: state => state.stompClient.typingStatus,
-      typingUser: state => state.stompClient.typingUser,
-      selectedUser: state => state.user.selectedUser,
-      users: state => state.user.users,
-      people: state => state.task.userCompletionTasks
+      selectedTask: (state) => state.task.selectedTask,
+      allCommentsLength: (state) => state.comments.allCommentsLength,
+      ownUser: (state) => state.user.ownUser,
+      taskComments: (state) => state.comments.activityComment,
+      typingStatus: (state) => state.stompClient.typingStatus,
+      typingUser: (state) => state.stompClient.typingUser,
+      selectedUser: (state) => state.user.selectedUser,
+      users: (state) => state.user.users,
+      people: (state) => state.task.userCompletionTasks,
     }),
     assigneeArray() {
       let AssigneeSearchList = this.people;
@@ -1194,45 +1288,45 @@ export default {
       for (let index = 0; index < AssigneeSearchList.length; ++index) {
         let user = AssigneeSearchList[index];
         assigneeList.push({
-          name: user.assigneeFirstName + " " + user.assigneeLastName,
+          name: user.assigneeFirstName + ' ' + user.assigneeLastName,
           id: user.assigneeId,
-          img: user.assigneeProfileImage
+          img: user.assigneeProfileImage,
         });
       }
       return assigneeList;
-    }
+    },
   },
   data: function() {
     return {
-      editorType: "",
+      editorType: '',
       tagging: false,
       annotations: [],
-      filterAssignee: "",
+      filterAssignee: '',
       files: null,
       commentPage: this.commentPage,
-      updatedComment: "",
+      updatedComment: '',
       commentEditor: false,
       selectedComment: {},
       uploadLoading: false,
-      errorMessage: "",
-      successMessage: "",
+      errorMessage: '',
+      successMessage: '',
       deleteCommentDialog: false,
-      component: "",
+      component: '',
       addCommentSection: false,
 
       items: [
-        { title: "Click Me" },
-        { title: "Click Me" },
-        { title: "Click Me" },
-        { title: "Click Me 2" }
+        { title: 'Click Me' },
+        { title: 'Click Me' },
+        { title: 'Click Me' },
+        { title: 'Click Me 2' },
       ],
       insertImageSettings: {
-        display: "break"
+        display: 'break',
       },
       userId: this.$store.state.user.userId,
-      textEditor: "",
+      textEditor: '',
       height: 400,
-      placeholder: "Add a new comment",
+      placeholder: 'Add a new comment',
       quickToolbarSettings: {
         link: [],
         image: [
@@ -1248,45 +1342,45 @@ export default {
           // 'Display',
           // 'AltText',
           // 'Dimension',
-        ]
+        ],
       },
       toolbarSettings: {
         items: [
-          "Bold",
-          "Italic",
-          "Underline",
-          "StrikeThrough",
+          'Bold',
+          'Italic',
+          'Underline',
+          'StrikeThrough',
           // 'FontName',
           // 'FontSize',
           // 'FontColor',
           // 'BackgroundColor',
-          "|",
-          "LowerCase",
-          "UpperCase",
-          "|",
+          '|',
+          'LowerCase',
+          'UpperCase',
+          '|',
           // 'Formats',
           // 'Alignments',
-          "OrderedList",
-          "UnorderedList",
-          "Outdent",
-          "Indent",
-          "|",
-          "CreateLink",
+          'OrderedList',
+          'UnorderedList',
+          'Outdent',
+          'Indent',
+          '|',
+          'CreateLink',
           // "Image",
           // '|',
-          "ClearFormat",
+          'ClearFormat',
           // 'Print',
-          "SourceCode",
+          'SourceCode',
           // 'FullScreen',
           // '|',
-          "Undo",
-          "Redo"
-        ]
-      }
+          'Undo',
+          'Redo',
+        ],
+      },
     };
   },
   provide: {
-    richtexteditor: [Toolbar, Link, Image, Count, HtmlEditor, QuickToolbar]
-  }
+    richtexteditor: [Toolbar, Link, Image, Count, HtmlEditor, QuickToolbar],
+  },
 };
 </script>
