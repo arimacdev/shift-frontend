@@ -3,7 +3,7 @@
     <v-btn
       v-if="this.filterList != '' && this.taskFilter != 'none'"
       style="position: absolute; right: 60px; margin-top: -45px"
-      @click
+      @click="exportAsCSV"
       dark
       height="30px"
       outlined
@@ -491,6 +491,8 @@ import Progress from "~/components/popups/progress";
 import { mapState } from "vuex";
 import Stomp from "stompjs";
 import SockJS from "sockjs-client";
+import Papa from "papaparse";
+
 export default {
   props: ["pagination"],
   data() {
@@ -611,6 +613,19 @@ export default {
     }
   },
   methods: {
+    exportAsCSV(){
+        var blob = new Blob([Papa.unparse(this.filterList)], { type: 'text/csv;charset=utf-8;' });
+
+        var link = document.createElement("a");
+
+        var url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", 'taskList.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    },
     getAllTasks() {
       this.overlay = true;
       Promise.all([
