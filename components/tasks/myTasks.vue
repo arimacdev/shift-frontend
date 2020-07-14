@@ -1,5 +1,18 @@
 <template>
   <div class>
+    <v-btn
+      v-if="this.filterList != '' && this.taskFilter != 'none'"
+      style="position: absolute; right: 60px; margin-top: -45px"
+      @click
+      dark
+      height="30px"
+      outlined
+      color="blue"
+    >
+      <v-icon color="blue" size="20">mdi-download</v-icon>
+      <v-list-item-action-text>Export as CSV</v-list-item-action-text>
+      <!-- Cancel -->
+    </v-btn>
     <div class="filterSection">
       <v-row>
         <v-col md="2">
