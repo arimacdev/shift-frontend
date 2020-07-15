@@ -182,7 +182,7 @@
                     v-on:click="component = 'tab-views'"
                     @click="selectProject(project)"
                   >
-                    <v-list-item :to="project.projectId">
+                    <v-list-item class="selectedProjectPanel" :to="project.projectId">
                       <v-list-item-action>
                         <v-icon size="17" color="#0BAFFF">icon-project</v-icon>
                       </v-list-item-action>
