@@ -897,6 +897,9 @@
       <v-overlay :value="overlay" color="black">
         <progress-loading />
       </v-overlay>
+      <v-overlay :value="waiting" color="black">
+        <waiting />
+      </v-overlay>
     </v-card>
   </div>
 </template>
@@ -909,6 +912,7 @@ import ErrorPopup from "~/components/popups/errorPopup";
 import AddParentTask from "~/components/tasks/addParentTask";
 import AddChildTask from "~/components/tasks/addChildTask";
 import Progress from "~/components/popups/progress";
+import Waiting from "~/components/popups/waiting";
 import TaskLogs from "~/components/tasks/taskLogs";
 import TaskComments from "~/components/tasks/taskComments";
 
@@ -920,6 +924,7 @@ export default {
     "add-parent-task": AddParentTask,
     "add-child-task": AddChildTask,
     "progress-loading": Progress,
+    "waiting": Waiting,
     "task-logs": TaskLogs,
     "task-comments": TaskComments
   },
@@ -934,6 +939,7 @@ export default {
       page: 1,
       commentPage: 1,
       overlay: false,
+      waiting: false,
       maxdate: "2020-05-11 12:17",
       taskId: "",
       projectId: "",
@@ -1239,7 +1245,7 @@ export default {
       this.selectedTab = "comments";
     },
     async updateIssueType() {
-      this.overlay = true;
+      this.waiting = true;
       // console.log("onchange updated status ->");
       let response;
       try {
@@ -1266,7 +1272,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         // console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
@@ -1274,13 +1280,13 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         console.log("Error updating a status", e);
       }
     },
     // ------------- update task status ----------
     async updateStatus() {
-      this.overlay = true;
+      this.waiting = true;
       // console.log("onchange updated status ->");
       let response;
       try {
@@ -1306,7 +1312,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         // console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
@@ -1314,13 +1320,13 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         // console.log("Error updating a status", e);
       }
     },
     async saveEditTaskName() {
       if (this.updatedTask.taskName != "") {
-        this.overlay = true;
+        this.waiting = true;
         // console.log("updatedTaskName ->", this.updatedTask.taskName);
         let response;
         try {
@@ -1353,7 +1359,7 @@ export default {
           setTimeout(() => {
             this.close();
           }, 3000);
-          this.overlay = false;
+          this.waiting = false;
           this.editTask = true;
           console.log("edit task response", response);
         } catch (e) {
@@ -1364,14 +1370,14 @@ export default {
             this.close();
           }, 3000);
           this.editTask = true;
-          this.overlay = false;
+          this.waiting = false;
         }
       }
     },
 
     // ------ update task assignee ---------
     async changeAssignee() {
-      this.overlay = true;
+      this.waiting = true;
       console.log("assignee changed");
       let response;
       try {
@@ -1399,7 +1405,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         // console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
@@ -1407,7 +1413,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         console.log("Error updating a status", e);
       }
     },
@@ -1429,7 +1435,7 @@ export default {
     },
     // -------- update sprint ----------
     async changeTaskSprint() {
-      this.overlay = true;
+      this.waiting = true;
       // console.log("onchange sprint", this.updatedSprint);
       let response;
       try {
@@ -1457,7 +1463,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         // console.log("update sprint status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
@@ -1465,13 +1471,13 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         // console.log("Error updating a sprint", e);
       }
     },
     // ---------- update task note -----------
     async updateTaskNote() {
-      this.overlay = true;
+      this.waiting = true;
       // console.log("updatedTaskValue ->", this.updatedTask.taskNote);
       let response;
 
@@ -1498,7 +1504,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         // console.log("edit task response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
@@ -1506,13 +1512,13 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         // console.log("Error updating a note", e);
       }
     },
 
     async updateTaskDates(type) {
-      this.overlay = true;
+      this.waiting = true;
       let dueDate;
       let remindDate;
       let changedDate = {};
@@ -1575,7 +1581,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         // console.log("update task dates response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
@@ -1583,14 +1589,14 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         // console.log("Error updating a date", e);
       }
     },
     // --------- upload task files ----------
 
     async taskFileUpload() {
-      this.overlay = true;
+      this.waiting = true;
       if (this.files != null) {
         for (let index = 0; index < this.files.length; ++index) {
           this.uploadLoading = true;
@@ -1621,10 +1627,10 @@ export default {
             setTimeout(() => {
               this.close();
             }, 3000);
-            this.overlay = false;
+            this.waiting = false;
             // console.log("file response", this.taskFiles);
           } catch (e) {
-            this.overlay = false;
+            this.waiting = false;
             console.log("Error adding group file", e);
             this.errorMessage = e.response.data;
             this.component = "error-popup";
@@ -1636,12 +1642,12 @@ export default {
           }
         }
       }
-      this.overlay = false;
+      this.waiting = false;
       this.files = null;
     },
     // ------------ file remove ---------
     async handleFileDelete(taskFileId) {
-      this.overlay = true;
+      this.waiting = true;
       let response;
       try {
         response = await this.$axios.$delete(
@@ -1665,14 +1671,14 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         // console.log("Error deleting task", e);
       }
     },
