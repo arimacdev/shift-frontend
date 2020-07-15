@@ -33,6 +33,7 @@
                     </template>
                     <span>{{ getTooltipDate(comment.commentedAt) }}</span>
                   </v-tooltip>
+                  <span class="commentTime" v-if="comment.isEdited == true">(edited)</span>
                   <br />
                   <div class="commentContent" v-html="comment.content"></div>
                   <v-row></v-row>
@@ -98,7 +99,10 @@
                       <template v-slot:activator="{ on, attrs }">
                         <div class="text-capitalize addEmojiButton" v-bind="attrs" v-on="on">
                           <span style="font-size: 14px">
-                            <v-icon size="16" style="margin-top: -6px">mdi-emoticon-outline</v-icon>
+                            <v-icon
+                              size="16"
+                              style="margin-top: -6px; z-index: 0"
+                            >mdi-emoticon-outline</v-icon>
                           </span>
                         </div>
                       </template>
@@ -132,6 +136,7 @@
                         <v-icon size="16" style="margin-top: -5px">mdi-trash-can-outline</v-icon>
                       </span>
                     </div>
+
                     <div class="commentDivider"></div>
                   </div>
                 </div>
@@ -146,16 +151,46 @@
             >
               <v-col sm="1" md="1"></v-col>
               <v-col sm="10" md="10">
-                <div id="defaultRTE">
+                <div id="defaultRTE" @paste="pasteFile">
                   <ejs-richtexteditor
                     :insertImageSettings="insertImageSettings"
                     ref="rteObj"
                     :quickToolbarSettings="quickToolbarSettings"
                     :toolbarSettings="toolbarSettings"
                     v-model="updatedComment"
-                    @focus="typingText()"
+                    @focus="
+                      typingText();
+                      selectTextEditor('updateCommentEditor');
+                    "
                     @blur="notTyping()"
                   ></ejs-richtexteditor>
+                </div>
+                <div
+                  v-if="tagging && editorType == 'updateCommentEditor'"
+                  class="taggingPopupBox overflow-y-auto"
+                >
+                  <div>
+                    <v-list-item-group>
+                      <div v-for="(user, index) in assigneeArray" :key="index">
+                        <v-list-item @click="tagPeopleUpdate(user)" dense>
+                          <v-list-item-avatar size="20">
+                            <v-img v-if="user.img != null && user.img != ''" :src="user.img"></v-img>
+                            <v-img
+                              v-else
+                              src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                            ></v-img>
+                          </v-list-item-avatar>
+                          <v-list-item-content>
+                            <v-list-item-subtitle>
+                              {{
+                              user.name
+                              }}
+                            </v-list-item-subtitle>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </div>
+                    </v-list-item-group>
+                  </div>
                 </div>
                 <div style="float: left">
                   <v-btn
@@ -165,7 +200,11 @@
                     color="primary"
                   >Update</v-btn>
                   <v-btn
-                    @click="commentEditor = false"
+                    @click="
+                      commentEditor = false;
+                      editorType = '';
+                      tagging = false;
+                    "
                     class="text-capitalize"
                     style="margin-top: 10px"
                     color="error"
@@ -225,10 +264,10 @@
                                 <v-list-item-avatar size="22">
                                   <v-img
                                     v-if="
-                                data.item.img != null &&
-                                   data.item.img != ''
-                              "
-                                    :src=" data.item.img"
+                                      data.item.img != null &&
+                                        data.item.img != ''
+                                    "
+                                    :src="data.item.img"
                                   ></v-img>
                                   <v-img
                                     v-else
@@ -315,17 +354,47 @@
                 ></v-img>
               </v-avatar>
             </v-col>
-            <v-col sm="10" md="10">
-              <div id="defaultRTE">
+            <v-col sm="10" md="10" style="z-index: 100">
+              <div id="defaultRTE" @paste="pasteFile">
                 <ejs-richtexteditor
                   :placeholder="placeholder"
                   ref="rteObj"
                   :quickToolbarSettings="quickToolbarSettings"
                   :toolbarSettings="toolbarSettings"
                   v-model="textEditor"
-                  @focus="typingText()"
+                  @focus="
+                    typingText();
+                    selectTextEditor('addCommentEditor');
+                  "
                   @blur="notTyping()"
                 ></ejs-richtexteditor>
+              </div>
+              <div
+                v-if="tagging && editorType == 'addCommentEditor'"
+                class="taggingPopupBox overflow-y-auto"
+              >
+                <div>
+                  <v-list-item-group>
+                    <div v-for="(user, index) in this.assigneeArray" :key="index">
+                      <v-list-item @click="tagPeople(user)" dense>
+                        <v-list-item-avatar size="20">
+                          <v-img v-if="user.img != null && user.img != ''" :src="user.img"></v-img>
+                          <v-img
+                            v-else
+                            src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                          ></v-img>
+                        </v-list-item-avatar>
+                        <v-list-item-content>
+                          <v-list-item-subtitle>
+                            {{
+                            user.name
+                            }}
+                          </v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </div>
+                  </v-list-item-group>
+                </div>
               </div>
               <div style="float: left">
                 <v-btn
@@ -390,10 +459,9 @@
                               <v-list-item-avatar size="22">
                                 <v-img
                                   v-if="
-                                data.item.img != null &&
-                                   data.item.img != ''
-                              "
-                                  :src=" data.item.img"
+                                    data.item.img != null && data.item.img != ''
+                                  "
+                                  :src="data.item.img"
                                 ></v-img>
                                 <v-img
                                   v-else
@@ -514,14 +582,103 @@ export default {
     // console.log("created---->", this.stomp);
     this.projectId = this.$route.params.projects;
   },
+  mounted() {
+    document.addEventListener("keyup", this.onKeyUp);
+  },
   methods: {
+    pasteFile(e) {
+      const items = (event.clipboardData || event.originalEvent.clipboardData)
+        .items;
+      let file = null;
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf("image") === 0) {
+          file = items[i].getAsFile();
+        }
+        console.log("file", file);
+        this.files = file;
+        this.submit("addComment");
+      }
+    },
+    selectTextEditor(editor) {
+      this.editorType = editor;
+    },
+    onKeyUp(e) {
+      if (e.keyCode === 50) {
+        this.tagging = true;
+        // console.log("KEYUPENTER!" + e.keyCode);
+        // this.$refs.defaultRTE.ej2Instances.focusIn();
+      } else {
+        this.tagging = false;
+      }
+    },
+    tagPeopleUpdate(assignee) {
+      this.tagging = false;
+
+      this.updatedComment = this.updatedComment.slice(0, -1);
+      if (assignee != null) {
+        if (this.updatedComment != null) {
+          this.updatedComment =
+            this.updatedComment.slice(0, -4) +
+            "&nbsp;<span >" +
+            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
+            assignee.display +
+            "</span> &nbsp;" +
+            "<span @userId='# " +
+            assignee.id +
+            "#'></span></span>&nbsp;&nbsp;</p>";
+          // this.annotations.push(this.filterAssignee.id);
+        } else {
+          this.updatedComment =
+            "&nbsp;<span >" +
+            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
+            assignee.display +
+            "</span> &nbsp;" +
+            "<span @userId='# " +
+            assignee.id +
+            "#'></span></span>&nbsp;&nbsp;</p>";
+          // this.annotations.push(this.filterAssignee.id);
+        }
+      }
+      this.filterAssignee == "";
+    },
+    tagPeople(assignee) {
+      // console.log("TEXT EDIT: " + this.textEditor);
+      this.tagging = false;
+      this.textEditor = this.textEditor.slice(0, -1);
+      if (assignee != null) {
+        if (this.textEditor != null) {
+          this.textEditor =
+            this.textEditor.slice(0, -4) +
+            "&nbsp;<span >" +
+            // <span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>
+            "<span> @" +
+            assignee.display +
+            "</span> " +
+            "<span @userId='# " +
+            assignee.id +
+            "#'></span></span>&nbsp;&nbsp;</p>";
+          this.annotations.push(assignee.id);
+        } else {
+          this.textEditor =
+            "&nbsp;<span >" +
+            "<span >   @" +
+            assignee.display +
+            "</span> &nbsp;" +
+            "<span @userId='# " +
+            assignee.id +
+            "#'></span></span>&nbsp;&nbsp;</p>";
+          assignee.push(assignee.id);
+        }
+      }
+      this.filterAssignee == "";
+    },
     mentionSomeone() {
       if (this.filterAssignee != null) {
         if (this.textEditor != null) {
           this.textEditor =
             this.textEditor.slice(0, -4) +
             "&nbsp;<span >" +
-            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
+            "<span >   @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
             "<span @userId='# " +
@@ -531,7 +688,7 @@ export default {
         } else {
           this.textEditor =
             "&nbsp;<span >" +
-            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
+            "<span >   @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
             "<span @userId='# " +
@@ -617,8 +774,7 @@ export default {
         this.uploadLoading = true;
         let formData = new FormData();
         formData.append("files", this.files);
-        formData.append("type", "profileImage");
-        formData.append("taskType", "project");
+        formData.append("type", "comment");
         let fileResponse;
         try {
           fileResponse = await this.$axios.$post(
@@ -638,30 +794,38 @@ export default {
             if (this.textEditor != null) {
               this.textEditor =
                 this.textEditor +
-                "<img src='" +
+                "<a href='" +
                 fileResponse.data +
-                "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'>";
+                "' target='_blank'><img src='" +
+                fileResponse.data +
+                "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'></a>";
             } else {
               this.textEditor =
-                "<img src='" +
+                "<a href='" +
                 fileResponse.data +
-                "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'>";
+                "' target='_blank'><img src='" +
+                fileResponse.data +
+                "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'></a>";
             }
           } else {
             if (this.updatedComment != null) {
               this.updatedComment =
                 this.updatedComment +
-                "<img src='" +
+                "<a href='" +
                 fileResponse.data +
-                "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'>";
+                "' target='_blank'><img src='" +
+                fileResponse.data +
+                "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'></a>";
             } else {
               this.updatedComment =
-                "<img src='" +
+                "<a href='" +
                 fileResponse.data +
-                "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'>";
+                "' target='_blank'><img src='" +
+                fileResponse.data +
+                "' class='e-rte-image e-imginline' width='auto' height='auto' style='min-width: 0px; min-height: 0px;'></a>";
             }
           }
-          console.log("File response", fileResponse.data);
+          // console.log("File response", fileResponse.data);
           // location.reload();
         } catch (e) {
           console.log("Error uploading prof pic: ", e);
@@ -778,17 +942,17 @@ export default {
             this.close();
           }, 3000);
 
-          console.log("textEditor", this.textEditor);
+          // console.log("textEditor", this.textEditor);
           let mentionedUsers = [],
             m,
             rx = /# (.*?)#/g;
           while ((m = rx.exec(this.textEditor)) !== null) {
             mentionedUsers.push(m[1]);
           }
-          console.log("result", mentionedUsers);
+          // console.log("result", mentionedUsers);
 
           this.textEditor = "";
-          if (response.message == "success") {
+          if (mentionedUsers.length > 0) {
             mentionResponse = await this.$axios.$post(
               `/notification/mention`,
               {
@@ -802,7 +966,7 @@ export default {
                 }
               }
             );
-            console.log("Annotations: " + mentionResponse);
+            // console.log("Annotations: " + mentionResponse);
           }
 
           this.annotations = [];
@@ -839,6 +1003,7 @@ export default {
         //   startIndex: 0,
         //   endIndex: 200
         // });
+        // console.log("updated--->", this.updatedComment);
         this.sendCommentedMessage(
           this.selectedTask.taskId,
           this.updatedComment,
@@ -846,13 +1011,38 @@ export default {
         );
         this.getComments();
 
+        let mentionedUsers = [],
+          m,
+          rx = /# (.*?)#/g;
+        while ((m = rx.exec(this.updatedComment)) !== null) {
+          mentionedUsers.push(m[1]);
+        }
+        // console.log("result", mentionedUsers);
+
+        if (mentionedUsers.length > 0) {
+          let mentionResponse = await this.$axios.$post(
+            `/notification/mention`,
+            {
+              commentId: commentId,
+              entityId: this.selectedTask.taskId,
+              recipients: mentionedUsers
+            },
+            {
+              headers: {
+                userId: this.userId
+              }
+            }
+          );
+          // console.log("Annotations: " + mentionResponse);
+        }
+
         this.component = "success-popup";
         this.successMessage = "Comment successfully updated";
         this.userExists = true;
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("update task status response", response);
+        // console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
@@ -864,7 +1054,7 @@ export default {
       }
     },
     sendCommentedMessage(taskId, comment, sender) {
-      console.log("sending message", this.stomp, comment);
+      // console.log("sending message", this.stomp, comment);
       this.stomp.send(
         "/app/chat/" + taskId,
         {},
@@ -877,7 +1067,7 @@ export default {
     },
 
     sendTypingMessage(taskId, sender, event) {
-      console.log("typing message", this.stomp);
+      // console.log("typing message", this.stomp);
       this.stomp.send(
         "/app/chat/" + taskId,
         {},
@@ -1014,7 +1204,8 @@ export default {
         assigneeList.push({
           name: user.assigneeFirstName + " " + user.assigneeLastName,
           id: user.assigneeId,
-          img: user.assigneeProfileImage
+          img: user.assigneeProfileImage,
+          display: user.assigneeFirstName + user.assigneeLastName
         });
       }
       return assigneeList;
@@ -1022,6 +1213,8 @@ export default {
   },
   data: function() {
     return {
+      editorType: "",
+      tagging: false,
       annotations: [],
       filterAssignee: "",
       files: null,

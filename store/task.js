@@ -10,11 +10,15 @@ export const state = () => ({
   startIndex: 0,
   endIndex: 10,
   totalCount: 0,
+  myTaskCount: 0,
 });
 
 export const mutations = {
   SET_TOTAL_COUNT(state, count) {
     state.totalCount = count;
+  },
+  SET_MY_TASK_COUNT(state, count) {
+    state.myTaskCount = count;
   },
   SET_INDEX(state, { startIndex, endIndex }) {
     state.startIndex = startIndex;
@@ -125,6 +129,19 @@ export const actions = {
       );
       console.log('task length', taskLength.data);
       commit('SET_TOTAL_COUNT', taskLength.data);
+    } catch (error) {
+      console.log('Error fetching task count length', error);
+    }
+  },
+  async fetchMyTaskCount({ commit, rootState }, projectId) {
+    const user = rootState.user.userId;
+    let taskLength;
+    try {
+      taskLength = await this.$axios.$get(
+        `/projects/${projectId}/tasks/user/count?userId=${user}`
+      );
+      console.log('task length', taskLength.data);
+      commit('SET_MY_TASK_COUNT', taskLength.data);
     } catch (error) {
       console.log('Error fetching task count length', error);
     }
@@ -240,7 +257,9 @@ export const actions = {
   fetchTasksMyTasks({ commit, rootState }, projectId) {
     const userId = rootState.user.userId;
     this.$axios
-      .get(`projects/${projectId}/tasks/user?userId=${userId}`)
+      .get(
+        `projects/${projectId}/tasks/user?userId=${userId}&startIndex=${rootState.task.startIndex}&endIndex=${rootState.task.endIndex}`
+      )
       .then((response) => {
         // console.log(
         //   'MY TASKS ARE RETRIEVED SUCCESSFULLY-->',

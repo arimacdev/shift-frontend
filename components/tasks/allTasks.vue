@@ -1,5 +1,18 @@
 <template>
   <div class>
+    <v-btn
+      v-if="this.filterList != '' && this.taskFilter != 'none'"
+      style="position: absolute; right: 60px; margin-top: -45px"
+      @click="exportAsCSV"
+      dark
+      height="30px"
+      outlined
+      color="blue"
+    >
+      <v-icon color="blue" size="20">mdi-download</v-icon>
+      <v-list-item-action-text>Export as CSV</v-list-item-action-text>
+      <!-- Cancel -->
+    </v-btn>
     <div class="filterSection">
       <v-row>
         <v-col md="2">
@@ -143,9 +156,9 @@
                   <v-list-item
                     class="innerListItem"
                     @click="
-                  selectTask(task.parentTask, task);
-                  taskDialog = true;
-                "
+                      selectTask(task.parentTask, task);
+                      taskDialog = true;
+                    "
                   >
                     <!-- @click.stop="drawer = !drawer" -->
                     <v-list-item-action>
@@ -158,26 +171,32 @@
                     </v-list-item-action>
                     <div class="tasklistTaskNames restructuredMainTaskName">
                       <div class="body-2">
-                        <span class="restructuredMainTaskCode">{{ task.parentTask.secondaryTaskId }}</span>
+                        <span class="restructuredMainTaskCode">
+                          {{
+                          task.parentTask.secondaryTaskId
+                          }}
+                        </span>
                         {{ task.parentTask.taskName }}
                       </div>
                     </div>
                     <div
                       class="restStatusChip"
                       :class="statusCheck(task.parentTask.issueType)"
-                    >{{ task.parentTask.issueType }}</div>
+                    >{{ taskTypeFormatting(task.parentTask.issueType) }}</div>
                     <v-list-item-content class="updatedDate">
-                      <v-list-item-title
-                        :class="dueDateCheck(task.parentTask)"
-                      >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</v-list-item-title>
+                      <v-list-item-title :class="dueDateCheck(task.parentTask)">
+                        {{
+                        getProjectDates(task.parentTask.taskDueDateAt)
+                        }}
+                      </v-list-item-title>
                     </v-list-item-content>
                     <div>
                       <v-list-item-avatar>
                         <v-img
                           v-if="
-                        task.parentTask.taskAssigneeProfileImage != null &&
-                          task.parentTask.taskAssigneeProfileImage != ''
-                      "
+                            task.parentTask.taskAssigneeProfileImage != null &&
+                              task.parentTask.taskAssigneeProfileImage != ''
+                          "
                           :src="task.parentTask.taskAssigneeProfileImage"
                         ></v-img>
                         <v-img
@@ -191,8 +210,11 @@
                   <div class="boardTabLinkIcon">
                     <nuxt-link
                       :to="
-                    '/task/' + task.parentTask.taskId + '/?project=' + projectId
-                  "
+                        '/task/' +
+                          task.parentTask.taskId +
+                          '/?project=' +
+                          projectId
+                      "
                       style="text-decoration: none;"
                       target="_blank"
                     >
@@ -215,13 +237,13 @@
                     label="Add a sub task..."
                     class
                     @keyup.enter="
-                addSubTask(
-                  index,
-                  task.parentTask.taskId,
-                  task.parentTask.issueType,
-                  task.parentTask.sprintId
-                )
-              "
+                      addSubTask(
+                        index,
+                        task.parentTask.taskId,
+                        task.parentTask.issueType,
+                        task.parentTask.sprintId
+                      )
+                    "
                     clearable
                   ></v-text-field>
                 </v-expand-transition>
@@ -236,9 +258,9 @@
                     <v-list-item
                       class="innerListItem"
                       @click="
-                    selectTask(childTask, task);
-                    taskDialog = true;
-                  "
+                        selectTask(childTask, task);
+                        taskDialog = true;
+                      "
                     >
                       <!-- @click.stop="drawer = !drawer" -->
                       <v-list-item-action>
@@ -251,26 +273,32 @@
                       </v-list-item-action>
                       <div class="tasklistTaskNames restructuredSubTaskName">
                         <div class="body-2">
-                          <span class="restructuredMainTaskCode">{{ childTask.secondaryTaskId }}</span>
+                          <span class="restructuredMainTaskCode">
+                            {{
+                            childTask.secondaryTaskId
+                            }}
+                          </span>
                           {{ childTask.taskName }}
                         </div>
                       </div>
                       <div
                         class="restStatusChip"
                         :class="statusCheck(childTask.issueType)"
-                      >{{ childTask.issueType }}</div>
+                      >{{ taskTypeFormatting(childTask.issueType) }}</div>
                       <v-list-item-content class="updatedDate">
-                        <v-list-item-title
-                          :class="dueDateCheck(childTask)"
-                        >{{ getProjectDates(childTask.taskDueDateAt) }}</v-list-item-title>
+                        <v-list-item-title :class="dueDateCheck(childTask)">
+                          {{
+                          getProjectDates(childTask.taskDueDateAt)
+                          }}
+                        </v-list-item-title>
                       </v-list-item-content>
                       <div>
                         <v-list-item-avatar>
                           <v-img
                             v-if="
-                          childTask.taskAssigneeProfileImage != null &&
-                            childTask.taskAssigneeProfileImage != ''
-                        "
+                              childTask.taskAssigneeProfileImage != null &&
+                                childTask.taskAssigneeProfileImage != ''
+                            "
                             :src="childTask.taskAssigneeProfileImage"
                           ></v-img>
                           <v-img
@@ -282,7 +310,9 @@
                     </v-list-item>
                     <div class="boardTabLinkIcon">
                       <nuxt-link
-                        :to="'/task/' + childTask.taskId + '/?project=' + projectId"
+                        :to="
+                          '/task/' + childTask.taskId + '/?project=' + projectId
+                        "
                         style="text-decoration: none;"
                         target="_blank"
                       >
@@ -346,15 +376,24 @@
               </v-list-item-action>
               <div class="tasklistTaskNames restructuredMainTaskName">
                 <div class="body-2">
-                  <span class="restructuredMainTaskCode">{{ task.secondaryTaskId }}</span>
+                  <span class="restructuredMainTaskCode">
+                    {{
+                    task.secondaryTaskId
+                    }}
+                  </span>
                   {{ task.taskName }}
                 </div>
               </div>
-              <div class="restStatusChip" :class="statusCheck(task.issueType)">{{ task.issueType }}</div>
+              <div
+                class="restStatusChip"
+                :class="statusCheck(task.issueType)"
+              >{{ taskTypeFormatting(task.issueType) }}</div>
               <v-list-item-content class="updatedDate">
-                <v-list-item-title
-                  :class="dueDateCheck(task)"
-                >{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
+                <v-list-item-title :class="dueDateCheck(task)">
+                  {{
+                  getProjectDates(task.taskDueDateAt)
+                  }}
+                </v-list-item-title>
               </v-list-item-content>
               <div>
                 <v-list-item-avatar>
@@ -463,7 +502,7 @@
       ></component>
       <!-- <success-popup /> -->
     </div>
-    <v-overlay :value="overlay">
+    <v-overlay :value="overlay" color="black">
       <progress-loading />
     </v-overlay>
   </div>
@@ -478,6 +517,8 @@ import Progress from "~/components/popups/progress";
 import { mapState } from "vuex";
 import Stomp from "stompjs";
 import SockJS from "sockjs-client";
+import Papa from "papaparse";
+
 export default {
   props: ["pagination"],
   data() {
@@ -598,19 +639,65 @@ export default {
     }
   },
   methods: {
-    getAllTasks() {
-      this.$store.dispatch("task/setIndex", {
-        startIndex: this.pagination * 10 - 10,
-        endIndex: this.pagination * 10
+    taskTypeFormatting(type) {
+      switch (type) {
+        case "development":
+          return "Development";
+          break;
+        case "qa":
+          return "QA";
+          break;
+        case "design":
+          return "Design";
+          break;
+        case "bug":
+          return "Bug";
+          break;
+        case "operational":
+          return "Operational";
+          break;
+        case "preSales":
+          return "Pre-sales";
+          break;
+        case "general":
+          return "General";
+          break;
+        default:
+      }
+    },
+    exportAsCSV() {
+      var blob = new Blob([Papa.unparse(this.filterList)], {
+        type: "text/csv;charset=utf-8;"
       });
-      this.$store.dispatch(
-        "task/fetchTasksAllTasks",
-        this.$route.params.projects
-      );
-      this.$store.dispatch(
-        "task/fetchTotalTaskCount",
-        this.$route.params.projects
-      );
+
+      var link = document.createElement("a");
+
+      var url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", "taskList.csv");
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
+    getAllTasks() {
+      this.overlay = true;
+      Promise.all([
+        this.$store.dispatch("task/setIndex", {
+          startIndex: this.pagination * 10 - 10,
+          endIndex: this.pagination * 10
+        }),
+        this.$store.dispatch(
+          "task/fetchTasksAllTasks",
+          this.$route.params.projects
+        ),
+        this.$store.dispatch(
+          "task/fetchTotalTaskCount",
+          this.$route.params.projects
+        )
+      ]).finally(() => {
+        this.overlay = false;
+      });
     },
     filterChange() {
       this.nameOfTask = "";
@@ -625,7 +712,7 @@ export default {
       this.typeQuery = "";
       this.statusQuery = "";
       this.dateRange = null;
-      this.jqlQuery = "";
+      this.jqlQuery = null;
     },
     jqlSearch() {
       this.overlay = true;

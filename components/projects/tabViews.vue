@@ -77,6 +77,9 @@
         </v-tabs>
       </v-card>
     </div>
+    <v-overlay :value="overlay" color="black">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 
@@ -88,11 +91,14 @@ import ProjectTab from "~/components/projects/projectTab";
 import FilesTab from "~/components/projects/filesTab";
 import BoardTab from "~/components/projects/boardTab";
 import ProjectLogs from "~/components/projects/projectLogs";
+import Progress from "~/components/popups/progress";
+
 import { mapState } from "vuex";
 
 export default {
   data() {
     return {
+      overlay: false,
       page: 1,
       drawer: null,
       userId: this.$store.state.user.userId,
@@ -121,7 +127,8 @@ export default {
     "project-tab": ProjectTab,
     "files-tab": FilesTab,
     "board-tab": BoardTab,
-    "project-logs": ProjectLogs
+    "project-logs": ProjectLogs,
+    "progress-loading": Progress
   },
   async created() {
     this.projectId = this.$route.params.projects;
@@ -150,14 +157,18 @@ export default {
           this.$emit("refreshSelectedTab", "files");
           break;
         case "logs":
-          this.$store.dispatch("tab/updateTabViewsTab", "logs");
+          this.overlay = true;
           this.$emit("refreshSelectedTab", "logs");
-          this.$store.dispatch("activityLog/fetchProjectActivityLog", {
-            projectId: this.$route.params.projects,
-            startIndex: 0,
-            endIndex: 10
+          Promise.all([
+            this.$store.dispatch("tab/updateTabViewsTab", "logs"),
+            this.$store.dispatch("activityLog/fetchProjectActivityLog", {
+              projectId: this.$route.params.projects,
+              startIndex: 0,
+              endIndex: 10
+            })
+          ]).finally(() => {
+            this.overlay = false;
           });
-
           break;
       }
     },

@@ -88,7 +88,7 @@
         v-bind:is="component"
       ></component>
     </div>
-    <v-overlay :value="overlay">
+    <v-overlay :value="overlay" color="black">
       <progress-loading />
     </v-overlay>
   </div>
@@ -134,8 +134,13 @@ export default {
     };
   },
   async created() {
-    this.$store.dispatch("groups/group/fetchMyGroups");
-    this.$store.dispatch("project/clearProject");
+    this.overlay = true;
+    Promise.all([
+      this.$store.dispatch("groups/group/fetchMyGroups"),
+      this.$store.dispatch("project/clearProject")
+    ]).finally(() => {
+      this.overlay = false;
+    });
   },
 
   computed: {

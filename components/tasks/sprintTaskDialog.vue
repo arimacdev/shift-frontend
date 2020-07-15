@@ -38,7 +38,7 @@
               </div>
             </v-col>
             <v-col sm="2" md="2">
-              <div class="taskStatusDropdown">{{ taskStatus }}</div>
+              <div class="taskStatusDropdown">{{ taskStatusFormatting(taskStatus) }}</div>
             </v-col>
             <v-col sm="8" md="8" class="taskViewLinksDiv">
               <nuxt-link
@@ -167,19 +167,13 @@
                               style="font-size: 14px; font-weight: 800; padding-right: 20px"
                             >{{ parent.secondaryTaskId }}</v-list-item-action>
                             <v-list-item-content style="width: 200px">
-                              <v-list-item-title>
-                                {{
-                                parent.taskName
-                                }}
-                              </v-list-item-title>
+                              <v-list-item-title>{{ parent.taskName }}</v-list-item-title>
                             </v-list-item-content>
                             <div>
                               <v-list-item-action>
-                                <v-list-item-sub-title :class="dueDateCheck(parent)">
-                                  {{
-                                  getProjectDates(parent.taskDueDateAt)
-                                  }}
-                                </v-list-item-sub-title>
+                                <v-list-item-sub-title
+                                  :class="dueDateCheck(parent)"
+                                >{{ getProjectDates(parent.taskDueDateAt) }}</v-list-item-sub-title>
                               </v-list-item-action>
                             </div>
                             <div>
@@ -250,17 +244,9 @@
                               </v-list-item-action>
                               <v-list-item-action
                                 style="font-size: 14px; font-weight: 800; padding-right: 20px"
-                              >
-                                {{
-                                childTask.secondaryTaskId
-                                }}
-                              </v-list-item-action>
+                              >{{ childTask.secondaryTaskId }}</v-list-item-action>
                               <v-list-item-content style="width: 200px">
-                                <v-list-item-title>
-                                  {{
-                                  childTask.taskName
-                                  }}
-                                </v-list-item-title>
+                                <v-list-item-title>{{ childTask.taskName }}</v-list-item-title>
                               </v-list-item-content>
                               <div>
                                 <v-list-item-action>
@@ -536,9 +522,10 @@
                   <v-list-item-action>
                     <v-icon size="15" color="red">mdi-alert-outline</v-icon>
                   </v-list-item-action>
-                  <v-list-item-content
-                    class="userBlockedWarning"
-                  >Assignee is no longer a participant of the project</v-list-item-content>
+                  <v-list-item-content class="userBlockedWarning">
+                    Assignee is no longer a participant of the
+                    project
+                  </v-list-item-content>
                 </v-list-item>
                 <div class="rightSideColumn">
                   <!-- --------- assignee section ---------- -->
@@ -759,22 +746,16 @@
                             target="_blank"
                           >{{ file.taskFileName }}</a>
                         </v-list-item-title>
-                        <v-list-item-subtitle class="fileSubTitles">
-                          {{
-                          file.taskFileSize / 1000
-                          }}KB
-                        </v-list-item-subtitle>
+                        <v-list-item-subtitle class="fileSubTitles">{{ file.taskFileSize / 1000 }}KB</v-list-item-subtitle>
                       </v-list-item-content>
                       <v-list-item-content>
                         <v-list-item-title class="fileTitles">
                           {{ file.firstName }}
                           {{ file.lastName }}
                         </v-list-item-title>
-                        <v-list-item-subtitle class="fileSubTitles">
-                          {{
-                          getProjectDates(file.taskFileDate)
-                          }}
-                        </v-list-item-subtitle>
+                        <v-list-item-subtitle
+                          class="fileSubTitles"
+                        >{{ getProjectDates(file.taskFileDate) }}</v-list-item-subtitle>
                       </v-list-item-content>
                       <div>
                         <a style="text-decoration: none;" :href="file.taskFileUrl" target="_blank">
@@ -883,7 +864,7 @@
       ></component>
       <!-- <success-popup /> -->
     </div>
-    <v-overlay :value="overlay">
+    <v-overlay :value="overlay" color="black">
       <progress-loading />
     </v-overlay>
   </v-card>
@@ -1048,6 +1029,74 @@ export default {
     };
   },
   methods: {
+    taskStatusFormatting(status) {
+      switch (status) {
+        case "pending":
+          return "Pending";
+          break;
+        case "onHold":
+          return "On Hold";
+          break;
+        case "open":
+          return "Open";
+          break;
+        case "cancel":
+          return "Cancel";
+          break;
+        case "reOpened":
+          return "Re Opened";
+          break;
+        case "fixing":
+          return "Fixing";
+          break;
+        case "testing":
+          return "Testing";
+          break;
+        case "resolved":
+          return "Resolved";
+          break;
+        case "inprogress":
+          return "Inprogress";
+          break;
+        case "completed":
+          return "Completed";
+          break;
+        case "implementing":
+          return "Implementing";
+          break;
+        case "underReview":
+          return "UnderReview";
+          break;
+        case "waitingForApproval":
+          return "Waiting for Approval";
+          break;
+        case "review":
+          return "Review";
+          break;
+        case "discussion":
+          return "Discussion";
+          break;
+        case "waitingResponse":
+          return "Waiting Response";
+          break;
+        case "ready":
+          return "Ready";
+          break;
+        case "deployed":
+          return "Deployed";
+          break;
+        case "fixed":
+          return "Fixed";
+          break;
+        case "rejected":
+          return "Rejected";
+          break;
+        case "closed":
+          return "Closed";
+          break;
+        default:
+      }
+    },
     selectedVTab(component) {
       this.activity = component;
       if (component === "logs") {

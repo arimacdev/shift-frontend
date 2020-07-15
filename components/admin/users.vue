@@ -68,7 +68,7 @@
         </keep-alive>
       </div>
     </div>
-    <v-overlay :value="overlay">
+    <v-overlay :value="overlay" color="black">
       <progress-loading />
     </v-overlay>
   </div>
@@ -124,10 +124,15 @@ export default {
       } catch (e) {
         this.roleListCount = 0;
       }
-      this.$store.dispatch("admin/fetchUserRoleMapping", userData.userId);
-      this.$store.dispatch("skillMatrix/fetchUserSkills", userData.userId);
-      this.$store.dispatch("user/setSelectedUser", userData);
-      this.$store.dispatch("skillMap/fetchUserSkillMap", userData.userId);
+      this.overlay = true;
+      Promise.all([
+        this.$store.dispatch("admin/fetchUserRoleMapping", userData.userId),
+        this.$store.dispatch("skillMatrix/fetchUserSkills", userData.userId),
+        this.$store.dispatch("user/setSelectedUser", userData),
+        this.$store.dispatch("skillMap/fetchUserSkillMap", userData.userId)
+      ]).finally(() => {
+        this.overlay = false;
+      });
     }
   },
 
