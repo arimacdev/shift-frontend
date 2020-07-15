@@ -43,7 +43,7 @@
         <component v-bind:is="component"></component>
       </div>
     </div>
-    <v-overlay :value="overlay" color="white">
+    <v-overlay :value="overlay" color="black">
       <progress-loading />
     </v-overlay>
   </div>

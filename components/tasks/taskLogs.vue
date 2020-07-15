@@ -213,7 +213,7 @@
         </div>
       </v-col>
     </v-row>
-    <v-overlay :value="overlay" color="white">
+    <v-overlay :value="overlay" color="black">
       <progress-loading />
     </v-overlay>
   </div>

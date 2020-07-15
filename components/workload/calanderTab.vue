@@ -217,7 +217,7 @@
         </div>
       </div>
     </v-row>
-    <v-overlay :value="overlay" color="white">
+    <v-overlay :value="overlay" color="black">
       <progress-loading />
     </v-overlay>
     <div @click="close" class="filterTaskPopupPlacements">

@@ -131,7 +131,7 @@
         </v-col>
       </v-row>
     </form>
-    <v-overlay :value="overlay" color="white">
+    <v-overlay :value="overlay" color="black">
       <progress-loading />
     </v-overlay>
     <div @click="close">

@@ -70,7 +70,7 @@
     <div @click="close" class="editProjectUserPopup">
       <component v-bind:is="component" :errorMessage="errorMessage"></component>
     </div>
-    <v-overlay :value="overlay" color="white">
+    <v-overlay :value="overlay" color="black">
       <progress-loading />
     </v-overlay>
   </div>

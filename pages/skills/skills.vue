@@ -529,7 +529,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-overlay :value="overlay" color="white" style="z-index:1008">
+    <v-overlay :value="overlay" color="black" style="z-index:1008">
       <progress-loading />
     </v-overlay>
   </div>

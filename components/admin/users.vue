@@ -68,7 +68,7 @@
         </keep-alive>
       </div>
     </div>
-    <v-overlay :value="overlay" color="white">
+    <v-overlay :value="overlay" color="black">
       <progress-loading />
     </v-overlay>
   </div>

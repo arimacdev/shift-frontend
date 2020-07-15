@@ -393,7 +393,7 @@
     <!-- <div class="popupBox">
         <success-popup />
     </div>-->
-    <v-overlay :value="overlay" color="white">
+    <v-overlay :value="overlay" color="black">
       <progress-loading />
     </v-overlay>
   </div>

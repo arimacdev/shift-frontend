@@ -296,7 +296,7 @@
         @taskDialogClosing="taskDialogClosing()"
       />
     </v-dialog>
-    <v-overlay :value="overlay" color="white">
+    <v-overlay :value="overlay" color="black">
       <progress-loading />
     </v-overlay>
     <div @click="close" class="filterTaskPopupPlacements">
