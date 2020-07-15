@@ -77,9 +77,9 @@
         </v-tabs>
       </v-card>
     </div>
-     <v-overlay :value="overlay">
-        <progress-loading />
-      </v-overlay>
+    <v-overlay :value="overlay" color="white">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 
@@ -128,7 +128,7 @@ export default {
     "files-tab": FilesTab,
     "board-tab": BoardTab,
     "project-logs": ProjectLogs,
-    "progress-loading": Progress,
+    "progress-loading": Progress
   },
   async created() {
     this.projectId = this.$route.params.projects;
@@ -157,18 +157,18 @@ export default {
           this.$emit("refreshSelectedTab", "files");
           break;
         case "logs":
-          this.overlay = true
+          this.overlay = true;
           this.$emit("refreshSelectedTab", "logs");
           Promise.all([
-          this.$store.dispatch("tab/updateTabViewsTab", "logs"),
-          this.$store.dispatch("activityLog/fetchProjectActivityLog", {
-            projectId: this.$route.params.projects,
-            startIndex: 0,
-            endIndex: 10
-          })
-          ]).finally( ()=> {
-            this.overlay = false
-          })       
+            this.$store.dispatch("tab/updateTabViewsTab", "logs"),
+            this.$store.dispatch("activityLog/fetchProjectActivityLog", {
+              projectId: this.$route.params.projects,
+              startIndex: 0,
+              endIndex: 10
+            })
+          ]).finally(() => {
+            this.overlay = false;
+          });
           break;
       }
     },

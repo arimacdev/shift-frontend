@@ -451,9 +451,9 @@
         </div>
       </v-col>
     </v-row>
-     <v-overlay :value="overlay">
-        <progress-loading />
-      </v-overlay>
+    <v-overlay :value="overlay" color="white">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 
@@ -463,8 +463,8 @@ import Progress from "~/components/popups/progress";
 
 export default {
   props: ["page"],
-  components :{ 
-     "progress-loading": Progress,
+  components: {
+    "progress-loading": Progress
   },
   data() {
     return {
@@ -480,13 +480,15 @@ export default {
   methods: {
     async getLogs() {
       this.overlay = true;
-      this.$store.dispatch("activityLog/fetchProjectActivityLog", {
-        projectId: this.$route.params.projects,
-        startIndex: this.page * 10 - 10,
-        endIndex: this.page * 10
-      }).finally(()=> {
-        this.overlay = false
-      })
+      this.$store
+        .dispatch("activityLog/fetchProjectActivityLog", {
+          projectId: this.$route.params.projects,
+          startIndex: this.page * 10 - 10,
+          endIndex: this.page * 10
+        })
+        .finally(() => {
+          this.overlay = false;
+        });
       // console.log("TRIGGERED: " + this.page);
 
       // let taskLogResponse;

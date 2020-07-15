@@ -26,7 +26,7 @@
       <component v-bind:is="component" :errorMessage="errorMessage"></component>
       <!-- <success-popup /> -->
     </div>
-     <v-overlay :value="overlay">
+    <v-overlay :value="overlay" color="white">
       <progress-loading />
     </v-overlay>
   </div>
@@ -41,7 +41,7 @@ export default {
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
-    "progress-loading": Progress,
+    "progress-loading": Progress
   },
   data() {
     return {
@@ -76,14 +76,13 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.$store.dispatch(
-          "task/fetchProjectUserCompletionTasks",
-          this.projectId
-        ).finally(()=> {
-          this.overlay = false;
-        })
+        this.$store
+          .dispatch("task/fetchProjectUserCompletionTasks", this.projectId)
+          .finally(() => {
+            this.overlay = false;
+          });
       } catch (e) {
-        this.overlay = false
+        this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {

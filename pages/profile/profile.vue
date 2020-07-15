@@ -19,7 +19,7 @@
         <component v-bind:is="component" :name="name" :user="user"></component>
       </keep-alive>
     </div>
-    <v-overlay :value="overlay">
+    <v-overlay :value="overlay" color="white">
       <progress-loading />
     </v-overlay>
   </div>

@@ -70,7 +70,7 @@
     <div @click="close" class="editProjectUserPopup">
       <component v-bind:is="component" :errorMessage="errorMessage"></component>
     </div>
-    <v-overlay :value="overlay">
+    <v-overlay :value="overlay" color="white">
       <progress-loading />
     </v-overlay>
   </div>
@@ -85,7 +85,7 @@ export default {
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
-    "progress-loading": Progress,
+    "progress-loading": Progress
   },
   data() {
     return {
@@ -113,7 +113,7 @@ export default {
       } else {
         roleIdValue = 3;
       }
-      this.overlay = true
+      this.overlay = true;
       let response;
       try {
         // console.log("edituser", this.editUser);
@@ -125,12 +125,11 @@ export default {
             assigneeProjectRole: roleIdValue
           }
         );
-        this.$store.dispatch(
-          "task/fetchProjectUserCompletionTasks",
-          this.projectId
-        ).finally(()=> {
-          this.overlay = false
-        })
+        this.$store
+          .dispatch("task/fetchProjectUserCompletionTasks", this.projectId)
+          .finally(() => {
+            this.overlay = false;
+          });
         this.component = "success-popup";
       } catch (e) {
         console.log("Error blocking user", e);
