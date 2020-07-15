@@ -621,7 +621,7 @@ export default {
             this.updatedComment.slice(0, -4) +
             "&nbsp;<span >" +
             "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
-            assignee.name +
+            assignee.display +
             "</span> &nbsp;" +
             "<span @userId='# " +
             assignee.id +
@@ -631,7 +631,7 @@ export default {
           this.updatedComment =
             "&nbsp;<span >" +
             "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
-            assignee.name +
+            assignee.display +
             "</span> &nbsp;" +
             "<span @userId='# " +
             assignee.id +
@@ -650,9 +650,10 @@ export default {
           this.textEditor =
             this.textEditor.slice(0, -4) +
             "&nbsp;<span >" +
-            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
-            assignee.name +
-            "</span> &nbsp;" +
+            // <span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>
+            "<span> @" +
+            assignee.display +
+            "</span> " +
             "<span @userId='# " +
             assignee.id +
             "#'></span></span>&nbsp;&nbsp;</p>";
@@ -660,8 +661,8 @@ export default {
         } else {
           this.textEditor =
             "&nbsp;<span >" +
-            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
-            assignee.name +
+            "<span >   @" +
+            assignee.display +
             "</span> &nbsp;" +
             "<span @userId='# " +
             assignee.id +
@@ -677,7 +678,7 @@ export default {
           this.textEditor =
             this.textEditor.slice(0, -4) +
             "&nbsp;<span >" +
-            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
+            "<span >   @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
             "<span @userId='# " +
@@ -687,7 +688,7 @@ export default {
         } else {
           this.textEditor =
             "&nbsp;<span >" +
-            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
+            "<span >   @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
             "<span @userId='# " +
@@ -1203,7 +1204,8 @@ export default {
         assigneeList.push({
           name: user.assigneeFirstName + " " + user.assigneeLastName,
           id: user.assigneeId,
-          img: user.assigneeProfileImage
+          img: user.assigneeProfileImage,
+          display: user.assigneeFirstName + user.assigneeLastName
         });
       }
       return assigneeList;
