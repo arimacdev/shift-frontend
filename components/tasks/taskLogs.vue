@@ -28,7 +28,7 @@
                   </v-list-item-avatar>
                   <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
                   <span>has created the</span>
-                  <span class="font-weight-medium">Task</span>
+                  <span class="font-weight-bold">Task</span>
                 </v-list-item-title>
               </v-list-item-content>
               <v-list-item-content v-if="log.operation == 'UPDATE'">
@@ -56,7 +56,7 @@
                   <span v-if="log.updateType == 'ASSIGNEE'">has changed the</span>
                   <span v-else-if="log.updateType == 'FILE'"></span>
                   <span v-else>has updated the</span>
-                  <span class="font-weight-medium">{{ updateTypeCheck(log.updateType) }}</span>
+                  <span class="font-weight-bold">{{ updateTypeCheck(log.updateType) }}</span>
                 </v-list-item-title>
                 <!-- -------- for assignee ------ -->
                 <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ASSIGNEE'">

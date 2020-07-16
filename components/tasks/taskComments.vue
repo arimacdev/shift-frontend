@@ -620,7 +620,7 @@ export default {
           this.updatedComment =
             this.updatedComment.slice(0, -4) +
             "&nbsp;<span >" +
-            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
+            "<span '>   @" +
             assignee.display +
             "</span> &nbsp;" +
             "<span @userId='# " +
@@ -630,7 +630,7 @@ export default {
         } else {
           this.updatedComment =
             "&nbsp;<span >" +
-            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
+            "<span '>   @" +
             assignee.display +
             "</span> &nbsp;" +
             "<span @userId='# " +
@@ -699,13 +699,14 @@ export default {
       }
       this.filterAssignee == "";
     },
+    // tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'
     mentionSomeoneUpdate() {
       if (this.filterAssignee != null) {
         if (this.updatedComment != null) {
           this.updatedComment =
             this.updatedComment.slice(0, -4) +
             "&nbsp;<span >" +
-            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
+            "<span >   @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
             "<span @userId='# " +
@@ -715,7 +716,7 @@ export default {
         } else {
           this.updatedComment =
             "&nbsp;<span >" +
-            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
+            "<span >   @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
             "<span @userId='# " +
