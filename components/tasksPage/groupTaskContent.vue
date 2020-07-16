@@ -40,7 +40,7 @@
                     <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                   </v-list-item-action>
                   <div class="tasklistTaskNames restructuredMainTaskName">
-                    <div class="body-2">
+                    <div>
                       <span class="restructuredMainTaskCode">{{task.parentTask.secondaryTaskId}}</span>
                       {{ task.parentTask.taskName }}
                     </div>
@@ -113,7 +113,7 @@
                       <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                     </v-list-item-action>
                     <div class="tasklistTaskNames restructuredSubTaskName">
-                      <div class="body-2">
+                      <div>
                         <span class="restructuredMainTaskCode">{{childTask.secondaryTaskId}}</span>
                         {{ childTask.taskName }}
                       </div>
@@ -171,7 +171,7 @@
                     <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
                   </v-list-item-action>
                   <div class="tasklistTaskNames restructuredMainTaskName">
-                    <div class="body-2">
+                    <div>
                       <span class="restructuredMainTaskCode">{{task.parentTask.secondaryTaskId}}</span>
                       {{ task.parentTask.taskName }}
                     </div>
@@ -232,7 +232,7 @@
                       <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
                     </v-list-item-action>
                     <div class="tasklistTaskNames restructuredSubTaskName">
-                      <div class="body-2">
+                      <div>
                         <span class="restructuredMainTaskCode">{{childTask.secondaryTaskId}}</span>
                         {{ childTask.taskName }}
                       </div>

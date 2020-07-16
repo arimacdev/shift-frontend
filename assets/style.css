@@ -16,11 +16,13 @@
 
 @import './icons.css'; /* -------------- common --------------- */
 * {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Circular Std', sans-serif !important;
 }
-
+body {
+  font-family: 'Circular Std', sans-serif !important;
+}
 .body-2 {
-  font-family: 'Roboto', sans-serif !important;
+  font-family: 'Circular Std', sans-serif !important;
 }
 .projectListView {
   margin-top: 10px;
@@ -1310,8 +1312,9 @@
 }
 
 .projectDetailsPannels {
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   border-radius: 5px;
+  border-bottom: solid 1px #d2d8e2;
 }
 .projectDetailsPannelHeader {
   color: #ffffff;
@@ -1399,7 +1402,7 @@
 
 .projectSubtitle {
   font-size: 10px !important;
-  font-family: CircularStd !important;
+  /* font-family: CircularStd !important; */
 }
 
 .taskDatePickerField {

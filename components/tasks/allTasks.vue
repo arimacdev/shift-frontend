@@ -137,6 +137,7 @@
             v-model="taskName"
             background-color="#EDF0F5"
             solo
+            flat
             prepend-inner-icon="mdi-plus-circle"
             label="Add a main task..."
             class
@@ -170,7 +171,7 @@
                       <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                     </v-list-item-action>
                     <div class="tasklistTaskNames restructuredMainTaskName">
-                      <div class="body-2">
+                      <div>
                         <span class="restructuredMainTaskCode">
                           {{
                           task.parentTask.secondaryTaskId
@@ -272,7 +273,7 @@
                         <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                       </v-list-item-action>
                       <div class="tasklistTaskNames restructuredSubTaskName">
-                        <div class="body-2">
+                        <div>
                           <span class="restructuredMainTaskCode">
                             {{
                             childTask.secondaryTaskId
@@ -375,7 +376,7 @@
                 >mdi-checkbox-blank-circle</v-icon>
               </v-list-item-action>
               <div class="tasklistTaskNames restructuredMainTaskName">
-                <div class="body-2">
+                <div>
                   <span class="restructuredMainTaskCode">
                     {{
                     task.secondaryTaskId
