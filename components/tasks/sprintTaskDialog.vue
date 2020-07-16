@@ -1195,6 +1195,7 @@ export default {
     },
     taskDialogClosing() {
       this.$emit("taskDialogClosing");
+      this.selectedTab = "comments";
       Object.assign(this.$data, this.$options.data.apply(this));
     },
     async updateIssueType() {
