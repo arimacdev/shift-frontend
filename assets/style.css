@@ -1952,6 +1952,14 @@
   margin-right: 2px;
   /* border-radius: 5px; */
 }
+.restructuredSubTaskGroupListRestructure {
+  background-color: #ffffff !important;
+  margin-left: 30px;
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-right: 2px;
+  height: 45px;
+}
 .restructuredSubTaskCreate {
   padding-left: 30px;
   padding-right: 2px;
@@ -2326,6 +2334,11 @@
 }
 .innerListItem {
   margin-right: 10px;
+}
+.upperListItemGroup {
+  margin-left: -20px !important;
+  padding-left: 20px !important;
+  margin-top: -8px;
 }
 
 .pickerButtonDiv {
