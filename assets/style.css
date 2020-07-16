@@ -2765,6 +2765,7 @@
   overflow-y: scroll;
   /* overflow-y: hidden; */
   white-space: nowrap;
+  padding-top: 15px;
 }
 .skillScrollingWrapperScroll {
   overflow-y: hidden;
