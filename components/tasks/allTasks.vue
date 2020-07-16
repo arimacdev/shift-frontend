@@ -138,6 +138,7 @@
             background-color="#EDF0F5"
             solo
             flat
+            dense
             prepend-inner-icon="mdi-plus-circle"
             label="Add a main task..."
             class
@@ -151,7 +152,7 @@
       <div v-for="(task, index) in projectAllTasks" :key="index">
         <v-hover v-slot:default="{ hover }">
           <div>
-            <div class="backPannelAllTask">
+            <div :class="backPannelDisplay(task.childTasks.length)">
               <div class="taskList restructuredMainTaskList">
                 <v-list-item class="upperListItem">
                   <v-list-item
@@ -165,10 +166,10 @@
                     <v-list-item-action>
                       <v-icon
                         v-if="task.parentTask.taskStatus == 'closed'"
-                        size="30"
+                        size="25"
                         color="#2EC973"
                       >mdi-checkbox-marked-circle</v-icon>
-                      <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                      <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                     </v-list-item-action>
                     <div class="tasklistTaskNames restructuredMainTaskName">
                       <div>
@@ -183,16 +184,23 @@
                     <div
                       class="restStatusChip"
                       :class="statusCheck(task.parentTask.issueType)"
+                    >{{ taskStatusFormatting(task.parentTask.taskStatus) }}</div>
+                    <div
+                      class="restStatusChip"
+                      :class="statusCheck(task.parentTask.issueType)"
                     >{{ taskTypeFormatting(task.parentTask.issueType) }}</div>
                     <v-list-item-content class="updatedDate">
-                      <v-list-item-title :class="dueDateCheck(task.parentTask)">
+                      <v-list-item-title
+                        class="fontRestructure12"
+                        :class="dueDateCheck(task.parentTask)"
+                      >
                         {{
                         getProjectDates(task.parentTask.taskDueDateAt)
                         }}
                       </v-list-item-title>
                     </v-list-item-content>
-                    <div>
-                      <v-list-item-avatar>
+                    <div style="margin-right: -25px">
+                      <v-list-item-avatar size="25">
                         <v-img
                           v-if="
                             task.parentTask.taskAssigneeProfileImage != null &&
@@ -219,7 +227,7 @@
                       style="text-decoration: none;"
                       target="_blank"
                     >
-                      <v-icon color="blue">mdi-link-variant</v-icon>
+                      <v-icon size="20" color="blue">mdi-link-variant</v-icon>
                     </nuxt-link>
                   </div>
                 </v-list-item>
@@ -234,9 +242,11 @@
                     background-color="#0BAFFF"
                     solo
                     dark
+                    flat
+                    dense
                     prepend-inner-icon="mdi-plus-circle"
                     label="Add a sub task..."
-                    class
+                    style="margin-bottom: -20px; margin-top: 5px"
                     @keyup.enter="
                       addSubTask(
                         index,
@@ -267,10 +277,10 @@
                       <v-list-item-action>
                         <v-icon
                           v-if="childTask.taskStatus == 'closed'"
-                          size="30"
+                          size="25"
                           color="#2EC973"
                         >mdi-checkbox-marked-circle</v-icon>
-                        <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                        <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                       </v-list-item-action>
                       <div class="tasklistTaskNames restructuredSubTaskName">
                         <div>
@@ -285,16 +295,23 @@
                       <div
                         class="restStatusChip"
                         :class="statusCheck(childTask.issueType)"
-                      >{{ taskTypeFormatting(childTask.issueType) }}</div>
+                      >{{ taskStatusFormatting(childTask.taskStatus) }}</div>
+                      <div
+                        class="restStatusChip"
+                        :class="statusCheck(task.parentTask.issueType)"
+                      >{{ taskTypeFormatting(task.parentTask.issueType) }}</div>
                       <v-list-item-content class="updatedDate">
-                        <v-list-item-title :class="dueDateCheck(childTask)">
+                        <v-list-item-title
+                          class="fontRestructure12"
+                          :class="dueDateCheck(childTask)"
+                        >
                           {{
                           getProjectDates(childTask.taskDueDateAt)
                           }}
                         </v-list-item-title>
                       </v-list-item-content>
-                      <div>
-                        <v-list-item-avatar>
+                      <div style="margin-right: -25px">
+                        <v-list-item-avatar size="25">
                           <v-img
                             v-if="
                               childTask.taskAssigneeProfileImage != null &&
@@ -317,7 +334,7 @@
                         style="text-decoration: none;"
                         target="_blank"
                       >
-                        <v-icon color="blue">mdi-link-variant</v-icon>
+                        <v-icon size="20" color="blue">mdi-link-variant</v-icon>
                       </nuxt-link>
                     </div>
                   </v-list-item>
@@ -366,16 +383,16 @@
               <v-list-item-action>
                 <v-icon
                   v-if="task.taskStatus == 'closed'"
-                  size="30"
+                  size="25"
                   color="#2EC973"
                 >mdi-checkbox-marked-circle</v-icon>
                 <v-icon
                   v-else
-                  size="30"
+                  size="25"
                   :color="checkBoxColor(task.isParent)"
                 >mdi-checkbox-blank-circle</v-icon>
               </v-list-item-action>
-              <div class="tasklistTaskNames restructuredMainTaskName">
+              <div class="tasklistFilterTaskNames restructuredMainTaskName">
                 <div>
                   <span class="restructuredMainTaskCode">
                     {{
@@ -388,16 +405,20 @@
               <div
                 class="restStatusChip"
                 :class="statusCheck(task.issueType)"
+              >{{ taskStatusFormatting(task.taskStatus) }}</div>
+              <div
+                class="restStatusChip"
+                :class="statusCheck(task.issueType)"
               >{{ taskTypeFormatting(task.issueType) }}</div>
               <v-list-item-content class="updatedDate">
-                <v-list-item-title :class="dueDateCheck(task)">
+                <v-list-item-title class="fontRestructure12" :class="dueDateCheck(task)">
                   {{
                   getProjectDates(task.taskDueDateAt)
                   }}
                 </v-list-item-title>
               </v-list-item-content>
               <div>
-                <v-list-item-avatar>
+                <v-list-item-avatar size="25">
                   <v-img
                     v-if="task.profileImage != null && task.profileImage != ''"
                     :src="task.profileImage"
@@ -640,6 +661,81 @@ export default {
     }
   },
   methods: {
+    backPannelDisplay(child) {
+      if (child != 0) {
+        return "backPannelAllTask";
+      } else {
+        return "";
+      }
+    },
+    taskStatusFormatting(status) {
+      switch (status) {
+        case "pending":
+          return "Pending";
+          break;
+        case "onHold":
+          return "On Hold";
+          break;
+        case "open":
+          return "Open";
+          break;
+        case "cancel":
+          return "Cancel";
+          break;
+        case "reOpened":
+          return "Re Opened";
+          break;
+        case "fixing":
+          return "Fixing";
+          break;
+        case "testing":
+          return "Testing";
+          break;
+        case "resolved":
+          return "Resolved";
+          break;
+        case "inprogress":
+          return "Inprogress";
+          break;
+        case "completed":
+          return "Completed";
+          break;
+        case "implementing":
+          return "Implementing";
+          break;
+        case "underReview":
+          return "UnderReview";
+          break;
+        case "waitingForApproval":
+          return "Waiting for Approval";
+          break;
+        case "review":
+          return "Review";
+          break;
+        case "discussion":
+          return "Discussion";
+          break;
+        case "waitingResponse":
+          return "Waiting Response";
+          break;
+        case "ready":
+          return "Ready";
+          break;
+        case "deployed":
+          return "Deployed";
+          break;
+        case "fixed":
+          return "Fixed";
+          break;
+        case "rejected":
+          return "Rejected";
+          break;
+        case "closed":
+          return "Closed";
+          break;
+        default:
+      }
+    },
     taskTypeFormatting(type) {
       switch (type) {
         case "development":

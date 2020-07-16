@@ -1413,7 +1413,10 @@ body {
   width: 70%;
 }
 .tasklistTaskNames {
-  width: 59%;
+  width: 57%;
+}
+.tasklistFilterTaskNames {
+  width: 55%;
 }
 
 .filterIcon {
@@ -1883,10 +1886,13 @@ body {
 }
 
 .restructuredMainTaskList {
-  border: 2px #e5e5e5 solid;
-  margin-top: 20px;
+  border: 1px #e5e5e5 solid;
+  margin-top: 10px;
   background-color: #ffffff;
   overflow: hidden;
+  height: 45px;
+  padding-top: 2px;
+  /* padding-top: -10px !important; */
 }
 .restructuredGroupMainTaskFilterList {
   background-color: #edf0f5;
@@ -1941,13 +1947,16 @@ body {
 .restructuredSubTaskListRestructure {
   background-color: #ffffff !important;
   margin-left: 30px;
-  border: 1px #cdcfd2 solid;
-  /* margin-right: 30px; */
+  /* border: 1px #cdcfd2 solid; */
+  border-radius: 5px;
+  height: 45px;
+  margin-top: 8px;
+  margin-right: 2px;
   /* border-radius: 5px; */
 }
 .restructuredSubTaskCreate {
   padding-left: 30px;
-  padding-right: 30px;
+  padding-right: 2px;
   /* margin-bottom: -10px; */
 }
 .restructuredSubTaskCreateGroup {
@@ -1961,17 +1970,18 @@ body {
 }
 .restructuredSubTaskName {
   color: #080848;
-  width: 57% !important;
+  width: 56% !important;
 }
 .restStatusChip {
   /* padding-right: 30px; */
   text-align: center;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 3px;
-  padding-bottom: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  /* padding-top: 3px; */
+  /* padding-bottom: 3px; */
   border-radius: 30px;
-  width: 120px;
+  width: 100px;
+  margin-right: 5px;
 }
 .developmentStatus {
   background-color: #ffa800;
@@ -2314,6 +2324,7 @@ body {
 .upperListItem {
   margin-left: -20px !important;
   padding-left: 20px !important;
+  margin-top: -5px;
 }
 .innerListItem {
   margin-right: 10px;
