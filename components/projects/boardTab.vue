@@ -34,7 +34,7 @@
                 </div>
               </v-list-item-action>
               <v-list-item-content>
-                <v-list-item-title>
+                <v-list-item-title class="fontRestructure12">
                   {{
                   task.parentTask.taskName
                   }}
@@ -67,7 +67,7 @@
                   <v-icon size="15" color="blue">mdi-link-variant</v-icon>
                 </nuxt-link>
               </div>
-              <div class="bluePart"></div>
+              <!-- <div class="bluePart"></div> -->
             </v-list-item>
           </div>
           <!-- -------------- load child tasks (default board) ----------- -->
@@ -108,7 +108,7 @@
               </v-list-item-action>
 
               <v-list-item-content>
-                <v-list-item-title>{{ childTask.taskName }}</v-list-item-title>
+                <v-list-item-title class="fontRestructure12">{{ childTask.taskName }}</v-list-item-title>
                 <div :class="dueDateCheck(childTask)">{{ getProjectDates(childTask.taskDueDateAt) }}</div>
               </v-list-item-content>
               <v-list-item-avatar size="25">
@@ -160,12 +160,12 @@
                   </v-tooltip>
                 </div>
                 <div class="sprintTitleName">
-                  <v-list-item-title>{{ projectSprint.sprintName }}</v-list-item-title>
-                  <v-list-item-subtitle>
+                  <div>{{ projectSprint.sprintName }}</div>
+                  <div>
                     {{
                     projectSprint.sprintDescription
                     }}
-                  </v-list-item-subtitle>
+                  </div>
                 </div>
               </div>
 
@@ -211,7 +211,7 @@
                       </v-list-item-action>
 
                       <v-list-item-content>
-                        <v-list-item-title>
+                        <v-list-item-title class="fontRestructure12">
                           {{
                           task.parentTask.taskName
                           }}
@@ -247,7 +247,7 @@
                           <v-icon size="15" color="blue">mdi-link-variant</v-icon>
                         </nuxt-link>
                       </div>
-                      <div class="bluePart"></div>
+                      <!-- <div class="bluePart"></div> -->
                     </v-list-item>
                   </div>
                   <!-- -------- load child tasks (project boards) ------------ -->
@@ -289,7 +289,7 @@
                       </v-list-item-action>
 
                       <v-list-item-content>
-                        <v-list-item-title>
+                        <v-list-item-title class="fontRestructure12">
                           {{
                           childTask.taskName
                           }}

@@ -17,6 +17,7 @@
 @import './icons.css'; /* -------------- common --------------- */
 * {
   font-family: 'Circular Std', sans-serif !important;
+  font-size: 12px;
 }
 body {
   font-family: 'Circular Std', sans-serif !important;
@@ -1669,7 +1670,7 @@ body {
   height: 70px;
   background-color: #0bafff;
   color: #ffffff;
-  font-size: 16px;
+  font-size: 12px !important;
   text-align: center;
   /* padding-top: -60px !important; */
   border-top-right-radius: 5px;
@@ -1677,6 +1678,7 @@ body {
 }
 .sprintTitleName {
   /* background-color: red; */
+  font-size: 12px !important;
   margin-top: -20px;
 }
 .boardTaskList {
@@ -1721,19 +1723,19 @@ body {
 
 .boardTaskDone {
   color: rgb(10, 126, 0);
-  font-size: 14px;
+  /* font-size: 14px; */
 }
 .boardTaskOverDue {
   color: rgb(163, 11, 0) !important;
-  font-size: 14px;
+  /* font-size: 14px; */
 }
 .boardTaskHealthy {
   color: rgb(0, 4, 255);
-  font-size: 14px;
+  /* font-size: 14px; */
 }
 .boardTaskDefault {
   color: rgb(0, 0, 0);
-  font-size: 14px;
+  /* font-size: 14px; */
 }
 
 .projectFileUploadButton {
@@ -1936,10 +1938,17 @@ body {
   margin-right: 30px;
   margin-bottom: 10px;
 }
+.restructuredSubTaskListRestructure {
+  background-color: #ffffff !important;
+  margin-left: 30px;
+  border: 1px #cdcfd2 solid;
+  /* margin-right: 30px; */
+  /* border-radius: 5px; */
+}
 .restructuredSubTaskCreate {
   padding-left: 30px;
   padding-right: 30px;
-  /* margin-bottom: -20px; */
+  /* margin-bottom: -10px; */
 }
 .restructuredSubTaskCreateGroup {
   padding-left: 30px;
@@ -2192,7 +2201,7 @@ body {
 .boardTabLinkIcon {
   position: absolute;
   right: 2px;
-  bottom: 2px;
+  /* bottom: 2px; */
 }
 .updatedDate {
   margin-right: 10px;
@@ -3063,4 +3072,8 @@ body {
   position: absolute;
   z-index: 1000;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.fontRestructure12 {
+  font-size: 12px !important;
 }

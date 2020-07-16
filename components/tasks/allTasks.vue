@@ -206,7 +206,7 @@
                         ></v-img>
                       </v-list-item-avatar>
                     </div>
-                    <div class="bluePartMyTask"></div>
+                    <!-- <div class="bluePartMyTask"></div> -->
                   </v-list-item>
                   <div class="boardTabLinkIcon">
                     <nuxt-link
@@ -253,7 +253,7 @@
                 <div
                   v-for="(childTask, index) in task.childTasks"
                   :key="index"
-                  class="taskList restructuredSubTaskList"
+                  class="restructuredSubTaskListRestructure"
                 >
                   <v-list-item class="upperListItem">
                     <v-list-item
