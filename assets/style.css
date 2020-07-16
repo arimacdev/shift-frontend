@@ -1696,6 +1696,7 @@
   margin-left: 10px;
   margin-right: 10px;
   border-radius: 3px;
+  height: 60px;
   overflow: hidden;
 }
 .boardTaskChildListItem {

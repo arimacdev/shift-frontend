@@ -26,7 +26,7 @@
                       src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                     ></v-img>
                   </v-list-item-avatar>
-                  <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
+                  <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
                   <span>has deleted the task</span>
                   <span class="font-weight-medium">{{ log.entityName }}</span>
                 </v-list-item-title>
@@ -46,7 +46,7 @@
                       src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                     ></v-img>
                   </v-list-item-avatar>
-                  <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
+                  <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
                   <span>has created the task</span>
                   <span class="font-weight-medium">{{ log.entityName }}</span>
                 </v-list-item-title>
@@ -67,7 +67,7 @@
                     ></v-img>
                   </v-list-item-avatar>
 
-                  <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
+                  <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
                   <span v-if="log.updateType == 'ASSIGNEE'">has changed the</span>
                   <span
                     v-if="log.updateType == 'FILE' && log.previousValue.displayValue != undefined"
@@ -116,7 +116,10 @@
 
                 <!-- ------- for files -------- -->
 
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'FILE'">
+                <v-list-item-subtitle
+                  class="logSubtitle fontRestructure12"
+                  v-if="log.updateType == 'FILE'"
+                >
                   <a
                     style="text-decoration: none;"
                     :href="log.updatedvalue.value"
@@ -124,7 +127,7 @@
                   >{{ log.updatedvalue.displayValue }}</a>
                 </v-list-item-subtitle>
                 <v-list-item-subtitle
-                  class="logSubtitle"
+                  class="logSubtitle fontRestructure12"
                   v-if="log.updateType == 'FILE'"
                 >{{ log.previousValue.displayValue }}</v-list-item-subtitle>
 
@@ -232,7 +235,7 @@
                       src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                     ></v-img>
                   </v-list-item-avatar>
-                  <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
+                  <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
                   <span>has created the</span>
                   <span class="font-weight-medium">Project</span>
                 </v-list-item-title>
@@ -256,7 +259,7 @@
                     ></v-img>
                   </v-list-item-avatar>
 
-                  <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
+                  <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
                   <span v-if="log.updateType == 'REMOVE_USER'">removed a</span>
                   <span v-else-if="log.updateType == 'ADD_USER'">added a</span>
                   <span
@@ -419,7 +422,10 @@
 
                 <!-- ------- for files -------- -->
 
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'FILE'">
+                <v-list-item-subtitle
+                  class="logSubtitle fontRestructure12"
+                  v-if="log.updateType == 'FILE'"
+                >
                   <a
                     style="text-decoration: none;"
                     :href="log.updatedvalue.value"
@@ -427,7 +433,7 @@
                   >{{ log.updatedvalue.displayValue }}</a>
                 </v-list-item-subtitle>
                 <v-list-item-subtitle
-                  class="logSubtitle"
+                  class="logSubtitle fontRestructure12"
                   v-if="log.updateType == 'FILE'"
                 >{{ log.previousValue.displayValue }}</v-list-item-subtitle>
               </v-list-item-content>

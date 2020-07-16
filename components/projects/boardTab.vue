@@ -23,10 +23,10 @@
                 <div class="text-center">
                   <v-icon
                     v-if="task.parentTask.taskStatus == 'closed'"
-                    size="25"
+                    size="20"
                     color="#2EC973"
                   >mdi-checkbox-marked-circle</v-icon>
-                  <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                  <v-icon v-else size="20" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                   <br />
                   <div
                     style="font-size: 10px; font-weight: bold"
@@ -43,7 +43,7 @@
                   :class="dueDateCheck(task.parentTask)"
                 >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</div>
               </v-list-item-content>
-              <v-list-item-avatar size="25">
+              <v-list-item-avatar style="margin-right: 5px" size="25">
                 <v-img
                   v-if="
                     task.parentTask.taskAssigneeProfileImage != null &&
@@ -111,7 +111,7 @@
                 <v-list-item-title class="fontRestructure12">{{ childTask.taskName }}</v-list-item-title>
                 <div :class="dueDateCheck(childTask)">{{ getProjectDates(childTask.taskDueDateAt) }}</div>
               </v-list-item-content>
-              <v-list-item-avatar size="25">
+              <v-list-item-avatar style="margin-right: 5px" size="25">
                 <v-img
                   v-if="
                     childTask.taskAssigneeProfileImage != null &&
@@ -199,10 +199,10 @@
                         <div class="text-center">
                           <v-icon
                             v-if="task.parentTask.taskStatus == 'closed'"
-                            size="25"
+                            size="20"
                             color="#2EC973"
                           >mdi-checkbox-marked-circle</v-icon>
-                          <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                          <v-icon v-else size="20" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                           <br />
                           <div
                             style="font-size: 10px; font-weight: bold"
@@ -220,7 +220,7 @@
                           :class="dueDateCheck(task.parentTask)"
                         >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</div>
                       </v-list-item-content>
-                      <v-list-item-avatar size="25">
+                      <v-list-item-avatar style="margin-right: 5px" size="25">
                         <v-img
                           v-if="
                             task.parentTask.taskAssigneeProfileImage != null &&
@@ -277,10 +277,10 @@
                         <div class="text-center">
                           <v-icon
                             v-if="childTask.taskStatus == 'closed'"
-                            size="25"
+                            size="20"
                             color="#2EC973"
                           >mdi-checkbox-marked-circle</v-icon>
-                          <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                          <v-icon v-else size="20" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                           <br />
                           <div
                             style="font-size: 10px; font-weight: bold"
@@ -298,7 +298,7 @@
                           :class="dueDateCheck(childTask)"
                         >{{ getProjectDates(childTask.taskDueDateAt) }}</div>
                       </v-list-item-content>
-                      <v-list-item-avatar size="25">
+                      <v-list-item-avatar style="margin-right: 5px" size="25">
                         <v-img
                           v-if="
                             childTask.taskAssigneeProfileImage != null &&
