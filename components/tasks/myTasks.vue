@@ -941,6 +941,13 @@ export default {
         startIndex: 0,
         endIndex: 10
       });
+      this.$store.dispatch("comments/fetchTaskActivityComment", {
+        taskId: task.taskId,
+        startIndex: 0,
+        endIndex: 10
+      });
+
+      this.$store.dispatch("comments/fetchTaskCommentLength", task.taskId);
     },
     statusCheck(task) {
       if (task === "development") {
