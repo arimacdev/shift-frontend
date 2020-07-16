@@ -30,7 +30,7 @@ body {
   height: 100vh;
   background-color: #edf0f5;
   border-radius: 5px;
-  padding-bottom: 100px !important;
+  padding-bottom: 200px !important;
   border-right: 1px #e5e5e5 solid;
   padding-top: 10px;
 }
@@ -3087,4 +3087,7 @@ body {
 
 .fontRestructure12 {
   font-size: 12px !important;
+}
+.fontRestructure14 {
+  font-size: 14px !important;
 }

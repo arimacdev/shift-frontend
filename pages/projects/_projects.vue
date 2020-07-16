@@ -58,7 +58,7 @@
                   <div>
                     <v-icon size="17" color="deep-orange lighten-1">icon-project</v-icon>
                   </div>
-                  <div>Presales</div>
+                  <div class="fontRestructure14">Presales</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content class="projectPanelContent" color="#EDF0F5">
                   <div
@@ -83,7 +83,7 @@
                         <v-icon size="17" color="deep-orange lighten-1">icon-project</v-icon>
                       </v-list-item-action>
                       <v-list-item-content>
-                        <v-list-item-title>{{ project.projectName }}</v-list-item-title>
+                        <v-list-item-title class="fontRestructure12">{{ project.projectName }}</v-list-item-title>
                         <v-list-item-subtitle
                           v-if="project.projectStatus == 'presalesPD'"
                           class="projectSubtitle"
@@ -117,7 +117,7 @@
                   <div>
                     <v-icon size="17" color="#FFC212">icon-project</v-icon>
                   </div>
-                  <div>Ongoing</div>
+                  <div class="fontRestructure14">Ongoing</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content class="projectPanelContent" color="#EDF0F5">
                   <div
@@ -131,7 +131,7 @@
                         <v-icon size="17" color="#FFC212">icon-project</v-icon>
                       </v-list-item-action>
                       <v-list-item-content>
-                        <v-list-item-title>{{ project.projectName }}</v-list-item-title>
+                        <v-list-item-title class="fontRestructure12">{{ project.projectName }}</v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                   </div>
@@ -145,7 +145,7 @@
                   <div>
                     <v-icon size="17" color="#ED5ED1">icon-project</v-icon>
                   </div>
-                  <div>Support</div>
+                  <div class="fontRestructure14">Support</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content class="projectPanelContent" color="#EDF0F5">
                   <div
@@ -159,7 +159,7 @@
                         <v-icon size="17" color="#ED5ED1">icon-project</v-icon>
                       </v-list-item-action>
                       <v-list-item-content>
-                        <v-list-item-title>{{ project.projectName }}</v-list-item-title>
+                        <v-list-item-title class="fontRestructure12">{{ project.projectName }}</v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                   </div>
@@ -173,7 +173,7 @@
                   <div>
                     <v-icon size="17" color="#0BAFFF">icon-project</v-icon>
                   </div>
-                  <div>Finished</div>
+                  <div class="fontRestructure14">Finished</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content class="projectPanelContent" color="#EDF0F5">
                   <div
@@ -187,7 +187,7 @@
                         <v-icon size="17" color="#0BAFFF">icon-project</v-icon>
                       </v-list-item-action>
                       <v-list-item-content>
-                        <v-list-item-title>{{ project.projectName }}</v-list-item-title>
+                        <v-list-item-title class="fontRestructure12">{{ project.projectName }}</v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                   </div>
