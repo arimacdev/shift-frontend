@@ -28,7 +28,7 @@
                   </v-list-item-avatar>
                   <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
                   <span>has deleted the task</span>
-                  <span class="font-weight-medium">{{ log.entityName }}</span>
+                  <span class="font-weight-bold">{{ log.entityName }}</span>
                 </v-list-item-title>
               </v-list-item-content>
               <v-list-item-content v-if="log.operation == 'CREATE'  && log.entityType == 'TASK'">
@@ -48,7 +48,7 @@
                   </v-list-item-avatar>
                   <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
                   <span>has created the task</span>
-                  <span class="font-weight-medium">{{ log.entityName }}</span>
+                  <span class="font-weight-bold">{{ log.entityName }}</span>
                 </v-list-item-title>
               </v-list-item-content>
               <v-list-item-content v-if="log.operation == 'UPDATE' && log.entityType == 'TASK'">
@@ -76,9 +76,9 @@
                     v-else-if="log.updateType == 'FILE' && log.updatedvalue.displayValue != undefined"
                   >uploaded a</span>
                   <span v-else>has updated the</span>
-                  <span class="font-weight-medium">{{ updateTypeCheck(log.updateType) }}</span>
+                  <span class="font-weight-bold">{{ updateTypeCheck(log.updateType) }}</span>
                   <span>of the task</span>
-                  <span class="font-weight-medium">{{ log.entityName }}</span>
+                  <span class="font-weight-bold">{{ log.entityName }}</span>
                 </v-list-item-title>
                 <v-list-item-subtitle></v-list-item-subtitle>
                 <!-- -------- for assignee ------ -->
@@ -237,7 +237,7 @@
                   </v-list-item-avatar>
                   <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
                   <span>has created the</span>
-                  <span class="font-weight-medium">Project</span>
+                  <span class="font-weight-bold">Project</span>
                 </v-list-item-title>
               </v-list-item-content>
 
@@ -269,8 +269,8 @@
                     v-else-if="log.updateType == 'FILE' && log.updatedvalue.displayValue != undefined"
                   >uploaded a</span>
                   <span v-else>has updated</span>
-                  <span class="font-weight-medium">{{ updateProjectTypeCheck(log.updateType) }}</span>
-                  <span class="font-weight-medium">{{ log.entityName }}</span>
+                  <span class="font-weight-bold">{{ updateProjectTypeCheck(log.updateType) }}</span>
+                  <span class="font-weight-bold">{{ log.entityName }}</span>
                 </v-list-item-title>
                 <v-list-item-subtitle></v-list-item-subtitle>
                 <!-- -------- for project name ------ -->
