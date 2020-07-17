@@ -680,25 +680,21 @@ export default {
     richtexteditor: [Toolbar, Link, Image, Count, HtmlEditor, QuickToolbar]
   },
   methods: {
-       onKeyUp(e) {
-        console.log(
-        "--------------------------------",
-        this.$refs.rteObj.ej2Instances.getText()
-      );
+    onKeyUp(e) {
+      console.log("--------------------------------", this.traverseText);
       const currentKey = this.$refs.rteObj.ej2Instances.getText().slice(-1);
-      if (currentKey === '@') {
+      if (currentKey === "@") {
         console.log("@ Pressed", this.traversing, e.keyCode);
-        this.traversing = true
+        this.traversing = true;
         this.tagging = true;
-      } else if (e.keyCode ===8 && this.traversing){
-          this.traverseText = this.traverseText.slice(0,-1);
+      } else if (e.keyCode === 8 && this.traversing) {
+        this.traverseText = this.traverseText.slice(0, -1);
+        this.assigneeArray();
+      } else if (e.keyCode >= 60 && e.keyCode <= 90) {
+        console.log("NOT @", this.traversing, e.keyCode);
+        if (this.traversing) {
+          this.traverseText = this.traverseText.concat(e.key);
           this.assigneeArray();
-      }
-      else if(e.keyCode>=60 && e.keyCode<=90){
-        console.log("NOT @", this.traversing, e.keyCode)
-        if(this.traversing){
-            this.traverseText = this.traverseText.concat(e.key);
-            this.assigneeArray();
         }
         console.log("traversing string", this.traverseText);
         //this.tagging = false;
@@ -754,8 +750,7 @@ export default {
       // console.log("TEXT EDIT: " + this.textEditor);
       this.tagging = false;
       this.traversing = false;
-      this.traverseText = ''
-      this.textEditor = this.textEditor.slice(0, -1);
+      this.textEditor = this.textEditor.slice(0, -this.traverseText.length - 1);
       if (assignee != null) {
         if (this.textEditor != null) {
           this.textEditor =
@@ -781,6 +776,8 @@ export default {
           assignee.push(assignee.id);
         }
       }
+
+      this.traverseText = "";
       this.filterAssignee == "";
     },
     mentionSomeone() {
