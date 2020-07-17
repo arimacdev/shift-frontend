@@ -547,6 +547,9 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-overlay :value="overlay" color="black">
+      <progress-loading />
+    </v-overlay>
     <div @click="close" class="taskPopupPopups">
       <component
         v-bind:is="component"
@@ -562,6 +565,7 @@ import { mapState } from "vuex";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import VEmojiPicker from "v-emoji-picker";
+import Progress from "~/components/popups/progress";
 import {
   RichTextEditorPlugin,
   Toolbar,
@@ -574,6 +578,7 @@ import {
 export default {
   components: {
     "success-popup": SuccessPopup,
+    "progress-loading": Progress,
     "error-popup": ErrorPopup,
     VEmojiPicker
   },
@@ -585,8 +590,9 @@ export default {
   mounted() {
     document.addEventListener("keyup", this.onKeyUp);
   },
-    data: function() {
+  data: function() {
     return {
+      overlay: false,
       editorType: "",
       tagging: false,
       annotations: [],
@@ -694,7 +700,7 @@ export default {
             this.traverseText = this.traverseText.concat(e.key);
             this.assigneeArray();
         }
-        console.log("traversing string", this.traverseText)
+        console.log("traversing string", this.traverseText);
         //this.tagging = false;
       }
     },
@@ -847,16 +853,21 @@ export default {
       }
     },
     getComments() {
+      this.overlay = true;
       this.$store.dispatch(
         "comments/fetchTaskCommentLength",
         this.selectedTask.taskId
       );
 
-      this.$store.dispatch("comments/fetchTaskActivityComment", {
-        taskId: this.selectedTask.taskId,
-        startIndex: this.commentPage * 10 - 10,
-        endIndex: this.commentPage * 10
-      });
+      this.$store
+        .dispatch("comments/fetchTaskActivityComment", {
+          taskId: this.selectedTask.taskId,
+          startIndex: this.commentPage * 10 - 10,
+          endIndex: this.commentPage * 10
+        })
+        .finally(() => {
+          this.overlay = false;
+        });
     },
     showTypingStatus() {
       // console.log("typing", this.typingStatus);
@@ -1288,38 +1299,42 @@ export default {
       //   return stringDate;
       // }
     },
-       assigneeArray() {
+    assigneeArray() {
       let assigneeList = [];
-      if(this.traversing){
-        const matches = this.people.filter((user)=>{
-          console.log('user', user.assigneeFirstName, this.traverseText)
-           if(user.assigneeFirstName.toLowerCase().startsWith(this.traverseText.toLowerCase())){
-              assigneeList.push({
-                  name: user.assigneeFirstName + " " + user.assigneeLastName,
-                  id: user.assigneeId,
-                  img: user.assigneeProfileImage,
-                  display: user.assigneeFirstName + user.assigneeLastName
-                });
-           }
-        })  
-        if(assigneeList.length === 0){
-        this.tagging = false;
-        this.traversing = false;
-        this.traverseText = '';
+      if (this.traversing) {
+        const matches = this.people.filter(user => {
+          console.log("user", user.assigneeFirstName, this.traverseText);
+          if (
+            user.assigneeFirstName
+              .toLowerCase()
+              .startsWith(this.traverseText.toLowerCase())
+          ) {
+            assigneeList.push({
+              name: user.assigneeFirstName + " " + user.assigneeLastName,
+              id: user.assigneeId,
+              img: user.assigneeProfileImage,
+              display: user.assigneeFirstName + user.assigneeLastName
+            });
+          }
+        });
+        if (assigneeList.length === 0) {
+          this.tagging = false;
+          this.traversing = false;
+          this.traverseText = "";
         }
         return assigneeList;
       } else {
-      let AssigneeSearchList = this.people;     
-      for (let index = 0; index < AssigneeSearchList.length; ++index) {
-        let user = AssigneeSearchList[index];
-        assigneeList.push({
-          name: user.assigneeFirstName + " " + user.assigneeLastName,
-          id: user.assigneeId,
-          img: user.assigneeProfileImage,
-          display: user.assigneeFirstName + user.assigneeLastName
-        });
-      }
-      return assigneeList;
+        let AssigneeSearchList = this.people;
+        for (let index = 0; index < AssigneeSearchList.length; ++index) {
+          let user = AssigneeSearchList[index];
+          assigneeList.push({
+            name: user.assigneeFirstName + " " + user.assigneeLastName,
+            id: user.assigneeId,
+            img: user.assigneeProfileImage,
+            display: user.assigneeFirstName + user.assigneeLastName
+          });
+        }
+        return assigneeList;
       }
     }
   },
@@ -1334,9 +1349,7 @@ export default {
       selectedUser: state => state.user.selectedUser,
       users: state => state.user.users,
       people: state => state.task.userCompletionTasks
-    }),
- 
-  },
-
+    })
+  }
 };
 </script>
