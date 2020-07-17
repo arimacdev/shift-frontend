@@ -171,7 +171,7 @@
                 >
                   <div>
                     <v-list-item-group>
-                      <div v-for="(user, index) in assigneeArray" :key="index">
+                      <div v-for="(user, index) in assigneeArray()" :key="index">
                         <v-list-item @click="tagPeopleUpdate(user)" dense>
                           <v-list-item-avatar size="20">
                             <v-img v-if="user.img != null && user.img != ''" :src="user.img"></v-img>
@@ -680,31 +680,56 @@ export default {
     richtexteditor: [Toolbar, Link, Image, Count, HtmlEditor, QuickToolbar]
   },
   methods: {
-       onKeyUp(e) {
-        console.log(
-        "--------------------------------",
-        this.$refs.rteObj.ej2Instances.getText().slice(-1)
-      );
+    onKeyUp(e) {
+      console.log("--------------------------------", e.keyCode);
+      if (e.keyCode === 50) {
+        console.log("@ Pressed", this.traversing, e.keyCode);
+        this.traversing = true;
+        this.tagging = true;
+      } else if (e.keyCode === 8 && this.traversing) {
+        this.traverseText = this.traverseText.slice(0, -1);
+        if (this.traverseText === "") {
+          this.tagging = false;
+        } else this.assigneeArray();
+      } else if (
+        e.keyCode === 8 &&
+        this.traversing &&
+        this.traverseText === ""
+      ) {
+        this.traversing = false;
+        this.tagging = false;
+      } else if (e.keyCode >= 60 && e.keyCode <= 90) {
+        console.log("NOT @", this.traversing, e.keyCode);
+        if (this.traversing) {
+          this.traverseText = this.traverseText.concat(e.key);
+          this.assigneeArray();
+        }
+        console.log("traversing string", this.traverseText);
+        //this.tagging = false;
+      }
+
       const currentKey = this.$refs.rteObj.ej2Instances.getText().slice(-1);
       if (currentKey === "@") {
         console.log("@ Pressed", this.traversing, e.keyCode);
         this.traversing = true;
         this.tagging = true;
-      } else if (e.keyCode ===8 && this.traversing){
-          this.traverseText = this.traverseText.slice(0,-1);
-          if(this.traverseText === ""){
-            this.tagging = false;
-          } else
-          this.assigneeArray();
-      } else if(e.keyCode ===8 && this.traversing && this.traverseText === ''){
+      } else if (e.keyCode === 8 && this.traversing) {
+        this.traverseText = this.traverseText.slice(0, -1);
+        if (this.traverseText === "") {
+          this.tagging = false;
+        } else this.assigneeArray();
+      } else if (
+        e.keyCode === 8 &&
+        this.traversing &&
+        this.traverseText === ""
+      ) {
         this.traversing = false;
-        this.tagging = false
-      }
-      else if(e.keyCode>=60 && e.keyCode<=90){
-        console.log("NOT @", this.traversing, e.keyCode)
-        if(this.traversing){
-            this.traverseText = this.traverseText.concat(e.key);
-            this.assigneeArray();
+        this.tagging = false;
+      } else if (e.keyCode >= 60 && e.keyCode <= 90) {
+        console.log("NOT @", this.traversing, e.keyCode);
+        if (this.traversing) {
+          this.traverseText = this.traverseText.concat(e.key);
+          this.assigneeArray();
         }
         console.log("traversing string", this.traverseText);
         //this.tagging = false;
@@ -729,13 +754,20 @@ export default {
     tagPeopleUpdate(assignee) {
       this.tagging = false;
 
-      this.updatedComment = this.updatedComment.slice(0, -1);
+      if (this.traverseText.length == 0) {
+        this.updatedComment = this.updatedComment.slice(0, -1);
+      } else {
+        this.updatedComment = this.updatedComment.slice(
+          0,
+          -this.traverseText.length - 1
+        );
+      }
       if (assignee != null) {
         if (this.updatedComment != null) {
           this.updatedComment =
             this.updatedComment.slice(0, -4) +
             "&nbsp;<span >" +
-            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
+            "<span >   @" +
             assignee.display +
             "</span> &nbsp;" +
             "<span @userId='# " +
@@ -745,7 +777,7 @@ export default {
         } else {
           this.updatedComment =
             "&nbsp;<span >" +
-            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
+            "<span >   @" +
             assignee.display +
             "</span> &nbsp;" +
             "<span @userId='# " +
@@ -1317,7 +1349,7 @@ export default {
     },
     assigneeArray() {
       let assigneeList = [];
-      if (this.traversing) {  
+      if (this.traversing) {
         const matches = this.people.filter(user => {
           if (
             user.assigneeFirstName
