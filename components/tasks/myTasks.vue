@@ -1,5 +1,18 @@
 <template>
-  <div class="taskContent">
+  <div class>
+    <v-btn
+      v-if="this.filterList != '' && this.taskFilter != 'none'"
+      style="position: absolute; right: 60px; margin-top: -45px"
+      @click="exportAsCSV"
+      dark
+      height="30px"
+      outlined
+      color="blue"
+    >
+      <v-icon color="blue" size="20">mdi-download</v-icon>
+      <v-list-item-action-text>Export as CSV</v-list-item-action-text>
+      <!-- Cancel -->
+    </v-btn>
     <div class="filterSection">
       <v-row>
         <v-col md="2">
@@ -93,38 +106,35 @@
       </v-row>
     </div>
 
-    <div v-if="this.taskFilter == 'none'" class="restructuredTaskCreate">
-      <v-text-field
-        v-model="taskName"
-        background-color="#EDF0F5"
-        solo
-        prepend-inner-icon="mdi-plus-circle"
-        label="Add a main task..."
-        class
-        @keyup.enter="addTask(null)"
-        clearable
-      ></v-text-field>
-    </div>
     <div v-if="this.taskFilter == 'none'" class="taskListViewContent overflow-y-auto">
+      <div v-if="this.taskFilter == 'none'" class="restructuredTaskCreate">
+        <v-text-field
+          v-model="taskName"
+          background-color="#EDF0F5"
+          solo
+          prepend-inner-icon="mdi-plus-circle"
+          label="Add a main task..."
+          class
+          @keyup.enter="addTask(null)"
+          clearable
+        ></v-text-field>
+      </div>
       <!-- ------ start task filter list ------- -->
-      <div v-for="(task, index) in projectAllTasks" :key="index">
+      <div v-for="(task, index) in projectMyTasks" :key="index">
         <div class>
-          <div
-            class="taskList restructuredMyTaskList"
-            v-if="task.parentTask.taskAssignee == userId"
-          >
+          <div class="taskList restructuredMyTaskList">
             <v-list-item class="upperListItem">
               <v-list-item
                 class="innerListItem"
                 @click="
-              selectTask(task.parentTask, task);
-              taskDialog = true;
-            "
+                  selectTask(task);
+                  taskDialog = true;
+                "
               >
                 <!-- @click.stop="drawer = !drawer" -->
                 <v-list-item-action>
                   <v-icon
-                    v-if="task.parentTask.taskStatus == 'closed'"
+                    v-if="task.taskStatus == 'closed'"
                     size="30"
                     color="#2EC973"
                   >mdi-checkbox-marked-circle</v-icon>
@@ -132,24 +142,27 @@
                 </v-list-item-action>
                 <div class="tasklistTaskNames restructuredMainTaskName">
                   <div class="body-2">
-                    <span class="restructuredMainTaskCode">{{task.parentTask.secondaryTaskId}}</span>
-                    {{ task.parentTask.taskName }}
+                    <span class="restructuredMainTaskCode">{{ task.secondaryTaskId }}</span>
+                    {{ task.taskName }}
                   </div>
                 </div>
                 <div
                   class="restStatusChip"
-                  :class="statusCheck(task.parentTask.issueType)"
-                >{{ task.parentTask.issueType }}</div>
+                  :class="statusCheck(task.issueType)"
+                >{{ taskTypeFormatting(task.issueType) }}</div>
                 <v-list-item-content class="updatedDate">
                   <v-list-item-title
-                    :class="dueDateCheck(task.parentTask)"
-                  >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</v-list-item-title>
+                    :class="dueDateCheck(task)"
+                  >{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
                 </v-list-item-content>
                 <div>
                   <v-list-item-avatar>
                     <v-img
-                      v-if="task.parentTask.taskAssigneeProfileImage != null && task.parentTask.taskAssigneeProfileImage != ''"
-                      :src="task.parentTask.taskAssigneeProfileImage"
+                      v-if="
+                        task.taskAssigneeProfileImage != null &&
+                          task.taskAssigneeProfileImage != ''
+                      "
+                      :src="task.taskAssigneeProfileImage"
                     ></v-img>
                     <v-img
                       v-else
@@ -157,13 +170,11 @@
                     ></v-img>
                   </v-list-item-avatar>
                 </div>
-                <div class="bluePartMyTask"></div>
+                <div v-if="task.isParent == true" class="bluePartMyTask"></div>
               </v-list-item>
               <div class="boardTabLinkIcon">
                 <nuxt-link
-                  :to="
-                  '/task/' + task.parentTask.taskId + '/?project=' + projectId
-                "
+                  :to="'/task/' + task.taskId + '/?project=' + projectId"
                   style="text-decoration: none;"
                   target="_blank"
                 >
@@ -175,45 +186,60 @@
 
           <!-- -------------- sub task design --------------- -->
 
-          <div v-if="task.childTasks.length !== 0">
-            <!-- restructuredMySubTaskList -->
-            <div v-for="(childTask, index) in task.childTasks" :key="index" class="taskList">
-              <v-list-item class="upperListItem" v-if="childTask.taskAssignee == userId">
+          <!-- <div v-if="task.childTasks.length !== 0">
+            <div
+              v-for="(childTask, index) in task.childTasks"
+              :key="index"
+              class="taskList"
+            >
+              <v-list-item
+                class="upperListItem"
+                v-if="childTask.taskAssignee == userId"
+              >
                 <v-list-item
                   class="innerListItem"
                   @click="
-                selectTask(childTask, task);
-                taskDialog = true;
-              "
+                    selectTask(childTask, task);
+                    taskDialog = true;
+                  "
                 >
-                  <!-- @click.stop="drawer = !drawer" -->
                   <v-list-item-action>
                     <v-icon
                       v-if="childTask.taskStatus == 'closed'"
                       size="30"
                       color="#2EC973"
-                    >mdi-checkbox-marked-circle</v-icon>
-                    <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                      >mdi-checkbox-marked-circle</v-icon
+                    >
+                    <v-icon v-else size="30" color="#FFFFFF"
+                      >mdi-checkbox-blank-circle</v-icon
+                    >
                   </v-list-item-action>
                   <div class="tasklistTaskNames restructuredMainTaskName">
                     <div class="body-2">
-                      <span class="restructuredMainTaskCode">{{childTask.secondaryTaskId}}</span>
+                      <span class="restructuredMainTaskCode">{{
+                        childTask.secondaryTaskId
+                      }}</span>
                       {{ childTask.taskName }}
                     </div>
                   </div>
                   <div
                     class="restStatusChip"
                     :class="statusCheck(childTask.issueType)"
-                  >{{ childTask.issueType }}</div>
+                  >
+                    {{ childTask.issueType }}
+                  </div>
                   <v-list-item-content class="updatedDate">
-                    <v-list-item-title
-                      :class="dueDateCheck(childTask)"
-                    >{{ getProjectDates(childTask.taskDueDateAt) }}</v-list-item-title>
+                    <v-list-item-title :class="dueDateCheck(childTask)">{{
+                      getProjectDates(childTask.taskDueDateAt)
+                    }}</v-list-item-title>
                   </v-list-item-content>
                   <div>
                     <v-list-item-avatar>
                       <v-img
-                        v-if="childTask.taskAssigneeProfileImage != null && childTask.taskAssigneeProfileImage != ''"
+                        v-if="
+                          childTask.taskAssigneeProfileImage != null &&
+                            childTask.taskAssigneeProfileImage != ''
+                        "
                         :src="childTask.taskAssigneeProfileImage"
                       ></v-img>
                       <v-img
@@ -234,12 +260,22 @@
                 </div>
               </v-list-item>
             </div>
-          </div>
+          </div>-->
 
           <!-- -------------- end sub task design -------------- -->
         </div>
       </div>
+      <div style="margin-top: 50px">
+        <v-pagination
+          @input="getMyTasks()"
+          v-model="myTaskPagination"
+          :length="Math.ceil(this.myTaskCount / 10)"
+          circle
+          :total-visible="8"
+        ></v-pagination>
+      </div>
     </div>
+
     <!-- -------------- filter list -------------- -->
     <div v-else class="taskListViewContent filterListTop overflow-y-auto">
       <div v-if="this.filterList == ''" class="filterTitleDiv headline">No items to show</div>
@@ -250,15 +286,11 @@
           v-if="task.taskAssignee == userId"
         >
           <nuxt-link
-            :to="
-                  '/task/' + task.taskId + '/?project=' + projectId
-                "
+            :to="'/task/' + task.taskId + '/?project=' + projectId"
             style="text-decoration: none;"
             target="_blank"
           >
-            <v-list-item @click="
-              selectTask(task, task);
-            ">
+            <v-list-item>
               <!-- @click.stop="drawer = !drawer" -->
               <v-list-item-action>
                 <v-icon
@@ -274,11 +306,14 @@
               </v-list-item-action>
               <div class="tasklistTaskNames restructuredMainTaskName">
                 <div class="body-2">
-                  <span class="restructuredMainTaskCode">{{task.secondaryTaskId}}</span>
+                  <span class="restructuredMainTaskCode">{{ task.secondaryTaskId }}</span>
                   {{ task.taskName }}
                 </div>
               </div>
-              <div class="restStatusChip" :class="statusCheck(task.issueType)">{{ task.issueType }}</div>
+              <div
+                class="restStatusChip"
+                :class="statusCheck(task.issueType)"
+              >{{ taskTypeFormatting(task.issueType) }}</div>
               <v-list-item-content class="updatedDate">
                 <v-list-item-title
                   :class="dueDateCheck(task)"
@@ -337,6 +372,7 @@
         :taskFiles="taskFiles"
         :componentClose="componentClose"
         :taskObject="taskObject"
+        :stomp="stomp"
         @taskDialogClosing="taskDialogClosing()"
       />
     </v-dialog>
@@ -350,7 +386,7 @@
       ></component>
       <!-- <success-popup /> -->
     </div>
-    <v-overlay :value="overlay">
+    <v-overlay :value="overlay" color="black">
       <progress-loading />
     </v-overlay>
   </div>
@@ -358,15 +394,20 @@
 
 <script>
 // import TaskSideBar from "~/components/tasks/taskSideBar";
-import TaskDialog from "~/components/tasks/taskDialog";
+import TaskDialog from "~/components/tasks/myTaskDialog";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import Progress from "~/components/popups/progress";
 import { mapState } from "vuex";
+import Stomp from "stompjs";
+import SockJS from "sockjs-client";
+import Papa from "papaparse";
+
 export default {
-  // props: ['projectId', 'projectUsers', 'people'],
+  props: ["myTaskPagination"],
   data() {
     return {
+      myTaskPagination: this.myTaskPagination,
       overlay: false,
       projectId: "",
       jqlQuery: "",
@@ -461,7 +502,8 @@ export default {
       userId: this.$store.state.user.userId,
       taskSelect: "all",
       taskFilter: "none",
-      componentClose: null
+      componentClose: null,
+      baseUrl: process.env.SYSTEM_URL
     };
   },
   async created() {
@@ -475,6 +517,103 @@ export default {
     "progress-loading": Progress
   },
   methods: {
+    taskTypeFormatting(type) {
+      switch (type) {
+        case "development":
+          return "Development";
+          break;
+        case "qa":
+          return "QA";
+          break;
+        case "design":
+          return "Design";
+          break;
+        case "bug":
+          return "Bug";
+          break;
+        case "operational":
+          return "Operational";
+          break;
+        case "preSales":
+          return "Pre-sales";
+          break;
+        case "general":
+          return "General";
+          break;
+        default:
+      }
+    },
+    exportAsCSV() {
+      var blob = new Blob([Papa.unparse(this.filterList)], {
+        type: "text/csv;charset=utf-8;"
+      });
+
+      var link = document.createElement("a");
+
+      var url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", "taskList.csv");
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
+    websocketConnectInit(taskId) {
+      console.log("initalize websocket connection for task", taskId);
+      const url = this.baseUrl + "/api/pm-service";
+      try {
+        console.log("connecting to ws...");
+        let socket = new SockJS(url + "/chat");
+        //this.stompClient = Stomp.over(socket);
+        this.stomp = Stomp.over(socket);
+        //this.$store.dispatch("stompClient/setStompClient", "this.stomp");
+        //let client = this.stompClient;
+        this.stomp.connect({}, frame => {
+          console.log("connected to: " + frame);
+          console.log("subscribing to topic: " + "/topic/messages/" + taskId);
+          this.stomp.subscribe("/topic/messages/" + taskId, response => {
+            // console.log("Response", response);
+            let data = JSON.parse(response.body);
+            console.log("outside----->");
+            if (data.actionType === "comment") {
+              console.log("inside----->");
+              this.$store.dispatch("comments/fetchTaskActivityComment", {
+                taskId: this.selectedTask.taskId,
+                startIndex: 0,
+                endIndex: 9
+              });
+            } else if (
+              data.actionType === "typing" &&
+              data.sender !== this.userId
+            ) {
+              this.$store.dispatch("stompClient/setTypingStatus", true);
+              this.$store.dispatch("stompClient/setTypingUser", data.message);
+            } else if (
+              data.actionType === "notTyping" &&
+              data.sender !== this.userId
+            ) {
+              this.$store.dispatch("stompClient/setTypingStatus", false);
+            }
+          });
+        });
+      } catch (error) {
+        console.log("Error fetching data", error);
+      }
+    },
+    getMyTasks() {
+      this.$store.dispatch("task/setIndex", {
+        startIndex: this.myTaskPagination * 10 - 10,
+        endIndex: this.myTaskPagination * 10
+      });
+      this.$store.dispatch(
+        "task/fetchTasksMyTasks",
+        this.$route.params.projects
+      );
+      this.$store.dispatch(
+        "task/fetchMyTaskCount",
+        this.$route.params.projects
+      );
+    },
     filterChange() {
       this.nameOfTask = "";
       this.taskType = [];
@@ -705,7 +844,7 @@ export default {
           this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         } else {
           // console.log("assignee is NOT me", this.taskAssignee);
-          this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+          this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
         }
         (this.taskName = ""),
           (this.taskAssignee = ""),
@@ -755,10 +894,11 @@ export default {
     taskFilterHandler() {
       // console.log("-----------> changed" + this.taskSelect);
     },
-    async selectTask(task, taskObject) {
+    async selectTask(task) {
+      this.websocketConnectInit(task.taskId);
       this.task = task;
       this.$store.dispatch("task/setSelectedTask", task);
-      this.taskObject = taskObject;
+      // this.taskObject = taskObject;
       this.componentClose = "";
       // console.log("selectedTask", task);
       this.$axios.get(`/users/${task.taskAssignee}`).then(async response => {
@@ -795,12 +935,19 @@ export default {
       } catch (error) {
         // console.log("Error fetching data", error);
       }
-
+      this.$store.dispatch("user/fetchOwnUser", this.userId);
       this.$store.dispatch("activityLog/fetchTaskActivityLog", {
         taskId: task.taskId,
         startIndex: 0,
         endIndex: 10
       });
+      this.$store.dispatch("comments/fetchTaskActivityComment", {
+        taskId: task.taskId,
+        startIndex: 0,
+        endIndex: 10
+      });
+
+      this.$store.dispatch("comments/fetchTaskCommentLength", task.taskId);
     },
     statusCheck(task) {
       if (task === "development") {
@@ -884,8 +1031,10 @@ export default {
     ...mapState({
       people: state => state.task.userCompletionTasks,
       projectAllTasks: state => state.task.allTasks,
+      projectMyTasks: state => state.task.myTasks,
       // projectId: state => state.project.project.projectId,
-      selectedTask: state => state.task.selectedTask
+      selectedTask: state => state.task.selectedTask,
+      myTaskCount: state => state.task.myTaskCount
     }),
     taskType: {
       get() {},

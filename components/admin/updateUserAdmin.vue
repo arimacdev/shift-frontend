@@ -15,9 +15,7 @@
         src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
       ></v-img>
     </div>
-    <div class="userNameAdmin">
-      {{ this.selectedUser.firstName + ' ' + this.selectedUser.lastName }}
-    </div>
+    <div class="userNameAdmin">{{ this.selectedUser.firstName + ' ' + this.selectedUser.lastName }}</div>
     <div class="buttonSectionAdmin">
       <!-- <v-btn color="#FFC212" dark small @click.stop="resetDialog = true">Reset Password</v-btn> -->
       <v-btn
@@ -26,16 +24,14 @@
         dark
         small
         @click.stop="deactivateDialog = true"
-        >Deactivate User</v-btn
-      >
+      >Deactivate User</v-btn>
       <v-btn
         v-if="selectedUser.isActive == false"
         color="#B52DD7"
         dark
         small
         @click.stop="activateDialog = true"
-        >Activate User</v-btn
-      >
+      >Activate User</v-btn>
     </div>
 
     <div class="formContentAdmin userUpdateSection overflow-y-auto">
@@ -142,25 +138,19 @@
           <v-col>
             <v-row>
               <v-col md="3">
-                <div style="color: #576377; font-weight: 450">
-                  Organization Roles
-                </div>
+                <div style="color: #576377; font-weight: 450">Organization Roles</div>
               </v-col>
               <v-col md="9">
                 <v-row>
-                  <v-col
-                    md="3"
-                    v-for="(role, index) in realmRoles"
-                    :key="index"
-                  >
+                  <v-col md="3" v-for="(role, index) in realmRoles" :key="index">
                     <v-btn
+                      v-if="role.name != 'ORGANIZATION_ADMIN'"
                       width="110px"
                       small
                       @click="selectUserRole(role)"
                       :color="checkUserRole(role.name)"
                       :disabled="checkUser(role.name)"
-                      >{{ role.name }}</v-btn
-                    >
+                    >{{ displayRoleName(role.name) }}</v-btn>
                   </v-col>
                 </v-row>
               </v-col>
@@ -188,9 +178,7 @@
                   <div
                     class="skillHeader"
                     :style="'background-color:' + category.categoryColorCode"
-                  >
-                    {{ category.categoryName }}
-                  </div>
+                  >{{ category.categoryName }}</div>
 
                   <div class="skillBody">
                     <div
@@ -210,8 +198,7 @@
                             v-if="skill.isAssigned == true"
                             size="20"
                             color="#2EC973"
-                            >mdi-checkbox-marked-circle</v-icon
-                          >
+                          >mdi-checkbox-marked-circle</v-icon>
                           <v-icon
                             @click="
                               addSkillToUser(category.categoryId, skill.skillId)
@@ -219,12 +206,13 @@
                             v-else
                             size="20"
                             color="#FFFFFF"
-                            >mdi-checkbox-blank-circle</v-icon
-                          >
+                          >mdi-checkbox-blank-circle</v-icon>
                         </v-list-item-action>
-                        <v-list-item-content>{{
+                        <v-list-item-content>
+                          {{
                           skill.skillName
-                        }}</v-list-item-content>
+                          }}
+                        </v-list-item-content>
                       </v-list-item>
                     </div>
                   </div>
@@ -251,13 +239,9 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn small color="red darken-1" dark @click="resetDialog = false"
-            >Cancel</v-btn
-          >
+          <v-btn small color="red darken-1" dark @click="resetDialog = false">Cancel</v-btn>
 
-          <v-btn small color="green darken-1" dark @click="resetDialog = false"
-            >Confirm</v-btn
-          >
+          <v-btn small color="green darken-1" dark @click="resetDialog = false">Confirm</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -280,13 +264,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn
-            small
-            color="red darken-1"
-            dark
-            @click="deactivateDialog = false"
-            >Cancel</v-btn
-          >
+          <v-btn small color="red darken-1" dark @click="deactivateDialog = false">Cancel</v-btn>
 
           <v-btn
             small
@@ -296,8 +274,7 @@
               deactivateDialog = false;
               deactivateUser();
             "
-            >Confirm</v-btn
-          >
+          >Confirm</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -319,9 +296,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn small color="red darken-1" dark @click="activateDialog = false"
-            >Cancel</v-btn
-          >
+          <v-btn small color="red darken-1" dark @click="activateDialog = false">Cancel</v-btn>
 
           <v-btn
             small
@@ -331,8 +306,7 @@
               activateDialog = false;
               activateUser();
             "
-            >Confirm</v-btn
-          >
+          >Confirm</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -341,11 +315,7 @@
     <!-- -------- role change dialog -------- -->
     <v-dialog v-model="roleChangeDialog" max-width="350">
       <v-card style="text-align: center; padding-bottom: 25px">
-        <v-card-title
-          class="headline"
-          style="text-align: center"
-          v-if="this.existingRole"
-        >
+        <v-card-title class="headline" style="text-align: center" v-if="this.existingRole">
           <v-spacer></v-spacer>Remove User Role
           <v-spacer></v-spacer>
         </v-card-title>
@@ -366,17 +336,9 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn
-            small
-            color="red darken-1"
-            dark
-            @click="roleChangeDialog = false"
-            >Cancel</v-btn
-          >
+          <v-btn small color="red darken-1" dark @click="roleChangeDialog = false">Cancel</v-btn>
 
-          <v-btn small color="green darken-1" dark @click="userRoleUpdate"
-            >Confirm</v-btn
-          >
+          <v-btn small color="green darken-1" dark @click="userRoleUpdate">Confirm</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -393,10 +355,10 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { mapState } from 'vuex';
-import SuccessPopup from '~/components/popups/successPopup';
-import ErrorPopup from '~/components/popups/errorPopup';
+import axios from "axios";
+import { mapState } from "vuex";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
 
 import {
   numeric,
@@ -405,52 +367,70 @@ import {
   minLength,
   maxLength,
   email,
-  sameAs,
-} from 'vuelidate/lib/validators';
+  sameAs
+} from "vuelidate/lib/validators";
 
 export default {
-  props: ['userData'],
-  name: 'editUser',
+  props: ["userData"],
+  name: "editUser",
   components: {
-    'success-popup': SuccessPopup,
-    'error-popup': ErrorPopup,
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup
   },
 
   data() {
     return {
-      filterCategory: '',
+      filterCategory: "",
       selectedSkills: [],
       // skillList: [],
       isValid: true,
-      firstNameRules: [(value) => !!value || 'First name is required!'],
-      lastNameRules: [(value) => !!value || 'Last name is required!'],
+      firstNameRules: [value => !!value || "First name is required!"],
+      lastNameRules: [value => !!value || "Last name is required!"],
       emailRules: [
-        (value) => !!value || 'E-mail is required',
-        (value) => /.+@.+\..+/.test(value) || 'E-mail must be valid',
+        value => !!value || "E-mail is required",
+        value => /.+@.+\..+/.test(value) || "E-mail must be valid"
       ],
       resetDialog: false,
       roleChangeDialog: false,
       deactivateDialog: false,
       activateDialog: false,
-      successMessage: '',
+      successMessage: "",
       userId: this.userData,
       adminId: this.$store.state.user.userId,
-      password: '',
-      confirmPassword: '',
-      component: '',
-      errorMessage: '',
-      successMessage: '',
+      password: "",
+      confirmPassword: "",
+      component: "",
+      errorMessage: "",
+      successMessage: "",
       selectedRole: {},
       existingRole: false,
       fullName: this.userFirstName,
-      firstName: '',
-      lastName: '',
-      email: '',
-      designation: '',
+      firstName: "",
+      lastName: "",
+      email: "",
+      designation: ""
     };
   },
 
   methods: {
+    displayRoleName(roleName) {
+      switch (roleName) {
+        case "SUPER_ADMIN":
+          return "Super Admin";
+          break;
+        case "USER":
+          return "User";
+          break;
+        case "ADMIN":
+          return "admin";
+          break;
+        case "WORKLOAD":
+          return "workload";
+          break;
+
+        default:
+      }
+    },
     async addSkillToUser(categoryId, skillId) {
       let response;
       try {
@@ -458,36 +438,36 @@ export default {
           `/category/${categoryId}/user/skill`,
           {
             assigneeId: this.userData.userId,
-            skills: [skillId],
+            skills: [skillId]
           },
           {
             headers: {
-              userId: this.adminId,
-            },
+              userId: this.adminId
+            }
           }
         );
 
         this.$store.dispatch(
-          'skillMatrix/fetchUserSkills',
+          "skillMatrix/fetchUserSkills",
           this.userData.userId
         );
 
         this.$store.dispatch(
-          'skillMap/fetchUserSkillMap',
+          "skillMap/fetchUserSkillMap",
           this.userData.userId
         );
-        this.successMessage = 'Skill added to user successfully';
-        this.component = 'success-popup';
+        this.successMessage = "Skill added to user successfully";
+        this.component = "success-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error adding a skill', e);
+        console.log("Error adding a skill", e);
       }
     },
     async removeSkillFromUser(categoryId, skillId) {
@@ -498,42 +478,42 @@ export default {
           {
             data: {
               assigneeId: this.userData.userId,
-              skills: [skillId],
+              skills: [skillId]
             },
             headers: {
-              userId: this.adminId,
-            },
+              userId: this.adminId
+            }
           }
         );
 
         this.$store.dispatch(
-          'skillMatrix/fetchUserSkills',
+          "skillMatrix/fetchUserSkills",
           this.userData.userId
         );
 
         this.$store.dispatch(
-          'skillMap/fetchUserSkillMap',
+          "skillMap/fetchUserSkillMap",
           this.userData.userId
         );
-        this.successMessage = 'Skill removed from user successfully';
-        this.component = 'success-popup';
+        this.successMessage = "Skill removed from user successfully";
+        this.component = "success-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error removing a skill', e);
+        console.log("Error removing a skill", e);
       }
     },
     getSkills() {
-      console.log('TRIGERRED ' + this.filterCategory);
+      console.log("TRIGERRED " + this.filterCategory);
       if (this.filterCategory != undefined) {
         this.$store.dispatch(
-          'skillMatrix/fetchCategorySkills',
+          "skillMatrix/fetchCategorySkills",
           this.filterCategory
         );
       } else {
@@ -544,8 +524,8 @@ export default {
       // this.filterSkill = [];
     },
     clearCategory() {
-      console.log('CLEARED ' + this.filterCategory);
-      this.filterCategory = '';
+      console.log("CLEARED " + this.filterCategory);
+      this.filterCategory = "";
     },
     // categorizedSkillMap() {
     //   let skillmap = this.userSkillMap;
@@ -559,38 +539,38 @@ export default {
     //   return orderedSkillMap;
     // },
     checkUser(roleName) {
-      if (roleName === 'USER') {
+      if (roleName === "USER") {
         return true;
       } else return false;
     },
     userRoleUpdate() {
       this.roleChangeDialog = false;
       if (!this.existingRole) {
-        this.$store.dispatch('admin/addUserRole', {
+        this.$store.dispatch("admin/addUserRole", {
           userId: this.userData.userId,
           id: this.selectedRole.id,
-          name: this.selectedRole.name,
+          name: this.selectedRole.name
         });
       } else {
         if (this.existingRole) {
           // console.log("calling delete");
-          this.$store.dispatch('admin/removeUserRole', {
+          this.$store.dispatch("admin/removeUserRole", {
             userId: this.userData.userId,
             id: this.selectedRole.id,
-            name: this.selectedRole.name,
+            name: this.selectedRole.name
           });
         }
       }
     },
     checkUserRole(name) {
-      if (this.userRoles.some((role) => role.name === name)) return 'primary';
+      if (this.userRoles.some(role => role.name === name)) return "primary";
     },
     selectUserRole(userRole) {
       // console.log("userRole", userRole);
       this.roleChangeDialog = true;
       this.selectedRole = userRole;
       if (
-        this.userRoles.filter((role) => role.name === userRole.name).length > 0
+        this.userRoles.filter(role => role.name === userRole.name).length > 0
       ) {
         this.existingRole = true;
         // console.log("role exists");
@@ -607,31 +587,31 @@ export default {
           `/users/deactivate`,
           {
             headers: {
-              user: this.adminId,
-            },
+              user: this.adminId
+            }
           },
           {
             data: {
               adminId: this.adminId,
-              userId: this.userData.userId,
-            },
+              userId: this.userData.userId
+            }
           }
         );
-        this.component = 'success-popup';
-        this.successMessage = 'User successfully deactivated';
+        this.component = "success-popup";
+        this.successMessage = "User successfully deactivated";
         setTimeout(() => {
           this.close();
         }, 3000);
         this.$v.$reset();
         let updatedUser = this.selectedUser;
-        this.$store.dispatch('user/updateActivationStatus', {
+        this.$store.dispatch("user/updateActivationStatus", {
           user: updatedUser,
-          status: false,
+          status: false
         });
       } catch (e) {
-        console.log('Error creating user', e);
+        console.log("Error creating user", e);
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -646,31 +626,31 @@ export default {
           `/users/activate`,
           {
             headers: {
-              user: this.adminId,
-            },
+              user: this.adminId
+            }
           },
           {
             data: {
               adminId: this.adminId,
-              userId: this.userData.userId,
-            },
+              userId: this.userData.userId
+            }
           }
         );
-        this.component = 'success-popup';
-        this.successMessage = 'User successfully activated';
+        this.component = "success-popup";
+        this.successMessage = "User successfully activated";
         setTimeout(() => {
           this.close();
         }, 3000);
         this.$v.$reset();
         let updatedUser = this.selectedUser;
-        this.$store.dispatch('user/updateActivationStatus', {
+        this.$store.dispatch("user/updateActivationStatus", {
           user: updatedUser,
-          status: true,
+          status: true
         });
       } catch (e) {
-        console.log('Error creating user', e);
+        console.log("Error creating user", e);
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -682,7 +662,7 @@ export default {
         firstName: this.getFirstName(),
         lastName: this.getLastName(),
         email: this.getEmail(),
-        designation: this.designation,
+        designation: this.designation
       };
       let response;
       try {
@@ -690,18 +670,18 @@ export default {
           `/users/${this.selectedUser.userId}`,
           userObj
         );
-        this.component = 'success-popup';
-        this.successMessage = 'User successfully updated';
+        this.component = "success-popup";
+        this.successMessage = "User successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
         this.$v.$reset();
         let updatedUser = this.selectedUser;
-        this.$store.dispatch('user/updateSelectedUser', userObj);
+        this.$store.dispatch("user/updateSelectedUser", userObj);
       } catch (e) {
-        console.log('Error creating user', e);
+        console.log("Error creating user", e);
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -733,19 +713,19 @@ export default {
       }
     },
     close() {
-      this.component = '';
-    },
+      this.component = "";
+    }
   },
   computed: {
     ...mapState({
-      realmRoles: (state) => state.admin.realmRoles,
-      userRoles: (state) => state.admin.userRoles,
-      selectedUser: (state) => state.user.selectedUser,
-      organizationalRoles: (state) => state.user.organizationalRoles,
-      userSkillMap: (state) => state.skillMap.userSkillMap,
-      skillCategory: (state) => state.skillMatrix.skillCategory,
-      categorySkills: (state) => state.skillMatrix.skills,
-      userSkills: (state) => state.skillMatrix.userSkills,
+      realmRoles: state => state.admin.realmRoles,
+      userRoles: state => state.admin.userRoles,
+      selectedUser: state => state.user.selectedUser,
+      organizationalRoles: state => state.user.organizationalRoles,
+      userSkillMap: state => state.skillMap.userSkillMap,
+      skillCategory: state => state.skillMatrix.skillCategory,
+      categorySkills: state => state.skillMatrix.skills,
+      userSkills: state => state.skillMatrix.userSkills
     }),
     // categoryArray() {
     //   let categorySearchList = this.skillCategory;
@@ -781,22 +761,22 @@ export default {
       },
       set(value) {
         this.projectName = value;
-      },
+      }
     },
     addProjectStyling: {
       get() {
         if (this.isValid == false) {
-          return 'addProjectButtonFail';
+          return "addProjectButtonFail";
         } else {
-          return 'addProjectButtonSuccess';
+          return "addProjectButtonSuccess";
         }
-      },
+      }
     },
     filterSkill: {
       get() {},
       set(value) {
         this.selectedSkills = value;
-      },
+      }
     },
     userFirstName: {
       get() {
@@ -804,7 +784,7 @@ export default {
       },
       set(value) {
         this.firstName = value;
-      },
+      }
     },
     userLastName: {
       get() {
@@ -812,7 +792,7 @@ export default {
       },
       set(value) {
         this.lastName = value;
-      },
+      }
     },
     userEmail: {
       get() {
@@ -820,17 +800,17 @@ export default {
       },
       set(value) {
         this.email = value;
-      },
-    },
+      }
+    }
   },
   validations: {
     firstName: {
       required,
-      maxLength: maxLength(50),
+      maxLength: maxLength(50)
     },
     lastName: {
       required,
-      maxLength: maxLength(50),
+      maxLength: maxLength(50)
     },
     // designation: {
     //   required,
@@ -838,8 +818,8 @@ export default {
     // },
     email: {
       required,
-      email,
-    },
-  },
+      email
+    }
+  }
 };
 </script>

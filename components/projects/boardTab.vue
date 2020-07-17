@@ -621,6 +621,24 @@ export default {
               );
               // console.log("files--->", taskFilesResponse.data);
               this.taskFiles = taskFilesResponse.data;
+              this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+                taskId: task.taskId,
+                startIndex: 0,
+                endIndex: 10
+              });
+
+              this.$store.dispatch("comments/fetchTaskActivityComment", {
+                taskId: task.taskId,
+                startIndex: 0,
+                endIndex: 10
+              });
+
+              this.$store.dispatch(
+                "comments/fetchTaskCommentLength",
+                task.taskId
+              );
+
+              this.$store.dispatch("user/fetchOwnUser", this.userId);
             } catch (error) {
               console.log("Error fetching data", error);
             }

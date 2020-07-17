@@ -2,21 +2,12 @@
   <div class="top-nav">
     <navigation-drawer :user="user" />
 
-    <v-toolbar
-      app
-      color
-      dark
-      fixed
-      :clipped-left="clipped"
-      class="toolBarFilter tool-bar"
-    >
+    <v-toolbar app color dark fixed :clipped-left="clipped" class="toolBarFilter tool-bar">
       <div class="title-div">
         <div class="name-div">
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title class="font-weight-bold"
-                >Admin</v-list-item-title
-              >
+              <v-list-item-title class="font-weight-bold">Admin</v-list-item-title>
             </v-list-item-content>
 
             <v-divider class="mx-4" inset vertical></v-divider>
@@ -32,52 +23,53 @@
             class="tabInactiveStyle"
             active-class="adminTabTitleStyle"
             v-on:click="component = 'users-tab'"
-            >Users</v-tab
-          >
+          >Users</v-tab>
           <v-tab
             class="tabInactiveStyle"
             active-class="adminTabTitleStyle"
             v-on:click="component = 'skills-tab'"
-            >Skills</v-tab
-          >
+          >Skills</v-tab>
           <v-tab
             class="tabInactiveStyle"
             active-class="adminTabTitleStyle"
             v-on:click="component = 'organization-tab'"
-            >Organization</v-tab
-          >
+          >Organization</v-tab>
         </v-tabs>
       </div>
     </div>
-
     <div class="workloadV2Body">
       <component v-bind:is="component"></component>
     </div>
+    <v-overlay :value="overlay" color="black" style="z-index:1008">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 <script>
-import NavigationDrawer from '~/components/navigationDrawer';
-import Users from '~/components/admin/users';
-import Organization from '~/components/admin/organization';
-
-import Skills from '~/components/admin/skills';
+import NavigationDrawer from "~/components/navigationDrawer";
+import Users from "~/components/admin/users";
+import Organization from "~/components/admin/organization";
+import Progress from "~/components/popups/progress";
+import Skills from "~/components/admin/skills";
 
 export default {
   components: {
     NavigationDrawer,
-    'users-tab': Users,
-    'organization-tab': Organization,
-    'skills-tab': Skills,
+    "users-tab": Users,
+    "organization-tab": Organization,
+    "skills-tab": Skills,
+    "progress-loading": Progress
   },
   data() {
     return {
-      component: 'users-tab',
+      overlay: false,
+      component: "users-tab"
     };
   },
   async asyncData({ $axios, store }) {
     let userId = store.state.user.userId;
     const { data: projects } = await $axios.$get(`/projects?userId=${userId}`);
-    const { data: users } = await $axios.$get('/users');
+    const { data: users } = await $axios.$get("/users");
     const sorted = users.sort((a, b) => {
       const userA = a.firstName.toUpperCase();
       const userB = b.firstName.toUpperCase();
@@ -92,13 +84,18 @@ export default {
     return {
       projects: projects,
       users: users,
-      name: users[0].userId,
+      name: users[0].userId
     };
   },
   created() {
-    this.$store.dispatch('user/setAllUsers');
-    this.$store.dispatch('project/clearProject');
-    this.$store.dispatch('skillMatrix/fetchSkillCategory');
-  },
+    this.overlay = true;
+    Promise.all([
+      this.$store.dispatch("user/setAllUsers"),
+      this.$store.dispatch("project/clearProject"),
+      this.$store.dispatch("skillMatrix/fetchSkillCategory")
+    ]).finally(() => {
+      this.overlay = false;
+    });
+  }
 };
 </script>

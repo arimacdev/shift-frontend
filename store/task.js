@@ -7,9 +7,23 @@ export const state = () => ({
   childTasks: [],
   selectedTask: {},
   parentTask: {},
+  startIndex: 0,
+  endIndex: 10,
+  totalCount: 0,
+  myTaskCount: 0,
 });
 
 export const mutations = {
+  SET_TOTAL_COUNT(state, count) {
+    state.totalCount = count;
+  },
+  SET_MY_TASK_COUNT(state, count) {
+    state.myTaskCount = count;
+  },
+  SET_INDEX(state, { startIndex, endIndex }) {
+    state.startIndex = startIndex;
+    state.endIndex = endIndex;
+  },
   SET_SELECTED_TASK(state, task) {
     if (state.selectedTask.taskId === task.taskId) {
       state.selectedTask = {};
@@ -19,15 +33,15 @@ export const mutations = {
     }
   },
   SET_ALL_TASKS(state, event) {
-    const sorted = event.sort((a, b) => {
-      const userA = a.parentTask.taskCreatedAt.toUpperCase();
-      const userB = b.parentTask.taskCreatedAt.toUpperCase();
+    // const sorted = event.sort((a, b) => {
+    //   const userA = a.parentTask.taskCreatedAt.toUpperCase();
+    //   const userB = b.parentTask.taskCreatedAt.toUpperCase();
 
-      if (userA > userB) return -1;
-      if (userA < userB) return 1;
+    //   if (userA > userB) return -1;
+    //   if (userA < userB) return 1;
 
-      return 0;
-    });
+    //   return 0;
+    // });
     state.allTasks = event;
   },
   SET_CHILD_TASKS(state, children) {
@@ -40,15 +54,15 @@ export const mutations = {
     state.myTasks = event;
   },
   SET_USER_TASK_COMPLETION(state, event) {
-    const sorted = event.sort((a, b) => {
-      const userA = a.assigneeFirstName.toUpperCase();
-      const userB = b.assigneeFirstName.toUpperCase();
+    // const sorted = event.sort((a, b) => {
+    //   const userA = a.assigneeFirstName.toUpperCase();
+    //   const userB = b.assigneeFirstName.toUpperCase();
 
-      if (userA < userB) return -1;
-      if (userA > userB) return 1;
+    //   if (userA < userB) return -1;
+    //   if (userA > userB) return 1;
 
-      return 0;
-    });
+    //   return 0;
+    // });
     state.userCompletionTasks = event;
   },
   SET_PROJECT_TASK_COMPLETION(state, projectTaskCompletion) {
@@ -95,13 +109,47 @@ export const mutations = {
     // console.log('selectedtask', selectedTask);
     state.selectedTask = selectedTask;
   },
-  UPDATE_SELECTED_TASK_NAME(state, taskName){
-    state.selectedTask.taskName = taskName
-
-  }
+  UPDATE_SELECTED_TASK_NAME(state, taskName) {
+    state.selectedTask.taskName = taskName;
+  },
 };
 
 export const actions = {
+  async fetchTotalTaskCount({ commit, rootState }, projectId) {
+    const user = rootState.user.userId;
+    let taskLength;
+    try {
+      taskLength = await this.$axios.$get(
+        `/projects/${projectId}/tasks/count`,
+        {
+          headers: {
+            userId: user,
+          },
+        }
+      );
+      console.log('task length', taskLength.data);
+      commit('SET_TOTAL_COUNT', taskLength.data);
+    } catch (error) {
+      console.log('Error fetching task count length', error);
+    }
+  },
+  async fetchMyTaskCount({ commit, rootState }, projectId) {
+    const user = rootState.user.userId;
+    let taskLength;
+    try {
+      taskLength = await this.$axios.$get(
+        `/projects/${projectId}/tasks/user/count?userId=${user}`
+      );
+      console.log('task length', taskLength.data);
+      commit('SET_MY_TASK_COUNT', taskLength.data);
+    } catch (error) {
+      console.log('Error fetching task count length', error);
+    }
+  },
+  setIndex({ commit }, { startIndex, endIndex }) {
+    // console.log('SETINDEX->>>', startIndex, endIndex);
+    commit('SET_INDEX', { startIndex, endIndex });
+  },
   setSelectedTask({ commit }, task) {
     // console.log('selected->>>', task);
     commit('SET_SELECTED_TASK', task);
@@ -110,6 +158,7 @@ export const actions = {
     // console.log('selected->>>', task);
     commit('UPDATE_SELECTED_TASK_NAME', taskName);
   },
+
   async setCurrentTask({ commit, rootState }, { projectId, taskId }) {
     const userId = rootState.user.userId;
     let taskResponse;
@@ -185,11 +234,14 @@ export const actions = {
   fetchTasksAllTasks({ commit, rootState }, projectId) {
     const userId = rootState.user.userId;
     this.$axios
-      .get(`projects/${projectId}/tasks?userId=${userId}`, {
-        headers: {
-          type: 'project',
-        },
-      })
+      .get(
+        `projects/${projectId}/tasks?userId=${userId}&startIndex=${rootState.task.startIndex}&endIndex=${rootState.task.endIndex}`,
+        {
+          headers: {
+            type: 'project',
+          },
+        }
+      )
       .then((response) => {
         // console.log(
         //   'ALL TASKS ARE RETRIEVED SUCCESSFULLY-->',
@@ -205,7 +257,9 @@ export const actions = {
   fetchTasksMyTasks({ commit, rootState }, projectId) {
     const userId = rootState.user.userId;
     this.$axios
-      .get(`projects/${projectId}/tasks/user?userId=${userId}`)
+      .get(
+        `projects/${projectId}/tasks/user?userId=${userId}&startIndex=${rootState.task.startIndex}&endIndex=${rootState.task.endIndex}`
+      )
       .then((response) => {
         // console.log(
         //   'MY TASKS ARE RETRIEVED SUCCESSFULLY-->',

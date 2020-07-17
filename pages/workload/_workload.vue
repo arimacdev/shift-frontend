@@ -23,13 +23,17 @@
             <v-tab
               class="tabInactiveStyle"
               active-class="adminTabTitleStyle"
-              v-on:click="component='my-workload' "
+              v-on:click="component = 'my-workload'"
             >My Workload</v-tab>
             <v-tab
               class="tabInactiveStyle"
               active-class="adminTabTitleStyle"
-              v-if="organizationalRoles.indexOf('SUPER_ADMIN') > -1 || organizationalRoles.indexOf('WORKLOAD') > -1 || organizationalRoles.indexOf('ADMIN') > -1"
-              v-on:click="component='org-workload'"
+              v-if="
+                organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
+                  organizationalRoles.indexOf('WORKLOAD') > -1 ||
+                  organizationalRoles.indexOf('ADMIN') > -1
+              "
+              v-on:click="component = 'org-workload'"
             >Organizational Workload</v-tab>
           </v-tabs>
         </div>
@@ -39,13 +43,16 @@
         <component v-bind:is="component"></component>
       </div>
     </div>
+    <v-overlay :value="overlay" color="black">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 <script>
 import NavigationDrawer from "~/components/navigationDrawer";
 import usersSearchBar from "~/components/tools/usersSearchBar";
 import WorkloadContent from "~/components/workload/workloadContent";
-
+import Progress from "~/components/popups/progress";
 import MyWorkload from "~/components/workload/myWorkload";
 import OrgWorkload from "~/components/workload/orgWorkload";
 
@@ -56,10 +63,28 @@ export default {
     NavigationDrawer,
     "workload-content": WorkloadContent,
     "my-workload": MyWorkload,
-    "org-workload": OrgWorkload
+    "org-workload": OrgWorkload,
+    "progress-loading": Progress
+  },
+  created() {
+    console.log("cretad");
+    this.overlay = true;
+    Promise.all([
+      this.$store.dispatch("user/setAllUsers"),
+      this.$store.dispatch("project/fetchAllProjects"),
+      // this.$store.dispatch('workload/fetchAllTaskLoadUsers', {
+      //   userId: 'all',
+      //   from: 0,
+      //   to: 10,
+      // }),
+      this.$store.dispatch("project/clearProject")
+    ]).finally(() => {
+      this.overlay = false;
+    });
   },
   data() {
     return {
+      overlay: false,
       component: "my-workload",
       userId: this.$store.state.user.userId,
       workLoad: {},
@@ -73,11 +98,6 @@ export default {
       states: [],
       drawer: null
     };
-  },
-
-  created() {
-    this.$store.dispatch("workload/fetchAllTaskLoadUsers");
-    this.$store.dispatch("project/clearProject");
   },
 
   watch: {
@@ -149,10 +169,6 @@ export default {
       taskWorkLoadUsers: state => state.workload.taskWorkLoadUsers,
       organizationalRoles: state => state.user.organizationalRoles
     })
-  },
-  created() {
-    this.$store.dispatch("project/fetchAllProjects");
-    this.$store.dispatch("user/setAllUsers");
   }
 };
 </script>
