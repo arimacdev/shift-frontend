@@ -750,7 +750,16 @@ export default {
       // console.log("TEXT EDIT: " + this.textEditor);
       this.tagging = false;
       this.traversing = false;
-      this.textEditor = this.textEditor.slice(0, -this.traverseText.length - 1);
+      // -this.traverseText.length
+      if (this.traverseText.length == 0) {
+        this.textEditor = this.textEditor.slice(0, -1);
+      } else {
+        this.textEditor = this.textEditor.slice(
+          0,
+          -this.traverseText.length - 1
+        );
+      }
+
       if (assignee != null) {
         if (this.textEditor != null) {
           this.textEditor =
