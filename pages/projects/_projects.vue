@@ -528,9 +528,9 @@ export default {
               this.$route.params.projects
             )
           ]).finally(() => {
-            setTimeout(() => {
-              this.overlay = false;
-            }, 1000);
+            // setTimeout(() => {
+            this.overlay = false;
+            // }, 100);
           });
           break;
         case "task":
@@ -574,7 +574,7 @@ export default {
           ]).finally(() => {
             setTimeout(() => {
               this.overlay = false;
-            }, 1000);
+            }, 100);
           });
           break;
         case "board":
