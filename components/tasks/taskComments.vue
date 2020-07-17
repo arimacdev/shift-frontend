@@ -604,10 +604,10 @@ export default {
     },
     onKeyUp(e) {
       if (e.keyCode === 50) {
+         console.log("@ Pressed")
         this.tagging = true;
-        // console.log("KEYUPENTER!" + e.keyCode);
-        // this.$refs.defaultRTE.ej2Instances.focusIn();
       } else {
+        console.log("NOT @")
         this.tagging = false;
       }
     },
