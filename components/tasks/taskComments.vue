@@ -675,15 +675,21 @@ export default {
   },
   methods: {
        onKeyUp(e) {
-      if (e.keyCode === 50) {
-        console.log("@ Pressed", this.traversing);
+        console.log(
+        "--------------------------------",
+        this.$refs.rteObj.ej2Instances.getText()
+      );
+      const currentKey = this.$refs.rteObj.ej2Instances.getText().slice(-1);
+      if (currentKey === '@') {
+        console.log("@ Pressed", this.traversing, e.keyCode);
         this.traversing = true
         this.tagging = true;
       } else if (e.keyCode ===8 && this.traversing){
-          
+          this.traverseText = this.traverseText.slice(0,-1);
+          this.assigneeArray();
       }
-      else{
-        console.log("NOT @", this.traversing, e.key)
+      else if(e.keyCode>=60 && e.keyCode<=90){
+        console.log("NOT @", this.traversing, e.keyCode)
         if(this.traversing){
             this.traverseText = this.traverseText.concat(e.key);
             this.assigneeArray();
@@ -741,6 +747,8 @@ export default {
     tagPeople(assignee) {
       // console.log("TEXT EDIT: " + this.textEditor);
       this.tagging = false;
+      this.traversing = false;
+      this.traverseText = ''
       this.textEditor = this.textEditor.slice(0, -1);
       if (assignee != null) {
         if (this.textEditor != null) {
