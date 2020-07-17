@@ -683,7 +683,7 @@ export default {
        onKeyUp(e) {
         console.log(
         "--------------------------------",
-        this.$refs.rteObj.ej2Instances.getText()
+        this.$refs.rteObj.ej2Instances.getText().slice(-1)
       );
       const currentKey = this.$refs.rteObj.ej2Instances.getText().slice(-1);
       if (currentKey === '@') {
@@ -692,7 +692,13 @@ export default {
         this.tagging = true;
       } else if (e.keyCode ===8 && this.traversing){
           this.traverseText = this.traverseText.slice(0,-1);
+          if(this.traverseText === ""){
+            this.tagging = false;
+          } else
           this.assigneeArray();
+      } else if(e.keyCode ===8 && this.traversing && this.traverseText === ''){
+        this.traversing = false;
+        this.tagging = false
       }
       else if(e.keyCode>=60 && e.keyCode<=90){
         console.log("NOT @", this.traversing, e.keyCode)
@@ -1301,9 +1307,8 @@ export default {
     },
     assigneeArray() {
       let assigneeList = [];
-      if (this.traversing) {
+      if (this.traversing) {  
         const matches = this.people.filter(user => {
-          console.log("user", user.assigneeFirstName, this.traverseText);
           if (
             user.assigneeFirstName
               .toLowerCase()
