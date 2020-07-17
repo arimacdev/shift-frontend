@@ -1,5 +1,5 @@
 <template>
-  <div class="taskContent">
+  <div class>
     <div class="filterSection">
       <v-row>
         <v-col md="2">
@@ -93,19 +93,19 @@
       </v-row>
     </div>
 
-    <div v-if="this.taskFilter == 'none'" class="restructuredTaskCreate">
-      <v-text-field
-        v-model="taskName"
-        background-color="#EDF0F5"
-        solo
-        prepend-inner-icon="mdi-plus-circle"
-        label="Add a main task..."
-        class
-        @keyup.enter="addTask(null)"
-        clearable
-      ></v-text-field>
-    </div>
     <div v-if="this.taskFilter == 'none'" class="taskListViewContent overflow-y-auto">
+      <div v-if="this.taskFilter == 'none'" class="restructuredTaskCreate">
+        <v-text-field
+          v-model="taskName"
+          background-color="#EDF0F5"
+          solo
+          prepend-inner-icon="mdi-plus-circle"
+          label="Add a main task..."
+          class
+          @keyup.enter="addTask(null)"
+          clearable
+        ></v-text-field>
+      </div>
       <!-- ------ start task filter list ------- -->
       <div v-for="(task, index) in projectAllTasks" :key="index">
         <div class>

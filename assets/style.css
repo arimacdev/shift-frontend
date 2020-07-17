@@ -22,6 +22,15 @@
 .body-2 {
   font-family: 'Roboto', sans-serif !important;
 }
+.projectListView {
+  margin-top: 10px;
+  height: 80vh;
+  background-color: #edf0f5;
+  border-radius: 5px;
+  padding-bottom: 100px !important;
+  border-right: 1px #e5e5e5 solid;
+  padding-top: 10px;
+}
 .listView {
   margin-top: 10px;
   height: 80vh;
@@ -203,11 +212,11 @@
 
 .taskFormDiv {
   position: absolute;
-  width: 90%;
-  margin-top: 7%;
+  width: 98%;
+  /* margin-top: 7%; */
   padding-top: 10px;
   padding-right: 10px;
-  height: 70vh;
+  height: 80vh;
   padding-bottom: 100px;
 }
 .fileUpload::-webkit-file-upload-button {
@@ -961,13 +970,14 @@
 }
 
 .taskListViewContent {
-  height: 60vh;
+  height: 70vh;
   z-index: -100;
-  margin-top: 25px;
+  margin-top: 10px;
   padding-bottom: 100px;
 }
 .allTaskCreateTab {
-  margin-bottom: -40px !important;
+  margin-top: 5px;
+  margin-bottom: -30px !important;
 }
 .filterListTop {
   margin-top: 25px;
@@ -1825,6 +1835,7 @@
 /* ----------------------- task restructure ---------------- */
 
 .filterSection {
+  margin-top: -15px;
   height: 60px;
 }
 .taskFilterTypeDiv {
@@ -1867,7 +1878,7 @@
 
 .restructuredMainTaskList {
   border: 2px #e5e5e5 solid;
-  margin-top: 30px;
+  margin-top: 20px;
   background-color: #ffffff;
   overflow: hidden;
 }
@@ -1895,7 +1906,7 @@
 }
 .backPannelAllTask {
   background-color: #edf0f5;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
   border-radius: 5px;
 }
 .restructuredMySubTaskList {
@@ -1912,7 +1923,7 @@
   margin-right: 10px;
 }
 .restructuredTaskCreate {
-  margin-top: 20px;
+  /* margin-top: 20px; */
   margin-bottom: -20px;
 }
 .restructuredSubTaskList {
@@ -1924,7 +1935,7 @@
 .restructuredSubTaskCreate {
   padding-left: 30px;
   padding-right: 30px;
-  margin-bottom: -20px;
+  /* margin-bottom: -20px; */
 }
 .restructuredSubTaskCreateGroup {
   padding-left: 30px;
@@ -2204,7 +2215,7 @@
 .allTaskPopupPlacements {
   position: absolute;
   right: 30px;
-  bottom: 100px;
+  bottom: 20px;
 }
 .filterTaskPopupPlacements {
   position: absolute;
@@ -2582,7 +2593,7 @@
 }
 .logooutButton {
   position: absolute;
-  bottom: 20px;
+  bottom: 5px;
   width: 100%;
 }
 .tabTitleStyle {
@@ -3026,6 +3037,16 @@
 .annotations {
   font-weight: 500;
   background-color: #2600ff0e;
+}
+
+/* ------ project page restructure ------- */
+.projectPanelContent {
+}
+.selectedProjectPanel {
+  margin-left: -25px;
+  margin-right: -25px;
   border-radius: 5px;
-  padding: 2px;
+}
+.taskActionContents {
+  /* margin-top: -70px; */
 }

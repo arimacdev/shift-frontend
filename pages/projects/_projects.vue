@@ -10,7 +10,9 @@
               <v-list-item-title class="font-weight-medium">Projects</v-list-item-title>
             </v-list-item-content>
 
-            <v-list-item-icon v-if="organizationalRoles.indexOf('ADMIN') > -1 || organizationalRoles.indexOf('SUPER_ADMIN') > -1 || organizationalRoles.indexOf('WORKLOAD') > -1">
+            <v-list-item-icon
+              v-if="organizationalRoles.indexOf('ADMIN') > -1 || organizationalRoles.indexOf('SUPER_ADMIN') > -1 || organizationalRoles.indexOf('WORKLOAD') > -1"
+            >
               <button v-on:click="component = 'add-project'">
                 <v-icon @click="createNewProject">mdi-plus-circle</v-icon>
               </button>
@@ -40,12 +42,162 @@
       <div class="project-list">
         <search-bar :projects="allProjects" @selectSearched="selectProject" />
         <v-list-item-group>
-          <div class="listView overflow-y-auto">
+          <div
+            class="projectListView overflow-y-auto"
+            style="padding-left: 5px; padding-right: 5px"
+          >
             <!-- --------------- Pre sales loop ----------- -->
-            <v-divider class="mx-4"></v-divider>
-            <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Presales</v-toolbar-title>
+            <!-- <v-divider class="mx-4"></v-divider> -->
 
-            <div
+            <v-expansion-panels multiple focusable hover>
+              <v-expansion-panel class="projectDetailsPannels">
+                <v-expansion-panel-header
+                  color="#EDF0F5"
+                  class="grey--text text--darken-2 font-weight-bold titles"
+                >
+                  <div>
+                    <v-icon size="17" color="deep-orange lighten-1">icon-project</v-icon>
+                  </div>
+                  <div>Presales</div>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content class="projectPanelContent" color="#EDF0F5">
+                  <div
+                    v-for="(project, index) in getProjects('presales')"
+                    :key="'preSales' + index"
+                  >
+                    <v-list-item
+                      @click="selectProject(project)"
+                      class="selectedProjectPanel"
+                      v-if="
+                  project.projectStatus == 'presalesPD' ||
+                    project.projectStatus == 'preSalesQS' ||
+                    project.projectStatus == 'preSalesN' ||
+                    project.projectStatus == 'preSalesC' ||
+                    project.projectStatus == 'preSalesL' ||
+                    project.projectStatus == 'presales'
+                "
+                      v-on:click="component = 'tab-views'"
+                      :to="project.projectId"
+                    >
+                      <v-list-item-action>
+                        <v-icon size="17" color="deep-orange lighten-1">icon-project</v-icon>
+                      </v-list-item-action>
+                      <v-list-item-content>
+                        <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
+                        <v-list-item-subtitle
+                          v-if="project.projectStatus == 'presalesPD'"
+                          class="projectSubtitle"
+                        >(Project discovery)</v-list-item-subtitle>
+                        <v-list-item-subtitle
+                          v-if="project.projectStatus == 'preSalesQS'"
+                          class="projectSubtitle"
+                        >(Quotation submission)</v-list-item-subtitle>
+                        <v-list-item-subtitle
+                          v-if="project.projectStatus == 'preSalesN'"
+                          class="projectSubtitle"
+                        >(Negotiation)</v-list-item-subtitle>
+                        <v-list-item-subtitle
+                          v-if="project.projectStatus == 'preSalesC'"
+                          class="projectSubtitle"
+                        >(Confirm)</v-list-item-subtitle>
+                        <v-list-item-subtitle
+                          v-if="project.projectStatus == 'preSalesL'"
+                          class="projectSubtitle"
+                        >(Lost)</v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </div>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel class="projectDetailsPannels">
+                <v-expansion-panel-header
+                  color="#EDF0F5"
+                  class="grey--text text--darken-2 font-weight-bold titles"
+                >
+                  <div>
+                    <v-icon size="17" color="#FFC212">icon-project</v-icon>
+                  </div>
+                  <div>Ongoing</div>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content class="projectPanelContent" color="#EDF0F5">
+                  <div
+                    v-for="(project, index) in getProjects('ongoing')"
+                    :key="'ongoing' + index"
+                    v-on:click="component = 'tab-views'"
+                    @click="selectProject(project)"
+                  >
+                    <v-list-item class="selectedProjectPanel" :to="project.projectId">
+                      <v-list-item-action>
+                        <v-icon size="17" color="#FFC212">icon-project</v-icon>
+                      </v-list-item-action>
+                      <v-list-item-content>
+                        <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </div>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel class="projectDetailsPannels">
+                <v-expansion-panel-header
+                  color="#EDF0F5"
+                  class="grey--text text--darken-2 font-weight-bold titles"
+                >
+                  <div>
+                    <v-icon size="17" color="#ED5ED1">icon-project</v-icon>
+                  </div>
+                  <div>Support</div>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content class="projectPanelContent" color="#EDF0F5">
+                  <div
+                    v-for="(project, index) in getProjects('support')"
+                    :key="'support' + index"
+                    v-on:click="component = 'tab-views'"
+                    @click="selectProject(project)"
+                  >
+                    <v-list-item class="selectedProjectPanel" :to="project.projectId">
+                      <v-list-item-action>
+                        <v-icon size="17" color="#ED5ED1">icon-project</v-icon>
+                      </v-list-item-action>
+                      <v-list-item-content>
+                        <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </div>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel class="projectDetailsPannels">
+                <v-expansion-panel-header
+                  color="#EDF0F5"
+                  class="grey--text text--darken-2 font-weight-bold titles"
+                >
+                  <div>
+                    <v-icon size="17" color="#0BAFFF">icon-project</v-icon>
+                  </div>
+                  <div>Finished</div>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content class="projectPanelContent" color="#EDF0F5">
+                  <div
+                    v-for="(project, index) in getProjects('finished')"
+                    :key="'finished'+index"
+                    v-on:click="component = 'tab-views'"
+                    @click="selectProject(project)"
+                  >
+                    <v-list-item :to="project.projectId">
+                      <v-list-item-action>
+                        <v-icon size="17" color="#0BAFFF">icon-project</v-icon>
+                      </v-list-item-action>
+                      <v-list-item-content>
+                        <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </div>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
+
+            <!-- <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Presales</v-toolbar-title> -->
+
+            <!-- <div
               v-for="(project, index) in getProjects('presales')"
               :key="'preSales' + index"
               @click="selectProject(project)"
@@ -90,16 +242,14 @@
                   >(Lost)</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
+            </div>-->
 
-              <!-- <v-divider class="mx-4"></v-divider> -->
-            </div>
-
-            <v-divider class="mx-4"></v-divider>
+            <!-- <v-divider class="mx-4"></v-divider> -->
 
             <!-- --------------- ongoing  ----------- -->
-            <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Ongoing</v-toolbar-title>
+            <!-- <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Ongoing</v-toolbar-title> -->
 
-            <div
+            <!-- <div
               v-for="(project, index) in getProjects('ongoing')"
               :key="'ongoing' + index"
               v-on:click="component = 'tab-views'"
@@ -113,14 +263,13 @@
                   <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-              <!-- <v-divider class="mx-4"></v-divider> -->
-            </div>
+            </div>-->
 
             <!-- --------------- Support  ----------- -->
-            <v-divider class="mx-4"></v-divider>
-            <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Support</v-toolbar-title>
+            <!-- <v-divider class="mx-4"></v-divider>
+            <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Support</v-toolbar-title>-->
 
-            <div
+            <!-- <div
               v-for="(project, index) in getProjects('support')"
               :key="'support' + index"
               v-on:click="component = 'tab-views'"
@@ -134,13 +283,12 @@
                   <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-              <!-- <v-divider class="mx-4"></v-divider> -->
-            </div>
+            </div>-->
 
             <!-- --------------- Finished  ----------- -->
-            <v-divider class="mx-4"></v-divider>
-            <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Finished</v-toolbar-title>
-
+            <!-- <v-divider class="mx-4"></v-divider>
+            <v-toolbar-title class="grey--text text--darken-2 font-weight-bold titles">Finished</v-toolbar-title>-->
+            <!-- 
             <div
               v-for="(project, index) in getProjects('finished')"
               :key="'finished'+index"
@@ -155,10 +303,8 @@
                   <v-list-item-title class="body-2">{{ project.projectName }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-              <!-- <v-divider class="mx-4"></v-divider>
-              <v-divider class="mx-4"></v-divider>-->
-            </div>
-            <v-divider class="mx-4"></v-divider>
+            </div>-->
+            <!-- <v-divider class="mx-4"></v-divider> -->
           </div>
           <!-- allProjects -->
         </v-list-item-group>
@@ -174,6 +320,7 @@
           "
           v-bind:is="component"
           :project="project"
+          :pagination="pagination"
           @refreshSelectedTab="refreshSelectedTab"
         ></component>
         <component v-else-if="this.component == 'add-project'" v-bind:is="component"></component>
@@ -199,6 +346,7 @@ export default {
   },
   data() {
     return {
+      pagination: 1,
       component: "tab-views",
       project: {},
       taskLog: [],
@@ -230,8 +378,16 @@ export default {
     switch (this.selectedTab) {
       case "task":
         if (this.$route.params.projects != "projects") {
+          this.$store.dispatch("task/setIndex", {
+            startIndex: 0,
+            endIndex: 10
+          });
           this.$store.dispatch(
             "task/fetchTasksAllTasks",
+            this.$route.params.projects
+          );
+          this.$store.dispatch(
+            "task/fetchTotalTaskCount",
             this.$route.params.projects
           );
           this.$store.dispatch(
@@ -265,8 +421,16 @@ export default {
           "sprints/sprint/fetchAllProjectSprints",
           this.$route.params.projects
         );
+        this.$store.dispatch("task/setIndex", {
+          startIndex: 0,
+          endIndex: 10
+        });
         this.$store.dispatch(
           "task/fetchTasksAllTasks",
+          this.$route.params.projects
+        );
+        this.$store.dispatch(
+          "task/fetchTotalTaskCount",
           this.$route.params.projects
         );
         break;
@@ -334,8 +498,16 @@ export default {
           );
           break;
         case "task":
+          this.$store.dispatch("task/setIndex", {
+            startIndex: 0,
+            endIndex: 10
+          });
           this.$store.dispatch(
             "task/fetchTasksAllTasks",
+            this.$route.params.projects
+          );
+          this.$store.dispatch(
+            "task/fetchTotalTaskCount",
             this.$route.params.projects
           );
           this.$store.dispatch(
@@ -362,8 +534,16 @@ export default {
             "sprints/sprint/fetchAllProjectSprints",
             this.$route.params.projects
           );
+          this.$store.dispatch("task/setIndex", {
+            startIndex: 0,
+            endIndex: 10
+          });
           this.$store.dispatch(
             "task/fetchTasksAllTasks",
+            this.$route.params.projects
+          );
+          this.$store.dispatch(
+            "task/fetchTotalTaskCount",
             this.$route.params.projects
           );
           break;
@@ -383,8 +563,16 @@ export default {
       this.$store.dispatch("project/fetchProject", this.$route.params.projects);
       switch (this.selectedTab) {
         case "task":
+          this.$store.dispatch("task/setIndex", {
+            startIndex: 0,
+            endIndex: 10
+          });
           this.$store.dispatch(
             "task/fetchTasksAllTasks",
+            this.$route.params.projects
+          );
+          this.$store.dispatch(
+            "task/fetchTotalTaskCount",
             this.$route.params.projects
           );
           this.$store.dispatch(
@@ -417,8 +605,16 @@ export default {
             "sprints/sprint/fetchAllProjectSprints",
             this.$route.params.projects
           );
+          this.$store.dispatch("task/setIndex", {
+            startIndex: 0,
+            endIndex: 10
+          });
           this.$store.dispatch(
             "task/fetchTasksAllTasks",
+            this.$route.params.projects
+          );
+          this.$store.dispatch(
+            "task/fetchTotalTaskCount",
             this.$route.params.projects
           );
           break;

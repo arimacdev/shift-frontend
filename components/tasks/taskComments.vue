@@ -109,6 +109,7 @@
                       <div @click="addReact(comment.commentId, '&#128546;')" class="emoji">&#128546;</div>
                     </v-menu>
                     <div
+                      v-if="userId == comment.commenter"
                       @click="
                         commentEditor = true;
                         selectComment(comment);
@@ -120,6 +121,7 @@
                       </span>
                     </div>
                     <div
+                      v-if="userId == comment.commenter"
                       @click="
                         deleteCommentDialog = true;
                         selectComment(comment);
@@ -190,7 +192,7 @@
                   </template>
                   <span>Emoji</span>
                 </v-tooltip>
-                <!-- <v-tooltip right>
+                <v-tooltip right>
                   <template v-slot:activator="{ on }">
                     <div v-on="on" class="emojiSection">
                       <v-menu
@@ -244,7 +246,7 @@
                     </div>
                   </template>
                   <span>Mention Someone</span>
-                </v-tooltip>-->
+                </v-tooltip>
                 <v-tooltip right>
                   <template v-slot:activator="{ on }">
                     <div v-on="on" class="fileAttachSection" style>
@@ -355,7 +357,7 @@
                 </template>
                 <span>Emoji</span>
               </v-tooltip>
-              <!-- <v-tooltip right>
+              <v-tooltip right>
                 <template v-slot:activator="{ on }">
                   <div v-on="on" class="emojiSection">
                     <v-menu
@@ -409,7 +411,7 @@
                   </div>
                 </template>
                 <span>Mention Someone</span>
-              </v-tooltip>-->
+              </v-tooltip>
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
                   <div v-on="on" class="fileAttachSection">
@@ -438,7 +440,6 @@
         </div>
       </v-col>
     </v-row>
-
     <v-pagination
       @input="getComments()"
       v-model="commentPage"
@@ -519,18 +520,24 @@ export default {
         if (this.textEditor != null) {
           this.textEditor =
             this.textEditor.slice(0, -4) +
-            "<span class=''>" +
-            "<span class='annotations'>  @" +
+            "&nbsp;<span >" +
+            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
-            "</span></p>";
+            "<span @userId='# " +
+            this.filterAssignee.id +
+            "#'></span></span>&nbsp;&nbsp;</p>";
+          this.annotations.push(this.filterAssignee.id);
         } else {
           this.textEditor =
-            "<span class=''>" +
-            "<span class='annotations'>  @" +
+            "&nbsp;<span >" +
+            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
-            "</span></p>";
+            "<span @userId='# " +
+            this.filterAssignee.id +
+            "#'></span></span>&nbsp;&nbsp;</p>";
+          this.annotations.push(this.filterAssignee.id);
         }
       }
       this.filterAssignee == "";
@@ -540,18 +547,24 @@ export default {
         if (this.updatedComment != null) {
           this.updatedComment =
             this.updatedComment.slice(0, -4) +
-            "<span class=''>" +
-            "<span class='annotations'>  @" +
+            "&nbsp;<span >" +
+            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
-            "</span></p>";
+            "<span @userId='# " +
+            this.filterAssignee.id +
+            "#'></span></span>&nbsp;&nbsp;</p>";
+          // this.annotations.push(this.filterAssignee.id);
         } else {
           this.updatedComment =
-            "<span class=''>" +
-            "<span class='annotations'>  @" +
+            "&nbsp;<span >" +
+            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
             this.filterAssignee.name +
             "</span> &nbsp;" +
-            "</span></p>";
+            "<span @userId='# " +
+            this.filterAssignee.id +
+            "#'></span></span>&nbsp;&nbsp;</p>";
+          // this.annotations.push(this.filterAssignee.id);
         }
       }
       this.filterAssignee == "";
@@ -734,6 +747,7 @@ export default {
     async addComment() {
       if (this.textEditor != "") {
         let response;
+        let mentionResponse;
         try {
           response = await this.$axios.$post(
             `/task/comment`,
@@ -749,12 +763,7 @@ export default {
               }
             }
           );
-          this.textEditor = "";
-          // this.$store.dispatch("comments/fetchTaskActivityComment", {
-          //   taskId: this.selectedTask.taskId,
-          //   startIndex: 0,
-          //   endIndex: 200
-          // });
+
           this.sendCommentedMessage(
             this.selectedTask.taskId,
             this.textEditor,
@@ -768,7 +777,36 @@ export default {
           setTimeout(() => {
             this.close();
           }, 3000);
-          console.log("update task status response", response);
+
+          console.log("textEditor", this.textEditor);
+          let mentionedUsers = [],
+            m,
+            rx = /# (.*?)#/g;
+          while ((m = rx.exec(this.textEditor)) !== null) {
+            mentionedUsers.push(m[1]);
+          }
+          console.log("result", mentionedUsers);
+
+          this.textEditor = "";
+          if (response.message == "success") {
+            mentionResponse = await this.$axios.$post(
+              `/notification/mention`,
+              {
+                commentId: response.data.commentId,
+                entityId: this.selectedTask.taskId,
+                recipients: mentionedUsers
+              },
+              {
+                headers: {
+                  userId: this.userId
+                }
+              }
+            );
+            console.log("Annotations: " + mentionResponse);
+          }
+
+          this.annotations = [];
+          // console.log("update task status response", response);
         } catch (e) {
           this.errorMessage = e.response.data;
           this.component = "error-popup";
@@ -965,17 +1003,18 @@ export default {
       typingStatus: state => state.stompClient.typingStatus,
       typingUser: state => state.stompClient.typingUser,
       selectedUser: state => state.user.selectedUser,
-      users: state => state.user.users
+      users: state => state.user.users,
+      people: state => state.task.userCompletionTasks
     }),
     assigneeArray() {
-      let AssigneeSearchList = this.users;
+      let AssigneeSearchList = this.people;
       let assigneeList = [];
       for (let index = 0; index < AssigneeSearchList.length; ++index) {
         let user = AssigneeSearchList[index];
         assigneeList.push({
-          name: user.firstName + " " + user.lastName,
-          id: user.userId,
-          img: user.profileImage
+          name: user.assigneeFirstName + " " + user.assigneeLastName,
+          id: user.assigneeId,
+          img: user.assigneeProfileImage
         });
       }
       return assigneeList;
@@ -983,6 +1022,7 @@ export default {
   },
   data: function() {
     return {
+      annotations: [],
       filterAssignee: "",
       files: null,
       commentPage: this.commentPage,
