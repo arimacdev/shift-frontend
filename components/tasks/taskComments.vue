@@ -171,7 +171,7 @@
                 >
                   <div>
                     <v-list-item-group>
-                      <div v-for="(user, index) in assigneeArray()" :key="index">
+                      <div v-for="(user, index) in assigneeUpdateArray()" :key="index">
                         <v-list-item @click="tagPeopleUpdate(user)" dense>
                           <v-list-item-avatar size="20">
                             <v-img v-if="user.img != null && user.img != ''" :src="user.img"></v-img>
@@ -690,7 +690,7 @@ export default {
         this.traverseText = this.traverseText.slice(0, -1);
         if (this.traverseText === "") {
           this.tagging = false;
-        } else this.assigneeArray();
+        } else this.assigneeUpdateArray();
       } else if (
         e.keyCode === 8 &&
         this.traversing &&
@@ -702,7 +702,7 @@ export default {
         console.log("NOT @", this.traversing, e.keyCode);
         if (this.traversing) {
           this.traverseText = this.traverseText.concat(e.key);
-          this.assigneeArray();
+          this.assigneeUpdateArray();
         }
         console.log("traversing string", this.traverseText);
         //this.tagging = false;
@@ -1348,6 +1348,44 @@ export default {
       // }
     },
     assigneeArray() {
+      let assigneeList = [];
+      if (this.traversing) {
+        const matches = this.people.filter(user => {
+          if (
+            user.assigneeFirstName
+              .toLowerCase()
+              .startsWith(this.traverseText.toLowerCase())
+          ) {
+            assigneeList.push({
+              name: user.assigneeFirstName + " " + user.assigneeLastName,
+              id: user.assigneeId,
+              img: user.assigneeProfileImage,
+              display: user.assigneeFirstName + user.assigneeLastName
+            });
+          }
+        });
+        if (assigneeList.length === 0) {
+          this.tagging = false;
+          this.traversing = false;
+          this.traverseText = "";
+        }
+        return assigneeList;
+      } else {
+        let AssigneeSearchList = this.people;
+        for (let index = 0; index < AssigneeSearchList.length; ++index) {
+          let user = AssigneeSearchList[index];
+          assigneeList.push({
+            name: user.assigneeFirstName + " " + user.assigneeLastName,
+            id: user.assigneeId,
+            img: user.assigneeProfileImage,
+            display: user.assigneeFirstName + user.assigneeLastName
+          });
+        }
+        return assigneeList;
+      }
+    },
+
+    assigneeUpdateArray() {
       let assigneeList = [];
       if (this.traversing) {
         const matches = this.people.filter(user => {
