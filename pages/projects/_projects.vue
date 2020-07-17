@@ -522,14 +522,15 @@ export default {
         case "people":
           this.overlay = true;
           Promise.all([
-            console.log("people"),
-
+            // console.log("people"),
             this.$store.dispatch(
               "task/fetchProjectUserCompletionTasks",
               this.$route.params.projects
             )
           ]).finally(() => {
-            this.overlay = false;
+            setTimeout(() => {
+              this.overlay = false;
+            }, 1000);
           });
           break;
         case "task":
@@ -571,7 +572,9 @@ export default {
               this.$route.params.projects
             )
           ]).finally(() => {
-            this.overlay = false;
+            setTimeout(() => {
+              this.overlay = false;
+            }, 1000);
           });
           break;
         case "board":
