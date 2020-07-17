@@ -250,7 +250,7 @@
                             background-color="#FFFFFF"
                             return-object
                             solo
-                            :items="assigneeArray"
+                            :items="this.assigneeArray()"
                             item-text="name"
                             item-value="id"
                             flat
@@ -375,7 +375,7 @@
               >
                 <div>
                   <v-list-item-group>
-                    <div v-for="(user, index) in this.assigneeArray" :key="index">
+                    <div v-for="(user, index) in assigneeArray()" :key="index">
                       <v-list-item @click="tagPeople(user)" dense>
                         <v-list-item-avatar size="20">
                           <v-img v-if="user.img != null && user.img != ''" :src="user.img"></v-img>
@@ -585,7 +585,113 @@ export default {
   mounted() {
     document.addEventListener("keyup", this.onKeyUp);
   },
+    data: function() {
+    return {
+      editorType: "",
+      tagging: false,
+      annotations: [],
+      filterAssignee: "",
+      files: null,
+      commentPage: this.commentPage,
+      updatedComment: "",
+      commentEditor: false,
+      selectedComment: {},
+      uploadLoading: false,
+      errorMessage: "",
+      successMessage: "",
+      deleteCommentDialog: false,
+      component: "",
+      addCommentSection: false,
+      traversing: false,
+      traverseText: "",
+
+      items: [
+        { title: "Click Me" },
+        { title: "Click Me" },
+        { title: "Click Me" },
+        { title: "Click Me 2" }
+      ],
+      insertImageSettings: {
+        display: "break"
+      },
+      userId: this.$store.state.user.userId,
+      textEditor: "",
+      height: 400,
+      placeholder: "Add a new comment",
+      quickToolbarSettings: {
+        link: [],
+        image: [
+          // 'Replace',
+          // 'Align',
+          // 'Caption',
+          // 'Remove',
+          // 'InsertLink',
+          // 'OpenImageLink',
+          // '-',
+          // 'EditImageLink',
+          // 'RemoveImageLink',
+          // 'Display',
+          // 'AltText',
+          // 'Dimension',
+        ]
+      },
+      toolbarSettings: {
+        items: [
+          "Bold",
+          "Italic",
+          "Underline",
+          "StrikeThrough",
+          // 'FontName',
+          // 'FontSize',
+          // 'FontColor',
+          // 'BackgroundColor',
+          "|",
+          "LowerCase",
+          "UpperCase",
+          "|",
+          // 'Formats',
+          // 'Alignments',
+          "OrderedList",
+          "UnorderedList",
+          "Outdent",
+          "Indent",
+          "|",
+          "CreateLink",
+          // "Image",
+          // '|',
+          "ClearFormat",
+          // 'Print',
+          "SourceCode",
+          // 'FullScreen',
+          // '|',
+          "Undo",
+          "Redo"
+        ]
+      }
+    };
+  },
+  provide: {
+    richtexteditor: [Toolbar, Link, Image, Count, HtmlEditor, QuickToolbar]
+  },
   methods: {
+       onKeyUp(e) {
+      if (e.keyCode === 50) {
+        console.log("@ Pressed", this.traversing);
+        this.traversing = true
+        this.tagging = true;
+      } else if (e.keyCode ===8 && this.traversing){
+          
+      }
+      else{
+        console.log("NOT @", this.traversing, e.key)
+        if(this.traversing){
+            this.traverseText = this.traverseText.concat(e.key);
+            this.assigneeArray();
+        }
+        console.log("traversing string", this.traverseText)
+        //this.tagging = false;
+      }
+    },
     pasteFile(e) {
       const items = (event.clipboardData || event.originalEvent.clipboardData)
         .items;
@@ -601,15 +707,6 @@ export default {
     },
     selectTextEditor(editor) {
       this.editorType = editor;
-    },
-    onKeyUp(e) {
-      if (e.keyCode === 50) {
-         console.log("@ Pressed")
-        this.tagging = true;
-      } else {
-        console.log("NOT @")
-        this.tagging = false;
-      }
     },
     tagPeopleUpdate(assignee) {
       this.tagging = false;
@@ -1182,6 +1279,40 @@ export default {
       //   stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 21);
       //   return stringDate;
       // }
+    },
+       assigneeArray() {
+      let assigneeList = [];
+      if(this.traversing){
+        const matches = this.people.filter((user)=>{
+          console.log('user', user.assigneeFirstName, this.traverseText)
+           if(user.assigneeFirstName.toLowerCase().startsWith(this.traverseText.toLowerCase())){
+              assigneeList.push({
+                  name: user.assigneeFirstName + " " + user.assigneeLastName,
+                  id: user.assigneeId,
+                  img: user.assigneeProfileImage,
+                  display: user.assigneeFirstName + user.assigneeLastName
+                });
+           }
+        })  
+        if(assigneeList.length === 0){
+        this.tagging = false;
+        this.traversing = false;
+        this.traverseText = '';
+        }
+        return assigneeList;
+      } else {
+      let AssigneeSearchList = this.people;     
+      for (let index = 0; index < AssigneeSearchList.length; ++index) {
+        let user = AssigneeSearchList[index];
+        assigneeList.push({
+          name: user.assigneeFirstName + " " + user.assigneeLastName,
+          id: user.assigneeId,
+          img: user.assigneeProfileImage,
+          display: user.assigneeFirstName + user.assigneeLastName
+        });
+      }
+      return assigneeList;
+      }
     }
   },
   computed: {
@@ -1196,106 +1327,8 @@ export default {
       users: state => state.user.users,
       people: state => state.task.userCompletionTasks
     }),
-    assigneeArray() {
-      let AssigneeSearchList = this.people;
-      let assigneeList = [];
-      for (let index = 0; index < AssigneeSearchList.length; ++index) {
-        let user = AssigneeSearchList[index];
-        assigneeList.push({
-          name: user.assigneeFirstName + " " + user.assigneeLastName,
-          id: user.assigneeId,
-          img: user.assigneeProfileImage,
-          display: user.assigneeFirstName + user.assigneeLastName
-        });
-      }
-      return assigneeList;
-    }
+ 
   },
-  data: function() {
-    return {
-      editorType: "",
-      tagging: false,
-      annotations: [],
-      filterAssignee: "",
-      files: null,
-      commentPage: this.commentPage,
-      updatedComment: "",
-      commentEditor: false,
-      selectedComment: {},
-      uploadLoading: false,
-      errorMessage: "",
-      successMessage: "",
-      deleteCommentDialog: false,
-      component: "",
-      addCommentSection: false,
 
-      items: [
-        { title: "Click Me" },
-        { title: "Click Me" },
-        { title: "Click Me" },
-        { title: "Click Me 2" }
-      ],
-      insertImageSettings: {
-        display: "break"
-      },
-      userId: this.$store.state.user.userId,
-      textEditor: "",
-      height: 400,
-      placeholder: "Add a new comment",
-      quickToolbarSettings: {
-        link: [],
-        image: [
-          // 'Replace',
-          // 'Align',
-          // 'Caption',
-          // 'Remove',
-          // 'InsertLink',
-          // 'OpenImageLink',
-          // '-',
-          // 'EditImageLink',
-          // 'RemoveImageLink',
-          // 'Display',
-          // 'AltText',
-          // 'Dimension',
-        ]
-      },
-      toolbarSettings: {
-        items: [
-          "Bold",
-          "Italic",
-          "Underline",
-          "StrikeThrough",
-          // 'FontName',
-          // 'FontSize',
-          // 'FontColor',
-          // 'BackgroundColor',
-          "|",
-          "LowerCase",
-          "UpperCase",
-          "|",
-          // 'Formats',
-          // 'Alignments',
-          "OrderedList",
-          "UnorderedList",
-          "Outdent",
-          "Indent",
-          "|",
-          "CreateLink",
-          // "Image",
-          // '|',
-          "ClearFormat",
-          // 'Print',
-          "SourceCode",
-          // 'FullScreen',
-          // '|',
-          "Undo",
-          "Redo"
-        ]
-      }
-    };
-  },
-  provide: {
-    richtexteditor: [Toolbar, Link, Image, Count, HtmlEditor, QuickToolbar]
-  }
 };
 </script>
