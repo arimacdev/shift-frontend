@@ -250,7 +250,7 @@
                             background-color="#FFFFFF"
                             return-object
                             solo
-                            :items="this.assigneeArray()"
+                            :items="loadAssigneeArray"
                             item-text="name"
                             item-value="id"
                             flat
@@ -445,7 +445,7 @@
                           background-color="#FFFFFF"
                           return-object
                           solo
-                          :items="assigneeArray"
+                          :items="loadAssigneeArray"
                           item-text="name"
                           item-value="id"
                           flat
@@ -547,7 +547,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-overlay :value="overlay" color="black">
+    <v-overlay z-index="1008" :value="overlay" color="black">
       <progress-loading />
     </v-overlay>
     <div @click="close" class="taskPopupPopups">
@@ -686,9 +686,9 @@ export default {
         this.$refs.rteObj.ej2Instances.getText().slice(-1)
       );
       const currentKey = this.$refs.rteObj.ej2Instances.getText().slice(-1);
-      if (currentKey === '@') {
+      if (currentKey === "@") {
         console.log("@ Pressed", this.traversing, e.keyCode);
-        this.traversing = true
+        this.traversing = true;
         this.tagging = true;
       } else if (e.keyCode ===8 && this.traversing){
           this.traverseText = this.traverseText.slice(0,-1);
@@ -760,8 +760,16 @@ export default {
       // console.log("TEXT EDIT: " + this.textEditor);
       this.tagging = false;
       this.traversing = false;
-      this.traverseText = ''
-      this.textEditor = this.textEditor.slice(0, -1);
+      // -this.traverseText.length
+      if (this.traverseText.length == 0) {
+        this.textEditor = this.textEditor.slice(0, -1);
+      } else {
+        this.textEditor = this.textEditor.slice(
+          0,
+          -this.traverseText.length - 1
+        );
+      }
+
       if (assignee != null) {
         if (this.textEditor != null) {
           this.textEditor =
@@ -787,6 +795,8 @@ export default {
           assignee.push(assignee.id);
         }
       }
+
+      this.traverseText = "";
       this.filterAssignee == "";
     },
     mentionSomeone() {
@@ -796,7 +806,7 @@ export default {
             this.textEditor.slice(0, -4) +
             "&nbsp;<span >" +
             "<span >   @" +
-            this.filterAssignee.name +
+            this.filterAssignee.display +
             "</span> &nbsp;" +
             "<span @userId='# " +
             this.filterAssignee.id +
@@ -806,7 +816,7 @@ export default {
           this.textEditor =
             "&nbsp;<span >" +
             "<span >   @" +
-            this.filterAssignee.name +
+            this.filterAssignee.display +
             "</span> &nbsp;" +
             "<span @userId='# " +
             this.filterAssignee.id +
@@ -822,8 +832,8 @@ export default {
           this.updatedComment =
             this.updatedComment.slice(0, -4) +
             "&nbsp;<span >" +
-            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
-            this.filterAssignee.name +
+            "<span >   @" +
+            this.filterAssignee.display +
             "</span> &nbsp;" +
             "<span @userId='# " +
             this.filterAssignee.id +
@@ -832,8 +842,8 @@ export default {
         } else {
           this.updatedComment =
             "&nbsp;<span >" +
-            "<span tabindex='-1' class='v-chip--select v-chip v-chip--clickable v-chip--no-color theme--light v-size--small'>   @" +
-            this.filterAssignee.name +
+            "<span >   @" +
+            this.filterAssignee.display +
             "</span> &nbsp;" +
             "<span @userId='# " +
             this.filterAssignee.id +
@@ -1354,7 +1364,21 @@ export default {
       selectedUser: state => state.user.selectedUser,
       users: state => state.user.users,
       people: state => state.task.userCompletionTasks
-    })
+    }),
+    loadAssigneeArray() {
+      let assigneeList = [];
+      let AssigneeSearchList = this.people;
+      for (let index = 0; index < AssigneeSearchList.length; ++index) {
+        let user = AssigneeSearchList[index];
+        assigneeList.push({
+          name: user.assigneeFirstName + " " + user.assigneeLastName,
+          id: user.assigneeId,
+          img: user.assigneeProfileImage,
+          display: user.assigneeFirstName + user.assigneeLastName
+        });
+      }
+      return assigneeList;
+    }
   }
 };
 </script>
