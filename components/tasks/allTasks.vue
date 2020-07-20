@@ -869,7 +869,7 @@ export default {
             '" AND ';
         }
       }
-      this.orderByQuery = "ORDER BY projectName ASC";
+      this.orderByQuery = "ORDER BY FIELD(taskStatus, 'closed') ASC,  taskCreatedAt DESC";
 
       if (this.nameOfTask != "" && this.nameOfTask != null) {
         this.taskNameQuery =
