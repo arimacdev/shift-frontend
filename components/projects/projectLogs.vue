@@ -420,6 +420,22 @@
                   <span>{{ log.updatedvalue.displayValue }}</span>
                 </v-list-item-subtitle>
 
+                <!-- ------- for project weight -------- -->
+
+                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'PROJECT_WEIGHT'">
+                  <span v-if="log.previousValue.displayValue == 'story'">
+                    Story Point
+                    &nbsp; &rarr; &nbsp;
+                  </span>
+                  <span v-else-if="log.previousValue.displayValue == 'time'">
+                    Time
+                    &nbsp; &rarr; &nbsp;
+                  </span>
+
+                  <span v-if="log.updatedvalue.displayValue == 'story'">Story Point</span>
+                  <span v-else-if="log.updatedvalue.displayValue == 'time'">Time</span>
+                </v-list-item-subtitle>
+
                 <!-- ------- for files -------- -->
 
                 <v-list-item-subtitle
@@ -616,6 +632,9 @@ export default {
           break;
         case "END_DATE":
           return "Project End Date";
+          break;
+        case "PROJECT_WEIGHT":
+          return "Project Weight";
           break;
         case "ADD_USER":
           return "Project User";
