@@ -269,9 +269,10 @@
                 <br />
                 <span class="alertPopupTitle">Update weight type</span>
                 <br />
+                <br />
                 <span
                   class="alertPopupText"
-                >Are you sure? Your data related to weight allocations of tasks will be lost and cannot recover.</span>
+                >Updating project Weight type will remove already existing weight allocation from all tasks of the project</span>
                 <br />
                 <br />
                 <br />
