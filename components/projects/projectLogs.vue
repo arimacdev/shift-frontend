@@ -189,6 +189,43 @@
                   <span>{{ log.updatedvalue.displayValue }}</span>
                 </v-list-item-subtitle>
 
+                <!-- ------- for actual weight type -------- -->
+
+                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ACTUAL_WEIGHT'">
+                  <span>
+                    {{
+                    log.previousValue.displayValue
+                    }}
+                    &nbsp; &rarr; &nbsp;
+                  </span>
+
+                  <span>
+                    {{
+                    log.updatedvalue.displayValue
+                    }}
+                  </span>
+                </v-list-item-subtitle>
+
+                <!-- ------- for estimated weight type -------- -->
+
+                <v-list-item-subtitle
+                  class="logSubtitle"
+                  v-if="log.updateType == 'ESTIMATED_WEIGHT'"
+                >
+                  <span>
+                    {{
+                    log.previousValue.displayValue
+                    }}
+                    &nbsp; &rarr; &nbsp;
+                  </span>
+
+                  <span>
+                    {{
+                    log.updatedvalue.displayValue
+                    }}
+                  </span>
+                </v-list-item-subtitle>
+
                 <!-- ------- for task type -------- -->
 
                 <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ISSUE_TYPE'">
@@ -554,6 +591,12 @@ export default {
           break;
         case "TASK_SPRINT":
           return "Task Sprint";
+          break;
+        case "ACTUAL_WEIGHT":
+          return "Actual Weight";
+          break;
+        case "ESTIMATED_WEIGHT":
+          return "Estimated Weight";
           break;
 
         case "FILE":

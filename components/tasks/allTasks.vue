@@ -144,7 +144,6 @@
             class
             @keyup.enter="addTask(null, 'general')"
             clearable
-            hint="Type a task name and hit enter"
           ></v-text-field>
         </v-form>
       </div>
@@ -869,7 +868,8 @@ export default {
             '" AND ';
         }
       }
-      this.orderByQuery = "ORDER BY FIELD(taskStatus, 'closed') ASC,  taskCreatedAt DESC";
+      this.orderByQuery =
+        "ORDER BY FIELD(taskStatus, 'closed') ASC,  taskCreatedAt DESC";
 
       if (this.nameOfTask != "" && this.nameOfTask != null) {
         this.taskNameQuery =
@@ -1334,6 +1334,7 @@ export default {
   },
   computed: {
     ...mapState({
+      fetchProject: state => state.project.project,
       allTaskCount: state => state.task.totalCount,
       people: state => state.task.userCompletionTasks,
       projectAllTasks: state => state.task.allTasks,
