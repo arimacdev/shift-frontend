@@ -171,7 +171,7 @@
                 >
                   <div>
                     <v-list-item-group>
-                      <div v-for="(user, index) in assigneeArray" :key="index">
+                      <div v-for="(user, index) in assigneeArray()" :key="index">
                         <v-list-item @click="tagPeopleUpdate(user)" dense>
                           <v-list-item-avatar size="20">
                             <v-img v-if="user.img != null && user.img != ''" :src="user.img"></v-img>
@@ -250,7 +250,7 @@
                             background-color="#FFFFFF"
                             return-object
                             solo
-                            :items="assigneeArray"
+                            :items="loadAssigneeArray"
                             item-text="name"
                             item-value="id"
                             flat
@@ -375,7 +375,7 @@
               >
                 <div>
                   <v-list-item-group>
-                    <div v-for="(user, index) in this.assigneeArray" :key="index">
+                    <div v-for="(user, index) in assigneeArray()" :key="index">
                       <v-list-item @click="tagPeople(user)" dense>
                         <v-list-item-avatar size="20">
                           <v-img v-if="user.img != null && user.img != ''" :src="user.img"></v-img>
@@ -445,7 +445,7 @@
                           background-color="#FFFFFF"
                           return-object
                           solo
-                          :items="assigneeArray"
+                          :items="loadAssigneeArray"
                           item-text="name"
                           item-value="id"
                           flat
@@ -547,6 +547,9 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-overlay z-index="1008" :value="overlay" color="black">
+      <progress-loading />
+    </v-overlay>
     <div @click="close" class="taskPopupPopups">
       <component
         v-bind:is="component"
@@ -562,6 +565,7 @@ import { mapState } from "vuex";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import VEmojiPicker from "v-emoji-picker";
+import Progress from "~/components/popups/progress";
 import {
   RichTextEditorPlugin,
   Toolbar,
@@ -574,6 +578,7 @@ import {
 export default {
   components: {
     "success-popup": SuccessPopup,
+    "progress-loading": Progress,
     "error-popup": ErrorPopup,
     VEmojiPicker
   },
@@ -585,7 +590,151 @@ export default {
   mounted() {
     document.addEventListener("keyup", this.onKeyUp);
   },
+  data: function() {
+    return {
+      overlay: false,
+      editorType: "",
+      tagging: false,
+      annotations: [],
+      filterAssignee: "",
+      files: null,
+      commentPage: this.commentPage,
+      updatedComment: "",
+      commentEditor: false,
+      selectedComment: {},
+      uploadLoading: false,
+      errorMessage: "",
+      successMessage: "",
+      deleteCommentDialog: false,
+      component: "",
+      addCommentSection: false,
+      traversing: false,
+      traverseText: "",
+
+      items: [
+        { title: "Click Me" },
+        { title: "Click Me" },
+        { title: "Click Me" },
+        { title: "Click Me 2" }
+      ],
+      insertImageSettings: {
+        display: "break"
+      },
+      userId: this.$store.state.user.userId,
+      textEditor: "",
+      height: 400,
+      placeholder: "Add a new comment",
+      quickToolbarSettings: {
+        link: [],
+        image: [
+          // 'Replace',
+          // 'Align',
+          // 'Caption',
+          // 'Remove',
+          // 'InsertLink',
+          // 'OpenImageLink',
+          // '-',
+          // 'EditImageLink',
+          // 'RemoveImageLink',
+          // 'Display',
+          // 'AltText',
+          // 'Dimension',
+        ]
+      },
+      toolbarSettings: {
+        items: [
+          "Bold",
+          "Italic",
+          "Underline",
+          "StrikeThrough",
+          // 'FontName',
+          // 'FontSize',
+          // 'FontColor',
+          // 'BackgroundColor',
+          "|",
+          "LowerCase",
+          "UpperCase",
+          "|",
+          // 'Formats',
+          // 'Alignments',
+          "OrderedList",
+          "UnorderedList",
+          "Outdent",
+          "Indent",
+          "|",
+          "CreateLink",
+          // "Image",
+          // '|',
+          "ClearFormat",
+          // 'Print',
+          "SourceCode",
+          // 'FullScreen',
+          // '|',
+          "Undo",
+          "Redo"
+        ]
+      }
+    };
+  },
+  provide: {
+    richtexteditor: [Toolbar, Link, Image, Count, HtmlEditor, QuickToolbar]
+  },
   methods: {
+    onKeyUp(e) {
+      // console.log("--------------------------------", e.keyCode);
+      // if (e.keyCode === 50) {
+      //   console.log("@ Pressed", this.traversing, e.keyCode);
+      //   this.traversing = true;
+      //   this.tagging = true;
+      // } else if (e.keyCode === 8 && this.traversing) {
+      //   this.traverseText = this.traverseText.slice(0, -1);
+      //   if (this.traverseText === "") {
+      //     this.tagging = false;
+      //   } else this.assigneeArray();
+      // } else if (
+      //   e.keyCode === 8 &&
+      //   this.traversing &&
+      //   this.traverseText === ""
+      // ) {
+      //   this.traversing = false;
+      //   this.tagging = false;
+      // } else if (e.keyCode >= 60 && e.keyCode <= 90) {
+      //   console.log("NOT @", this.traversing, e.keyCode);
+      //   if (this.traversing) {
+      //     this.traverseText = this.traverseText.concat(e.key);
+      //     this.assigneeArray();
+      //   }
+      //   console.log("traversing string", this.traverseText);
+      //   //this.tagging = false;
+      // }
+
+      const currentKey = this.$refs.rteObj.ej2Instances.getText().slice(-1);
+      if (currentKey === "@") {
+        console.log("@ Pressed", this.traversing, e.keyCode);
+        this.traversing = true;
+        this.tagging = true;
+      } else if (e.keyCode === 8 && this.traversing) {
+        this.traverseText = this.traverseText.slice(0, -1);
+        if (this.traverseText === "") {
+          this.tagging = false;
+        } else this.assigneeArray();
+      } else if (
+        e.keyCode === 8 &&
+        this.traversing &&
+        this.traverseText === ""
+      ) {
+        this.traversing = false;
+        this.tagging = false;
+      } else if (e.keyCode >= 60 && e.keyCode <= 90) {
+        console.log("NOT @", this.traversing, e.keyCode);
+        if (this.traversing) {
+          this.traverseText = this.traverseText.concat(e.key);
+          this.assigneeArray();
+        }
+        console.log("traversing string", this.traverseText);
+        //this.tagging = false;
+      }
+    },
     pasteFile(e) {
       const items = (event.clipboardData || event.originalEvent.clipboardData)
         .items;
@@ -602,25 +751,23 @@ export default {
     selectTextEditor(editor) {
       this.editorType = editor;
     },
-    onKeyUp(e) {
-      if (e.keyCode === 50) {
-        this.tagging = true;
-        // console.log("KEYUPENTER!" + e.keyCode);
-        // this.$refs.defaultRTE.ej2Instances.focusIn();
-      } else {
-        this.tagging = false;
-      }
-    },
     tagPeopleUpdate(assignee) {
       this.tagging = false;
 
-      this.updatedComment = this.updatedComment.slice(0, -1);
+      if (this.traverseText.length == 0) {
+        this.updatedComment = this.updatedComment.slice(0, -1);
+      } else {
+        this.updatedComment = this.updatedComment.slice(
+          0,
+          -this.traverseText.length - 1
+        );
+      }
       if (assignee != null) {
         if (this.updatedComment != null) {
           this.updatedComment =
             this.updatedComment.slice(0, -4) +
             "&nbsp;<span >" +
-            "<span '>   @" +
+            "<span >   @" +
             assignee.display +
             "</span> &nbsp;" +
             "<span @userId='# " +
@@ -630,7 +777,7 @@ export default {
         } else {
           this.updatedComment =
             "&nbsp;<span >" +
-            "<span '>   @" +
+            "<span >   @" +
             assignee.display +
             "</span> &nbsp;" +
             "<span @userId='# " +
@@ -644,7 +791,17 @@ export default {
     tagPeople(assignee) {
       // console.log("TEXT EDIT: " + this.textEditor);
       this.tagging = false;
-      this.textEditor = this.textEditor.slice(0, -1);
+      this.traversing = false;
+      // -this.traverseText.length
+      if (this.traverseText.length == 0) {
+        this.textEditor = this.textEditor.slice(0, -1);
+      } else {
+        this.textEditor = this.textEditor.slice(
+          0,
+          -this.traverseText.length - 1
+        );
+      }
+
       if (assignee != null) {
         if (this.textEditor != null) {
           this.textEditor =
@@ -670,6 +827,8 @@ export default {
           assignee.push(assignee.id);
         }
       }
+
+      this.traverseText = "";
       this.filterAssignee == "";
     },
     mentionSomeone() {
@@ -679,7 +838,7 @@ export default {
             this.textEditor.slice(0, -4) +
             "&nbsp;<span >" +
             "<span >   @" +
-            this.filterAssignee.name +
+            this.filterAssignee.display +
             "</span> &nbsp;" +
             "<span @userId='# " +
             this.filterAssignee.id +
@@ -689,7 +848,7 @@ export default {
           this.textEditor =
             "&nbsp;<span >" +
             "<span >   @" +
-            this.filterAssignee.name +
+            this.filterAssignee.display +
             "</span> &nbsp;" +
             "<span @userId='# " +
             this.filterAssignee.id +
@@ -707,7 +866,7 @@ export default {
             this.updatedComment.slice(0, -4) +
             "&nbsp;<span >" +
             "<span >   @" +
-            this.filterAssignee.name +
+            this.filterAssignee.display +
             "</span> &nbsp;" +
             "<span @userId='# " +
             this.filterAssignee.id +
@@ -717,7 +876,7 @@ export default {
           this.updatedComment =
             "&nbsp;<span >" +
             "<span >   @" +
-            this.filterAssignee.name +
+            this.filterAssignee.display +
             "</span> &nbsp;" +
             "<span @userId='# " +
             this.filterAssignee.id +
@@ -743,16 +902,21 @@ export default {
       }
     },
     getComments() {
+      this.overlay = true;
       this.$store.dispatch(
         "comments/fetchTaskCommentLength",
         this.selectedTask.taskId
       );
 
-      this.$store.dispatch("comments/fetchTaskActivityComment", {
-        taskId: this.selectedTask.taskId,
-        startIndex: this.commentPage * 10 - 10,
-        endIndex: this.commentPage * 10
-      });
+      this.$store
+        .dispatch("comments/fetchTaskActivityComment", {
+          taskId: this.selectedTask.taskId,
+          startIndex: this.commentPage * 10 - 10,
+          endIndex: this.commentPage * 10
+        })
+        .finally(() => {
+          this.overlay = false;
+        });
     },
     showTypingStatus() {
       // console.log("typing", this.typingStatus);
@@ -1183,6 +1347,43 @@ export default {
       //   stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 21);
       //   return stringDate;
       // }
+    },
+    assigneeArray() {
+      let assigneeList = [];
+      if (this.traversing) {
+        const matches = this.people.filter(user => {
+          if (
+            user.assigneeFirstName
+              .toLowerCase()
+              .startsWith(this.traverseText.toLowerCase())
+          ) {
+            assigneeList.push({
+              name: user.assigneeFirstName + " " + user.assigneeLastName,
+              id: user.assigneeId,
+              img: user.assigneeProfileImage,
+              display: user.assigneeFirstName + user.assigneeLastName
+            });
+          }
+        });
+        if (assigneeList.length === 0) {
+          this.tagging = false;
+          this.traversing = false;
+          this.traverseText = "";
+        }
+        return assigneeList;
+      } else {
+        let AssigneeSearchList = this.people;
+        for (let index = 0; index < AssigneeSearchList.length; ++index) {
+          let user = AssigneeSearchList[index];
+          assigneeList.push({
+            name: user.assigneeFirstName + " " + user.assigneeLastName,
+            id: user.assigneeId,
+            img: user.assigneeProfileImage,
+            display: user.assigneeFirstName + user.assigneeLastName
+          });
+        }
+        return assigneeList;
+      }
     }
   },
   computed: {
@@ -1197,9 +1398,9 @@ export default {
       users: state => state.user.users,
       people: state => state.task.userCompletionTasks
     }),
-    assigneeArray() {
-      let AssigneeSearchList = this.people;
+    loadAssigneeArray() {
       let assigneeList = [];
+      let AssigneeSearchList = this.people;
       for (let index = 0; index < AssigneeSearchList.length; ++index) {
         let user = AssigneeSearchList[index];
         assigneeList.push({
@@ -1211,92 +1412,6 @@ export default {
       }
       return assigneeList;
     }
-  },
-  data: function() {
-    return {
-      editorType: "",
-      tagging: false,
-      annotations: [],
-      filterAssignee: "",
-      files: null,
-      commentPage: this.commentPage,
-      updatedComment: "",
-      commentEditor: false,
-      selectedComment: {},
-      uploadLoading: false,
-      errorMessage: "",
-      successMessage: "",
-      deleteCommentDialog: false,
-      component: "",
-      addCommentSection: false,
-
-      items: [
-        { title: "Click Me" },
-        { title: "Click Me" },
-        { title: "Click Me" },
-        { title: "Click Me 2" }
-      ],
-      insertImageSettings: {
-        display: "break"
-      },
-      userId: this.$store.state.user.userId,
-      textEditor: "",
-      height: 400,
-      placeholder: "Add a new comment",
-      quickToolbarSettings: {
-        link: [],
-        image: [
-          // 'Replace',
-          // 'Align',
-          // 'Caption',
-          // 'Remove',
-          // 'InsertLink',
-          // 'OpenImageLink',
-          // '-',
-          // 'EditImageLink',
-          // 'RemoveImageLink',
-          // 'Display',
-          // 'AltText',
-          // 'Dimension',
-        ]
-      },
-      toolbarSettings: {
-        items: [
-          "Bold",
-          "Italic",
-          "Underline",
-          "StrikeThrough",
-          // 'FontName',
-          // 'FontSize',
-          // 'FontColor',
-          // 'BackgroundColor',
-          "|",
-          "LowerCase",
-          "UpperCase",
-          "|",
-          // 'Formats',
-          // 'Alignments',
-          "OrderedList",
-          "UnorderedList",
-          "Outdent",
-          "Indent",
-          "|",
-          "CreateLink",
-          // "Image",
-          // '|',
-          "ClearFormat",
-          // 'Print',
-          "SourceCode",
-          // 'FullScreen',
-          // '|',
-          "Undo",
-          "Redo"
-        ]
-      }
-    };
-  },
-  provide: {
-    richtexteditor: [Toolbar, Link, Image, Count, HtmlEditor, QuickToolbar]
   }
 };
 </script>
