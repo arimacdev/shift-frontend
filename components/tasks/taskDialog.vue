@@ -713,7 +713,7 @@
                                 :items="storyPoints"
                                 flat
                                 label="Estimated"
-                                @change="changeAssignee"
+                                @change="changeEstimatedWeight()"
                               ></v-select>
                             </v-col>
                             <v-col md="6">
@@ -723,7 +723,7 @@
                                 :items="storyPoints"
                                 flat
                                 label="Actual"
-                                @change="changeAssignee"
+                                @change="changeActualWeight()"
                               ></v-select>
                             </v-col>
                           </v-row>
@@ -1094,6 +1094,89 @@ export default {
     };
   },
   methods: {
+    // ------ update estimated weight ---------
+    async changeEstimatedWeight() {
+      this.waiting = true;
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
+          {
+            estimatedWeight: this.updatedEstimatedWeight
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
+        this.component = "success-popup";
+        this.successMessage = "Estimated Weight successfully updated";
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+
+        this.userExists = true;
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        // console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        console.log("Error updating a status", e);
+      }
+    },
+
+    async changeActualWeight() {
+      this.waiting = true;
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
+          {
+            actualWeight: this.updatedActualWeight
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
+        this.component = "success-popup";
+        this.successMessage = "Actual Weight successfully updated";
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+
+        this.userExists = true;
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        // console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        console.log("Error updating a status", e);
+      }
+    },
+
     taskStatusFormatting(status) {
       switch (status) {
         case "pending":
