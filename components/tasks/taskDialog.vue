@@ -693,13 +693,13 @@
                     <v-divider class="datePickerDivider"></v-divider>
 
                     <!-- --------- weight section ---------- -->
-                    <v-list-item>
+                    <v-list-item v-if="this.fetchProject.weightMeasure == 'story'">
                       <v-list-item-icon
                         style="background-color: #0BAFFF; padding: 10px; border-radius: 50%"
                       >
                         <v-icon size="25" color="#FFFFFF">mdi-weight-lifter</v-icon>
                       </v-list-item-icon>
-                      <v-list-item-content v-if="this.fetchProject.weightMeasure == 'story'">
+                      <v-list-item-content>
                         <v-list-item-subtitle class="rightColumnItemsSubTitle">
                           Task weight -
                           <strong>Story Points</strong>
@@ -731,7 +731,7 @@
                       </v-list-item-content>
                     </v-list-item>
 
-                    <v-divider class="datePickerDivider"></v-divider>
+                    <v-divider class></v-divider>
                     <!-- ----------- Files section --------- -->
                     <v-list-item>
                       <v-list-item-icon
