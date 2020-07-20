@@ -561,26 +561,6 @@
                       <v-list-item-content>
                         <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
                         <v-list-item-title>
-                          <!-- <select
-                          v-model="taskAssignee"
-                          @change="changeAssignee"
-                          class="rightColumnItemsText"
-                        >
-                          <option value disabled>
-                            {{ selectedTaskUser.firstName }}
-                            {{ selectedTaskUser.lastName }}
-                          </option>
-                          <option
-                            class="tabListItemsText"
-                            v-for="(taskAssignee, index) in peopleList"
-                            :key="index"
-                            :value="taskAssignee.assigneeId"
-                          >
-                            {{ taskAssignee.assigneeFirstName }}
-                            {{ taskAssignee.assigneeLastName }}
-                          </option>
-                          </select>-->
-
                           <v-select
                             style="margin-left: -10px"
                             dense
@@ -709,6 +689,46 @@
                           <span>Select date and click to update</span>
                         </v-tooltip>
                       </v-list-item-action>
+                    </v-list-item>
+                    <v-divider class="datePickerDivider"></v-divider>
+
+                    <!-- --------- weight section ---------- -->
+                    <v-list-item>
+                      <v-list-item-icon
+                        style="background-color: #0BAFFF; padding: 10px; border-radius: 50%"
+                      >
+                        <v-icon size="25" color="#FFFFFF">mdi-weight-lifter</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-content v-if="this.fetchProject.weightMeasure == 'story'">
+                        <v-list-item-subtitle class="rightColumnItemsSubTitle">
+                          Task weight -
+                          <strong>Story Points</strong>
+                        </v-list-item-subtitle>
+                        <v-list-item-title>
+                          <v-row>
+                            <v-col md="6">
+                              <v-select
+                                dense
+                                v-model="estimatedWeight"
+                                :items="storyPoints"
+                                flat
+                                label="Estimated"
+                                @change="changeAssignee"
+                              ></v-select>
+                            </v-col>
+                            <v-col md="6">
+                              <v-select
+                                dense
+                                v-model="actualWeight"
+                                :items="storyPoints"
+                                flat
+                                label="Actual"
+                                @change="changeAssignee"
+                              ></v-select>
+                            </v-col>
+                          </v-row>
+                        </v-list-item-title>
+                      </v-list-item-content>
                     </v-list-item>
 
                     <v-divider class="datePickerDivider"></v-divider>
@@ -924,7 +944,7 @@ export default {
     "add-parent-task": AddParentTask,
     "add-child-task": AddChildTask,
     "progress-loading": Progress,
-    "waiting": Waiting,
+    waiting: Waiting,
     "task-logs": TaskLogs,
     "task-comments": TaskComments
   },
@@ -934,6 +954,8 @@ export default {
   },
   data() {
     return {
+      updatedEstimatedWeight: "",
+      updatedActualWeight: "",
       selectedTab: "comments",
       activity: "comments",
       page: 1,
@@ -1066,7 +1088,9 @@ export default {
         { name: "In progress", id: "inprogress" },
         { name: "Completed", id: "completed" },
         { name: "Closed", id: "closed" }
-      ]
+      ],
+
+      storyPoints: [0, 0.5, 1, 2, 3, 5, 8, 13, 21]
     };
   },
   methods: {
@@ -1946,6 +1970,30 @@ export default {
       set(value) {
         // console.log("updated task reminder ->", value);
         this.updatedTask.taskRemindOnDate = value;
+      }
+    },
+    estimatedWeight: {
+      get() {
+        if (this.updatedEstimatedWeight == "") {
+          return this.selectedTask.estimatedWeight;
+        } else {
+          return this.updatedEstimatedWeight;
+        }
+      },
+      set(estimatedWeight) {
+        this.updatedEstimatedWeight = estimatedWeight;
+      }
+    },
+    actualWeight: {
+      get() {
+        if (this.updatedActualWeight == "") {
+          return this.selectedTask.actualWeight;
+        } else {
+          return this.updatedActualWeight;
+        }
+      },
+      set(actualWeight) {
+        this.updatedActualWeight = actualWeight;
       }
     }
   }
