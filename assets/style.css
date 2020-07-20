@@ -113,7 +113,6 @@
   height: 85vh;
 }
 .addProjectTitle {
-  font-family: CircularStd;
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -559,16 +558,26 @@
 }
 .deleteProjectButton {
   background-color: #ff6161 !important;
-  width: 250px;
-  margin-top: 70px;
-  position: absolute;
-  right: 30px;
-  margin-bottom: 100px;
+  width: 325px;
+  margin-top: 20px;
+  /* position: absolute; */
+  margin-right: 15px;
+  margin-bottom: 40px;
 }
 .addProjectButton {
-  position: absolute;
-  right: 30px;
-  width: 250px;
+  /* position: absolute; */
+  right: 10px;
+  margin-right: 15px;
+  width: 325px;
+}
+.addProjectButtonUpdate {
+  /* position: absolute; */
+  margin-right: 15px;
+  width: 320px;
+  margin-left: 0px;
+}
+.updateWeightTypeDiv {
+  margin-bottom: 100px;
 }
 .taskTitleDiv {
   width: 100%;

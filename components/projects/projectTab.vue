@@ -192,34 +192,118 @@
                       <!-- <input type="text" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='text')" v-model="projectEndDate" placeholder="Project end date" class="formElements"> -->
                     </v-col>
                   </v-row>
+                  <v-row>
+                    <v-col>
+                      <div class="submitButtonEdit addProjectButton">
+                        <v-list-item @click="editProject()" dark>
+                          <v-list-item-action>
+                            <v-icon size="20" color>mdi-plus-circle</v-icon>
+                          </v-list-item-action>
+                          <v-list-item-content class="buttonText">
+                            <v-list-item-title class="bodyWiew">Save</v-list-item-title>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </div>
 
-                  <div class="submitButtonEdit addProjectButton">
-                    <v-list-item @click="editProject()" dark>
-                      <v-list-item-action>
-                        <v-icon size="20" color>mdi-plus-circle</v-icon>
-                      </v-list-item-action>
-                      <v-list-item-content class="buttonText">
-                        <v-list-item-title class="bodyWiew">Save</v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </div>
-
-                  <div class="submitButton deleteProjectButton">
-                    <v-list-item @click="projectDialog = true" dark>
-                      <v-list-item-action>
-                        <v-icon size="20" color>mdi-trash-can-outline</v-icon>
-                      </v-list-item-action>
-                      <v-list-item-content class="buttonText">
-                        <v-list-item-title class="bodyWiew">Delete Project</v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </div>
+                      <div class="submitButton deleteProjectButton">
+                        <v-list-item @click="projectDialog = true" dark>
+                          <v-list-item-action>
+                            <v-icon size="20" color>mdi-trash-can-outline</v-icon>
+                          </v-list-item-action>
+                          <v-list-item-content class="buttonText">
+                            <v-list-item-title class="bodyWiew">Delete Project</v-list-item-title>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </div>
+                    </v-col>
+                  </v-row>
+                  <v-divider></v-divider>
+                  <v-row class="mb-12 formRow projectDrawer" no-gutters>
+                    <v-col sm="12" md="12">
+                      <div class>
+                        <!-- <input t v-model="projectStatus" placeholder="Project status" class="formElements"> -->
+                        <div class="editProjectLabels">Weight type*</div>
+                        <select v-model="weightType" class="formElements">
+                          <!-- <option value="" disabled>{{ this.projectStatus }}</option> -->
+                          <option key="story" value="story">Story Points</option>
+                          <option key="time" value="time">Time</option>
+                        </select>
+                      </div>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col>
+                      <v-btn
+                        :disabled="this.updateProject.weightMeasure == ''"
+                        depressed
+                        height="50px"
+                        class="submitButtonEdit updateWeightTypeDiv addProjectButtonUpdate text-capitalize"
+                      >
+                        <v-list-item @click="weightUpdateDialog = true" dark>
+                          <v-list-item-action>
+                            <v-icon size="20" color>mdi-alert-outline</v-icon>
+                          </v-list-item-action>
+                          <v-list-item-content class="buttonText">
+                            <v-list-item-title class="bodyWiew">Update weight type</v-list-item-title>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </v-btn>
+                    </v-col>
+                  </v-row>
                 </form>
               </div>
             </v-navigation-drawer>
           </div>
 
           <!-- --------------- end side bar --------------------- -->
+          <!-- --------------------- update weight popup --------------- -->
+
+          <v-dialog v-model="weightUpdateDialog" max-width="380">
+            <v-card>
+              <div class="popupConfirmHeadline">
+                <v-icon
+                  class="deletePopupIcon"
+                  size="60"
+                  color="deep-orange lighten-1"
+                >mdi-alert-outline</v-icon>
+                <br />
+                <span class="alertPopupTitle">Update weight type</span>
+                <br />
+                <span
+                  class="alertPopupText"
+                >Are you sure? Your data related to weight allocations of tasks will be lost and cannot recover.</span>
+                <br />
+                <br />
+                <br />
+                <strong>Enter project name to proceed</strong>
+                <br />
+                <br />
+                <v-text-field outlined label="Enter project name" v-model="projectNameConfirmation"></v-text-field>
+              </div>
+
+              <div class="popupBottom">
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+
+                  <v-btn color="error" width="100px" @click="weightUpdateDialog = false">Cancel</v-btn>
+                  <v-spacer></v-spacer>
+                  <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
+                  <v-btn
+                    color="success"
+                    :disabled="checkConfirmation()"
+                    width="100px"
+                    @click="
+                      weightUpdateDialog = false;
+                      updateWeightType();
+                    "
+                  >Update</v-btn>
+                  <v-spacer></v-spacer>
+                </v-card-actions>
+              </div>
+            </v-card>
+          </v-dialog>
+
+          <!-- ---------------------- end popup ------------------ -->
           <!-- --------------------- delete task popup --------------- -->
 
           <v-dialog v-model="projectDialog" max-width="380">
@@ -412,10 +496,12 @@ export default {
   },
   data() {
     return {
+      projectNameConfirmation: "",
       overlay: false,
       successMessage: "",
       errorMessage: "",
       userId: this.$store.state.user.userId,
+      weightUpdateDialog: false,
       projectDialog: false,
       updateProject: {
         projectName: "",
@@ -423,7 +509,8 @@ export default {
         projectStartDate: "",
         projectEndDate: "",
         projectStatus: "",
-        projectAlias: ""
+        projectAlias: "",
+        weightMeasure: ""
       },
       drawer: null,
       prName: "project",
@@ -458,6 +545,14 @@ export default {
       },
       set(value) {
         this.updateProject.clientId = value;
+      }
+    },
+    weightType: {
+      get() {
+        return this.fetchProject.weightMeasure;
+      },
+      set(value) {
+        this.updateProject.weightMeasure = value;
       }
     },
     projectStartDate: {
@@ -507,6 +602,55 @@ export default {
     // }),
   },
   methods: {
+    checkConfirmation() {
+      if (this.projectNameConfirmation === this.projectName) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    async updateWeightType() {
+      let response;
+      if (this.projectNameConfirmation === this.projectName) {
+        this.overlay = true;
+        try {
+          response = await this.$axios.$put(
+            `/projects/${this.fetchProject.projectId}/weight`,
+            {
+              weightType: this.updateProject.weightMeasure
+            },
+            {
+              headers: {
+                userId: this.userId
+              }
+            }
+          );
+          this.$store.dispatch(
+            "project/fetchProject",
+            this.fetchProject.projectId
+          );
+
+          this.component = "success-popup";
+          this.successMessage = "Weight type successfully updated";
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          this.overlay = false;
+        } catch (e) {
+          console.log("Error confirmation", e);
+          this.errorMessage = e.response.data;
+          this.component = "error-popup";
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          this.overlay = false;
+        }
+      } else {
+        console.log("Error confirmation");
+        this.overlay = false;
+      }
+      this.projectNameConfirmation = "";
+    },
     updateField() {
       let projectName = this.fetchProject.projectName;
       this.updateProject.projectName = projectName;
