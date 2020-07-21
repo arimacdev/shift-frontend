@@ -112,6 +112,8 @@
           v-model="taskName"
           background-color="#EDF0F5"
           solo
+          flat
+          dense
           prepend-inner-icon="mdi-plus-circle"
           label="Add a main task..."
           class
@@ -119,11 +121,11 @@
           clearable
         ></v-text-field>
       </div>
-      <!-- ------ start task filter list ------- -->
+      <!-- ------ start my task list ------- -->
       <div v-for="(task, index) in projectMyTasks" :key="index">
         <div class>
-          <div class="taskList restructuredMyTaskList">
-            <v-list-item class="upperListItem">
+          <div class="restructuredFilterTaskList">
+            <v-list-item class="upperFilterListItem">
               <v-list-item
                 class="innerListItem"
                 @click="
@@ -135,10 +137,10 @@
                 <v-list-item-action>
                   <v-icon
                     v-if="task.taskStatus == 'closed'"
-                    size="30"
+                    size="25"
                     color="#2EC973"
                   >mdi-checkbox-marked-circle</v-icon>
-                  <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                  <v-icon v-else size="25" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
                 </v-list-item-action>
                 <div class="tasklistTaskNames restructuredMainTaskName">
                   <div>
@@ -146,17 +148,28 @@
                     {{ task.taskName }}
                   </div>
                 </div>
-                <div
+                <!-- <div
                   class="restStatusChip"
                   :class="statusCheck(task.issueType)"
-                >{{ taskTypeFormatting(task.issueType) }}</div>
+                >{{ taskTypeFormatting(task.issueType) }}</div>-->
+                <v-chip
+                  class="chipsContent"
+                  :class="statusCheck(task.issueType)"
+                  x-small
+                >{{ taskStatusFormatting(task.taskStatus) }}</v-chip>
+                <v-chip
+                  class="chipsContent"
+                  :class="statusCheck(task.issueType)"
+                  x-small
+                >{{ taskTypeFormatting(task.issueType) }}</v-chip>
                 <v-list-item-content class="updatedDate">
                   <v-list-item-title
+                    class="fontRestructure12"
                     :class="dueDateCheck(task)"
                   >{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
                 </v-list-item-content>
                 <div>
-                  <v-list-item-avatar>
+                  <v-list-item-avatar size="25">
                     <v-img
                       v-if="
                         task.taskAssigneeProfileImage != null &&
@@ -183,86 +196,6 @@
               </div>
             </v-list-item>
           </div>
-
-          <!-- -------------- sub task design --------------- -->
-
-          <!-- <div v-if="task.childTasks.length !== 0">
-            <div
-              v-for="(childTask, index) in task.childTasks"
-              :key="index"
-              class="taskList"
-            >
-              <v-list-item
-                class="upperListItem"
-                v-if="childTask.taskAssignee == userId"
-              >
-                <v-list-item
-                  class="innerListItem"
-                  @click="
-                    selectTask(childTask, task);
-                    taskDialog = true;
-                  "
-                >
-                  <v-list-item-action>
-                    <v-icon
-                      v-if="childTask.taskStatus == 'closed'"
-                      size="30"
-                      color="#2EC973"
-                      >mdi-checkbox-marked-circle</v-icon
-                    >
-                    <v-icon v-else size="30" color="#FFFFFF"
-                      >mdi-checkbox-blank-circle</v-icon
-                    >
-                  </v-list-item-action>
-                  <div class="tasklistTaskNames restructuredMainTaskName">
-                    <div >
-                      <span class="restructuredMainTaskCode">{{
-                        childTask.secondaryTaskId
-                      }}</span>
-                      {{ childTask.taskName }}
-                    </div>
-                  </div>
-                  <div
-                    class="restStatusChip"
-                    :class="statusCheck(childTask.issueType)"
-                  >
-                    {{ childTask.issueType }}
-                  </div>
-                  <v-list-item-content class="updatedDate">
-                    <v-list-item-title :class="dueDateCheck(childTask)">{{
-                      getProjectDates(childTask.taskDueDateAt)
-                    }}</v-list-item-title>
-                  </v-list-item-content>
-                  <div>
-                    <v-list-item-avatar>
-                      <v-img
-                        v-if="
-                          childTask.taskAssigneeProfileImage != null &&
-                            childTask.taskAssigneeProfileImage != ''
-                        "
-                        :src="childTask.taskAssigneeProfileImage"
-                      ></v-img>
-                      <v-img
-                        v-else
-                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                      ></v-img>
-                    </v-list-item-avatar>
-                  </div>
-                </v-list-item>
-                <div class="boardTabLinkIcon">
-                  <nuxt-link
-                    :to="'/task/' + childTask.taskId + '/?project=' + projectId"
-                    style="text-decoration: none;"
-                    target="_blank"
-                  >
-                    <v-icon color="blue">mdi-link-variant</v-icon>
-                  </nuxt-link>
-                </div>
-              </v-list-item>
-            </div>
-          </div>-->
-
-          <!-- -------------- end sub task design -------------- -->
         </div>
       </div>
       <div style="margin-top: 50px">
@@ -277,7 +210,7 @@
     </div>
 
     <!-- -------------- filter list -------------- -->
-    <div v-else class="taskListViewContent filterListTop overflow-y-auto">
+    <!-- <div v-else class="taskListViewContent filterListTop overflow-y-auto">
       <div v-if="this.filterList == ''" class="filterTitleDiv headline">No items to show</div>
       <div v-for="(task, index) in filterList" :key="index">
         <div
@@ -291,7 +224,6 @@
             target="_blank"
           >
             <v-list-item>
-              <!-- @click.stop="drawer = !drawer" -->
               <v-list-item-action>
                 <v-icon
                   v-if="task.taskStatus == 'closed'"
@@ -321,6 +253,87 @@
               </v-list-item-content>
               <div>
                 <v-list-item-avatar>
+                  <v-img
+                    v-if="task.profileImage != null && task.profileImage != ''"
+                    :src="task.profileImage"
+                  ></v-img>
+                  <v-img
+                    v-else
+                    src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                  ></v-img>
+                </v-list-item-avatar>
+              </div>
+              <div v-if="task.isParent == true" class="bluePart"></div>
+            </v-list-item>
+          </nuxt-link>
+        </div>
+      </div>
+    </div>-->
+
+    <div v-else class="taskListViewContent filterListTop overflow-y-auto">
+      <div v-if="this.filterList == ''" class="filterTitleDiv headline">No items to show</div>
+      <div v-for="(task, index) in filterList" :key="index">
+        <div
+          class="restructuredFilterTaskList"
+          :class="filterStyles(task.isParent)"
+          v-if="task.taskAssignee == userId"
+        >
+          <nuxt-link
+            :to="'/task/' + task.taskId + '/?project=' + projectId"
+            style="text-decoration: none;"
+            target="_blank"
+          >
+            <v-list-item class="upperFilterListItem" @click="selectTask(task, task)">
+              <!-- @click.stop="drawer = !drawer" -->
+              <v-list-item-action>
+                <v-icon
+                  v-if="task.taskStatus == 'closed'"
+                  size="25"
+                  color="#2EC973"
+                >mdi-checkbox-marked-circle</v-icon>
+                <v-icon
+                  v-else
+                  size="25"
+                  :color="checkBoxColor(task.isParent)"
+                >mdi-checkbox-blank-circle</v-icon>
+              </v-list-item-action>
+              <div class="tasklistFilterTaskNames restructuredMainTaskName">
+                <div>
+                  <span class="restructuredMainTaskCode">
+                    {{
+                    task.secondaryTaskId
+                    }}
+                  </span>
+                  {{ task.taskName }}
+                </div>
+              </div>
+              <!-- <div
+                class="restStatusChip"
+                :class="statusCheck(task.issueType)"
+              >{{ taskStatusFormatting(task.taskStatus) }}</div>
+              <div
+                class="restStatusChip"
+                :class="statusCheck(task.issueType)"
+              >{{ taskTypeFormatting(task.issueType) }}</div>-->
+              <v-chip
+                class="chipsContent"
+                :class="statusCheck(task.issueType)"
+                x-small
+              >{{ taskStatusFormatting(task.taskStatus) }}</v-chip>
+              <v-chip
+                class="chipsContent"
+                :class="statusCheck(task.issueType)"
+                x-small
+              >{{ taskTypeFormatting(task.issueType) }}</v-chip>
+              <v-list-item-content class="updatedDate">
+                <v-list-item-title class="fontRestructure12" :class="dueDateCheck(task)">
+                  {{
+                  getProjectDates(task.taskDueDateAt)
+                  }}
+                </v-list-item-title>
+              </v-list-item-content>
+              <div>
+                <v-list-item-avatar size="25">
                   <v-img
                     v-if="task.profileImage != null && task.profileImage != ''"
                     :src="task.profileImage"
@@ -517,6 +530,74 @@ export default {
     "progress-loading": Progress
   },
   methods: {
+    taskStatusFormatting(status) {
+      switch (status) {
+        case "pending":
+          return "Pending";
+          break;
+        case "onHold":
+          return "On Hold";
+          break;
+        case "open":
+          return "Open";
+          break;
+        case "cancel":
+          return "Cancel";
+          break;
+        case "reOpened":
+          return "Re Opened";
+          break;
+        case "fixing":
+          return "Fixing";
+          break;
+        case "testing":
+          return "Testing";
+          break;
+        case "resolved":
+          return "Resolved";
+          break;
+        case "inprogress":
+          return "Inprogress";
+          break;
+        case "completed":
+          return "Completed";
+          break;
+        case "implementing":
+          return "Implementing";
+          break;
+        case "underReview":
+          return "UnderReview";
+          break;
+        case "waitingForApproval":
+          return "Waiting for Approval";
+          break;
+        case "review":
+          return "Review";
+          break;
+        case "discussion":
+          return "Discussion";
+          break;
+        case "waitingResponse":
+          return "Waiting Response";
+          break;
+        case "ready":
+          return "Ready";
+          break;
+        case "deployed":
+          return "Deployed";
+          break;
+        case "fixed":
+          return "Fixed";
+          break;
+        case "rejected":
+          return "Rejected";
+          break;
+        case "closed":
+          return "Closed";
+          break;
+        default:
+      }
+    },
     taskTypeFormatting(type) {
       switch (type) {
         case "development":
@@ -675,7 +756,8 @@ export default {
             '" AND ';
         }
       }
-      this.orderByQuery = "ORDER BY FIELD(taskStatus, 'closed') ASC,  taskCreatedAt DESC";
+      this.orderByQuery =
+        "ORDER BY FIELD(taskStatus, 'closed') ASC,  taskCreatedAt DESC";
 
       if (this.nameOfTask != "" && this.nameOfTask != null) {
         this.taskNameQuery =

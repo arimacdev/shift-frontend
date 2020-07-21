@@ -16,11 +16,11 @@
 
 @import './icons.css'; /* -------------- common --------------- */
 * {
-  /* font-family: 'Circular Std', sans-serif;
-  font-size: 12px; */
+  font-family: 'Circular Std', sans-serif;
+  font-size: 12px;
 
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 1em;
+  /* font-family: 'Segoe UI', sans-serif;
+  font-size: 1em; */
 }
 .body-2 {
   font-family: 'Segoe UI', sans-serif !important;
@@ -1894,15 +1894,45 @@
 .filterButtonBackground {
   background-color: #080848;
 }
+.upperFilterListItem {
+  margin-top: -10px;
+  /* height: 30px !important; */
+}
+.upperMyListItem {
+  margin-top: -10px;
+  margin-left: -20px;
+}
+.restructuredFilterTaskList {
+  border: 1px #cdcfd2 solid;
+  background-color: #edf0f5;
+  overflow: hidden;
+  height: 35px;
+  padding-top: 2px;
+  margin-bottom: 5px;
+
+  /* padding-top: -10px !important; */
+}
 
 .restructuredMainTaskList {
-  border: 1px #e5e5e5 solid;
+  border: 1px #cdcfd2 solid;
   margin-top: 10px;
   background-color: #ffffff;
   overflow: hidden;
-  height: 45px;
+  height: 35px;
   padding-top: 2px;
+  margin-bottom: 5px;
   /* padding-top: -10px !important; */
+}
+.restructuredSubTaskListRestructure {
+  background-color: #ffffff !important;
+  margin-left: 30px;
+  border-bottom: 1px #cdcfd2 solid;
+  border-left: 1px #cdcfd2 solid;
+  border-right: 1px #cdcfd2 solid;
+  overflow: hidden;
+  height: 35px;
+  padding-top: 2px;
+  /* border-radius: 5px; */
 }
 .restructuredGroupMainTaskFilterList {
   background-color: #edf0f5;
@@ -1954,16 +1984,7 @@
   margin-right: 30px;
   margin-bottom: 10px;
 }
-.restructuredSubTaskListRestructure {
-  background-color: #ffffff !important;
-  margin-left: 30px;
-  /* border: 1px #cdcfd2 solid; */
-  border-radius: 5px;
-  height: 45px;
-  margin-top: 8px;
-  margin-right: 2px;
-  /* border-radius: 5px; */
-}
+
 .restructuredSubTaskGroupListRestructure {
   background-color: #ffffff !important;
   margin-left: 30px;
@@ -1975,7 +1996,8 @@
 .restructuredSubTaskCreate {
   padding-left: 30px;
   padding-right: 2px;
-  /* margin-bottom: -10px; */
+  margin-top: -5px;
+  margin-bottom: -5px;
 }
 .restructuredSubTaskCreateGroup {
   padding-left: 30px;
@@ -1995,39 +2017,44 @@
   text-align: center;
   padding-left: 5px;
   padding-right: 5px;
-  /* padding-top: 3px; */
-  /* padding-bottom: 3px; */
+  height: 20px;
+  font-size: 12px !important;
   border-radius: 30px;
   width: 100px;
   margin-right: 5px;
 }
+.chipsContent {
+  width: 100px;
+  justify-content: center !important;
+  margin-right: 5px !important;
+}
 .developmentStatus {
-  background-color: #ffa800;
-  color: #ffffff;
+  background-color: #ffa800 !important;
+  color: #ffffff !important;
 }
 .qaStatus {
-  background-color: #ff7a00;
-  color: #ffffff;
+  background-color: #ff7a00 !important;
+  color: #ffffff !important;
 }
 .designStatus {
-  background-color: #4ebc44;
-  color: #ffffff;
+  background-color: #4ebc44 !important;
+  color: #ffffff !important;
 }
 .bugStatus {
-  background-color: #fb3f3f;
-  color: #ffffff;
+  background-color: #fb3f3f !important;
+  color: #ffffff !important;
 }
 .operationalStatus {
-  background-color: #dd6def;
-  color: #ffffff;
+  background-color: #dd6def !important;
+  color: #ffffff !important;
 }
 .preSalesStatus {
-  background-color: #00c29f;
-  color: #ffffff;
+  background-color: #00c29f !important;
+  color: #ffffff !important;
 }
 .generalStatus {
-  background-color: #0083e2;
-  color: #ffffff;
+  background-color: #0083e2 !important;
+  color: #ffffff !important;
 }
 .otherStatus {
   background-color: #0083e2;
@@ -2342,7 +2369,8 @@
 .upperListItem {
   margin-left: -20px !important;
   padding-left: 20px !important;
-  margin-top: -5px;
+  margin-top: -10px;
+  /* height: 30px !important; */
 }
 .innerListItem {
   margin-right: 10px;

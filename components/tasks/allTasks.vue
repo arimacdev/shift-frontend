@@ -152,7 +152,7 @@
         <v-hover v-slot:default="{ hover }">
           <div>
             <div :class="backPannelDisplay(task.childTasks.length)">
-              <div class="taskList restructuredMainTaskList">
+              <div class="restructuredMainTaskList">
                 <v-list-item class="upperListItem">
                   <v-list-item
                     class="innerListItem"
@@ -180,14 +180,25 @@
                         {{ task.parentTask.taskName }}
                       </div>
                     </div>
-                    <div
+                    <!-- <div
                       class="restStatusChip"
                       :class="statusCheck(task.parentTask.issueType)"
-                    >{{ taskStatusFormatting(task.parentTask.taskStatus) }}</div>
-                    <div
+                    >{{ taskStatusFormatting(task.parentTask.taskStatus) }}</div>-->
+                    <!-- <div
                       class="restStatusChip"
                       :class="statusCheck(task.parentTask.issueType)"
-                    >{{ taskTypeFormatting(task.parentTask.issueType) }}</div>
+                    >{{ taskTypeFormatting(task.parentTask.issueType) }}</div>-->
+                    <v-chip
+                      class="chipsContent"
+                      :class="statusCheck(task.parentTask.issueType)"
+                      x-small
+                    >{{ taskStatusFormatting(task.parentTask.taskStatus) }}</v-chip>
+
+                    <v-chip
+                      class="chipsContent"
+                      :class="statusCheck(task.parentTask.issueType)"
+                      x-small
+                    >{{ taskTypeFormatting(task.parentTask.issueType) }}</v-chip>
                     <v-list-item-content class="updatedDate">
                       <v-list-item-title
                         class="fontRestructure12"
@@ -245,7 +256,7 @@
                     dense
                     prepend-inner-icon="mdi-plus-circle"
                     label="Add a sub task..."
-                    style="margin-bottom: -20px; margin-top: 5px"
+                    style="margin-bottom: -25px; margin-top: 5px; border-radius: 0px"
                     @keyup.enter="
                       addSubTask(
                         index,
@@ -291,14 +302,24 @@
                           {{ childTask.taskName }}
                         </div>
                       </div>
-                      <div
+                      <!-- <div
                         class="restStatusChip"
                         :class="statusCheck(childTask.issueType)"
-                      >{{ taskStatusFormatting(childTask.taskStatus) }}</div>
-                      <div
+                      >{{ taskStatusFormatting(childTask.taskStatus) }}</div>-->
+                      <!-- <div
                         class="restStatusChip"
                         :class="statusCheck(task.parentTask.issueType)"
-                      >{{ taskTypeFormatting(task.parentTask.issueType) }}</div>
+                      >{{ taskTypeFormatting(task.parentTask.issueType) }}</div>-->
+                      <v-chip
+                        class="chipsContent"
+                        :class="statusCheck(childTask.issueType)"
+                        x-small
+                      >{{taskStatusFormatting(childTask.taskStatus) }}</v-chip>
+                      <v-chip
+                        class="chipsContent"
+                        :class="statusCheck(task.parentTask.issueType)"
+                        x-small
+                      >{{ taskTypeFormatting(task.parentTask.issueType) }}</v-chip>
                       <v-list-item-content class="updatedDate">
                         <v-list-item-title
                           class="fontRestructure12"
@@ -371,13 +392,13 @@
     <div v-else class="taskListViewContent filterListTop overflow-y-auto">
       <div v-if="this.filterList == ''" class="filterTitleDiv headline">No items to show</div>
       <div v-for="(task, index) in filterList" :key="index">
-        <div class="taskList" :class="filterStyles(task.isParent)">
+        <div class="restructuredFilterTaskList" :class="filterStyles(task.isParent)">
           <nuxt-link
             :to="'/task/' + task.taskId + '/?project=' + projectId"
             style="text-decoration: none;"
             target="_blank"
           >
-            <v-list-item @click="selectTask(task, task)">
+            <v-list-item class="upperFilterListItem" @click="selectTask(task, task)">
               <!-- @click.stop="drawer = !drawer" -->
               <v-list-item-action>
                 <v-icon
@@ -401,14 +422,24 @@
                   {{ task.taskName }}
                 </div>
               </div>
-              <div
+              <!-- <div
                 class="restStatusChip"
                 :class="statusCheck(task.issueType)"
               >{{ taskStatusFormatting(task.taskStatus) }}</div>
               <div
                 class="restStatusChip"
                 :class="statusCheck(task.issueType)"
-              >{{ taskTypeFormatting(task.issueType) }}</div>
+              >{{ taskTypeFormatting(task.issueType) }}</div>-->
+              <v-chip
+                class="chipsContent"
+                :class="statusCheck(task.issueType)"
+                x-small
+              >{{ taskStatusFormatting(task.taskStatus) }}</v-chip>
+              <v-chip
+                class="chipsContent"
+                :class="statusCheck(task.issueType)"
+                x-small
+              >{{ taskTypeFormatting(task.issueType) }}</v-chip>
               <v-list-item-content class="updatedDate">
                 <v-list-item-title class="fontRestructure12" :class="dueDateCheck(task)">
                   {{
