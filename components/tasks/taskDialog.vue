@@ -707,24 +707,40 @@
                         <v-list-item-title>
                           <v-row>
                             <v-col md="6">
-                              <v-select
+                              <!-- <v-select
                                 dense
                                 v-model="estimatedWeight"
                                 :items="storyPoints"
                                 flat
                                 label="Estimated"
                                 @change="changeEstimatedWeight()"
-                              ></v-select>
+                              ></v-select>-->
+                              <v-text-field
+                                dense
+                                v-model="estimatedWeight"
+                                flat
+                                label="Estimated"
+                                @keyup.enter="changeEstimatedWeight()"
+                                hint="Update and hit enter"
+                              ></v-text-field>
                             </v-col>
                             <v-col md="6">
-                              <v-select
+                              <!-- <v-select
                                 dense
                                 v-model="actualWeight"
                                 :items="storyPoints"
                                 flat
                                 label="Actual"
                                 @change="changeActualWeight()"
-                              ></v-select>
+                              ></v-select>-->
+                              <v-text-field
+                                dense
+                                v-model="actualWeight"
+                                flat
+                                label="Actual"
+                                @keyup.enter="changeActualWeight()"
+                                hint="Update and hit enter"
+                              ></v-text-field>
                             </v-col>
                           </v-row>
                         </v-list-item-title>
@@ -2057,11 +2073,7 @@ export default {
     },
     estimatedWeight: {
       get() {
-        if (this.updatedEstimatedWeight == "") {
-          return this.selectedTask.estimatedWeight;
-        } else {
-          return this.updatedEstimatedWeight;
-        }
+        return this.selectedTask.estimatedWeight;
       },
       set(estimatedWeight) {
         this.updatedEstimatedWeight = estimatedWeight;
@@ -2069,11 +2081,7 @@ export default {
     },
     actualWeight: {
       get() {
-        if (this.updatedActualWeight == "") {
-          return this.selectedTask.actualWeight;
-        } else {
-          return this.updatedActualWeight;
-        }
+        return this.selectedTask.actualWeight;
       },
       set(actualWeight) {
         this.updatedActualWeight = actualWeight;
