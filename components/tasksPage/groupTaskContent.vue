@@ -32,8 +32,8 @@
           <!-- -------- loop task list here ----------- -->
           <div v-for="(task, index) in groupTasks" :key="index">
             <v-hover v-slot:default="{ hover }">
-              <div class="backPannelAllTask" v-if="taskSelect == 'all'">
-                <div class="taskList restructuredMainTaskList">
+              <div :class="backPannelDisplay(task.childTasks.length)" v-if="taskSelect == 'all'">
+                <div class="restructuredMainTaskList">
                   <v-list-item class="upperListItem">
                     <v-list-item
                       class="innerListItem"
@@ -79,7 +79,7 @@
 
                 <!-- -------------- sub task design --------------- -->
                 <div
-                  class="restructuredSubTaskCreateGroup"
+                  class="restructuredSubTaskCreate"
                   v-if="task.parentTask.taskStatus != 'closed'"
                 >
                   <v-expand-transition>
@@ -88,6 +88,7 @@
                       v-model="subTaskName[index]"
                       background-color="#0BAFFF"
                       solo
+                      style="margin-bottom: -25px; margin-top: 5px; border-radius: 0px"
                       dark
                       dense
                       flat
@@ -99,13 +100,14 @@
                     ></v-text-field>
                   </v-expand-transition>
                 </div>
+                <div class="restructuredSubTaskCreate" v-else style="margin-bottom: -5px;"></div>
                 <div v-if="task.childTasks.length !== 0">
                   <div
                     v-for="(childTask, index) in task.childTasks"
                     :key="index"
-                    class="restructuredSubTaskGroupListRestructure"
+                    class="restructuredSubTaskListRestructure"
                   >
-                    <v-list-item class="upperListItemGroup">
+                    <v-list-item class="upperListItem">
                       <v-list-item
                         class="innerListItem"
                         @click="
@@ -170,18 +172,21 @@
             <div class v-if="taskSelect != 'all'">
               <div
                 v-if="task.parentTask.taskStatus == taskSelect"
-                class="restructuredGroupMainTaskFilterList parentOwerflow"
+                class="restructuredFilterTaskList"
               >
-                <v-list-item @click="
-              selectGroupTask(task.parentTask, task);">
+                <v-list-item
+                  @click="
+              selectGroupTask(task.parentTask, task);"
+                  class="upperFilterListItem"
+                >
                   <!-- @click.stop="drawer = !drawer" -->
                   <v-list-item-action>
                     <v-icon
                       v-if="task.parentTask.taskStatus == 'closed'"
-                      size="30"
+                      size="25"
                       color="#2EC973"
                     >mdi-checkbox-marked-circle</v-icon>
-                    <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                    <v-icon v-else size="25" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
                   </v-list-item-action>
                   <div class="tasklistTaskNames restructuredMainTaskName">
                     <div>
@@ -192,10 +197,11 @@
                   <v-list-item-content class="updatedDate">
                     <v-list-item-title
                       :class="dueDateCheck(task.parentTask)"
+                      class="fontRestructure12"
                     >{{ getTaskDueDate(task.parentTask.taskDueDateAt) }}</v-list-item-title>
                   </v-list-item-content>
                   <div>
-                    <v-list-item-avatar>
+                    <v-list-item-avatar size="25">
                       <v-img
                         v-if="task.parentTask.taskAssigneeProfileImage != null && task.parentTask.taskAssigneeProfileImage != ''"
                         :src="task.parentTask.taskAssigneeProfileImage"
@@ -223,12 +229,9 @@
               <!-- -------------- sub task design --------------- -->
 
               <div v-if="task.childTasks.length !== 0">
-                <div
-                  v-for="(childTask, index) in task.childTasks"
-                  :key="index"
-                  class="restructuredGroupMainTaskFilterList"
-                >
+                <div v-for="(childTask, index) in task.childTasks" :key="index">
                   <v-list-item
+                    class="restructuredFilterGroupTaskList"
                     v-if="childTask.taskStatus == taskSelect"
                     @click="
                 selectGroupTask(childTask, task);
@@ -239,10 +242,10 @@
                     <v-list-item-action>
                       <v-icon
                         v-if="childTask.taskStatus == 'closed'"
-                        size="30"
+                        size="25"
                         color="#2EC973"
                       >mdi-checkbox-marked-circle</v-icon>
-                      <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                      <v-icon v-else size="25" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
                     </v-list-item-action>
                     <div class="tasklistTaskNames restructuredSubTaskName">
                       <div>
@@ -254,10 +257,11 @@
                     <v-list-item-content class="updatedDate">
                       <v-list-item-title
                         :class="dueDateCheck(childTask)"
+                        class="fontRestructure12"
                       >{{ getTaskDueDate(childTask.taskDueDateAt) }}</v-list-item-title>
                     </v-list-item-content>
                     <div>
-                      <v-list-item-avatar>
+                      <v-list-item-avatar size="25">
                         <v-img
                           v-if="childTask.taskAssigneeProfileImage != null && childTask.taskAssigneeProfileImage != ''"
                           :src="childTask.taskAssigneeProfileImage"
@@ -384,6 +388,13 @@ export default {
   // },
 
   methods: {
+    backPannelDisplay(child) {
+      if (child != 0) {
+        return "backPannelAllTask";
+      } else {
+        return "";
+      }
+    },
     taskDialogClosing() {
       this.taskDialog = false;
     },

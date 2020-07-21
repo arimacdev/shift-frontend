@@ -1912,6 +1912,16 @@
 
   /* padding-top: -10px !important; */
 }
+.restructuredFilterGroupTaskList {
+  border: 1px #cdcfd2 solid;
+  background-color: #edf0f5;
+  overflow: hidden;
+  height: 35px;
+  padding-top: 2px;
+  margin-bottom: 5px;
+
+  /* padding-top: -10px !important; */
+}
 
 .restructuredMainTaskList {
   border: 1px #cdcfd2 solid;
@@ -1936,9 +1946,9 @@
 }
 .restructuredGroupMainTaskFilterList {
   background-color: #edf0f5;
-  border-radius: 5px;
   margin-bottom: 10px;
   margin-top: 10px;
+  height: 35px;
 }
 .parentOwerflow {
   border: 2px #cdcfd2 solid;

@@ -269,6 +269,7 @@
                   ></v-text-field>
                 </v-expand-transition>
               </div>
+              <div class="restructuredSubTaskCreate" v-else style="margin-bottom: -5px;"></div>
               <div v-if="task.childTasks.length !== 0">
                 <div
                   v-for="(childTask, index) in task.childTasks"
