@@ -693,6 +693,8 @@
                     <v-divider class="datePickerDivider"></v-divider>
 
                     <!-- --------- weight section ---------- -->
+
+                    <!-- -------- story as a weight -------- -->
                     <v-list-item v-if="this.fetchProject.weightMeasure == 'story'">
                       <v-list-item-icon
                         style="background-color: #0BAFFF; padding: 10px; border-radius: 50%"
@@ -738,6 +740,74 @@
                                 v-model="actualWeight"
                                 flat
                                 label="Actual"
+                                @keyup.enter="changeActualWeight()"
+                                hint="Update and hit enter"
+                              ></v-text-field>
+                            </v-col>
+                          </v-row>
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+
+                    <!-- ----------- time as a weight ----------- -->
+
+                    <v-list-item v-if="this.fetchProject.weightMeasure == 'time'">
+                      <v-list-item-icon
+                        style="background-color: #0BAFFF; padding: 10px; border-radius: 50%"
+                      >
+                        <v-icon size="25" color="#FFFFFF">mdi-weight-lifter</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-content>
+                        <v-list-item-subtitle class="rightColumnItemsSubTitle">
+                          Task weight -
+                          <strong>Time</strong>
+                        </v-list-item-subtitle>
+                        <v-list-item-title>
+                          <v-row>
+                            <v-col md="4">
+                              <v-list-item-subtitle class="rightColumnItemsSubTitle">Estimated -</v-list-item-subtitle>
+                            </v-col>
+                            <v-col md="4">
+                              <v-text-field
+                                dense
+                                v-model="estimatedWeight"
+                                flat
+                                label="Hours"
+                                @keyup.enter="changeEstimatedWeight()"
+                                hint="Update and hit enter"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col md="4">
+                              <v-text-field
+                                dense
+                                v-model="actualWeight"
+                                flat
+                                label="Minutes"
+                                @keyup.enter="changeActualWeight()"
+                                hint="Update and hit enter"
+                              ></v-text-field>
+                            </v-col>
+                          </v-row>
+                          <v-row>
+                            <v-col md="4">
+                              <v-list-item-subtitle class="rightColumnItemsSubTitle">Actual -</v-list-item-subtitle>
+                            </v-col>
+                            <v-col md="4">
+                              <v-text-field
+                                dense
+                                v-model="estimatedWeight"
+                                flat
+                                label="Hours"
+                                @keyup.enter="changeEstimatedWeight()"
+                                hint="Update and hit enter"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col md="4">
+                              <v-text-field
+                                dense
+                                v-model="actualWeight"
+                                flat
+                                label="Minutes"
                                 @keyup.enter="changeActualWeight()"
                                 hint="Update and hit enter"
                               ></v-text-field>
