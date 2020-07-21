@@ -16,11 +16,14 @@
 
 @import './icons.css'; /* -------------- common --------------- */
 * {
+  /* font-family: 'Circular Std', sans-serif;
+  font-size: 12px; */
+
   font-family: 'Segoe UI', sans-serif;
   font-size: 1em;
 }
 .body-2 {
-  font-family: 'Circular Std', sans-serif !important;
+  font-family: 'Segoe UI', sans-serif !important;
 }
 .projectListView {
   margin-top: 10px;
