@@ -718,6 +718,7 @@
                                 @change="changeEstimatedWeight()"
                               ></v-select>-->
                               <v-text-field
+                                type="number"
                                 dense
                                 v-model="estimatedWeight"
                                 flat
@@ -736,6 +737,7 @@
                                 @change="changeActualWeight()"
                               ></v-select>-->
                               <v-text-field
+                                type="number"
                                 dense
                                 v-model="actualWeight"
                                 flat
@@ -764,53 +766,33 @@
                         </v-list-item-subtitle>
                         <v-list-item-title>
                           <v-row>
-                            <v-col md="4">
-                              <v-list-item-subtitle class="rightColumnItemsSubTitle">Estimated -</v-list-item-subtitle>
-                            </v-col>
-                            <v-col md="4">
+                            <v-col md="6">
                               <v-text-field
                                 dense
-                                v-model="estimatedWeight"
+                                v-model="estimatedTimeWeight"
                                 flat
-                                label="Hours"
+                                label="Estimated Time"
                                 @keyup.enter="changeEstimatedWeight()"
                                 hint="Update and hit enter"
                               ></v-text-field>
                             </v-col>
-                            <v-col md="4">
-                              <v-text-field
-                                dense
-                                v-model="actualWeight"
-                                flat
-                                label="Minutes"
-                                @keyup.enter="changeActualWeight()"
-                                hint="Update and hit enter"
-                              ></v-text-field>
+                            <v-col md="6">
+                              <v-list-item-subtitle class="rightColumnItemsSubTitle">(eg. 2h 30min)</v-list-item-subtitle>
                             </v-col>
                           </v-row>
                           <v-row>
-                            <v-col md="4">
-                              <v-list-item-subtitle class="rightColumnItemsSubTitle">Actual -</v-list-item-subtitle>
-                            </v-col>
-                            <v-col md="4">
+                            <v-col md="6">
                               <v-text-field
                                 dense
-                                v-model="estimatedWeight"
+                                v-model="actualTimeWeight"
                                 flat
-                                label="Hours"
-                                @keyup.enter="changeEstimatedWeight()"
-                                hint="Update and hit enter"
-                              ></v-text-field>
-                            </v-col>
-                            <v-col md="4">
-                              <v-text-field
-                                dense
-                                v-model="actualWeight"
-                                flat
-                                label="Minutes"
+                                label="Actual Time"
                                 @keyup.enter="changeActualWeight()"
                                 hint="Update and hit enter"
                               ></v-text-field>
+                            </v-col>
+                            <v-col md="6">
+                              <v-list-item-subtitle class="rightColumnItemsSubTitle">(eg. 2h 30min)</v-list-item-subtitle>
                             </v-col>
                           </v-row>
                         </v-list-item-title>
@@ -2149,12 +2131,76 @@ export default {
         this.updatedEstimatedWeight = estimatedWeight;
       }
     },
+
     actualWeight: {
       get() {
         return this.selectedTask.actualWeight;
       },
       set(actualWeight) {
         this.updatedActualWeight = actualWeight;
+      }
+    },
+    estimatedTimeWeight: {
+      get() {
+        console.log("WEIGHT: " + this.selectedTask.estimatedWeight);
+        if (this.selectedTask.estimatedWeight == 0) {
+          return this.selectedTask.estimatedWeight;
+        } else {
+          let int_part = Math.trunc(this.selectedTask.estimatedWeight);
+          let float_part = (this.selectedTask.estimatedWeight + "").split(
+            "."
+          )[1];
+          if (float_part / 10 < 1) {
+            float_part = float_part * 10;
+          }
+
+          if (float_part != undefined && int_part != 0) {
+            return int_part + "h " + float_part + "min";
+          } else if (int_part == 0) {
+            return float_part + "min";
+          } else {
+            return int_part + "h ";
+          }
+        }
+      },
+      set(estimatedWeight) {
+        let hours = estimatedWeight.split("h")[0];
+        let minutes = estimatedWeight
+          .split(" ")
+          .pop()
+          .split("m")[0];
+
+        this.updatedEstimatedWeight = parseFloat(hours + "." + minutes);
+      }
+    },
+    actualTimeWeight: {
+      get() {
+        if (this.selectedTask.actualWeight == 0) {
+          return this.selectedTask.actualWeight;
+        } else {
+          let int_part = Math.trunc(this.selectedTask.actualWeight);
+          let float_part = (this.selectedTask.actualWeight + "").split(".")[1];
+          if (float_part / 10 < 1) {
+            float_part = float_part * 10;
+          }
+
+          if (float_part != undefined && int_part != 0) {
+            return int_part + "h " + float_part + "min";
+          } else if (int_part == 0) {
+            return float_part + "min";
+          } else {
+            return int_part + "h ";
+          }
+        }
+      },
+      set(actualWeight) {
+        let hours = actualWeight.split("h")[0];
+        let minutes = actualWeight
+          .split(" ")
+          .pop()
+          .split("m")[0];
+
+        this.updatedActualWeight = parseFloat(hours + "." + minutes);
       }
     }
   }
