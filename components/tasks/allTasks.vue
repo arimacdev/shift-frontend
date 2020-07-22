@@ -399,7 +399,7 @@
             style="text-decoration: none;"
             target="_blank"
           >
-            <v-list-item class="upperFilterListItem" @click="selectTask(task, task)">
+            <v-list-item class="upperFilterListItem">
               <!-- @click.stop="drawer = !drawer" -->
               <v-list-item-action>
                 <v-icon
@@ -460,7 +460,6 @@
                   ></v-img>
                 </v-list-item-avatar>
               </div>
-              <div v-if="task.isParent == true" class="bluePart"></div>
             </v-list-item>
           </nuxt-link>
         </div>
