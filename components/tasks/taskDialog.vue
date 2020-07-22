@@ -791,7 +791,7 @@
                                   :rules="estimatedRules"
                                 ></v-text-field>
                               </v-col>
-                              <v-col md="4">
+                              <v-col style="text-align: right" md="4">
                                 <v-btn
                                   :disabled="!isValidEstimated"
                                   @click="changeEstimatedTime()"
@@ -826,7 +826,7 @@
                                   :rules="actualRules"
                                 ></v-text-field>
                               </v-col>
-                              <v-col md="4">
+                              <v-col style="text-align: right" md="4">
                                 <v-btn :disabled="!isValidActual" @click="changeActualTime()" icon>
                                   <v-icon color="deep-orange">mdi-checkbox-marked-circle-outline</v-icon>
                                 </v-btn>
