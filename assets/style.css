@@ -987,7 +987,7 @@
 .taskListViewContent {
   height: 100vh;
   z-index: -100;
-  margin-top: 10px;
+  /* margin-top: 10px; */
   padding-bottom: 400px;
 }
 .allTaskCreateTab {
@@ -1862,6 +1862,9 @@
   margin-top: -15px;
   height: 60px;
 }
+.filterSectionAllTasks {
+  height: 60px;
+}
 .taskFilterTypeDiv {
   width: 35% !important;
   float: left;
@@ -1909,7 +1912,7 @@
 }
 .restructuredFilterTaskList {
   border: 1px #cdcfd2 solid;
-  background-color: #edf0f5;
+  background-color: #fafafa;
   overflow: hidden;
   height: 35px;
   padding-top: 2px;
@@ -1919,7 +1922,7 @@
 }
 .restructuredFilterGroupTaskList {
   border: 1px #cdcfd2 solid;
-  background-color: #edf0f5;
+  background-color: #fafafa;
   overflow: hidden;
   height: 35px;
   padding-top: 2px;
@@ -1983,11 +1986,13 @@
   margin-bottom: 10px;
 }
 .restructuredMainTaskName {
-  color: #131111;
+  color: #576377;
+  font-weight: 500;
 }
 .restructuredMainTaskCode {
   font-weight: 600;
   margin-right: 10px;
+  color: #383838;
 }
 .restructuredTaskCreate {
   /* margin-top: 20px; */
@@ -2024,9 +2029,10 @@
   padding-right: 30px;
 }
 .restructuredSubTaskName {
-  color: #080848;
+  color: #576377;
   width: 57% !important;
   margin-right: -12px;
+  font-weight: 500;
 }
 .restStatusChip {
   /* padding-right: 30px; */
@@ -3165,5 +3171,31 @@
   font-size: 14px !important;
 }
 .v-label {
+  font-size: 12px !important;
+}
+.asdfg {
+  max-height: 30px !important;
+}
+.filterTriggers .v-text-field .v-input__control .v-input__slot {
+  min-height: auto !important;
+  max-height: 35px !important;
+}
+.filterTriggers .v-text-field--outlined.v-input--dense .v-label {
+  top: 5px;
+}
+.filterTriggersDrop .v-text-field .v-input__control .v-input__slot {
+  min-height: auto !important;
+  max-height: 32px !important;
+}
+.filterTriggersDrop .v-text-field--outlined.v-input--dense .v-label {
+  top: 5px;
+}
+.filterTriggersDrop .v-icon.v-icon {
+  margin-top: -8px !important;
+}
+
+.filterTriggersDrop .field-input {
+  min-height: auto !important;
+  max-height: 32px !important;
   font-size: 12px !important;
 }

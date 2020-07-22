@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="position: fixed; right: 20px; top: 100px">
+    <div style="position: fixed; top: 40px; z-index: 1000 ">
       <v-menu bottom left>
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon v-bind="attrs" v-on="on">
@@ -117,62 +117,62 @@
 </template>
 
 <script>
-import AllTasks from '~/components/tasks/allTasks';
-import MyTasks from '~/components/tasks/myTasks';
-import AddTask from '~/components/tasks/addTask';
+import AllTasks from "~/components/tasks/allTasks";
+import MyTasks from "~/components/tasks/myTasks";
+import AddTask from "~/components/tasks/addTask";
 
 export default {
-  props: ['name', 'projectId', 'Alltasks', 'MyTasks', 'people', 'pagination'],
+  props: ["name", "projectId", "Alltasks", "MyTasks", "people", "pagination"],
   data() {
     return {
-      key: value,
+      key: value
     };
   },
-  name: 'tasks',
+  name: "tasks",
   components: {
-    'all-tasks': AllTasks,
-    'my-tasks': MyTasks,
-    'add-task': AddTask,
+    "all-tasks": AllTasks,
+    "my-tasks": MyTasks,
+    "add-task": AddTask
   },
   data() {
     return {
       myTaskPagination: 1,
-      component: 'all-tasks',
+      component: "all-tasks"
     };
   },
   methods: {
     fetchAllTasks() {
-      this.$store.dispatch('task/setIndex', {
+      this.$store.dispatch("task/setIndex", {
         startIndex: 0,
-        endIndex: 10,
+        endIndex: 10
       });
       this.$store.dispatch(
-        'task/fetchTasksAllTasks',
+        "task/fetchTasksAllTasks",
         this.$route.params.projects
       );
       this.$store.dispatch(
-        'task/fetchTotalTaskCount',
+        "task/fetchTotalTaskCount",
         this.$route.params.projects
       );
     },
     fetchMyTasks() {
-      this.$store.dispatch('task/setIndex', {
+      this.$store.dispatch("task/setIndex", {
         startIndex: 0,
-        endIndex: 10,
+        endIndex: 10
       });
       this.$store.dispatch(
-        'task/fetchTasksMyTasks',
+        "task/fetchTasksMyTasks",
         this.$route.params.projects
       );
       this.$store.dispatch(
-        'task/fetchMyTaskCount',
+        "task/fetchMyTaskCount",
         this.$route.params.projects
       );
     },
     setTaskTab(tabType) {
       this.component = tabType;
-    },
-  },
+    }
+  }
 };
 </script>
 
