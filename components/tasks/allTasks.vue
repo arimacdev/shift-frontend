@@ -135,13 +135,15 @@
         <v-form onsubmit="return false" ref="form">
           <v-text-field
             v-model="taskName"
-            background-color="#EDF0F5"
+            background-color="#FFFFFF"
+            outlined
             solo
             flat
             dense
-            prepend-inner-icon="mdi-plus-circle"
+            prepend-inner-icon="mdi-plus"
             label="Add a main task..."
             class
+            style="border-radius: 0px"
             @keyup.enter="addTask(null, 'general')"
             clearable
           ></v-text-field>
@@ -151,7 +153,7 @@
       <div v-for="(task, index) in projectAllTasks" :key="index">
         <v-hover v-slot:default="{ hover }">
           <div>
-            <div :class="backPannelDisplay(task.childTasks.length)">
+            <div>
               <div class="restructuredMainTaskList">
                 <v-list-item class="upperListItem">
                   <v-list-item
@@ -166,9 +168,9 @@
                       <v-icon
                         v-if="task.parentTask.taskStatus == 'closed'"
                         size="25"
-                        color="#2EC973"
-                      >mdi-checkbox-marked-circle</v-icon>
-                      <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                        color="#66B25F"
+                      >mdi-checkbox-blank</v-icon>
+                      <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
                     </v-list-item-action>
                     <div class="tasklistTaskNames restructuredMainTaskName">
                       <div>
@@ -249,12 +251,12 @@
                   <v-text-field
                     v-if="hover"
                     v-model="subTaskName[index]"
-                    background-color="#0BAFFF"
+                    background-color="#FFFFFF"
+                    outlined
                     solo
-                    dark
                     flat
                     dense
-                    prepend-inner-icon="mdi-plus-circle"
+                    prepend-inner-icon="mdi-plus"
                     label="Add a sub task..."
                     style="margin-bottom: -25px; margin-top: 5px; border-radius: 0px"
                     @keyup.enter="
@@ -288,10 +290,9 @@
                       <v-list-item-action>
                         <v-icon
                           v-if="childTask.taskStatus == 'closed'"
-                          size="25"
-                          color="#2EC973"
-                        >mdi-checkbox-marked-circle</v-icon>
-                        <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                          color="#66B25F"
+                        >mdi-checkbox-blank</v-icon>
+                        <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
                       </v-list-item-action>
                       <div class="tasklistTaskNames restructuredSubTaskName">
                         <div>
@@ -405,13 +406,9 @@
                 <v-icon
                   v-if="task.taskStatus == 'closed'"
                   size="25"
-                  color="#2EC973"
-                >mdi-checkbox-marked-circle</v-icon>
-                <v-icon
-                  v-else
-                  size="25"
-                  :color="checkBoxColor(task.isParent)"
-                >mdi-checkbox-blank-circle</v-icon>
+                  color="#66B25F"
+                >mdi-checkbox-blank</v-icon>
+                <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
               </v-list-item-action>
               <div class="tasklistFilterTaskNames restructuredMainTaskName">
                 <div>

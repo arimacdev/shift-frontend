@@ -22,9 +22,9 @@
 
       <v-list-item-title>
         <div id="name-div">
-          <p id="company-name">ARIMAC</p>
+          <p id="company-name">{{userProfile.firstName}}</p>
 
-          <p id="name">{{userProfile.firstName}} {{userProfile.lastName}}</p>
+          <p id="name">{{userProfile.lastName }}</p>
         </div>
       </v-list-item-title>
     </v-list-item>
@@ -41,10 +41,12 @@
         :key="item.title"
         link
         active-class="active"
+        class="navItem"
       >
         <v-list-item-icon>
-          <!-- <span class="navButtons" :class="item.icon"></span> -->
-          <v-icon size="20" class="navButtons">{{ item.icon }}</v-icon>
+          <div style="margin-top: -8px">
+            <v-icon size="15" class="navButtons">{{ item.icon }}</v-icon>
+          </div>
         </v-list-item-icon>
 
         <v-list-item-content>
@@ -60,9 +62,12 @@
         :key="item.title"
         link
         active-class="active"
+        class="navItem"
       >
         <v-list-item-icon>
-          <v-icon class="navButtons">{{ item.icon }}</v-icon>
+          <div style="margin-top: -8px">
+            <v-icon size="15" class="navButtons">{{ item.icon }}</v-icon>
+          </div>
         </v-list-item-icon>
 
         <v-list-item-content>
@@ -75,7 +80,7 @@
       <v-list>
         <v-list-item @click="userLogOut">
           <v-list-item-icon>
-            <v-icon class="navButtons">mdi-power-standby</v-icon>
+            <v-icon size="18" class="navButtons">mdi-power-standby</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -187,5 +192,14 @@ export default {
 
 .navText:visited {
   color: rgb(231, 231, 240);
+}
+.navText {
+  font-size: 14px !important;
+}
+.navItem {
+  height: 35px !important;
+}
+.navIcon {
+  /* margin-top: -4px !important; */
 }
 </style>

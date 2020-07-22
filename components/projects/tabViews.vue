@@ -6,32 +6,32 @@
         <v-tabs slider-color="#0c0c5a" slider-size="3">
           <v-tab
             @click="changeTabView('task')"
-            class="tabInactiveStyle"
+            class="tabInactiveStyle text-capitalize"
             active-class="tabTitleStyle"
           >Tasks</v-tab>
           <v-tab
             @click="changeTabView('board')"
-            class="tabInactiveStyle"
+            class="tabInactiveStyle text-capitalize"
             active-class="tabTitleStyle"
           >Board</v-tab>
           <v-tab
             @click="changeTabView('people')"
-            class="tabInactiveStyle"
+            class="tabInactiveStyle text-capitalize"
             active-class="tabTitleStyle"
           >People</v-tab>
           <v-tab
             @click="changeTabView('project')"
-            class="tabInactiveStyle"
+            class="tabInactiveStyle text-capitalize"
             active-class="tabTitleStyle"
           >Project</v-tab>
           <v-tab
             @click="changeTabView('files')"
-            class="tabInactiveStyle"
+            class="tabInactiveStyle text-capitalize"
             active-class="tabTitleStyle"
           >Files</v-tab>
           <v-tab
             @click="changeTabView('logs')"
-            class="tabInactiveStyle"
+            class="tabInactiveStyle text-capitalize"
             active-class="tabTitleStyle"
           >Logs</v-tab>
 

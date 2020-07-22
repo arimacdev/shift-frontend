@@ -1,5 +1,6 @@
 <template>
   <v-autocomplete
+    dense
     v-model="select"
     :loading="loading"
     :items="states"
