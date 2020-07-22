@@ -44,7 +44,7 @@
         class="navItem"
       >
         <v-list-item-icon>
-          <div style="margin-top: -8px">
+          <div style="margin-top: -8px !important">
             <v-icon size="15" class="navButtons">{{ item.icon }}</v-icon>
           </div>
         </v-list-item-icon>
@@ -197,7 +197,8 @@ export default {
   font-size: 14px !important;
 }
 .navItem {
-  height: 35px !important;
+  min-height: auto !important;
+  max-height: 35px !important;
 }
 .navIcon {
   /* margin-top: -4px !important; */
