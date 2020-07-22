@@ -761,38 +761,66 @@
                       </v-list-item-icon>
                       <v-list-item-content>
                         <v-list-item-subtitle class="rightColumnItemsSubTitle">
-                          Task weight -
-                          <strong>Time</strong>
+                          <strong>
+                            Task weight -
+                            Time
+                          </strong>
                         </v-list-item-subtitle>
                         <v-list-item-title>
                           <v-row>
-                            <v-col md="6">
+                            <v-col md="4" class="rightColumnItemsSubTitle">Estimated Time</v-col>
+                          </v-row>
+                          <v-row style="margin-top: -17px">
+                            <v-col md="4">
                               <v-text-field
                                 dense
-                                v-model="estimatedTimeWeight"
+                                type="number"
+                                v-model="estimatedHours"
                                 flat
-                                label="Estimated Time"
-                                @keyup.enter="changeEstimatedWeight()"
-                                hint="Update and hit enter"
+                                label="hours"
                               ></v-text-field>
                             </v-col>
-                            <v-col md="6">
-                              <v-list-item-subtitle class="rightColumnItemsSubTitle">(eg. 2h 30min)</v-list-item-subtitle>
+                            <v-col md="4">
+                              <v-text-field
+                                dense
+                                type="number"
+                                v-model="estimatedMin"
+                                flat
+                                label="minutes"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col md="4">
+                              <v-btn @click="changeEstimatedTime()" icon>
+                                <v-icon color="deep-orange">mdi-checkbox-marked-circle-outline</v-icon>
+                              </v-btn>
                             </v-col>
                           </v-row>
                           <v-row>
-                            <v-col md="6">
+                            <v-col md="4" class="rightColumnItemsSubTitle">Actual Time</v-col>
+                          </v-row>
+                          <v-row style="margin-top: -17px">
+                            <v-col md="4">
                               <v-text-field
                                 dense
-                                v-model="actualTimeWeight"
+                                type="number"
+                                v-model="actualHours"
                                 flat
-                                label="Actual Time"
-                                @keyup.enter="changeActualWeight()"
-                                hint="Update and hit enter"
+                                label="hours"
                               ></v-text-field>
                             </v-col>
-                            <v-col md="6">
-                              <v-list-item-subtitle class="rightColumnItemsSubTitle">(eg. 2h 30min)</v-list-item-subtitle>
+                            <v-col md="4">
+                              <v-text-field
+                                dense
+                                type="number"
+                                v-model="actualMin"
+                                flat
+                                label="minutes"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col md="4">
+                              <v-btn @click="changeActualTime()" icon>
+                                <v-icon color="deep-orange">mdi-checkbox-marked-circle-outline</v-icon>
+                              </v-btn>
                             </v-col>
                           </v-row>
                         </v-list-item-title>
@@ -1022,6 +1050,10 @@ export default {
   },
   data() {
     return {
+      updatedActualMin: "",
+      updatedActualHours: "",
+      updatedEstimatedHours: "",
+      updatedEstimatedMin: "",
       updatedEstimatedWeight: "",
       updatedActualWeight: "",
       selectedTab: "comments",
@@ -1163,6 +1195,111 @@ export default {
   },
   methods: {
     // ------ update estimated weight ---------
+    async changeEstimatedTime() {
+      let hours;
+      let min;
+      if (this.updatedEstimatedHours != "") {
+        hours = this.updatedEstimatedHours;
+      } else {
+        hours = this.estimatedHours;
+      }
+      if (this.updatedEstimatedMin != "") {
+        min = this.updatedEstimatedMin;
+      } else {
+        min = this.estimatedMin;
+      }
+      this.waiting = true;
+      console.log("TIME WEIGHT + " + hours + min);
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
+          {
+            estimatedWeight: parseFloat(hours + "." + min)
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
+        this.component = "success-popup";
+        this.successMessage = "Estimated Weight successfully updated";
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+
+        this.userExists = true;
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        // console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        console.log("Error updating a status", e);
+      }
+    },
+    async changeActualTime() {
+      let hours;
+      let min;
+      if (this.updatedActualHours != "") {
+        hours = this.updatedActualHours;
+      } else {
+        hours = this.actualHours;
+      }
+      if (this.updatedActualMin != "") {
+        min = this.updatedActualMin;
+      } else {
+        min = this.actualMin;
+      }
+      this.waiting = true;
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
+          {
+            actualWeight: parseFloat(hours + "." + min)
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
+        this.component = "success-popup";
+        this.successMessage = "Actual Weight successfully updated";
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+
+        this.userExists = true;
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        // console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        console.log("Error updating a status", e);
+      }
+    },
     async changeEstimatedWeight() {
       this.waiting = true;
       let response;
@@ -2140,69 +2277,111 @@ export default {
         this.updatedActualWeight = actualWeight;
       }
     },
-    estimatedTimeWeight: {
+    estimatedHours: {
       get() {
-        console.log("WEIGHT: " + this.selectedTask.estimatedWeight);
-        if (this.selectedTask.estimatedWeight == 0) {
-          return this.selectedTask.estimatedWeight;
+        return Math.trunc(this.selectedTask.estimatedWeight);
+      },
+      set(estimatedWeight) {
+        this.updatedEstimatedHour = estimatedWeight;
+      }
+    },
+    estimatedMin: {
+      get() {
+        let min = (this.selectedTask.estimatedWeight + "").split(".")[1];
+        if (min == undefined) {
+          return 0;
         } else {
-          let int_part = Math.trunc(this.selectedTask.estimatedWeight);
-          let float_part = (this.selectedTask.estimatedWeight + "").split(
-            "."
-          )[1];
-          if (float_part / 10 < 1) {
-            float_part = float_part * 10;
-          }
-
-          if (float_part != undefined && int_part != 0) {
-            return int_part + "h " + float_part + "min";
-          } else if (int_part == 0) {
-            return float_part + "min";
-          } else {
-            return int_part + "h ";
-          }
+          return min;
         }
       },
       set(estimatedWeight) {
-        let hours = estimatedWeight.split("h")[0];
-        let minutes = estimatedWeight
-          .split(" ")
-          .pop()
-          .split("m")[0];
-
-        this.updatedEstimatedWeight = parseFloat(hours + "." + minutes);
+        this.updatedEstimatedMin = estimatedWeight;
       }
     },
-    actualTimeWeight: {
+    actualHours: {
       get() {
-        if (this.selectedTask.actualWeight == 0) {
-          return this.selectedTask.actualWeight;
+        return Math.trunc(this.selectedTask.actualWeight);
+      },
+      set(estimatedWeight) {
+        this.updatedActualHours = estimatedWeight;
+      }
+    },
+    actualMin: {
+      get() {
+        let min = (this.selectedTask.actualWeight + "").split(".")[1];
+        if (min == undefined) {
+          return 0;
         } else {
-          let int_part = Math.trunc(this.selectedTask.actualWeight);
-          let float_part = (this.selectedTask.actualWeight + "").split(".")[1];
-          if (float_part / 10 < 1) {
-            float_part = float_part * 10;
-          }
-
-          if (float_part != undefined && int_part != 0) {
-            return int_part + "h " + float_part + "min";
-          } else if (int_part == 0) {
-            return float_part + "min";
-          } else {
-            return int_part + "h ";
-          }
+          return min;
         }
       },
       set(actualWeight) {
-        let hours = actualWeight.split("h")[0];
-        let minutes = actualWeight
-          .split(" ")
-          .pop()
-          .split("m")[0];
-
-        this.updatedActualWeight = parseFloat(hours + "." + minutes);
+        this.updatedActualMin = actualWeight;
       }
     }
+    // estimatedTimeWeight: {
+    //   get() {
+    //     console.log("WEIGHT: " + this.selectedTask.estimatedWeight);
+    //     if (this.selectedTask.estimatedWeight == 0) {
+    //       return this.selectedTask.estimatedWeight;
+    //     } else {
+    //       let int_part = Math.trunc(this.selectedTask.estimatedWeight);
+    //       let float_part = (this.selectedTask.estimatedWeight + "").split(
+    //         "."
+    //       )[1];
+    //       if (float_part / 10 < 1) {
+    //         float_part = float_part * 10;
+    //       }
+
+    //       if (float_part != undefined && int_part != 0) {
+    //         return int_part + "h " + float_part + "min";
+    //       } else if (int_part == 0) {
+    //         return float_part + "min";
+    //       } else {
+    //         return int_part + "h ";
+    //       }
+    //     }
+    //   },
+    //   set(estimatedWeight) {
+    //     let hours = estimatedWeight.split("h")[0];
+    //     let minutes = estimatedWeight
+    //       .split(" ")
+    //       .pop()
+    //       .split("m")[0];
+
+    //     this.updatedEstimatedWeight = parseFloat(hours + "." + minutes);
+    //   }
+    // },
+    // actualTimeWeight: {
+    //   get() {
+    //     if (this.selectedTask.actualWeight == 0) {
+    //       return this.selectedTask.actualWeight;
+    //     } else {
+    //       let int_part = Math.trunc(this.selectedTask.actualWeight);
+    //       let float_part = (this.selectedTask.actualWeight + "").split(".")[1];
+    //       if (float_part / 10 < 1) {
+    //         float_part = float_part * 10;
+    //       }
+
+    //       if (float_part != undefined && int_part != 0) {
+    //         return int_part + "h " + float_part + "min";
+    //       } else if (int_part == 0) {
+    //         return float_part + "min";
+    //       } else {
+    //         return int_part + "h ";
+    //       }
+    //     }
+    //   },
+    //   set(actualWeight) {
+    //     let hours = actualWeight.split("h")[0];
+    //     let minutes = actualWeight
+    //       .split(" ")
+    //       .pop()
+    //       .split("m")[0];
+
+    //     this.updatedActualWeight = parseFloat(hours + "." + minutes);
+    //   }
+    // }
   }
 };
 </script>
