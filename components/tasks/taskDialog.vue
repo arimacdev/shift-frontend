@@ -770,59 +770,69 @@
                           <v-row>
                             <v-col md="4" class="rightColumnItemsSubTitle">Estimated Time</v-col>
                           </v-row>
-                          <v-row style="margin-top: -17px">
-                            <v-col md="4">
-                              <v-text-field
-                                dense
-                                type="number"
-                                v-model="estimatedHours"
-                                flat
-                                label="hours"
-                              ></v-text-field>
-                            </v-col>
-                            <v-col md="4">
-                              <v-text-field
-                                dense
-                                type="number"
-                                v-model="estimatedMin"
-                                flat
-                                label="minutes"
-                              ></v-text-field>
-                            </v-col>
-                            <v-col md="4">
-                              <v-btn @click="changeEstimatedTime()" icon>
-                                <v-icon color="deep-orange">mdi-checkbox-marked-circle-outline</v-icon>
-                              </v-btn>
-                            </v-col>
-                          </v-row>
+                          <v-form v-model="isValidEstimated" ref="estimatedform">
+                            <v-row style="margin-top: -17px">
+                              <v-col md="4">
+                                <v-text-field
+                                  dense
+                                  type="number"
+                                  v-model="estimatedHours"
+                                  flat
+                                  label="hours"
+                                ></v-text-field>
+                              </v-col>
+                              <v-col md="4">
+                                <v-text-field
+                                  dense
+                                  type="number"
+                                  v-model="estimatedMin"
+                                  flat
+                                  label="minutes"
+                                  :rules="estimatedRules"
+                                ></v-text-field>
+                              </v-col>
+                              <v-col md="4">
+                                <v-btn
+                                  :disabled="!isValidEstimated"
+                                  @click="changeEstimatedTime()"
+                                  icon
+                                >
+                                  <v-icon color="deep-orange">mdi-checkbox-marked-circle-outline</v-icon>
+                                </v-btn>
+                              </v-col>
+                            </v-row>
+                          </v-form>
                           <v-row>
                             <v-col md="4" class="rightColumnItemsSubTitle">Actual Time</v-col>
                           </v-row>
-                          <v-row style="margin-top: -17px">
-                            <v-col md="4">
-                              <v-text-field
-                                dense
-                                type="number"
-                                v-model="actualHours"
-                                flat
-                                label="hours"
-                              ></v-text-field>
-                            </v-col>
-                            <v-col md="4">
-                              <v-text-field
-                                dense
-                                type="number"
-                                v-model="actualMin"
-                                flat
-                                label="minutes"
-                              ></v-text-field>
-                            </v-col>
-                            <v-col md="4">
-                              <v-btn @click="changeActualTime()" icon>
-                                <v-icon color="deep-orange">mdi-checkbox-marked-circle-outline</v-icon>
-                              </v-btn>
-                            </v-col>
-                          </v-row>
+                          <v-form v-model="isValidActual" ref="estimatedform">
+                            <v-row style="margin-top: -17px">
+                              <v-col md="4">
+                                <v-text-field
+                                  dense
+                                  type="number"
+                                  v-model="actualHours"
+                                  flat
+                                  label="hours"
+                                ></v-text-field>
+                              </v-col>
+                              <v-col md="4">
+                                <v-text-field
+                                  dense
+                                  type="number"
+                                  v-model="actualMin"
+                                  flat
+                                  label="minutes"
+                                  :rules="actualRules"
+                                ></v-text-field>
+                              </v-col>
+                              <v-col md="4">
+                                <v-btn :disabled="!isValidActual" @click="changeActualTime()" icon>
+                                  <v-icon color="deep-orange">mdi-checkbox-marked-circle-outline</v-icon>
+                                </v-btn>
+                              </v-col>
+                            </v-row>
+                          </v-form>
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -1050,12 +1060,17 @@ export default {
   },
   data() {
     return {
+      estimatedRules: [v => v < 60 || "Invalid!"],
+      isValidEstimated: true,
+      actualRules: [v => v < 60 || "Invalid!"],
+      isValidActual: true,
       updatedActualMin: "",
       updatedActualHours: "",
       updatedEstimatedHours: "",
       updatedEstimatedMin: "",
       updatedEstimatedWeight: "",
       updatedActualWeight: "",
+
       selectedTab: "comments",
       activity: "comments",
       page: 1,
