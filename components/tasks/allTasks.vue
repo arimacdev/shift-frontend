@@ -239,7 +239,7 @@
                       style="text-decoration: none;"
                       target="_blank"
                     >
-                      <v-icon size="20" color="blue">mdi-link-variant</v-icon>
+                      <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
                     </nuxt-link>
                   </div>
                 </v-list-item>
@@ -294,7 +294,7 @@
                         >mdi-checkbox-blank</v-icon>
                         <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
                       </v-list-item-action>
-                      <div class="tasklistTaskNames restructuredSubTaskName">
+                      <div class="restructuredSubTaskName">
                         <div>
                           <span class="restructuredMainTaskCode">
                             {{
@@ -356,7 +356,7 @@
                         style="text-decoration: none;"
                         target="_blank"
                       >
-                        <v-icon size="20" color="blue">mdi-link-variant</v-icon>
+                        <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
                       </nuxt-link>
                     </div>
                   </v-list-item>

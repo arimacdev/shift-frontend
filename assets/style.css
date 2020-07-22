@@ -2025,7 +2025,8 @@
 }
 .restructuredSubTaskName {
   color: #080848;
-  width: 56% !important;
+  width: 57% !important;
+  margin-right: -12px;
 }
 .restStatusChip {
   /* padding-right: 30px; */
@@ -2044,35 +2045,35 @@
   margin-right: 5px !important;
 }
 .developmentStatus {
-  background-color: #ffa800 !important;
+  background-color: #ffaa0062 !important;
   color: #ffffff !important;
 }
 .qaStatus {
-  background-color: #ff7a00 !important;
+  background-color: #ff7b0059 !important;
   color: #ffffff !important;
 }
 .designStatus {
-  background-color: #4ebc44 !important;
+  background-color: #4ebc447e !important;
   color: #ffffff !important;
 }
 .bugStatus {
-  background-color: #fb3f3f !important;
+  background-color: #fb3f3f8e !important;
   color: #ffffff !important;
 }
 .operationalStatus {
-  background-color: #dd6def !important;
+  background-color: #de6def86 !important;
   color: #ffffff !important;
 }
 .preSalesStatus {
-  background-color: #00c29f !important;
+  background-color: #00c29e9a !important;
   color: #ffffff !important;
 }
 .generalStatus {
-  background-color: #0083e2 !important;
+  background-color: #0084e29c !important;
   color: #ffffff !important;
 }
 .otherStatus {
-  background-color: #0083e2;
+  background-color: #0084e28c;
   color: #ffffff;
 }
 .taskAddTitle {
@@ -2385,10 +2386,13 @@
   margin-left: -20px !important;
   padding-left: 20px !important;
   margin-top: -10px;
+  background-color: #ececec;
   /* height: 30px !important; */
 }
 .innerListItem {
   margin-right: 10px;
+  background-color: #fafafa;
+  border-right: 1px #cdcfd2 solid;
 }
 .upperListItemGroup {
   margin-left: -20px !important;
