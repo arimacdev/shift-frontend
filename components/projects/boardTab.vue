@@ -56,7 +56,7 @@
                   src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                 ></v-img>
               </v-list-item-avatar>
-              <div class="boardTabLinkIcon">
+              <!-- <div class="boardTabLinkIcon">
                 <nuxt-link
                   :to="
                     '/task/' + task.parentTask.taskId + '/?project=' + projectId
@@ -66,8 +66,8 @@
                 >
                   <v-icon size="15" color="#9F9F9F">mdi-open-in-new</v-icon>
                 </nuxt-link>
-              </div>
-              <!-- <div class="bluePart"></div> -->
+              </div>-->
+              <div class="bluePart"></div>
             </v-list-item>
           </div>
           <!-- -------------- load child tasks (default board) ----------- -->
@@ -124,7 +124,7 @@
                   src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                 ></v-img>
               </v-list-item-avatar>
-              <div class="boardTabLinkIcon">
+              <!-- <div class="boardTabLinkIcon">
                 <nuxt-link
                   :to="'/task/' + childTask.taskId + '/?project=' + projectId"
                   style="text-decoration: none;"
@@ -132,7 +132,7 @@
                 >
                   <v-icon size="15" color="#9F9F9F">mdi-open-in-new</v-icon>
                 </nuxt-link>
-              </div>
+              </div>-->
             </v-list-item>
           </div>
         </div>
@@ -233,7 +233,7 @@
                           src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                         ></v-img>
                       </v-list-item-avatar>
-                      <div class="boardTabLinkIcon">
+                      <!-- <div class="boardTabLinkIcon">
                         <nuxt-link
                           :to="
                             '/task/' +
@@ -246,8 +246,8 @@
                         >
                           <v-icon size="15" color="#9F9F9F">mdi-open-in-new</v-icon>
                         </nuxt-link>
-                      </div>
-                      <!-- <div class="bluePart"></div> -->
+                      </div>-->
+                      <div class="bluePart"></div>
                     </v-list-item>
                   </div>
                   <!-- -------- load child tasks (project boards) ------------ -->
@@ -311,7 +311,7 @@
                           src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                         ></v-img>
                       </v-list-item-avatar>
-                      <div class="boardTabLinkIcon">
+                      <!-- <div class="boardTabLinkIcon">
                         <nuxt-link
                           :to="
                             '/task/' +
@@ -324,7 +324,7 @@
                         >
                           <v-icon size="15" color="#9F9F9F">mdi-open-in-new</v-icon>
                         </nuxt-link>
-                      </div>
+                      </div>-->
                     </v-list-item>
                   </div>
                 </div>

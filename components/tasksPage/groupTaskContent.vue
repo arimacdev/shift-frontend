@@ -8,31 +8,35 @@
         <div class="taskFilter-tasksPage">
           <v-select
             v-model="taskSelect"
-            background-color="#EDF0F5"
+            background-color="#FFFFFF"
             :items="items"
             item-text="name"
             item-value="id"
             solo
             dense
             flat
+            outlined
+            style="border-radius: 0px"
           ></v-select>
           <v-form onsubmit="return false" ref="form">
             <v-text-field
               v-model="addNewTask"
-              background-color="#EDF0F5"
+              background-color="#FFFFFF"
+              outlined
               solo
               dense
               flat
-              prepend-inner-icon="mdi-plus-circle"
+              prepend-inner-icon="mdi-plus"
               label="Add a new task"
               class="addPersonalTaskTextBox"
+              style="border-radius: 0px"
               @keyup.enter="addGroupTask(null)"
             ></v-text-field>
           </v-form>
           <!-- -------- loop task list here ----------- -->
           <div v-for="(task, index) in groupTasks" :key="index">
-            <v-hover v-slot:default="{ hover }">
-              <div :class="backPannelDisplay(task.childTasks.length)" v-if="taskSelect == 'all'">
+            <v-hover open-delay="500" v-slot:default="{ hover }">
+              <div v-if="taskSelect == 'all'">
                 <div class="restructuredMainTaskList">
                   <v-list-item class="upperListItem">
                     <v-list-item
@@ -45,9 +49,9 @@
                         <v-icon
                           v-if="task.parentTask.taskStatus == 'closed'"
                           size="25"
-                          color="#2EC973"
-                        >mdi-checkbox-marked-circle</v-icon>
-                        <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                          color="#66B25F"
+                        >mdi-checkbox-blank</v-icon>
+                        <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
                       </v-list-item-action>
                       <div class="tasklistTaskNames restructuredMainTaskName">
                         <div>
@@ -120,9 +124,9 @@
                           <v-icon
                             v-if="childTask.taskStatus == 'closed'"
                             size="25"
-                            color="#2EC973"
-                          >mdi-checkbox-marked-circle</v-icon>
-                          <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                            color="#66B25F"
+                          >mdi-checkbox-blank</v-icon>
+                          <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
                         </v-list-item-action>
                         <div class="tasklistTaskNames restructuredSubTaskName">
                           <div>
@@ -184,9 +188,9 @@
                     <v-icon
                       v-if="task.parentTask.taskStatus == 'closed'"
                       size="25"
-                      color="#2EC973"
-                    >mdi-checkbox-marked-circle</v-icon>
-                    <v-icon v-else size="25" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                      color="#66B25F"
+                    >mdi-checkbox-blank</v-icon>
+                    <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
                   </v-list-item-action>
                   <div class="tasklistTaskNames restructuredMainTaskName">
                     <div>
@@ -243,9 +247,9 @@
                       <v-icon
                         v-if="childTask.taskStatus == 'closed'"
                         size="25"
-                        color="#2EC973"
-                      >mdi-checkbox-marked-circle</v-icon>
-                      <v-icon v-else size="25" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                        color="#66B25F"
+                      >mdi-checkbox-blank</v-icon>
+                      <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
                     </v-list-item-action>
                     <div class="tasklistTaskNames restructuredSubTaskName">
                       <div>

@@ -1914,6 +1914,11 @@
   margin-top: -10px;
   /* height: 30px !important; */
 }
+.upperFilterListPersonalItem {
+  background-color: #fafafa;
+  margin-bottom: 5px;
+  border: 1px solid #c4c4c4;
+}
 .upperMyListItem {
   margin-top: -10px;
   margin-left: -20px;
@@ -2375,7 +2380,7 @@
   width: 50px;
   height: 50px;
   transform: rotate(45deg);
-  background: #0bafff;
+  background: #333369;
 }
 .bluePartMyTask {
   position: absolute;
@@ -2448,7 +2453,7 @@
   width: 100%;
   height: 60px;
   background-color: #0b0b53;
-  margin-top: -20px;
+  margin-top: -40px;
   margin-bottom: 40px;
   color: #ffffff;
   padding-left: 20px;
@@ -2459,6 +2464,7 @@
 
 .workloadV2Body {
   padding: 30px;
+  margin-top: -20px;
 }
 
 .myWorkloadV2Content {
