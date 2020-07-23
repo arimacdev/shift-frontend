@@ -779,6 +779,7 @@
                                   v-model="estimatedHours"
                                   flat
                                   label="hours"
+                                  :rules="estimatedHRules"
                                 ></v-text-field>
                               </v-col>
                               <v-col md="4">
@@ -814,6 +815,7 @@
                                   v-model="actualHours"
                                   flat
                                   label="hours"
+                                  :rules="actualHRules"
                                 ></v-text-field>
                               </v-col>
                               <v-col md="4">
@@ -1060,9 +1062,11 @@ export default {
   },
   data() {
     return {
-      estimatedRules: [v => v < 60 || "Invalid!"],
+      estimatedRules: [v => v < 60 || "Invalid!", v => v > -1 || "Invalid!"],
+      estimatedHRules: [v => v > -1 || "Invalid!"],
       isValidEstimated: true,
-      actualRules: [v => v < 60 || "Invalid!"],
+      actualRules: [v => v < 60 || "Invalid!", v => v > -1 || "Invalid!"],
+      actualHRules: [v => v > -1 || "Invalid!"],
       isValidActual: true,
       updatedActualMin: "",
       updatedActualHours: "",
