@@ -938,6 +938,12 @@
         :errorMessage="errorMessage"
       ></component>
       <!-- <success-popup /> -->
+        <v-overlay :value="overlay" color="black">
+        <progress-loading />
+      </v-overlay>
+      <v-overlay :value="waiting" color="black">
+        <waiting />
+      </v-overlay>
     </div>
   </div>
 </template>
@@ -954,6 +960,9 @@ import TaskLogs from "~/components/tasks/taskLogs";
 import TaskComments from "~/components/tasks/taskComments";
 import Stomp from "stompjs";
 import SockJS from "sockjs-client";
+import Progress from "~/components/popups/progress";
+import Waiting from "~/components/popups/waiting";
+
 
 export default {
   components: {
@@ -963,7 +972,9 @@ export default {
     "add-parent-task": AddParentTask,
     "add-child-task": AddChildTask,
     "task-logs": TaskLogs,
-    "task-comments": TaskComments
+    "task-comments": TaskComments,
+    "progress-loading": Progress,
+    "waiting": Waiting,
   },
   data() {
     return {
@@ -980,7 +991,8 @@ export default {
       updatedEstimatedMin: "",
       updatedEstimatedWeight: "",
       updatedActualWeight: "",
-
+      overlay: false,
+      waiting: false,
       baseUrl: "",
       page: 1,
       commentPage: 1,
@@ -1188,6 +1200,7 @@ export default {
       this.waiting = true;
       console.log("TIME WEIGHT + " + hours + min);
       let response;
+      this.overlay = true;
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
@@ -1210,12 +1223,14 @@ export default {
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
 
         this.userExists = true;
+      this.overlay = false
         setTimeout(() => {
           this.close();
         }, 3000);
         this.waiting = false;
         // console.log("update task status response", response);
       } catch (e) {
+        this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -1240,6 +1255,7 @@ export default {
       }
       this.waiting = true;
       let response;
+      this.overlay = true
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
@@ -1257,6 +1273,7 @@ export default {
           startIndex: 0,
           endIndex: 10
         });
+      this.overlay = false
         this.component = "success-popup";
         this.successMessage = "Actual Weight successfully updated";
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
@@ -1268,6 +1285,7 @@ export default {
         this.waiting = false;
         // console.log("update task status response", response);
       } catch (e) {
+      this.overlay = false
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -1280,6 +1298,7 @@ export default {
     async changeEstimatedWeight() {
       this.waiting = true;
       let response;
+      this.overlay = true
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
@@ -1302,6 +1321,7 @@ export default {
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
 
         this.userExists = true;
+        this.overlay = false;
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -1310,6 +1330,7 @@ export default {
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
+        this.overlay = false;
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -1321,6 +1342,7 @@ export default {
     async changeActualWeight() {
       this.waiting = true;
       let response;
+        this.overlay = true
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
@@ -1346,6 +1368,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
+        this.overlay = true
         this.waiting = false;
         // console.log("update task status response", response);
       } catch (e) {
@@ -1354,6 +1377,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
+        this.overlay = false
         this.waiting = false;
         console.log("Error updating a status", e);
       }
@@ -1459,6 +1483,7 @@ export default {
     async updateStatus() {
       // console.log("onchange updated status ->");
       let response;
+      this.overlay = true
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
@@ -1477,12 +1502,14 @@ export default {
           endIndex: 10
         });
         this.component = "success-popup";
+        this.overlay = false
         this.successMessage = "Status successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
         // console.log("update task status response", response);
       } catch (e) {
+        this.overlay = false
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -1493,6 +1520,7 @@ export default {
     },
     async updateIssueType() {
       // console.log("onchange updated status ->");
+      this.overlay = true
       let response;
       try {
         response = await this.$axios.$put(
@@ -1512,6 +1540,7 @@ export default {
           startIndex: 0,
           endIndex: 10
         });
+        this.overlay = false
         this.component = "success-popup";
         this.successMessage = "Status successfully updated";
         setTimeout(() => {
@@ -1519,6 +1548,7 @@ export default {
         }, 3000);
         // console.log("update task status response", response);
       } catch (e) {
+        this.overlay = false
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -1533,6 +1563,7 @@ export default {
     async changeTaskSprint() {
       // console.log("onchange sprint", this.updatedTask.sprintId);
       let response;
+      this.overlay = true
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}/sprint`,
@@ -1551,6 +1582,7 @@ export default {
           startIndex: 0,
           endIndex: 10
         });
+        this.overlay = false
         this.component = "success-popup";
         this.successMessage = "Sprint successfully updated";
         setTimeout(() => {
@@ -1558,6 +1590,7 @@ export default {
         }, 3000);
         // console.log("update sprint status response", response);
       } catch (e) {
+        this.overlay = false
         console.log("Error updating a sprint", e);
         this.errorMessage = e.response.data;
         this.component = "error-popup";
@@ -1570,6 +1603,7 @@ export default {
     async changeAssignee() {
       // console.log("onchange updated assignee ->", this.taskAssignee);
       let response;
+      this.overlay = true
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
@@ -1587,6 +1621,7 @@ export default {
           startIndex: 0,
           endIndex: 10
         });
+        this.overlay = false
         this.component = "success-popup";
         this.successMessage = "Assignee successfully updated";
         setTimeout(() => {
@@ -1594,6 +1629,7 @@ export default {
         }, 3000);
         // console.log("update task status response", response);
       } catch (e) {
+        this.overlay = false
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -1632,6 +1668,7 @@ export default {
     async updateTaskNote() {
       // console.log("updatedTaskValue ->", this.updatedTask.taskNotes);
       let response;
+      this.overlay = true
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
@@ -1651,11 +1688,13 @@ export default {
         });
         this.component = "success-popup";
         this.successMessage = "Note successfully updated";
+        this.overlay = false
         setTimeout(() => {
           this.close();
         }, 3000);
         // console.log("edit task response", response);
       } catch (e) {
+        this.overlay = false
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -1668,6 +1707,7 @@ export default {
       if (this.updatedTask.taskName != "") {
         // console.log("updatedTaskName ->", this.updatedTask.taskName);
         let response;
+        this.overlay = true
         try {
           response = await this.$axios.$put(
             `/projects/${this.projectId}/tasks/${this.task.taskId}`,
@@ -1689,6 +1729,7 @@ export default {
             "task/setSelectedTaskName",
             this.updatedTask.taskName
           );
+          this.overlay = false
           this.component = "success-popup";
           this.successMessage = "Name successfully updated";
           setTimeout(() => {
@@ -1698,6 +1739,7 @@ export default {
           this.editTask = true;
           // console.log("edit task response", response);
         } catch (e) {
+          this.overlay = false
           console.log("Error updating the name", e);
           this.errorMessage = e.response.data;
           this.component = "error-popup";
@@ -1847,6 +1889,7 @@ export default {
         });
       }
       let response;
+      this.overlay = true
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
@@ -1864,11 +1907,13 @@ export default {
         });
         this.component = "success-popup";
         this.successMessage = "Date successfully updated";
+        this.overlay = false
         setTimeout(() => {
           this.close();
         }, 3000);
         // console.log("update task dates response", response);
       } catch (e) {
+        this.overlay = false
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -1917,6 +1962,7 @@ export default {
       if (this.files != null) {
         for (let index = 0; index < this.files.length; ++index) {
           this.uploadLoading = true;
+          this.waiting = true
           let formData = new FormData();
           formData.append("files", this.files[index]);
           formData.append("type", "profileImage");
@@ -1939,6 +1985,7 @@ export default {
             });
             this.$store.dispatch("task/appendTaskFile", fileResponse.data);
             this.uploadLoading = false;
+            this.waiting = false;
             this.component = "success-popup";
             this.successMessage = "File(s) successfully uploaded";
             setTimeout(() => {
@@ -1947,6 +1994,7 @@ export default {
             // console.log("file response", this.taskFiles);
           } catch (e) {
             // console.log("Error adding group file", e);
+            this.waiting = false
             this.errorMessage = e.response.data;
             this.component = "error-popup";
             setTimeout(() => {
@@ -1960,6 +2008,7 @@ export default {
     },
     async handleFileDelete(taskFileId) {
       let response;
+      this.overlay = true
       try {
         response = await this.$axios.$delete(
           `/projects/${this.projectId}/tasks/${this.task.taskId}/upload/${taskFileId}`,
@@ -1979,10 +2028,12 @@ export default {
         this.$store.dispatch("task/removeTaskFile", taskFileId);
         this.component = "success-popup";
         this.successMessage = "File successfully deleted";
+        this.overlay = false
         setTimeout(() => {
           this.close();
         }, 3000);
       } catch (e) {
+        this.overlay = false
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {

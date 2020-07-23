@@ -1041,7 +1041,7 @@ export default {
     "add-parent-task": AddParentTask,
     "add-child-task": AddChildTask,
     "progress-loading": Progress,
-    waiting: Waiting,
+    "waiting": Waiting,
     "task-logs": TaskLogs,
     "task-comments": TaskComments
   },
