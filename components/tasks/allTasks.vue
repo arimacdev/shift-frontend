@@ -267,7 +267,7 @@
       </div>
       <!-- ------ start task list ------- -->
       <div v-for="(task, index) in projectAllTasks" :key="index">
-        <v-hover v-slot:default="{ hover }">
+        <v-hover open-delay="400" v-slot:default="{ hover }">
           <div>
             <div>
               <div class="restructuredMainTaskList">
