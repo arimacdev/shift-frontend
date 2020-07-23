@@ -667,6 +667,142 @@
                     </v-row>
                   </div>
                   <v-divider class="datePickerDivider"></v-divider>
+                  <!-- --------- weight section ---------- -->
+
+                  <!-- -------- story as a weight -------- -->
+                  <v-list-item v-if="this.fetchProject.weightMeasure == 'story'">
+                    <v-list-item-icon
+                      style="background-color: #0BAFFF; padding: 10px; border-radius: 50%"
+                    >
+                      <v-icon size="25" color="#FFFFFF">mdi-weight-lifter</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-subtitle class="rightColumnItemsSubTitle">
+                        Task weight -
+                        <strong>Story Points</strong>
+                      </v-list-item-subtitle>
+                      <v-list-item-title>
+                        <v-form v-model="isValidEstimated" ref="estimatedform">
+                          <v-row>
+                            <v-col md="6">
+                              <v-text-field
+                                type="number"
+                                dense
+                                v-model="estimatedWeight"
+                                flat
+                                label="Estimated"
+                                @keyup.enter="changeEstimatedWeight()"
+                                hint="Update and hit enter"
+                                :rules="estimatedHRules"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col md="6">
+                              <v-text-field
+                                type="number"
+                                dense
+                                v-model="actualWeight"
+                                flat
+                                label="Actual"
+                                @keyup.enter="changeActualWeight()"
+                                hint="Update and hit enter"
+                                :rules="estimatedHRules"
+                              ></v-text-field>
+                            </v-col>
+                          </v-row>
+                        </v-form>
+                      </v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+
+                  <!-- ----------- time as a weight ----------- -->
+
+                  <v-list-item v-if="this.fetchProject.weightMeasure == 'time'">
+                    <v-list-item-icon
+                      style="background-color: #0BAFFF; padding: 10px; border-radius: 50%"
+                    >
+                      <v-icon size="25" color="#FFFFFF">mdi-weight-lifter</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-subtitle class="rightColumnItemsSubTitle">
+                        <strong>
+                          Task weight -
+                          Time
+                        </strong>
+                      </v-list-item-subtitle>
+                      <v-list-item-title>
+                        <v-row>
+                          <v-col md="4" class="rightColumnItemsSubTitle">Estimated Time</v-col>
+                        </v-row>
+                        <v-form v-model="isValidEstimated" ref="estimatedform">
+                          <v-row style="margin-top: -17px">
+                            <v-col md="4">
+                              <v-text-field
+                                dense
+                                type="number"
+                                v-model="estimatedHours"
+                                flat
+                                label="hours"
+                                :rules="estimatedHRules"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col md="4">
+                              <v-text-field
+                                dense
+                                type="number"
+                                v-model="estimatedMin"
+                                flat
+                                label="minutes"
+                                :rules="estimatedRules"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col style="text-align: right" md="4">
+                              <v-btn
+                                :disabled="!isValidEstimated"
+                                @click="changeEstimatedTime()"
+                                icon
+                              >
+                                <v-icon color="deep-orange">mdi-checkbox-marked-circle-outline</v-icon>
+                              </v-btn>
+                            </v-col>
+                          </v-row>
+                        </v-form>
+                        <v-row>
+                          <v-col md="4" class="rightColumnItemsSubTitle">Actual Time</v-col>
+                        </v-row>
+                        <v-form v-model="isValidActual" ref="estimatedform">
+                          <v-row style="margin-top: -17px">
+                            <v-col md="4">
+                              <v-text-field
+                                dense
+                                type="number"
+                                v-model="actualHours"
+                                flat
+                                label="hours"
+                                :rules="actualHRules"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col md="4">
+                              <v-text-field
+                                dense
+                                type="number"
+                                v-model="actualMin"
+                                flat
+                                label="minutes"
+                                :rules="actualRules"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col style="text-align: right" md="4">
+                              <v-btn :disabled="!isValidActual" @click="changeActualTime()" icon>
+                                <v-icon color="deep-orange">mdi-checkbox-marked-circle-outline</v-icon>
+                              </v-btn>
+                            </v-col>
+                          </v-row>
+                        </v-form>
+                      </v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-divider class></v-divider>
+                  <!-- ----------- end weight section ------- -->
                   <!-- ----------- Files section --------- -->
                   <v-list-item>
                     <v-list-item-icon
@@ -831,6 +967,20 @@ export default {
   },
   data() {
     return {
+      // ---------- for weight section -----------
+      estimatedRules: [v => v < 60 || "Invalid!", v => v > -1 || "Invalid!"],
+      estimatedHRules: [v => v > -1 || "Invalid!"],
+      isValidEstimated: true,
+      actualRules: [v => v < 60 || "Invalid!", v => v > -1 || "Invalid!"],
+      actualHRules: [v => v > -1 || "Invalid!"],
+      isValidActual: true,
+      updatedActualMin: "",
+      updatedActualHours: "",
+      updatedEstimatedHours: "",
+      updatedEstimatedMin: "",
+      updatedEstimatedWeight: "",
+      updatedActualWeight: "",
+
       baseUrl: "",
       page: 1,
       commentPage: 1,
@@ -969,6 +1119,7 @@ export default {
     this.userId = this.$store.state.user.userId;
     this.baseUrl = process.env.SYSTEM_URL;
     this.websocketConnectInit(this.taskId);
+    this.$store.dispatch("project/fetchProject", this.$route.query.project);
     this.$store.dispatch("activityLog/fetchTaskActivityLog", {
       taskId: this.selectedTask.taskId,
       startIndex: 0,
@@ -1019,6 +1170,195 @@ export default {
     this.$store.dispatch("user/fetchOwnUser", this.$store.state.user.userId);
   },
   methods: {
+    // -----for weight section ---------
+    // ------ update estimated weight ---------
+    async changeEstimatedTime() {
+      let hours;
+      let min;
+      if (this.updatedEstimatedHours != "") {
+        hours = this.updatedEstimatedHours;
+      } else {
+        hours = this.estimatedHours;
+      }
+      if (this.updatedEstimatedMin != "") {
+        min = this.updatedEstimatedMin;
+      } else {
+        min = this.estimatedMin;
+      }
+      this.waiting = true;
+      console.log("TIME WEIGHT + " + hours + min);
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            estimatedWeight: parseFloat(hours + "." + min)
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.task.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
+        this.component = "success-popup";
+        this.successMessage = "Estimated Weight successfully updated";
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+
+        this.userExists = true;
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        // console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        console.log("Error updating a status", e);
+      }
+    },
+    async changeActualTime() {
+      let hours;
+      let min;
+      if (this.updatedActualHours != "") {
+        hours = this.updatedActualHours;
+      } else {
+        hours = this.actualHours;
+      }
+      if (this.updatedActualMin != "") {
+        min = this.updatedActualMin;
+      } else {
+        min = this.actualMin;
+      }
+      this.waiting = true;
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            actualWeight: parseFloat(hours + "." + min)
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.task.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
+        this.component = "success-popup";
+        this.successMessage = "Actual Weight successfully updated";
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+
+        this.userExists = true;
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        // console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        console.log("Error updating a status", e);
+      }
+    },
+    async changeEstimatedWeight() {
+      this.waiting = true;
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            estimatedWeight: this.updatedEstimatedWeight
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.task.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
+        this.component = "success-popup";
+        this.successMessage = "Estimated Weight successfully updated";
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+
+        this.userExists = true;
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        // console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        console.log("Error updating a status", e);
+      }
+    },
+
+    async changeActualWeight() {
+      this.waiting = true;
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.task.taskId}`,
+          {
+            actualWeight: this.updatedActualWeight
+          },
+          {
+            headers: {
+              user: this.userId
+            }
+          }
+        );
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.task.taskId,
+          startIndex: 0,
+          endIndex: 10
+        });
+        this.component = "success-popup";
+        this.successMessage = "Actual Weight successfully updated";
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+
+        this.userExists = true;
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        // console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        console.log("Error updating a status", e);
+      }
+    },
+    // ------------ end weight methods -----------
     selectedVTab(component) {
       this.activity = component;
       if (component === "logs") {
@@ -1700,7 +2040,8 @@ export default {
       projectSprints: state => state.sprints.sprint.sprints,
       taskFiles: state => state.task.taskFiles,
       children: state => state.task.childTasks,
-      parentTask: state => state.task.parentTask
+      parentTask: state => state.task.parentTask,
+      fetchProject: state => state.project.project
     }),
     ...mapGetters(["getuserCompletionTasks"]),
 
@@ -1855,6 +2196,67 @@ export default {
       set(value) {
         // console.log("updated remind on ->", value);
         this.updatedRemindOnDate = value;
+      }
+    },
+
+    // -------- for weight section ---------
+    estimatedWeight: {
+      get() {
+        return this.task.estimatedWeight;
+      },
+      set(estimatedWeight) {
+        this.updatedEstimatedWeight = estimatedWeight;
+      }
+    },
+
+    actualWeight: {
+      get() {
+        return this.task.actualWeight;
+      },
+      set(actualWeight) {
+        this.updatedActualWeight = actualWeight;
+      }
+    },
+    estimatedHours: {
+      get() {
+        return Math.trunc(this.task.estimatedWeight);
+      },
+      set(estimatedWeight) {
+        this.updatedEstimatedHour = estimatedWeight;
+      }
+    },
+    estimatedMin: {
+      get() {
+        let min = (this.task.estimatedWeight + "").split(".")[1];
+        if (min == undefined) {
+          return 0;
+        } else {
+          return min;
+        }
+      },
+      set(estimatedWeight) {
+        this.updatedEstimatedMin = estimatedWeight;
+      }
+    },
+    actualHours: {
+      get() {
+        return Math.trunc(this.task.actualWeight);
+      },
+      set(estimatedWeight) {
+        this.updatedActualHours = estimatedWeight;
+      }
+    },
+    actualMin: {
+      get() {
+        let min = (this.task.actualWeight + "").split(".")[1];
+        if (min == undefined) {
+          return 0;
+        } else {
+          return min;
+        }
+      },
+      set(actualWeight) {
+        this.updatedActualMin = actualWeight;
       }
     }
   }

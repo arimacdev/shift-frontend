@@ -707,46 +707,34 @@
                           <strong>Story Points</strong>
                         </v-list-item-subtitle>
                         <v-list-item-title>
-                          <v-row>
-                            <v-col md="6">
-                              <!-- <v-select
-                                dense
-                                v-model="estimatedWeight"
-                                :items="storyPoints"
-                                flat
-                                label="Estimated"
-                                @change="changeEstimatedWeight()"
-                              ></v-select>-->
-                              <v-text-field
-                                type="number"
-                                dense
-                                v-model="estimatedWeight"
-                                flat
-                                label="Estimated"
-                                @keyup.enter="changeEstimatedWeight()"
-                                hint="Update and hit enter"
-                              ></v-text-field>
-                            </v-col>
-                            <v-col md="6">
-                              <!-- <v-select
-                                dense
-                                v-model="actualWeight"
-                                :items="storyPoints"
-                                flat
-                                label="Actual"
-                                @change="changeActualWeight()"
-                              ></v-select>-->
-                              <v-text-field
-                                type="number"
-                                dense
-                                v-model="actualWeight"
-                                flat
-                                label="Actual"
-                                @keyup.enter="changeActualWeight()"
-                                hint="Update and hit enter"
-                              ></v-text-field>
-                            </v-col>
-                          </v-row>
+                          <v-form v-model="isValidEstimated" ref="estimatedform">
+                            <v-row>
+                              <v-col md="6">
+                                <v-text-field
+                                  type="number"
+                                  dense
+                                  v-model="estimatedWeight"
+                                  flat
+                                  label="Estimated"
+                                  @keyup.enter="changeEstimatedWeight()"
+                                  hint="Update and hit enter"
+                                  :rules="estimatedHRules"
+                                ></v-text-field>
+                              </v-col>
+                              <v-col md="6">
+                                <v-text-field
+                                  type="number"
+                                  dense
+                                  v-model="actualWeight"
+                                  flat
+                                  label="Actual"
+                                  @keyup.enter="changeActualWeight()"
+                                  hint="Update and hit enter"
+                                  :rules="estimatedHRules"
+                                ></v-text-field>
+                              </v-col>
+                            </v-row>
+                          </v-form>
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -838,8 +826,9 @@
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
-
                     <v-divider class></v-divider>
+                    <!-- ----------- end weight section ------- -->
+
                     <!-- ----------- Files section --------- -->
                     <v-list-item>
                       <v-list-item-icon
@@ -1062,6 +1051,7 @@ export default {
   },
   data() {
     return {
+      // ---------- for weight section -----------
       estimatedRules: [v => v < 60 || "Invalid!", v => v > -1 || "Invalid!"],
       estimatedHRules: [v => v > -1 || "Invalid!"],
       isValidEstimated: true,
@@ -1213,6 +1203,7 @@ export default {
     };
   },
   methods: {
+    // -----for weight section ---------
     // ------ update estimated weight ---------
     async changeEstimatedTime() {
       let hours;
@@ -1400,6 +1391,7 @@ export default {
         console.log("Error updating a status", e);
       }
     },
+    // ------------ end weight methods -----------
 
     taskStatusFormatting(status) {
       switch (status) {
@@ -2279,6 +2271,8 @@ export default {
         this.updatedTask.taskRemindOnDate = value;
       }
     },
+
+    // -------- for weight section ---------
     estimatedWeight: {
       get() {
         return this.selectedTask.estimatedWeight;
@@ -2338,69 +2332,6 @@ export default {
         this.updatedActualMin = actualWeight;
       }
     }
-    // estimatedTimeWeight: {
-    //   get() {
-    //     console.log("WEIGHT: " + this.selectedTask.estimatedWeight);
-    //     if (this.selectedTask.estimatedWeight == 0) {
-    //       return this.selectedTask.estimatedWeight;
-    //     } else {
-    //       let int_part = Math.trunc(this.selectedTask.estimatedWeight);
-    //       let float_part = (this.selectedTask.estimatedWeight + "").split(
-    //         "."
-    //       )[1];
-    //       if (float_part / 10 < 1) {
-    //         float_part = float_part * 10;
-    //       }
-
-    //       if (float_part != undefined && int_part != 0) {
-    //         return int_part + "h " + float_part + "min";
-    //       } else if (int_part == 0) {
-    //         return float_part + "min";
-    //       } else {
-    //         return int_part + "h ";
-    //       }
-    //     }
-    //   },
-    //   set(estimatedWeight) {
-    //     let hours = estimatedWeight.split("h")[0];
-    //     let minutes = estimatedWeight
-    //       .split(" ")
-    //       .pop()
-    //       .split("m")[0];
-
-    //     this.updatedEstimatedWeight = parseFloat(hours + "." + minutes);
-    //   }
-    // },
-    // actualTimeWeight: {
-    //   get() {
-    //     if (this.selectedTask.actualWeight == 0) {
-    //       return this.selectedTask.actualWeight;
-    //     } else {
-    //       let int_part = Math.trunc(this.selectedTask.actualWeight);
-    //       let float_part = (this.selectedTask.actualWeight + "").split(".")[1];
-    //       if (float_part / 10 < 1) {
-    //         float_part = float_part * 10;
-    //       }
-
-    //       if (float_part != undefined && int_part != 0) {
-    //         return int_part + "h " + float_part + "min";
-    //       } else if (int_part == 0) {
-    //         return float_part + "min";
-    //       } else {
-    //         return int_part + "h ";
-    //       }
-    //     }
-    //   },
-    //   set(actualWeight) {
-    //     let hours = actualWeight.split("h")[0];
-    //     let minutes = actualWeight
-    //       .split(" ")
-    //       .pop()
-    //       .split("m")[0];
-
-    //     this.updatedActualWeight = parseFloat(hours + "." + minutes);
-    //   }
-    // }
   }
 };
 </script>
