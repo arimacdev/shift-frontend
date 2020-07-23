@@ -3,7 +3,7 @@
     <v-row justify="center">
       <v-dialog v-model="dialog" persistent max-width="350">
         <template v-slot:activator="{ on }">
-          <div class="iconBackCircle">
+          <div class="iconBackCirclePeople">
             <v-icon v-on="on" size="17" color="#0BAFFF">mdi-pencil-outline</v-icon>
           </div>
         </template>

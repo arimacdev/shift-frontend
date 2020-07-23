@@ -305,6 +305,14 @@
   border-radius: 50%;
   text-align: center;
 }
+.iconBackCirclePeople {
+  background-color: #ffff;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  text-align: center;
+  padding-top: 2px;
+}
 
 .iconBackCircleFiles {
   background-color: #ffff;

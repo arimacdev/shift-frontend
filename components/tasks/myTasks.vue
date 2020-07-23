@@ -2,7 +2,7 @@
   <div class>
     <v-btn
       v-if="this.filterList != '' && this.taskFilter != 'none'"
-      style="position: absolute; right: 60px; margin-top: -45px"
+      style="position: absolute; right: 60px; margin-top: -48px"
       @click="exportAsCSV"
       dark
       height="30px"
@@ -13,8 +13,103 @@
       <v-list-item-action-text>Export as CSV</v-list-item-action-text>
       <!-- Cancel -->
     </v-btn>
-    <div class="filterSection">
-      <v-row>
+    <div class="filterSectionAllTasks">
+      <div class="filterTriggersDrop" style="width: 10%; float: left; padding-right: 10px">
+        <v-btn dark width="100%" height="30px" color="#060631">
+          <v-icon
+            size="13"
+            color="#FFFFFF"
+            style="margin-right: 3px; margin-top: 3px !important"
+          >icon-task</v-icon>
+          <span class="text-capitalize" style="font-size: 10px !important">All Tasks</span>
+        </v-btn>
+      </div>
+      <div class="filterTriggers" style="width: 20%; float: left; margin-right: 10px">
+        <v-text-field
+          dense
+          clearable
+          @click:clear="clearName()"
+          v-model="nameOfTask"
+          outlined
+          flat
+          label="Task Name"
+          background-color="#FFFFFF"
+        ></v-text-field>
+      </div>
+      <div class="filterTriggersDrop" style="width: 15%; float: left; padding-right: 10px">
+        <v-autocomplete
+          v-model="filterType"
+          return-object
+          :items="taskTypeArray"
+          item-text="name"
+          item-value="id"
+          flat
+          outlined
+          dense
+          chips
+          background-color="#FFFFFF"
+          small-chips
+          label="Task Type"
+          multiple
+          clearable
+          @click:clear="clearType()"
+        >
+          <template v-slot:selection="{ item, index }">
+            <v-chip x-small style="width: 30px" v-if="index === 0">
+              <span>{{ item.name }}</span>
+            </v-chip>
+          </template>
+        </v-autocomplete>
+      </div>
+      <div class="filterTriggersDrop" style="width: 15%; float: left; padding-right: 10px">
+        <v-autocomplete
+          v-model="filterStatus"
+          return-object
+          :items="taskStatusArray"
+          item-text="name"
+          item-value="id"
+          flat
+          outlined
+          dense
+          chips
+          background-color="#FFFFFF"
+          small-chips
+          label="Task Status"
+          multiple
+          clearable
+          @click:clear="clearStatus()"
+        >
+          <template v-slot:selection="{ item, index }">
+            <v-chip x-small style="width: 30px" v-if="index === 0">
+              <span>{{ item.name }}</span>
+            </v-chip>
+          </template>
+        </v-autocomplete>
+      </div>
+      <div class="filterTriggersDrop" style="width: 25%; float: left; padding-right: 10px">
+        <VueCtkDateTimePicker
+          :no-value-to-custom-elem="false"
+          color="#3f51b5"
+          v-model="dateRange"
+          label="Date Range"
+          range
+          right
+          noButton
+          autoClose
+          :clear-icon-cb="clearDate()"
+        ></VueCtkDateTimePicker>
+      </div>
+      <div class="filterTriggersDrop" style="width: 5%; float: left; margin-right: 20px">
+        <v-btn @click="jqlSearch()" dark width="100%" height="30px" color="#080848">
+          <span class="text-capitalize" style="font-size: 10px !important">Search</span>
+        </v-btn>
+      </div>
+      <div class="filterTriggersDrop" style="width: 5%; float: left; padding-right: 10px">
+        <v-btn @click="filterChange()" dark width="100%" height="30px" color="#FF6161">
+          <span class="text-capitalize" style="font-size: 10px !important; ">Clear</span>
+        </v-btn>
+      </div>
+      <!-- <v-row>
         <v-col md="2">
           <v-text-field
             dense
@@ -94,27 +189,29 @@
         <v-col md="1">
           <v-btn @click="jqlSearch()" dark width="100%" height="40px" color="#080848">
             <v-icon color="#FFFFFF">mdi-filter-outline</v-icon>
-            <!-- Filter -->
+           
           </v-btn>
         </v-col>
         <v-col md="1">
           <v-btn @click="filterChange()" dark width="100%" height="40px" color="#FF6161">
             <v-icon color="#FFFFFF">mdi-cancel</v-icon>
-            <!-- Cancel -->
+            
           </v-btn>
         </v-col>
-      </v-row>
+      </v-row>-->
     </div>
 
     <div v-if="this.taskFilter == 'none'" class="taskListViewContent overflow-y-auto">
       <div v-if="this.taskFilter == 'none'" class="restructuredTaskCreate">
         <v-text-field
           v-model="taskName"
-          background-color="#EDF0F5"
+          background-color="#FFFFFF"
+          outlined
           solo
           flat
           dense
-          prepend-inner-icon="mdi-plus-circle"
+          prepend-inner-icon="mdi-plus"
+          style="border-radius: 0px"
           label="Add a main task..."
           class
           @keyup.enter="addTask(null)"
@@ -125,7 +222,7 @@
       <div v-for="(task, index) in projectMyTasks" :key="index">
         <div class>
           <div class="restructuredFilterTaskList">
-            <v-list-item class="upperFilterListItem">
+            <v-list-item class="upperListItem">
               <v-list-item
                 class="innerListItem"
                 @click="
@@ -138,9 +235,9 @@
                   <v-icon
                     v-if="task.taskStatus == 'closed'"
                     size="25"
-                    color="#2EC973"
-                  >mdi-checkbox-marked-circle</v-icon>
-                  <v-icon v-else size="25" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                    color="#66B25F"
+                  >mdi-checkbox-blank</v-icon>
+                  <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
                 </v-list-item-action>
                 <div class="tasklistTaskNames restructuredMainTaskName">
                   <div>
@@ -168,7 +265,7 @@
                     :class="dueDateCheck(task)"
                   >{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
                 </v-list-item-content>
-                <div>
+                <div style="margin-right: -25px">
                   <v-list-item-avatar size="25">
                     <v-img
                       v-if="
@@ -191,7 +288,7 @@
                   style="text-decoration: none;"
                   target="_blank"
                 >
-                  <v-icon color="blue">mdi-link-variant</v-icon>
+                  <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
                 </nuxt-link>
               </div>
             </v-list-item>
@@ -289,13 +386,9 @@
                 <v-icon
                   v-if="task.taskStatus == 'closed'"
                   size="25"
-                  color="#2EC973"
-                >mdi-checkbox-marked-circle</v-icon>
-                <v-icon
-                  v-else
-                  size="25"
-                  :color="checkBoxColor(task.isParent)"
-                >mdi-checkbox-blank-circle</v-icon>
+                  color="#66B25F"
+                >mdi-checkbox-blank</v-icon>
+                <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
               </v-list-item-action>
               <div class="tasklistFilterTaskNames restructuredMainTaskName">
                 <div>

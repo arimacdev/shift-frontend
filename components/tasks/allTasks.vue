@@ -2,7 +2,7 @@
   <div class>
     <v-btn
       v-if="this.filterList != '' && this.taskFilter != 'none'"
-      style="position: absolute; right: 60px; margin-top: -45px"
+      style="position: absolute; right: 60px; margin-top: -48px"
       @click="exportAsCSV"
       dark
       height="30px"
@@ -16,6 +16,11 @@
     <div class="filterSectionAllTasks">
       <div class="filterTriggersDrop" style="width: 10%; float: left; padding-right: 10px">
         <v-btn dark width="100%" height="30px" color="#66B35F">
+          <v-icon
+            size="13"
+            color="#FFFFFF"
+            style="margin-right: 3px; margin-top: 3px !important"
+          >icon-task</v-icon>
           <span class="text-capitalize" style="font-size: 10px !important">My Tasks</span>
         </v-btn>
       </div>

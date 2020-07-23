@@ -64,7 +64,7 @@
                   style="text-decoration: none;"
                   target="_blank"
                 >
-                  <v-icon size="15" color="blue">mdi-link-variant</v-icon>
+                  <v-icon size="15" color="#9F9F9F">mdi-open-in-new</v-icon>
                 </nuxt-link>
               </div>
               <!-- <div class="bluePart"></div> -->
@@ -130,7 +130,7 @@
                   style="text-decoration: none;"
                   target="_blank"
                 >
-                  <v-icon size="15" color="blue">mdi-link-variant</v-icon>
+                  <v-icon size="15" color="#9F9F9F">mdi-open-in-new</v-icon>
                 </nuxt-link>
               </div>
             </v-list-item>
@@ -244,7 +244,7 @@
                           style="text-decoration: none;"
                           target="_blank"
                         >
-                          <v-icon size="15" color="blue">mdi-link-variant</v-icon>
+                          <v-icon size="15" color="#9F9F9F">mdi-open-in-new</v-icon>
                         </nuxt-link>
                       </div>
                       <!-- <div class="bluePart"></div> -->
@@ -322,7 +322,7 @@
                           style="text-decoration: none;"
                           target="_blank"
                         >
-                          <v-icon size="15" color="blue">mdi-link-variant</v-icon>
+                          <v-icon size="15" color="#9F9F9F">mdi-open-in-new</v-icon>
                         </nuxt-link>
                       </div>
                     </v-list-item>
