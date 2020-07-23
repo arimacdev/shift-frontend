@@ -15,7 +15,7 @@
     </v-btn>
     <div class="filterSectionAllTasks">
       <div class="filterTriggersDrop" style="width: 10%; float: left; padding-right: 10px">
-        <v-btn dark width="100%" height="30px" color="#66B35F">
+        <v-btn dark width="100%" height="30px" color="#66B35F" @click="changeTaskOption()">
           <v-icon
             size="13"
             color="#FFFFFF"
@@ -809,6 +809,9 @@ export default {
     }
   },
   methods: {
+    changeTaskOption(){
+      this.$emit("changeTaskOption", "my-tasks");
+    },
     backPannelDisplay(child) {
       if (child != 0) {
         return "backPannelAllTask";

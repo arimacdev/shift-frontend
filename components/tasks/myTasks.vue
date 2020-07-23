@@ -15,7 +15,7 @@
     </v-btn>
     <div class="filterSectionAllTasks">
       <div class="filterTriggersDrop" style="width: 10%; float: left; padding-right: 10px">
-        <v-btn dark width="100%" height="30px" color="#060631">
+        <v-btn dark width="100%" height="30px" color="#060631" @click="changeTaskOption">
           <v-icon
             size="13"
             color="#FFFFFF"
@@ -623,6 +623,9 @@ export default {
     "progress-loading": Progress
   },
   methods: {
+      changeTaskOption(){
+      this.$emit("changeTaskOption", "all-tasks");
+    },
     taskStatusFormatting(status) {
       switch (status) {
         case "pending":

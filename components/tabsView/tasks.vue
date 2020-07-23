@@ -4,7 +4,7 @@
       <v-menu bottom left>
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon v-bind="attrs" v-on="on">
-            <v-icon>mdi-dots-vertical</v-icon>
+            <!-- <v-icon>mdi-dots-vertical</v-icon> -->
           </v-btn>
         </template>
 
@@ -108,6 +108,7 @@
             :people="people"
             :pagination="pagination"
             :myTaskPagination="myTaskPagination"
+            @changeTaskOption="changeTaskOption"
           ></component>
         </div>
         <!-- </keep-alive> -->
@@ -141,6 +142,9 @@ export default {
     };
   },
   methods: {
+    changeTaskOption(option){
+      this.component = option
+    },
     fetchAllTasks() {
       this.$store.dispatch("task/setIndex", {
         startIndex: 0,
