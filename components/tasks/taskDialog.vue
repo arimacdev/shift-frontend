@@ -1221,6 +1221,7 @@ export default {
       this.waiting = true;
       console.log("TIME WEIGHT + " + hours + min);
       let response;
+      this.overlay = true;
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
@@ -1247,8 +1248,10 @@ export default {
           this.close();
         }, 3000);
         this.waiting = false;
+        this.overlay = false;
         // console.log("update task status response", response);
       } catch (e) {
+        this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -1273,6 +1276,7 @@ export default {
       }
       this.waiting = true;
       let response;
+      this.overlay = true;
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
@@ -1295,12 +1299,14 @@ export default {
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
 
         this.userExists = true;
+        this.overlay = false;
         setTimeout(() => {
           this.close();
         }, 3000);
         this.waiting = false;
         // console.log("update task status response", response);
       } catch (e) {
+        this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -1313,6 +1319,7 @@ export default {
     async changeEstimatedWeight() {
       this.waiting = true;
       let response;
+      this.overlay = true;
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
@@ -1330,6 +1337,7 @@ export default {
           startIndex: 0,
           endIndex: 10
         });
+        this.overlay = false;
         this.component = "success-popup";
         this.successMessage = "Estimated Weight successfully updated";
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
@@ -1341,6 +1349,7 @@ export default {
         this.waiting = false;
         // console.log("update task status response", response);
       } catch (e) {
+        this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -1353,6 +1362,7 @@ export default {
 
     async changeActualWeight() {
       this.waiting = true;
+      this.overlay = true;
       let response;
       try {
         response = await this.$axios.$put(
@@ -1380,8 +1390,10 @@ export default {
           this.close();
         }, 3000);
         this.waiting = false;
+        this.overlay = false;
         // console.log("update task status response", response);
       } catch (e) {
+        this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
