@@ -718,12 +718,12 @@
 }
 .projectRole {
   color: #080848;
-  font-weight: 500;
-  font-size: 14px;
+  font-weight: bold;
+  font-size: 12px;
 }
 .peopleName {
   color: #b9b9b9;
-  font-size: 13px;
+  font-size: 11px;
 }
 .completedStatus {
   color: #7a8b9f;

@@ -13,7 +13,7 @@
 
         <div v-for="(assignee, index) in userCompletionTasks" :key="index" class="peopleListItems">
           <v-list-item v-if="assignee.projectRoleId == 1" class="peopleContainer">
-            <v-list-item-avatar>
+            <v-list-item-avatar size="35">
               <v-img
                 v-if="
                   assignee.assigneeProfileImage != null &&
@@ -94,7 +94,7 @@
             "
             class="peopleContainer"
           >
-            <v-list-item-avatar>
+            <v-list-item-avatar size="35">
               <v-img
                 v-if="
                   assignee.assigneeProfileImage != null &&
@@ -176,7 +176,7 @@
               "
               class="peopleContainer"
             >
-              <v-list-item-avatar>
+              <v-list-item-avatar size="35">
                 <v-img
                   v-if="
                     assignee.assigneeProfileImage != null &&
