@@ -938,7 +938,7 @@
         :errorMessage="errorMessage"
       ></component>
       <!-- <success-popup /> -->
-        <v-overlay :value="overlay" color="black">
+      <v-overlay :value="overlay" color="black">
         <progress-loading />
       </v-overlay>
       <v-overlay :value="waiting" color="black">
@@ -963,7 +963,6 @@ import SockJS from "sockjs-client";
 import Progress from "~/components/popups/progress";
 import Waiting from "~/components/popups/waiting";
 
-
 export default {
   components: {
     NavigationDrawer,
@@ -974,16 +973,19 @@ export default {
     "task-logs": TaskLogs,
     "task-comments": TaskComments,
     "progress-loading": Progress,
-    "waiting": Waiting,
+    waiting: Waiting,
   },
   data() {
     return {
       // ---------- for weight section -----------
-      estimatedRules: [v => v < 60 || "Invalid!", v => v > -1 || "Invalid!"],
-      estimatedHRules: [v => v > -1 || "Invalid!"],
+      estimatedRules: [
+        (v) => v < 60 || "Invalid!",
+        (v) => v > -1 || "Invalid!",
+      ],
+      estimatedHRules: [(v) => v > -1 || "Invalid!"],
       isValidEstimated: true,
-      actualRules: [v => v < 60 || "Invalid!", v => v > -1 || "Invalid!"],
-      actualHRules: [v => v > -1 || "Invalid!"],
+      actualRules: [(v) => v < 60 || "Invalid!", (v) => v > -1 || "Invalid!"],
+      actualHRules: [(v) => v > -1 || "Invalid!"],
       isValidActual: true,
       updatedActualMin: "",
       updatedActualHours: "",
@@ -1014,7 +1016,7 @@ export default {
       updatedTaskName: "",
       updatedTask: {
         taskName: "",
-        taskAssignee: ""
+        taskAssignee: "",
       },
       updatedIssue: "",
       updatedStatus: "",
@@ -1038,7 +1040,7 @@ export default {
         { name: "Bug", id: "bug" },
         { name: "Operational", id: "operational" },
         { name: "Pre-sales", id: "preSales" },
-        { name: "General", id: "general" }
+        { name: "General", id: "general" },
       ],
       development: [
         { name: "Pending", id: "pending" },
@@ -1047,13 +1049,13 @@ export default {
         { name: "Completed", id: "completed" },
         { name: "Implementing", id: "implementing" },
         { name: "Deployed", id: "deployed" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       qa: [
         { name: "Pending", id: "pending" },
         { name: "Testing", id: "testing" },
         { name: "Review", id: "review" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       design: [
         { name: "Pending", id: "pending" },
@@ -1068,7 +1070,7 @@ export default {
         { name: "Review", id: "review" },
         { name: "Waiting response", id: "waitingResponse" },
         { name: "Rejected", id: "rejected" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       bug: [
         { name: "Pending", id: "pending" },
@@ -1082,7 +1084,7 @@ export default {
         { name: "Under review", id: "underReview" },
         { name: "Review", id: "review" },
         { name: "Waiting response", id: "waitingResponse" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       operational: [
         { name: "Pending", id: "pending" },
@@ -1098,7 +1100,7 @@ export default {
         { name: "Waiting response", id: "waitingResponse" },
         { name: "Ready", id: "ready" },
         { name: "Rejected", id: "rejected" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       preSales: [
         { name: "Pending", id: "pending" },
@@ -1112,7 +1114,7 @@ export default {
         { name: "Discussion", id: "discussion" },
         { name: "Waiting response", id: "waitingResponse" },
         { name: "Rejected", id: "rejected" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       general: [
         { name: "Pending", id: "pending" },
@@ -1121,8 +1123,8 @@ export default {
         { name: "Cancel", id: "cancel" },
         { name: "In progress", id: "inprogress" },
         { name: "Completed", id: "completed" },
-        { name: "Closed", id: "closed" }
-      ]
+        { name: "Closed", id: "closed" },
+      ],
     };
   },
   async created() {
@@ -1135,7 +1137,7 @@ export default {
     this.$store.dispatch("activityLog/fetchTaskActivityLog", {
       taskId: this.selectedTask.taskId,
       startIndex: 0,
-      endIndex: 10
+      endIndex: 10,
     });
     this.$store.dispatch(
       "task/fetchProjectUserCompletionTasks",
@@ -1148,8 +1150,8 @@ export default {
         {
           headers: {
             user: this.userId,
-            type: "project"
-          }
+            type: "project",
+          },
         }
       );
       this.task = taskResponse.data;
@@ -1161,7 +1163,7 @@ export default {
     this.$store.dispatch("comments/fetchTaskActivityComment", {
       taskId: this.$route.params.viewTask,
       startIndex: 0,
-      endIndex: 10
+      endIndex: 10,
     });
 
     this.$store.dispatch(
@@ -1171,12 +1173,12 @@ export default {
     if (this.task.isParent) {
       this.$store.dispatch("task/fetchChildren", {
         projectId: this.$route.query.project,
-        taskId: this.$route.params.viewTask
+        taskId: this.$route.params.viewTask,
       });
     } else {
       this.$store.dispatch("task/fetchParentTask", {
         projectId: this.$route.query.project,
-        taskId: this.task.parentId
+        taskId: this.task.parentId,
       });
     }
     this.$store.dispatch("user/fetchOwnUser", this.$store.state.user.userId);
@@ -1205,25 +1207,25 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            estimatedWeight: parseFloat(hours + "." + min)
+            estimatedWeight: parseFloat(hours + "." + min),
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.task.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.component = "success-popup";
         this.successMessage = "Estimated Weight successfully updated";
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
 
         this.userExists = true;
-      this.overlay = false
+        this.overlay = false;
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -1255,25 +1257,25 @@ export default {
       }
       this.waiting = true;
       let response;
-      this.overlay = true
+      this.overlay = true;
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            actualWeight: parseFloat(hours + "." + min)
+            actualWeight: parseFloat(hours + "." + min),
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.task.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
-      this.overlay = false
+        this.overlay = false;
         this.component = "success-popup";
         this.successMessage = "Actual Weight successfully updated";
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
@@ -1285,7 +1287,7 @@ export default {
         this.waiting = false;
         // console.log("update task status response", response);
       } catch (e) {
-      this.overlay = false
+        this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -1298,23 +1300,23 @@ export default {
     async changeEstimatedWeight() {
       this.waiting = true;
       let response;
-      this.overlay = true
+      this.overlay = true;
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            estimatedWeight: this.updatedEstimatedWeight
+            estimatedWeight: this.updatedEstimatedWeight,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.task.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.component = "success-popup";
         this.successMessage = "Estimated Weight successfully updated";
@@ -1342,23 +1344,23 @@ export default {
     async changeActualWeight() {
       this.waiting = true;
       let response;
-        this.overlay = true
+      this.overlay = true;
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            actualWeight: this.updatedActualWeight
+            actualWeight: this.updatedActualWeight,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.task.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.component = "success-popup";
         this.successMessage = "Actual Weight successfully updated";
@@ -1368,7 +1370,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = true
+        this.overlay = true;
         this.waiting = false;
         // console.log("update task status response", response);
       } catch (e) {
@@ -1377,7 +1379,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false
+        this.overlay = false;
         this.waiting = false;
         console.log("Error updating a status", e);
       }
@@ -1390,7 +1392,7 @@ export default {
         this.$store.dispatch("comments/fetchTaskActivityComment", {
           taskId: this.$route.params.viewTask,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
 
         this.$store.dispatch(
@@ -1411,10 +1413,10 @@ export default {
         this.stomp = Stomp.over(socket);
         //this.$store.dispatch("stompClient/setStompClient", "this.stomp");
         //let client = this.stompClient;
-        this.stomp.connect({}, frame => {
+        this.stomp.connect({}, (frame) => {
           console.log("connected to: " + frame);
           console.log("subscribing to topic: " + "/topic/messages/" + taskId);
-          this.stomp.subscribe("/topic/messages/" + taskId, response => {
+          this.stomp.subscribe("/topic/messages/" + taskId, (response) => {
             console.log("Response", response);
             let data = JSON.parse(response.body);
             console.log("outside----->");
@@ -1423,7 +1425,7 @@ export default {
               this.$store.dispatch("comments/fetchTaskActivityComment", {
                 taskId: this.selectedTask.taskId,
                 startIndex: 0,
-                endIndex: 9
+                endIndex: 9,
               });
             } else if (
               data.actionType === "typing" &&
@@ -1445,7 +1447,7 @@ export default {
     },
     checkUserExists() {
       const index = this.people.findIndex(
-        user => user.assigneeId === this.selectedTask.taskAssignee
+        (user) => user.assigneeId === this.selectedTask.taskAssignee
       );
       if (index === -1) {
         this.userExists = false;
@@ -1462,8 +1464,8 @@ export default {
             data: {},
             headers: {
               user: this.userId,
-              type: "project"
-            }
+              type: "project",
+            },
           }
         );
         this.$emit("listenChange");
@@ -1483,33 +1485,33 @@ export default {
     async updateStatus() {
       // console.log("onchange updated status ->");
       let response;
-      this.overlay = true
+      this.overlay = true;
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            taskStatus: this.updatedTask.taskStatus
+            taskStatus: this.updatedTask.taskStatus,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.component = "success-popup";
-        this.overlay = false
+        this.overlay = false;
         this.successMessage = "Status successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
         // console.log("update task status response", response);
       } catch (e) {
-        this.overlay = false
+        this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -1520,27 +1522,27 @@ export default {
     },
     async updateIssueType() {
       // console.log("onchange updated status ->");
-      this.overlay = true
+      this.overlay = true;
       let response;
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
             taskStatus: this.taskStatus,
-            issueType: this.updatedIssue
+            issueType: this.updatedIssue,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
-        this.overlay = false
+        this.overlay = false;
         this.component = "success-popup";
         this.successMessage = "Status successfully updated";
         setTimeout(() => {
@@ -1548,7 +1550,7 @@ export default {
         }, 3000);
         // console.log("update task status response", response);
       } catch (e) {
-        this.overlay = false
+        this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -1563,26 +1565,26 @@ export default {
     async changeTaskSprint() {
       // console.log("onchange sprint", this.updatedTask.sprintId);
       let response;
-      this.overlay = true
+      this.overlay = true;
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}/sprint`,
           {
             previousSprint: this.task.sprintId,
-            newSprint: this.updatedTask.sprintId
+            newSprint: this.updatedTask.sprintId,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
-        this.overlay = false
+        this.overlay = false;
         this.component = "success-popup";
         this.successMessage = "Sprint successfully updated";
         setTimeout(() => {
@@ -1590,7 +1592,7 @@ export default {
         }, 3000);
         // console.log("update sprint status response", response);
       } catch (e) {
-        this.overlay = false
+        this.overlay = false;
         console.log("Error updating a sprint", e);
         this.errorMessage = e.response.data;
         this.component = "error-popup";
@@ -1603,25 +1605,25 @@ export default {
     async changeAssignee() {
       // console.log("onchange updated assignee ->", this.taskAssignee);
       let response;
-      this.overlay = true
+      this.overlay = true;
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            taskAssignee: this.updatedTask.taskAssignee
+            taskAssignee: this.updatedTask.taskAssignee,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
-        this.overlay = false
+        this.overlay = false;
         this.component = "success-popup";
         this.successMessage = "Assignee successfully updated";
         setTimeout(() => {
@@ -1629,7 +1631,7 @@ export default {
         }, 3000);
         // console.log("update task status response", response);
       } catch (e) {
-        this.overlay = false
+        this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -1648,7 +1650,7 @@ export default {
         let assignee = assigneeSearchList[index];
         this.assignees.push({
           name: assignee.assigneeFirstName + " " + assignee.assigneeLastName,
-          id: assignee.assigneeId
+          id: assignee.assigneeId,
         });
       }
       // console.log("nameList", this.states);
@@ -1668,33 +1670,33 @@ export default {
     async updateTaskNote() {
       // console.log("updatedTaskValue ->", this.updatedTask.taskNotes);
       let response;
-      this.overlay = true
+      this.overlay = true;
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            taskNotes: this.updatedTask.taskNote
+            taskNotes: this.updatedTask.taskNote,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.component = "success-popup";
         this.successMessage = "Note successfully updated";
-        this.overlay = false
+        this.overlay = false;
         setTimeout(() => {
           this.close();
         }, 3000);
         // console.log("edit task response", response);
       } catch (e) {
-        this.overlay = false
+        this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -1707,29 +1709,29 @@ export default {
       if (this.updatedTask.taskName != "") {
         // console.log("updatedTaskName ->", this.updatedTask.taskName);
         let response;
-        this.overlay = true
+        this.overlay = true;
         try {
           response = await this.$axios.$put(
             `/projects/${this.projectId}/tasks/${this.task.taskId}`,
             {
-              taskName: this.updatedTask.taskName
+              taskName: this.updatedTask.taskName,
             },
             {
               headers: {
-                user: this.userId
-              }
+                user: this.userId,
+              },
             }
           );
           this.$store.dispatch("activityLog/fetchTaskActivityLog", {
             taskId: this.selectedTask.taskId,
             startIndex: 0,
-            endIndex: 10
+            endIndex: 10,
           });
           this.$store.dispatch(
             "task/setSelectedTaskName",
             this.updatedTask.taskName
           );
-          this.overlay = false
+          this.overlay = false;
           this.component = "success-popup";
           this.successMessage = "Name successfully updated";
           setTimeout(() => {
@@ -1739,7 +1741,7 @@ export default {
           this.editTask = true;
           // console.log("edit task response", response);
         } catch (e) {
-          this.overlay = false
+          this.overlay = false;
           console.log("Error updating the name", e);
           this.errorMessage = e.response.data;
           this.component = "error-popup";
@@ -1830,7 +1832,7 @@ export default {
           let sprint = sprints[index];
           sprintList.push({
             name: sprint.sprintName,
-            id: sprint.sprintId
+            id: sprint.sprintId,
           });
         }
         return sprintList;
@@ -1867,11 +1869,11 @@ export default {
         dueDate = isoDate;
         remindDate = this.updatedRemindOnDate;
         changedDate = {
-          taskDueDate: dueDate
+          taskDueDate: dueDate,
         };
         this.$store.dispatch("task/updateProjectDates", {
           type: "dueDate",
-          date: dueDate
+          date: dueDate,
         });
       } else if (type === "remindOn" && this.updatedRemindOnDate != null) {
         remindDate = new Date(this.updatedRemindOnDate);
@@ -1881,39 +1883,39 @@ export default {
         remindDate = isoDate;
         dueDate = this.updatedRemindOnDate;
         changedDate = {
-          taskRemindOnDate: remindDate
+          taskRemindOnDate: remindDate,
         };
         this.$store.dispatch("task/updateProjectDates", {
           type: "remindDate",
-          date: remindDate
+          date: remindDate,
         });
       }
       let response;
-      this.overlay = true
+      this.overlay = true;
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           changedDate,
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.component = "success-popup";
         this.successMessage = "Date successfully updated";
-        this.overlay = false
+        this.overlay = false;
         setTimeout(() => {
           this.close();
         }, 3000);
         // console.log("update task dates response", response);
       } catch (e) {
-        this.overlay = false
+        this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -1962,7 +1964,7 @@ export default {
       if (this.files != null) {
         for (let index = 0; index < this.files.length; ++index) {
           this.uploadLoading = true;
-          this.waiting = true
+          this.waiting = true;
           let formData = new FormData();
           formData.append("files", this.files[index]);
           formData.append("type", "profileImage");
@@ -1974,14 +1976,14 @@ export default {
               formData,
               {
                 headers: {
-                  user: this.userId
-                }
+                  user: this.userId,
+                },
               }
             );
             this.$store.dispatch("activityLog/fetchTaskActivityLog", {
               taskId: this.selectedTask.taskId,
               startIndex: 0,
-              endIndex: 10
+              endIndex: 10,
             });
             this.$store.dispatch("task/appendTaskFile", fileResponse.data);
             this.uploadLoading = false;
@@ -1994,7 +1996,7 @@ export default {
             // console.log("file response", this.taskFiles);
           } catch (e) {
             // console.log("Error adding group file", e);
-            this.waiting = false
+            this.waiting = false;
             this.errorMessage = e.response.data;
             this.component = "error-popup";
             setTimeout(() => {
@@ -2008,32 +2010,32 @@ export default {
     },
     async handleFileDelete(taskFileId) {
       let response;
-      this.overlay = true
+      this.overlay = true;
       try {
         response = await this.$axios.$delete(
           `/projects/${this.projectId}/tasks/${this.task.taskId}/upload/${taskFileId}`,
           {
             data: {},
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         // console.log(response.data);
         this.$store.dispatch("task/removeTaskFile", taskFileId);
         this.component = "success-popup";
         this.successMessage = "File successfully deleted";
-        this.overlay = false
+        this.overlay = false;
         setTimeout(() => {
           this.close();
         }, 3000);
       } catch (e) {
-        this.overlay = false
+        this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -2056,11 +2058,11 @@ export default {
       ) {
         // this.$store.dispatch("user/setComponentUser", userId);
         let fileUser;
-        const index = this.componentUsers.findIndex(i => i.userId === userId);
+        const index = this.componentUsers.findIndex((i) => i.userId === userId);
         if (index === -1) {
           this.$axios
             .get(`/users/${userId}`)
-            .then(response => {
+            .then((response) => {
               // console.log("component user---->", response.data.data);
               // this.userList = response.data.data;
               // console.log("another user", response.data.data);
@@ -2068,31 +2070,31 @@ export default {
               let fileUser = response.data.data;
               return fileUser.firstName;
             })
-            .catch(e => {
+            .catch((e) => {
               console.log("error", e);
             });
         }
       } else {
-        const index = this.componentUsers.findIndex(i => i.userId === userId);
+        const index = this.componentUsers.findIndex((i) => i.userId === userId);
         if (index > -1) {
           const user = this.componentUsers[index];
           return user.firstName + " " + user.lastName;
         }
       }
-    }
+    },
   },
   computed: {
     ...mapState({
-      selectedTask: state => state.task.selectedTask,
-      selectedTaskUser: state => state.user.selectedTaskUser,
-      parentTaskUser: state => state.user.parentTaskUser,
-      componentUser: state => state.user.componentUser,
-      people: state => state.task.userCompletionTasks,
-      projectSprints: state => state.sprints.sprint.sprints,
-      taskFiles: state => state.task.taskFiles,
-      children: state => state.task.childTasks,
-      parentTask: state => state.task.parentTask,
-      fetchProject: state => state.project.project
+      selectedTask: (state) => state.task.selectedTask,
+      selectedTaskUser: (state) => state.user.selectedTaskUser,
+      parentTaskUser: (state) => state.user.parentTaskUser,
+      componentUser: (state) => state.user.componentUser,
+      people: (state) => state.task.userCompletionTasks,
+      projectSprints: (state) => state.sprints.sprint.sprints,
+      taskFiles: (state) => state.task.taskFiles,
+      children: (state) => state.task.childTasks,
+      parentTask: (state) => state.task.parentTask,
+      fetchProject: (state) => state.project.project,
     }),
     ...mapGetters(["getuserCompletionTasks"]),
 
@@ -2127,7 +2129,7 @@ export default {
         // console.log("file length dispatch", this.taskFiles.length);
         this.$store.dispatch("task/fetchTaskFiles", {
           projectId: this.projectId,
-          taskId: this.taskId
+          taskId: this.taskId,
         });
         this.fetchFilesCount += 1;
       } else {
@@ -2161,7 +2163,7 @@ export default {
       set(assignee) {
         // console.log("spid", sprintId);
         this.updatedTask.taskAssignee = assignee;
-      }
+      },
     },
 
     taskName: {
@@ -2172,7 +2174,7 @@ export default {
       },
       set(name) {
         this.updatedTask.taskName = name;
-      }
+      },
     },
     taskStatus: {
       get() {
@@ -2188,7 +2190,7 @@ export default {
       },
       set(value) {
         this.updatedTask.taskStatus = value;
-      }
+      },
     },
     issueType: {
       get() {
@@ -2200,7 +2202,7 @@ export default {
         this.issueTypes = value;
         this.issueStatus = "pending";
         // console.log("issue type", this.updatedIssue);
-      }
+      },
     },
     selectedSprint: {
       get() {
@@ -2209,7 +2211,7 @@ export default {
       },
       set(value) {
         this.updatedTask.sprintId = value;
-      }
+      },
     },
     taskNote: {
       get() {
@@ -2217,7 +2219,7 @@ export default {
       },
       set(value) {
         this.updatedTask.taskNote = value;
-      }
+      },
     },
     taskDueDate: {
       get() {
@@ -2232,7 +2234,7 @@ export default {
       set(value) {
         // console.log("set updated", value);
         this.updatedTaskDueDate = value;
-      }
+      },
     },
     taskRemindOnDate: {
       get() {
@@ -2247,7 +2249,7 @@ export default {
       set(value) {
         // console.log("updated remind on ->", value);
         this.updatedRemindOnDate = value;
-      }
+      },
     },
 
     // -------- for weight section ---------
@@ -2257,7 +2259,7 @@ export default {
       },
       set(estimatedWeight) {
         this.updatedEstimatedWeight = estimatedWeight;
-      }
+      },
     },
 
     actualWeight: {
@@ -2266,15 +2268,15 @@ export default {
       },
       set(actualWeight) {
         this.updatedActualWeight = actualWeight;
-      }
+      },
     },
     estimatedHours: {
       get() {
         return Math.trunc(this.task.estimatedWeight);
       },
       set(estimatedWeight) {
-        this.updatedEstimatedHour = estimatedWeight;
-      }
+        this.updatedEstimatedHours = estimatedWeight;
+      },
     },
     estimatedMin: {
       get() {
@@ -2287,7 +2289,7 @@ export default {
       },
       set(estimatedWeight) {
         this.updatedEstimatedMin = estimatedWeight;
-      }
+      },
     },
     actualHours: {
       get() {
@@ -2295,7 +2297,7 @@ export default {
       },
       set(estimatedWeight) {
         this.updatedActualHours = estimatedWeight;
-      }
+      },
     },
     actualMin: {
       get() {
@@ -2308,8 +2310,8 @@ export default {
       },
       set(actualWeight) {
         this.updatedActualMin = actualWeight;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
