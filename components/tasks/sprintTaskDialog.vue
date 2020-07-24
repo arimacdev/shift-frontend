@@ -2288,7 +2288,11 @@ export default {
         if (min == undefined) {
           return 0;
         } else {
-          return min;
+          if (min / 10 < 1 && min.toString().length == 1) {
+            return min * 10;
+          } else {
+            return min;
+          }
         }
       },
       set(estimatedWeight) {
@@ -2309,7 +2313,11 @@ export default {
         if (min == undefined) {
           return 0;
         } else {
-          return min;
+          if (min / 10 < 1 && min.toString().length == 1) {
+            return min * 10;
+          } else {
+            return min;
+          }
         }
       },
       set(actualWeight) {
