@@ -1663,14 +1663,15 @@ export default {
             startIndex: 0,
             endIndex: 10
           });
-          if (this.selectedTask.isParent) {
-            this.$store.dispatch("task/updateTask", {
-              taskId: this.selectedTask.taskId,
-              taskName: this.updatedTask.taskName
-            });
-          } else {
-            this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
-          }
+          // if (this.selectedTask.isParent) {
+          //   this.$store.dispatch("task/updateTask", {
+          //     taskId: this.selectedTask.taskId,
+          //     taskName: this.updatedTask.taskName
+          //   });
+          // } else {
+          this.$store.dispatch("task/setSelectedTaskName", this.updatedTask.taskName)
+          this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
+          // }
           setTimeout(() => {
             this.close();
           }, 3000);
