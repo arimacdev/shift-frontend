@@ -238,7 +238,7 @@
                           <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
                         </v-list-item-action>
                         <div class="tasklistTaskNames restructuredMainTaskName">
-                          <div class="body-2">
+                          <div>
                             <span class="restructuredMainTaskCode">
                               {{
                               task.secondaryTaskId

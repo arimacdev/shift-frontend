@@ -23,10 +23,10 @@
                 <div class="text-center">
                   <v-icon
                     v-if="task.parentTask.taskStatus == 'closed'"
-                    size="25"
+                    size="20"
                     color="#2EC973"
                   >mdi-checkbox-marked-circle</v-icon>
-                  <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                  <v-icon v-else size="20" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                   <br />
                   <div
                     style="font-size: 10px; font-weight: bold"
@@ -34,7 +34,7 @@
                 </div>
               </v-list-item-action>
               <v-list-item-content>
-                <v-list-item-title>
+                <v-list-item-title class="fontRestructure12">
                   {{
                   task.parentTask.taskName
                   }}
@@ -43,7 +43,7 @@
                   :class="dueDateCheck(task.parentTask)"
                 >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</div>
               </v-list-item-content>
-              <v-list-item-avatar size="25">
+              <v-list-item-avatar style="margin-right: 5px" size="25">
                 <v-img
                   v-if="
                     task.parentTask.taskAssigneeProfileImage != null &&
@@ -56,7 +56,7 @@
                   src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                 ></v-img>
               </v-list-item-avatar>
-              <div class="boardTabLinkIcon">
+              <!-- <div class="boardTabLinkIcon">
                 <nuxt-link
                   :to="
                     '/task/' + task.parentTask.taskId + '/?project=' + projectId
@@ -64,9 +64,9 @@
                   style="text-decoration: none;"
                   target="_blank"
                 >
-                  <v-icon size="15" color="blue">mdi-link-variant</v-icon>
+                  <v-icon size="15" color="#9F9F9F">mdi-open-in-new</v-icon>
                 </nuxt-link>
-              </div>
+              </div>-->
               <div class="bluePart"></div>
             </v-list-item>
           </div>
@@ -108,10 +108,10 @@
               </v-list-item-action>
 
               <v-list-item-content>
-                <v-list-item-title>{{ childTask.taskName }}</v-list-item-title>
+                <v-list-item-title class="fontRestructure12">{{ childTask.taskName }}</v-list-item-title>
                 <div :class="dueDateCheck(childTask)">{{ getProjectDates(childTask.taskDueDateAt) }}</div>
               </v-list-item-content>
-              <v-list-item-avatar size="25">
+              <v-list-item-avatar style="margin-right: 5px" size="25">
                 <v-img
                   v-if="
                     childTask.taskAssigneeProfileImage != null &&
@@ -124,15 +124,15 @@
                   src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                 ></v-img>
               </v-list-item-avatar>
-              <div class="boardTabLinkIcon">
+              <!-- <div class="boardTabLinkIcon">
                 <nuxt-link
                   :to="'/task/' + childTask.taskId + '/?project=' + projectId"
                   style="text-decoration: none;"
                   target="_blank"
                 >
-                  <v-icon size="15" color="blue">mdi-link-variant</v-icon>
+                  <v-icon size="15" color="#9F9F9F">mdi-open-in-new</v-icon>
                 </nuxt-link>
-              </div>
+              </div>-->
             </v-list-item>
           </div>
         </div>
@@ -160,12 +160,12 @@
                   </v-tooltip>
                 </div>
                 <div class="sprintTitleName">
-                  <v-list-item-title>{{ projectSprint.sprintName }}</v-list-item-title>
-                  <v-list-item-subtitle>
+                  <div>{{ projectSprint.sprintName }}</div>
+                  <div>
                     {{
                     projectSprint.sprintDescription
                     }}
-                  </v-list-item-subtitle>
+                  </div>
                 </div>
               </div>
 
@@ -199,10 +199,10 @@
                         <div class="text-center">
                           <v-icon
                             v-if="task.parentTask.taskStatus == 'closed'"
-                            size="25"
+                            size="20"
                             color="#2EC973"
                           >mdi-checkbox-marked-circle</v-icon>
-                          <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                          <v-icon v-else size="20" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                           <br />
                           <div
                             style="font-size: 10px; font-weight: bold"
@@ -211,7 +211,7 @@
                       </v-list-item-action>
 
                       <v-list-item-content>
-                        <v-list-item-title>
+                        <v-list-item-title class="fontRestructure12">
                           {{
                           task.parentTask.taskName
                           }}
@@ -220,7 +220,7 @@
                           :class="dueDateCheck(task.parentTask)"
                         >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</div>
                       </v-list-item-content>
-                      <v-list-item-avatar size="25">
+                      <v-list-item-avatar style="margin-right: 5px" size="25">
                         <v-img
                           v-if="
                             task.parentTask.taskAssigneeProfileImage != null &&
@@ -233,7 +233,7 @@
                           src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                         ></v-img>
                       </v-list-item-avatar>
-                      <div class="boardTabLinkIcon">
+                      <!-- <div class="boardTabLinkIcon">
                         <nuxt-link
                           :to="
                             '/task/' +
@@ -244,9 +244,9 @@
                           style="text-decoration: none;"
                           target="_blank"
                         >
-                          <v-icon size="15" color="blue">mdi-link-variant</v-icon>
+                          <v-icon size="15" color="#9F9F9F">mdi-open-in-new</v-icon>
                         </nuxt-link>
-                      </div>
+                      </div>-->
                       <div class="bluePart"></div>
                     </v-list-item>
                   </div>
@@ -277,10 +277,10 @@
                         <div class="text-center">
                           <v-icon
                             v-if="childTask.taskStatus == 'closed'"
-                            size="25"
+                            size="20"
                             color="#2EC973"
                           >mdi-checkbox-marked-circle</v-icon>
-                          <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                          <v-icon v-else size="20" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                           <br />
                           <div
                             style="font-size: 10px; font-weight: bold"
@@ -289,7 +289,7 @@
                       </v-list-item-action>
 
                       <v-list-item-content>
-                        <v-list-item-title>
+                        <v-list-item-title class="fontRestructure12">
                           {{
                           childTask.taskName
                           }}
@@ -298,7 +298,7 @@
                           :class="dueDateCheck(childTask)"
                         >{{ getProjectDates(childTask.taskDueDateAt) }}</div>
                       </v-list-item-content>
-                      <v-list-item-avatar size="25">
+                      <v-list-item-avatar style="margin-right: 5px" size="25">
                         <v-img
                           v-if="
                             childTask.taskAssigneeProfileImage != null &&
@@ -311,7 +311,7 @@
                           src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                         ></v-img>
                       </v-list-item-avatar>
-                      <div class="boardTabLinkIcon">
+                      <!-- <div class="boardTabLinkIcon">
                         <nuxt-link
                           :to="
                             '/task/' +
@@ -322,9 +322,9 @@
                           style="text-decoration: none;"
                           target="_blank"
                         >
-                          <v-icon size="15" color="blue">mdi-link-variant</v-icon>
+                          <v-icon size="15" color="#9F9F9F">mdi-open-in-new</v-icon>
                         </nuxt-link>
-                      </div>
+                      </div>-->
                     </v-list-item>
                   </div>
                 </div>

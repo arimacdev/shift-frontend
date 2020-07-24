@@ -26,9 +26,9 @@
                       src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                     ></v-img>
                   </v-list-item-avatar>
-                  <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
+                  <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
                   <span>has created the</span>
-                  <span class="font-weight-medium">Task</span>
+                  <span class="font-weight-bold">Task</span>
                 </v-list-item-title>
               </v-list-item-content>
               <v-list-item-content v-if="log.operation == 'UPDATE'">
@@ -46,7 +46,7 @@
                       src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                     ></v-img>
                   </v-list-item-avatar>
-                  <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
+                  <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
                   <span
                     v-if="log.updateType == 'FILE' && log.previousValue.displayValue != undefined"
                   >removed a</span>
@@ -56,7 +56,7 @@
                   <span v-if="log.updateType == 'ASSIGNEE'">has changed the</span>
                   <span v-else-if="log.updateType == 'FILE'"></span>
                   <span v-else>has updated the</span>
-                  <span class="font-weight-medium">{{ updateTypeCheck(log.updateType) }}</span>
+                  <span class="font-weight-bold">{{ updateTypeCheck(log.updateType) }}</span>
                 </v-list-item-title>
                 <!-- -------- for assignee ------ -->
                 <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ASSIGNEE'">
@@ -91,9 +91,49 @@
                   <span>&nbsp; {{ log.updatedvalue.displayValue }}</span>
                 </v-list-item-subtitle>
 
+                <!-- ------- for actual weight type -------- -->
+
+                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ACTUAL_WEIGHT'">
+                  <span>
+                    {{
+                    log.previousValue.displayValue
+                    }}
+                    &nbsp; &rarr; &nbsp;
+                  </span>
+
+                  <span>
+                    {{
+                    log.updatedvalue.displayValue
+                    }}
+                  </span>
+                </v-list-item-subtitle>
+
+                <!-- ------- for estimated weight type -------- -->
+
+                <v-list-item-subtitle
+                  class="logSubtitle"
+                  v-if="log.updateType == 'ESTIMATED_WEIGHT'"
+                >
+                  <span>
+                    {{
+                    log.previousValue.displayValue
+                    }}
+                    &nbsp; &rarr; &nbsp;
+                  </span>
+
+                  <span>
+                    {{
+                    log.updatedvalue.displayValue
+                    }}
+                  </span>
+                </v-list-item-subtitle>
+
                 <!-- ------- for files -------- -->
 
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'FILE'">
+                <v-list-item-subtitle
+                  class="logSubtitle fontRestructure12"
+                  v-if="log.updateType == 'FILE'"
+                >
                   <a
                     style="text-decoration: none;"
                     :href="log.updatedvalue.value"
@@ -101,7 +141,7 @@
                   >{{ log.updatedvalue.displayValue }}</a>
                 </v-list-item-subtitle>
                 <v-list-item-subtitle
-                  class="logSubtitle"
+                  class="logSubtitle fontRestructure12"
                   v-if="log.updateType == 'FILE'"
                 >{{ log.previousValue.displayValue }}</v-list-item-subtitle>
 
@@ -288,7 +328,12 @@ export default {
         case "TASK_NOTES":
           return "Task Note";
           break;
-
+        case "ACTUAL_WEIGHT":
+          return "Actual Weight";
+          break;
+        case "ESTIMATED_WEIGHT":
+          return "Estimated Weight";
+          break;
         case "TASK_SPRINT":
           return "Task Sprint";
           break;

@@ -18,21 +18,32 @@
                 item-value="id"
                 label="All"
                 solo
+                flat
+                background-color="#FFFFFF"
+                dense
+                outlined
+                style="border-radius: 0px"
               ></v-select>
 
               <v-text-field
                 v-model="personalTask"
                 solo
-                prepend-inner-icon="mdi-plus-circle"
+                prepend-inner-icon="mdi-plus"
                 label="Add a new task"
                 class="addPersonalTaskTextBox"
                 @keyup.enter="addPersonalTask"
+                background-color="#FFFFFF"
+                dense
+                outlined
+                flat
+                style="border-radius: 0px"
               ></v-text-field>
 
               <!-- -------- loop task list here ----------- -->
               <div class="taskPageContentScroll overflow-y-auto">
-                <div class="taskList" v-for="(personalTask, index) in personalTasks" :key="index">
+                <div v-for="(personalTask, index) in personalTasks" :key="index">
                   <v-list-item
+                    class="upperFilterListPersonalItem"
                     v-if="personalTask.taskStatus == taskSelect"
                     @click="selectPersonalTask(personalTask);  taskDialog = true;"
                   >
@@ -41,21 +52,23 @@
                       <v-icon
                         v-if="personalTask.taskStatus == 'closed'"
                         size="30"
-                        color="#2EC973"
-                      >mdi-checkbox-marked-circle</v-icon>
-                      <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                        color="#66B25F"
+                      >mdi-checkbox-blank</v-icon>
+                      <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
                     </v-list-item-action>
                     <div class="tasklistTaskNames">
-                      <div class="body-2">{{ personalTask.taskName }}</div>
+                      <div>{{ personalTask.taskName }}</div>
                     </div>
                     <v-list-item-content class="updatedDate">
                       <v-list-item-title
+                        class="fontRestructure12"
                         :class="dueDateCheck(personalTask)"
                       >{{ getTaskDueDate(personalTask.taskDueDateAt) }}</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
 
                   <v-list-item
+                    class="upperFilterListPersonalItem"
                     v-if="taskSelect == 'all' || taskSelect == null"
                     @click="selectPersonalTask(personalTask); taskDialog = true;"
                   >
@@ -64,15 +77,16 @@
                       <v-icon
                         v-if="personalTask.taskStatus == 'closed'"
                         size="30"
-                        color="#2EC973"
-                      >mdi-checkbox-marked-circle</v-icon>
-                      <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                        color="#66B25F"
+                      >mdi-checkbox-blank</v-icon>
+                      <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
                     </v-list-item-action>
                     <div class="tasklistTaskNames">
-                      <div class="body-2">{{ personalTask.taskName }}</div>
+                      <div>{{ personalTask.taskName }}</div>
                     </div>
                     <v-list-item-content class="updatedDate">
                       <v-list-item-title
+                        class="fontRestructure12"
                         :class="dueDateCheck(personalTask)"
                       >{{ getTaskDueDate(personalTask.taskDueDateAt) }}</v-list-item-title>
                     </v-list-item-content>

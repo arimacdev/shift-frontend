@@ -16,18 +16,21 @@
 
 @import './icons.css'; /* -------------- common --------------- */
 * {
-  font-family: 'Roboto', sans-serif;
-}
+  font-family: 'Circular Std', sans-serif;
+  font-size: 12px;
 
+  /* font-family: 'Segoe UI', sans-serif;
+  font-size: 1em; */
+}
 .body-2 {
-  font-family: 'Roboto', sans-serif !important;
+  font-family: 'Segoe UI', sans-serif !important;
 }
 .projectListView {
   margin-top: 10px;
   height: 100vh;
   background-color: #edf0f5;
   border-radius: 5px;
-  padding-bottom: 100px !important;
+  padding-bottom: 200px !important;
   border-right: 1px #e5e5e5 solid;
   padding-top: 10px;
 }
@@ -113,7 +116,6 @@
   height: 85vh;
 }
 .addProjectTitle {
-  font-family: CircularStd;
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -302,6 +304,14 @@
   width: 25px;
   border-radius: 50%;
   text-align: center;
+}
+.iconBackCirclePeople {
+  background-color: #ffff;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  text-align: center;
+  padding-top: 2px;
 }
 
 .iconBackCircleFiles {
@@ -559,16 +569,26 @@
 }
 .deleteProjectButton {
   background-color: #ff6161 !important;
-  width: 250px;
-  margin-top: 70px;
-  position: absolute;
-  right: 30px;
-  margin-bottom: 100px;
+  width: 325px;
+  margin-top: 20px;
+  /* position: absolute; */
+  margin-right: 15px;
+  margin-bottom: 40px;
 }
 .addProjectButton {
-  position: absolute;
-  right: 30px;
-  width: 250px;
+  /* position: absolute; */
+  right: 10px;
+  margin-right: 15px;
+  width: 325px;
+}
+.addProjectButtonUpdate {
+  /* position: absolute; */
+  margin-right: 15px;
+  width: 320px;
+  margin-left: 0px;
+}
+.updateWeightTypeDiv {
+  margin-bottom: 100px;
 }
 .taskTitleDiv {
   width: 100%;
@@ -688,19 +708,22 @@
   margin-right: 10px;
 }
 .peopleListItems {
+  background-color: #fafafa;
+  margin-bottom: 3px;
 }
 .peopleContainer {
   margin-top: 20px;
-  height: 70px;
+  height: 50px;
+  border: 1px solid #c4c4c4;
 }
 .projectRole {
   color: #080848;
-  font-weight: 500;
-  font-size: 14px;
+  font-weight: bold;
+  font-size: 12px;
 }
 .peopleName {
   color: #b9b9b9;
-  font-size: 13px;
+  font-size: 11px;
 }
 .completedStatus {
   color: #7a8b9f;
@@ -816,7 +839,7 @@
 /* -------------- add people to project ------------- */
 
 .addPeople {
-  background-color: #0bafff;
+  background-color: #66b35f;
   border-radius: 5px;
   position: absolute;
   right: 50px;
@@ -972,7 +995,7 @@
 .taskListViewContent {
   height: 100vh;
   z-index: -100;
-  margin-top: 10px;
+  /* margin-top: 10px; */
   padding-bottom: 400px;
 }
 .allTaskCreateTab {
@@ -1071,9 +1094,10 @@
 
 .projectTabContent {
   width: 101%;
-  height: 82vh;
+  height: 85vh;
   margin-left: -10px;
   padding: 20px;
+  padding-bottom: 100px;
 }
 
 .logsContainer {
@@ -1310,8 +1334,9 @@
 }
 
 .projectDetailsPannels {
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   border-radius: 5px;
+  border-bottom: solid 1px #d2d8e2;
 }
 .projectDetailsPannelHeader {
   color: #ffffff;
@@ -1399,7 +1424,7 @@
 
 .projectSubtitle {
   font-size: 10px !important;
-  font-family: CircularStd !important;
+  /* font-family: CircularStd !important; */
 }
 
 .taskDatePickerField {
@@ -1409,7 +1434,10 @@
   width: 70%;
 }
 .tasklistTaskNames {
-  width: 59%;
+  width: 57%;
+}
+.tasklistFilterTaskNames {
+  width: 55%;
 }
 
 .filterIcon {
@@ -1539,10 +1567,11 @@
 }
 .pageBody {
   width: 100%;
-  top: 60px;
-  padding-top: 100px;
+  top: 0px;
+  padding-top: 80px;
   height: 100vh;
   overflow: hidden;
+  display: block;
 }
 
 .sideBarBody {
@@ -1589,12 +1618,12 @@
 
 .filesList {
   width: 100%;
-  height: 50vh;
+  height: 58vh;
   margin-top: 20px;
   margin-bottom: 10px;
 }
 .fileScroll {
-  height: 50vh;
+  height: 58vh;
 }
 .filesUploader {
   width: 99%;
@@ -1619,7 +1648,7 @@
 
 .boardBodyDiv {
   width: 100%;
-  height: 90vh;
+  height: 100vh;
   padding-top: 20px;
   position: absolute;
   left: 25vw;
@@ -1630,7 +1659,7 @@
 }
 .defaultBoard {
   width: 30%;
-  height: 73vh;
+  height: 80vh;
   background-color: #edf0f5;
   position: absolute;
   left: 20px;
@@ -1639,7 +1668,7 @@
 }
 .actualBoard {
   width: 300px;
-  height: 73vh;
+  height: 80vh;
   background-color: #edf0f5;
   left: 20px;
   border-radius: 5px;
@@ -1666,7 +1695,7 @@
   height: 70px;
   background-color: #0bafff;
   color: #ffffff;
-  font-size: 16px;
+  font-size: 12px !important;
   text-align: center;
   /* padding-top: -60px !important; */
   border-top-right-radius: 5px;
@@ -1674,6 +1703,7 @@
 }
 .sprintTitleName {
   /* background-color: red; */
+  font-size: 12px !important;
   margin-top: -20px;
 }
 .boardTaskList {
@@ -1691,6 +1721,7 @@
   margin-left: 10px;
   margin-right: 10px;
   border-radius: 3px;
+  height: 60px;
   overflow: hidden;
 }
 .boardTaskChildListItem {
@@ -1718,19 +1749,19 @@
 
 .boardTaskDone {
   color: rgb(10, 126, 0);
-  font-size: 14px;
+  /* font-size: 14px; */
 }
 .boardTaskOverDue {
   color: rgb(163, 11, 0) !important;
-  font-size: 14px;
+  /* font-size: 14px; */
 }
 .boardTaskHealthy {
   color: rgb(0, 4, 255);
-  font-size: 14px;
+  /* font-size: 14px; */
 }
 .boardTaskDefault {
   color: rgb(0, 0, 0);
-  font-size: 14px;
+  /* font-size: 14px; */
 }
 
 .projectFileUploadButton {
@@ -1839,6 +1870,9 @@
   margin-top: -15px;
   height: 60px;
 }
+.filterSectionAllTasks {
+  height: 60px;
+}
 .taskFilterTypeDiv {
   width: 35% !important;
   float: left;
@@ -1876,18 +1910,66 @@
 .filterButtonBackground {
   background-color: #080848;
 }
+.upperFilterListItem {
+  margin-top: -10px;
+  /* height: 30px !important; */
+}
+.upperFilterListPersonalItem {
+  background-color: #fafafa;
+  margin-bottom: 5px;
+  border: 1px solid #c4c4c4;
+}
+.upperMyListItem {
+  margin-top: -10px;
+  margin-left: -20px;
+}
+.restructuredFilterTaskList {
+  border: 1px #cdcfd2 solid;
+  background-color: #fafafa;
+  overflow: hidden;
+  height: 35px;
+  padding-top: 2px;
+  margin-bottom: 5px;
+
+  /* padding-top: -10px !important; */
+}
+.restructuredFilterGroupTaskList {
+  border: 1px #cdcfd2 solid;
+  background-color: #fafafa;
+  overflow: hidden;
+  height: 35px;
+  padding-top: 2px;
+  margin-bottom: 5px;
+
+  /* padding-top: -10px !important; */
+}
 
 .restructuredMainTaskList {
-  border: 2px #e5e5e5 solid;
-  margin-top: 20px;
-  background-color: #ffffff;
+  border: 1px #cdcfd2 solid;
+  margin-top: 10px;
+  background-color: #fafafa;
   overflow: hidden;
+  height: 35px;
+  padding-top: 2px;
+  margin-bottom: 5px;
+  /* padding-top: -10px !important; */
+}
+.restructuredSubTaskListRestructure {
+  background-color: #fafafa !important;
+  margin-left: 30px;
+  border-bottom: 1px #cdcfd2 solid;
+  border-left: 1px #cdcfd2 solid;
+  border-right: 1px #cdcfd2 solid;
+  overflow: hidden;
+  height: 35px;
+  padding-top: 2px;
+  /* border-radius: 5px; */
 }
 .restructuredGroupMainTaskFilterList {
   background-color: #edf0f5;
-  border-radius: 5px;
   margin-bottom: 10px;
   margin-top: 10px;
+  height: 35px;
 }
 .parentOwerflow {
   border: 2px #cdcfd2 solid;
@@ -1917,11 +1999,13 @@
   margin-bottom: 10px;
 }
 .restructuredMainTaskName {
-  color: #131111;
+  color: #576377;
+  font-weight: 500;
 }
 .restructuredMainTaskCode {
   font-weight: 600;
   margin-right: 10px;
+  color: #383838;
 }
 .restructuredTaskCreate {
   /* margin-top: 20px; */
@@ -1933,10 +2017,20 @@
   margin-right: 30px;
   margin-bottom: 10px;
 }
+
+.restructuredSubTaskGroupListRestructure {
+  background-color: #ffffff !important;
+  margin-left: 30px;
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-right: 2px;
+  height: 45px;
+}
 .restructuredSubTaskCreate {
   padding-left: 30px;
-  padding-right: 30px;
-  /* margin-bottom: -20px; */
+  /* padding-right: 2px; */
+  margin-top: -5px;
+  margin-bottom: -5px;
 }
 .restructuredSubTaskCreateGroup {
   padding-left: 30px;
@@ -1948,49 +2042,57 @@
   padding-right: 30px;
 }
 .restructuredSubTaskName {
-  color: #080848;
+  color: #576377;
   width: 57% !important;
+  margin-right: -12px;
+  font-weight: 500;
 }
 .restStatusChip {
   /* padding-right: 30px; */
   text-align: center;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 3px;
-  padding-bottom: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  height: 20px;
+  font-size: 12px !important;
   border-radius: 30px;
-  width: 120px;
+  width: 100px;
+  margin-right: 5px;
+}
+.chipsContent {
+  width: 100px;
+  justify-content: center !important;
+  margin-right: 5px !important;
 }
 .developmentStatus {
-  background-color: #ffa800;
-  color: #ffffff;
+  background-color: #ffaa00ad !important;
+  color: #ffffff !important;
 }
 .qaStatus {
-  background-color: #ff7a00;
-  color: #ffffff;
+  background-color: #ff7b00b6 !important;
+  color: #ffffff !important;
 }
 .designStatus {
-  background-color: #4ebc44;
-  color: #ffffff;
+  background-color: #4ebc44b2 !important;
+  color: #ffffff !important;
 }
 .bugStatus {
-  background-color: #fb3f3f;
-  color: #ffffff;
+  background-color: #fb3f3fb4 !important;
+  color: #ffffff !important;
 }
 .operationalStatus {
-  background-color: #dd6def;
-  color: #ffffff;
+  background-color: #de6defbe !important;
+  color: #ffffff !important;
 }
 .preSalesStatus {
-  background-color: #00c29f;
-  color: #ffffff;
+  background-color: #00c29ebe !important;
+  color: #ffffff !important;
 }
 .generalStatus {
-  background-color: #0083e2;
-  color: #ffffff;
+  background-color: #0084e2be !important;
+  color: #ffffff !important;
 }
 .otherStatus {
-  background-color: #0083e2;
+  background-color: #0084e2c0;
   color: #ffffff;
 }
 .taskAddTitle {
@@ -2189,7 +2291,7 @@
 .boardTabLinkIcon {
   position: absolute;
   right: 2px;
-  bottom: 2px;
+  /* bottom: 2px; */
 }
 .updatedDate {
   margin-right: 10px;
@@ -2278,7 +2380,7 @@
   width: 50px;
   height: 50px;
   transform: rotate(45deg);
-  background: #0bafff;
+  background: #333369;
 }
 .bluePartMyTask {
   position: absolute;
@@ -2302,9 +2404,19 @@
 .upperListItem {
   margin-left: -20px !important;
   padding-left: 20px !important;
+  margin-top: -10px;
+  background-color: #ececec;
+  /* height: 30px !important; */
 }
 .innerListItem {
   margin-right: 10px;
+  background-color: #fafafa;
+  border-right: 1px #cdcfd2 solid;
+}
+.upperListItemGroup {
+  margin-left: -20px !important;
+  padding-left: 20px !important;
+  margin-top: -8px;
 }
 
 .pickerButtonDiv {
@@ -2341,7 +2453,7 @@
   width: 100%;
   height: 60px;
   background-color: #0b0b53;
-  margin-top: -20px;
+  margin-top: -40px;
   margin-bottom: 40px;
   color: #ffffff;
   padding-left: 20px;
@@ -2352,6 +2464,7 @@
 
 .workloadV2Body {
   padding: 30px;
+  margin-top: -20px;
 }
 
 .myWorkloadV2Content {
@@ -2656,9 +2769,10 @@
   margin-left: 20px;
   margin-right: 20px;
   border-radius: 5px;
+  /* height: 80px; */
 }
 .projectLogsSection {
-  height: 80vh;
+  height: 90vh;
   padding-bottom: 100px;
 }
 .skillsSection {
@@ -2730,6 +2844,7 @@
   overflow-y: scroll;
   /* overflow-y: hidden; */
   white-space: nowrap;
+  padding-top: 15px;
 }
 .skillScrollingWrapperScroll {
   overflow-y: hidden;
@@ -2952,12 +3067,13 @@
 
 .commenterName {
   color: #576377;
-  font-weight: 500;
+  font-weight: 550;
   float: left;
+  font-size: 14px !important;
 }
 .commentTime {
-  padding-top: 5px;
-  font-size: 12px;
+  padding-top: 3px;
+  font-size: 10px;
   color: #576377;
   padding-left: 20px;
   float: left;
@@ -3060,4 +3176,40 @@
   position: absolute;
   z-index: 1000;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.fontRestructure12 {
+  font-size: 12px !important;
+}
+.fontRestructure14 {
+  font-size: 14px !important;
+}
+.v-label {
+  font-size: 12px !important;
+}
+.asdfg {
+  max-height: 30px !important;
+}
+.filterTriggers .v-text-field .v-input__control .v-input__slot {
+  min-height: auto !important;
+  max-height: 35px !important;
+}
+.filterTriggers .v-text-field--outlined.v-input--dense .v-label {
+  top: 5px;
+}
+.filterTriggersDrop .v-text-field .v-input__control .v-input__slot {
+  min-height: auto !important;
+  max-height: 32px !important;
+}
+.filterTriggersDrop .v-text-field--outlined.v-input--dense .v-label {
+  top: 5px;
+}
+.filterTriggersDrop .v-icon.v-icon {
+  margin-top: -8px !important;
+}
+
+.filterTriggersDrop .field-input {
+  min-height: auto !important;
+  max-height: 32px !important;
+  font-size: 12px !important;
 }
