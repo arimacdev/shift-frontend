@@ -2294,7 +2294,7 @@ export default {
         return Math.trunc(this.selectedTask.estimatedWeight);
       },
       set(estimatedWeight) {
-        this.updatedEstimatedHour = estimatedWeight;
+        this.updatedEstimatedHours = estimatedWeight;
       },
     },
     estimatedMin: {
