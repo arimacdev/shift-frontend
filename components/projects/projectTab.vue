@@ -193,8 +193,8 @@
                     </v-col>
                   </v-row>
                   <v-row>
-                    <v-col>
-                      <div class="submitButtonEdit addProjectButton">
+                    <v-col style="padding-left: 50px !important">
+                      <div class="submitButtonProjectEdit">
                         <v-list-item @click="editProject()" dark>
                           <v-list-item-action>
                             <v-icon size="20" color>mdi-plus-circle</v-icon>
@@ -205,7 +205,7 @@
                         </v-list-item>
                       </div>
 
-                      <div class="submitButton deleteProjectButton">
+                      <div class="deleteProjectButton">
                         <v-list-item @click="projectDialog = true" dark>
                           <v-list-item-action>
                             <v-icon size="20" color>mdi-trash-can-outline</v-icon>
@@ -232,12 +232,12 @@
                     </v-col>
                   </v-row>
                   <v-row>
-                    <v-col>
+                    <v-col style="margin-left: 45px !important">
                       <v-btn
                         :disabled="this.updateProject.weightMeasure == ''"
                         depressed
                         height="50px"
-                        class="submitButtonEdit updateWeightTypeDiv addProjectButtonUpdate text-capitalize"
+                        class="submitButtonWeightEdit updateWeightTypeDiv text-capitalize"
                       >
                         <v-list-item @click="weightUpdateDialog = true" dark>
                           <v-list-item-action>
@@ -493,7 +493,7 @@ export default {
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
-    "progress-loading": Progress
+    "progress-loading": Progress,
   },
   data() {
     return {
@@ -511,18 +511,18 @@ export default {
         projectEndDate: "",
         projectStatus: "",
         projectAlias: "",
-        weightMeasure: ""
+        weightMeasure: "",
       },
       drawer: null,
       prName: "project",
       items: [],
-      component: ""
+      component: "",
     };
   },
   computed: {
     ...mapState({
-      projectTaskCompletion: state => state.task.projectTaskCompletion,
-      fetchProject: state => state.project.project
+      projectTaskCompletion: (state) => state.task.projectTaskCompletion,
+      fetchProject: (state) => state.project.project,
     }),
     projectName: {
       get() {
@@ -530,7 +530,7 @@ export default {
       },
       set(value) {
         this.updateProject.projectName = value;
-      }
+      },
     },
     projectAlias: {
       get() {
@@ -538,7 +538,7 @@ export default {
       },
       set(value) {
         this.updateProject.projectAlias = value;
-      }
+      },
     },
     clientId: {
       get() {
@@ -546,7 +546,7 @@ export default {
       },
       set(value) {
         this.updateProject.clientId = value;
-      }
+      },
     },
     weightType: {
       get() {
@@ -554,7 +554,7 @@ export default {
       },
       set(value) {
         this.updateProject.weightMeasure = value;
-      }
+      },
     },
     projectStartDate: {
       get() {
@@ -570,7 +570,7 @@ export default {
         ).toISOString();
         // console.log("iso edit Start date", isoDate);
         this.updateProject.projectStartDate = isoDate;
-      }
+      },
     },
     projectEndDate: {
       get() {
@@ -586,7 +586,7 @@ export default {
         ).toISOString();
         // console.log("iso edit end date", isoDate);
         this.updateProject.projectEndDate = isoDate;
-      }
+      },
     },
     projectStatus: {
       get() {
@@ -597,8 +597,8 @@ export default {
         // console.log("set status", this.fetchProject.projectStatus);
 
         this.updateProject.projectStatus = value;
-      }
-    }
+      },
+    },
     // ...mapState({
     // }),
   },
@@ -618,12 +618,12 @@ export default {
           response = await this.$axios.$put(
             `/projects/${this.fetchProject.projectId}/weight`,
             {
-              weightType: this.updateProject.weightMeasure
+              weightType: this.updateProject.weightMeasure,
             },
             {
               headers: {
-                userId: this.userId
-              }
+                userId: this.userId,
+              },
             }
           );
           this.$store.dispatch(
@@ -698,7 +698,7 @@ export default {
             projectStartDate: startDate,
             projectEndDate: endDate,
             projectStatus: this.updateProject.projectStatus,
-            projectAlias: this.updateProject.projectAlias.toUpperCase()
+            projectAlias: this.updateProject.projectAlias.toUpperCase(),
           }
         );
         // console.log("project edit response ----------> ", response);
@@ -745,8 +745,8 @@ export default {
           {
             data: {},
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         // location.reload();
@@ -832,7 +832,7 @@ export default {
       } else {
         return days + " day(s)";
       }
-    }
-  }
+    },
+  },
 };
 </script>
