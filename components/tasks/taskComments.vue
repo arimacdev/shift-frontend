@@ -4,6 +4,176 @@
       <v-col>
         <div v-if="taskComments == ''">No comments to show</div>
         <div v-else>
+          <!-- ----------- update comment section ------------- -->
+          <v-overlay dark="false" z-index="1008" v-if="commentEditor == true">
+            <div
+              class="overflow-y-auto"
+              style="width: 88vw; max-height: 80vh; background-color: #FFFFFF; border-radius: 5px"
+            >
+              <v-row>
+                <v-col sm="1" md="1"></v-col>
+                <v-col sm="10" md="10">
+                  <div id="defaultRTE" @paste="pasteFile">
+                    <ejs-richtexteditor
+                      :insertImageSettings="insertImageSettings"
+                      ref="rteObj"
+                      :quickToolbarSettings="quickToolbarSettings"
+                      :toolbarSettings="toolbarSettings"
+                      v-model="updatedComment"
+                      @focus="
+                      typingText();
+                      selectTextEditor('updateCommentEditor');
+                    "
+                      @blur="notTyping()"
+                    ></ejs-richtexteditor>
+                  </div>
+                  <div
+                    v-if="tagging && editorType == 'updateCommentEditor'"
+                    class="taggingPopupBox overflow-y-auto"
+                  >
+                    <div>
+                      <v-list-item-group>
+                        <div v-for="(user, index) in assigneeArray()" :key="index">
+                          <v-list-item @click="tagPeopleUpdate(user)" dense>
+                            <v-list-item-avatar size="20">
+                              <v-img v-if="user.img != null && user.img != ''" :src="user.img"></v-img>
+                              <v-img
+                                v-else
+                                src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                              ></v-img>
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                              <v-list-item-subtitle>
+                                {{
+                                user.name
+                                }}
+                              </v-list-item-subtitle>
+                            </v-list-item-content>
+                          </v-list-item>
+                        </div>
+                      </v-list-item-group>
+                    </div>
+                  </div>
+                  <div style="float: left">
+                    <v-btn
+                      depressed
+                      @click="updateComment(selectedComment.commentId)"
+                      class="text-capitalize"
+                      style="margin-top: 10px"
+                      color="primary"
+                    >Update</v-btn>
+                    <v-btn
+                      depressed
+                      @click="
+                      commentEditor = false;
+                      editorType = '';
+                      tagging = false;
+                    "
+                      class="text-capitalize"
+                      style="margin-top: 10px"
+                      color="error"
+                    >Cancel</v-btn>
+                  </div>
+                  <v-tooltip right>
+                    <template v-slot:activator="{ on }">
+                      <div v-on="on" class="emojiSection">
+                        <v-menu
+                          :close-on-content-click="false"
+                          origin="center center"
+                          transition="scale-transition"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-btn text v-bind="attrs" v-on="on">
+                              <v-icon size="22">mdi-emoticon-outline</v-icon>
+                            </v-btn>
+                          </template>
+                          <v-list>
+                            <VEmojiPicker style="background-color: #FFFFFF" @select="updateEmoji" />
+                          </v-list>
+                        </v-menu>
+                      </div>
+                    </template>
+                    <span>Emoji</span>
+                  </v-tooltip>
+                  <v-tooltip right>
+                    <template v-slot:activator="{ on }">
+                      <div v-on="on" class="emojiSection">
+                        <v-menu
+                          :close-on-content-click="false"
+                          origin="center center"
+                          transition="scale-transition"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-btn style="margin-right: 12px" text v-bind="attrs" v-on="on">
+                              <v-text style="font-size: 20px; margin-top:0px">@</v-text>
+                            </v-btn>
+                          </template>
+                          <v-list style="height: 65px; width: 250px">
+                            <v-autocomplete
+                              v-model="filterAssignee"
+                              background-color="#FFFFFF"
+                              return-object
+                              solo
+                              :items="loadAssigneeArray"
+                              item-text="name"
+                              item-value="id"
+                              flat
+                              chips
+                              small-chips
+                              label="Mention Someone"
+                              @change="mentionSomeoneUpdate()"
+                            >
+                              <template v-slot:item="data">
+                                <template>
+                                  <v-list-item-avatar size="22">
+                                    <v-img
+                                      v-if="
+                                      data.item.img != null &&
+                                        data.item.img != ''
+                                    "
+                                      :src="data.item.img"
+                                    ></v-img>
+                                    <v-img
+                                      v-else
+                                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                                    ></v-img>
+                                  </v-list-item-avatar>
+                                  <v-list-item-content>
+                                    <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                                  </v-list-item-content>
+                                </template>
+                              </template>
+                            </v-autocomplete>
+                          </v-list>
+                        </v-menu>
+                      </div>
+                    </template>
+                    <span>Mention Someone</span>
+                  </v-tooltip>
+                  <v-tooltip right>
+                    <template v-slot:activator="{ on }">
+                      <div v-on="on" class="fileAttachSection" style>
+                        <v-file-input
+                          solo
+                          flat
+                          hide-details
+                          accept="image/png, image/jpeg, image/bmp"
+                          v-model="files"
+                          @change="submit('updateComment')"
+                        ></v-file-input>
+                      </div>
+                    </template>
+                    <span>Attach an image</span>
+                  </v-tooltip>
+                  <!--  -->
+                  <div style="margin-top: 15px; padding-left: 30px">
+                    <v-progress-circular v-if="uploadLoading == true" indeterminate color="primary"></v-progress-circular>
+                  </div>
+                </v-col>
+              </v-row>
+            </div>
+          </v-overlay>
+          <!-- ------------- end updated comment section ---------- -->
           <div class="commentBody" v-for="(comment, index) in this.taskComments" :key="index">
             <v-row>
               <v-col sm="1" md="1" style="padding-left: 40px">
@@ -142,171 +312,7 @@
                 </div>
               </v-col>
             </v-row>
-            <!-- ----------- update comment section ------------- -->
-            <v-row
-              v-if="
-                commentEditor == true &&
-                  selectedComment.commentId == comment.commentId
-              "
-            >
-              <v-col sm="1" md="1"></v-col>
-              <v-col sm="10" md="10">
-                <div id="defaultRTE" @paste="pasteFile">
-                  <ejs-richtexteditor
-                    :insertImageSettings="insertImageSettings"
-                    ref="rteObj"
-                    :quickToolbarSettings="quickToolbarSettings"
-                    :toolbarSettings="toolbarSettings"
-                    v-model="updatedComment"
-                    @focus="
-                      typingText();
-                      selectTextEditor('updateCommentEditor');
-                    "
-                    @blur="notTyping()"
-                  ></ejs-richtexteditor>
-                </div>
-                <div
-                  v-if="tagging && editorType == 'updateCommentEditor'"
-                  class="taggingPopupBox overflow-y-auto"
-                >
-                  <div>
-                    <v-list-item-group>
-                      <div v-for="(user, index) in assigneeArray()" :key="index">
-                        <v-list-item @click="tagPeopleUpdate(user)" dense>
-                          <v-list-item-avatar size="20">
-                            <v-img v-if="user.img != null && user.img != ''" :src="user.img"></v-img>
-                            <v-img
-                              v-else
-                              src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                            ></v-img>
-                          </v-list-item-avatar>
-                          <v-list-item-content>
-                            <v-list-item-subtitle>
-                              {{
-                              user.name
-                              }}
-                            </v-list-item-subtitle>
-                          </v-list-item-content>
-                        </v-list-item>
-                      </div>
-                    </v-list-item-group>
-                  </div>
-                </div>
-                <div style="float: left">
-                  <v-btn
-                    @click="updateComment(comment.commentId)"
-                    class="text-capitalize"
-                    style="margin-top: 10px"
-                    color="primary"
-                  >Update</v-btn>
-                  <v-btn
-                    @click="
-                      commentEditor = false;
-                      editorType = '';
-                      tagging = false;
-                    "
-                    class="text-capitalize"
-                    style="margin-top: 10px"
-                    color="error"
-                  >Cancel</v-btn>
-                </div>
-                <v-tooltip right>
-                  <template v-slot:activator="{ on }">
-                    <div v-on="on" class="emojiSection">
-                      <v-menu
-                        :close-on-content-click="false"
-                        origin="center center"
-                        transition="scale-transition"
-                      >
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-btn text v-bind="attrs" v-on="on">
-                            <v-icon size="22">mdi-emoticon-outline</v-icon>
-                          </v-btn>
-                        </template>
-                        <v-list>
-                          <VEmojiPicker style="background-color: #FFFFFF" @select="updateEmoji" />
-                        </v-list>
-                      </v-menu>
-                    </div>
-                  </template>
-                  <span>Emoji</span>
-                </v-tooltip>
-                <v-tooltip right>
-                  <template v-slot:activator="{ on }">
-                    <div v-on="on" class="emojiSection">
-                      <v-menu
-                        :close-on-content-click="false"
-                        origin="center center"
-                        transition="scale-transition"
-                      >
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-btn style="margin-right: 12px" text v-bind="attrs" v-on="on">
-                            <v-text style="font-size: 20px; margin-top:-5px">@</v-text>
-                          </v-btn>
-                        </template>
-                        <v-list style="height: 65px; width: 250px">
-                          <v-autocomplete
-                            v-model="filterAssignee"
-                            background-color="#FFFFFF"
-                            return-object
-                            solo
-                            :items="loadAssigneeArray"
-                            item-text="name"
-                            item-value="id"
-                            flat
-                            chips
-                            small-chips
-                            label="Mention Someone"
-                            @change="mentionSomeoneUpdate()"
-                          >
-                            <template v-slot:item="data">
-                              <template>
-                                <v-list-item-avatar size="22">
-                                  <v-img
-                                    v-if="
-                                      data.item.img != null &&
-                                        data.item.img != ''
-                                    "
-                                    :src="data.item.img"
-                                  ></v-img>
-                                  <v-img
-                                    v-else
-                                    src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                                  ></v-img>
-                                </v-list-item-avatar>
-                                <v-list-item-content>
-                                  <v-list-item-title v-html="data.item.name"></v-list-item-title>
-                                </v-list-item-content>
-                              </template>
-                            </template>
-                          </v-autocomplete>
-                        </v-list>
-                      </v-menu>
-                    </div>
-                  </template>
-                  <span>Mention Someone</span>
-                </v-tooltip>
-                <v-tooltip right>
-                  <template v-slot:activator="{ on }">
-                    <div v-on="on" class="fileAttachSection" style>
-                      <v-file-input
-                        solo
-                        flat
-                        hide-details
-                        accept="image/png, image/jpeg, image/bmp"
-                        v-model="files"
-                        @change="submit('updateComment')"
-                      ></v-file-input>
-                    </div>
-                  </template>
-                  <span>Attach an image</span>
-                </v-tooltip>
-                <!--  -->
-                <div style="margin-top: 15px; padding-left: 30px">
-                  <v-progress-circular v-if="uploadLoading == true" indeterminate color="primary"></v-progress-circular>
-                </div>
-              </v-col>
-            </v-row>
+
             <v-divider></v-divider>
           </div>
         </div>
@@ -398,6 +404,7 @@
               </div>
               <div style="float: left">
                 <v-btn
+                  depressed
                   @click="addComment()"
                   class="text-capitalize"
                   style="margin-top: 10px"
@@ -436,7 +443,7 @@
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn style="margin-right: 12px" text v-bind="attrs" v-on="on">
-                          <v-text style="font-size: 20px; margin-top:-5px">@</v-text>
+                          <v-text style="font-size: 20px; margin-top:0px">@</v-text>
                         </v-btn>
                       </template>
                       <v-list style="height: 65px; width: 250px">
@@ -573,14 +580,14 @@ import {
   Image,
   Count,
   HtmlEditor,
-  QuickToolbar
+  QuickToolbar,
 } from "@syncfusion/ej2-vue-richtexteditor";
 export default {
   components: {
     "success-popup": SuccessPopup,
     "progress-loading": Progress,
     "error-popup": ErrorPopup,
-    VEmojiPicker
+    VEmojiPicker,
   },
   props: ["stomp", "pageNum", "commentPage"],
   created() {
@@ -590,7 +597,7 @@ export default {
   mounted() {
     document.addEventListener("keyup", this.onKeyUp);
   },
-  data: function() {
+  data: function () {
     return {
       overlay: false,
       editorType: "",
@@ -615,10 +622,10 @@ export default {
         { title: "Click Me" },
         { title: "Click Me" },
         { title: "Click Me" },
-        { title: "Click Me 2" }
+        { title: "Click Me 2" },
       ],
       insertImageSettings: {
-        display: "break"
+        display: "break",
       },
       userId: this.$store.state.user.userId,
       textEditor: "",
@@ -639,7 +646,7 @@ export default {
           // 'Display',
           // 'AltText',
           // 'Dimension',
-        ]
+        ],
       },
       toolbarSettings: {
         items: [
@@ -671,13 +678,13 @@ export default {
           // 'FullScreen',
           // '|',
           "Undo",
-          "Redo"
-        ]
-      }
+          "Redo",
+        ],
+      },
     };
   },
   provide: {
-    richtexteditor: [Toolbar, Link, Image, Count, HtmlEditor, QuickToolbar]
+    richtexteditor: [Toolbar, Link, Image, Count, HtmlEditor, QuickToolbar],
   },
   methods: {
     onKeyUp(e) {
@@ -912,7 +919,7 @@ export default {
         .dispatch("comments/fetchTaskActivityComment", {
           taskId: this.selectedTask.taskId,
           startIndex: this.commentPage * 10 - 10,
-          endIndex: this.commentPage * 10
+          endIndex: this.commentPage * 10,
         })
         .finally(() => {
           this.overlay = false;
@@ -948,8 +955,8 @@ export default {
             {
               headers: {
                 "Content-Type": "multipart/form-data",
-                user: this.userId
-              }
+                user: this.userId,
+              },
             }
           );
           this.uploadLoading = false;
@@ -1016,12 +1023,12 @@ export default {
         response = await this.$axios.$post(
           `/task/comment/${commentId}/reaction`,
           {
-            reactionId: reactId
+            reactionId: reactId,
           },
           {
             headers: {
-              userId: this.userId
-            }
+              userId: this.userId,
+            },
           }
         );
         this.sendCommentedMessage(
@@ -1044,8 +1051,8 @@ export default {
           `/task/comment/${this.selectedComment.commentId}`,
           {
             headers: {
-              userId: this.userId
-            }
+              userId: this.userId,
+            },
           }
         );
         this.sendCommentedMessage(
@@ -1084,12 +1091,12 @@ export default {
               entityId: this.selectedTask.taskId,
               content: this.textEditor,
               commenter: this.userId,
-              parentId: ""
+              parentId: "",
             },
             {
               headers: {
-                userId: this.userId
-              }
+                userId: this.userId,
+              },
             }
           );
 
@@ -1123,12 +1130,12 @@ export default {
               {
                 commentId: response.data.commentId,
                 entityId: this.selectedTask.taskId,
-                recipients: mentionedUsers
+                recipients: mentionedUsers,
               },
               {
                 headers: {
-                  userId: this.userId
-                }
+                  userId: this.userId,
+                },
               }
             );
             // console.log("Annotations: " + mentionResponse);
@@ -1154,12 +1161,12 @@ export default {
           `/task/comment/${commentId}`,
           {
             content: this.updatedComment,
-            commenter: this.userId
+            commenter: this.userId,
           },
           {
             headers: {
-              userId: this.userId
-            }
+              userId: this.userId,
+            },
           }
         );
         this.commentEditor = false;
@@ -1190,12 +1197,12 @@ export default {
             {
               commentId: commentId,
               entityId: this.selectedTask.taskId,
-              recipients: mentionedUsers
+              recipients: mentionedUsers,
             },
             {
               headers: {
-                userId: this.userId
-              }
+                userId: this.userId,
+              },
             }
           );
           // console.log("Annotations: " + mentionResponse);
@@ -1226,7 +1233,7 @@ export default {
         JSON.stringify({
           sender: sender,
           message: comment,
-          actionType: "comment"
+          actionType: "comment",
         })
       );
     },
@@ -1239,7 +1246,7 @@ export default {
         JSON.stringify({
           sender: sender,
           message: this.ownUser.firstName + " " + this.ownUser.lastName,
-          actionType: event
+          actionType: event,
         })
       );
     },
@@ -1351,7 +1358,7 @@ export default {
     assigneeArray() {
       let assigneeList = [];
       if (this.traversing) {
-        const matches = this.people.filter(user => {
+        const matches = this.people.filter((user) => {
           if (
             user.assigneeFirstName
               .toLowerCase()
@@ -1361,7 +1368,7 @@ export default {
               name: user.assigneeFirstName + " " + user.assigneeLastName,
               id: user.assigneeId,
               img: user.assigneeProfileImage,
-              display: user.assigneeFirstName + user.assigneeLastName
+              display: user.assigneeFirstName + user.assigneeLastName,
             });
           }
         });
@@ -1379,24 +1386,24 @@ export default {
             name: user.assigneeFirstName + " " + user.assigneeLastName,
             id: user.assigneeId,
             img: user.assigneeProfileImage,
-            display: user.assigneeFirstName + user.assigneeLastName
+            display: user.assigneeFirstName + user.assigneeLastName,
           });
         }
         return assigneeList;
       }
-    }
+    },
   },
   computed: {
     ...mapState({
-      selectedTask: state => state.task.selectedTask,
-      allCommentsLength: state => state.comments.allCommentsLength,
-      ownUser: state => state.user.ownUser,
-      taskComments: state => state.comments.activityComment,
-      typingStatus: state => state.stompClient.typingStatus,
-      typingUser: state => state.stompClient.typingUser,
-      selectedUser: state => state.user.selectedUser,
-      users: state => state.user.users,
-      people: state => state.task.userCompletionTasks
+      selectedTask: (state) => state.task.selectedTask,
+      allCommentsLength: (state) => state.comments.allCommentsLength,
+      ownUser: (state) => state.user.ownUser,
+      taskComments: (state) => state.comments.activityComment,
+      typingStatus: (state) => state.stompClient.typingStatus,
+      typingUser: (state) => state.stompClient.typingUser,
+      selectedUser: (state) => state.user.selectedUser,
+      users: (state) => state.user.users,
+      people: (state) => state.task.userCompletionTasks,
     }),
     loadAssigneeArray() {
       let assigneeList = [];
@@ -1407,11 +1414,11 @@ export default {
           name: user.assigneeFirstName + " " + user.assigneeLastName,
           id: user.assigneeId,
           img: user.assigneeProfileImage,
-          display: user.assigneeFirstName + user.assigneeLastName
+          display: user.assigneeFirstName + user.assigneeLastName,
         });
       }
       return assigneeList;
-    }
-  }
+    },
+  },
 };
 </script>
