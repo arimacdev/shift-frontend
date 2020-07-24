@@ -161,6 +161,21 @@
   margin-right: 5px;
   float: right;
 }
+.submitButtonProjectEdit {
+  background-color: #0bafff !important;
+  width: 90%;
+  border-radius: 5px;
+  float: left;
+  margin-right: 5px;
+}
+.submitButtonWeightEdit {
+  background-color: #0bafff !important;
+  width: 90%;
+  border-radius: 5px;
+  float: left;
+  margin-right: 40px !important;
+}
+
 .addUserSubmitButtonEdit {
   background-color: #0bafff !important;
   margin-left: 20px;
@@ -567,13 +582,20 @@
   margin-left: 15px !important;
   margin-right: 15px !important;
 }
-.deleteProjectButton {
+/* .deleteProjectButton {
   background-color: #ff6161 !important;
   width: 325px;
   margin-top: 20px;
-  /* position: absolute; */
   margin-right: 15px;
   margin-bottom: 40px;
+} */
+.deleteProjectButton {
+  margin-top: 10px;
+  background-color: #ff6161 !important;
+  width: 90%;
+  border-radius: 5px;
+  float: left;
+  margin-right: 5px;
 }
 .addProjectButton {
   /* position: absolute; */
