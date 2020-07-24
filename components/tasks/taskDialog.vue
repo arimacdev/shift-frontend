@@ -1683,14 +1683,15 @@ export default {
             startIndex: 0,
             endIndex: 10
           });
-          if (this.selectedTask.isParent) {
-            this.$store.dispatch("task/updateTask", {
-              taskId: this.selectedTask.taskId,
-              taskName: this.updatedTask.taskName
-            });
-          } else {
+          // if (this.selectedTask.isParent) {
+            // this.$store.dispatch("task/updateTask", {
+            //   selectedTask: this.selectedTask,
+            //   taskName: this.updatedTask.taskName,
+            // });
+            this.$store.dispatch("task/setSelectedTaskName", this.updatedTask.taskName)
+          // } else {
             this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
-          }
+          // }
           setTimeout(() => {
             this.close();
           }, 3000);
