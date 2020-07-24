@@ -15,7 +15,14 @@
     </v-btn>
     <div class="filterSectionAllTasks">
       <div class="filterTriggersDrop" style="width: 10%; float: left; padding-right: 10px">
-        <v-btn dark width="100%" height="30px" color="#66B35F" @click="changeTaskOption()">
+        <v-btn
+          depressed
+          dark
+          width="100%"
+          height="30px"
+          color="#66B35F"
+          @click="changeTaskOption()"
+        >
           <v-icon
             size="13"
             color="#FFFFFF"
@@ -126,12 +133,12 @@
       </div>
 
       <div class="filterTriggersDrop" style="width: 5%; float: left; margin-right: 20px">
-        <v-btn @click="jqlSearch()" dark width="100%" height="30px" color="#080848">
+        <v-btn depressed @click="jqlSearch()" dark width="100%" height="30px" color="#080848">
           <span class="text-capitalize" style="font-size: 10px !important">Search</span>
         </v-btn>
       </div>
       <div class="filterTriggersDrop" style="width: 5%; float: left; padding-right: 10px">
-        <v-btn @click="filterChange()" dark width="100%" height="30px" color="#FF6161">
+        <v-btn depressed @click="filterChange()" dark width="100%" height="30px" color="#FF6161">
           <span class="text-capitalize" style="font-size: 10px !important; ">Clear</span>
         </v-btn>
       </div>
