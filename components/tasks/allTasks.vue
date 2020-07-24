@@ -440,9 +440,9 @@
                       >{{taskStatusFormatting(childTask.taskStatus) }}</v-chip>
                       <v-chip
                         class="chipsContent"
-                        :class="statusCheck(task.parentTask.issueType)"
+                        :class="statusCheck(childTask.issueType)"
                         x-small
-                      >{{ taskTypeFormatting(task.parentTask.issueType) }}</v-chip>
+                      >{{ taskTypeFormatting(childTask.issueType) }}</v-chip>
                       <v-list-item-content class="updatedDate">
                         <v-list-item-title
                           class="fontRestructure12"
@@ -730,7 +730,7 @@ export default {
       filterList: {},
       taskAssigneeFilter: "",
       updatedTask: {
-        taskName: ""
+        taskName: "",
       },
       nameOfTask: "",
       taskTypeArray: [
@@ -740,7 +740,7 @@ export default {
         { name: "Bug", id: "bug" },
         { name: "Operational", id: "operational" },
         { name: "Pre-sales", id: "preSales" },
-        { name: "General", id: "general" }
+        { name: "General", id: "general" },
       ],
       taskStatusArray: [
         { name: "Pending", id: "pending" },
@@ -763,7 +763,7 @@ export default {
         { name: "Deployed", id: "deployed" },
         { name: "Fixed", id: "fixed" },
         { name: "Rejected", id: "rejected" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
 
       items: [
@@ -773,13 +773,13 @@ export default {
         { name: "Bug", id: "bug" },
         { name: "Operational", id: "operational" },
         { name: "Pre-sales", id: "preSales" },
-        { name: "General", id: "general" }
+        { name: "General", id: "general" },
       ],
       filterOptions: [
         { id: "none", name: "None" },
         { id: "assignee", name: "Assignee" },
         { id: "issueType", name: "Task type" },
-        { id: "dueDate", name: "Date Range" }
+        { id: "dueDate", name: "Date Range" },
       ],
       projects: ["pr1"],
       drawer: null,
@@ -793,7 +793,7 @@ export default {
       taskFilter: "none",
       componentClose: null,
       stomp: null,
-      baseUrl: process.env.SYSTEM_URL
+      baseUrl: process.env.SYSTEM_URL,
     };
   },
   components: {
@@ -801,15 +801,15 @@ export default {
     "task-dialog": TaskDialog,
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
-    "progress-loading": Progress
+    "progress-loading": Progress,
   },
   watch: {
     searchAssignee(val) {
       val && val !== this.selectAssignee && this.loadAssignee(val);
-    }
+    },
   },
   methods: {
-    changeTaskOption(){
+    changeTaskOption() {
       this.$emit("changeTaskOption", "my-tasks");
     },
     backPannelDisplay(child) {
@@ -915,7 +915,7 @@ export default {
     },
     exportAsCSV() {
       var blob = new Blob([Papa.unparse(this.filterList)], {
-        type: "text/csv;charset=utf-8;"
+        type: "text/csv;charset=utf-8;",
       });
 
       var link = document.createElement("a");
@@ -933,7 +933,7 @@ export default {
       Promise.all([
         this.$store.dispatch("task/setIndex", {
           startIndex: this.pagination * 10 - 10,
-          endIndex: this.pagination * 10
+          endIndex: this.pagination * 10,
         }),
         this.$store.dispatch(
           "task/fetchTasksAllTasks",
@@ -942,7 +942,7 @@ export default {
         this.$store.dispatch(
           "task/fetchTotalTaskCount",
           this.$route.params.projects
-        )
+        ),
       ]).finally(() => {
         this.overlay = false;
       });
@@ -1048,8 +1048,8 @@ export default {
           `/projects/workload/filter?query=${this.jqlQuery}`,
           {
             headers: {
-              user: this.$store.state.user.userId
-            }
+              user: this.$store.state.user.userId,
+            },
           }
         );
         // console.log("tasks--->", taskFilterResponse.data);
@@ -1093,7 +1093,7 @@ export default {
         this.assigneeArray.push({
           name: user.assigneeFirstName + " " + user.assigneeLastName,
           id: user.assigneeId,
-          img: user.assigneeProfileImage
+          img: user.assigneeProfileImage,
         });
       }
     },
@@ -1159,8 +1159,8 @@ export default {
             data: {},
             headers: {
               user: this.userId,
-              type: "project"
-            }
+              type: "project",
+            },
           }
         );
         // this.component = 'success-popup'
@@ -1197,7 +1197,7 @@ export default {
             taskStatus: null,
             taskNotes: "",
             issueType: issueType,
-            parentTaskId: selectedParentTask
+            parentTaskId: selectedParentTask,
           }
         );
         this.$refs.form.reset();
@@ -1235,7 +1235,7 @@ export default {
             taskNotes: "",
             issueType: issueType,
             sprintId: sprintId,
-            parentTaskId: selectedParentTask
+            parentTaskId: selectedParentTask,
           }
         );
         this.subTaskName = [];
@@ -1269,7 +1269,7 @@ export default {
         this.states.push({
           name: user.assigneeFirstName + " " + user.assigneeLastName,
           id: user,
-          img: user.assigneeProfileImage
+          img: user.assigneeProfileImage,
         });
       }
       // console.log("nameList", this.states);
@@ -1297,10 +1297,10 @@ export default {
         this.stomp = Stomp.over(socket);
         //this.$store.dispatch("stompClient/setStompClient", "this.stomp");
         //let client = this.stompClient;
-        this.stomp.connect({}, frame => {
+        this.stomp.connect({}, (frame) => {
           console.log("connected to: " + frame);
           console.log("subscribing to topic: " + "/topic/messages/" + taskId);
-          this.stomp.subscribe("/topic/messages/" + taskId, response => {
+          this.stomp.subscribe("/topic/messages/" + taskId, (response) => {
             // console.log("Response", response);
             let data = JSON.parse(response.body);
             console.log("outside----->");
@@ -1309,7 +1309,7 @@ export default {
               this.$store.dispatch("comments/fetchTaskActivityComment", {
                 taskId: this.selectedTask.taskId,
                 startIndex: 0,
-                endIndex: 9
+                endIndex: 9,
               });
             } else if (
               data.actionType === "typing" &&
@@ -1336,7 +1336,7 @@ export default {
       this.$store.dispatch("task/setSelectedTask", task);
       this.taskObject = taskObject;
       this.componentClose = "";
-      this.$axios.get(`/users/${task.taskAssignee}`).then(async response => {
+      this.$axios.get(`/users/${task.taskAssignee}`).then(async (response) => {
         // console.log("fetched task -->", response.data.data);
         this.assignee = response.data.data;
       });
@@ -1345,12 +1345,12 @@ export default {
         // console.log("parent task");
         this.$store.dispatch("task/fetchChildren", {
           projectId: this.projectId,
-          taskId: this.task.taskId
+          taskId: this.task.taskId,
         });
       } else {
         this.$store.dispatch("task/fetchParentTask", {
           projectId: this.projectId,
-          taskId: this.task.parentId
+          taskId: this.task.parentId,
         });
       }
       let taskFilesResponse;
@@ -1360,8 +1360,8 @@ export default {
           {
             headers: {
               user: this.userId,
-              type: "project"
-            }
+              type: "project",
+            },
           }
         );
         // console.log("files--->", taskFilesResponse.data);
@@ -1374,13 +1374,13 @@ export default {
       this.$store.dispatch("activityLog/fetchTaskActivityLog", {
         taskId: task.taskId,
         startIndex: 0,
-        endIndex: 10
+        endIndex: 10,
       });
 
       this.$store.dispatch("comments/fetchTaskActivityComment", {
         taskId: task.taskId,
         startIndex: 0,
-        endIndex: 10
+        endIndex: 10,
       });
 
       this.$store.dispatch("comments/fetchTaskCommentLength", task.taskId);
@@ -1479,19 +1479,19 @@ export default {
         stringDate = stringDate.slice(0, 10);
         return stringDate;
       }
-    }
+    },
   },
   async created() {
     this.projectId = this.$route.params.projects;
   },
   computed: {
     ...mapState({
-      fetchProject: state => state.project.project,
-      allTaskCount: state => state.task.totalCount,
-      people: state => state.task.userCompletionTasks,
-      projectAllTasks: state => state.task.allTasks,
+      fetchProject: (state) => state.project.project,
+      allTaskCount: (state) => state.task.totalCount,
+      people: (state) => state.task.userCompletionTasks,
+      projectAllTasks: (state) => state.task.allTasks,
       // projectId: state => state.project.project.projectId,
-      selectedTask: state => state.task.selectedTask
+      selectedTask: (state) => state.task.selectedTask,
       // stompClient: state => state.stompClient.stompClient
     }),
     assigneeArray() {
@@ -1502,7 +1502,7 @@ export default {
         assigneeList.push({
           name: user.assigneeFirstName + " " + user.assigneeLastName,
           id: user.assigneeId,
-          img: user.assigneeProfileImage
+          img: user.assigneeProfileImage,
         });
       }
       return assigneeList;
@@ -1513,19 +1513,19 @@ export default {
       },
       set(value) {
         this.filterAssignee = value;
-      }
+      },
     },
     taskType: {
       get() {},
       set(value) {
         this.filterType = value;
-      }
+      },
     },
     taskStatus: {
       get() {},
       set(value) {
         this.filterStatus = value;
-      }
+      },
     },
     taskName: {
       get() {
@@ -1533,9 +1533,9 @@ export default {
       },
       set(value) {
         this.updatedTask.taskName = value;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 
