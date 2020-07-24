@@ -1014,7 +1014,7 @@ import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import AddParentTask from "~/components/tasks/addParentTask";
 import AddChildTask from "~/components/tasks/addChildTask";
-import Progress from "~/components/popups/progress";
+import Progress from "~/components/popups/waiting";
 import TaskLogs from "~/components/tasks/taskLogs";
 import TaskComments from "~/components/tasks/taskComments";
 
@@ -1027,16 +1027,19 @@ export default {
     "add-child-task": AddChildTask,
     "progress-loading": Progress,
     "task-logs": TaskLogs,
-    "task-comments": TaskComments
+    "task-comments": TaskComments,
   },
   data() {
     return {
       // ---------- for weight section -----------
-      estimatedRules: [v => v < 60 || "Invalid!", v => v > -1 || "Invalid!"],
-      estimatedHRules: [v => v > -1 || "Invalid!"],
+      estimatedRules: [
+        (v) => v < 60 || "Invalid!",
+        (v) => v > -1 || "Invalid!",
+      ],
+      estimatedHRules: [(v) => v > -1 || "Invalid!"],
       isValidEstimated: true,
-      actualRules: [v => v < 60 || "Invalid!", v => v > -1 || "Invalid!"],
-      actualHRules: [v => v > -1 || "Invalid!"],
+      actualRules: [(v) => v < 60 || "Invalid!", (v) => v > -1 || "Invalid!"],
+      actualHRules: [(v) => v > -1 || "Invalid!"],
       isValidActual: true,
       updatedActualMin: "",
       updatedActualHours: "",
@@ -1079,7 +1082,7 @@ export default {
         taskNotes: "",
         taskStatus: "",
         taskRemindOnDate: "",
-        taskDueDateAt: ""
+        taskDueDateAt: "",
       },
       userExists: true,
       // taskStatus: this.task.taskStatus,
@@ -1092,7 +1095,7 @@ export default {
         { name: "Bug", id: "bug" },
         { name: "Operational", id: "operational" },
         { name: "Pre-sales", id: "preSales" },
-        { name: "General", id: "general" }
+        { name: "General", id: "general" },
       ],
       development: [
         { name: "Pending", id: "pending" },
@@ -1101,13 +1104,13 @@ export default {
         { name: "Completed", id: "completed" },
         { name: "Implementing", id: "implementing" },
         { name: "Deployed", id: "deployed" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       qa: [
         { name: "Pending", id: "pending" },
         { name: "Testing", id: "testing" },
         { name: "Review", id: "review" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       design: [
         { name: "Pending", id: "pending" },
@@ -1122,7 +1125,7 @@ export default {
         { name: "Review", id: "review" },
         { name: "Waiting response", id: "waitingResponse" },
         { name: "Rejected", id: "rejected" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       bug: [
         { name: "Pending", id: "pending" },
@@ -1136,7 +1139,7 @@ export default {
         { name: "Under review", id: "underReview" },
         { name: "Review", id: "review" },
         { name: "Waiting response", id: "waitingResponse" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       operational: [
         { name: "Pending", id: "pending" },
@@ -1152,7 +1155,7 @@ export default {
         { name: "Waiting response", id: "waitingResponse" },
         { name: "Ready", id: "ready" },
         { name: "Rejected", id: "rejected" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       preSales: [
         { name: "Pending", id: "pending" },
@@ -1166,7 +1169,7 @@ export default {
         { name: "Discussion", id: "discussion" },
         { name: "Waiting response", id: "waitingResponse" },
         { name: "Rejected", id: "rejected" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       general: [
         { name: "Pending", id: "pending" },
@@ -1175,8 +1178,8 @@ export default {
         { name: "Cancel", id: "cancel" },
         { name: "In progress", id: "inprogress" },
         { name: "Completed", id: "completed" },
-        { name: "Closed", id: "closed" }
-      ]
+        { name: "Closed", id: "closed" },
+      ],
     };
   },
   methods: {
@@ -1203,18 +1206,18 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
           {
-            estimatedWeight: parseFloat(hours + "." + min)
+            estimatedWeight: parseFloat(hours + "." + min),
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.component = "success-popup";
         this.successMessage = "Estimated Weight successfully updated";
@@ -1258,18 +1261,18 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
           {
-            actualWeight: parseFloat(hours + "." + min)
+            actualWeight: parseFloat(hours + "." + min),
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.overlay = false;
         this.component = "success-popup";
@@ -1301,18 +1304,18 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
           {
-            estimatedWeight: this.updatedEstimatedWeight
+            estimatedWeight: this.updatedEstimatedWeight,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.component = "success-popup";
         this.successMessage = "Estimated Weight successfully updated";
@@ -1345,18 +1348,18 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
           {
-            actualWeight: this.updatedActualWeight
+            actualWeight: this.updatedActualWeight,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.component = "success-popup";
         this.successMessage = "Actual Weight successfully updated";
@@ -1456,7 +1459,7 @@ export default {
         this.$store.dispatch("comments/fetchTaskActivityComment", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
 
         this.$store.dispatch(
@@ -1467,7 +1470,7 @@ export default {
     },
     checkUserExists() {
       const index = this.people.findIndex(
-        user => user.assigneeId === this.selectedTask.taskAssignee
+        (user) => user.assigneeId === this.selectedTask.taskAssignee
       );
       if (index === -1) this.userExists = false;
       else this.userExists = true;
@@ -1524,8 +1527,8 @@ export default {
             data: {},
             headers: {
               user: this.userId,
-              type: "project"
-            }
+              type: "project",
+            },
           }
         );
         // this.component = 'success-popup'
@@ -1558,19 +1561,19 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
           {
-            issueType: this.updatedIssue
+            issueType: this.updatedIssue,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.component = "success-popup";
         this.successMessage = "Type successfully updated";
@@ -1598,19 +1601,19 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
           {
-            taskStatus: this.updatedStatus
+            taskStatus: this.updatedStatus,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.component = "success-popup";
         this.successMessage = "Status successfully updated";
@@ -1638,12 +1641,12 @@ export default {
           response = await this.$axios.$put(
             `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
             {
-              taskName: this.updatedTask.taskName
+              taskName: this.updatedTask.taskName,
             },
             {
               headers: {
-                user: this.userId
-              }
+                user: this.userId,
+              },
             }
           );
           this.component = "success-popup";
@@ -1651,7 +1654,7 @@ export default {
           this.$store.dispatch("activityLog/fetchTaskActivityLog", {
             taskId: this.selectedTask.taskId,
             startIndex: 0,
-            endIndex: 10
+            endIndex: 10,
           });
           // if (this.selectedTask.isParent) {
           //   this.$store.dispatch("task/updateTask", {
@@ -1659,8 +1662,11 @@ export default {
           //     taskName: this.updatedTask.taskName
           //   });
           // } else {
-            this.$store.dispatch("task/setSelectedTaskName", this.updatedTask.taskName)
-            this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+          this.$store.dispatch(
+            "task/setSelectedTaskName",
+            this.updatedTask.taskName
+          );
+          this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
           // }
           setTimeout(() => {
             this.close();
@@ -1690,12 +1696,12 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
           {
-            taskAssignee: this.updatedTask.taskAssignee
+            taskAssignee: this.updatedTask.taskAssignee,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.component = "success-popup";
@@ -1704,7 +1710,7 @@ export default {
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.userExists = true;
         setTimeout(() => {
@@ -1731,7 +1737,7 @@ export default {
         let assignee = assigneeSearchList[index];
         this.assignees.push({
           name: assignee.assigneeFirstName + " " + assignee.assigneeLastName,
-          id: assignee.assigneeId
+          id: assignee.assigneeId,
         });
       }
       // console.log("nameList", this.states);
@@ -1747,19 +1753,19 @@ export default {
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}/sprint`,
           {
             previousSprint: this.selectedTask.sprintId,
-            newSprint: this.updatedSprint
+            newSprint: this.updatedSprint,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.component = "success-popup";
         this.successMessage = "Sprint successfully updated";
@@ -1788,19 +1794,19 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
           {
-            taskNotes: this.updatedTask.taskNote
+            taskNotes: this.updatedTask.taskNote,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.component = "success-popup";
         this.successMessage = "Note successfully updated";
@@ -1835,11 +1841,11 @@ export default {
         dueDate = isoDate;
         remindDate = this.updatedTask.taskRemindOnDate;
         changedDate = {
-          taskDueDate: dueDate
+          taskDueDate: dueDate,
         };
         this.$store.dispatch("task/updateProjectDates", {
           type: "dueDate",
-          date: dueDate
+          date: dueDate,
         });
       } else if (this.updatedTask.taskRemindOnDate != "") {
         // console.log("inside remind on date");
@@ -1851,11 +1857,11 @@ export default {
         dueDate = this.updatedTask.taskDueDateAt;
         remindDate = isoDate;
         changedDate = {
-          taskRemindOnDate: remindDate
+          taskRemindOnDate: remindDate,
         };
         this.$store.dispatch("task/updateProjectDates", {
           type: "remindDate",
-          date: remindDate
+          date: remindDate,
         });
       }
       // console.log("dueDate", dueDate);
@@ -1867,15 +1873,15 @@ export default {
           changedDate,
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
 
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
 
@@ -1914,15 +1920,15 @@ export default {
               formData,
               {
                 headers: {
-                  user: this.userId
-                }
+                  user: this.userId,
+                },
               }
             );
             this.$store.dispatch("task/appendTaskFile", fileResponse.data);
             this.$store.dispatch("activityLog/fetchTaskActivityLog", {
               taskId: this.selectedTask.taskId,
               startIndex: 0,
-              endIndex: 10
+              endIndex: 10,
             });
             this.uploadLoading = false;
             this.component = "success-popup";
@@ -1957,8 +1963,8 @@ export default {
           {
             data: {},
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         // console.log(response.data);
@@ -1966,7 +1972,7 @@ export default {
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.component = "success-popup";
         this.successMessage = "File successfully deleted";
@@ -2062,7 +2068,7 @@ export default {
         let sprint = sprintSearchList[index];
         this.sprints.push({
           name: sprint.sprintName,
-          id: sprint.sprintId
+          id: sprint.sprintId,
         });
       }
       // console.log("nameList", this.states);
@@ -2080,7 +2086,7 @@ export default {
     },
     EditTaskName() {
       this.editTask = false;
-    }
+    },
   },
   async created() {
     this.projectId = this.$route.params.projects;
@@ -2100,17 +2106,17 @@ export default {
       }
     },
     ...mapState({
-      parent: state => state.task.parentTask,
-      children: state => state.task.childTasks,
-      people: state => state.task.userCompletionTasks,
-      projectSprints: state => state.sprints.sprint.sprints,
-      projectAllTasks: state => state.task.allTasks,
+      parent: (state) => state.task.parentTask,
+      children: (state) => state.task.childTasks,
+      people: (state) => state.task.userCompletionTasks,
+      projectSprints: (state) => state.sprints.sprint.sprints,
+      projectAllTasks: (state) => state.task.allTasks,
       // projectId: state => state.project.project.projectId,
-      selectedTaskUser: state => state.user.selectedTaskUser,
-      taskFiles: state => state.task.taskFiles,
-      selectedTask: state => state.task.selectedTask,
-      fetchProject: state => state.project.project,
-      parentTaskUser: state => state.user.parentTaskUser
+      selectedTaskUser: (state) => state.user.selectedTaskUser,
+      taskFiles: (state) => state.task.taskFiles,
+      selectedTask: (state) => state.task.selectedTask,
+      fetchProject: (state) => state.project.project,
+      parentTaskUser: (state) => state.user.parentTaskUser,
     }),
     ...mapGetters(["getuserCompletionTasks"]),
     peopleList() {
@@ -2147,7 +2153,7 @@ export default {
       set(assignee) {
         // console.log("spid", sprintId);
         this.updatedTask.taskAssignee = assignee;
-      }
+      },
     },
 
     taskName: {
@@ -2158,7 +2164,7 @@ export default {
       },
       set(name) {
         this.updatedTask.taskName = name;
-      }
+      },
     },
     taskStatus: {
       get() {
@@ -2171,7 +2177,7 @@ export default {
       set(value) {
         // console.log("task status", value);
         this.updatedStatus = value;
-      }
+      },
     },
     issueType: {
       get() {
@@ -2190,7 +2196,7 @@ export default {
         this.updatedIssue = value;
         this.issueTypes = value;
         // console.log("issue type", this.updatedIssue);
-      }
+      },
     },
     selectedSprint: {
       get() {
@@ -2205,7 +2211,7 @@ export default {
       set(sprintId) {
         // console.log("spid", sprintId);
         this.updatedSprint = sprintId;
-      }
+      },
     },
     taskNote: {
       get() {
@@ -2213,7 +2219,7 @@ export default {
       },
       set(value) {
         this.updatedTask.taskNote = value;
-      }
+      },
     },
 
     taskDue: {
@@ -2231,7 +2237,7 @@ export default {
       set(value) {
         // console.log("updated task due ->", value);
         this.updatedTask.taskDueDateAt = value;
-      }
+      },
     },
     taskRemindOn: {
       get() {
@@ -2248,7 +2254,7 @@ export default {
       set(value) {
         // console.log("updated task reminder ->", value);
         this.updatedTask.taskRemindOnDate = value;
-      }
+      },
     },
     // -------- for weight section ---------
     estimatedWeight: {
@@ -2257,7 +2263,7 @@ export default {
       },
       set(estimatedWeight) {
         this.updatedEstimatedWeight = estimatedWeight;
-      }
+      },
     },
 
     actualWeight: {
@@ -2266,7 +2272,7 @@ export default {
       },
       set(actualWeight) {
         this.updatedActualWeight = actualWeight;
-      }
+      },
     },
     estimatedHours: {
       get() {
@@ -2274,7 +2280,7 @@ export default {
       },
       set(estimatedWeight) {
         this.updatedEstimatedHour = estimatedWeight;
-      }
+      },
     },
     estimatedMin: {
       get() {
@@ -2287,7 +2293,7 @@ export default {
       },
       set(estimatedWeight) {
         this.updatedEstimatedMin = estimatedWeight;
-      }
+      },
     },
     actualHours: {
       get() {
@@ -2295,7 +2301,7 @@ export default {
       },
       set(estimatedWeight) {
         this.updatedActualHours = estimatedWeight;
-      }
+      },
     },
     actualMin: {
       get() {
@@ -2308,8 +2314,8 @@ export default {
       },
       set(actualWeight) {
         this.updatedActualMin = actualWeight;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
