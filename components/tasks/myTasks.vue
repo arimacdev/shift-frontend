@@ -15,7 +15,7 @@
     </v-btn>
     <div class="filterSectionAllTasks">
       <div class="filterTriggersDrop" style="width: 10%; float: left; padding-right: 10px">
-        <v-btn dark width="100%" height="30px" color="#060631" @click="changeTaskOption">
+        <v-btn depressed dark width="100%" height="30px" color="#060631" @click="changeTaskOption">
           <v-icon
             size="13"
             color="#FFFFFF"
@@ -100,12 +100,12 @@
         ></VueCtkDateTimePicker>
       </div>
       <div class="filterTriggersDrop" style="width: 5%; float: left; margin-right: 20px">
-        <v-btn @click="jqlSearch()" dark width="100%" height="30px" color="#080848">
+        <v-btn depressed @click="jqlSearch()" dark width="100%" height="30px" color="#080848">
           <span class="text-capitalize" style="font-size: 10px !important">Search</span>
         </v-btn>
       </div>
       <div class="filterTriggersDrop" style="width: 5%; float: left; padding-right: 10px">
-        <v-btn @click="filterChange()" dark width="100%" height="30px" color="#FF6161">
+        <v-btn depressed @click="filterChange()" dark width="100%" height="30px" color="#FF6161">
           <span class="text-capitalize" style="font-size: 10px !important; ">Clear</span>
         </v-btn>
       </div>
@@ -548,7 +548,7 @@ export default {
       taskAssigneeFilter: "",
       taskName: "",
       updatedTask: {
-        taskName: ""
+        taskName: "",
       },
       nameOfTask: "",
       taskTypeArray: [
@@ -558,7 +558,7 @@ export default {
         { name: "Bug", id: "bug" },
         { name: "Operational", id: "operational" },
         { name: "Pre-sales", id: "preSales" },
-        { name: "General", id: "general" }
+        { name: "General", id: "general" },
       ],
       taskStatusArray: [
         { name: "Pending", id: "pending" },
@@ -581,7 +581,7 @@ export default {
         { name: "Deployed", id: "deployed" },
         { name: "Fixed", id: "fixed" },
         { name: "Rejected", id: "rejected" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
 
       items: [
@@ -591,12 +591,12 @@ export default {
         { name: "Bug", id: "bug" },
         { name: "Operational", id: "operational" },
         { name: "Pre-sales", id: "preSales" },
-        { name: "General", id: "general" }
+        { name: "General", id: "general" },
       ],
       filterOptions: [
         { id: "none", name: "None" },
         { id: "issueType", name: "Task type" },
-        { id: "dueDate", name: "Date Range" }
+        { id: "dueDate", name: "Date Range" },
       ],
       projects: ["pr1"],
       drawer: null,
@@ -609,7 +609,7 @@ export default {
       taskSelect: "all",
       taskFilter: "none",
       componentClose: null,
-      baseUrl: process.env.SYSTEM_URL
+      baseUrl: process.env.SYSTEM_URL,
     };
   },
   async created() {
@@ -620,10 +620,10 @@ export default {
     "task-dialog": TaskDialog,
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
-    "progress-loading": Progress
+    "progress-loading": Progress,
   },
   methods: {
-      changeTaskOption(){
+    changeTaskOption() {
       this.$emit("changeTaskOption", "all-tasks");
     },
     taskStatusFormatting(status) {
@@ -722,7 +722,7 @@ export default {
     },
     exportAsCSV() {
       var blob = new Blob([Papa.unparse(this.filterList)], {
-        type: "text/csv;charset=utf-8;"
+        type: "text/csv;charset=utf-8;",
       });
 
       var link = document.createElement("a");
@@ -745,10 +745,10 @@ export default {
         this.stomp = Stomp.over(socket);
         //this.$store.dispatch("stompClient/setStompClient", "this.stomp");
         //let client = this.stompClient;
-        this.stomp.connect({}, frame => {
+        this.stomp.connect({}, (frame) => {
           console.log("connected to: " + frame);
           console.log("subscribing to topic: " + "/topic/messages/" + taskId);
-          this.stomp.subscribe("/topic/messages/" + taskId, response => {
+          this.stomp.subscribe("/topic/messages/" + taskId, (response) => {
             // console.log("Response", response);
             let data = JSON.parse(response.body);
             console.log("outside----->");
@@ -757,7 +757,7 @@ export default {
               this.$store.dispatch("comments/fetchTaskActivityComment", {
                 taskId: this.selectedTask.taskId,
                 startIndex: 0,
-                endIndex: 9
+                endIndex: 9,
               });
             } else if (
               data.actionType === "typing" &&
@@ -780,7 +780,7 @@ export default {
     getMyTasks() {
       this.$store.dispatch("task/setIndex", {
         startIndex: this.myTaskPagination * 10 - 10,
-        endIndex: this.myTaskPagination * 10
+        endIndex: this.myTaskPagination * 10,
       });
       this.$store.dispatch(
         "task/fetchTasksMyTasks",
@@ -880,8 +880,8 @@ export default {
           `/projects/workload/filter?query=${this.jqlQuery}`,
           {
             headers: {
-              user: this.$store.state.user.userId
-            }
+              user: this.$store.state.user.userId,
+            },
           }
         );
         // console.log("tasks--->", taskFilterResponse.data);
@@ -948,8 +948,8 @@ export default {
               assignee: this.userId,
               issueType: issueType,
               from: from.slice(0, 10),
-              to: to.slice(0, 10)
-            }
+              to: to.slice(0, 10),
+            },
           }
         );
         this.filterList = response.data;
@@ -967,8 +967,8 @@ export default {
             data: {},
             headers: {
               user: this.userId,
-              type: "project"
-            }
+              type: "project",
+            },
           }
         );
         // this.component = 'success-popup'
@@ -1005,7 +1005,7 @@ export default {
             taskStatus: null,
             taskNotes: "",
             issueType: "development",
-            parentTaskId: selectedParentTask
+            parentTaskId: selectedParentTask,
           }
         );
         this.taskName = "";
@@ -1054,7 +1054,7 @@ export default {
         this.states.push({
           name: user.assigneeFirstName + " " + user.assigneeLastName,
           id: user,
-          img: user.assigneeProfileImage
+          img: user.assigneeProfileImage,
         });
       }
       // console.log("nameList", this.states);
@@ -1079,7 +1079,7 @@ export default {
       // this.taskObject = taskObject;
       this.componentClose = "";
       // console.log("selectedTask", task);
-      this.$axios.get(`/users/${task.taskAssignee}`).then(async response => {
+      this.$axios.get(`/users/${task.taskAssignee}`).then(async (response) => {
         // console.log("fetched task -->", response.data.data);
         this.assignee = response.data.data;
       });
@@ -1088,12 +1088,12 @@ export default {
         // console.log("parent task");
         this.$store.dispatch("task/fetchChildren", {
           projectId: this.projectId,
-          taskId: this.task.taskId
+          taskId: this.task.taskId,
         });
       } else {
         this.$store.dispatch("task/fetchParentTask", {
           projectId: this.projectId,
-          taskId: this.task.parentId
+          taskId: this.task.parentId,
         });
       }
       let taskFilesResponse;
@@ -1103,8 +1103,8 @@ export default {
           {
             headers: {
               user: this.userId,
-              type: "project"
-            }
+              type: "project",
+            },
           }
         );
         // console.log("files--->", taskFilesResponse.data);
@@ -1117,12 +1117,12 @@ export default {
       this.$store.dispatch("activityLog/fetchTaskActivityLog", {
         taskId: task.taskId,
         startIndex: 0,
-        endIndex: 10
+        endIndex: 10,
       });
       this.$store.dispatch("comments/fetchTaskActivityComment", {
         taskId: task.taskId,
         startIndex: 0,
-        endIndex: 10
+        endIndex: 10,
       });
 
       this.$store.dispatch("comments/fetchTaskCommentLength", task.taskId);
@@ -1203,29 +1203,29 @@ export default {
         stringDate = stringDate.slice(0, 10);
         return stringDate;
       }
-    }
+    },
   },
   computed: {
     ...mapState({
-      people: state => state.task.userCompletionTasks,
-      projectAllTasks: state => state.task.allTasks,
-      projectMyTasks: state => state.task.myTasks,
+      people: (state) => state.task.userCompletionTasks,
+      projectAllTasks: (state) => state.task.allTasks,
+      projectMyTasks: (state) => state.task.myTasks,
       // projectId: state => state.project.project.projectId,
-      selectedTask: state => state.task.selectedTask,
-      myTaskCount: state => state.task.myTaskCount
+      selectedTask: (state) => state.task.selectedTask,
+      myTaskCount: (state) => state.task.myTaskCount,
     }),
     taskType: {
       get() {},
       set(value) {
         this.filterType = value;
-      }
+      },
     },
     taskStatus: {
       get() {},
       set(value) {
         this.filterStatus = value;
-      }
-    }
+      },
+    },
 
     // taskName: {
     //   get() {
@@ -1235,7 +1235,7 @@ export default {
     //     this.updatedTask.taskName = value;
     //   }
     // }
-  }
+  },
 };
 </script>
 

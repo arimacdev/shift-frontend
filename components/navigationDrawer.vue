@@ -90,9 +90,9 @@
       </v-list>
       <v-list-item>
         <img
-          style="margin-bottom: 10px; margin-left: -10px"
-          width="45px"
-          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1594269856114_1.png"
+          style="margin-bottom: 10px; margin-left: -8px; border-radius:5px; border: 1px solid black"
+          width="40px"
+          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1595564844985_image.png"
         />
         <v-list-item-content style="margin-left: 12px; margin-top: -10px">
           <v-list-item-title class="navText">Arimac Digital</v-list-item-title>
@@ -115,18 +115,18 @@ export default {
         {
           title: "Projects",
           icon: "icon-project",
-          route: "../../projects/projects"
+          route: "../../projects/projects",
         },
         {
           title: "Tasks",
           icon: "icon-task",
-          route: "../../tasks/tasks"
+          route: "../../tasks/tasks",
         },
         // { title: 'Inventory', icon: 'icon-inventory', route: '../inventory'},
         {
           title: "Workload",
           icon: "icon-workload",
-          route: "../../workload/workload"
+          route: "../../workload/workload",
         },
         // {
         //   title: "Users",
@@ -136,9 +136,9 @@ export default {
         {
           title: "Skill Matrix",
           icon: "icon-skills",
-          route: "../../skills/skills"
+          route: "../../skills/skills",
         },
-        { title: "Admin", icon: "icon-admin", route: "../../admin/admin" }
+        { title: "Admin", icon: "icon-admin", route: "../../admin/admin" },
         // { title: "Admin", icon: "icon-admin", route: "../../comments/comments" }
       ],
       mini: true,
@@ -147,31 +147,31 @@ export default {
         {
           title: "Projects",
           icon: "icon-project",
-          route: "../../projects/projects"
+          route: "../../projects/projects",
         },
         {
           title: "Tasks",
           icon: "icon-task",
-          route: "../../tasks/tasks"
+          route: "../../tasks/tasks",
         },
         // { title: 'Inventory', icon: 'icon-inventory', route: '../inventory'},
         {
           title: "Workload",
           icon: "icon-workload",
-          route: "../../workload/workload"
-        }
+          route: "../../workload/workload",
+        },
       ],
-      homePage: process.env.SYSTEM_URL
+      homePage: process.env.SYSTEM_URL,
     };
   },
   computed: {
     ...mapState({
-      userProfile: state => state.userProfile.userProfile,
-      organizationalRoles: state => state.user.organizationalRoles
+      userProfile: (state) => state.userProfile.userProfile,
+      organizationalRoles: (state) => state.user.organizationalRoles,
     }),
     profileImage() {
       // console.log("profile image", this.profilePic);
-    }
+    },
   },
 
   methods: {
@@ -181,8 +181,8 @@ export default {
         "/auth/realms/pm-tool/protocol/openid-connect/logout?redirect_uri=" +
         this.homePage;
       window.location.replace(LOGOUT_URL);
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

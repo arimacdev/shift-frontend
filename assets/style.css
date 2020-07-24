@@ -2064,35 +2064,35 @@
   margin-right: 5px !important;
 }
 .developmentStatus {
-  background-color: #ffaa0062 !important;
+  background-color: #ffaa00ad !important;
   color: #ffffff !important;
 }
 .qaStatus {
-  background-color: #ff7b0059 !important;
+  background-color: #ff7b00b6 !important;
   color: #ffffff !important;
 }
 .designStatus {
-  background-color: #4ebc447e !important;
+  background-color: #4ebc44b2 !important;
   color: #ffffff !important;
 }
 .bugStatus {
-  background-color: #fb3f3f8e !important;
+  background-color: #fb3f3fb4 !important;
   color: #ffffff !important;
 }
 .operationalStatus {
-  background-color: #de6def86 !important;
+  background-color: #de6defbe !important;
   color: #ffffff !important;
 }
 .preSalesStatus {
-  background-color: #00c29e9a !important;
+  background-color: #00c29ebe !important;
   color: #ffffff !important;
 }
 .generalStatus {
-  background-color: #0084e29c !important;
+  background-color: #0084e2be !important;
   color: #ffffff !important;
 }
 .otherStatus {
-  background-color: #0084e28c;
+  background-color: #0084e2c0;
   color: #ffffff;
 }
 .taskAddTitle {
