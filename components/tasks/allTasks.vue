@@ -294,7 +294,6 @@
                       >mdi-checkbox-blank</v-icon>
                       <v-icon
                         @click="
-                      selectTask(task.parentTask, task);
                       closeTask(task.parentTask.taskId)"
                         style="cursor: pointer"
                         v-else
@@ -429,7 +428,6 @@
                         >mdi-checkbox-blank</v-icon>
                         <v-icon
                           @click="
-                      selectTask(childTask, task);
                       closeTask(childTask.taskId)"
                           v-else
                           size="25"

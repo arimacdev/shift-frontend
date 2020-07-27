@@ -223,13 +223,7 @@
         <div class>
           <div class="restructuredFilterTaskList">
             <v-list-item class="upperListItem">
-              <v-list-item
-                class="innerListItem"
-                @click="
-                  selectTask(task);
-                  taskDialog = true;
-                "
-              >
+              <v-list-item class="innerListItem">
                 <!-- @click.stop="drawer = !drawer" -->
                 <v-list-item-action>
                   <v-icon
@@ -237,9 +231,22 @@
                     size="25"
                     color="#66B25F"
                   >mdi-checkbox-blank</v-icon>
-                  <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
+                  <v-icon
+                    @click="
+                      closeTask(task.taskId)"
+                    style="cursor: pointer"
+                    v-else
+                    size="25"
+                    color="#939393"
+                  >mdi-checkbox-blank-outline</v-icon>
                 </v-list-item-action>
-                <v-list-item-content>
+                <v-list-item-content
+                  @click="
+                  selectTask(task);
+                  taskDialog = true;
+                "
+                  style="cursor: pointer"
+                >
                   <!-- <div class="tasklistTaskNames restructuredMainTaskName"> -->
                   <div>
                     <span class="restructuredMainTaskCode">{{ task.secondaryTaskId }}</span>
@@ -635,6 +642,45 @@ export default {
     "progress-loading": Progress,
   },
   methods: {
+    async closeTask(taskId) {
+      this.waiting = true;
+      // console.log("onchange updated status ->");
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${taskId}`,
+          {
+            taskStatus: "closed",
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10,
+        });
+        this.component = "success-popup";
+        this.successMessage = "Status successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        // console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        // console.log("Error updating a status", e);
+      }
+    },
     changeTaskOption() {
       this.$emit("changeTaskOption", "all-tasks");
     },
