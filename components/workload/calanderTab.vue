@@ -240,7 +240,7 @@ export default {
   components: {
     "progress-loading": Progress,
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
   },
   data: () => ({
     overlay: false,
@@ -253,7 +253,7 @@ export default {
       month: "Month",
       week: "Week",
       day: "Day",
-      "4day": "4 Days"
+      "4day": "4 Days",
     },
     start: null,
     end: null,
@@ -268,7 +268,7 @@ export default {
       "cyan",
       "green",
       "orange",
-      "grey darken-1"
+      "grey darken-1",
     ],
     names: [
       "Meeting",
@@ -279,7 +279,7 @@ export default {
       "Birthday",
       "Conference",
       "Party",
-      "KKKK"
+      "KKKK",
     ],
 
     value: null,
@@ -315,14 +315,14 @@ export default {
       { name: "Bug", id: "bug" },
       { name: "Operational", id: "operational" },
       { name: "Pre-sales", id: "preSales" },
-      { name: "General", id: "general" }
+      { name: "General", id: "general" },
     ],
     orderByArray: [
       { name: "Assignee", id: "taskAssignee" },
       { name: "Projects", id: "projectName" },
       { name: "Type", id: "issueType" },
       { name: "Status", id: "taskStatus" },
-      { name: "Date", id: "taskDueDateAt" }
+      { name: "Date", id: "taskDueDateAt" },
     ],
     taskStatusArray: [
       { name: "Pending", id: "pending" },
@@ -345,8 +345,8 @@ export default {
       { name: "Deployed", id: "deployed" },
       { name: "Fixed", id: "fixed" },
       { name: "Rejected", id: "rejected" },
-      { name: "Closed", id: "closed" }
-    ]
+      { name: "Closed", id: "closed" },
+    ],
   }),
   watch: {
     searchAssignee(val) {
@@ -354,7 +354,7 @@ export default {
     },
     searchProject(val) {
       val && val !== this.selectProject && this.loadProject(val);
-    }
+    },
   },
   methods: {
     clear() {
@@ -441,7 +441,7 @@ export default {
           status: task.taskStatus,
           issueType: task.issueType,
           assignee: task.firstName + " " + task.lastName,
-          color: this.colors[this.rnd(0, this.colors.length - 1)]
+          color: this.colors[this.rnd(0, this.colors.length - 1)],
         });
       }
 
@@ -480,8 +480,9 @@ export default {
     },
     formatDate(a, withTime) {
       return withTime
-        ? `${a.getFullYear()}-${a.getMonth() +
-            1}-${a.getDate()} ${a.getHours()}:${a.getMinutes()}`
+        ? `${a.getFullYear()}-${
+            a.getMonth() + 1
+          }-${a.getDate()} ${a.getHours()}:${a.getMinutes()}`
         : `${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()}`;
     },
     jqlSearch() {
@@ -584,8 +585,8 @@ export default {
           `/projects/workload/filter?query=${this.jqlQuery}`,
           {
             headers: {
-              user: this.$store.state.user.userId
-            }
+              user: this.$store.state.user.userId,
+            },
           }
         );
         // console.log("tasks--->", taskFilterResponse.data);
@@ -643,7 +644,7 @@ export default {
           status: task.taskStatus,
           issueType: task.issueType,
           assignee: task.firstName + " " + task.lastName,
-          color: this.colors[this.rnd(0, this.colors.length - 1)]
+          color: this.colors[this.rnd(0, this.colors.length - 1)],
         });
       }
     },
@@ -654,7 +655,7 @@ export default {
         this.assigneeArray.push({
           name: user.firstName + " " + user.lastName,
           id: user.userId,
-          img: user.profileImage
+          img: user.profileImage,
         });
       }
     },
@@ -664,15 +665,15 @@ export default {
         let project = projectSearchList[index];
         this.projectArray.push({
           name: project.projectName,
-          id: project.projectId
+          id: project.projectId,
         });
       }
-    }
+    },
   },
   computed: {
     ...mapState({
-      users: state => state.user.users,
-      allProjects: state => state.project.projects
+      users: (state) => state.user.users,
+      allProjects: (state) => state.project.projects,
     }),
     assigneeArray() {
       let AssigneeSearchList = this.users;
@@ -682,7 +683,7 @@ export default {
         assigneeList.push({
           name: user.firstName + " " + user.lastName,
           id: user.userId,
-          img: user.profileImage
+          img: user.profileImage,
         });
       }
       return assigneeList;
@@ -694,7 +695,7 @@ export default {
         let project = projectSearchList[index];
         projectList.push({
           name: project.projectName,
-          id: project.projectId
+          id: project.projectId,
         });
       }
       return projectList;
@@ -705,7 +706,7 @@ export default {
       },
       set(value) {
         this.filterAssignee = value;
-      }
+      },
     },
     project: {
       get() {
@@ -713,19 +714,19 @@ export default {
       },
       set(value) {
         this.filterProject = value;
-      }
+      },
     },
     taskType: {
       get() {},
       set(value) {
         this.filterType = value;
-      }
+      },
     },
     taskStatus: {
       get() {},
       set(value) {
         this.filterStatus = value;
-      }
+      },
     },
 
     title() {
@@ -759,12 +760,12 @@ export default {
     monthFormatter() {
       return this.$refs.calendar.getFormatter({
         timeZone: "UTC",
-        month: "long"
+        month: "long",
       });
-    }
+    },
   },
   mounted() {
     this.$refs.calendar.checkChange();
-  }
+  },
 };
 </script>
