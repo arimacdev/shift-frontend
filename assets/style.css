@@ -2370,9 +2370,9 @@
   z-index: 1000;
 }
 .allTaskPopupPlacements {
-  position: absolute;
+  position: fixed;
   right: 30px;
-  bottom: 20px;
+  bottom: 10px;
 }
 .filterTaskPopupPlacements {
   position: absolute;
