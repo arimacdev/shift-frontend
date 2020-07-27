@@ -239,47 +239,53 @@
                   >mdi-checkbox-blank</v-icon>
                   <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
                 </v-list-item-action>
-                <div class="tasklistTaskNames restructuredMainTaskName">
+                <v-list-item-content>
+                  <!-- <div class="tasklistTaskNames restructuredMainTaskName"> -->
                   <div>
                     <span class="restructuredMainTaskCode">{{ task.secondaryTaskId }}</span>
                     {{ task.taskName }}
                   </div>
-                </div>
+                  <!-- </div> -->
+                </v-list-item-content>
                 <!-- <div
                   class="restStatusChip"
                   :class="statusCheck(task.issueType)"
                 >{{ taskTypeFormatting(task.issueType) }}</div>-->
-                <v-chip
-                  class="chipsContent"
-                  :class="statusCheck(task.issueType)"
-                  x-small
-                >{{ taskStatusFormatting(task.taskStatus) }}</v-chip>
-                <v-chip
-                  class="chipsContent"
-                  :class="statusCheck(task.issueType)"
-                  x-small
-                >{{ taskTypeFormatting(task.issueType) }}</v-chip>
-                <v-list-item-content class="updatedDate">
+                <v-list-item-action>
+                  <v-chip
+                    class="chipsContent"
+                    :class="statusCheck(task.issueType)"
+                    x-small
+                  >{{ taskStatusFormatting(task.taskStatus) }}</v-chip>
+                </v-list-item-action>
+                <v-list-item-action>
+                  <v-chip
+                    class="chipsContent"
+                    :class="statusCheck(task.issueType)"
+                    x-small
+                  >{{ taskTypeFormatting(task.issueType) }}</v-chip>
+                </v-list-item-action>
+                <v-list-item-action class="updatedDate">
                   <v-list-item-title
                     class="fontRestructure12"
                     :class="dueDateCheck(task)"
                   >{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
-                </v-list-item-content>
-                <div style="margin-right: -25px">
-                  <v-list-item-avatar size="25">
-                    <v-img
-                      v-if="
+                </v-list-item-action>
+                <!-- <div style="margin-right: -25px"> -->
+                <v-list-item-avatar size="25">
+                  <v-img
+                    v-if="
                         task.taskAssigneeProfileImage != null &&
                           task.taskAssigneeProfileImage != ''
                       "
-                      :src="task.taskAssigneeProfileImage"
-                    ></v-img>
-                    <v-img
-                      v-else
-                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                    ></v-img>
-                  </v-list-item-avatar>
-                </div>
+                    :src="task.taskAssigneeProfileImage"
+                  ></v-img>
+                  <v-img
+                    v-else
+                    src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                  ></v-img>
+                </v-list-item-avatar>
+                <!-- </div> -->
                 <!-- <div v-if="task.isParent == true" class="bluePartMyTask"></div> -->
               </v-list-item>
               <div class="boardTabLinkIcon">
@@ -390,7 +396,8 @@
                 >mdi-checkbox-blank</v-icon>
                 <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
               </v-list-item-action>
-              <div class="tasklistFilterTaskNames restructuredMainTaskName">
+              <v-list-item-content>
+                <!-- <div class="tasklistFilterTaskNames restructuredMainTaskName"> -->
                 <div>
                   <span class="restructuredMainTaskCode">
                     {{
@@ -399,7 +406,8 @@
                   </span>
                   {{ task.taskName }}
                 </div>
-              </div>
+                <!-- </div> -->
+              </v-list-item-content>
               <!-- <div
                 class="restStatusChip"
                 :class="statusCheck(task.issueType)"
@@ -408,35 +416,39 @@
                 class="restStatusChip"
                 :class="statusCheck(task.issueType)"
               >{{ taskTypeFormatting(task.issueType) }}</div>-->
-              <v-chip
-                class="chipsContent"
-                :class="statusCheck(task.issueType)"
-                x-small
-              >{{ taskStatusFormatting(task.taskStatus) }}</v-chip>
-              <v-chip
-                class="chipsContent"
-                :class="statusCheck(task.issueType)"
-                x-small
-              >{{ taskTypeFormatting(task.issueType) }}</v-chip>
-              <v-list-item-content class="updatedDate">
+              <v-list-item-action>
+                <v-chip
+                  class="chipsContent"
+                  :class="statusCheck(task.issueType)"
+                  x-small
+                >{{ taskStatusFormatting(task.taskStatus) }}</v-chip>
+              </v-list-item-action>
+              <v-list-item-action>
+                <v-chip
+                  class="chipsContent"
+                  :class="statusCheck(task.issueType)"
+                  x-small
+                >{{ taskTypeFormatting(task.issueType) }}</v-chip>
+              </v-list-item-action>
+              <v-list-item-action class="updatedDate">
                 <v-list-item-title class="fontRestructure12" :class="dueDateCheck(task)">
                   {{
                   getProjectDates(task.taskDueDateAt)
                   }}
                 </v-list-item-title>
-              </v-list-item-content>
-              <div>
-                <v-list-item-avatar size="25">
-                  <v-img
-                    v-if="task.profileImage != null && task.profileImage != ''"
-                    :src="task.profileImage"
-                  ></v-img>
-                  <v-img
-                    v-else
-                    src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                  ></v-img>
-                </v-list-item-avatar>
-              </div>
+              </v-list-item-action>
+              <!-- <div> -->
+              <v-list-item-avatar size="25">
+                <v-img
+                  v-if="task.profileImage != null && task.profileImage != ''"
+                  :src="task.profileImage"
+                ></v-img>
+                <v-img
+                  v-else
+                  src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                ></v-img>
+              </v-list-item-avatar>
+              <!-- </div> -->
               <div v-if="task.isParent == true" class="bluePart"></div>
             </v-list-item>
           </nuxt-link>

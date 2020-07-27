@@ -300,7 +300,8 @@
                       >mdi-checkbox-blank</v-icon>
                       <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
                     </v-list-item-action>
-                    <div class="tasklistTaskNames restructuredMainTaskName">
+                    <v-list-item-content>
+                      <!-- <div class="tasklistTaskNames restructuredMainTaskName"> -->
                       <div>
                         <span class="restructuredMainTaskCode">
                           {{
@@ -309,7 +310,8 @@
                         </span>
                         {{ task.parentTask.taskName }}
                       </div>
-                    </div>
+                      <!-- </div> -->
+                    </v-list-item-content>
                     <!-- <div
                       class="restStatusChip"
                       :class="statusCheck(task.parentTask.issueType)"
@@ -318,18 +320,22 @@
                       class="restStatusChip"
                       :class="statusCheck(task.parentTask.issueType)"
                     >{{ taskTypeFormatting(task.parentTask.issueType) }}</div>-->
-                    <v-chip
-                      class="chipsContent"
-                      :class="statusCheck(task.parentTask.issueType)"
-                      x-small
-                    >{{ taskStatusFormatting(task.parentTask.taskStatus) }}</v-chip>
+                    <v-list-item-action>
+                      <v-chip
+                        class="chipsContent"
+                        :class="statusCheck(task.parentTask.issueType)"
+                        x-small
+                      >{{ taskStatusFormatting(task.parentTask.taskStatus) }}</v-chip>
+                    </v-list-item-action>
+                    <v-list-item-action>
+                      <v-chip
+                        class="chipsContent"
+                        :class="statusCheck(task.parentTask.issueType)"
+                        x-small
+                      >{{ taskTypeFormatting(task.parentTask.issueType) }}</v-chip>
+                    </v-list-item-action>
 
-                    <v-chip
-                      class="chipsContent"
-                      :class="statusCheck(task.parentTask.issueType)"
-                      x-small
-                    >{{ taskTypeFormatting(task.parentTask.issueType) }}</v-chip>
-                    <v-list-item-content class="updatedDate">
+                    <v-list-item-action class="updatedDate">
                       <v-list-item-title
                         class="fontRestructure12"
                         :class="dueDateCheck(task.parentTask)"
@@ -338,22 +344,22 @@
                         getProjectDates(task.parentTask.taskDueDateAt)
                         }}
                       </v-list-item-title>
-                    </v-list-item-content>
-                    <div style="margin-right: -25px">
-                      <v-list-item-avatar size="25">
-                        <v-img
-                          v-if="
+                    </v-list-item-action>
+                    <!-- <div style="margin-right: -25px"> -->
+                    <v-list-item-avatar size="25">
+                      <v-img
+                        v-if="
                             task.parentTask.taskAssigneeProfileImage != null &&
                               task.parentTask.taskAssigneeProfileImage != ''
                           "
-                          :src="task.parentTask.taskAssigneeProfileImage"
-                        ></v-img>
-                        <v-img
-                          v-else
-                          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                        ></v-img>
-                      </v-list-item-avatar>
-                    </div>
+                        :src="task.parentTask.taskAssigneeProfileImage"
+                      ></v-img>
+                      <v-img
+                        v-else
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                      ></v-img>
+                    </v-list-item-avatar>
+                    <!-- </div> -->
                     <!-- <div class="bluePartMyTask"></div> -->
                   </v-list-item>
                   <div class="boardTabLinkIcon">
@@ -422,7 +428,8 @@
                         >mdi-checkbox-blank</v-icon>
                         <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
                       </v-list-item-action>
-                      <div class="restructuredSubTaskName">
+                      <!-- <div class="restructuredSubTaskName"> -->
+                      <v-list-item-content>
                         <div>
                           <span class="restructuredMainTaskCode">
                             {{
@@ -431,7 +438,8 @@
                           </span>
                           {{ childTask.taskName }}
                         </div>
-                      </div>
+                      </v-list-item-content>
+                      <!-- </div> -->
                       <!-- <div
                         class="restStatusChip"
                         :class="statusCheck(childTask.issueType)"
@@ -440,17 +448,21 @@
                         class="restStatusChip"
                         :class="statusCheck(task.parentTask.issueType)"
                       >{{ taskTypeFormatting(task.parentTask.issueType) }}</div>-->
-                      <v-chip
-                        class="chipsContent"
-                        :class="statusCheck(childTask.issueType)"
-                        x-small
-                      >{{taskStatusFormatting(childTask.taskStatus) }}</v-chip>
-                      <v-chip
-                        class="chipsContent"
-                        :class="statusCheck(childTask.issueType)"
-                        x-small
-                      >{{ taskTypeFormatting(childTask.issueType) }}</v-chip>
-                      <v-list-item-content class="updatedDate">
+                      <v-list-item-action>
+                        <v-chip
+                          class="chipsContent"
+                          :class="statusCheck(childTask.issueType)"
+                          x-small
+                        >{{taskStatusFormatting(childTask.taskStatus) }}</v-chip>
+                      </v-list-item-action>
+                      <v-list-item-action>
+                        <v-chip
+                          class="chipsContent"
+                          :class="statusCheck(childTask.issueType)"
+                          x-small
+                        >{{ taskTypeFormatting(childTask.issueType) }}</v-chip>
+                      </v-list-item-action>
+                      <v-list-item-action class="updatedDate">
                         <v-list-item-title
                           class="fontRestructure12"
                           :class="dueDateCheck(childTask)"
@@ -459,22 +471,22 @@
                           getProjectDates(childTask.taskDueDateAt)
                           }}
                         </v-list-item-title>
-                      </v-list-item-content>
-                      <div style="margin-right: -25px">
-                        <v-list-item-avatar size="25">
-                          <v-img
-                            v-if="
+                      </v-list-item-action>
+                      <!-- <div style="margin-right: -25px"> -->
+                      <v-list-item-avatar size="25">
+                        <v-img
+                          v-if="
                               childTask.taskAssigneeProfileImage != null &&
                                 childTask.taskAssigneeProfileImage != ''
                             "
-                            :src="childTask.taskAssigneeProfileImage"
-                          ></v-img>
-                          <v-img
-                            v-else
-                            src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                          ></v-img>
-                        </v-list-item-avatar>
-                      </div>
+                          :src="childTask.taskAssigneeProfileImage"
+                        ></v-img>
+                        <v-img
+                          v-else
+                          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                        ></v-img>
+                      </v-list-item-avatar>
+                      <!-- </div> -->
                     </v-list-item>
                     <div class="boardTabLinkIcon">
                       <nuxt-link
@@ -538,7 +550,8 @@
                 >mdi-checkbox-blank</v-icon>
                 <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
               </v-list-item-action>
-              <div class="tasklistFilterTaskNames restructuredMainTaskName">
+              <!-- <div class="tasklistFilterTaskNames restructuredMainTaskName"> -->
+              <v-list-item-content>
                 <div>
                   <span class="restructuredMainTaskCode">
                     {{
@@ -547,7 +560,8 @@
                   </span>
                   {{ task.taskName }}
                 </div>
-              </div>
+              </v-list-item-content>
+              <!-- </div> -->
               <!-- <div
                 class="restStatusChip"
                 :class="statusCheck(task.issueType)"
@@ -556,35 +570,39 @@
                 class="restStatusChip"
                 :class="statusCheck(task.issueType)"
               >{{ taskTypeFormatting(task.issueType) }}</div>-->
-              <v-chip
-                class="chipsContent"
-                :class="statusCheck(task.issueType)"
-                x-small
-              >{{ taskStatusFormatting(task.taskStatus) }}</v-chip>
-              <v-chip
-                class="chipsContent"
-                :class="statusCheck(task.issueType)"
-                x-small
-              >{{ taskTypeFormatting(task.issueType) }}</v-chip>
-              <v-list-item-content class="updatedDate">
+              <v-list-item-action>
+                <v-chip
+                  class="chipsContent"
+                  :class="statusCheck(task.issueType)"
+                  x-small
+                >{{ taskStatusFormatting(task.taskStatus) }}</v-chip>
+              </v-list-item-action>
+              <v-list-item-action>
+                <v-chip
+                  class="chipsContent"
+                  :class="statusCheck(task.issueType)"
+                  x-small
+                >{{ taskTypeFormatting(task.issueType) }}</v-chip>
+              </v-list-item-action>
+              <v-list-item-action class="updatedDate">
                 <v-list-item-title class="fontRestructure12" :class="dueDateCheck(task)">
                   {{
                   getProjectDates(task.taskDueDateAt)
                   }}
                 </v-list-item-title>
-              </v-list-item-content>
-              <div>
-                <v-list-item-avatar size="25">
-                  <v-img
-                    v-if="task.profileImage != null && task.profileImage != ''"
-                    :src="task.profileImage"
-                  ></v-img>
-                  <v-img
-                    v-else
-                    src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                  ></v-img>
-                </v-list-item-avatar>
-              </div>
+              </v-list-item-action>
+              <!-- <div> -->
+              <v-list-item-avatar size="25">
+                <v-img
+                  v-if="task.profileImage != null && task.profileImage != ''"
+                  :src="task.profileImage"
+                ></v-img>
+                <v-img
+                  v-else
+                  src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                ></v-img>
+              </v-list-item-avatar>
+              <!-- </div> -->
             </v-list-item>
           </nuxt-link>
         </div>

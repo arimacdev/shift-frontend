@@ -18,7 +18,7 @@
 
 @font-face {
   font-family: 'Circular Std';
-  src: url('../static/fonts/CircularStd-Medium.ttf');
+  src: url('../static/fonts/CircularStd-Book.ttf');
 }
 
 * {
@@ -2322,7 +2322,8 @@
   /* bottom: 2px; */
 }
 .updatedDate {
-  margin-right: 10px;
+  /* margin-right: 10px; */
+  width: 80px !important;
 }
 
 /* ------------- task dialog ------------- */
