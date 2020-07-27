@@ -61,7 +61,7 @@
           </template>
         </v-autocomplete>
       </div>
-      <div class="filterTriggersDrop" style="width: 15%; float: left; padding-right: 10px">
+      <div class="filterTriggersDrop" style="width: 15%; float: left; padding-right: 10px; ">
         <v-autocomplete
           v-model="filterStatus"
           return-object
@@ -211,7 +211,7 @@
           flat
           dense
           prepend-inner-icon="mdi-plus"
-          style="border-radius: 0px"
+          style="border-radius: 0px; margin-top: 5px"
           label="Add a main task..."
           class
           @keyup.enter="addTask(null)"
