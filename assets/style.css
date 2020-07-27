@@ -15,6 +15,12 @@
 @import '../node_modules/@syncfusion/ej2-vue-richtexteditor/styles/material.css';
 
 @import './icons.css'; /* -------------- common --------------- */
+
+@font-face {
+  font-family: 'Circular Std';
+  src: url('../static/fonts/CircularStd-Medium.ttf');
+}
+
 * {
   font-family: 'Circular Std', sans-serif;
   font-size: 12px;
@@ -23,7 +29,7 @@
   font-size: 1em; */
 }
 .body-2 {
-  font-family: 'Segoe UI', sans-serif !important;
+  font-family: 'Circular Std', sans-serif !important;
 }
 .projectListView {
   margin-top: 10px;
