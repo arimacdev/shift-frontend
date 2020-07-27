@@ -144,6 +144,11 @@ export default {
   methods: {
     changeTaskOption(option) {
       this.component = option;
+      if(option === 'my-tasks'){
+        this.fetchMyTasks();
+      } else {
+        this.fetchAllTasks();
+      }
     },
     fetchAllTasks() {
       this.$store.dispatch("task/setIndex", {
