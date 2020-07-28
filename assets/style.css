@@ -1986,11 +1986,21 @@
 
   /* padding-top: -10px !important; */
 }
+.restructuredFilterTaskListGroup {
+  border: 1px #cdcfd2 solid;
+  background-color: #fafafa;
+  overflow: hidden;
+  height: 45px;
+  padding-top: 7px;
+  margin-bottom: 5px;
+
+  /* padding-top: -10px !important; */
+}
 .restructuredFilterGroupTaskList {
   border: 1px #cdcfd2 solid;
   background-color: #fafafa;
   overflow: hidden;
-  height: 35px;
+  height: 20px !important;
   padding-top: 2px;
   margin-bottom: 5px;
 

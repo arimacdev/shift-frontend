@@ -187,13 +187,9 @@
             <div class v-if="taskSelect != 'all'">
               <div
                 v-if="task.parentTask.taskStatus == taskSelect"
-                class="restructuredFilterTaskList"
+                class="restructuredFilterTaskListGroup"
               >
-                <v-list-item
-                  @click="
-              selectGroupTask(task.parentTask, task);"
-                  class="upperFilterListItem"
-                >
+                <v-list-item class="upperFilterListItem">
                   <!-- @click.stop="drawer = !drawer" -->
                   <v-list-item-action>
                     <v-icon
@@ -201,10 +197,20 @@
                       size="25"
                       color="#66B25F"
                     >mdi-checkbox-blank</v-icon>
-                    <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
+                    <v-icon
+                      @click="
+                      closeTask(task.parentTask.taskId)"
+                      v-else
+                      size="25"
+                      color="#939393"
+                    >mdi-checkbox-blank-outline</v-icon>
                   </v-list-item-action>
                   <div class="tasklistTaskNames restructuredMainTaskName">
-                    <div>
+                    <div
+                      @click="
+              selectGroupTask(task.parentTask, task);"
+                      style="cursor: pointer"
+                    >
                       <span class="restructuredMainTaskCode">{{task.parentTask.secondaryTaskId}}</span>
                       {{ task.parentTask.taskName }}
                     </div>
@@ -215,7 +221,7 @@
                       class="fontRestructure12"
                     >{{ getTaskDueDate(task.parentTask.taskDueDateAt) }}</v-list-item-title>
                   </v-list-item-content>
-                  <div>
+                  <div style="margin-left: 10px">
                     <v-list-item-avatar size="25">
                       <v-img
                         v-if="task.parentTask.taskAssigneeProfileImage != null && task.parentTask.taskAssigneeProfileImage != ''"
@@ -248,10 +254,6 @@
                   <v-list-item
                     class="restructuredFilterGroupTaskList"
                     v-if="childTask.taskStatus == taskSelect"
-                    @click="
-                selectGroupTask(childTask, task);
-                taskDialog = true; 
-              "
                   >
                     <!-- @click.stop="drawer = !drawer" -->
                     <v-list-item-action>
@@ -260,10 +262,22 @@
                         size="25"
                         color="#66B25F"
                       >mdi-checkbox-blank</v-icon>
-                      <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
+                      <v-icon
+                        @click="
+                      closeTask(childTask.taskId)"
+                        v-else
+                        size="25"
+                        color="#939393"
+                      >mdi-checkbox-blank-outline</v-icon>
                     </v-list-item-action>
                     <div class="tasklistTaskNames restructuredSubTaskName">
-                      <div>
+                      <div
+                        @click="
+                selectGroupTask(childTask, task);
+                taskDialog = true; 
+              "
+                        style="cursor: pointer"
+                      >
                         <span class="restructuredMainTaskCode">{{childTask.secondaryTaskId}}</span>
                         {{ childTask.taskName }}
                       </div>
@@ -275,7 +289,7 @@
                         class="fontRestructure12"
                       >{{ getTaskDueDate(childTask.taskDueDateAt) }}</v-list-item-title>
                     </v-list-item-content>
-                    <div>
+                    <div style="margin-left: 10px">
                       <v-list-item-avatar size="25">
                         <v-img
                           v-if="childTask.taskAssigneeProfileImage != null && childTask.taskAssigneeProfileImage != ''"
