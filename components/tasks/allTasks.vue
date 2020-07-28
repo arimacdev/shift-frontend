@@ -294,7 +294,7 @@
                       >mdi-checkbox-blank</v-icon>
                       <v-icon
                         @click="
-                      closeTask(task.parentTask.taskId)"
+                      closeTask(task.parentTask.taskId, false)"
                         style="cursor: pointer"
                         v-else
                         size="25"
@@ -428,7 +428,7 @@
                         >mdi-checkbox-blank</v-icon>
                         <v-icon
                           @click="
-                      closeTask(childTask.taskId)"
+                      closeTask(childTask.taskId, false)"
                           v-else
                           size="25"
                           color="#939393"
@@ -555,7 +555,13 @@
                 size="25"
                 color="#66B25F"
               >mdi-checkbox-blank</v-icon>
-              <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
+              <v-icon
+                @click="
+                      closeTask(task.taskId, true)"
+                v-else
+                size="25"
+                color="#939393"
+              >mdi-checkbox-blank-outline</v-icon>
             </v-list-item-action>
             <!-- <div class="tasklistFilterTaskNames restructuredMainTaskName"> -->
 
@@ -847,7 +853,7 @@ export default {
     },
   },
   methods: {
-    async closeTask(taskId) {
+    async closeTask(taskId, filter) {
       this.waiting = true;
       // console.log("onchange updated status ->");
       let response;
@@ -869,12 +875,17 @@ export default {
           startIndex: 0,
           endIndex: 10,
         });
+        if (filter) {
+          this.jqlSearch();
+        }
+
         this.component = "success-popup";
         this.successMessage = "Status successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
         this.waiting = false;
+
         // console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
