@@ -259,18 +259,14 @@
                   :class="statusCheck(task.issueType)"
                 >{{ taskTypeFormatting(task.issueType) }}</div>-->
                 <v-list-item-action>
-                  <v-chip
-                    class="chipsContent"
-                    :class="statusCheck(task.issueType)"
-                    x-small
-                  >{{ taskStatusFormatting(task.taskStatus) }}</v-chip>
+                  <v-chip class="chipsContent" :class="statusCheck(task.issueType)" x-small>
+                    <span class="fontRestructure12">{{ taskStatusFormatting(task.taskStatus) }}</span>
+                  </v-chip>
                 </v-list-item-action>
                 <v-list-item-action>
-                  <v-chip
-                    class="chipsContent"
-                    :class="statusCheck(task.issueType)"
-                    x-small
-                  >{{ taskTypeFormatting(task.issueType) }}</v-chip>
+                  <v-chip class="chipsContent" :class="statusCheck(task.issueType)" x-small>
+                    <span class="fontRestructure12">{{ taskTypeFormatting(task.issueType) }}</span>
+                  </v-chip>
                 </v-list-item-action>
                 <v-list-item-action class="updatedDate">
                   <v-list-item-title
@@ -431,18 +427,14 @@
                 :class="statusCheck(task.issueType)"
             >{{ taskTypeFormatting(task.issueType) }}</div>-->
             <v-list-item-action>
-              <v-chip
-                class="chipsContent"
-                :class="statusCheck(task.issueType)"
-                x-small
-              >{{ taskStatusFormatting(task.taskStatus) }}</v-chip>
+              <v-chip class="chipsContent" :class="statusCheck(task.issueType)" x-small>
+                <span class="fontRestructure12">{{ taskStatusFormatting(task.taskStatus) }}</span>
+              </v-chip>
             </v-list-item-action>
             <v-list-item-action>
-              <v-chip
-                class="chipsContent"
-                :class="statusCheck(task.issueType)"
-                x-small
-              >{{ taskTypeFormatting(task.issueType) }}</v-chip>
+              <v-chip class="chipsContent" :class="statusCheck(task.issueType)" x-small>
+                <span class="fontRestructure12">{{ taskTypeFormatting(task.issueType) }}</span>
+              </v-chip>
             </v-list-item-action>
             <v-list-item-action class="updatedDate">
               <v-list-item-title class="fontRestructure12" :class="dueDateCheck(task)">

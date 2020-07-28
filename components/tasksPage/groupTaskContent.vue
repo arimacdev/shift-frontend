@@ -99,7 +99,7 @@
                       background-color="#FFFFFF"
                       outlined
                       solo
-                      style="margin-bottom: -25px; margin-top: 5px; border-radius: 0px"
+                      style="margin-top: 5px; border-radius: 0px"
                       dense
                       flat
                       prepend-inner-icon="mdi-plus-circle"
