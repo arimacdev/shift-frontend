@@ -64,7 +64,7 @@
                     <div
                       class="tasklistTaskNames"
                       @click="selectPersonalTask(personalTask);  taskDialog = true;"
-                      style="cursor: pointer"
+                      style="cursor: pointer; color: #576377"
                     >
                       <div>{{ personalTask.taskName }}</div>
                     </div>
@@ -98,7 +98,7 @@
                     <div
                       class="tasklistTaskNames"
                       @click="selectPersonalTask(personalTask); taskDialog = true;"
-                      style="cursor: pointer"
+                      style="cursor: pointer;  color: #576377"
                     >
                       <div>{{ personalTask.taskName }}</div>
                     </div>

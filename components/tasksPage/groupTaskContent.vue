@@ -71,7 +71,7 @@
                           :class="dueDateCheck(task.parentTask)"
                         >{{ getTaskDueDate(task.parentTask.taskDueDateAt) }}</v-list-item-title>
                       </v-list-item-content>
-                      <div style="margin-right: -25px">
+                      <div style="margin-right: -25px; margin-left: 10px">
                         <v-list-item-avatar size="25">
                           <v-img
                             v-if="task.parentTask.taskAssigneeProfileImage != null && task.parentTask.taskAssigneeProfileImage != ''"
@@ -152,7 +152,7 @@
                             :class="dueDateCheck(childTask)"
                           >{{ getTaskDueDate(childTask.taskDueDateAt) }}</v-list-item-title>
                         </v-list-item-content>
-                        <div style="margin-right: -25px">
+                        <div style="margin-right: -25px; margin-left: 10px">
                           <v-list-item-avatar size="25">
                             <v-img
                               v-if="childTask.taskAssigneeProfileImage != null && childTask.taskAssigneeProfileImage != ''"
@@ -243,7 +243,7 @@
                       <v-icon color="blue">mdi-link-variant</v-icon>
                     </nuxt-link>
                   </div>-->
-                  <div class="bluePart"></div>
+                  <!-- <div class="bluePart"></div> -->
                 </v-list-item>
               </div>
 
