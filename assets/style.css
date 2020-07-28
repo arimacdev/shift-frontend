@@ -3245,9 +3245,12 @@
 .projectPanelContent {
 }
 .selectedProjectPanel {
+  /* padding-top: 10px !important;
+  padding-bottom: -20px !important; */
   margin-left: -25px;
   margin-right: -25px;
-  border-radius: 5px;
+  /* border-radius: 5px; */
+  max-height: 35px !important;
 }
 .taskActionContents {
   /* margin-top: -70px; */
