@@ -248,7 +248,7 @@
                   style="cursor: pointer"
                 >
                   <!-- <div class="tasklistTaskNames restructuredMainTaskName"> -->
-                  <div>
+                  <div style="color: #576377">
                     <span class="restructuredMainTaskCode">{{ task.secondaryTaskId }}</span>
                     {{ task.taskName }}
                   </div>
