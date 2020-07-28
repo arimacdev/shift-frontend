@@ -221,8 +221,9 @@
               <div v-for="(task, index) in entityTasks" :key="index">
                 <v-tooltip top color="blue">
                   <template v-slot:activator="{ on }">
-                    <div v-on="on" class="taskList restructuredWorkloadTaskFilterList">
+                    <div v-on="on">
                       <v-list-item
+                        class="workloadTaskItems"
                         @click="
                           selectTask(task);
                           taskDialog = true;
@@ -232,10 +233,10 @@
                         <v-list-item-action>
                           <v-icon
                             v-if="task.taskStatus == 'closed'"
-                            size="30"
-                            color="#2EC973"
-                          >mdi-checkbox-marked-circle</v-icon>
-                          <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                            size="25"
+                            color="#66B25F"
+                          >mdi-checkbox-blank</v-icon>
+                          <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
                         </v-list-item-action>
                         <div class="tasklistTaskNames restructuredMainTaskName">
                           <div>
@@ -251,15 +252,15 @@
                         class="restStatusChip"
                         :class="statusCheck(task.issueType)"
                         >{{ task.issueType }}</div>-->
-                        <v-list-item-content class="updatedDate">
-                          <v-list-item-title :class="dueDateCheck(task)">
+                        <v-list-item-content class="updatedDate" style="margin-right: 10px">
+                          <v-list-item-title class="fontRestructure12" :class="dueDateCheck(task)">
                             {{
                             getProjectDates(task.taskDueDateAt)
                             }}
                           </v-list-item-title>
                         </v-list-item-content>
                         <div>
-                          <v-list-item-avatar>
+                          <v-list-item-avatar size="25">
                             <v-img
                               v-if="
                                 task.profileImage != null &&
@@ -323,7 +324,7 @@ export default {
     "task-dialog": TaskDialog,
     "progress-loading": Progress,
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
   },
   created() {
     this.$store.dispatch("workload/fetchTemplates");
@@ -374,14 +375,14 @@ export default {
       { name: "Bug", id: "bug" },
       { name: "Operational", id: "operational" },
       { name: "Pre-sales", id: "preSales" },
-      { name: "General", id: "general" }
+      { name: "General", id: "general" },
     ],
     orderByArray: [
       { name: "Assignee", id: "taskAssignee" },
       { name: "Projects", id: "projectName" },
       { name: "Type", id: "issueType" },
       { name: "Status", id: "taskStatus" },
-      { name: "Date", id: "taskDueDateAt" }
+      { name: "Date", id: "taskDueDateAt" },
     ],
     taskStatusArray: [
       { name: "Pending", id: "pending" },
@@ -404,8 +405,8 @@ export default {
       { name: "Deployed", id: "deployed" },
       { name: "Fixed", id: "fixed" },
       { name: "Rejected", id: "rejected" },
-      { name: "Closed", id: "closed" }
-    ]
+      { name: "Closed", id: "closed" },
+    ],
   }),
   watch: {
     searchAssignee(val) {
@@ -416,7 +417,7 @@ export default {
     },
     searchTemplate(val) {
       val && val !== this.selectTemplate && this.loadTempalte(val);
-    }
+    },
   },
 
   methods: {
@@ -444,8 +445,8 @@ export default {
           {
             headers: {
               user: task.taskAssignee,
-              type: "project"
-            }
+              type: "project",
+            },
           }
         );
         // console.log("files--->", taskFilesResponse.data);
@@ -463,8 +464,8 @@ export default {
             `/sprints/${this.projectId}/${task.sprintId}`,
             {
               headers: {
-                userId: task.taskAssignee
-              }
+                userId: task.taskAssignee,
+              },
             }
           );
           // console.log("sprint--->", sprintResponse.data.sprintName);
@@ -546,8 +547,8 @@ export default {
           `/projects/workload/filter?query=${this.filterTemplate.query}`,
           {
             headers: {
-              user: this.$store.state.user.userId
-            }
+              user: this.$store.state.user.userId,
+            },
           }
         );
         this.filterResult = taskFilterResponse.data;
@@ -606,7 +607,7 @@ export default {
             const orderBySequence = orderBySplit[1];
             // console.log("criteria", orderBySequence);
             let filterOrderByType = this.orderByArray.find(
-              type => type.id === orderByType
+              (type) => type.id === orderByType
             );
             // console.log(
             //   "criteria",
@@ -669,7 +670,7 @@ export default {
             let entities = [];
             // console.log("dec", paranthesesMatch[1]);
             if (entityString.includes(",")) {
-              entityString.split(/\s*,\s*/).forEach(assignee => {
+              entityString.split(/\s*,\s*/).forEach((assignee) => {
                 //Remove Quotation Marks
                 assignee = assignee.replace(/^"(.*)"$/, "$1");
                 entities.push(assignee);
@@ -684,38 +685,38 @@ export default {
               switch (criteria) {
                 case "taskAssignee":
                   let filterUser = this.users.find(
-                    user => user.userId === entities[i]
+                    (user) => user.userId === entities[i]
                   );
                   // console.log("filterUser", filterUser);
                   if (filterUser) {
                     this.filterAssignee.push({
                       name: filterUser.firstName,
                       id: filterUser.userId,
-                      img: filterUser.profileImage
+                      img: filterUser.profileImage,
                     });
                   }
                   break;
                 case "projectId":
                   let filterProject = this.allProjects.find(
-                    project => project.projectId === entities[i]
+                    (project) => project.projectId === entities[i]
                   );
                   // console.log("filterProject", filterProject);
                   if (filterProject) {
                     this.filterProject.push({
                       name: filterProject.projectName,
-                      id: filterProject.projectId
+                      id: filterProject.projectId,
                     });
                   }
                   break;
                 case "issueType":
                   let filterIssueType = this.taskTypeArray.find(
-                    issueType => issueType.id === entities[i]
+                    (issueType) => issueType.id === entities[i]
                   );
                   if (filterIssueType) this.filterType.push(filterIssueType);
                   break;
                 case "taskStatus":
                   let filterTaskStatus = this.taskStatusArray.find(
-                    taskStatus => taskStatus.id === entities[i]
+                    (taskStatus) => taskStatus.id === entities[i]
                   );
                   if (filterTaskStatus)
                     this.filterStatus.push(filterTaskStatus);
@@ -830,8 +831,8 @@ export default {
           `/projects/workload/filter?query=${this.jqlQuery}`,
           {
             headers: {
-              user: this.$store.state.user.userId
-            }
+              user: this.$store.state.user.userId,
+            },
           }
         );
         // this.component = "success-popup";
@@ -889,7 +890,7 @@ export default {
         this.assigneeArray.push({
           name: user.firstName + " " + user.lastName,
           id: user.userId,
-          img: user.profileImage
+          img: user.profileImage,
         });
       }
     },
@@ -899,7 +900,7 @@ export default {
         let project = projectSearchList[index];
         this.projectArray.push({
           name: project.projectName,
-          id: project.projectId
+          id: project.projectId,
         });
       }
     },
@@ -917,7 +918,7 @@ export default {
         this.templateArray.push({
           name: template.templateName,
           id: template.templateId,
-          query: template.templateQuery
+          query: template.templateQuery,
         });
       }
     },
@@ -1004,13 +1005,13 @@ export default {
         stringDate = stringDate.slice(0, 10);
         return stringDate;
       }
-    }
+    },
   },
   computed: {
     ...mapState({
-      users: state => state.user.users,
-      allProjects: state => state.project.projects,
-      templates: state => state.workload.templates
+      users: (state) => state.user.users,
+      allProjects: (state) => state.project.projects,
+      templates: (state) => state.workload.templates,
     }),
     assigneeArray() {
       let AssigneeSearchList = this.users;
@@ -1020,7 +1021,7 @@ export default {
         assigneeList.push({
           name: user.firstName + " " + user.lastName,
           id: user.userId,
-          img: user.profileImage
+          img: user.profileImage,
         });
       }
       return assigneeList;
@@ -1032,7 +1033,7 @@ export default {
         let project = projectSearchList[index];
         projectList.push({
           name: project.projectName,
-          id: project.projectId
+          id: project.projectId,
         });
       }
       return projectList;
@@ -1043,7 +1044,7 @@ export default {
       },
       set(value) {
         this.filterAssignee = value;
-      }
+      },
     },
     project: {
       get() {
@@ -1052,7 +1053,7 @@ export default {
       set(value) {
         // console.log("project", value);
         this.filterProject = value;
-      }
+      },
     },
     template: {
       get() {
@@ -1060,27 +1061,27 @@ export default {
       },
       set(value) {
         this.filterTemplate = value;
-      }
+      },
     },
     taskType: {
       get() {},
       set(value) {
         this.filterType = value;
-      }
+      },
     },
     taskStatus: {
       get() {},
       set(value) {
         this.filterStatus = value;
-      }
+      },
     },
     orderBy: {
       get() {},
       set(value) {
         this.filterOrderBy = value;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 

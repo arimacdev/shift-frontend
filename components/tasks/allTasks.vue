@@ -309,7 +309,7 @@
                     >
                       <!-- <div class="tasklistTaskNames restructuredMainTaskName"> -->
                       <div style="color: #576377">
-                        <span class="restructuredMainTaskCode">
+                        <span class="restructuredMainTaskCode fontRestructure12">
                           {{
                           task.parentTask.secondaryTaskId
                           }}
@@ -331,14 +331,22 @@
                         class="chipsContent"
                         :class="statusCheck(task.parentTask.issueType)"
                         x-small
-                      >{{ taskStatusFormatting(task.parentTask.taskStatus) }}</v-chip>
+                      >
+                        <span
+                          class="fontRestructure12"
+                        >{{ taskStatusFormatting(task.parentTask.taskStatus) }}</span>
+                      </v-chip>
                     </v-list-item-action>
                     <v-list-item-action>
                       <v-chip
                         class="chipsContent"
                         :class="statusCheck(task.parentTask.issueType)"
                         x-small
-                      >{{ taskTypeFormatting(task.parentTask.issueType) }}</v-chip>
+                      >
+                        <span
+                          class="fontRestructure12"
+                        >{{ taskTypeFormatting(task.parentTask.issueType) }}</span>
+                      </v-chip>
                     </v-list-item-action>
 
                     <v-list-item-action class="updatedDate">
@@ -398,7 +406,7 @@
                     dense
                     prepend-inner-icon="mdi-plus"
                     label="Add a sub task..."
-                    style="margin-bottom: -25px; margin-top: 5px; border-radius: 0px"
+                    style="margin-top: 5px; border-radius: 0px"
                     @keyup.enter="
                       addSubTask(
                         index,
@@ -443,7 +451,7 @@
                         style="cursor: pointer"
                       >
                         <div style="color: #576377">
-                          <span class="restructuredMainTaskCode">
+                          <span class="restructuredMainTaskCode fontRestructure12">
                             {{
                             childTask.secondaryTaskId
                             }}
@@ -465,14 +473,22 @@
                           class="chipsContent"
                           :class="statusCheck(childTask.issueType)"
                           x-small
-                        >{{taskStatusFormatting(childTask.taskStatus) }}</v-chip>
+                        >
+                          <span
+                            class="fontRestructure12"
+                          >{{taskStatusFormatting(childTask.taskStatus) }}</span>
+                        </v-chip>
                       </v-list-item-action>
                       <v-list-item-action>
                         <v-chip
                           class="chipsContent"
                           :class="statusCheck(childTask.issueType)"
                           x-small
-                        >{{ taskTypeFormatting(childTask.issueType) }}</v-chip>
+                        >
+                          <span
+                            class="fontRestructure12"
+                          >{{ taskTypeFormatting(childTask.issueType) }}</span>
+                        </v-chip>
                       </v-list-item-action>
                       <v-list-item-action class="updatedDate">
                         <v-list-item-title
@@ -572,7 +588,7 @@
                 target="_blank"
               >
                 <div style="color: #576377">
-                  <span class="restructuredMainTaskCode">
+                  <span class="restructuredMainTaskCode fontRestructure12">
                     {{
                     task.secondaryTaskId
                     }}
@@ -591,18 +607,14 @@
                 :class="statusCheck(task.issueType)"
             >{{ taskTypeFormatting(task.issueType) }}</div>-->
             <v-list-item-action>
-              <v-chip
-                class="chipsContent"
-                :class="statusCheck(task.issueType)"
-                x-small
-              >{{ taskStatusFormatting(task.taskStatus) }}</v-chip>
+              <v-chip class="chipsContent" :class="statusCheck(task.issueType)" x-small>
+                <span class="fontRestructure12">{{ taskStatusFormatting(task.taskStatus) }}</span>
+              </v-chip>
             </v-list-item-action>
             <v-list-item-action>
-              <v-chip
-                class="chipsContent"
-                :class="statusCheck(task.issueType)"
-                x-small
-              >{{ taskTypeFormatting(task.issueType) }}</v-chip>
+              <v-chip class="chipsContent" :class="statusCheck(task.issueType)" x-small>
+                <span class="fontRestructure12">{{ taskTypeFormatting(task.issueType) }}</span>
+              </v-chip>
             </v-list-item-action>
             <v-list-item-action class="updatedDate">
               <v-list-item-title class="fontRestructure12" :class="dueDateCheck(task)">

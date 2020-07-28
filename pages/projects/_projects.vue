@@ -62,6 +62,7 @@
                 </v-expansion-panel-header>
                 <v-expansion-panel-content class="projectPanelContent" color="#EDF0F5">
                   <div
+                    style="height: 45px !important"
                     v-for="(project, index) in getProjects('presales')"
                     :key="'preSales' + index"
                   >
@@ -121,6 +122,7 @@
                 </v-expansion-panel-header>
                 <v-expansion-panel-content class="projectPanelContent" color="#EDF0F5">
                   <div
+                    style="height: 45px !important"
                     v-for="(project, index) in getProjects('ongoing')"
                     :key="'ongoing' + index"
                     v-on:click="component = 'tab-views'"
@@ -149,6 +151,7 @@
                 </v-expansion-panel-header>
                 <v-expansion-panel-content class="projectPanelContent" color="#EDF0F5">
                   <div
+                    style="height: 45px !important"
                     v-for="(project, index) in getProjects('support')"
                     :key="'support' + index"
                     v-on:click="component = 'tab-views'"
@@ -177,6 +180,7 @@
                 </v-expansion-panel-header>
                 <v-expansion-panel-content class="projectPanelContent" color="#EDF0F5">
                   <div
+                    style="height: 45px !important"
                     v-for="(project, index) in getProjects('finished')"
                     :key="'finished'+index"
                     v-on:click="component = 'tab-views'"
@@ -348,7 +352,7 @@ export default {
     "tab-views": TabViews,
     "search-bar": SearchBar,
     "add-project": AddProject,
-    "progress-loading": Progress
+    "progress-loading": Progress,
   },
   data() {
     return {
@@ -371,7 +375,7 @@ export default {
       looped: false,
       projectSprint: {},
       newProject: false,
-      projectDisplayName: ""
+      projectDisplayName: "",
     };
   },
 
@@ -380,7 +384,7 @@ export default {
     Promise.all([
       this.$store.dispatch("project/fetchAllProjects"),
       this.$store.dispatch("user/setAllUsers"),
-      this.$store.dispatch("project/clearProject")
+      this.$store.dispatch("project/clearProject"),
     ]).finally(() => {
       this.overlay = false;
     });
@@ -394,7 +398,7 @@ export default {
           Promise.all([
             this.$store.dispatch("task/setIndex", {
               startIndex: 0,
-              endIndex: 10
+              endIndex: 10,
             }),
             this.$store.dispatch(
               "task/fetchTasksAllTasks",
@@ -415,7 +419,7 @@ export default {
             this.$store.dispatch(
               "sprints/sprint/fetchAllProjectSprints",
               this.$route.params.projects
-            )
+            ),
           ]).finally(() => {
             this.overlay = false;
           });
@@ -427,7 +431,7 @@ export default {
           this.$store.dispatch(
             "task/fetchProjectUserCompletionTasks",
             this.$route.params.projects
-          )
+          ),
         ]).finally(() => {
           this.overlay = false;
         });
@@ -448,7 +452,7 @@ export default {
           ),
           this.$store.dispatch("task/setIndex", {
             startIndex: 0,
-            endIndex: 10
+            endIndex: 10,
           }),
           this.$store.dispatch(
             "task/fetchTasksAllTasks",
@@ -457,7 +461,7 @@ export default {
           this.$store.dispatch(
             "task/fetchTotalTaskCount",
             this.$route.params.projects
-          )
+          ),
         ]).finally(() => {
           this.overlay = false;
         });
@@ -526,7 +530,7 @@ export default {
             this.$store.dispatch(
               "task/fetchProjectUserCompletionTasks",
               this.$route.params.projects
-            )
+            ),
           ]).finally(() => {
             // setTimeout(() => {
             this.overlay = false;
@@ -538,7 +542,7 @@ export default {
           Promise.all([
             this.$store.dispatch("task/setIndex", {
               startIndex: 0,
-              endIndex: 10
+              endIndex: 10,
             }),
             this.$store.dispatch(
               "task/fetchTasksAllTasks",
@@ -559,7 +563,7 @@ export default {
             this.$store.dispatch(
               "sprints/sprint/fetchAllProjectSprints",
               this.$route.params.projects
-            )
+            ),
           ]).finally(() => {
             this.overlay = false;
           });
@@ -570,7 +574,7 @@ export default {
             this.$store.dispatch(
               "task/fetchProjectTaskCompletion",
               this.$route.params.projects
-            )
+            ),
           ]).finally(() => {
             setTimeout(() => {
               this.overlay = false;
@@ -586,7 +590,7 @@ export default {
             ),
             this.$store.dispatch("task/setIndex", {
               startIndex: 0,
-              endIndex: 10
+              endIndex: 10,
             }),
             this.$store.dispatch(
               "task/fetchTasksAllTasks",
@@ -595,7 +599,7 @@ export default {
             this.$store.dispatch(
               "task/fetchTotalTaskCount",
               this.$route.params.projects
-            )
+            ),
           ]).finally(() => {
             this.overlay = false;
           });
@@ -606,7 +610,7 @@ export default {
             this.$store.dispatch(
               "project/fetchAllProjectFiles",
               this.$route.params.projects
-            )
+            ),
           ]).finally(() => {
             this.overlay = false;
           });
@@ -623,7 +627,7 @@ export default {
         case "task":
           this.$store.dispatch("task/setIndex", {
             startIndex: 0,
-            endIndex: 10
+            endIndex: 10,
           });
           this.$store.dispatch(
             "task/fetchTasksAllTasks",
@@ -665,7 +669,7 @@ export default {
           );
           this.$store.dispatch("task/setIndex", {
             startIndex: 0,
-            endIndex: 10
+            endIndex: 10,
           });
           this.$store.dispatch(
             "task/fetchTasksAllTasks",
@@ -683,15 +687,15 @@ export default {
           );
           break;
       }
-    }
+    },
   },
   computed: {
     ...mapState({
-      allProjects: state => state.project.projects,
-      organizationalRoles: state => state.user.organizationalRoles,
-      selectedTab: state => state.tab.selectedTab,
-      fetchProject: state => state.project.project
-    })
-  }
+      allProjects: (state) => state.project.projects,
+      organizationalRoles: (state) => state.user.organizationalRoles,
+      selectedTab: (state) => state.tab.selectedTab,
+      fetchProject: (state) => state.project.project,
+    }),
+  },
 };
 </script>

@@ -1395,10 +1395,19 @@
   margin-bottom: 15px;
 }
 .workloadTaskItems {
-  border-radius: 5px;
-  margin-bottom: 15px;
-  background-color: #ffffff;
+  border: 1px #cdcfd2 solid;
+  margin-bottom: 5px;
+  background-color: #fafafa;
+  height: 35px !important;
 }
+/* .restructuredFilterTaskList {
+  border: 1px #cdcfd2 solid;
+  background-color: #fafafa;
+  overflow: hidden;
+  height: 35px;
+  padding-top: 2px;
+  margin-bottom: 5px;
+} */
 .workloadTaskName {
   color: #576377;
 }
@@ -2094,6 +2103,8 @@
   /* padding-right: 2px; */
   margin-top: -5px;
   margin-bottom: -5px;
+  /* padding-bottom: -20px !important; */
+  max-height: 45px !important;
 }
 .restructuredSubTaskCreateGroup {
   padding-left: 30px;
@@ -3245,9 +3256,12 @@
 .projectPanelContent {
 }
 .selectedProjectPanel {
+  /* padding-top: 10px !important;
+  padding-bottom: -20px !important; */
   margin-left: -25px;
   margin-right: -25px;
-  border-radius: 5px;
+  /* border-radius: 5px; */
+  max-height: 35px !important;
 }
 .taskActionContents {
   /* margin-top: -70px; */
