@@ -2,11 +2,11 @@
   <div>
     <div style="position: fixed; top: 40px; z-index: 1000 ">
       <v-menu bottom left>
-        <template v-slot:activator="{ on, attrs }">
+        <!-- <template v-slot:activator="{ on, attrs }">
           <v-btn icon v-bind="attrs" v-on="on">
-            <!-- <v-icon>mdi-dots-vertical</v-icon> -->
+            <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
-        </template>
+        </template>-->
 
         <v-list>
           <v-list-item
@@ -126,29 +126,34 @@ export default {
   props: ["name", "projectId", "Alltasks", "MyTasks", "people", "pagination"],
   data() {
     return {
-      key: value
+      key: value,
     };
   },
   name: "tasks",
   components: {
     "all-tasks": AllTasks,
     "my-tasks": MyTasks,
-    "add-task": AddTask
+    "add-task": AddTask,
   },
   data() {
     return {
       myTaskPagination: 1,
-      component: "all-tasks"
+      component: "all-tasks",
     };
   },
   methods: {
-    changeTaskOption(option){
-      this.component = option
+    changeTaskOption(option) {
+      this.component = option;
+      if(option === 'my-tasks'){
+        this.fetchMyTasks();
+      } else {
+        this.fetchAllTasks();
+      }
     },
     fetchAllTasks() {
       this.$store.dispatch("task/setIndex", {
         startIndex: 0,
-        endIndex: 10
+        endIndex: 10,
       });
       this.$store.dispatch(
         "task/fetchTasksAllTasks",
@@ -162,7 +167,7 @@ export default {
     fetchMyTasks() {
       this.$store.dispatch("task/setIndex", {
         startIndex: 0,
-        endIndex: 10
+        endIndex: 10,
       });
       this.$store.dispatch(
         "task/fetchTasksMyTasks",
@@ -175,8 +180,8 @@ export default {
     },
     setTaskTab(tabType) {
       this.component = tabType;
-    }
-  }
+    },
+  },
 };
 </script>
 

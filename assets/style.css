@@ -15,15 +15,21 @@
 @import '../node_modules/@syncfusion/ej2-vue-richtexteditor/styles/material.css';
 
 @import './icons.css'; /* -------------- common --------------- */
+
+@font-face {
+  font-family: 'Circular Std';
+  src: url('../static/fonts/CircularStd-Book.ttf');
+}
+
 * {
   font-family: 'Circular Std', sans-serif;
-  font-size: 12px;
+  font-size: 14px;
 
   /* font-family: 'Segoe UI', sans-serif;
   font-size: 1em; */
 }
 .body-2 {
-  font-family: 'Segoe UI', sans-serif !important;
+  font-family: 'Circular Std', sans-serif !important;
 }
 .projectListView {
   margin-top: 10px;
@@ -34,11 +40,18 @@
   border-right: 1px #e5e5e5 solid;
   padding-top: 10px;
 }
+.projectListView::-webkit-scrollbar {
+  display: none;
+}
+
 .listView {
   margin-top: 10px;
   height: 100vh;
   background-color: #edf0f5;
   padding-bottom: 100px !important;
+}
+.listView::-webkit-scrollbar {
+  display: none;
 }
 .singleUserList {
   height: 80px;
@@ -1020,6 +1033,9 @@
   /* margin-top: 10px; */
   padding-bottom: 400px;
 }
+.taskListViewContent::-webkit-scrollbar {
+  display: none;
+}
 .allTaskCreateTab {
   margin-top: 5px;
   margin-bottom: -30px !important;
@@ -1120,6 +1136,9 @@
   margin-left: -10px;
   padding: 20px;
   padding-bottom: 100px;
+}
+.projectTabContent::-webkit-scrollbar {
+  display: none;
 }
 
 .logsContainer {
@@ -1609,6 +1628,9 @@
   float: left;
   padding-bottom: 200px;
 }
+.group-task-tab::-webkit-scrollbar {
+  display: none;
+}
 
 .popupFormGroupElement {
   margin-bottom: 10px !important;
@@ -1637,7 +1659,9 @@
   margin-top: 10px;
   margin-right: 10px;
 }
-
+.fileTabContent::-webkit-scrollbar {
+  display: none;
+}
 .filesList {
   width: 100%;
   height: 58vh;
@@ -1647,6 +1671,10 @@
 .fileScroll {
   height: 58vh;
 }
+.fileScroll::-webkit-scrollbar {
+  display: none;
+}
+
 .filesUploader {
   width: 99%;
   height: 30vh;
@@ -1732,6 +1760,9 @@
   height: 85%;
   padding-bottom: 100px;
   width: 100%;
+}
+.boardTaskList::-webkit-scrollbar {
+  display: none;
 }
 .boardProfPic {
   width: 10px !important;
@@ -1955,11 +1986,21 @@
 
   /* padding-top: -10px !important; */
 }
+.restructuredFilterTaskListGroup {
+  border: 1px #cdcfd2 solid;
+  background-color: #fafafa;
+  overflow: hidden;
+  height: 45px;
+  padding-top: 7px;
+  margin-bottom: 5px;
+
+  /* padding-top: -10px !important; */
+}
 .restructuredFilterGroupTaskList {
   border: 1px #cdcfd2 solid;
   background-color: #fafafa;
   overflow: hidden;
-  height: 35px;
+  height: 20px !important;
   padding-top: 2px;
   margin-bottom: 5px;
 
@@ -2316,7 +2357,8 @@
   /* bottom: 2px; */
 }
 .updatedDate {
-  margin-right: 10px;
+  /* margin-right: 10px; */
+  width: 80px !important;
 }
 
 /* ------------- task dialog ------------- */
@@ -2338,9 +2380,9 @@
   z-index: 1000;
 }
 .allTaskPopupPlacements {
-  position: absolute;
+  position: fixed;
   right: 30px;
-  bottom: 20px;
+  bottom: 10px;
 }
 .filterTaskPopupPlacements {
   position: absolute;
@@ -2525,9 +2567,13 @@
   /* margin-top: -13px; */
   padding: 20px;
   padding-left: 25px;
-  height: 100vh;
-  padding-bottom: 100px;
+  height: 100vh !important;
+  padding-bottom: 200px;
 }
+.searchTabLeftBar::-webkit-scrollbar {
+  display: none;
+}
+
 .searchTabRightBar {
   /* margin-left: -20px; */
   /* margin-top: -13px; */
@@ -2797,6 +2843,10 @@
   height: 90vh;
   padding-bottom: 100px;
 }
+.projectLogsSection::-webkit-scrollbar {
+  display: none;
+}
+
 .skillsSection {
   padding-bottom: 100px;
 }
@@ -2807,6 +2857,9 @@
   /* width: 100%; */
   padding-right: 3vw;
   padding-bottom: 100px;
+}
+.userUpdateSection::-webkit-scrollbar {
+  display: none;
 }
 
 .skillHeader {
@@ -2833,6 +2886,10 @@
   padding: 20px;
   color: #576377;
 }
+.skillsContentWrapper::-webkit-scrollbar {
+  display: none;
+}
+
 .skillsDiv {
   width: 100%;
   background-color: #edf0f5;
@@ -2969,6 +3026,9 @@
   height: 60vh;
   padding-bottom: 100px !important;
 }
+.categoryListView::-webkit-scrollbar {
+  display: none;
+}
 
 .categoryHeader {
   text-align: center;
@@ -3036,6 +3096,9 @@
 }
 .skillDisplayScreen {
   height: 69vh;
+}
+.skillDisplayScreen::-webkit-scrollbar {
+  display: none;
 }
 .skillDisplayScreenUser {
   height: 65vh;

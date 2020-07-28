@@ -131,7 +131,9 @@ export default {
             this.overlay = false;
           });
         this.component = "success-popup";
+        this.overlay = false;
       } catch (e) {
+        this.overlay = false
         console.log("Error blocking user", e);
         this.errorMessage = e.response.data;
         this.component = "error-popup";

@@ -35,15 +35,11 @@
           </v-form>
           <!-- -------- loop task list here ----------- -->
           <div v-for="(task, index) in groupTasks" :key="index">
-            <v-hover open-delay="500" v-slot:default="{ hover }">
+            <v-hover open-delay="600" v-slot:default="{ hover }">
               <div v-if="taskSelect == 'all'">
                 <div class="restructuredMainTaskList">
                   <v-list-item class="upperListItem">
-                    <v-list-item
-                      class="innerListItem"
-                      @click="
-              selectGroupTask(task.parentTask, task);"
-                    >
+                    <v-list-item class="innerListItem">
                       <!-- @click.stop="drawer = !drawer" -->
                       <v-list-item-action>
                         <v-icon
@@ -51,10 +47,20 @@
                           size="25"
                           color="#66B25F"
                         >mdi-checkbox-blank</v-icon>
-                        <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
+                        <v-icon
+                          @click="
+                      closeTask(task.parentTask.taskId)"
+                          v-else
+                          size="25"
+                          color="#939393"
+                        >mdi-checkbox-blank-outline</v-icon>
                       </v-list-item-action>
                       <div class="tasklistTaskNames restructuredMainTaskName">
-                        <div>
+                        <div
+                          @click="
+              selectGroupTask(task.parentTask, task);"
+                          style="cursor: pointer"
+                        >
                           <span class="restructuredMainTaskCode">{{task.parentTask.secondaryTaskId}}</span>
                           {{ task.parentTask.taskName }}
                         </div>
@@ -90,10 +96,10 @@
                     <v-text-field
                       v-if="hover"
                       v-model="subTaskName[index]"
-                      background-color="#0BAFFF"
+                      background-color="#FFFFFF"
+                      outlined
                       solo
                       style="margin-bottom: -25px; margin-top: 5px; border-radius: 0px"
-                      dark
                       dense
                       flat
                       prepend-inner-icon="mdi-plus-circle"
@@ -112,13 +118,7 @@
                     class="restructuredSubTaskListRestructure"
                   >
                     <v-list-item class="upperListItem">
-                      <v-list-item
-                        class="innerListItem"
-                        @click="
-                selectGroupTask(childTask, task);
-                taskDialog = true;
-              "
-                      >
+                      <v-list-item class="innerListItem">
                         <!-- @click.stop="drawer = !drawer" -->
                         <v-list-item-action>
                           <v-icon
@@ -126,10 +126,21 @@
                             size="25"
                             color="#66B25F"
                           >mdi-checkbox-blank</v-icon>
-                          <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
+                          <v-icon
+                            @click="
+                      closeTask(childTask.taskId)"
+                            v-else
+                            size="25"
+                            color="#939393"
+                          >mdi-checkbox-blank-outline</v-icon>
                         </v-list-item-action>
                         <div class="tasklistTaskNames restructuredSubTaskName">
-                          <div>
+                          <div
+                            @click="
+                selectGroupTask(childTask, task);
+                taskDialog = true;
+              "
+                          >
                             <span class="restructuredMainTaskCode">{{childTask.secondaryTaskId}}</span>
                             {{ childTask.taskName }}
                           </div>
@@ -176,13 +187,9 @@
             <div class v-if="taskSelect != 'all'">
               <div
                 v-if="task.parentTask.taskStatus == taskSelect"
-                class="restructuredFilterTaskList"
+                class="restructuredFilterTaskListGroup"
               >
-                <v-list-item
-                  @click="
-              selectGroupTask(task.parentTask, task);"
-                  class="upperFilterListItem"
-                >
+                <v-list-item class="upperFilterListItem">
                   <!-- @click.stop="drawer = !drawer" -->
                   <v-list-item-action>
                     <v-icon
@@ -190,10 +197,20 @@
                       size="25"
                       color="#66B25F"
                     >mdi-checkbox-blank</v-icon>
-                    <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
+                    <v-icon
+                      @click="
+                      closeTask(task.parentTask.taskId)"
+                      v-else
+                      size="25"
+                      color="#939393"
+                    >mdi-checkbox-blank-outline</v-icon>
                   </v-list-item-action>
                   <div class="tasklistTaskNames restructuredMainTaskName">
-                    <div>
+                    <div
+                      @click="
+              selectGroupTask(task.parentTask, task);"
+                      style="cursor: pointer"
+                    >
                       <span class="restructuredMainTaskCode">{{task.parentTask.secondaryTaskId}}</span>
                       {{ task.parentTask.taskName }}
                     </div>
@@ -204,7 +221,7 @@
                       class="fontRestructure12"
                     >{{ getTaskDueDate(task.parentTask.taskDueDateAt) }}</v-list-item-title>
                   </v-list-item-content>
-                  <div>
+                  <div style="margin-left: 10px">
                     <v-list-item-avatar size="25">
                       <v-img
                         v-if="task.parentTask.taskAssigneeProfileImage != null && task.parentTask.taskAssigneeProfileImage != ''"
@@ -237,10 +254,6 @@
                   <v-list-item
                     class="restructuredFilterGroupTaskList"
                     v-if="childTask.taskStatus == taskSelect"
-                    @click="
-                selectGroupTask(childTask, task);
-                taskDialog = true; 
-              "
                   >
                     <!-- @click.stop="drawer = !drawer" -->
                     <v-list-item-action>
@@ -249,10 +262,22 @@
                         size="25"
                         color="#66B25F"
                       >mdi-checkbox-blank</v-icon>
-                      <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
+                      <v-icon
+                        @click="
+                      closeTask(childTask.taskId)"
+                        v-else
+                        size="25"
+                        color="#939393"
+                      >mdi-checkbox-blank-outline</v-icon>
                     </v-list-item-action>
                     <div class="tasklistTaskNames restructuredSubTaskName">
-                      <div>
+                      <div
+                        @click="
+                selectGroupTask(childTask, task);
+                taskDialog = true; 
+              "
+                        style="cursor: pointer"
+                      >
                         <span class="restructuredMainTaskCode">{{childTask.secondaryTaskId}}</span>
                         {{ childTask.taskName }}
                       </div>
@@ -264,7 +289,7 @@
                         class="fontRestructure12"
                       >{{ getTaskDueDate(childTask.taskDueDateAt) }}</v-list-item-title>
                     </v-list-item-content>
-                    <div>
+                    <div style="margin-left: 10px">
                       <v-list-item-avatar size="25">
                         <v-img
                           v-if="childTask.taskAssigneeProfileImage != null && childTask.taskAssigneeProfileImage != ''"
@@ -357,7 +382,7 @@ export default {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
     "task-dialog": TaskDialog,
-    "progress-loading": Progress
+    "progress-loading": Progress,
   },
   data() {
     return {
@@ -382,8 +407,8 @@ export default {
       items: [
         { id: "all", name: "All" },
         { id: "open", name: "Open" },
-        { id: "closed", name: "Closed" }
-      ]
+        { id: "closed", name: "Closed" },
+      ],
     };
   },
 
@@ -392,6 +417,44 @@ export default {
   // },
 
   methods: {
+    async closeTask(taskId) {
+      // console.log("onchange updated status ->");
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/taskgroup/${this.group.taskGroupId}/tasks/${taskId}`,
+          {
+            taskStatus: "closed",
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.component = "success-popup";
+        this.successMessage = "Status successfully updated";
+        this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
+          taskGroupId: this.group.taskGroupId,
+          userId: this.userId,
+        });
+        this.$store.dispatch("groups/groupPeople/fetchGroupPeople", {
+          taskGroupId: this.group.taskGroupId,
+          userId: "user",
+        });
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        // console.log("update task status response", response);
+      } catch (e) {
+        // console.log("Error updating a status", e);
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+      }
+    },
     backPannelDisplay(child) {
       if (child != 0) {
         return "backPannelAllTask";
@@ -444,7 +507,7 @@ export default {
       // console.log("selectedTask", groupTask);
       this.$axios
         .get(`/users/${this.task.taskAssignee}`)
-        .then(async response => {
+        .then(async (response) => {
           //  console.log("fetched task -->", response.data.data)
           this.assignee = response.data.data;
           //if task fetch is successful,
@@ -456,8 +519,8 @@ export default {
                 `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}/files`,
                 {
                   headers: {
-                    user: this.userId
-                  }
+                    user: this.userId,
+                  },
                 }
               );
               // console.log("files--->", taskFilesResponse.data);
@@ -478,7 +541,7 @@ export default {
                 // console.log("isparent");
                 this.$store.dispatch("groups/groupTask/fetchChildren", {
                   taskGroupId: this.task.taskGroupId,
-                  taskId: this.task.taskId
+                  taskId: this.task.taskId,
                 });
               } else {
                 this.$store.dispatch(
@@ -493,7 +556,7 @@ export default {
             console.log("Error fetching data", error);
           }
         })
-        .catch(e => {
+        .catch((e) => {
           // console.log("error", e);
         });
     },
@@ -503,14 +566,14 @@ export default {
       await this.$store.dispatch("groups/groupTask/addTaskToGroup", {
         taskName: this.updatedTaskName,
         taskGroupId: this.group.taskGroupId,
-        parentTaskId: selectedParentTask
+        parentTaskId: selectedParentTask,
       });
       this.updatedTaskName = "";
       this.$refs.form.reset();
       this.overlay = false;
       this.$store.dispatch("groups/groupPeople/fetchGroupPeople", {
         taskGroupId: this.group.taskGroupId,
-        userId: "user"
+        userId: "user",
       });
     },
     async addGroupSubTask(index, selectedParentTask) {
@@ -519,7 +582,7 @@ export default {
       this.$store.dispatch("groups/groupTask/addTaskToGroup", {
         taskName: this.subTaskName[index],
         taskGroupId: this.group.taskGroupId,
-        parentTaskId: selectedParentTask
+        parentTaskId: selectedParentTask,
       });
       this.subTaskName = [];
       this.overlay = false;
@@ -559,12 +622,12 @@ export default {
         stringDate = stringDate.slice(0, 10);
         return stringDate;
       }
-    }
+    },
   },
   computed: {
     ...mapState({
-      groupTasks: state => state.groups.groupTask.groupTasks,
-      groupPeople: state => state.groups.groupPeople.groupPeople
+      groupTasks: (state) => state.groups.groupTask.groupTasks,
+      groupPeople: (state) => state.groups.groupPeople.groupPeople,
     }),
     addNewTask: {
       get() {
@@ -572,9 +635,9 @@ export default {
       },
       set(value) {
         this.updatedTaskName = value;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 
