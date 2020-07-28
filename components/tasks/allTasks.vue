@@ -309,7 +309,7 @@
                     >
                       <!-- <div class="tasklistTaskNames restructuredMainTaskName"> -->
                       <div style="color: #576377">
-                        <span class="restructuredMainTaskCode">
+                        <span class="restructuredMainTaskCode fontRestructure12">
                           {{
                           task.parentTask.secondaryTaskId
                           }}
@@ -451,7 +451,7 @@
                         style="cursor: pointer"
                       >
                         <div style="color: #576377">
-                          <span class="restructuredMainTaskCode">
+                          <span class="restructuredMainTaskCode fontRestructure12">
                             {{
                             childTask.secondaryTaskId
                             }}
@@ -588,7 +588,7 @@
                 target="_blank"
               >
                 <div style="color: #576377">
-                  <span class="restructuredMainTaskCode">
+                  <span class="restructuredMainTaskCode fontRestructure12">
                     {{
                     task.secondaryTaskId
                     }}
