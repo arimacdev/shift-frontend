@@ -1395,10 +1395,19 @@
   margin-bottom: 15px;
 }
 .workloadTaskItems {
-  border-radius: 5px;
-  margin-bottom: 15px;
-  background-color: #ffffff;
+  border: 1px #cdcfd2 solid;
+  margin-bottom: 5px;
+  background-color: #fafafa;
+  height: 35px !important;
 }
+/* .restructuredFilterTaskList {
+  border: 1px #cdcfd2 solid;
+  background-color: #fafafa;
+  overflow: hidden;
+  height: 35px;
+  padding-top: 2px;
+  margin-bottom: 5px;
+} */
 .workloadTaskName {
   color: #576377;
 }

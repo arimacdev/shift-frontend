@@ -213,10 +213,10 @@
                           <v-list-item-action>
                             <v-icon
                               v-if="task.taskStatus == 'closed'"
-                              size="30"
-                              color="#2EC973"
-                            >mdi-checkbox-marked-circle</v-icon>
-                            <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                              size="25"
+                              color="#66B25F"
+                            >mdi-checkbox-blank</v-icon>
+                            <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
                           </v-list-item-action>
                           <v-list-item-action>
                             <div
@@ -229,7 +229,33 @@
                           </v-list-item-content>
 
                           <v-list-item-action>
-                            <v-list-item-title :class="dueDateCheck(task)">
+                            <v-chip
+                              class="chipsContent"
+                              :class="statusCheck(task.issueType)"
+                              x-small
+                            >
+                              <span
+                                class="fontRestructure12"
+                              >{{ taskStatusFormatting(task.taskStatus) }}</span>
+                            </v-chip>
+                          </v-list-item-action>
+                          <v-list-item-action>
+                            <v-chip
+                              class="chipsContent"
+                              :class="statusCheck(task.issueType)"
+                              x-small
+                            >
+                              <span
+                                class="fontRestructure12"
+                              >{{ taskTypeFormatting(task.issueType) }}</span>
+                            </v-chip>
+                          </v-list-item-action>
+
+                          <v-list-item-action class="updatedDate">
+                            <v-list-item-title
+                              class="fontRestructure12"
+                              :class="dueDateCheck(task)"
+                            >
                               {{
                               getDueDate(task.taskDueDateAt)
                               }}
@@ -293,7 +319,7 @@ export default {
 
     "progress-loading": Progress,
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
   },
   data() {
     return {
@@ -316,32 +342,32 @@ export default {
           "June",
           "July",
           "January",
-          "February"
+          "February",
         ],
         datasets: [
           {
             type: "bar",
             label: "Completed",
             backgroundColor: "#78CF20",
-            data: [65, 0, 80, 81, 56, 85, 40]
+            data: [65, 0, 80, 81, 56, 85, 40],
           },
           {
             type: "bar",
             label: "Remaining",
             backgroundColor: "#EE7071",
-            data: [-65, 0, -80, -81, -56, -85, -40]
-          }
-        ]
+            data: [-65, 0, -80, -81, -56, -85, -40],
+          },
+        ],
       },
       barChartOptions: {
         maintainAspectRatio: true,
         responsive: false,
         legend: {
-          display: false
+          display: false,
         },
         title: {
           display: false,
-          text: "Organization overview"
+          text: "Organization overview",
         },
         scales: {
           xAxes: [
@@ -349,19 +375,19 @@ export default {
               stacked: true,
               maxBarThickness: 15,
               ticks: {
-                beginAtZero: true
-              }
-            }
+                beginAtZero: true,
+              },
+            },
           ],
           yAxes: [
             {
               stacked: true,
               ticks: {
-                beginAtZero: true
-              }
-            }
-          ]
-        }
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
       },
 
       overlay: true,
@@ -391,7 +417,7 @@ export default {
       search: null,
       select: {},
       states: [],
-      drawer: null
+      drawer: null,
     };
   },
 
@@ -399,7 +425,7 @@ export default {
     this.$store.dispatch("workload/fetchAllTaskLoadUsers", {
       assignees: "assignee=all",
       from: "all",
-      to: "all"
+      to: "all",
     });
     this.$store.dispatch("project/clearProject");
   },
@@ -411,9 +437,122 @@ export default {
     },
     searchAssignee(val) {
       val && val !== this.selectAssignee && this.loadAssignee(val);
-    }
+    },
   },
   methods: {
+    taskStatusFormatting(status) {
+      switch (status) {
+        case "pending":
+          return "Pending";
+          break;
+        case "onHold":
+          return "On Hold";
+          break;
+        case "open":
+          return "Open";
+          break;
+        case "cancel":
+          return "Cancel";
+          break;
+        case "reOpened":
+          return "Re Opened";
+          break;
+        case "fixing":
+          return "Fixing";
+          break;
+        case "testing":
+          return "Testing";
+          break;
+        case "resolved":
+          return "Resolved";
+          break;
+        case "inprogress":
+          return "Inprogress";
+          break;
+        case "completed":
+          return "Completed";
+          break;
+        case "implementing":
+          return "Implementing";
+          break;
+        case "underReview":
+          return "UnderReview";
+          break;
+        case "waitingForApproval":
+          return "Waiting for Approval";
+          break;
+        case "review":
+          return "Review";
+          break;
+        case "discussion":
+          return "Discussion";
+          break;
+        case "waitingResponse":
+          return "Waiting Response";
+          break;
+        case "ready":
+          return "Ready";
+          break;
+        case "deployed":
+          return "Deployed";
+          break;
+        case "fixed":
+          return "Fixed";
+          break;
+        case "rejected":
+          return "Rejected";
+          break;
+        case "closed":
+          return "Closed";
+          break;
+        default:
+      }
+    },
+    taskTypeFormatting(type) {
+      switch (type) {
+        case "development":
+          return "Development";
+          break;
+        case "qa":
+          return "QA";
+          break;
+        case "design":
+          return "Design";
+          break;
+        case "bug":
+          return "Bug";
+          break;
+        case "operational":
+          return "Operational";
+          break;
+        case "preSales":
+          return "Pre-sales";
+          break;
+        case "general":
+          return "General";
+          break;
+        default:
+      }
+    },
+    statusCheck(task) {
+      if (task === "development") {
+        return "developmentStatus";
+      } else if (task === "qa") {
+        return "qaStatus";
+      } else if (task === "design") {
+        return "designStatus";
+      } else if (task === "bug") {
+        return "bugStatus";
+      } else if (task === "operational") {
+        return "operationalStatus";
+      } else if (task === "preSales") {
+        return "preSalesStatus";
+      } else if (task === "general") {
+        return "generalStatus";
+      } else {
+        return "otherStatus";
+      }
+    },
     close() {
       this.component = "";
     },
@@ -480,7 +619,7 @@ export default {
       const filters = {
         assignees: this.assigneeQuery,
         from: from == "all" ? "all" : new Date(from).toISOString(),
-        to: to == "all" ? "all" : new Date(to).toISOString()
+        to: to == "all" ? "all" : new Date(to).toISOString(),
       };
       this.$store.dispatch("workload/fetchAllTaskLoadUsers", filters);
       this.overlay = false;
@@ -503,8 +642,8 @@ export default {
           {
             headers: {
               user: task.taskAssignee,
-              type: "project"
-            }
+              type: "project",
+            },
           }
         );
         // console.log("files--->", taskFilesResponse.data);
@@ -522,8 +661,8 @@ export default {
             `/sprints/${this.projectId}/${task.sprintId}`,
             {
               headers: {
-                userId: task.taskAssignee
-              }
+                userId: task.taskAssignee,
+              },
             }
           );
           // console.log("sprint--->", sprintResponse.data.sprintName);
@@ -548,7 +687,7 @@ export default {
         this.assigneeArray.push({
           name: user.firstName + " " + user.lastName,
           id: user.userId,
-          img: user.profileImage
+          img: user.profileImage,
         });
       }
     },
@@ -582,7 +721,7 @@ export default {
         this.$store.dispatch("workload/fetchAllWorkloadTasks", {
           userId: this.select.userId,
           from: "all",
-          to: "all"
+          to: "all",
         });
         //  } else {
         //    this.$store.dispatch('workload/clearWorkLoadTasks');
@@ -610,7 +749,7 @@ export default {
           this.$store.dispatch("workload/fetchAllWorkloadTasks", {
             userId: userData.userId,
             from: filterStart,
-            to: filterEnd
+            to: filterEnd,
           });
         }
         // console.log("FILTER APPLIED");
@@ -622,7 +761,7 @@ export default {
         this.$store.dispatch("workload/fetchAllWorkloadTasks", {
           userId: userData.userId,
           from: "all",
-          to: "all"
+          to: "all",
         });
         // console.log("NO FILTER APPLIED");
       }
@@ -698,26 +837,26 @@ export default {
         let user = projectSearchList[index];
         this.states.push({
           name: user.firstName + " " + user.lastName,
-          id: user
+          id: user,
         });
       }
       // console.log("usersList for search bar", this.taskWorkLoadUsers, "nameList", this.states)
       this.loading = true;
       setTimeout(() => {
-        this.items = this.states.filter(e => {
+        this.items = this.states.filter((e) => {
           return (e || "").toLowerCase().indexOf((v || "").toLowerCase()) > -1;
         });
         this.loading = false;
       });
       this.loading = false;
-    }
+    },
   },
   computed: {
     ...mapState({
-      workloadTasks: state => state.workload.workloadTasks,
-      taskWorkLoadUsers: state => state.workload.taskWorkLoadUsers,
-      users: state => state.user.users,
-      allProjects: state => state.project.projects
+      workloadTasks: (state) => state.workload.workloadTasks,
+      taskWorkLoadUsers: (state) => state.workload.taskWorkLoadUsers,
+      users: (state) => state.user.users,
+      allProjects: (state) => state.project.projects,
     }),
     maxCompleted() {
       if (this.taskWorkLoadUsers.length == 0) return;
@@ -744,7 +883,7 @@ export default {
         assigneeList.push({
           name: user.firstName + " " + user.lastName,
           id: user.userId,
-          img: user.profileImage
+          img: user.profileImage,
         });
       }
       return assigneeList;
@@ -755,7 +894,7 @@ export default {
       },
       set(value) {
         this.filterAssignee = value;
-      }
+      },
     },
     project: {
       get() {
@@ -763,8 +902,8 @@ export default {
       },
       set(value) {
         this.filterProject = value;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
