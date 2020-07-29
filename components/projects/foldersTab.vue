@@ -7,7 +7,7 @@
           <v-menu min-width="200px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn small rounded outlined color="#949494" v-bind="attrs" v-on="on">
-                <v-icon dark>mdi-plus</v-icon>
+                <v-icon size="20" dark>mdi-plus</v-icon>
                 <v-list-item-title
                   style="color: #576377 !important"
                   class="text-capitalize fontRestructure14"
@@ -15,7 +15,7 @@
               </v-btn>
             </template>
             <v-list>
-              <v-list-item>
+              <v-list-item @click="newFolderDialog = true">
                 <v-list-item-action>
                   <v-icon>mdi-folder-plus-outline</v-icon>
                 </v-list-item-action>
@@ -117,6 +117,51 @@
         </div>
       </v-card>
     </v-dialog>
+    <!-- ------------- New Folder Dialog ------------ -->
+    <v-dialog v-model="newFolderDialog" max-width="380">
+      <v-card>
+        <v-form v-model="isValid" ref="form">
+          <div style="padding-top: 30px" class="popupConfirmHeadline">
+            <v-list-item-title>New Folder</v-list-item-title>
+            <br />
+            <v-text-field
+              v-model="folderName"
+              :rules="folderNameRules"
+              label="Folder Name"
+              dense
+              outlined
+            ></v-text-field>
+          </div>
+
+          <div style="padding-bottom: 20px">
+            <v-card-actions>
+              <v-spacer></v-spacer>
+
+              <v-spacer></v-spacer>
+              <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
+              <v-btn
+                class="text-capitalize"
+                @click="newFolderDialog = false"
+                small
+                text
+                color="error"
+                width="100px"
+              >Cancel</v-btn>
+
+              <v-btn
+                :disabled="!isValid"
+                class="text-capitalize"
+                depressed
+                small
+                color="primary"
+                width="100px"
+                @click="newFolderDialog = false"
+              >Create</v-btn>
+            </v-card-actions>
+          </div>
+        </v-form>
+      </v-card>
+    </v-dialog>
 
     <!-- ------------------ -->
 
@@ -155,6 +200,9 @@ export default {
   data() {
     return {
       folderView: true,
+      newFolderDialog: false,
+      folderNameRules: [(value) => !!value || "Folder name is required!"],
+      isValid: true,
 
       errorMessage: "",
       successMessage: "",
