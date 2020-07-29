@@ -349,6 +349,7 @@ export default {
         let formData = new FormData();
         formData.append("files", this.files[index]);
         formData.append("type", "projectFile");
+        formData.append("folderId", "default");
 
         this.$axios
           .$post(`/projects/${this.projectId}/files/upload`, formData, {
