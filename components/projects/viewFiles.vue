@@ -14,7 +14,7 @@
         <v-list>
           <v-list-item>
             <v-list-item-action>
-              <v-icon>mdi-file-plus-outline</v-icon>
+              <v-icon>mdi-file-upload-outline</v-icon>
             </v-list-item-action>
             <v-list-item-title style="color: #576377 !important">New File Upload</v-list-item-title>
           </v-list-item>

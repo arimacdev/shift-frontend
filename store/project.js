@@ -2,6 +2,12 @@ export const state = () => ({
   project: {},
   projects: [],
   projectFiles: [],
+  projectFolders: [
+    {
+      folders: '',
+      files: [],
+    },
+  ],
   seletedProject: {},
 });
 
@@ -26,6 +32,9 @@ export const mutations = {
   },
   FETCH_ALL_PROJECTS_FILES(state, projectFiles) {
     state.projectFiles = projectFiles;
+  },
+  FETCH_ALL_PROJECTS_FOLDERS(state, projectFolders) {
+    state.projectFolders = projectFolders;
   },
   ADD_PROJECT_FILES(state, projectFiles) {
     state.projectFiles.push(...projectFiles);
@@ -94,6 +103,24 @@ export const actions = {
       );
       // console.log('project files--->', projectFilesResponse.data);
       commit('FETCH_ALL_PROJECTS_FILES', projectFilesResponse.data);
+    } catch (error) {
+      console.log('Error fetching data', error);
+    }
+  },
+  async fetchAllProjectFolders({ commit, rootState }, projectId) {
+    const user = rootState.user.userId;
+    let projectFilesResponse;
+    try {
+      projectFilesResponse = await this.$axios.$get(
+        `/projects/${projectId}/folder`,
+        {
+          headers: {
+            user: user,
+          },
+        }
+      );
+      // console.log('project files--->', projectFilesResponse.data);
+      commit('FETCH_ALL_PROJECTS_FOLDERS', projectFilesResponse.data);
     } catch (error) {
       console.log('Error fetching data', error);
     }

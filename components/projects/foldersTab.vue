@@ -22,11 +22,20 @@
                 <v-list-item-title style="color: #576377 !important">Add New Folder</v-list-item-title>
               </v-list-item>
               <v-divider class="mx-4"></v-divider>
-              <v-list-item>
-                <v-list-item-action>
-                  <v-icon>mdi-file-plus-outline</v-icon>
+              <v-list-item @click class="fileUploader">
+                <!-- <v-list-item-action>
+                  <v-icon>mdi-file-upload-outline</v-icon>
                 </v-list-item-action>
-                <v-list-item-title style="color: #576377 !important">New File Upload</v-list-item-title>
+                <v-list-item-title style="color: #576377 !important">New File Upload</v-list-item-title>-->
+                <v-file-input
+                  v-model="files"
+                  multiple
+                  flat
+                  solo
+                  prepend-icon="mdi-file-upload-outline"
+                  label="File input"
+                  @change="projectFileUpload();"
+                ></v-file-input>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -38,7 +47,12 @@
           </v-row>
           <v-row>
             <v-col>
-              <v-list-item @click="folderView = false" class="FolderDiv">
+              <v-list-item
+                v-for="(projectFolder, index) in AllprojectFolders.folders"
+                :key="index"
+                @click="folderView = false"
+                class="FolderDiv"
+              >
                 <v-list-item-action>
                   <v-icon>mdi-folder</v-icon>
                 </v-list-item-action>
@@ -46,18 +60,7 @@
                   <v-list-item-title
                     class="fontRestructure14"
                     style="color: #576377 !important"
-                  >New File Upload New File Upload New File Upload New File Upload</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item class="FolderDiv">
-                <v-list-item-action>
-                  <v-icon>mdi-folder</v-icon>
-                </v-list-item-action>
-                <v-list-item-content>
-                  <v-list-item-title
-                    class="fontRestructure14"
-                    style="color: #576377 !important"
-                  >New File Upload New File Upload New File Upload New File Upload</v-list-item-title>
+                  >{{projectFolder.folderName}}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-col>
@@ -65,6 +68,83 @@
           <v-row style="margin-top: 30px">
             <v-col>
               <v-list-item-title>Files</v-list-item-title>
+            </v-col>
+          </v-row>
+          <v-row style="margin-top: 30px">
+            <v-col>
+              <!-- ---------- file display cards --------- -->
+              <v-card
+                v-for="(projectFile, index) in AllprojectFolders.files"
+                :key="index"
+                flat
+                outlined
+                class="fileDisplaySection"
+                max-width="23%"
+              >
+                <div style="height: 150px; content">
+                  <v-img
+                    v-if="checkFileType(projectFile.projectFileName.split('.').pop())"
+                    :src="projectFile.projectFileUrl"
+                    height="100%"
+                  ></v-img>
+                  <iframe v-else width="100%" :src="projectFile.projectFileUrl"></iframe>
+                </div>
+
+                <v-list-item z- style="height: 30px !important; ">
+                  <v-list-item-action style="margin-left: -10px">
+                    <v-icon
+                      v-if="checkFileType(projectFile.projectFileName.split('.').pop())"
+                      size="20"
+                      color="red"
+                    >mdi-image</v-icon>
+                    <v-icon v-else size="20" color="red">mdi-file-document</v-icon>
+                  </v-list-item-action>
+                  <v-list-item-content style="margin-left: -25px">
+                    <v-list-item-subtitle class="fontRestructure12">{{projectFile.projectFileName}}</v-list-item-subtitle>
+                    <v-list-item-subtitle class="fontRestructure10">
+                      {{ projectFile.firstName }}
+                      {{ projectFile.lastName }}
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+
+                <v-card-actions style="height: 35px !important; margin-top: -10px">
+                  <v-list-item-subtitle class="fontRestructure10">
+                    {{
+                    getFileSize(projectFile.projectFileSize)
+                    }}
+                    kB
+                  </v-list-item-subtitle>
+                  <v-spacer></v-spacer>
+                  <v-list-item-subtitle
+                    class="fontRestructure10"
+                  >{{getUploadDate(projectFile.projectFileAddedOn)}}</v-list-item-subtitle>
+                  <v-btn icon>
+                    <div class="iconBackCircleFiles">
+                      <a
+                        style="text-decoration: none;"
+                        :href="projectFile.projectFileUrl"
+                        target="_blank"
+                        download="file"
+                      >
+                        <v-icon size="20" color="#0BAFFF">mdi-download-outline</v-icon>
+                      </a>
+                    </div>
+                  </v-btn>
+                  <v-btn icon>
+                    <div class="iconBackCircleFiles">
+                      <v-icon
+                        size="20"
+                        @click="
+                    taskDialog = true;
+                    selectFile(projectFile.projectFileId);
+                  "
+                        color="#FF6161"
+                      >mdi-trash-can-outline</v-icon>
+                    </div>
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
             </v-col>
           </v-row>
         </div>
@@ -125,6 +205,7 @@
             <v-list-item-title>New Folder</v-list-item-title>
             <br />
             <v-text-field
+              autofocus
               v-model="folderName"
               :rules="folderNameRules"
               label="Folder Name"
@@ -162,6 +243,17 @@
         </v-form>
       </v-card>
     </v-dialog>
+
+    <!-- ---------- snackbar ---------- -->
+
+    <div class="text-center">
+      <!-- <v-btn dark color="red darken-2" @click="snackbar = true">Open Snackbar</v-btn> -->
+
+      <v-snackbar width="100" right v-model="snackbar">
+        File is uploading...
+        <v-progress-circular color="primary" indeterminate></v-progress-circular>
+      </v-snackbar>
+    </div>
 
     <!-- ------------------ -->
 
@@ -204,6 +296,8 @@ export default {
       folderNameRules: [(value) => !!value || "Folder name is required!"],
       isValid: true,
       folderName: "",
+      snackbar: false,
+      files: [],
 
       errorMessage: "",
       successMessage: "",
@@ -221,12 +315,80 @@ export default {
   computed: {
     ...mapState({
       AllprojectFiles: (state) => state.project.projectFiles,
+      AllprojectFolders: (state) => state.project.projectFolders,
       userProfile: (state) => state.userProfile.userProfile,
       projectId: (state) => state.project.project.projectId,
     }),
   },
 
   methods: {
+    checkFileType(type) {
+      switch (type) {
+        case "png":
+          return true;
+          break;
+        case "jpeg":
+          return true;
+          break;
+        case "gif":
+          return true;
+          break;
+        case "svg":
+          return true;
+          break;
+        case "jpg":
+          return true;
+          break;
+        default:
+          return false;
+      }
+    },
+    async projectFileUpload() {
+      this.snackbar = true;
+      for (let index = 0; index < this.files.length; ++index) {
+        let formData = new FormData();
+        formData.append("files", this.files[index]);
+        formData.append("type", "projectFile");
+
+        this.$axios
+          .$post(`/projects/${this.projectId}/files/upload`, formData, {
+            headers: {
+              user: this.userId,
+            },
+          })
+          .then((res) => {
+            this.snackbar = false;
+            // console.log("resp", res.data);
+            this.component = "success-popup";
+            this.successMessage = "File(s) successfully uploaded";
+            setTimeout(() => {
+              this.close();
+            }, 3000);
+
+            const uploadedFile = res.data[0];
+            uploadedFile.firstName = this.userProfile.firstName;
+            uploadedFile.lastName = this.userProfile.lastName;
+            console.log("File upload successful", res.data);
+            this.$store.dispatch("project/addProjectFile", res.data);
+            this.$store.dispatch(
+              "project/fetchAllProjectFolders",
+              this.$route.params.projects
+            );
+            // console.log("File upload successful", res);
+          })
+          .catch((err) => {
+            this.errorMessage = err.response.data;
+            this.component = "error-popup";
+            setTimeout(() => {
+              this.close();
+            }, 3000);
+            this.snackbar = false;
+            //  this.errorMessage = err.response.data
+            console.log("File Upload Failed", err);
+          });
+      }
+      this.files = null;
+    },
     async createFolder() {
       let response;
       try {
@@ -240,6 +402,10 @@ export default {
               user: this.userId,
             },
           }
+        );
+        this.$store.dispatch(
+          "project/fetchAllProjectFolders",
+          this.$route.params.projects
         );
         this.component = "success-popup";
         this.successMessage = "Folder successfully created";
@@ -286,54 +452,7 @@ export default {
     setVisible() {
       this.visible = true;
     },
-    async projectFileUpload() {
-      this.overlay = true;
-      this.uploadLoading = true;
-      this.visible = false;
-      for (let index = 0; index < this.files.length; ++index) {
-        let formData = new FormData();
-        formData.append("files", this.files[index]);
-        formData.append("type", "projectFile");
 
-        this.$axios
-          .$post(`/projects/${this.projectId}/files/upload`, formData, {
-            headers: {
-              user: this.userId,
-            },
-          })
-          .then((res) => {
-            // console.log("resp", res.data);
-            this.uploadLoading = false;
-            this.visible = false;
-            this.overlay = false;
-            this.component = "success-popup";
-            this.successMessage = "File(s) successfully uploaded";
-            setTimeout(() => {
-              this.close();
-            }, 3000);
-            const uploadedFile = res.data[0];
-            uploadedFile.firstName = this.userProfile.firstName;
-            uploadedFile.lastName = this.userProfile.lastName;
-            console.log("File upload successful", res.data);
-            this.$store.dispatch("project/addProjectFile", res.data);
-            // console.log("File upload successful", res);
-          })
-          .catch((err) => {
-            this.overlay = false;
-            this.uploadLoading = false;
-            this.visible = false;
-            this.errorMessage = err.response.data;
-            this.component = "error-popup";
-            setTimeout(() => {
-              this.close();
-            }, 3000);
-            //  this.errorMessage = err.response.data
-            console.log("File Upload Failed", err);
-          });
-      }
-      this.files = null;
-      this.overlay = false;
-    },
     async removeFiles() {
       // console.log("projectFile " + this.fileId);
       this.taskDialog = false;

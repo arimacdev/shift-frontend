@@ -171,7 +171,7 @@ export default {
           break;
         case "folders":
           this.$store.dispatch("tab/updateTabViewsTab", "files");
-          this.$emit("refreshSelectedTab", "files");
+          this.$emit("refreshSelectedTab", "folders");
           break;
         case "logs":
           this.overlay = true;
