@@ -155,7 +155,7 @@
                 small
                 color="primary"
                 width="100px"
-                @click="newFolderDialog = false"
+                @click="newFolderDialog = false; createFolder()"
               >Create</v-btn>
             </v-card-actions>
           </div>
@@ -165,7 +165,7 @@
 
     <!-- ------------------ -->
 
-    <div class="popupDivContent">
+    <div class="filePopupDiv">
       <div @click="close">
         <component
           v-bind:is="component"
@@ -203,6 +203,7 @@ export default {
       newFolderDialog: false,
       folderNameRules: [(value) => !!value || "Folder name is required!"],
       isValid: true,
+      folderName: "",
 
       errorMessage: "",
       successMessage: "",
@@ -226,6 +227,36 @@ export default {
   },
 
   methods: {
+    async createFolder() {
+      let response;
+      try {
+        response = await this.$axios.$post(
+          `/projects/${this.projectId}/folder`,
+          {
+            folderName: this.folderName,
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.component = "success-popup";
+        this.successMessage = "Folder successfully created";
+        (this.folderName = ""),
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        (this.folderName = ""), console.log("Error updating a status", e);
+      }
+      this.$refs.form.reset();
+    },
     close() {
       this.component = "";
     },
