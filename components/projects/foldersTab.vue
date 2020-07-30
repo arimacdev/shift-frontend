@@ -4,7 +4,7 @@
     <div class="filesList">
       <div class="fileScroll overflow-y-auto">
         <div v-if="folderView">
-          <v-menu min-width="200px">
+          <v-menu min-width="250px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn small rounded outlined color="#949494" v-bind="attrs" v-on="on">
                 <v-icon size="20" dark>mdi-plus</v-icon>
@@ -33,7 +33,7 @@
                   flat
                   solo
                   prepend-icon="mdi-file-upload-outline"
-                  label="File input"
+                  label="New file upload"
                   @change="projectFileUpload();"
                 ></v-file-input>
               </v-list-item>
@@ -50,7 +50,7 @@
               <v-list-item
                 v-for="(projectFolder, index) in AllprojectFolders.folders"
                 :key="index"
-                @click="folderView = false; selectedFolder = projectFolder"
+                @click="folderView = false; selectFolder(projectFolder)"
                 class="FolderDiv"
               >
                 <v-list-item-action>
@@ -182,7 +182,7 @@
       </div>
     </div>
 
-    <!-- ------------- dialog ------------ -->
+    <!-- ------------- delete file dialog ------------ -->
     <v-dialog v-model="taskDialog" max-width="380">
       <v-card>
         <div class="popupConfirmHeadline">
@@ -335,6 +335,14 @@ export default {
   },
 
   methods: {
+    selectFolder(projectFolder) {
+      console.log("SELECTED");
+      this.selectedFolder = projectFolder;
+      this.$store.dispatch("project/fetchAllSelectedFolderFiles", {
+        projectId: this.$route.params.projects,
+        folderId: projectFolder.folderId,
+      });
+    },
     checkFileType(type) {
       switch (type) {
         case "png":
