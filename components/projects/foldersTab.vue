@@ -50,7 +50,7 @@
               <v-list-item
                 v-for="(projectFolder, index) in AllprojectFolders.folders"
                 :key="index"
-                @click="folderView = false"
+                @click="folderView = false; selectedFolder = projectFolder"
                 class="FolderDiv"
               >
                 <v-list-item-action>
@@ -65,12 +65,12 @@
               </v-list-item>
             </v-col>
           </v-row>
-          <v-row style="margin-top: 30px">
+          <v-row style="margin-top: 20px">
             <v-col>
               <v-list-item-title>Files</v-list-item-title>
             </v-col>
           </v-row>
-          <v-row style="margin-top: 30px">
+          <v-row style="margin-top: 10px">
             <v-col>
               <!-- ---------- file display cards --------- -->
               <v-card
@@ -79,9 +79,21 @@
                 flat
                 outlined
                 class="fileDisplaySection"
-                max-width="23%"
+                width="23%"
               >
-                <div style="height: 150px; content">
+                <div style="height: 150px;">
+                  <a
+                    style="text-decoration: none;"
+                    :href="projectFile.projectFileUrl"
+                    target="_blank"
+                    download="file"
+                  >
+                    <v-icon
+                      style="position: absolute; z-index: 100; right:5px; top: 5px"
+                      size="17"
+                      color="#9F9F9F"
+                    >mdi-open-in-new</v-icon>
+                  </a>
                   <v-img
                     v-if="checkFileType(projectFile.projectFileName.split('.').pop())"
                     :src="projectFile.projectFileUrl"
@@ -163,9 +175,9 @@
             color="primary"
             class="text-capitalize"
             @click="folderView = true"
-          >Folder</v-btn>
+          >{{selectedFolder.folderName}}</v-btn>
 
-          <view-files />
+          <view-files :selectedFolder="selectedFolder" />
         </div>
       </div>
     </div>
@@ -298,6 +310,7 @@ export default {
       folderName: "",
       snackbar: false,
       files: [],
+      selectedFolder: "",
 
       errorMessage: "",
       successMessage: "",
@@ -468,8 +481,10 @@ export default {
             },
           }
         );
-        this.$store.dispatch("project/removeProjectFile", this.fileId);
-        console.log(response.data);
+        this.$store.dispatch(
+          "project/fetchAllProjectFolders",
+          this.$route.params.projects
+        );
       } catch (e) {
         console.log("Error deleting task", e);
         this.taskDialog = false;

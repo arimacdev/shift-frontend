@@ -26,5 +26,14 @@
         <v-list-item-title>Files</v-list-item-title>
       </v-col>
     </v-row>
+
+    <v-row style="margin-top: 30px">
+      <v-col>{{selectedFolder}}</v-col>
+    </v-row>
   </div>
 </template>
+<script>
+export default {
+  props: ["selectedFolder"],
+};
+</script>
