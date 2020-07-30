@@ -166,7 +166,7 @@
               :src="taskFile.taskFileUrl"
               height="100%"
             ></v-img>
-            <iframe v-else width="100%" :src="taskFile.taskFileUrl"></iframe>
+            <iframe class="iframeSection" v-else width="100%" :src="taskFile.taskFileUrl"></iframe>
           </div>
 
           <v-list-item z- style="height: 30px !important; ">

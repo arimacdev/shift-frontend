@@ -3358,3 +3358,7 @@
 .fileUploader {
   margin-bottom: -25px !important;
 }
+
+.iframeSection::-webkit-scrollbar {
+  display: none;
+}

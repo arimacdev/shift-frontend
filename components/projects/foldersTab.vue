@@ -107,7 +107,12 @@
                     :src="projectFile.projectFileUrl"
                     height="100%"
                   ></v-img>
-                  <iframe v-else width="100%" :src="projectFile.projectFileUrl"></iframe>
+                  <iframe
+                    class="iframeSection"
+                    v-else
+                    width="100%"
+                    :src="projectFile.projectFileUrl"
+                  ></iframe>
                 </div>
 
                 <v-list-item z- style="height: 30px !important; ">
@@ -344,7 +349,6 @@ export default {
 
   methods: {
     selectFolder(projectFolder) {
-      console.log("SELECTED");
       this.selectedFolder = projectFolder;
       this.$store.dispatch("project/fetchAllSelectedFolderFiles", {
         projectId: this.$route.params.projects,
