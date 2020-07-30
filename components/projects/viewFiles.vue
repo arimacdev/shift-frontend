@@ -4,7 +4,10 @@
       <v-list-item>
         <v-list-item-action>
           <v-menu min-width="250px">
-            <template v-slot:activator="{ on, attrs }">
+            <template
+              v-if="selectedFolder.folderType == 'PROJECT'"
+              v-slot:activator="{ on, attrs }"
+            >
               <v-btn small rounded outlined color="#949494" v-bind="attrs" v-on="on">
                 <v-icon size="20" dark>mdi-plus</v-icon>
                 <v-list-item-title
@@ -29,10 +32,10 @@
           </v-menu>
         </v-list-item-action>
         <v-list-item-content></v-list-item-content>
-        <v-list-item-action>
+        <v-list-item-action v-if="selectedFolder.folderType == 'PROJECT'">
           <v-icon>mdi-trash-can-outline</v-icon>
         </v-list-item-action>
-        <v-list-item-action>
+        <v-list-item-action v-if="selectedFolder.folderType == 'PROJECT'">
           <v-icon>mdi-pencil-circle</v-icon>
         </v-list-item-action>
       </v-list-item>
@@ -42,10 +45,15 @@
         <v-list-item-title>Files</v-list-item-title>
       </v-col>
     </v-row>
-
-    <v-row style="margin-top: 10px">
+    <v-row v-if="selectedFolderFiles.files == ''" style="margin-top: 10px">
       <v-col>
-        <!-- ---------- file display cards --------- -->
+        <v-list-item-subtitle>No files to show</v-list-item-subtitle>
+      </v-col>
+    </v-row>
+
+    <v-row v-if="selectedFolder.folderType == 'PROJECT'" style="margin-top: 10px">
+      <v-col>
+        <!-- ---------- project file display cards --------- -->
         <v-card
           v-for="(projectFile, index) in selectedFolderFiles.files"
           :key="index"
@@ -61,11 +69,9 @@
               target="_blank"
               download="file"
             >
-              <v-icon
-                style="position: absolute; z-index: 100; right:5px; top: 5px"
-                size="17"
-                color="#9F9F9F"
-              >mdi-open-in-new</v-icon>
+              <v-btn style="position: absolute; z-index: 101; right:5px; top: 5px" icon>
+                <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
+              </v-btn>
             </a>
             <v-img
               v-if="checkFileType(projectFile.projectFileName.split('.').pop())"
@@ -123,6 +129,92 @@
                   @click="
                     taskDialog = true;
                     selectFile(projectFile.projectFileId);
+                  "
+                  color="#FF6161"
+                >mdi-trash-can-outline</v-icon>
+              </div>
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <v-row v-else-if="selectedFolder.folderType === 'TASK'" style="margin-top: 10px">
+      <v-col>
+        <!-- ---------- task file display cards --------- -->
+        <v-card
+          v-for="(taskFile, index) in selectedFolderFiles.files"
+          :key="index"
+          flat
+          outlined
+          class="fileDisplaySection"
+          width="23%"
+        >
+          <div style="height: 150px;">
+            <a
+              style="text-decoration: none;"
+              :href="taskFile.taskFileUrl"
+              target="_blank"
+              download="file"
+            >
+              <v-btn style="position: absolute; z-index: 101; right:5px; top: 5px" icon>
+                <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
+              </v-btn>
+            </a>
+            <v-img
+              v-if="checkFileType(taskFile.taskFileName.split('.').pop())"
+              :src="taskFile.taskFileUrl"
+              height="100%"
+            ></v-img>
+            <iframe v-else width="100%" :src="taskFile.taskFileUrl"></iframe>
+          </div>
+
+          <v-list-item z- style="height: 30px !important; ">
+            <v-list-item-action style="margin-left: -10px">
+              <v-icon
+                v-if="checkFileType(taskFile.taskFileName.split('.').pop())"
+                size="20"
+                color="red"
+              >mdi-image</v-icon>
+              <v-icon v-else size="20" color="red">mdi-file-document</v-icon>
+            </v-list-item-action>
+            <v-list-item-content style="margin-left: -25px">
+              <v-list-item-subtitle class="fontRestructure12">{{taskFile.taskFileName}}</v-list-item-subtitle>
+              <v-list-item-subtitle class="fontRestructure10">
+                {{ taskFile.firstName }}
+                {{ taskFile.lastName }}
+              </v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-card-actions style="height: 35px !important; margin-top: -10px">
+            <v-list-item-subtitle class="fontRestructure10">
+              {{
+              getFileSize(taskFile.taskFileSize)
+              }}
+              kB
+            </v-list-item-subtitle>
+            <v-spacer></v-spacer>
+            <v-list-item-subtitle class="fontRestructure10">{{getUploadDate(taskFile.taskFileDate)}}</v-list-item-subtitle>
+            <v-btn icon>
+              <div class="iconBackCircleFiles">
+                <a
+                  style="text-decoration: none;"
+                  :href="taskFile.taskFileUrl"
+                  target="_blank"
+                  download="file"
+                >
+                  <v-icon size="20" color="#0BAFFF">mdi-download-outline</v-icon>
+                </a>
+              </div>
+            </v-btn>
+            <v-btn icon>
+              <div class="iconBackCircleFiles">
+                <v-icon
+                  size="20"
+                  @click="
+                    taskDialog = true;
+                    selectFile(taskFile.taskFileId);
                   "
                   color="#FF6161"
                 >mdi-trash-can-outline</v-icon>

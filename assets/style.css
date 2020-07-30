@@ -1674,7 +1674,7 @@
 .filesList {
   width: 100%;
   height: 100vh;
-  padding-bottom: 200px;
+  /* padding-bottom: 200px; */
   margin-top: 20px;
   margin-bottom: 10px;
 }
@@ -3348,6 +3348,7 @@
   position: fixed;
   right: 20px;
   bottom: 10px;
+  z-index: 1000;
 }
 .fileUploader .v-label {
   font-size: 16px !important;

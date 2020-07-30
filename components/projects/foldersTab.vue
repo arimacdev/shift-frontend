@@ -45,6 +45,11 @@
               <v-list-item-title>Folders</v-list-item-title>
             </v-col>
           </v-row>
+          <v-row v-if="AllprojectFolders.folders == ''" style="margin-top: 10px">
+            <v-col>
+              <v-list-item-subtitle>No folders to show</v-list-item-subtitle>
+            </v-col>
+          </v-row>
           <v-row>
             <v-col>
               <v-list-item
@@ -70,6 +75,11 @@
               <v-list-item-title>Files</v-list-item-title>
             </v-col>
           </v-row>
+          <v-row v-if="AllprojectFolders.file == ''" style="margin-top: 10px">
+            <v-col>
+              <v-list-item-subtitle>No files to show</v-list-item-subtitle>
+            </v-col>
+          </v-row>
           <v-row style="margin-top: 10px">
             <v-col>
               <!-- ---------- file display cards --------- -->
@@ -88,11 +98,9 @@
                     target="_blank"
                     download="file"
                   >
-                    <v-icon
-                      style="position: absolute; z-index: 100; right:5px; top: 5px"
-                      size="17"
-                      color="#9F9F9F"
-                    >mdi-open-in-new</v-icon>
+                    <v-btn style="position: absolute; z-index: 100; right:5px; top: 5px" icon>
+                      <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
+                    </v-btn>
                   </a>
                   <v-img
                     v-if="checkFileType(projectFile.projectFileName.split('.').pop())"
@@ -166,7 +174,7 @@
             text
             color="primary"
             class="text-capitalize"
-            @click="folderView = true"
+            @click="folderView = true; selectedFolder =''"
           >Project Files</v-btn>
           <v-icon>mdi-chevron-right</v-icon>
           <v-btn
