@@ -123,7 +123,7 @@
               </div>
             </v-btn>
             <v-btn icon>
-              <div class="iconBackCircleFiles">
+              <!-- <div class="iconBackCircleFiles">
                 <v-icon
                   size="20"
                   @click="
@@ -132,7 +132,39 @@
                   "
                   color="#FF6161"
                 >mdi-trash-can-outline</v-icon>
-              </div>
+              </div>-->
+              <v-menu z-index="200" min-width="250px">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn small icon color="#949494" v-bind="attrs" v-on="on">
+                    <v-icon size="20" dark>mdi-dots-vertical</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item
+                    @click="
+                    taskDialog = true;
+                    selectFile(projectFile.projectFileId);
+                  "
+                  >
+                    <v-list-item-action>
+                      <v-icon size="20">mdi-trash-can-outline</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-title style="color: #576377 !important">Delete file</v-list-item-title>
+                  </v-list-item>
+                  <v-divider class="mx-4"></v-divider>
+                  <v-list-item
+                    @click="
+                    fileMoveDialog = true;
+                    selectFile(projectFile.projectFileId);
+                  "
+                  >
+                    <v-list-item-action>
+                      <v-icon size="20">mdi-file-move</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-title style="color: #576377 !important">Move file</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -208,7 +240,8 @@
                 </a>
               </div>
             </v-btn>
-            <v-btn icon>
+            <!-- <v-btn icon>
+              
               <div class="iconBackCircleFiles">
                 <v-icon
                   size="20"
@@ -219,11 +252,80 @@
                   color="#FF6161"
                 >mdi-trash-can-outline</v-icon>
               </div>
-            </v-btn>
+            </v-btn>-->
           </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
+
+    <!-- ------------- Move file Dialog ------------ -->
+    <v-dialog v-model="fileMoveDialog" max-width="380">
+      <v-card>
+        <v-form v-model="isValid" ref="form">
+          <div style="padding-top: 30px" class="popupConfirmHeadline">
+            <v-list-item-title>File move to</v-list-item-title>
+            <br />
+            <div class="moveToFoldersList overflow-y-auto">
+              <v-list-item-group>
+                <v-list-item @click="moveFolder(null)">
+                  <v-list-item-action>
+                    <v-icon>mdi-folder</v-icon>
+                  </v-list-item-action>
+                  <v-list-item-action>
+                    <v-list-item-subtitle
+                      class="fontRestructure14"
+                      style="color: #576377 !important"
+                    >Main Folder</v-list-item-subtitle>
+                  </v-list-item-action>
+                </v-list-item>
+                <div v-for="(projectFolder, index) in AllprojectFolders.folders" :key="index">
+                  <v-list-item
+                    v-if="projectFolder.folderType == 'PROJECT'"
+                    @click="moveFolder(projectFolder.folderId)"
+                  >
+                    <v-list-item-action>
+                      <v-icon>mdi-folder</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-action>
+                      <v-list-item-subtitle
+                        class="fontRestructure14"
+                        style="color: #576377 !important"
+                      >{{projectFolder.folderName}}</v-list-item-subtitle>
+                    </v-list-item-action>
+                  </v-list-item>
+                </div>
+              </v-list-item-group>
+            </div>
+          </div>
+
+          <div style="padding-bottom: 20px">
+            <v-card-actions>
+              <v-spacer></v-spacer>
+
+              <v-spacer></v-spacer>
+              <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
+              <v-btn
+                class="text-capitalize"
+                @click="fileMoveDialog = false"
+                small
+                text
+                color="error"
+                width="100px"
+              >Cancel</v-btn>
+
+              <v-btn
+                class="text-capitalize"
+                depressed
+                small
+                color="primary"
+                width="100px"
+                @click="fileMoveDialog = false; moveFile()"
+              >Move</v-btn>
+            </v-card-actions>
+          </div>
+        </v-form>
+      </v-card>
+    </v-dialog>
 
     <!-- ------------- delete file dialog ------------ -->
     <v-dialog v-model="taskDialog" max-width="380">
@@ -375,9 +477,49 @@ export default {
       editFolderDialog: false,
       folderNameRules: [(value) => !!value || "Folder name is required!"],
       folderName: this.selectedFolder.folderName,
+      fileMoveDialog: false,
+      folderMove: "",
     };
   },
   methods: {
+    moveFolder(folderId) {
+      this.folderMove = folderId;
+    },
+    async moveFile() {
+      let response;
+      try {
+        response = await this.$axios.$post(
+          `/projects/${this.projectId}/folder/copy`,
+          {
+            fileId: this.fileId,
+            previousParentFolder: null,
+            newParentFolder: this.folderMove,
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.$store.dispatch("project/fetchAllSelectedFolderFiles", {
+          projectId: this.$route.params.projects,
+          folderId: this.selectedFolder.folderId,
+        });
+        this.component = "success-popup";
+        this.successMessage = "File successfully moved";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        (this.folderName = ""), console.log("Error updating a status", e);
+      }
+      this.$refs.form.reset();
+    },
     async editFolder() {
       let response;
       try {
@@ -571,6 +713,7 @@ export default {
     ...mapState({
       projectId: (state) => state.project.project.projectId,
       selectedFolderFiles: (state) => state.project.selectedFolderFiles,
+      AllprojectFolders: (state) => state.project.projectFolders,
     }),
   },
 };

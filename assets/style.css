@@ -3362,3 +3362,7 @@
 .iframeSection::-webkit-scrollbar {
   display: none;
 }
+.moveToFoldersList {
+  max-height: 300px;
+  background-color: #fafafa;
+}

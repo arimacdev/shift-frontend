@@ -38,6 +38,15 @@ export const mutations = {
     state.projectFiles = projectFiles;
   },
   FETCH_ALL_PROJECTS_FOLDERS(state, projectFolders) {
+    const sorted = projectFolders.folders.sort((a, b) => {
+      const folderA = a.folderType;
+      const folderB = b.folderType;
+
+      if (folderA < folderB) return -1;
+      if (folderA > folderB) return 1;
+
+      return 0;
+    });
     state.projectFolders = projectFolders;
   },
   FETCH_ALL_PROJECTS_FOLDER_FILES(state, selectedFolderFiles) {
