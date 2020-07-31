@@ -505,6 +505,10 @@ export default {
           projectId: this.$route.params.projects,
           folderId: this.selectedFolder.folderId,
         });
+        this.$store.dispatch(
+          "project/fetchAllProjectFolders",
+          this.$route.params.projects
+        );
         this.component = "success-popup";
         this.successMessage = "File successfully moved";
         setTimeout(() => {
