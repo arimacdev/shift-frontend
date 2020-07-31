@@ -501,6 +501,12 @@ export default {
             },
           }
         );
+        this.component = "success-popup";
+        this.successMessage = "File successfully deleted";
+        (this.folderName = ""),
+          setTimeout(() => {
+            this.close();
+          }, 3000);
         this.$store.dispatch(
           "project/fetchAllProjectFolders",
           this.$route.params.projects
@@ -508,6 +514,11 @@ export default {
       } catch (e) {
         console.log("Error deleting task", e);
         this.taskDialog = false;
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
       }
     },
     getUploadDate(date) {

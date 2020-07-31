@@ -33,10 +33,10 @@
         </v-list-item-action>
         <v-list-item-content></v-list-item-content>
         <v-list-item-action v-if="selectedFolder.folderType == 'PROJECT'">
-          <v-icon>mdi-trash-can-outline</v-icon>
+          <v-icon @click="folderDeleteDialog = true;">mdi-trash-can-outline</v-icon>
         </v-list-item-action>
         <v-list-item-action v-if="selectedFolder.folderType == 'PROJECT'">
-          <v-icon>mdi-pencil-circle</v-icon>
+          <v-icon @click="editFolderDialog = true;">mdi-pencil-circle</v-icon>
         </v-list-item-action>
       </v-list-item>
     </div>
@@ -252,6 +252,80 @@
         </div>
       </v-card>
     </v-dialog>
+    <!-- ------------- delete folder dialog ------------ -->
+    <v-dialog v-model="folderDeleteDialog" max-width="380">
+      <v-card>
+        <div class="popupConfirmHeadline">
+          <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
+          <br />
+          <span class="alertPopupTitle">Delete Folder</span>
+          <br />
+          <span class="alertPopupText">
+            You're about to permanantly delete this folder, If you're not sure,
+            you can cancel this action.
+          </span>
+        </div>
+
+        <div class="popupBottom">
+          <v-card-actions>
+            <v-spacer></v-spacer>
+
+            <v-btn color="success" width="100px" @click="folderDeleteDialog = false">Cancel</v-btn>
+            <v-spacer></v-spacer>
+            <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
+            <v-btn color="error" width="100px" @click="removeFolder()">Delete</v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </div>
+      </v-card>
+    </v-dialog>
+
+    <!-- ------------- Edit Folder Dialog ------------ -->
+    <v-dialog v-model="editFolderDialog" max-width="380">
+      <v-card>
+        <v-form v-model="isValid" ref="form">
+          <div style="padding-top: 30px" class="popupConfirmHeadline">
+            <v-list-item-title>New Folder</v-list-item-title>
+            <br />
+            <v-text-field
+              autofocus
+              v-model="folderName"
+              :rules="folderNameRules"
+              label="Folder Name"
+              dense
+              outlined
+            ></v-text-field>
+          </div>
+
+          <div style="padding-bottom: 20px">
+            <v-card-actions>
+              <v-spacer></v-spacer>
+
+              <v-spacer></v-spacer>
+              <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
+              <v-btn
+                class="text-capitalize"
+                @click="editFolderDialog = false"
+                small
+                text
+                color="error"
+                width="100px"
+              >Cancel</v-btn>
+
+              <v-btn
+                :disabled="!isValid"
+                class="text-capitalize"
+                depressed
+                small
+                color="primary"
+                width="100px"
+                @click="editFolderDialog = false; editFolder()"
+              >Update</v-btn>
+            </v-card-actions>
+          </div>
+        </v-form>
+      </v-card>
+    </v-dialog>
 
     <!-- ---------- snackbar ---------- -->
 
@@ -297,9 +371,47 @@ export default {
       files: [],
       fileId: "",
       taskDialog: false,
+      folderDeleteDialog: false,
+      editFolderDialog: false,
+      folderNameRules: [(value) => !!value || "Folder name is required!"],
+      folderName: this.selectedFolder.folderName,
     };
   },
   methods: {
+    async editFolder() {
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/folder/${this.selectedFolder.folderId}`,
+          {
+            folderName: this.folderName,
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.$store.dispatch(
+          "project/fetchAllProjectFolders",
+          this.$route.params.projects
+        );
+        this.component = "success-popup";
+        this.successMessage = "Folder successfully updated";
+        (this.folderName = ""),
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        (this.folderName = ""), console.log("Error updating a status", e);
+      }
+      this.$refs.form.reset();
+    },
     async projectFileUpload() {
       this.snackbar = true;
       for (let index = 0; index < this.files.length; ++index) {
@@ -387,7 +499,40 @@ export default {
           folderId: this.selectedFolder.folderId,
         });
         this.component = "success-popup";
-        this.successMessage = "File(s) successfully uploaded";
+        this.successMessage = "File successfully deleted";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.snackbar = false;
+        console.log("Error deleting task", e);
+        this.taskDialog = false;
+      }
+    },
+    async removeFolder() {
+      // console.log("projectFile " + this.fileId);
+      this.folderDeleteDialog = false;
+      let response;
+      try {
+        response = await this.$axios.$delete(
+          `/projects/${this.projectId}/folder/${this.selectedFolder.folderId}`,
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.$store.dispatch(
+          "project/fetchAllProjectFolders",
+          this.$route.params.projects
+        );
+        this.component = "success-popup";
+        this.successMessage = "Folder successfully deleted";
         setTimeout(() => {
           this.close();
         }, 3000);
