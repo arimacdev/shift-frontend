@@ -531,6 +531,7 @@ export default {
           "project/fetchAllProjectFolders",
           this.$route.params.projects
         );
+        this.$emit("removeComponent");
         this.component = "success-popup";
         this.successMessage = "Folder successfully deleted";
         setTimeout(() => {

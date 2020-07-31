@@ -190,7 +190,7 @@
             @click="folderView = true"
           >{{selectedFolder.folderName}}</v-btn>
 
-          <view-files :selectedFolder="selectedFolder" />
+          <view-files :selectedFolder="selectedFolder" @removeComponent="removeComponent" />
         </div>
       </div>
     </div>
@@ -348,6 +348,9 @@ export default {
   },
 
   methods: {
+    removeComponent() {
+      this.folderView = true;
+    },
     selectFolder(projectFolder) {
       this.selectedFolder = projectFolder;
       this.$store.dispatch("project/fetchAllSelectedFolderFiles", {
