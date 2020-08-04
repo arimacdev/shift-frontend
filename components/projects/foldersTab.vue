@@ -53,10 +53,10 @@
             ></v-text-field>
           </v-col>
           <v-col md="1" sm="1">
-            <v-btn color="primary" @click="filterFiles()">Search</v-btn>
+            <v-btn depressed color="primary" @click="filterFiles()" class="text-capitalize">Search</v-btn>
           </v-col>
           <v-col style="margin-left: 20px" v-if="folderView == 'filter'" md="1">
-            <v-btn color="error" @click="filterCancel()">Cancel</v-btn>
+            <v-btn color="error" class="text-capitalize" depressed @click="filterCancel()">Cancel</v-btn>
           </v-col>
         </v-row>
         <div v-if="folderView == 'root'">
@@ -228,16 +228,20 @@
 
         <!-- --------- filter section ---------- -->
         <div v-else-if="folderView == 'filter'">
-          <v-row style="margin-top: 10px">
+          <v-row
+            v-if="FilterFiles.folders == '' && FilterFiles.projectFiles == '' && FilterFiles.taskFiles == ''"
+            style="margin-top: 10px"
+          >
             <v-col>
+              <v-list-item-subtitle>No result found</v-list-item-subtitle>
+            </v-col>
+          </v-row>
+          <v-row style="margin-top: 10px">
+            <v-col v-if="FilterFiles.folders != ''">
               <v-list-item-title>Folders</v-list-item-title>
             </v-col>
           </v-row>
-          <v-row v-if="FilterFiles.folders == ''" style="margin-top: 10px">
-            <v-col>
-              <v-list-item-subtitle>No folders to show</v-list-item-subtitle>
-            </v-col>
-          </v-row>
+
           <v-row>
             <v-col>
               <v-list-item
@@ -259,20 +263,16 @@
             </v-col>
           </v-row>
           <v-row style="margin-top: 20px">
-            <v-col>
-              <v-list-item-title>Files</v-list-item-title>
+            <v-col v-if="FilterFiles.projectFiles != ''">
+              <v-list-item-title>Project Files</v-list-item-title>
             </v-col>
           </v-row>
-          <v-row v-if="FilterFiles.file == ''" style="margin-top: 10px">
-            <v-col>
-              <v-list-item-subtitle>No files to show</v-list-item-subtitle>
-            </v-col>
-          </v-row>
+
           <v-row style="margin-top: 10px">
             <v-col>
-              <!-- ---------- file display cards --------- -->
+              <!-- ---------- project file display cards --------- -->
               <v-card
-                v-for="(projectFile, index) in FilterFiles.files"
+                v-for="(projectFile, index) in FilterFiles.projectFiles"
                 :key="index"
                 flat
                 outlined
@@ -386,6 +386,87 @@
                         </v-list-item>
                       </v-list>
                     </v-menu>
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+          </v-row>
+
+          <v-row style="margin-top: 20px">
+            <v-col v-if="FilterFiles.taskFiles != ''">
+              <v-list-item-title>Task Files</v-list-item-title>
+            </v-col>
+          </v-row>
+
+          <v-row style="margin-top: 10px">
+            <v-col>
+              <!-- ---------- task file display cards --------- -->
+              <v-card
+                v-for="(taskFile, index) in FilterFiles.taskFiles"
+                :key="index"
+                flat
+                outlined
+                class="fileDisplaySection"
+                width="23%"
+              >
+                <div style="height: 150px;">
+                  <a
+                    style="text-decoration: none;"
+                    :href="taskFile.taskFileUrl"
+                    target="_blank"
+                    download="file"
+                  >
+                    <v-btn style="position: absolute; z-index: 100; right:5px; top: 5px" icon>
+                      <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
+                    </v-btn>
+                  </a>
+                  <v-img
+                    v-if="checkFileType(taskFile.taskFileName.split('.').pop())"
+                    :src="taskFile.taskFileUrl"
+                    height="100%"
+                  ></v-img>
+                  <iframe class="iframeSection" v-else width="100%" :src="taskFile.taskFileUrl"></iframe>
+                </div>
+
+                <v-list-item z- style="height: 30px !important; ">
+                  <v-list-item-action style="margin-left: -10px">
+                    <v-icon
+                      v-if="checkFileType(taskFile.taskFileName.split('.').pop())"
+                      size="20"
+                      color="red"
+                    >mdi-image</v-icon>
+                    <v-icon v-else size="20" color="red">mdi-file-document</v-icon>
+                  </v-list-item-action>
+                  <v-list-item-content style="margin-left: -25px">
+                    <v-list-item-subtitle class="fontRestructure12">{{taskFile.taskFileName}}</v-list-item-subtitle>
+                    <v-list-item-subtitle class="fontRestructure10">
+                      <!-- add uploader name here -->
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+
+                <v-card-actions style="height: 35px !important; margin-top: -10px">
+                  <v-list-item-subtitle class="fontRestructure10">
+                    {{
+                    getFileSize(taskFile.taskFileSize)
+                    }}
+                    kB
+                  </v-list-item-subtitle>
+                  <v-spacer></v-spacer>
+                  <v-list-item-subtitle
+                    class="fontRestructure10"
+                  >{{getUploadDate(taskFile.taskFileDate)}}</v-list-item-subtitle>
+                  <v-btn icon>
+                    <div class="iconBackCircleFiles">
+                      <a
+                        style="text-decoration: none;"
+                        :href="taskFile.taskFileUrl"
+                        target="_blank"
+                        download="file"
+                      >
+                        <v-icon size="20" color="#0BAFFF">mdi-download-outline</v-icon>
+                      </a>
+                    </div>
                   </v-btn>
                 </v-card-actions>
               </v-card>
@@ -856,6 +937,10 @@ export default {
           "project/fetchAllProjectFolders",
           this.$route.params.projects
         );
+        this.$store.dispatch("project/fetchFilterProjectFolders", {
+          projectId: this.$route.params.projects,
+          filterText: this.filterText,
+        });
       } catch (e) {
         console.log("Error deleting task", e);
         this.taskDialog = false;
