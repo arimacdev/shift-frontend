@@ -6,6 +6,10 @@ export const state = () => ({
     folders: [],
     files: [],
   },
+  filterFiles: {
+    folders: [],
+    files: [],
+  },
   projectFolders: [
     {
       folders: [],
@@ -48,6 +52,18 @@ export const mutations = {
       return 0;
     });
     state.projectFolders = projectFolders;
+  },
+  FILTER_PROJECTS_FOLDERS(state, filterFiles) {
+    const sorted = filterFiles.folders.sort((a, b) => {
+      const folderA = a.folderType;
+      const folderB = b.folderType;
+
+      if (folderA < folderB) return -1;
+      if (folderA > folderB) return 1;
+
+      return 0;
+    });
+    state.filterFiles = filterFiles;
   },
   FETCH_ALL_PROJECTS_FOLDER_FILES(state, selectedFolderFiles) {
     state.selectedFolderFiles = selectedFolderFiles;
@@ -137,6 +153,27 @@ export const actions = {
       );
       // console.log('project files--->', projectFilesResponse.data);
       commit('FETCH_ALL_PROJECTS_FOLDERS', projectFilesResponse.data);
+    } catch (error) {
+      console.log('Error fetching data', error);
+    }
+  },
+  async fetchFilterProjectFolders(
+    { commit, rootState },
+    { projectId, filterText }
+  ) {
+    const user = rootState.user.userId;
+    let projectFilesResponse;
+    try {
+      projectFilesResponse = await this.$axios.$get(
+        `/projects/${projectId}/folder/search?name=${filterText}`,
+        {
+          headers: {
+            user: user,
+          },
+        }
+      );
+      // console.log('project files--->', projectFilesResponse.data);
+      commit('FILTER_PROJECTS_FOLDERS', projectFilesResponse.data);
     } catch (error) {
       console.log('Error fetching data', error);
     }
