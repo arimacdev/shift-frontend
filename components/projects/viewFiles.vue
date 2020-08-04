@@ -203,11 +203,7 @@
 
           <v-list-item z- style="height: 30px !important; ">
             <v-list-item-action style="margin-left: -10px">
-              <v-icon
-                v-if="checkFileType(taskFile.taskFileName)"
-                size="20"
-                color="red"
-              >mdi-image</v-icon>
+              <v-icon v-if="checkFileType(taskFile.taskFileName)" size="20" color="red">mdi-image</v-icon>
               <v-icon v-else size="20" color="red">mdi-file-document</v-icon>
             </v-list-item-action>
             <v-list-item-content style="margin-left: -25px">
@@ -606,28 +602,28 @@ export default {
       this.files = null;
     },
     checkFileType(type) {
-      console.log("checkF", type)
-      if(type){
-      const fileType = type.split('.').pop();
-      switch (type) {
-        case "png":
-          return false;
-          break;
-        case "jpeg":
-          return false;
-          break;
-        case "gif":
-          return false;
-          break;
-        case "svg":
-          return false;
-          break;
-        case "jpg":
-          return false;
-          break;
-        default:
-          return true;
-      }
+      console.log("checkF", type);
+      if (type) {
+        const fileType = type.split(".").pop();
+        switch (fileType) {
+          case "png":
+            return true;
+            break;
+          case "jpeg":
+            return true;
+            break;
+          case "gif":
+            return true;
+            break;
+          case "svg":
+            return true;
+            break;
+          case "jpg":
+            return true;
+            break;
+          default:
+            return false;
+        }
       }
     },
     async removeFiles() {
