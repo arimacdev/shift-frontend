@@ -80,6 +80,12 @@ export const mutations = {
   SET_SELECTED_PROJECT(state, project) {
     state.seletedProject = project;
   },
+  CLEAR_FOLDER_FILES(state){
+    state.selectedFolderFiles = {
+      folders: [],
+      files: [],
+    }
+  }
 };
 export const actions = {
   async fetchProject({ commit, rootState }, projectId) {
@@ -178,6 +184,9 @@ export const actions = {
       console.log('Error fetching data', error);
     }
   },
+  clearFolderFiles({commit}){
+    commit('CLEAR_FOLDER_FILES');
+  },
   async fetchAllSelectedFolderFiles(
     { commit, rootState },
     { projectId, folderId }
@@ -210,6 +219,7 @@ export const actions = {
     commit('SET_SELECTED_PROJECT', project);
   },
 };
+
 
 export const getters = {
   getProject: (state) => {

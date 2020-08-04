@@ -480,7 +480,7 @@
             text
             color="primary"
             class="text-capitalize"
-            @click="folderView = 'root'; selectedFolder =''"
+            @click="folderView = 'root'; selectedFolder =''; clearFolderState()"
           >Project Files</v-btn>
           <v-icon>mdi-chevron-right</v-icon>
           <v-btn
@@ -722,6 +722,9 @@ export default {
   },
 
   methods: {
+    clearFolderState(){
+      this.$store.dispatch("project/clearFolderFiles")
+    },
     filterCancel() {
       this.folderView = "root";
       this.filterText = "";
