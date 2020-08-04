@@ -611,22 +611,22 @@ export default {
       const fileType = type.split('.').pop();
       switch (type) {
         case "png":
-          return true;
+          return false;
           break;
         case "jpeg":
-          return true;
+          return false;
           break;
         case "gif":
-          return true;
+          return false;
           break;
         case "svg":
-          return true;
+          return false;
           break;
         case "jpg":
-          return true;
+          return false;
           break;
         default:
-          return false;
+          return true;
       }
       }
     },
