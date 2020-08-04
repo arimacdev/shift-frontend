@@ -40,7 +40,7 @@
         </v-list-item-action>
       </v-list-item>
     </div>
-    <v-row style="margin-top: 30px">
+    <v-row style="margin-top: 10px">
       <v-col>
         <v-list-item-title>Files</v-list-item-title>
       </v-col>

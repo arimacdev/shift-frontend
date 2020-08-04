@@ -236,7 +236,7 @@
               <v-list-item-subtitle>No result found</v-list-item-subtitle>
             </v-col>
           </v-row>
-          <v-row style="margin-top: 10px">
+          <v-row style="margin-top: -30px">
             <v-col v-if="FilterFiles.folders != ''">
               <v-list-item-title>Folders</v-list-item-title>
             </v-col>
@@ -748,6 +748,7 @@ export default {
         projectId: this.$route.params.projects,
         folderId: projectFolder.folderId,
       });
+      this.filterText = "";
     },
     checkFileType(type) {
       switch (type) {
