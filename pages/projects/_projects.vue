@@ -615,6 +615,17 @@ export default {
             this.overlay = false;
           });
           break;
+        case "folders":
+          this.overlay = true;
+          Promise.all([
+            this.$store.dispatch(
+              "project/fetchAllProjectFolders",
+              this.$route.params.projects
+            ),
+          ]).finally(() => {
+            this.overlay = false;
+          });
+          break;
       }
     },
     async selectProject(project) {

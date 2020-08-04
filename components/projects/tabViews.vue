@@ -24,8 +24,13 @@
             class="tabInactiveStyle text-capitalize"
             active-class="tabTitleStyle"
           >Project</v-tab>
-          <v-tab
+          <!-- <v-tab
             @click="changeTabView('files')"
+            class="tabInactiveStyle text-capitalize"
+            active-class="tabTitleStyle"
+          >Files</v-tab>-->
+          <v-tab
+            @click="changeTabView('folders')"
             class="tabInactiveStyle text-capitalize"
             active-class="tabTitleStyle"
           >Files</v-tab>
@@ -62,10 +67,16 @@
               <project-tab />
             </v-card>
           </v-tab-item>
-          <v-tab-item>
+          <!-- <v-tab-item>
             <v-divider class="mx-4"></v-divider>
             <v-card flat>
               <files-tab />
+            </v-card>
+          </v-tab-item>-->
+          <v-tab-item>
+            <v-divider class="mx-4"></v-divider>
+            <v-card flat>
+              <folders-tab />
             </v-card>
           </v-tab-item>
           <v-tab-item>
@@ -89,6 +100,7 @@ import TaskDrawer from "~/components/projects/taskDrawer";
 import People from "~/components/people/people";
 import ProjectTab from "~/components/projects/projectTab";
 import FilesTab from "~/components/projects/filesTab";
+import FoldersTab from "~/components/projects/foldersTab";
 import BoardTab from "~/components/projects/boardTab";
 import ProjectLogs from "~/components/projects/projectLogs";
 import Progress from "~/components/popups/progress";
@@ -102,7 +114,7 @@ export default {
       page: 1,
       drawer: null,
       userId: this.$store.state.user.userId,
-      items: []
+      items: [],
       // taskCompletion: {}
     };
   },
@@ -116,7 +128,7 @@ export default {
     "MyTasks",
     "people",
     "taskLog",
-    "pagination"
+    "pagination",
     // "taskCompletion"
   ],
   name: "tabViews",
@@ -126,9 +138,10 @@ export default {
     people: People,
     "project-tab": ProjectTab,
     "files-tab": FilesTab,
+    "folders-tab": FoldersTab,
     "board-tab": BoardTab,
     "project-logs": ProjectLogs,
-    "progress-loading": Progress
+    "progress-loading": Progress,
   },
   async created() {
     this.projectId = this.$route.params.projects;
@@ -156,6 +169,10 @@ export default {
           this.$store.dispatch("tab/updateTabViewsTab", "files");
           this.$emit("refreshSelectedTab", "files");
           break;
+        case "folders":
+          this.$store.dispatch("tab/updateTabViewsTab", "files");
+          this.$emit("refreshSelectedTab", "folders");
+          break;
         case "logs":
           this.overlay = true;
           this.$emit("refreshSelectedTab", "logs");
@@ -164,16 +181,16 @@ export default {
             this.$store.dispatch("activityLog/fetchProjectActivityLog", {
               projectId: this.$route.params.projects,
               startIndex: 0,
-              endIndex: 10
-            })
+              endIndex: 10,
+            }),
           ]).finally(() => {
             this.overlay = false;
           });
           break;
       }
     },
-    onSelectProject() {}
-  }
+    onSelectProject() {},
+  },
 };
 </script>
 
