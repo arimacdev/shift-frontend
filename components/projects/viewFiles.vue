@@ -74,7 +74,7 @@
               </v-btn>
             </a>
             <v-img
-              v-if="checkFileType(projectFile.projectFileName.split('.').pop())"
+              v-if="checkFileType(projectFile.projectFileName)"
               :src="projectFile.projectFileUrl"
               height="100%"
             ></v-img>
@@ -84,7 +84,7 @@
           <v-list-item z- style="height: 30px !important; ">
             <v-list-item-action style="margin-left: -10px">
               <v-icon
-                v-if="checkFileType(projectFile.projectFileName.split('.').pop())"
+                v-if="checkFileType(projectFile.projectFileName)"
                 size="20"
                 color="red"
               >mdi-image</v-icon>
@@ -194,7 +194,7 @@
               </v-btn>
             </a>
             <v-img
-              v-if="checkFileType(taskFile.taskFileName.split('.').pop())"
+              v-if="checkFileType(taskFile.taskFileName)"
               :src="taskFile.taskFileUrl"
               height="100%"
             ></v-img>
@@ -204,7 +204,7 @@
           <v-list-item z- style="height: 30px !important; ">
             <v-list-item-action style="margin-left: -10px">
               <v-icon
-                v-if="checkFileType(taskFile.taskFileName.split('.').pop())"
+                v-if="checkFileType(taskFile.taskFileName)"
                 size="20"
                 color="red"
               >mdi-image</v-icon>
@@ -606,6 +606,9 @@ export default {
       this.files = null;
     },
     checkFileType(type) {
+      console.log("checkF", type)
+      if(type){
+      const fileType = type.split('.').pop();
       switch (type) {
         case "png":
           return true;
@@ -624,6 +627,7 @@ export default {
           break;
         default:
           return false;
+      }
       }
     },
     async removeFiles() {
