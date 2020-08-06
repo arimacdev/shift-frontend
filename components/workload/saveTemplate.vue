@@ -100,14 +100,14 @@ export default {
     "filterType",
     "filterStatus",
     "from",
-    "to"
+    "to",
   ],
   data() {
     return {
       dialog: false,
       isValid: true,
       templateName: "",
-      nameRules: [value => !!value || "Template name is required!"]
+      nameRules: [(value) => !!value || "Template name is required!"],
     };
   },
   methods: {
@@ -117,7 +117,7 @@ export default {
       const template = {
         templateName: this.templateName,
         templateCreatorId: this.$store.state.user.userId,
-        templateQuery: this.saveTemplateQuery
+        templateQuery: this.saveTemplateQuery,
       };
       try {
         response = await this.$axios.$post(`/template`, template);
@@ -127,7 +127,7 @@ export default {
       } catch (e) {
         console.log("Error adding a User", e);
       }
-    }
-  }
+    },
+  },
 };
 </script>

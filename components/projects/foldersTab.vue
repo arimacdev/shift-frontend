@@ -38,6 +38,7 @@
                     @change="projectFileUpload();"
                   ></v-file-input>
                 </v-list-item>
+                <v-list-item-subtitle class="UploaderWarning">(Max file size : 10MB)</v-list-item-subtitle>
               </v-list>
             </v-menu>
           </v-col>
@@ -116,7 +117,6 @@
                     style="text-decoration: none;"
                     :href="projectFile.projectFileUrl"
                     target="_blank"
-                    download="file"
                   >
                     <v-btn style="position: absolute; z-index: 100; right:5px; top: 5px" icon>
                       <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
@@ -169,7 +169,7 @@
                         style="text-decoration: none;"
                         :href="projectFile.projectFileUrl"
                         target="_blank"
-                        download="file"
+                        download
                       >
                         <v-icon size="20" color="#0BAFFF">mdi-download-outline</v-icon>
                       </a>
@@ -284,7 +284,6 @@
                     style="text-decoration: none;"
                     :href="projectFile.projectFileUrl"
                     target="_blank"
-                    download="file"
                   >
                     <v-btn style="position: absolute; z-index: 100; right:5px; top: 5px" icon>
                       <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
@@ -337,7 +336,7 @@
                         style="text-decoration: none;"
                         :href="projectFile.projectFileUrl"
                         target="_blank"
-                        download="file"
+                        download
                       >
                         <v-icon size="20" color="#0BAFFF">mdi-download-outline</v-icon>
                       </a>
@@ -410,12 +409,7 @@
                 width="23%"
               >
                 <div style="height: 150px;">
-                  <a
-                    style="text-decoration: none;"
-                    :href="taskFile.taskFileUrl"
-                    target="_blank"
-                    download="file"
-                  >
+                  <a style="text-decoration: none;" :href="taskFile.taskFileUrl" target="_blank">
                     <v-btn style="position: absolute; z-index: 100; right:5px; top: 5px" icon>
                       <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
                     </v-btn>
@@ -462,7 +456,7 @@
                         style="text-decoration: none;"
                         :href="taskFile.taskFileUrl"
                         target="_blank"
-                        download="file"
+                        download
                       >
                         <v-icon size="20" color="#0BAFFF">mdi-download-outline</v-icon>
                       </a>
@@ -722,8 +716,8 @@ export default {
   },
 
   methods: {
-    clearFolderState(){
-      this.$store.dispatch("project/clearFolderFiles")
+    clearFolderState() {
+      this.$store.dispatch("project/clearFolderFiles");
     },
     filterCancel() {
       this.folderView = "root";
@@ -812,6 +806,7 @@ export default {
               this.close();
             }, 3000);
             this.snackbar = false;
+            this.files = null;
             //  this.errorMessage = err.response.data
             console.log("File Upload Failed", err);
           });
@@ -894,22 +889,22 @@ export default {
       this.fileId = projectFileId;
       // console.log("file Id " + this.fileId);
     },
-    downloadFile(projectFileUrl) {
-      axios({
-        url: projectFileUrl,
-        method: "GET",
-        responseType: "blob",
-      }).then((response) => {
-        var fileURL = window.URL.createObjectURL(new Blob([response.data]));
-        var fileLink = document.createElement("a");
+    // downloadFile(projectFileUrl) {
+    //   axios({
+    //     url: projectFileUrl,
+    //     method: "GET",
+    //     responseType: "blob",
+    //   }).then((response) => {
+    //     var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+    //     var fileLink = document.createElement("a");
 
-        fileLink.href = fileURL;
-        fileLink.setAttribute("download", "file.pdf");
-        document.body.appendChild(fileLink);
+    //     fileLink.href = fileURL;
+    //     fileLink.setAttribute("download", "file.pdf");
+    //     document.body.appendChild(fileLink);
 
-        fileLink.click();
-      });
-    },
+    //     fileLink.click();
+    //   });
+    // },
     close() {
       this.component = "";
     },

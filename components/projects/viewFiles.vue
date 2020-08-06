@@ -28,6 +28,7 @@
                   @change="projectFileUpload();"
                 ></v-file-input>
               </v-list-item>
+              <v-list-item-subtitle class="UploaderWarning">(Max file size : 10MB)</v-list-item-subtitle>
             </v-list>
           </v-menu>
         </v-list-item-action>
@@ -63,12 +64,7 @@
           width="23%"
         >
           <div style="height: 150px;">
-            <a
-              style="text-decoration: none;"
-              :href="projectFile.projectFileUrl"
-              target="_blank"
-              download="file"
-            >
+            <a style="text-decoration: none;" :href="projectFile.projectFileUrl" target="_blank">
               <v-btn style="position: absolute; z-index: 101; right:5px; top: 5px" icon>
                 <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
               </v-btn>
@@ -116,7 +112,7 @@
                   style="text-decoration: none;"
                   :href="projectFile.projectFileUrl"
                   target="_blank"
-                  download="file"
+                  download
                 >
                   <v-icon size="20" color="#0BAFFF">mdi-download-outline</v-icon>
                 </a>
@@ -183,12 +179,7 @@
           width="23%"
         >
           <div style="height: 150px;">
-            <a
-              style="text-decoration: none;"
-              :href="taskFile.taskFileUrl"
-              target="_blank"
-              download="file"
-            >
+            <a style="text-decoration: none;" :href="taskFile.taskFileUrl" target="_blank">
               <v-btn style="position: absolute; z-index: 101; right:5px; top: 5px" icon>
                 <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
               </v-btn>
@@ -230,7 +221,7 @@
                   style="text-decoration: none;"
                   :href="taskFile.taskFileUrl"
                   target="_blank"
-                  download="file"
+                  download
                 >
                   <v-icon size="20" color="#0BAFFF">mdi-download-outline</v-icon>
                 </a>
