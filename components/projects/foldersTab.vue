@@ -566,7 +566,7 @@
                 class="text-capitalize"
                 @click="newFolderDialog = false"
                 small
-                text
+                depressed
                 color="error"
                 width="100px"
               >Cancel</v-btn>
