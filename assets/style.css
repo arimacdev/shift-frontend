@@ -2491,6 +2491,15 @@
   background-color: #fafafa;
   border-right: 1px #cdcfd2 solid;
 }
+.innerListItemGroup {
+  background-color: #fafafa;
+}
+.upperListItemGroup {
+  margin-left: -20px !important;
+  padding-left: 20px !important;
+  margin-top: -10px;
+  background-color: #fafafa;
+}
 .upperListItemGroup {
   margin-left: -20px !important;
   padding-left: 20px !important;

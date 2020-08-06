@@ -38,8 +38,8 @@
             <v-hover open-delay="600" v-slot:default="{ hover }">
               <div v-if="taskSelect == 'all'">
                 <div class="restructuredMainTaskList">
-                  <v-list-item class="upperListItem">
-                    <v-list-item class="innerListItem">
+                  <v-list-item class="upperListItemGroup">
+                    <v-list-item class="innerListItemGroup">
                       <!-- @click.stop="drawer = !drawer" -->
                       <v-list-item-action>
                         <v-icon
@@ -117,8 +117,8 @@
                     :key="index"
                     class="restructuredSubTaskListRestructure"
                   >
-                    <v-list-item class="upperListItem">
-                      <v-list-item class="innerListItem">
+                    <v-list-item class="upperListItemGroup">
+                      <v-list-item class="innerListItemGroup">
                         <!-- @click.stop="drawer = !drawer" -->
                         <v-list-item-action>
                           <v-icon
