@@ -112,7 +112,7 @@
                   style="text-decoration: none;"
                   :href="projectFile.projectFileUrl"
                   target="_blank"
-                  download="file"
+                  download
                 >
                   <v-icon size="20" color="#0BAFFF">mdi-download-outline</v-icon>
                 </a>
@@ -221,7 +221,7 @@
                   style="text-decoration: none;"
                   :href="taskFile.taskFileUrl"
                   target="_blank"
-                  download="file"
+                  download
                 >
                   <v-icon size="20" color="#0BAFFF">mdi-download-outline</v-icon>
                 </a>
