@@ -38,7 +38,7 @@
                     @change="projectFileUpload();"
                   ></v-file-input>
                 </v-list-item>
-                <v-list-item-subtitle class="UploaderWarning">(Max file size : 10MB)</v-list-item-subtitle>
+                <v-list-item-subtitle class="UploaderWarning">(Maximum upload file size : 10MB)</v-list-item-subtitle>
               </v-list>
             </v-menu>
           </v-col>
@@ -54,7 +54,13 @@
             ></v-text-field>
           </v-col>
           <v-col md="1" sm="1">
-            <v-btn depressed color="primary" @click="filterFiles()" class="text-capitalize">Search</v-btn>
+            <v-btn
+              :disabled="this.filterText == ''"
+              depressed
+              color="primary"
+              @click="filterFiles()"
+              class="text-capitalize"
+            >Search</v-btn>
           </v-col>
           <v-col style="margin-left: 20px" v-if="folderView == 'filter'" md="1">
             <v-btn color="error" class="text-capitalize" depressed @click="filterCancel()">Cancel</v-btn>
@@ -127,12 +133,18 @@
                     :src="projectFile.projectFileUrl"
                     height="100%"
                   ></v-img>
-                  <iframe
+
+                  <v-img
+                    v-else
+                    src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1596703345080_pngtree-file-icon-image_1128287.jpg"
+                    height="100%"
+                  ></v-img>
+                  <!-- <iframe
                     class="iframeSection"
                     v-else
                     width="100%"
                     :src="projectFile.projectFileUrl"
-                  ></iframe>
+                  ></iframe>-->
                 </div>
 
                 <v-list-item z- style="height: 30px !important; ">
@@ -294,12 +306,17 @@
                     :src="projectFile.projectFileUrl"
                     height="100%"
                   ></v-img>
-                  <iframe
+                  <v-img
+                    v-else
+                    src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1596703345080_pngtree-file-icon-image_1128287.jpg"
+                    height="100%"
+                  ></v-img>
+                  <!-- <iframe
                     class="iframeSection"
                     v-else
                     width="100%"
                     :src="projectFile.projectFileUrl"
-                  ></iframe>
+                  ></iframe>-->
                 </div>
 
                 <v-list-item z- style="height: 30px !important; ">
@@ -419,7 +436,12 @@
                     :src="taskFile.taskFileUrl"
                     height="100%"
                   ></v-img>
-                  <iframe class="iframeSection" v-else width="100%" :src="taskFile.taskFileUrl"></iframe>
+                  <v-img
+                    v-else
+                    src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1596703345080_pngtree-file-icon-image_1128287.jpg"
+                    height="100%"
+                  ></v-img>
+                  <!-- <iframe class="iframeSection" v-else width="100%" :src="taskFile.taskFileUrl"></iframe> -->
                 </div>
 
                 <v-list-item z- style="height: 30px !important; ">
@@ -613,7 +635,7 @@
                 class="text-capitalize"
                 @click="fileMoveDialog = false"
                 small
-                text
+                depressed
                 color="error"
                 width="100px"
               >Cancel</v-btn>
@@ -724,11 +746,13 @@ export default {
       this.filterText = "";
     },
     filterFiles() {
-      this.$store.dispatch("project/fetchFilterProjectFolders", {
-        projectId: this.$route.params.projects,
-        filterText: this.filterText,
-      });
-      this.folderView = "filter";
+      if (this.filterText != "") {
+        this.$store.dispatch("project/fetchFilterProjectFolders", {
+          projectId: this.$route.params.projects,
+          filterText: this.filterText,
+        });
+        this.folderView = "filter";
+      }
     },
     moveFolder(folderId) {
       this.folderMove = folderId;
