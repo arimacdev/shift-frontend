@@ -64,12 +64,7 @@
           width="23%"
         >
           <div style="height: 150px;">
-            <a
-              style="text-decoration: none;"
-              :href="projectFile.projectFileUrl"
-              target="_blank"
-              download="file"
-            >
+            <a style="text-decoration: none;" :href="projectFile.projectFileUrl" target="_blank">
               <v-btn style="position: absolute; z-index: 101; right:5px; top: 5px" icon>
                 <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
               </v-btn>
@@ -184,12 +179,7 @@
           width="23%"
         >
           <div style="height: 150px;">
-            <a
-              style="text-decoration: none;"
-              :href="taskFile.taskFileUrl"
-              target="_blank"
-              download="file"
-            >
+            <a style="text-decoration: none;" :href="taskFile.taskFileUrl" target="_blank">
               <v-btn style="position: absolute; z-index: 101; right:5px; top: 5px" icon>
                 <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
               </v-btn>
