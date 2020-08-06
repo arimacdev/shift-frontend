@@ -28,6 +28,7 @@
                   @change="projectFileUpload();"
                 ></v-file-input>
               </v-list-item>
+              <v-list-item-subtitle class="UploaderWarning">(Max file size : 10MB)</v-list-item-subtitle>
             </v-list>
           </v-menu>
         </v-list-item-action>

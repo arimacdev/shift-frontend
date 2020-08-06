@@ -47,13 +47,29 @@
                 ></VueCtkDateTimePicker>
               </v-col>
               <v-col md="1">
-                <v-btn @click="jqlSearch()" dark width="100%" height="40px" color="#080848">
-                  <v-icon color="#FFFFFF">mdi-filter-outline</v-icon>
+                <v-btn
+                  class="text-capitalize"
+                  @click="jqlSearch()"
+                  dark
+                  width="100%"
+                  height="40px"
+                  color="#080848"
+                >
+                  <!-- <v-icon color="#FFFFFF">mdi-filter-outline</v-icon> -->
+                  Search
                 </v-btn>
               </v-col>
               <v-col md="1">
-                <v-btn dark width="100%" height="40px" color="#FF6161" @click="clearFilters()">
-                  <v-icon color="#FFFFFF">mdi-cancel</v-icon>
+                <v-btn
+                  class="text-capitalize"
+                  dark
+                  width="100%"
+                  height="40px"
+                  color="#FF6161"
+                  @click="clearFilters()"
+                >
+                  <!-- <v-icon color="#FFFFFF">mdi-cancel</v-icon> -->
+                  Cancel
                 </v-btn>
               </v-col>
             </v-row>
@@ -805,7 +821,7 @@ export default {
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "Add Due Date";
+        return "No Due Date";
       } else if (
         now.getDate() === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&

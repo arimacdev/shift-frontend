@@ -38,6 +38,7 @@
                     @change="projectFileUpload();"
                   ></v-file-input>
                 </v-list-item>
+                <v-list-item-subtitle class="UploaderWarning">(Max file size : 10MB)</v-list-item-subtitle>
               </v-list>
             </v-menu>
           </v-col>
@@ -722,8 +723,8 @@ export default {
   },
 
   methods: {
-    clearFolderState(){
-      this.$store.dispatch("project/clearFolderFiles")
+    clearFolderState() {
+      this.$store.dispatch("project/clearFolderFiles");
     },
     filterCancel() {
       this.folderView = "root";
@@ -812,6 +813,7 @@ export default {
               this.close();
             }, 3000);
             this.snackbar = false;
+            this.files = null;
             //  this.errorMessage = err.response.data
             console.log("File Upload Failed", err);
           });
@@ -894,22 +896,22 @@ export default {
       this.fileId = projectFileId;
       // console.log("file Id " + this.fileId);
     },
-    downloadFile(projectFileUrl) {
-      axios({
-        url: projectFileUrl,
-        method: "GET",
-        responseType: "blob",
-      }).then((response) => {
-        var fileURL = window.URL.createObjectURL(new Blob([response.data]));
-        var fileLink = document.createElement("a");
+    // downloadFile(projectFileUrl) {
+    //   axios({
+    //     url: projectFileUrl,
+    //     method: "GET",
+    //     responseType: "blob",
+    //   }).then((response) => {
+    //     var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+    //     var fileLink = document.createElement("a");
 
-        fileLink.href = fileURL;
-        fileLink.setAttribute("download", "file.pdf");
-        document.body.appendChild(fileLink);
+    //     fileLink.href = fileURL;
+    //     fileLink.setAttribute("download", "file.pdf");
+    //     document.body.appendChild(fileLink);
 
-        fileLink.click();
-      });
-    },
+    //     fileLink.click();
+    //   });
+    // },
     close() {
       this.component = "";
     },

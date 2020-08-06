@@ -3356,7 +3356,7 @@
   cursor: pointer !important;
 }
 .fileUploader {
-  margin-bottom: -25px !important;
+  padding-top: 5px !important;
 }
 
 .iframeSection::-webkit-scrollbar {
@@ -3365,4 +3365,11 @@
 .moveToFoldersList {
   max-height: 300px;
   background-color: #fafafa;
+}
+.UploaderWarning {
+  margin-top: -25px;
+  position: absolute;
+  right: 15px;
+  font-size: 10px !important;
+  color: #576377;
 }

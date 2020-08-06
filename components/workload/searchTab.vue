@@ -119,10 +119,24 @@
               </v-radio-group>
               <v-row>
                 <v-col md="10">
-                  <v-btn @click="jqlSearch()" height="70px" color="#080848" dark width="100%">Search</v-btn>
+                  <v-btn
+                    @click="jqlSearch()"
+                    class="text-capitalize"
+                    height="70px"
+                    color="#080848"
+                    dark
+                    width="100%"
+                  >Search</v-btn>
                 </v-col>
                 <v-col md="2">
-                  <v-btn @click="jqlCancel()" height="70px" color="#ff6161" dark width="70%">
+                  <v-btn
+                    @click="jqlCancel()"
+                    class="text-capitalize"
+                    height="70px"
+                    color="#ff6161"
+                    dark
+                    width="70%"
+                  >
                     <v-icon color="#FFFFFF">mdi-cancel</v-icon>
                   </v-btn>
                 </v-col>
@@ -161,7 +175,12 @@
                       </v-autocomplete>
                     </v-col>
                     <v-col md="4">
-                      <v-btn width="100%" color="primary" @click="loadTemplate">Go</v-btn>
+                      <v-btn
+                        class="text-capitalize"
+                        width="100%"
+                        color="primary"
+                        @click="loadTemplate"
+                      >Go</v-btn>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -980,7 +999,7 @@ export default {
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "Add Due Date";
+        return "No Due Date";
       } else if (
         now.getDate() === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
