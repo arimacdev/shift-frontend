@@ -28,7 +28,7 @@
                   @change="projectFileUpload();"
                 ></v-file-input>
               </v-list-item>
-              <v-list-item-subtitle class="UploaderWarning">(Max file size : 10MB)</v-list-item-subtitle>
+              <v-list-item-subtitle class="UploaderWarning">(Maximum upload file size : 10MB)</v-list-item-subtitle>
             </v-list>
           </v-menu>
         </v-list-item-action>
@@ -74,7 +74,12 @@
               :src="projectFile.projectFileUrl"
               height="100%"
             ></v-img>
-            <iframe v-else width="100%" :src="projectFile.projectFileUrl"></iframe>
+            <v-img
+              v-else
+              src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1596703345080_pngtree-file-icon-image_1128287.jpg"
+              height="100%"
+            ></v-img>
+            <!-- <iframe v-else width="100%" :src="projectFile.projectFileUrl"></iframe> -->
           </div>
 
           <v-list-item z- style="height: 30px !important; ">
@@ -189,7 +194,12 @@
               :src="taskFile.taskFileUrl"
               height="100%"
             ></v-img>
-            <iframe class="iframeSection" v-else width="100%" :src="taskFile.taskFileUrl"></iframe>
+            <v-img
+              v-else
+              src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1596703345080_pngtree-file-icon-image_1128287.jpg"
+              height="100%"
+            ></v-img>
+            <!-- <iframe class="iframeSection" v-else width="100%" :src="taskFile.taskFileUrl"></iframe> -->
           </div>
 
           <v-list-item z- style="height: 30px !important; ">
@@ -267,7 +277,7 @@
                 </v-list-item>
                 <div v-for="(projectFolder, index) in AllprojectFolders.folders" :key="index">
                   <v-list-item
-                    v-if="projectFolder.folderType == 'PROJECT'"
+                    v-if="projectFolder.folderType == 'PROJECT' && projectFolder.folderId != selectedFolder.folderId"
                     @click="moveFolder(projectFolder.folderId)"
                   >
                     <v-list-item-action>
@@ -295,7 +305,7 @@
                 class="text-capitalize"
                 @click="fileMoveDialog = false"
                 small
-                text
+                depressed
                 color="error"
                 width="100px"
               >Cancel</v-btn>
@@ -396,7 +406,7 @@
                 class="text-capitalize"
                 @click="editFolderDialog = false"
                 small
-                text
+                depressed
                 color="error"
                 width="100px"
               >Cancel</v-btn>

@@ -80,12 +80,12 @@ export const mutations = {
   SET_SELECTED_PROJECT(state, project) {
     state.seletedProject = project;
   },
-  CLEAR_FOLDER_FILES(state){
+  CLEAR_FOLDER_FILES(state) {
     state.selectedFolderFiles = {
       folders: [],
       files: [],
-    }
-  }
+    };
+  },
 };
 export const actions = {
   async fetchProject({ commit, rootState }, projectId) {
@@ -171,7 +171,9 @@ export const actions = {
     let projectFilesResponse;
     try {
       projectFilesResponse = await this.$axios.$get(
-        `/projects/${projectId}/folder/search?name=${filterText}`,
+        `/projects/${projectId}/folder/search?name=${encodeURIComponent(
+          filterText
+        )}`,
         {
           headers: {
             user: user,
@@ -184,7 +186,7 @@ export const actions = {
       console.log('Error fetching data', error);
     }
   },
-  clearFolderFiles({commit}){
+  clearFolderFiles({ commit }) {
     commit('CLEAR_FOLDER_FILES');
   },
   async fetchAllSelectedFolderFiles(
@@ -219,7 +221,6 @@ export const actions = {
     commit('SET_SELECTED_PROJECT', project);
   },
 };
-
 
 export const getters = {
   getProject: (state) => {
