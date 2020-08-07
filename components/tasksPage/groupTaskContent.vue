@@ -129,6 +129,7 @@
                           <v-icon
                             @click="
                       closeTask(childTask.taskId)"
+                            style="cursor: pointer"
                             v-else
                             size="25"
                             color="#939393"
@@ -136,6 +137,7 @@
                         </v-list-item-action>
                         <div class="tasklistTaskNames restructuredSubTaskName">
                           <div
+                            style="cursor: pointer"
                             @click="
                 selectGroupTask(childTask, task);
                 taskDialog = true;
