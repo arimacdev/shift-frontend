@@ -129,6 +129,7 @@
                           <v-icon
                             @click="
                       closeTask(childTask.taskId)"
+                            style="cursor: pointer"
                             v-else
                             size="25"
                             color="#939393"
@@ -136,6 +137,7 @@
                         </v-list-item-action>
                         <div class="tasklistTaskNames restructuredSubTaskName">
                           <div
+                            style="cursor: pointer"
                             @click="
                 selectGroupTask(childTask, task);
                 taskDialog = true;
@@ -597,7 +599,7 @@ export default {
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "Add Due Date";
+        return "No Due Date";
       } else if (
         now.getDate() === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&

@@ -677,7 +677,7 @@ export default {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
     "add-parent-task": AddParentTask,
-    "add-child-task": AddChildTask
+    "add-child-task": AddChildTask,
   },
   data() {
     return {
@@ -708,15 +708,15 @@ export default {
         taskNotes: "",
         taskStatus: "",
         taskRemindOnDate: "",
-        taskDueDateAt: ""
+        taskDueDateAt: "",
       },
       // taskStatus: this.task.taskStatus,
       // issueType: this.task.issueType,
 
       status: [
         { name: "Open", id: "open" },
-        { name: "Closed", id: "closed" }
-      ]
+        { name: "Closed", id: "closed" },
+      ],
     };
   },
   methods: {
@@ -728,8 +728,8 @@ export default {
           {
             data: {},
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         // this.component = 'success-popup'
@@ -738,7 +738,7 @@ export default {
         this.closeTaskDialog();
         this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
           taskGroupId: this.task.taskGroupId,
-          userId: this.userId
+          userId: this.userId,
         });
         // console.log(response.data);
       } catch (e) {
@@ -765,23 +765,23 @@ export default {
         response = await this.$axios.$put(
           `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}`,
           {
-            taskStatus: this.updatedStatus
+            taskStatus: this.updatedStatus,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.component = "success-popup";
         this.successMessage = "Status successfully updated";
         this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
           taskGroupId: this.task.taskGroupId,
-          userId: this.userId
+          userId: this.userId,
         });
         this.$store.dispatch("groups/groupPeople/fetchGroupPeople", {
           taskGroupId: this.task.taskGroupId,
-          userId: "user"
+          userId: "user",
         });
         setTimeout(() => {
           this.close();
@@ -804,12 +804,12 @@ export default {
           response = await this.$axios.$put(
             `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}`,
             {
-              taskName: this.updatedTask.taskName
+              taskName: this.updatedTask.taskName,
             },
             {
               headers: {
-                user: this.userId
-              }
+                user: this.userId,
+              },
             }
           );
           this.component = "success-popup";
@@ -817,7 +817,7 @@ export default {
 
           this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
             taskGroupId: this.task.taskGroupId,
-            userId: this.userId
+            userId: this.userId,
           });
           setTimeout(() => {
             this.close();
@@ -844,19 +844,19 @@ export default {
         response = await this.$axios.$put(
           `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}`,
           {
-            taskAssignee: this.updatedTask.taskAssignee
+            taskAssignee: this.updatedTask.taskAssignee,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.component = "success-popup";
         this.successMessage = "Assignee successfully updated";
         this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
           taskGroupId: this.task.taskGroupId,
-          userId: this.userId
+          userId: this.userId,
         });
         setTimeout(() => {
           this.close();
@@ -878,7 +878,7 @@ export default {
         let assignee = assigneeSearchList[index];
         this.assignees.push({
           name: assignee.assigneeFirstName + " " + assignee.assigneeLastName,
-          id: assignee.assigneeId
+          id: assignee.assigneeId,
         });
       }
       // console.log("nameList", this.states);
@@ -893,19 +893,19 @@ export default {
         response = await this.$axios.$put(
           `/taskgroup/${this.task.taskGroupId}/tasks/${this.task.taskId}`,
           {
-            taskNotes: this.updatedTask.taskNote
+            taskNotes: this.updatedTask.taskNote,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.component = "success-popup";
         this.successMessage = "Note successfully updated";
         this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
           taskGroupId: this.task.taskGroupId,
-          userId: this.userId
+          userId: this.userId,
         });
         setTimeout(() => {
           this.close();
@@ -942,10 +942,10 @@ export default {
         remindDate = this.updatedTask.taskRemindOnDate;
         this.$store.dispatch("groups/groupTask/updateProjectDates", {
           type: "dueDate",
-          date: dueDate
+          date: dueDate,
         });
         changedDate = {
-          taskDueDate: dueDate
+          taskDueDate: dueDate,
         };
       } else if (this.updatedTask.taskRemindOnDate != "") {
         // console.log("inside remind on date");
@@ -958,10 +958,10 @@ export default {
         remindDate = isoDate;
         this.$store.dispatch("groups/groupTask/updateProjectDates", {
           type: "remindDate",
-          date: remindDate
+          date: remindDate,
         });
         changedDate = {
-          taskRemindOnDate: remindDate
+          taskRemindOnDate: remindDate,
         };
       }
       // console.log("dueDate", dueDate);
@@ -973,8 +973,8 @@ export default {
           changedDate,
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.component = "success-popup";
@@ -982,7 +982,7 @@ export default {
 
         this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
           taskGroupId: this.task.taskGroupId,
-          userId: this.userId
+          userId: this.userId,
         });
         setTimeout(() => {
           this.close();
@@ -1014,8 +1014,8 @@ export default {
               formData,
               {
                 headers: {
-                  user: this.userId
-                }
+                  user: this.userId,
+                },
               }
             );
             this.$store.dispatch(
@@ -1052,8 +1052,8 @@ export default {
           {
             data: {},
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         // console.log(response.data);
@@ -1114,7 +1114,7 @@ export default {
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "Add Due Date";
+        return "No Due Date";
       } else if (
         now.getDate() === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
@@ -1171,7 +1171,7 @@ export default {
     },
     EditTaskName() {
       this.editTask = false;
-    }
+    },
   },
   computed: {
     taskUser() {
@@ -1180,16 +1180,17 @@ export default {
       );
     },
     ...mapState({
-      people: state => state.task.userCompletionTasks,
-      projectSprints: state => state.sprints.sprint.sprints,
-      projectAllTasks: state => state.task.allTasks,
+      people: (state) => state.task.userCompletionTasks,
+      projectSprints: (state) => state.sprints.sprint.sprints,
+      projectAllTasks: (state) => state.task.allTasks,
       // projectId: state => state.project.project.projectId,
-      selectedTaskUser: state => state.user.selectedTaskUser,
-      groupPeople: state => state.groups.groupPeople.groupPeople,
-      taskFiles: state => state.groups.groupTask.groupTaskFiles,
-      selectedTaskGroupTask: state => state.groups.groupTask.selectedGroupTask,
-      children: state => state.groups.groupTask.children,
-      parent: state => state.groups.groupTask.parentTask
+      selectedTaskUser: (state) => state.user.selectedTaskUser,
+      groupPeople: (state) => state.groups.groupPeople.groupPeople,
+      taskFiles: (state) => state.groups.groupTask.groupTaskFiles,
+      selectedTaskGroupTask: (state) =>
+        state.groups.groupTask.selectedGroupTask,
+      children: (state) => state.groups.groupTask.children,
+      parent: (state) => state.groups.groupTask.parentTask,
     }),
     ...mapGetters(["getuserCompletionTasks"]),
 
@@ -1215,7 +1216,7 @@ export default {
       set(assignee) {
         // console.log("spid", sprintId);
         this.updatedTask.taskAssignee = assignee;
-      }
+      },
     },
 
     taskName: {
@@ -1226,7 +1227,7 @@ export default {
       },
       set(name) {
         if (this) this.updatedTask.taskName = name;
-      }
+      },
     },
     taskStatus: {
       get() {
@@ -1237,7 +1238,7 @@ export default {
       set(value) {
         // console.log("task status", value);
         this.updatedStatus = value;
-      }
+      },
     },
 
     taskNote: {
@@ -1246,7 +1247,7 @@ export default {
       },
       set(value) {
         this.updatedTask.taskNote = value;
-      }
+      },
     },
 
     taskDue: {
@@ -1264,7 +1265,7 @@ export default {
       set(value) {
         // console.log("updated task due ->", value);
         this.updatedTask.taskDueDateAt = value;
-      }
+      },
     },
     taskRemindOn: {
       get() {
@@ -1281,8 +1282,8 @@ export default {
       set(value) {
         // console.log("updated task reminder ->", value);
         this.updatedTask.taskRemindOnDate = value;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>

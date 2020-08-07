@@ -436,7 +436,7 @@ export default {
     "task-dialog": TaskDialog,
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
-    "update-sprint": UpdateSprint
+    "update-sprint": UpdateSprint,
   },
   data() {
     return {
@@ -456,7 +456,7 @@ export default {
       assignee: {},
       userId: this.$store.state.user.userId,
       taskSelect: null,
-      baseUrl: process.env.SYSTEM_URL
+      baseUrl: process.env.SYSTEM_URL,
     };
   },
   async created() {
@@ -464,12 +464,12 @@ export default {
   },
   computed: {
     ...mapState({
-      projectAllTasks: state => state.task.allTasks,
-      projectSprints: state => state.sprints.sprint.sprints,
+      projectAllTasks: (state) => state.task.allTasks,
+      projectSprints: (state) => state.sprints.sprint.sprints,
       // projectId: state => state.project.project.projectId,
-      selectedTask: state => state.task.selectedTask
+      selectedTask: (state) => state.task.selectedTask,
       // people: (state) => state.
-    })
+    }),
   },
   methods: {
     taskDialogClosing() {
@@ -494,8 +494,8 @@ export default {
             data: {},
             headers: {
               user: this.userId,
-              type: "project"
-            }
+              type: "project",
+            },
           }
         );
         // this.component = 'success-popup'
@@ -529,10 +529,10 @@ export default {
         this.stomp = Stomp.over(socket);
         //this.$store.dispatch("stompClient/setStompClient", taskId);
         //let client = this.stompClient;
-        this.stomp.connect({}, frame => {
+        this.stomp.connect({}, (frame) => {
           console.log("connected to: " + frame);
           console.log("subscribing to topic: " + "/topic/messages/" + taskId);
-          this.stomp.subscribe("/topic/messages/" + taskId, response => {
+          this.stomp.subscribe("/topic/messages/" + taskId, (response) => {
             console.log("Response", response);
             let data = JSON.parse(response.body);
             console.log("outside----->");
@@ -541,7 +541,7 @@ export default {
               this.$store.dispatch("comments/fetchTaskActivityComment", {
                 taskId: this.selectedTask.taskId,
                 startIndex: 0,
-                endIndex: 9
+                endIndex: 9,
               });
             } else if (
               data.actionType === "typing" &&
@@ -575,17 +575,17 @@ export default {
         // console.log("parent task");
         this.$store.dispatch("task/fetchChildren", {
           projectId: this.projectId,
-          taskId: this.task.taskId
+          taskId: this.task.taskId,
         });
       } else {
         this.$store.dispatch("task/fetchParentTask", {
           projectId: this.projectId,
-          taskId: this.task.parentId
+          taskId: this.task.parentId,
         });
       }
       this.$axios
         .get(`/users/${this.task.taskAssignee}`)
-        .then(async response => {
+        .then(async (response) => {
           // console.log("fetched task -->", response.data.data);
           this.assignee = response.data.data;
           //if task fetch is successful,
@@ -595,8 +595,8 @@ export default {
               `/projects/${this.projectId}/tasks/${task.taskId}/subtask?userId=${this.userId}`,
               {
                 headers: {
-                  type: "project"
-                }
+                  type: "project",
+                },
               }
             );
             this.$store.dispatch("user/setSelectedTaskUser", task.taskAssignee);
@@ -615,8 +615,8 @@ export default {
                 {
                   headers: {
                     user: this.userId,
-                    type: "project"
-                  }
+                    type: "project",
+                  },
                 }
               );
               // console.log("files--->", taskFilesResponse.data);
@@ -624,13 +624,13 @@ export default {
               this.$store.dispatch("activityLog/fetchTaskActivityLog", {
                 taskId: task.taskId,
                 startIndex: 0,
-                endIndex: 10
+                endIndex: 10,
               });
 
               this.$store.dispatch("comments/fetchTaskActivityComment", {
                 taskId: task.taskId,
                 startIndex: 0,
-                endIndex: 10
+                endIndex: 10,
               });
 
               this.$store.dispatch(
@@ -646,14 +646,14 @@ export default {
             console.log("Error fetching data", error);
           }
         })
-        .catch(e => {
+        .catch((e) => {
           console.log("error", e);
         });
 
       this.$store.dispatch("activityLog/fetchTaskActivityLog", {
         taskId: task.taskId,
         startIndex: 0,
-        endIndex: 10
+        endIndex: 10,
       });
     },
     dueDateCheck(task) {
@@ -688,7 +688,7 @@ export default {
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "Add Due Date";
+        return "No Due Date";
       } else if (
         now.getDate() === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
@@ -713,7 +713,7 @@ export default {
         stringDate = stringDate.slice(0, 10);
         return stringDate;
       }
-    }
-  }
+    },
+  },
 };
 </script>

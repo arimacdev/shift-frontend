@@ -512,7 +512,7 @@ export default {
 
   components: {
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
   },
   data() {
     return {
@@ -538,19 +538,19 @@ export default {
         taskNotes: "",
         taskStatus: "",
         taskRemindOnDate: "",
-        taskDueDate: ""
+        taskDueDate: "",
       },
       newSubTask: {
         taskId: "",
         subtaskName: "",
-        subtaskStatus: false
+        subtaskStatus: false,
       },
       subTask: {
         taskId: this.task.taskId,
         subtaskName: "",
-        subTaskCreator: ""
+        subTaskCreator: "",
       },
-      updatedSprint: ""
+      updatedSprint: "",
     };
   },
   methods: {
@@ -570,11 +570,13 @@ export default {
           {
             data: {},
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
-        const index = this.taskFiles.findIndex(i => i.taskFileId === taskFile);
+        const index = this.taskFiles.findIndex(
+          (i) => i.taskFileId === taskFile
+        );
         this.taskFiles.splice(index, 1);
         console.log(response.data);
         this.component = "success-popup";
@@ -593,7 +595,7 @@ export default {
     close() {
       this.component = "";
     },
-    showNewSubTaskField: function() {
+    showNewSubTaskField: function () {
       this.showNewSubTask = true;
     },
     EditTaskName() {
@@ -614,12 +616,12 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            taskAssignee: this.updatedTask.taskAssignee
+            taskAssignee: this.updatedTask.taskAssignee,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$emit("listenChange");
@@ -645,17 +647,17 @@ export default {
           `/projects/${this.projectId}/tasks/${this.task.taskId}/sprint`,
           {
             previousSprint: this.task.sprintId,
-            newSprint: this.updatedSprint
+            newSprint: this.updatedSprint,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("task/updateSprintOfATask", {
           taskId: this.task.taskId,
-          sprintId: this.updatedSprint
+          sprintId: this.updatedSprint,
         });
         this.component = "success-popup";
         setTimeout(() => {
@@ -680,8 +682,8 @@ export default {
             data: {},
             headers: {
               user: this.userId,
-              type: "project"
-            }
+              type: "project",
+            },
           }
         );
         // this.component = 'success-popup'
@@ -712,7 +714,7 @@ export default {
             {
               taskId: this.task.taskId,
               subtaskName: this.newSubTask.subtaskName,
-              subTaskCreator: this.userId
+              subTaskCreator: this.userId,
             }
           );
           this.newSubTask.subtaskName = "";
@@ -746,12 +748,12 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            taskNotes: this.updatedTask.taskNotes
+            taskNotes: this.updatedTask.taskNotes,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$emit("listenChange");
@@ -777,12 +779,12 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            taskName: this.updatedTask.taskName
+            taskName: this.updatedTask.taskName,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.component = "success-popup";
@@ -810,12 +812,12 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
-            taskStatus: this.updatedTask.taskStatus
+            taskStatus: this.updatedTask.taskStatus,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$emit("listenChange");
@@ -863,12 +865,12 @@ export default {
           `/projects/${this.projectId}/tasks/${this.task.taskId}`,
           {
             taskDueDate: dueDate,
-            taskRemindOnDate: remindDate
+            taskRemindOnDate: remindDate,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$emit("listenChange");
@@ -896,12 +898,12 @@ export default {
             {
               subTaskEditor: this.userId,
               subtaskName: editsubtask.subtaskName,
-              subtaskStatus: editsubtask.subtaskStatus
+              subtaskStatus: editsubtask.subtaskStatus,
             },
             {
               headers: {
-                user: this.userId
-              }
+                user: this.userId,
+              },
             }
           );
           // this.$emit('listenChange');
@@ -930,8 +932,8 @@ export default {
           {
             headers: {
               user: this.userId,
-              type: "project"
-            }
+              type: "project",
+            },
           }
         );
         this.subTasks.splice(this.selectedSubTaskIndex, 1);
@@ -1007,8 +1009,8 @@ export default {
           formData,
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.taskFiles.push(fileResponse.data);
@@ -1027,12 +1029,12 @@ export default {
         }, 2000);
         this.uploadLoading = false;
       }
-    }
+    },
   },
   computed: {
     ...mapState({
-      projectSprints: state => state.sprints.sprint.sprints,
-      people: state => state.task.userCompletionTasks
+      projectSprints: (state) => state.sprints.sprint.sprints,
+      people: (state) => state.task.userCompletionTasks,
     }),
     updatedName: {
       get() {
@@ -1041,7 +1043,7 @@ export default {
       set(value) {
         console.log("updated task name ->", value);
         this.updatedTask.taskName = value;
-      }
+      },
     },
 
     taskNotes: {
@@ -1051,7 +1053,7 @@ export default {
       set(value) {
         console.log("updated task value ->", value);
         this.updatedTask.taskNotes = value;
-      }
+      },
     },
 
     taskAssignee: {
@@ -1062,7 +1064,7 @@ export default {
       set(value) {
         console.log("updated task assignee ->", value);
         this.updatedTask.taskAssignee = value;
-      }
+      },
     },
 
     taskStatus: {
@@ -1072,7 +1074,7 @@ export default {
       set(value) {
         console.log("updated task statutus ->", value);
         this.updatedTask.taskStatus = value;
-      }
+      },
     },
 
     updateTaskSprint: {
@@ -1082,7 +1084,7 @@ export default {
       set(sprintId) {
         console.log("spid", sprintId);
         this.updatedSprint = sprintId;
-      }
+      },
     },
 
     taskDue: {
@@ -1092,7 +1094,7 @@ export default {
           this.task.taskDueDateAt === null ||
           this.task.taskDueDateAt === "1970-01-01T05:30:00.000+0000"
         )
-          return "Add Due Date";
+          return "No Due Date";
         let stringDate = this.task.taskDueDateAt + " ";
         // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
         stringDate = stringDate.toString();
@@ -1104,7 +1106,7 @@ export default {
         console.log("updated task due ->", value);
         this.updatedTask.taskDueDateAt = value;
         this.updateTaskDates("dueDate");
-      }
+      },
     },
     taskRemindOn: {
       get() {
@@ -1124,7 +1126,7 @@ export default {
         console.log("updated task reminder ->", value);
         this.updatedTask.taskRemindOnDate = value;
         this.updateTaskDates("remindOn");
-      }
+      },
     },
     subTaskDescription: {
       get() {
@@ -1133,8 +1135,8 @@ export default {
       set(value) {
         console.log("updated subtask description ->", value);
         this.subTask.subtaskName = value;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>

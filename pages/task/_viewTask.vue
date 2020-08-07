@@ -620,7 +620,7 @@
                           id="duePicker"
                           class
                           v-model="taskDueDate"
-                          label="Add due date"
+                          label="No due date"
                           right
                         />
                       </v-col>
@@ -1784,7 +1784,7 @@ export default {
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "Add Due Date";
+        return "No Due Date";
       } else if (
         now.getDate() === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
@@ -1934,7 +1934,7 @@ export default {
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "Add Due Date";
+        return "No Due Date";
       } else if (
         now.getDate() === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
