@@ -41,7 +41,7 @@ export default {
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
-    "progress-loading": Progress
+    "progress-loading": Progress,
   },
   data() {
     return {
@@ -50,12 +50,11 @@ export default {
       successMessage: "",
       component: "",
       userId: this.$store.state.user.userId,
-      dialog: false
+      dialog: false,
     };
   },
   methods: {
     close() {
-      this.$refs.form.reset();
       this.component = "";
     },
     async changeHandler() {
@@ -68,7 +67,7 @@ export default {
           {
             executorId: this.userId,
             blockedUserId: this.blockedUserId,
-            blockedStatus: true
+            blockedStatus: true,
           }
         );
         this.component = "success-popup";
@@ -91,8 +90,8 @@ export default {
         console.log("Error blocking user", e);
       }
       // console.log(response);
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -790,8 +790,23 @@ export default {
       }
     },
     async projectFileUpload() {
-      this.snackbar = true;
       for (let index = 0; index < this.files.length; ++index) {
+        let fileSize = (this.files[index].size)/1000000;
+        console.log("fileSize", fileSize)
+        if(Math.floor(fileSize) > 5){
+            const errorMessage = {
+            "message" : "File Size too Large",
+            "status": 422
+          }
+            this.errorMessage = errorMessage;
+            //this.errorMessage = "File Size too Large"
+            this.component = "error-popup";
+            setTimeout(() => {
+              this.close();
+            }, 3000);
+            this.snackbar = false;
+        } else {
+           this.snackbar = true;
         let formData = new FormData();
         formData.append("files", this.files[index]);
         formData.append("type", "projectFile");
@@ -815,7 +830,7 @@ export default {
             const uploadedFile = res.data[0];
             uploadedFile.firstName = this.userProfile.firstName;
             uploadedFile.lastName = this.userProfile.lastName;
-            console.log("File upload successful", res.data);
+            console.log("File upload successful!!!!!!!", res.data);
             this.$store.dispatch("project/addProjectFile", res.data);
             this.$store.dispatch(
               "project/fetchAllProjectFolders",
@@ -834,6 +849,7 @@ export default {
             //  this.errorMessage = err.response.data
             console.log("File Upload Failed", err);
           });
+        }
       }
       this.files = null;
     },
