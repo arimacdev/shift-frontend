@@ -794,7 +794,12 @@ export default {
         let fileSize = (this.files[index].size)/1000000;
         console.log("fileSize", fileSize)
         if(Math.floor(fileSize) > 5){
-          this.errorMessage = "File Size too Large"
+            const errorMessage = {
+            "message" : "File Size too Large",
+            "status": 422
+          }
+            this.errorMessage = errorMessage;
+            //this.errorMessage = "File Size too Large"
             this.component = "error-popup";
             setTimeout(() => {
               this.close();
