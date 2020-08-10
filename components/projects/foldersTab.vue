@@ -792,7 +792,7 @@ export default {
     async projectFileUpload() {
       for (let index = 0; index < this.files.length; ++index) {
         let fileSize = this.files[index].size / 1000000;
-        console.log("fileSize", fileSize);
+        // console.log("fileSize", fileSize);
         if (Math.floor(fileSize) > 5) {
           const errorMessage = {
             message: "File Size too Large",
