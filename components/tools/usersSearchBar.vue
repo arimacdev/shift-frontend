@@ -1,6 +1,7 @@
 <template>
   <v-autocomplete
     v-model="select"
+    dense
     :loading="loading"
     :items="states"
     item-text="name"
@@ -29,23 +30,23 @@ export default {
       items: [],
       search: null,
       select: null,
-      states: []
+      states: [],
     };
   },
 
   watch: {
     search(val) {
       val && val !== this.select && this.querySelections(val);
-    }
+    },
   },
   methods: {
     onSelectedUser() {
       if (this.select !== undefined) {
-      this.$emit("searchSelected", this.select);
-      this.$store.dispatch("admin/fetchUserRoleMapping", this.select.userId);
-      this.$store.dispatch("skillMatrix/fetchUserSkills", this.select.userId);
-      this.$store.dispatch("user/setSelectedUser", this.select);
-      this.$store.dispatch("skillMap/fetchUserSkillMap", this.select.userId);
+        this.$emit("searchSelected", this.select);
+        this.$store.dispatch("admin/fetchUserRoleMapping", this.select.userId);
+        this.$store.dispatch("skillMatrix/fetchUserSkills", this.select.userId);
+        this.$store.dispatch("user/setSelectedUser", this.select);
+        this.$store.dispatch("skillMap/fetchUserSkillMap", this.select.userId);
       }
     },
     querySelections(v) {
@@ -54,7 +55,7 @@ export default {
         let user = projectSearchList[index];
         this.states.push({
           name: user.firstName + " " + user.lastName,
-          id: user
+          id: user,
         });
       }
       // console.log("usersList", this.users, "nameList", this.states)
@@ -66,8 +67,8 @@ export default {
       //   this.loading = false;
       // });
       this.loading = false;
-    }
-  }
+    },
+  },
 };
 </script>
 

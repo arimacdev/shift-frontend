@@ -18,20 +18,20 @@
 
     <div class="body-div">
       <div class="workloadTypeSection">
-        <v-tabs background-color="#0b0b53" slider-size="3" dark>
+        <v-tabs background-color="#151515" slider-size="3" dark>
           <v-tab
-            class="tabInactiveStyle"
-            active-class="adminTabTitleStyle"
+            class="tabInactiveStyle text-capitalize"
+            active-class="adminTabTitleStyle text-capitalize"
             v-on:click="component = 'users-tab'"
           >Users</v-tab>
           <v-tab
-            class="tabInactiveStyle"
-            active-class="adminTabTitleStyle"
+            class="tabInactiveStyle text-capitalize"
+            active-class="adminTabTitleStyle text-capitalize text-capitalize"
             v-on:click="component = 'skills-tab'"
           >Skills</v-tab>
           <v-tab
-            class="tabInactiveStyle"
-            active-class="adminTabTitleStyle"
+            class="tabInactiveStyle text-capitalize"
+            active-class="adminTabTitleStyle text-capitalize"
             v-on:click="component = 'organization-tab'"
           >Organization</v-tab>
         </v-tabs>
@@ -58,12 +58,12 @@ export default {
     "users-tab": Users,
     "organization-tab": Organization,
     "skills-tab": Skills,
-    "progress-loading": Progress
+    "progress-loading": Progress,
   },
   data() {
     return {
       overlay: false,
-      component: "users-tab"
+      component: "users-tab",
     };
   },
   async asyncData({ $axios, store }) {
@@ -84,7 +84,7 @@ export default {
     return {
       projects: projects,
       users: users,
-      name: users[0].userId
+      name: users[0].userId,
     };
   },
   created() {
@@ -92,10 +92,10 @@ export default {
     Promise.all([
       this.$store.dispatch("user/setAllUsers"),
       this.$store.dispatch("project/clearProject"),
-      this.$store.dispatch("skillMatrix/fetchSkillCategory")
+      this.$store.dispatch("skillMatrix/fetchSkillCategory"),
     ]).finally(() => {
       this.overlay = false;
     });
-  }
+  },
 };
 </script>
