@@ -7,6 +7,7 @@
 
           <v-text-field
             @click:clear="clearName()"
+            style="border-radius: 0px"
             clearable
             v-model="taskName"
             outlined
@@ -15,18 +16,21 @@
             background-color="#FFFFFF"
           ></v-text-field>
           <v-row align="center">
-            <v-col md="12">
+            <v-col class="searchOptions" md="12">
               <!-- :search-input.sync="searchAssignee" -->
               <v-autocomplete
                 v-model="filterAssignee"
                 return-object
+                dense
+                style="border-radius: 0px; margin-bottom: -10px"
                 :items="assigneeArray"
                 item-text="name"
                 item-value="id"
                 flat
                 outlined
                 chips
-                background-color="#FFFFFF"
+                background-color="#576377"
+                dark
                 small-chips
                 label="Assignee"
                 multiple
@@ -38,12 +42,15 @@
                 v-model="filterProject"
                 return-object
                 :items="projectArray"
+                dense
+                style="border-radius: 0px; margin-bottom: -10px"
                 item-text="name"
                 item-value="id"
                 flat
                 outlined
                 chips
-                background-color="#FFFFFF"
+                background-color="#576377"
+                dark
                 small-chips
                 label="Project"
                 multiple
@@ -52,6 +59,8 @@
               ></v-autocomplete>
               <v-autocomplete
                 v-model="filterType"
+                dense
+                style="border-radius: 0px; margin-bottom: -10px"
                 return-object
                 :items="taskTypeArray"
                 item-text="name"
@@ -59,7 +68,8 @@
                 flat
                 outlined
                 chips
-                background-color="#FFFFFF"
+                background-color="#576377"
+                dark
                 small-chips
                 label="Task Type"
                 multiple
@@ -70,12 +80,15 @@
                 v-model="filterStatus"
                 return-object
                 :items="taskStatusArray"
+                dense
+                style="border-radius: 0px; margin-bottom: -10px"
                 item-text="name"
                 item-value="id"
                 flat
                 outlined
                 chips
-                background-color="#FFFFFF"
+                background-color="#576377"
+                dark
                 small-chips
                 label="Task Status"
                 multiple
@@ -87,6 +100,7 @@
                 color="#3f51b5"
                 v-model="dateRange"
                 label="Date Range"
+                style="border-radius: 0px; margin-bottom: -10px"
                 range
                 left
                 noButton
@@ -95,6 +109,8 @@
               ></VueCtkDateTimePicker>
               <v-select
                 class="filterOrderWorkload"
+                dense
+                style="border-radius: 0px; margin-bottom: -10px"
                 v-model="filterOrderBy"
                 :items="orderByArray"
                 item-text="name"
@@ -102,7 +118,8 @@
                 flat
                 outlined
                 chips
-                background-color="#FFFFFF"
+                background-color="#576377"
+                dark
                 small-chips
                 label="Order By"
                 @click:clear="clearOrderBy()"
@@ -123,13 +140,15 @@
                     @click="jqlSearch()"
                     class="text-capitalize"
                     height="70px"
-                    color="#080848"
+                    color="#151515"
                     dark
+                    depressed
                     width="100%"
                   >Search</v-btn>
                 </v-col>
                 <v-col md="2">
                   <v-btn
+                    depressed
                     @click="jqlCancel()"
                     class="text-capitalize"
                     height="70px"
@@ -176,9 +195,11 @@
                     </v-col>
                     <v-col md="4">
                       <v-btn
+                        depressed
                         class="text-capitalize"
                         width="100%"
-                        color="primary"
+                        color="#66B25F"
+                        dark
                         @click="loadTemplate"
                       >Go</v-btn>
                     </v-col>

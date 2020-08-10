@@ -2,7 +2,13 @@
   <div class="text-center adasd">
     <v-dialog scrollable v-model="dialog" width="600">
       <template v-slot:activator="{ on }">
-        <v-btn width="100%" color="#2EC973" dark v-on="on">Save current filter as a template</v-btn>
+        <v-btn
+          depressed
+          width="100%"
+          color="#333369"
+          dark
+          v-on="on"
+        >Save current filter as a template</v-btn>
       </template>
 
       <v-card height="100%">
