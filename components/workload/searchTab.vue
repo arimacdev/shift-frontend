@@ -154,7 +154,7 @@
                     height="70px"
                     color="#ff6161"
                     dark
-                    width="70%"
+                    width="60%"
                   >
                     <v-icon color="#FFFFFF">mdi-cancel</v-icon>
                   </v-btn>

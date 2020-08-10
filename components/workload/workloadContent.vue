@@ -53,14 +53,14 @@
             ></VueCtkDateTimePicker>
           </v-col>
           <v-col md="2">
-            <v-btn @click="applyFilter()" dark width="100%" height="40px" color="#080848">
+            <v-btn depressed @click="applyFilter()" dark width="100%" height="40px" color="#080848">
               <!-- <v-icon color="#FFFFFF">mdi-filter-outline</v-icon> -->
               <span class="text-capitalize">Search</span>
               <!-- Filter -->
             </v-btn>
           </v-col>
           <v-col md="2">
-            <v-btn dark width="100%" @click="clearFilter()" height="40px" color="#FF6161">
+            <v-btn depressed dark width="100%" @click="clearFilter()" height="40px" color="#FF6161">
               <!-- <v-icon color="#FFFFFF">mdi-cancel</v-icon> -->
               <span class="text-capitalize">Cancel</span>
               <!-- Cancel -->
@@ -82,7 +82,7 @@
           <v-expansion-panel-header
             v-if="project.total > 0"
             class="projectDetailsPannelHeader"
-            color="#080848"
+            color="#292929"
           >
             {{ project.projectName }} - {{ project.completed }}/{{
             project.total

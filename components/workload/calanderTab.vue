@@ -6,6 +6,7 @@
           <span class="containsText">Contains Text</span>
 
           <v-text-field
+            style="border-radius: 0px"
             clearable
             @click:clear="clearName()"
             v-model="taskName"
@@ -13,10 +14,13 @@
             solo
             flat
             background-color="#FFFFFF"
+            dark
           ></v-text-field>
           <v-row align="center">
             <v-col md="12">
               <v-autocomplete
+                dense
+                style="border-radius: 0px; margin-bottom: -10px"
                 v-model="filterAssignee"
                 return-object
                 :items="assigneeArray"
@@ -25,7 +29,8 @@
                 flat
                 outlined
                 chips
-                background-color="#FFFFFF"
+                background-color="#576377"
+                dark
                 small-chips
                 label="Assignee"
                 multiple
@@ -34,6 +39,8 @@
               ></v-autocomplete>
 
               <v-autocomplete
+                dense
+                style="border-radius: 0px; margin-bottom: -10px"
                 v-model="filterProject"
                 return-object
                 :items="projectArray"
@@ -42,7 +49,8 @@
                 flat
                 outlined
                 chips
-                background-color="#FFFFFF"
+                background-color="#576377"
+                dark
                 small-chips
                 label="Project"
                 multiple
@@ -50,6 +58,8 @@
                 :clear-icon-cb="clearProject()"
               ></v-autocomplete>
               <v-autocomplete
+                dense
+                style="border-radius: 0px; margin-bottom: -10px"
                 v-model="filterType"
                 return-object
                 :items="taskTypeArray"
@@ -58,7 +68,8 @@
                 flat
                 outlined
                 chips
-                background-color="#FFFFFF"
+                background-color="#576377"
+                dark
                 small-chips
                 label="Task Type"
                 multiple
@@ -66,6 +77,8 @@
                 @click:clear="clearType()"
               ></v-autocomplete>
               <v-autocomplete
+                dense
+                style="border-radius: 0px; margin-bottom: -10px"
                 v-model="filterStatus"
                 return-object
                 :items="taskStatusArray"
@@ -74,7 +87,8 @@
                 flat
                 outlined
                 chips
-                background-color="#FFFFFF"
+                background-color="#576377"
+                dark
                 small-chips
                 label="Task Status"
                 multiple
@@ -86,10 +100,17 @@
           <v-row>
             <v-col md="9">
               <!-- <div @click="jqlSearch()" class="filterSearchBtn">Search</div> -->
-              <v-btn @click="jqlSearch()" height="70px" color="#080848" dark width="100%">Search</v-btn>
+              <v-btn
+                depressed
+                @click="jqlSearch()"
+                height="50px"
+                color="#151515"
+                dark
+                width="100%"
+              >Search</v-btn>
             </v-col>
             <v-col md="3">
-              <v-btn @click="clear()" height="70px" color="#ff6161" dark width="70%">
+              <v-btn depressed @click="clear()" height="50px" color="#ff6161" dark width="70%">
                 <v-icon color="#FFFFFF">mdi-cancel</v-icon>
               </v-btn>
             </v-col>
