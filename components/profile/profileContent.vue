@@ -256,6 +256,7 @@
             </v-btn>
 
             <v-btn
+              depressed
               v-else-if="
                 this.confirmPassword == '' &&
                   this.password == '' &&
@@ -264,7 +265,7 @@
               "
               height="50px"
               width="300px"
-              class="submitButtonEdit"
+              class="submitButtonEdit text-capitalize"
             >
               <v-list-item @click="postData()" dark>
                 <v-list-item-action>
@@ -275,7 +276,14 @@
                 </v-list-item-content>
               </v-list-item>
             </v-btn>
-            <v-btn v-else disabled height="50px" width="300px" class="submitButtonEdit">
+            <v-btn
+              depressed
+              v-else
+              disabled
+              height="50px"
+              width="300px"
+              class="submitButtonEdit text-capitalize"
+            >
               <v-list-item @click="postData()" dark>
                 <v-list-item-action>
                   <v-icon size="20" color>icon-user</v-icon>
@@ -360,7 +368,7 @@ export default {
   components: {
     "edit-profile": EditProfile,
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
   },
   // data: function(){
   // return{
@@ -370,11 +378,11 @@ export default {
   data() {
     return {
       isValid: true,
-      firstNameRules: [value => !!value || "First name is required!"],
-      lastNameRules: [value => !!value || "Last name is required!"],
+      firstNameRules: [(value) => !!value || "First name is required!"],
+      lastNameRules: [(value) => !!value || "Last name is required!"],
       emailRules: [
-        value => !!value || "E-mail is required",
-        value => /.+@.+\..+/.test(value) || "E-mail must be valid"
+        (value) => !!value || "E-mail is required",
+        (value) => /.+@.+\..+/.test(value) || "E-mail must be valid",
       ],
       getstatus: false,
       disableButton: true,
@@ -399,7 +407,7 @@ export default {
       dismissSecs: 5,
       dismissCountDown: 0,
       component: "",
-      stompClient: null
+      stompClient: null,
     };
   },
   watch: {
@@ -410,13 +418,13 @@ export default {
       setTimeout(() => (this[l] = false), 3000);
 
       this.loader = null;
-    }
+    },
   },
 
   computed: {
     ...mapState({
-      userSkillMap: state => state.skillMap.userSkillMap
-    })
+      userSkillMap: (state) => state.skillMap.userSkillMap,
+    }),
   },
 
   created() {
@@ -473,7 +481,7 @@ export default {
   methods: {
     checkActivationStatus() {
       if (process.browser) {
-        window.OneSignal.isPushNotificationsEnabled(isEnabled => {
+        window.OneSignal.isPushNotificationsEnabled((isEnabled) => {
           if (isEnabled) {
             console.log("Push notifications are enabled!");
             this.getstatus = false;
@@ -487,7 +495,7 @@ export default {
     activateOneSignal() {
       console.log("activate");
       if (process.browser) {
-        window.OneSignal.getUserId().then(userId => {
+        window.OneSignal.getUserId().then((userId) => {
           if (userId) {
             console.log("userId", userId);
             this.changeOneSignalActivationStatus(userId, true);
@@ -500,7 +508,7 @@ export default {
     deactivateOneSignal() {
       console.log("deactivate");
       if (process.browser) {
-        window.OneSignal.getUserId().then(userId => {
+        window.OneSignal.getUserId().then((userId) => {
           if (userId) {
             console.log("userId", userId);
             this.changeOneSignalActivationStatus(userId, false);
@@ -520,12 +528,12 @@ export default {
             subscriberId: this.$store.state.user.userId,
             provider: "OneSignal",
             platform: "Web",
-            notificationStatus: notificationStatus
+            notificationStatus: notificationStatus,
           },
           {
             headers: {
-              userId: this.$store.state.user.userId
-            }
+              userId: this.$store.state.user.userId,
+            },
           }
         );
       } catch (e) {
@@ -556,12 +564,12 @@ export default {
           {
             slackAssignerId: this.userId,
             slackAssigneeId: this.user.userId,
-            notificationStatus: !status
+            notificationStatus: !status,
           },
           {
             headers: {
-              userId: this.userId
-            }
+              userId: this.userId,
+            },
           }
         );
         location.reload();
@@ -589,14 +597,14 @@ export default {
           response = await this.$axios.$put(`/users/${this.userId}`, {
             firstName: this.user.firstName,
             lastName: this.user.lastName,
-            email: this.user.email
+            email: this.user.email,
           });
         } else {
           response = await this.$axios.$put(`/users/${this.userId}`, {
             firstName: this.user.firstName,
             lastName: this.user.lastName,
             email: this.user.email,
-            password: this.password
+            password: this.password,
           });
         }
 
@@ -642,8 +650,8 @@ export default {
           {
             headers: {
               "Content-Type": "multipart/form-data",
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.uploadLoading = false;
@@ -666,16 +674,16 @@ export default {
       } catch (e) {
         console.log(e);
       }
-    }
+    },
   },
   validations: {
     password: {
       required,
-      minLength: minLength(6)
+      minLength: minLength(6),
     },
     confirmPassword: {
-      sameAsPassword: sameAs("password")
-    }
-  }
+      sameAsPassword: sameAs("password"),
+    },
+  },
 };
 </script>
