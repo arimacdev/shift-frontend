@@ -200,7 +200,15 @@
                     </div>-->
                     <v-menu z-index="200" min-width="250px">
                       <template v-slot:activator="{ on, attrs }">
-                        <v-btn small icon color="#949494" v-bind="attrs" v-on="on">
+                        <v-btn
+                          small
+                          depressed
+                          class="text-capitalize"
+                          icon
+                          color="#949494"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
                           <v-icon size="20" dark>mdi-dots-vertical</v-icon>
                         </v-btn>
                       </template>
@@ -372,7 +380,15 @@
                     </div>-->
                     <v-menu z-index="200" min-width="250px">
                       <template v-slot:activator="{ on, attrs }">
-                        <v-btn small icon color="#949494" v-bind="attrs" v-on="on">
+                        <v-btn
+                          small
+                          depressed
+                          class="text-capitalize"
+                          icon
+                          color="#949494"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
                           <v-icon size="20" dark>mdi-dots-vertical</v-icon>
                         </v-btn>
                       </template>
@@ -791,64 +807,64 @@ export default {
     },
     async projectFileUpload() {
       for (let index = 0; index < this.files.length; ++index) {
-        let fileSize = (this.files[index].size)/1000000;
-        console.log("fileSize", fileSize)
-        if(Math.floor(fileSize) > 5){
-            const errorMessage = {
-            "message" : "File Size too Large",
-            "status": 422
-          }
-            this.errorMessage = errorMessage;
-            //this.errorMessage = "File Size too Large"
-            this.component = "error-popup";
-            setTimeout(() => {
-              this.close();
-            }, 3000);
-            this.snackbar = false;
+        let fileSize = this.files[index].size / 1000000;
+        // console.log("fileSize", fileSize);
+        if (Math.floor(fileSize) > 5) {
+          const errorMessage = {
+            message: "File Size too Large",
+            status: 422,
+          };
+          this.errorMessage = errorMessage;
+          //this.errorMessage = "File Size too Large"
+          this.component = "error-popup";
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          this.snackbar = false;
         } else {
-           this.snackbar = true;
-        let formData = new FormData();
-        formData.append("files", this.files[index]);
-        formData.append("type", "projectFile");
-        formData.append("folderId", "default");
+          this.snackbar = true;
+          let formData = new FormData();
+          formData.append("files", this.files[index]);
+          formData.append("type", "projectFile");
+          formData.append("folderId", "default");
 
-        this.$axios
-          .$post(`/projects/${this.projectId}/files/upload`, formData, {
-            headers: {
-              user: this.userId,
-            },
-          })
-          .then((res) => {
-            this.snackbar = false;
-            // console.log("resp", res.data);
-            this.component = "success-popup";
-            this.successMessage = "File(s) successfully uploaded";
-            setTimeout(() => {
-              this.close();
-            }, 3000);
+          this.$axios
+            .$post(`/projects/${this.projectId}/files/upload`, formData, {
+              headers: {
+                user: this.userId,
+              },
+            })
+            .then((res) => {
+              this.snackbar = false;
+              // console.log("resp", res.data);
+              this.component = "success-popup";
+              this.successMessage = "File(s) successfully uploaded";
+              setTimeout(() => {
+                this.close();
+              }, 3000);
 
-            const uploadedFile = res.data[0];
-            uploadedFile.firstName = this.userProfile.firstName;
-            uploadedFile.lastName = this.userProfile.lastName;
-            console.log("File upload successful!!!!!!!", res.data);
-            this.$store.dispatch("project/addProjectFile", res.data);
-            this.$store.dispatch(
-              "project/fetchAllProjectFolders",
-              this.$route.params.projects
-            );
-            // console.log("File upload successful", res);
-          })
-          .catch((err) => {
-            this.errorMessage = err.response.data;
-            this.component = "error-popup";
-            setTimeout(() => {
-              this.close();
-            }, 3000);
-            this.snackbar = false;
-            this.files = null;
-            //  this.errorMessage = err.response.data
-            console.log("File Upload Failed", err);
-          });
+              const uploadedFile = res.data[0];
+              uploadedFile.firstName = this.userProfile.firstName;
+              uploadedFile.lastName = this.userProfile.lastName;
+              // console.log("File upload successful!!!!!!!", res.data);
+              this.$store.dispatch("project/addProjectFile", res.data);
+              this.$store.dispatch(
+                "project/fetchAllProjectFolders",
+                this.$route.params.projects
+              );
+              // console.log("File upload successful", res);
+            })
+            .catch((err) => {
+              this.errorMessage = err.response.data;
+              this.component = "error-popup";
+              setTimeout(() => {
+                this.close();
+              }, 3000);
+              this.snackbar = false;
+              this.files = null;
+              //  this.errorMessage = err.response.data
+              console.log("File Upload Failed", err);
+            });
         }
       }
       this.files = null;

@@ -19,6 +19,8 @@
     <div class="buttonSectionAdmin">
       <!-- <v-btn color="#FFC212" dark small @click.stop="resetDialog = true">Reset Password</v-btn> -->
       <v-btn
+        depressed
+        class="text-capitalize"
         v-if="selectedUser.isActive == true"
         color="#FF6161"
         dark
@@ -26,6 +28,8 @@
         @click.stop="deactivateDialog = true"
       >Deactivate User</v-btn>
       <v-btn
+        depressed
+        class="text-capitalize"
         v-if="selectedUser.isActive == false"
         color="#B52DD7"
         dark
@@ -114,10 +118,11 @@
           <v-col sm="12" md="6" class></v-col>
           <v-col sm="12" md="6" class="buttonGrid">
             <v-btn
+              depressed
               :disabled="!isValid"
               height="50px"
-              color="blue"
-              class="addProjectButtonSuccess"
+              color="#333369"
+              class="addProjectButtonSuccess text-capitalize"
               @click="postData()"
             >
               <!-- class="submitButtonEdit profileButton" -->
@@ -144,6 +149,8 @@
                 <v-row>
                   <v-col md="3" v-for="(role, index) in realmRoles" :key="index">
                     <v-btn
+                      depressed
+                      class="text-capitalize"
                       v-if="role.name != 'ORGANIZATION_ADMIN'"
                       width="110px"
                       small
@@ -197,16 +204,16 @@
                             "
                             v-if="skill.isAssigned == true"
                             size="20"
-                            color="#2EC973"
-                          >mdi-checkbox-marked-circle</v-icon>
+                            color="#66B25F"
+                          >mdi-checkbox-blank</v-icon>
                           <v-icon
                             @click="
                               addSkillToUser(category.categoryId, skill.skillId)
                             "
                             v-else
                             size="20"
-                            color="#FFFFFF"
-                          >mdi-checkbox-blank-circle</v-icon>
+                            color="#939393"
+                          >mdi-checkbox-blank-outline</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
                           {{
@@ -239,9 +246,23 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn small color="red darken-1" dark @click="resetDialog = false">Cancel</v-btn>
+          <v-btn
+            depressed
+            class="text-capitalize"
+            small
+            color="red darken-1"
+            dark
+            @click="resetDialog = false"
+          >Cancel</v-btn>
 
-          <v-btn small color="green darken-1" dark @click="resetDialog = false">Confirm</v-btn>
+          <v-btn
+            small
+            depressed
+            class="text-capitalize"
+            color="green darken-1"
+            dark
+            @click="resetDialog = false"
+          >Confirm</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -264,9 +285,18 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn small color="red darken-1" dark @click="deactivateDialog = false">Cancel</v-btn>
+          <v-btn
+            small
+            class="text-capitalize"
+            depressed
+            color="red darken-1"
+            dark
+            @click="deactivateDialog = false"
+          >Cancel</v-btn>
 
           <v-btn
+            depressed
+            class="text-capitalize"
             small
             color="green darken-1"
             dark
@@ -296,10 +326,19 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn small color="red darken-1" dark @click="activateDialog = false">Cancel</v-btn>
+          <v-btn
+            class="text-capitalize"
+            depressed
+            small
+            color="red darken-1"
+            dark
+            @click="activateDialog = false"
+          >Cancel</v-btn>
 
           <v-btn
+            depressed
             small
+            class="text-capitalize"
             color="green darken-1"
             dark
             @click="
@@ -336,9 +375,23 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn small color="red darken-1" dark @click="roleChangeDialog = false">Cancel</v-btn>
+          <v-btn
+            small
+            class="text-capitalize"
+            depressed
+            color="red darken-1"
+            dark
+            @click="roleChangeDialog = false"
+          >Cancel</v-btn>
 
-          <v-btn small color="green darken-1" dark @click="userRoleUpdate">Confirm</v-btn>
+          <v-btn
+            small
+            class="text-capitalize"
+            depressed
+            color="green darken-1"
+            dark
+            @click="userRoleUpdate"
+          >Confirm</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -367,7 +420,7 @@ import {
   minLength,
   maxLength,
   email,
-  sameAs
+  sameAs,
 } from "vuelidate/lib/validators";
 
 export default {
@@ -375,7 +428,7 @@ export default {
   name: "editUser",
   components: {
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
   },
 
   data() {
@@ -384,11 +437,11 @@ export default {
       selectedSkills: [],
       // skillList: [],
       isValid: true,
-      firstNameRules: [value => !!value || "First name is required!"],
-      lastNameRules: [value => !!value || "Last name is required!"],
+      firstNameRules: [(value) => !!value || "First name is required!"],
+      lastNameRules: [(value) => !!value || "Last name is required!"],
       emailRules: [
-        value => !!value || "E-mail is required",
-        value => /.+@.+\..+/.test(value) || "E-mail must be valid"
+        (value) => !!value || "E-mail is required",
+        (value) => /.+@.+\..+/.test(value) || "E-mail must be valid",
       ],
       resetDialog: false,
       roleChangeDialog: false,
@@ -408,7 +461,7 @@ export default {
       firstName: "",
       lastName: "",
       email: "",
-      designation: ""
+      designation: "",
     };
   },
 
@@ -438,12 +491,12 @@ export default {
           `/category/${categoryId}/user/skill`,
           {
             assigneeId: this.userData.userId,
-            skills: [skillId]
+            skills: [skillId],
           },
           {
             headers: {
-              userId: this.adminId
-            }
+              userId: this.adminId,
+            },
           }
         );
 
@@ -478,11 +531,11 @@ export default {
           {
             data: {
               assigneeId: this.userData.userId,
-              skills: [skillId]
+              skills: [skillId],
             },
             headers: {
-              userId: this.adminId
-            }
+              userId: this.adminId,
+            },
           }
         );
 
@@ -549,7 +602,7 @@ export default {
         this.$store.dispatch("admin/addUserRole", {
           userId: this.userData.userId,
           id: this.selectedRole.id,
-          name: this.selectedRole.name
+          name: this.selectedRole.name,
         });
       } else {
         if (this.existingRole) {
@@ -557,20 +610,20 @@ export default {
           this.$store.dispatch("admin/removeUserRole", {
             userId: this.userData.userId,
             id: this.selectedRole.id,
-            name: this.selectedRole.name
+            name: this.selectedRole.name,
           });
         }
       }
     },
     checkUserRole(name) {
-      if (this.userRoles.some(role => role.name === name)) return "primary";
+      if (this.userRoles.some((role) => role.name === name)) return "primary";
     },
     selectUserRole(userRole) {
       // console.log("userRole", userRole);
       this.roleChangeDialog = true;
       this.selectedRole = userRole;
       if (
-        this.userRoles.filter(role => role.name === userRole.name).length > 0
+        this.userRoles.filter((role) => role.name === userRole.name).length > 0
       ) {
         this.existingRole = true;
         // console.log("role exists");
@@ -587,14 +640,14 @@ export default {
           `/users/deactivate`,
           {
             headers: {
-              user: this.adminId
-            }
+              user: this.adminId,
+            },
           },
           {
             data: {
               adminId: this.adminId,
-              userId: this.userData.userId
-            }
+              userId: this.userData.userId,
+            },
           }
         );
         this.component = "success-popup";
@@ -606,7 +659,7 @@ export default {
         let updatedUser = this.selectedUser;
         this.$store.dispatch("user/updateActivationStatus", {
           user: updatedUser,
-          status: false
+          status: false,
         });
       } catch (e) {
         console.log("Error creating user", e);
@@ -626,14 +679,14 @@ export default {
           `/users/activate`,
           {
             headers: {
-              user: this.adminId
-            }
+              user: this.adminId,
+            },
           },
           {
             data: {
               adminId: this.adminId,
-              userId: this.userData.userId
-            }
+              userId: this.userData.userId,
+            },
           }
         );
         this.component = "success-popup";
@@ -645,7 +698,7 @@ export default {
         let updatedUser = this.selectedUser;
         this.$store.dispatch("user/updateActivationStatus", {
           user: updatedUser,
-          status: true
+          status: true,
         });
       } catch (e) {
         console.log("Error creating user", e);
@@ -662,7 +715,7 @@ export default {
         firstName: this.getFirstName(),
         lastName: this.getLastName(),
         email: this.getEmail(),
-        designation: this.designation
+        designation: this.designation,
       };
       let response;
       try {
@@ -714,18 +767,18 @@ export default {
     },
     close() {
       this.component = "";
-    }
+    },
   },
   computed: {
     ...mapState({
-      realmRoles: state => state.admin.realmRoles,
-      userRoles: state => state.admin.userRoles,
-      selectedUser: state => state.user.selectedUser,
-      organizationalRoles: state => state.user.organizationalRoles,
-      userSkillMap: state => state.skillMap.userSkillMap,
-      skillCategory: state => state.skillMatrix.skillCategory,
-      categorySkills: state => state.skillMatrix.skills,
-      userSkills: state => state.skillMatrix.userSkills
+      realmRoles: (state) => state.admin.realmRoles,
+      userRoles: (state) => state.admin.userRoles,
+      selectedUser: (state) => state.user.selectedUser,
+      organizationalRoles: (state) => state.user.organizationalRoles,
+      userSkillMap: (state) => state.skillMap.userSkillMap,
+      skillCategory: (state) => state.skillMatrix.skillCategory,
+      categorySkills: (state) => state.skillMatrix.skills,
+      userSkills: (state) => state.skillMatrix.userSkills,
     }),
     // categoryArray() {
     //   let categorySearchList = this.skillCategory;
@@ -761,7 +814,7 @@ export default {
       },
       set(value) {
         this.projectName = value;
-      }
+      },
     },
     addProjectStyling: {
       get() {
@@ -770,13 +823,13 @@ export default {
         } else {
           return "addProjectButtonSuccess";
         }
-      }
+      },
     },
     filterSkill: {
       get() {},
       set(value) {
         this.selectedSkills = value;
-      }
+      },
     },
     userFirstName: {
       get() {
@@ -784,7 +837,7 @@ export default {
       },
       set(value) {
         this.firstName = value;
-      }
+      },
     },
     userLastName: {
       get() {
@@ -792,7 +845,7 @@ export default {
       },
       set(value) {
         this.lastName = value;
-      }
+      },
     },
     userEmail: {
       get() {
@@ -800,17 +853,17 @@ export default {
       },
       set(value) {
         this.email = value;
-      }
-    }
+      },
+    },
   },
   validations: {
     firstName: {
       required,
-      maxLength: maxLength(50)
+      maxLength: maxLength(50),
     },
     lastName: {
       required,
-      maxLength: maxLength(50)
+      maxLength: maxLength(50),
     },
     // designation: {
     //   required,
@@ -818,8 +871,8 @@ export default {
     // },
     email: {
       required,
-      email
-    }
-  }
+      email,
+    },
+  },
 };
 </script>

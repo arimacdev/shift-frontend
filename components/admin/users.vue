@@ -85,7 +85,7 @@ export default {
     "search-bar": usersSearchBar,
     "add-user": AddUser,
     "edit-user": EditUser,
-    "progress-loading": Progress
+    "progress-loading": Progress,
   },
   data() {
     return {
@@ -93,7 +93,7 @@ export default {
       userData: "",
       component: "",
       userId: this.$store.state.user.userId,
-      roleListCount: 0
+      roleListCount: 0,
     };
   },
   methods: {
@@ -129,21 +129,21 @@ export default {
         this.$store.dispatch("admin/fetchUserRoleMapping", userData.userId),
         this.$store.dispatch("skillMatrix/fetchUserSkills", userData.userId),
         this.$store.dispatch("user/setSelectedUser", userData),
-        this.$store.dispatch("skillMap/fetchUserSkillMap", userData.userId)
+        this.$store.dispatch("skillMap/fetchUserSkillMap", userData.userId),
       ]).finally(() => {
         this.overlay = false;
       });
-    }
+    },
   },
 
   computed: {
     ...mapState({
-      users: state => state.user.users
-    })
+      users: (state) => state.user.users,
+    }),
   },
 
   created() {
     this.$store.dispatch("project/clearProject");
-  }
+  },
 };
 </script>

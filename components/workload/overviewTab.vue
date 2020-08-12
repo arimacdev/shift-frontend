@@ -48,6 +48,7 @@
               </v-col>
               <v-col md="1">
                 <v-btn
+                  depressed
                   class="text-capitalize"
                   @click="jqlSearch()"
                   dark
@@ -61,6 +62,7 @@
               </v-col>
               <v-col md="1">
                 <v-btn
+                  depressed
                   class="text-capitalize"
                   dark
                   width="100%"

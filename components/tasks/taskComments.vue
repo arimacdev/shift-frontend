@@ -334,8 +334,9 @@
     <v-btn
       v-if="addCommentSection == false"
       v-on:click="addCommentSection = true"
-      class="ma-2"
+      class="ma-2 text-capitalize"
       text
+      depressed
       color="primary"
     >
       <v-icon left>mdi-comment-processing-outline</v-icon>Add a comment
@@ -538,9 +539,18 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn width="100px" color="#FF6161" dark @click="deleteCommentDialog = false">Cancel</v-btn>
+          <v-btn
+            width="100px"
+            class="text-capitalize"
+            depressed
+            color="#FF6161"
+            dark
+            @click="deleteCommentDialog = false"
+          >Cancel</v-btn>
 
           <v-btn
+            class="text-capitalize"
+            depressed
             width="100px"
             color="#2EC973"
             dark

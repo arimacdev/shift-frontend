@@ -16,8 +16,13 @@
               <span>If you are not sure, you can close this popup</span>
             </v-card-text>
 
-            <v-btn class="editButton" text @click="dialog = false">Cancel</v-btn>
-            <v-btn class="deleteButtonSpec" text @click="changeHandler">Block</v-btn>
+            <v-btn class="editButton text-capitalize" depressed text @click="dialog = false">Cancel</v-btn>
+            <v-btn
+              class="deleteButtonSpec text-capitalize"
+              depressed
+              text
+              @click="changeHandler"
+            >Block</v-btn>
           </div>
         </v-card>
       </v-dialog>

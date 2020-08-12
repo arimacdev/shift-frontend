@@ -342,10 +342,22 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn color="success" width="100px" @click="taskDialog = false">Cancel</v-btn>
+            <v-btn
+              color="success"
+              class="text-capitalize"
+              depressed
+              width="100px"
+              @click="taskDialog = false"
+            >Cancel</v-btn>
             <v-spacer></v-spacer>
             <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
-            <v-btn color="error" width="100px" @click="removeFiles()">Delete</v-btn>
+            <v-btn
+              color="error"
+              width="100px"
+              class="text-capitalize"
+              depressed
+              @click="removeFiles()"
+            >Delete</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
         </div>
@@ -369,10 +381,22 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn color="success" width="100px" @click="folderDeleteDialog = false">Cancel</v-btn>
+            <v-btn
+              color="success"
+              class="text-capitalize"
+              depressed
+              width="100px"
+              @click="folderDeleteDialog = false"
+            >Cancel</v-btn>
             <v-spacer></v-spacer>
             <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
-            <v-btn color="error" width="100px" @click="removeFolder()">Delete</v-btn>
+            <v-btn
+              color="error"
+              class="text-capitalize"
+              depressed
+              width="100px"
+              @click="removeFolder()"
+            >Delete</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
         </div>
@@ -556,49 +580,65 @@ export default {
       this.$refs.form.reset();
     },
     async projectFileUpload() {
-      this.snackbar = true;
       for (let index = 0; index < this.files.length; ++index) {
-        let formData = new FormData();
-        formData.append("files", this.files[index]);
-        formData.append("type", "projectFile");
-        formData.append("folderId", this.selectedFolder.folderId);
+        let fileSize = this.files[index].size / 1000000;
 
-        this.$axios
-          .$post(`/projects/${this.projectId}/files/upload`, formData, {
-            headers: {
-              user: this.userId,
-            },
-          })
-          .then((res) => {
-            this.snackbar = false;
-            // console.log("resp", res.data);
-            this.component = "success-popup";
-            this.successMessage = "File(s) successfully uploaded";
-            setTimeout(() => {
-              this.close();
-            }, 3000);
+        if (Math.floor(fileSize) > 5) {
+          const errorMessage = {
+            message: "File Size too Large",
+            status: 422,
+          };
+          this.errorMessage = errorMessage;
+          //this.errorMessage = "File Size too Large"
+          this.component = "error-popup";
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          this.snackbar = false;
+        } else {
+          this.snackbar = true;
+          let formData = new FormData();
+          formData.append("files", this.files[index]);
+          formData.append("type", "projectFile");
+          formData.append("folderId", this.selectedFolder.folderId);
 
-            // const uploadedFile = res.data[0];
-            // uploadedFile.firstName = this.userProfile.firstName;
-            // uploadedFile.lastName = this.userProfile.lastName;
-            // console.log("File upload successful", res.data);
-            // this.$store.dispatch("project/addProjectFile", res.data);
-            this.$store.dispatch("project/fetchAllSelectedFolderFiles", {
-              projectId: this.$route.params.projects,
-              folderId: this.selectedFolder.folderId,
+          this.$axios
+            .$post(`/projects/${this.projectId}/files/upload`, formData, {
+              headers: {
+                user: this.userId,
+              },
+            })
+            .then((res) => {
+              this.snackbar = false;
+              // console.log("resp", res.data);
+              this.component = "success-popup";
+              this.successMessage = "File(s) successfully uploaded";
+              setTimeout(() => {
+                this.close();
+              }, 3000);
+
+              // const uploadedFile = res.data[0];
+              // uploadedFile.firstName = this.userProfile.firstName;
+              // uploadedFile.lastName = this.userProfile.lastName;
+              // console.log("File upload successful", res.data);
+              // this.$store.dispatch("project/addProjectFile", res.data);
+              this.$store.dispatch("project/fetchAllSelectedFolderFiles", {
+                projectId: this.$route.params.projects,
+                folderId: this.selectedFolder.folderId,
+              });
+              // console.log("File upload successful", res);
+            })
+            .catch((err) => {
+              console.log("File Upload Failed", err);
+              this.errorMessage = err.response.data;
+              this.component = "error-popup";
+              setTimeout(() => {
+                this.close();
+              }, 3000);
+              this.snackbar = false;
+              console.log("File Upload Failed", err);
             });
-            // console.log("File upload successful", res);
-          })
-          .catch((err) => {
-            console.log("File Upload Failed", err);
-            this.errorMessage = err.response.data;
-            this.component = "error-popup";
-            setTimeout(() => {
-              this.close();
-            }, 3000);
-            this.snackbar = false;
-            console.log("File Upload Failed", err);
-          });
+        }
       }
       this.files = null;
     },

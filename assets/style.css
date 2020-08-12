@@ -190,7 +190,7 @@
 }
 
 .addUserSubmitButtonEdit {
-  background-color: #0bafff !important;
+  background-color: #333369 !important;
   margin-left: 20px;
   width: 88%;
   border-radius: 5px;
@@ -378,7 +378,7 @@
 }
 .adminUserImage {
   position: absolute;
-  margin-top: -100px;
+  margin-top: -80px;
   margin-left: 30px;
 }
 .userNameAdmin {
@@ -397,8 +397,8 @@
 }
 .userAdminProfileImage {
   border-radius: 50%;
-  width: 150px;
-  height: 150px;
+  width: 120px;
+  height: 120px;
   border: 5px solid #ffffff;
 }
 .image {
@@ -442,10 +442,10 @@
   height: 190px !important;
 }
 .adminBlackBar {
-  height: 150px !important;
+  height: 120px !important;
   width: 120%;
   /* margin-left: 30%; */
-  background-color: #040428;
+  background-color: #292929;
 }
 .formContentAdmin {
   padding-left: 30px !important;
@@ -2538,15 +2538,23 @@
 
 .workloadTypeSection {
   width: 100%;
-  height: 60px;
-  background-color: #0b0b53;
+  height: 40px;
+  background-color: #151515;
   margin-top: -40px;
   margin-bottom: 40px;
   color: #ffffff;
-  padding-left: 20px;
+  /* padding-left: 20px; */
   padding-top: 12px;
   position: fixed;
   z-index: 100;
+}
+.workloadTwoTabs {
+  margin-top: -10px;
+}
+.threWorkloadTabs {
+  /* padding-left: -20px; */
+  margin-top: -30px;
+  /* padding-left: 20px; */
 }
 
 .workloadV2Body {
@@ -2574,8 +2582,8 @@
   margin-top: -20px;
 }
 .orgWorkloadTopTabs {
-  margin-top: 30px;
-  margin-left: -25px;
+  margin-top: 20px;
+  margin-left: -41px;
   height: 90vh;
   width: 100%;
   position: fixed !important;
@@ -2586,7 +2594,7 @@
 }
 .searchTabLeftBar {
   background-color: #edf0f5;
-  margin-left: -20px;
+  /* margin-left: -20px; */
   /* margin-top: -13px; */
   padding: 20px;
   padding-left: 25px;
@@ -3381,4 +3389,17 @@
   right: 15px;
   font-size: 10px !important;
   color: #576377;
+}
+
+.searchOptions .field-input {
+  background-color: #576377 !important;
+  color: #ffffff !important;
+  border-radius: 0px !important;
+  font-size: 12px !important;
+}
+.searchOptions .field-input .field-label {
+  color: #ffffff !important;
+}
+.date-time-picker label {
+  color: #ffffff !important;
 }
