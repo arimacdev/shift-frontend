@@ -149,7 +149,7 @@ export const actions = {
     }
   },
   setIndex({ commit }, { startIndex, endIndex, allTasks }) {
-    console.log('SETINDEX->>>', allTasks);
+    // console.log('SETINDEX->>>', allTasks);
     commit('SET_INDEX', { startIndex, endIndex, allTasks });
   },
   setSelectedTask({ commit }, task) {
