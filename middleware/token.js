@@ -5,9 +5,19 @@ export default async function({ store, error, app }) {
   store.commit('user/setAccessToken', token);
   token = token.slice(8, token.length).trimLeft();
   const decodedJwt = jwt.decode(token);
+  const currentTime = new Date();
   // console.log('decodedJWT', token);
   if (decodedJwt != null) {
-    // console.log('Bearer token present');
+    if (decodedJwt.exp >= currentTime.getTime()) {
+      console.log(
+        'VALID TOKEN------->' + decodedJwt.exp + '/' + currentTime.getTime()
+      );
+    } else {
+      console.log(
+        'INVALID TOKEN------->' + decodedJwt.exp + '/' + currentTime.getTime()
+      );
+    }
+
     store.commit('user/setUserId', decodedJwt.userId);
     const organizationRoles = decodedJwt.realm_access.roles;
     let userRoles = [];
