@@ -399,7 +399,7 @@ export default {
             this.$store.dispatch("task/setIndex", {
               startIndex: 0,
               endIndex: 10,
-              allTasks: false,
+              isAllTasks: false,
             }),
             this.$store.dispatch(
               "task/fetchTasksAllTasks",
@@ -454,7 +454,7 @@ export default {
           this.$store.dispatch("task/setIndex", {
             startIndex: 0,
             endIndex: 10,
-            allTasks: true,
+            isAllTasks: true,
           }),
           this.$store.dispatch(
             "task/fetchTasksAllTasks",
@@ -545,7 +545,7 @@ export default {
             this.$store.dispatch("task/setIndex", {
               startIndex: 0,
               endIndex: 10,
-              allTasks: false,
+              isAllTasks: false,
             }),
             this.$store.dispatch(
               "task/fetchTasksAllTasks",
@@ -594,7 +594,7 @@ export default {
             this.$store.dispatch("task/setIndex", {
               startIndex: 0,
               endIndex: 10,
-              allTasks: true,
+              isAllTasks: true,
             }),
             this.$store.dispatch(
               "task/fetchTasksAllTasks",
@@ -643,7 +643,7 @@ export default {
           this.$store.dispatch("task/setIndex", {
             startIndex: 0,
             endIndex: 10,
-            allTasks: false,
+            isAllTasks: false,
           });
           this.$store.dispatch(
             "task/fetchTasksAllTasks",
@@ -686,7 +686,7 @@ export default {
           this.$store.dispatch("task/setIndex", {
             startIndex: 0,
             endIndex: 10,
-            allTasks: true,
+            isAllTasks: true,
           });
           this.$store.dispatch(
             "task/fetchTasksAllTasks",

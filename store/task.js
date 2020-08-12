@@ -9,7 +9,7 @@ export const state = () => ({
   parentTask: {},
   startIndex: 0,
   endIndex: 10,
-  allTasks: false,
+  isAllTasks: false,
   totalCount: 0,
   myTaskCount: 0,
 });
@@ -21,10 +21,10 @@ export const mutations = {
   SET_MY_TASK_COUNT(state, count) {
     state.myTaskCount = count;
   },
-  SET_INDEX(state, { startIndex, endIndex, allTasks }) {
+  SET_INDEX(state, { startIndex, endIndex, isAllTasks }) {
     state.startIndex = startIndex;
     state.endIndex = endIndex;
-    state.allTasks = allTasks;
+    state.isAllTasks = isAllTasks;
   },
   SET_SELECTED_TASK(state, task) {
     if (state.selectedTask.taskId === task.taskId) {
@@ -148,9 +148,9 @@ export const actions = {
       console.log('Error fetching task count length', error);
     }
   },
-  setIndex({ commit }, { startIndex, endIndex, allTasks }) {
+  setIndex({ commit }, { startIndex, endIndex, isAllTasks }) {
     // console.log('SETINDEX->>>', allTasks);
-    commit('SET_INDEX', { startIndex, endIndex, allTasks });
+    commit('SET_INDEX', { startIndex, endIndex, isAllTasks });
   },
   setSelectedTask({ commit }, task) {
     // console.log('selected->>>', task);
@@ -237,7 +237,7 @@ export const actions = {
     const userId = rootState.user.userId;
     this.$axios
       .get(
-        `projects/${projectId}/tasks?userId=${userId}&startIndex=${rootState.task.startIndex}&endIndex=${rootState.task.endIndex}&allTasks=${rootState.task.allTasks}`,
+        `projects/${projectId}/tasks?userId=${userId}&startIndex=${rootState.task.startIndex}&endIndex=${rootState.task.endIndex}&allTasks=${rootState.task.isAllTasks}`,
         {
           headers: {
             type: 'project',
