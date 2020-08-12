@@ -1042,6 +1042,7 @@ export default {
         this.$store.dispatch("task/setIndex", {
           startIndex: this.pagination * 10 - 10,
           endIndex: this.pagination * 10,
+          allTasks: false,
         }),
         this.$store.dispatch(
           "task/fetchTasksAllTasks",

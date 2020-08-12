@@ -144,7 +144,7 @@ export default {
   methods: {
     changeTaskOption(option) {
       this.component = option;
-      if(option === 'my-tasks'){
+      if (option === "my-tasks") {
         this.fetchMyTasks();
       } else {
         this.fetchAllTasks();
@@ -154,6 +154,7 @@ export default {
       this.$store.dispatch("task/setIndex", {
         startIndex: 0,
         endIndex: 10,
+        allTasks: false,
       });
       this.$store.dispatch(
         "task/fetchTasksAllTasks",
@@ -168,6 +169,7 @@ export default {
       this.$store.dispatch("task/setIndex", {
         startIndex: 0,
         endIndex: 10,
+        allTasks: false,
       });
       this.$store.dispatch(
         "task/fetchTasksMyTasks",
