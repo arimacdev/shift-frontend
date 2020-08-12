@@ -8,7 +8,14 @@
             <div style="color: #576377; font-weight: 500; font-size: 18px">{{ url }}</div>
           </v-col>
           <v-col md="2">
-            <v-btn color="#0BAFFF" dark small @click.stop.prevent="copyTestingCode">Copy</v-btn>
+            <v-btn
+              class="text-capitalize"
+              depressed
+              color="#0BAFFF"
+              dark
+              small
+              @click.stop.prevent="copyTestingCode"
+            >Copy</v-btn>
             <input type="hidden" id="testing-code" :value="url" />
           </v-col>
         </v-row>
@@ -29,7 +36,14 @@
         <v-text-field v-model="company" flat outlined label="Company" background-color="#EDF0F5"></v-text-field>
       </v-col>
       <v-col md="2">
-        <v-btn disabled color="#0BAFFF" width="150px" height="50px">Save</v-btn>
+        <v-btn
+          class="text-capitalize"
+          depressed
+          disabled
+          color="#0BAFFF"
+          width="150px"
+          height="50px"
+        >Save</v-btn>
       </v-col>
     </v-row>
     <div style="color: #576377;  margin-top: 20px; margin-bottom: 30px">Icon</div>
@@ -38,6 +52,8 @@
       src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1591002135277_arimac_logo%201.png"
     ></v-img>
     <v-btn
+      depressed
+      class="text-capitalize"
       disabled
       small
       color="#0BAFFF"
@@ -55,7 +71,7 @@ export default {
       // url: process.env.ORGANIZATION_URL,
       url: "https://project.arimaclanka.com",
       companyName: "Arimac Digital",
-      company: "Arimac Lanka PVT LTD"
+      company: "Arimac Lanka PVT LTD",
     };
   },
   methods: {
@@ -74,7 +90,7 @@ export default {
       /* unselect the range */
       testingCodeToCopy.setAttribute("type", "hidden");
       window.getSelection().removeAllRanges();
-    }
-  }
+    },
+  },
 };
 </script>

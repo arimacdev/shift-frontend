@@ -499,7 +499,7 @@
                         </v-list-item-title>
                         <div class="noteUpdateButton">
                           <v-btn
-                            class="ma-2"
+                            class="ma-2 text-capitalize"
                             small
                             rounded
                             depressed
@@ -853,7 +853,7 @@
                     <div class="fileUploadButton taskViewFileUploadButton">
                       <v-btn
                         @click="taskFileUpload()"
-                        class="ma-2"
+                        class="ma-2 text-capitalize"
                         x-small
                         rounded
                         depressed
@@ -935,11 +935,19 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn color="success" width="100px" @click="taskDeleteDialog = false">Cancel</v-btn>
+            <v-btn
+              color="success"
+              class="text-capitalize"
+              depressed
+              width="100px"
+              @click="taskDeleteDialog = false"
+            >Cancel</v-btn>
             <v-spacer></v-spacer>
             <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
             <v-btn
               color="error"
+              depressed
+              class="text-capitalize"
               width="100px"
               @click="
                 taskDeleteDialog = false;

@@ -102,6 +102,7 @@
               <!-- <div @click="jqlSearch()" class="filterSearchBtn">Search</div> -->
               <v-btn
                 depressed
+                class="text-capitalize"
                 @click="jqlSearch()"
                 height="50px"
                 color="#151515"

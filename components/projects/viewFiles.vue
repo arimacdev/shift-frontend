@@ -342,10 +342,22 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn color="success" width="100px" @click="taskDialog = false">Cancel</v-btn>
+            <v-btn
+              color="success"
+              class="text-capitalize"
+              depressed
+              width="100px"
+              @click="taskDialog = false"
+            >Cancel</v-btn>
             <v-spacer></v-spacer>
             <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
-            <v-btn color="error" width="100px" @click="removeFiles()">Delete</v-btn>
+            <v-btn
+              color="error"
+              width="100px"
+              class="text-capitalize"
+              depressed
+              @click="removeFiles()"
+            >Delete</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
         </div>
@@ -369,10 +381,22 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn color="success" width="100px" @click="folderDeleteDialog = false">Cancel</v-btn>
+            <v-btn
+              color="success"
+              class="text-capitalize"
+              depressed
+              width="100px"
+              @click="folderDeleteDialog = false"
+            >Cancel</v-btn>
             <v-spacer></v-spacer>
             <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
-            <v-btn color="error" width="100px" @click="removeFolder()">Delete</v-btn>
+            <v-btn
+              color="error"
+              class="text-capitalize"
+              depressed
+              width="100px"
+              @click="removeFolder()"
+            >Delete</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
         </div>

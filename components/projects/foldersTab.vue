@@ -200,7 +200,15 @@
                     </div>-->
                     <v-menu z-index="200" min-width="250px">
                       <template v-slot:activator="{ on, attrs }">
-                        <v-btn small icon color="#949494" v-bind="attrs" v-on="on">
+                        <v-btn
+                          small
+                          depressed
+                          class="text-capitalize"
+                          icon
+                          color="#949494"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
                           <v-icon size="20" dark>mdi-dots-vertical</v-icon>
                         </v-btn>
                       </template>
@@ -372,7 +380,15 @@
                     </div>-->
                     <v-menu z-index="200" min-width="250px">
                       <template v-slot:activator="{ on, attrs }">
-                        <v-btn small icon color="#949494" v-bind="attrs" v-on="on">
+                        <v-btn
+                          small
+                          depressed
+                          class="text-capitalize"
+                          icon
+                          color="#949494"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
                           <v-icon size="20" dark>mdi-dots-vertical</v-icon>
                         </v-btn>
                       </template>

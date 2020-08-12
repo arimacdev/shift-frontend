@@ -89,8 +89,21 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="#FF6161" dark text @click="dialog = false">Cancel</v-btn>
-            <v-btn color="#2EC973" :disabled="!isValid" @click="saveTemplate">OK</v-btn>
+            <v-btn
+              color="#FF6161"
+              class="text-capitalize"
+              depressed
+              dark
+              text
+              @click="dialog = false"
+            >Cancel</v-btn>
+            <v-btn
+              color="#2EC973"
+              class="text-capitalize"
+              depressed
+              :disabled="!isValid"
+              @click="saveTemplate"
+            >OK</v-btn>
           </v-card-actions>
         </v-form>
       </v-card>

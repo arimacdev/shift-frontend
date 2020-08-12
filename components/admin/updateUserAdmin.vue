@@ -149,6 +149,7 @@
                 <v-row>
                   <v-col md="3" v-for="(role, index) in realmRoles" :key="index">
                     <v-btn
+                      depressed
                       class="text-capitalize"
                       v-if="role.name != 'ORGANIZATION_ADMIN'"
                       width="110px"
@@ -245,9 +246,23 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn small color="red darken-1" dark @click="resetDialog = false">Cancel</v-btn>
+          <v-btn
+            depressed
+            class="text-capitalize"
+            small
+            color="red darken-1"
+            dark
+            @click="resetDialog = false"
+          >Cancel</v-btn>
 
-          <v-btn small color="green darken-1" dark @click="resetDialog = false">Confirm</v-btn>
+          <v-btn
+            small
+            depressed
+            class="text-capitalize"
+            color="green darken-1"
+            dark
+            @click="resetDialog = false"
+          >Confirm</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -270,9 +285,18 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn small color="red darken-1" dark @click="deactivateDialog = false">Cancel</v-btn>
+          <v-btn
+            small
+            class="text-capitalize"
+            depressed
+            color="red darken-1"
+            dark
+            @click="deactivateDialog = false"
+          >Cancel</v-btn>
 
           <v-btn
+            depressed
+            class="text-capitalize"
             small
             color="green darken-1"
             dark
@@ -302,10 +326,19 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn small color="red darken-1" dark @click="activateDialog = false">Cancel</v-btn>
+          <v-btn
+            class="text-capitalize"
+            depressed
+            small
+            color="red darken-1"
+            dark
+            @click="activateDialog = false"
+          >Cancel</v-btn>
 
           <v-btn
+            depressed
             small
+            class="text-capitalize"
             color="green darken-1"
             dark
             @click="
@@ -342,9 +375,23 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn small color="red darken-1" dark @click="roleChangeDialog = false">Cancel</v-btn>
+          <v-btn
+            small
+            class="text-capitalize"
+            depressed
+            color="red darken-1"
+            dark
+            @click="roleChangeDialog = false"
+          >Cancel</v-btn>
 
-          <v-btn small color="green darken-1" dark @click="userRoleUpdate">Confirm</v-btn>
+          <v-btn
+            small
+            class="text-capitalize"
+            depressed
+            color="green darken-1"
+            dark
+            @click="userRoleUpdate"
+          >Confirm</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>

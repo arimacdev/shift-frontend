@@ -460,6 +460,7 @@
                   <br />
                   <div style="position: fixed; bottom: 10px; right: 10px;" v-if="this.matrixView">
                     <v-btn
+                      depressed
                       color="blue"
                       style=" color: #FFFFFF"
                       @click="loadMatrix()"
@@ -470,6 +471,7 @@
                       <v-icon>mdi-plus-circle-outline</v-icon>
                     </v-btn>
                     <v-btn
+                      depressed
                       color="#78CC71"
                       style="color: #FFFFFF"
                       @click="loadAllMatrix()"
@@ -521,9 +523,18 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn width="100px" color="#FF6161" dark @click="searchSkillDialog = false">Cancel</v-btn>
+          <v-btn
+            width="100px"
+            class="text-capitalize"
+            depressed
+            color="#FF6161"
+            dark
+            @click="searchSkillDialog = false"
+          >Cancel</v-btn>
 
           <v-btn
+            class="text-capitalize"
+            depressed
             width="100px"
             color="#2EC973"
             @click="

@@ -30,10 +30,11 @@
           </template>
           <div class="pictureUploadButton">
             <v-btn
+              depressed
               :disabled="disableButton"
               :loading="loading"
               color="#0BAFFF"
-              class="ma-2 white--text"
+              class="ma-2 white--text text-capitalize"
               @click="submit()"
               x-small
             >
@@ -122,6 +123,7 @@
               @click="activateOneSignal()"
             >Activate</v-btn>
             <v-btn
+              depressed
               color="red"
               dark
               style="margin-top: -15px"

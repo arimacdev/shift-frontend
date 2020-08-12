@@ -286,10 +286,18 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
 
-                  <v-btn color="error" width="100px" @click="weightUpdateDialog = false">Cancel</v-btn>
+                  <v-btn
+                    color="error"
+                    class="text-capitalize"
+                    depressed
+                    width="100px"
+                    @click="weightUpdateDialog = false"
+                  >Cancel</v-btn>
                   <v-spacer></v-spacer>
                   <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
                   <v-btn
+                    class="text-capitalize"
+                    depressed
                     color="success"
                     :disabled="checkConfirmation()"
                     width="100px"
@@ -329,10 +337,18 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
 
-                  <v-btn color="success" width="100px" @click="projectDialog = false">Cancel</v-btn>
+                  <v-btn
+                    class="text-capitalize"
+                    depressed
+                    color="success"
+                    width="100px"
+                    @click="projectDialog = false"
+                  >Cancel</v-btn>
                   <v-spacer></v-spacer>
                   <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
                   <v-btn
+                    depressed
+                    class="text-capitalize"
                     color="error"
                     width="100px"
                     @click="

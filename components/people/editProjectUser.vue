@@ -46,6 +46,8 @@
                   <v-spacer></v-spacer>
 
                   <v-btn
+                    depressed
+                    class="text-capitalize"
                     color="error"
                     width="100px"
                     @click="dialog = false"
@@ -53,6 +55,8 @@
                   >Cancel</v-btn>
                   <v-spacer></v-spacer>
                   <v-btn
+                    depressed
+                    class="text-capitalize"
                     :disabled="!isValid"
                     color="success"
                     width="100px"
@@ -85,7 +89,7 @@ export default {
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
-    "progress-loading": Progress
+    "progress-loading": Progress,
   },
   data() {
     return {
@@ -97,7 +101,7 @@ export default {
       isAdmin: false,
       jobRole: this.editUser.projectJobRoleName,
       component: "",
-      projectRoleRules: [value => !!value || "Project role is required!"]
+      projectRoleRules: [(value) => !!value || "Project role is required!"],
     };
   },
   methods: {
@@ -122,7 +126,7 @@ export default {
           {
             assignerId: this.userId,
             assigneeJobRole: this.jobRole,
-            assigneeProjectRole: roleIdValue
+            assigneeProjectRole: roleIdValue,
           }
         );
         this.$store
@@ -133,13 +137,13 @@ export default {
         this.component = "success-popup";
         this.overlay = false;
       } catch (e) {
-        this.overlay = false
+        this.overlay = false;
         console.log("Error blocking user", e);
         this.errorMessage = e.response.data;
         this.component = "error-popup";
       }
       // console.log(response);
-    }
+    },
   },
   computed: {
     adminStatus: {
@@ -157,9 +161,9 @@ export default {
       },
       set(value) {
         this.isAdmin = value;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 

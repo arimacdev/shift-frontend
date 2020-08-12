@@ -75,10 +75,18 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
 
-                  <v-btn color="success" width="100px" @click="taskDialog = false;">Cancel</v-btn>
+                  <v-btn
+                    color="success"
+                    class="text-capitalize"
+                    depressed
+                    width="100px"
+                    @click="taskDialog = false;"
+                  >Cancel</v-btn>
                   <v-spacer></v-spacer>
                   <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
                   <v-btn
+                    class="text-capitalize"
+                    depressed
                     color="error"
                     width="100px"
                     @click="taskDialog = false; deleteTask()"
