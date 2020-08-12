@@ -7,16 +7,16 @@ export default async function({ store, error, app }) {
   const decodedJwt = jwt.decode(token);
   const currentTime = new Date();
   // console.log('decodedJWT', token);
-  // if (decodedJwt != null) {
-  //   if (decodedJwt.exp >= currentTime.getTime()) {
-  //     console.log(
-  //       'VALID TOKEN------->' + decodedJwt.exp + '/' + currentTime.getTime()
-  //     );
-  //   } else {
-  //     console.log(
-  //       'INVALID TOKEN------->' + decodedJwt.exp + '/' + currentTime.getTime()
-  //     );
-  //   }
+  if (decodedJwt != null) {
+    // if (decodedJwt.exp >= currentTime.getTime()) {
+    //   console.log(
+    //     'VALID TOKEN------->' + decodedJwt.exp + '/' + currentTime.getTime()
+    //   );
+    // } else {
+    //   console.log(
+    //     'INVALID TOKEN------->' + decodedJwt.exp + '/' + currentTime.getTime()
+    //   );
+    // }
 
     store.commit('user/setUserId', decodedJwt.userId);
     const organizationRoles = decodedJwt.realm_access.roles;
