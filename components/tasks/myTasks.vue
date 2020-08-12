@@ -842,7 +842,7 @@ export default {
       this.$store.dispatch("task/setIndex", {
         startIndex: this.myTaskPagination * 10 - 10,
         endIndex: this.myTaskPagination * 10,
-        allTasks: false,
+        isAllTasks: false,
       });
       this.$store.dispatch(
         "task/fetchTasksMyTasks",
