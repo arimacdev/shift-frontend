@@ -1,14 +1,14 @@
 <template>
   <v-card class="tabs orgWorkloadTopTabs">
-    <v-tabs>
+    <v-tabs class="threWorkloadTabs" dark background-color="#292929">
       <v-tab @click="changeTabView('task')">
-        <span class="tabHeaders">Search</span>
+        <span class="tabHeaders text-capitalize">Search</span>
       </v-tab>
       <v-tab @click="changeTabView('board')">
-        <span class="tabHeaders">Calander</span>
+        <span class="tabHeaders text-capitalize">Calander</span>
       </v-tab>
       <v-tab @click="changeTabView('people')">
-        <span class="tabHeaders">Overview</span>
+        <span class="tabHeaders text-capitalize">Overview</span>
       </v-tab>
 
       <v-tab-item>
@@ -38,10 +38,10 @@ export default {
   components: {
     "search-tab": SearchTab,
     "calander-tab": CalanderTab,
-    "overview-tab": OverviewTab
+    "overview-tab": OverviewTab,
   },
   methods: {
-    changeTabView(type) {}
-  }
+    changeTabView(type) {},
+  },
 };
 </script>

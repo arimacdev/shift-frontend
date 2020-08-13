@@ -29,21 +29,6 @@ export default {
 </script>
 
 <style scoped>
-.tool-bar {
-  position: fixed;
-  width: 100%;
-  z-index: 100;
-  background-color: #080848 !important;
-}
-.top-nav {
-  margin-top: -12px;
-  margin-left: -12px;
-  margin-right: -12px;
-}
-.title-div {
-  width: 100%;
-  height: 100%;
-}
 .name-div {
   width: 20%;
   float: left;

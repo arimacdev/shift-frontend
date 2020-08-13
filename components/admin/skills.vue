@@ -5,6 +5,7 @@
         <v-row>
           <v-col>
             <v-btn
+              depressed
               @click="skillDialog = true"
               height="50px"
               class="addUserSubmitButtonEdit userAddBottom"
@@ -102,9 +103,18 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn width="100px" color="#FF6161" dark @click="skillDialog = false">Cancel</v-btn>
+          <v-btn
+            depressed
+            class="text-capitalize"
+            width="100px"
+            color="#FF6161"
+            dark
+            @click="skillDialog = false"
+          >Cancel</v-btn>
 
           <v-btn
+            depressed
+            class="text-capitalize"
             width="100px"
             color="#2EC973"
             dark
@@ -135,7 +145,7 @@ export default {
     "search-bar": usersSearchBar,
     "skills-content": skillsContent,
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
   },
   data() {
     return {
@@ -148,7 +158,7 @@ export default {
       colorPicker: "",
       categoryName: "",
       popup: "",
-      userId: this.$store.state.user.userId
+      userId: this.$store.state.user.userId,
     };
   },
   methods: {
@@ -161,7 +171,7 @@ export default {
         let category = catSearchList[index];
         this.catArray.push({
           name: category.categoryName,
-          id: category.categoryId
+          id: category.categoryId,
         });
       }
       return catList;
@@ -199,12 +209,12 @@ export default {
           `/category`,
           {
             categoryName: this.categoryName,
-            categoryColorCode: this.colorPicker
+            categoryColorCode: this.colorPicker,
           },
           {
             headers: {
-              userId: this.userId
-            }
+              userId: this.userId,
+            },
           }
         );
 
@@ -228,12 +238,12 @@ export default {
         this.overlay = false;
         console.log("Error updating a status", e);
       }
-    }
+    },
   },
   computed: {
     ...mapState({
-      skillCategory: state => state.skillMatrix.skillCategory
-    })
+      skillCategory: (state) => state.skillMatrix.skillCategory,
+    }),
     // catArray() {
     //   let catSearchList = this.skillCategory;
     //   let catList = [];
@@ -246,6 +256,6 @@ export default {
     //   }
     //   return catList;
     // },
-  }
+  },
 };
 </script>

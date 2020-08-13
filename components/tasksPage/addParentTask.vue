@@ -44,6 +44,8 @@
                 <v-spacer></v-spacer>
 
                 <v-btn
+                  class="text-capitalize"
+                  depressed
                   color="error"
                   width="100px"
                   @click="dialog = false"
@@ -51,6 +53,8 @@
                 >Cancel</v-btn>
                 <v-spacer></v-spacer>
                 <v-btn
+                  class="text-capitalize"
+                  depressed
                   color="success"
                   width="100px"
                   @click="changeHandler"
@@ -83,7 +87,7 @@ export default {
   props: ["taskId", "groupId"],
   components: {
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
   },
   created() {
     // console.log("alltasks", this.groupAllTasks);
@@ -103,7 +107,7 @@ export default {
       isValid: true,
       userId: this.$store.state.user.userId,
       successMessage: "",
-      assigneeRules: [value => !!value || "Parent task is required!"],
+      assigneeRules: [(value) => !!value || "Parent task is required!"],
       isShow: false,
       selected: false,
       dialog: false,
@@ -113,13 +117,13 @@ export default {
       select: null,
       states: [],
       component: "",
-      success: ""
+      success: "",
     };
   },
   watch: {
     search(val) {
       val && val !== this.select && this.querySelections(val);
-    }
+    },
   },
   methods: {
     close() {
@@ -135,7 +139,7 @@ export default {
         if (parent.parentTask.taskId != this.taskId) {
           this.parentTasks.push({
             name: parent.parentTask.taskName,
-            id: parent.parentTask.taskId
+            id: parent.parentTask.taskId,
           });
         }
       }
@@ -157,12 +161,12 @@ export default {
         response = await this.$axios.$put(
           `/taskgroup/${this.groupId}/tasks/${this.taskId}/parent/transition`,
           {
-            newParent: this.parentTask
+            newParent: this.parentTask,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.dialog = false;
@@ -171,11 +175,11 @@ export default {
 
         this.$store.dispatch("groups/groupTask/setCurrentTask", {
           taskGroupId: this.groupId,
-          taskId: this.taskId
+          taskId: this.taskId,
         });
         this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
           taskGroupId: this.groupId,
-          userId: this.userId
+          userId: this.userId,
         });
         this.$store.dispatch("groups/groupTask/addParentTask", this.taskId);
 
@@ -191,7 +195,7 @@ export default {
         }, 3000);
         console.log("Error Adding parent task", e);
       }
-    }
+    },
   },
   computed: {
     adminStatus: {
@@ -200,12 +204,12 @@ export default {
       },
       set(value) {
         this.selected = !this.selected;
-      }
+      },
     },
     ...mapState({
-      groupAllTasks: state => state.groups.groupTask.groupTasks
-    })
-  }
+      groupAllTasks: (state) => state.groups.groupTask.groupTasks,
+    }),
+  },
 };
 </script>
 

@@ -51,6 +51,8 @@
                 <v-spacer></v-spacer>
 
                 <v-btn
+                  class="text-capitalize"
+                  depressed
                   color="error"
                   width="100px"
                   @click="dialog = false"
@@ -58,6 +60,8 @@
                 >Cancel</v-btn>
                 <v-spacer></v-spacer>
                 <v-btn
+                  depressed
+                  class="text-capitalize"
                   color="success"
                   width="100px"
                   @click="changeHandler"
@@ -85,7 +89,7 @@ export default {
   props: ["users", "group"],
   components: {
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
   },
   data() {
     return {
@@ -96,9 +100,9 @@ export default {
         assignerId: this.$store.state.user.userId,
         assigneeId: "",
         assigneeJobRole: "",
-        assigneeProjectRole: this.getProjectRole()
+        assigneeProjectRole: this.getProjectRole(),
       },
-      assigneeRules: [value => !!value || "Assignee is required!"],
+      assigneeRules: [(value) => !!value || "Assignee is required!"],
       isShow: false,
       selected: false,
       dialog: false,
@@ -108,13 +112,13 @@ export default {
       select: null,
       states: [],
       component: "",
-      success: ""
+      success: "",
     };
   },
   watch: {
     search(val) {
       val && val !== this.select && this.querySelections(val);
-    }
+    },
   },
   methods: {
     close() {
@@ -134,14 +138,14 @@ export default {
         response = await this.$axios.$post(`/taskgroup/add`, {
           taskGroupId: this.group.taskGroupId,
           taskGroupAssigner: this.userId,
-          taskGroupAssignee: this.addUser.assigneeId
+          taskGroupAssignee: this.addUser.assigneeId,
         });
         this.$refs.form.reset();
         this.addUser.assigneeId = null;
         this.component = "success-popup";
         this.$store.dispatch("groups/groupPeople/fetchGroupPeople", {
           taskGroupId: this.group.taskGroupId,
-          userId: this.userId
+          userId: this.userId,
         });
         // console.log(response);
       } catch (e) {
@@ -174,13 +178,13 @@ export default {
         this.states.push({
           name: user.firstName + " " + user.lastName,
           id: user,
-          img: user.profileImage
+          img: user.profileImage,
         });
       }
       // console.log("usersList", this.users, "nameList", this.states);
       this.loading = true;
       setTimeout(() => {
-        this.items = this.states.filter(e => {
+        this.items = this.states.filter((e) => {
           return (e || "").toLowerCase().indexOf((v || "").toLowerCase()) > -1;
         });
         this.loading = false;
@@ -194,7 +198,7 @@ export default {
       } else {
         return 3;
       }
-    }
+    },
   },
   computed: {
     adminStatus: {
@@ -203,9 +207,9 @@ export default {
       },
       set(value) {
         this.selected = !this.selected;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 

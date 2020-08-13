@@ -17,8 +17,13 @@
             <span>If you are not sure, you can close this popup</span>
           </v-card-text>
 
-          <v-btn class="editButton" text @click="dialog = false">Cancel</v-btn>
-          <v-btn class="deleteButtonSpec" text @click="changeHandler">Remove</v-btn>
+          <v-btn class="editButton text-capitalize" depressed text @click="dialog = false">Cancel</v-btn>
+          <v-btn
+            class="deleteButtonSpec text-capitalize"
+            depressed
+            text
+            @click="changeHandler"
+          >Remove</v-btn>
         </div>
       </v-card>
     </v-dialog>
@@ -31,7 +36,7 @@ export default {
   data() {
     return {
       userId: this.$store.state.user.userId,
-      dialog: false
+      dialog: false,
     };
   },
   methods: {
@@ -44,15 +49,15 @@ export default {
           {
             executorId: this.userId,
             blockedUserId: this.blockedUserId,
-            blockedStatus: true
+            blockedStatus: true,
           }
         );
       } catch (e) {
         console.log("Error blocking user", e);
       }
       console.log(response);
-    }
-  }
+    },
+  },
 };
 </script>
 

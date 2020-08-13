@@ -18,61 +18,93 @@
                 item-value="id"
                 label="All"
                 solo
+                flat
+                background-color="#FFFFFF"
+                dense
+                outlined
+                style="border-radius: 0px"
               ></v-select>
 
               <v-text-field
                 v-model="personalTask"
                 solo
-                prepend-inner-icon="mdi-plus-circle"
+                prepend-inner-icon="mdi-plus"
                 label="Add a new task"
                 class="addPersonalTaskTextBox"
                 @keyup.enter="addPersonalTask"
+                background-color="#FFFFFF"
+                dense
+                outlined
+                flat
+                style="border-radius: 0px"
               ></v-text-field>
 
               <!-- -------- loop task list here ----------- -->
               <div class="taskPageContentScroll overflow-y-auto">
-                <div class="taskList" v-for="(personalTask, index) in personalTasks" :key="index">
+                <div v-for="(personalTask, index) in personalTasks" :key="index">
                   <v-list-item
+                    class="upperFilterListPersonalItem"
                     v-if="personalTask.taskStatus == taskSelect"
-                    @click="selectPersonalTask(personalTask);  taskDialog = true;"
                   >
                     <!-- @click.stop="drawer = !drawer" -->
                     <v-list-item-action>
                       <v-icon
                         v-if="personalTask.taskStatus == 'closed'"
                         size="30"
-                        color="#2EC973"
-                      >mdi-checkbox-marked-circle</v-icon>
-                      <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                        color="#66B25F"
+                      >mdi-checkbox-blank</v-icon>
+                      <v-icon
+                        @click="
+                      closeTask(personalTask.taskId)"
+                        v-else
+                        size="25"
+                        color="#939393"
+                      >mdi-checkbox-blank-outline</v-icon>
                     </v-list-item-action>
-                    <div class="tasklistTaskNames">
-                      <div class="body-2">{{ personalTask.taskName }}</div>
+                    <div
+                      class="tasklistTaskNames"
+                      @click="selectPersonalTask(personalTask);  taskDialog = true;"
+                      style="cursor: pointer; color: #576377"
+                    >
+                      <div>{{ personalTask.taskName }}</div>
                     </div>
                     <v-list-item-content class="updatedDate">
                       <v-list-item-title
+                        class="fontRestructure12"
                         :class="dueDateCheck(personalTask)"
                       >{{ getTaskDueDate(personalTask.taskDueDateAt) }}</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
 
                   <v-list-item
+                    class="upperFilterListPersonalItem"
                     v-if="taskSelect == 'all' || taskSelect == null"
-                    @click="selectPersonalTask(personalTask); taskDialog = true;"
                   >
                     <!-- @click.stop="drawer = !drawer" -->
                     <v-list-item-action>
                       <v-icon
                         v-if="personalTask.taskStatus == 'closed'"
-                        size="30"
-                        color="#2EC973"
-                      >mdi-checkbox-marked-circle</v-icon>
-                      <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                        size="25"
+                        color="#66B25F"
+                      >mdi-checkbox-blank</v-icon>
+                      <v-icon
+                        @click="
+                      closeTask(personalTask.taskId)"
+                        v-else
+                        size="25"
+                        color="#939393"
+                      >mdi-checkbox-blank-outline</v-icon>
                     </v-list-item-action>
-                    <div class="tasklistTaskNames">
-                      <div class="body-2">{{ personalTask.taskName }}</div>
+                    <div
+                      class="tasklistTaskNames"
+                      @click="selectPersonalTask(personalTask); taskDialog = true;"
+                      style="cursor: pointer;  color: #576377"
+                    >
+                      <div>{{ personalTask.taskName }}</div>
                     </div>
                     <v-list-item-content class="updatedDate">
                       <v-list-item-title
+                        class="fontRestructure12"
                         :class="dueDateCheck(personalTask)"
                       >{{ getTaskDueDate(personalTask.taskDueDateAt) }}</v-list-item-title>
                     </v-list-item-content>
@@ -143,7 +175,7 @@ export default {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
     "task-dialog": TaskDialog,
-    "progress-loading": Progress
+    "progress-loading": Progress,
   },
   data() {
     return {
@@ -164,8 +196,8 @@ export default {
       items: [
         { id: "all", name: "All" },
         { id: "open", name: "Open" },
-        { id: "closed", name: "Closed" }
-      ]
+        { id: "closed", name: "Closed" },
+      ],
     };
   },
 
@@ -174,6 +206,37 @@ export default {
   },
 
   methods: {
+    async closeTask(taskId) {
+      // console.log("onchange updated status ->");
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/non-project/tasks/personal/${taskId}`,
+          {
+            taskStatus: "closed",
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.$store.dispatch("personalTasks/fetchAllPersonalTasks");
+        this.component = "success-popup";
+        this.successMessage = "Status successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        // console.log("update task status response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error updating a status", e);
+      }
+    },
     close() {
       this.component = "";
     },
@@ -215,11 +278,11 @@ export default {
       // console.log("selectedTask", personalTask);
       this.$axios
         .get(`/users/${this.task.taskAssignee}`)
-        .then(async response => {
+        .then(async (response) => {
           // console.log("fetched task -->", response.data.data);
           this.assignee = response.data.data;
         })
-        .catch(e => {
+        .catch((e) => {
           // console.log("error", e);
         });
       this.$store.dispatch("personalTasks/setSelectedTask", personalTask);
@@ -237,7 +300,7 @@ export default {
           taskName: this.personalTask,
           taskAssignee: this.userId,
           taskDueDate: null,
-          taskRemindOnDate: null
+          taskRemindOnDate: null,
         });
         this.personalTask = "";
         // console.log(response);
@@ -268,7 +331,7 @@ export default {
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "Add Due Date";
+        return "No Due Date";
       } else if (
         now.getDate() === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
@@ -293,13 +356,13 @@ export default {
         stringDate = stringDate.slice(0, 10);
         return stringDate;
       }
-    }
+    },
   },
   computed: {
     ...mapState({
-      personalTasks: state => state.personalTasks.personalTasks
-    })
-  }
+      personalTasks: (state) => state.personalTasks.personalTasks,
+    }),
+  },
 };
 </script>
 

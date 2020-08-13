@@ -3,7 +3,7 @@
     <v-row justify="center">
       <v-dialog v-model="dialog" persistent max-width="350">
         <template v-slot:activator="{ on }">
-          <div class="iconBackCircle">
+          <div class="iconBackCirclePeople">
             <v-icon v-on="on" size="17" color="#FF6161">mdi-trash-can-outline</v-icon>
           </div>
         </template>
@@ -16,8 +16,13 @@
               <span>If you are not sure, you can close this popup</span>
             </v-card-text>
 
-            <v-btn class="editButton" text @click="dialog = false">Cancel</v-btn>
-            <v-btn class="deleteButtonSpec" text @click="changeHandler">Block</v-btn>
+            <v-btn class="editButton text-capitalize" depressed text @click="dialog = false">Cancel</v-btn>
+            <v-btn
+              class="deleteButtonSpec text-capitalize"
+              depressed
+              text
+              @click="changeHandler"
+            >Block</v-btn>
           </div>
         </v-card>
       </v-dialog>
@@ -41,7 +46,7 @@ export default {
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
-    "progress-loading": Progress
+    "progress-loading": Progress,
   },
   data() {
     return {
@@ -50,12 +55,11 @@ export default {
       successMessage: "",
       component: "",
       userId: this.$store.state.user.userId,
-      dialog: false
+      dialog: false,
     };
   },
   methods: {
     close() {
-      this.$refs.form.reset();
       this.component = "";
     },
     async changeHandler() {
@@ -68,7 +72,7 @@ export default {
           {
             executorId: this.userId,
             blockedUserId: this.blockedUserId,
-            blockedStatus: true
+            blockedStatus: true,
           }
         );
         this.component = "success-popup";
@@ -91,8 +95,8 @@ export default {
         console.log("Error blocking user", e);
       }
       // console.log(response);
-    }
-  }
+    },
+  },
 };
 </script>
 
