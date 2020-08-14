@@ -1,6 +1,7 @@
 export const state = () => ({
   project: {},
   projects: [],
+  allOrgProjects: [],
   projectFiles: [],
   selectedFolderFiles: {
     folders: [],
@@ -37,6 +38,18 @@ export const mutations = {
       return 0;
     });
     state.projects = projects;
+  },
+  FETCH_ALL_ORG_PROJECTS(state, projects){
+    const sorted = projects.sort((a, b) => {
+      const projectA = a.projectName.toUpperCase();
+      const projectB = b.projectName.toUpperCase();
+
+      if (projectA < projectB) return -1;
+      if (projectA > projectB) return 1;
+
+      return 0;
+    });
+    state.allOrgProjects = projects;
   },
   FETCH_ALL_PROJECTS_FILES(state, projectFiles) {
     state.projectFiles = projectFiles;
@@ -124,6 +137,21 @@ export const actions = {
       // );
     } catch (e) {
       // console.log('Error fetching projects from store', e);
+    }
+  },
+
+    async fetchAllOragnizationProjects({ commit, rootState }) {
+    const user = rootState.user.userId;
+    let projectResponse;
+    try {
+      projectResponse = await this.$axios.$get(`/projects/all`, {
+        headers: {
+          user: user,
+        },
+      });
+      commit('FETCH_ALL_ORG_PROJECTS', projectResponse.data);
+    } catch (e) {
+      console.log('Error fetching projects from store', e);
     }
   },
 
