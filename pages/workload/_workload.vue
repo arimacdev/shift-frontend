@@ -77,7 +77,9 @@ export default {
     this.overlay = true;
     Promise.all([
       this.$store.dispatch("user/setAllUsers"),
+      //TODO Remove this
       this.$store.dispatch("project/fetchAllProjects"),
+      this.$store.dispatch("project/fetchAllOragnizationProjects"),
       // this.$store.dispatch('workload/fetchAllTaskLoadUsers', {
       //   userId: 'all',
       //   from: 0,

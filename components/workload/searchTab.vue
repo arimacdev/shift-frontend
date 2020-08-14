@@ -1050,7 +1050,7 @@ export default {
   computed: {
     ...mapState({
       users: (state) => state.user.users,
-      allProjects: (state) => state.project.projects,
+      allProjects: (state) => state.project.allOrgProjects,
       templates: (state) => state.workload.templates,
     }),
     assigneeArray() {
