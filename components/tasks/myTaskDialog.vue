@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card width="100vw" height="100%">
-      <v-toolbar dark color="primary">
+      <v-toolbar dark color="#010101">
         <v-btn icon dark @click="taskDialogClosing()">
           <v-icon>mdi-close</v-icon>
         </v-btn>

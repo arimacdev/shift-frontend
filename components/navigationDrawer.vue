@@ -187,7 +187,7 @@ export default {
 </script>
 <style scoped>
 .navButtons {
-  color: #4d4f85;
+  color: #585858;
 }
 
 .navText:visited {
