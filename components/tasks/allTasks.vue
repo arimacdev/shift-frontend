@@ -321,7 +321,7 @@
                 <v-expand-transition>
                   <v-text-field
                     v-if="hover"
-                    v-model="subTaskName[index]"
+                    v-model="subTaskName"
                     background-color="#FFFFFF"
                     outlined
                     solo
@@ -340,9 +340,38 @@
                       )
                     "
                     clearable
+                    @input="autoFillingSubTask(index)"
                   ></v-text-field>
                 </v-expand-transition>
+                <div
+                  v-if="hover && subTagging"
+                  class="taggingPopupBoxSubTaskCreate overflow-y-auto"
+                >
+                  <div>
+                    <v-list-item-group>
+                      <div v-for="(user, index) in assigneeLoadArray()" :key="index">
+                        <v-list-item @click="tagPeopleSubTask(user, index)" dense>
+                          <v-list-item-avatar size="20">
+                            <v-img v-if="user.img != null && user.img != ''" :src="user.img"></v-img>
+                            <v-img
+                              v-else
+                              src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                            ></v-img>
+                          </v-list-item-avatar>
+                          <v-list-item-content>
+                            <v-list-item-subtitle>
+                              {{
+                              user.name
+                              }}
+                            </v-list-item-subtitle>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </div>
+                    </v-list-item-group>
+                  </div>
+                </div>
               </div>
+
               <div class="restructuredSubTaskCreate" v-else style="margin-bottom: -5px;"></div>
               <div v-if="task.childTasks.length !== 0">
                 <div
@@ -692,12 +721,13 @@ export default {
   data() {
     return {
       tagging: false,
+      subTagging: false,
       assigneeId: "",
       pagination: this.pagination,
       logs: {},
       searchAssignee: "",
       overlay: false,
-      subTaskName: [],
+      subTaskName: "",
       projectId: "",
       jqlQuery: "",
       assigneeQuery: "",
@@ -813,7 +843,26 @@ export default {
       this.tagging = false;
       this.assigneeId = user.id;
       this.updatedTask.taskName = this.updatedTask.taskName + user.display;
-      console.log("SELECTED TAGGING: " + this.assigneeId);
+      // console.log("SELECTED TAGGING: " + this.assigneeId);
+    },
+    tagPeopleSubTask(user, index) {
+      this.subTagging = false;
+      this.assigneeId = user.id;
+      this.subTaskName = this.subTaskName + user.display;
+      // console.log("SELECTED TAGGING INDEX: " + index);
+    },
+    autoFillingSubTask(index) {
+      if (this.subTaskName != "" && this.subTaskName != null) {
+        if (this.subTaskName.charAt(this.subTaskName.length - 1) == "@") {
+          this.subTagging = true;
+          // console.log("TAGGING: " + this.subTagging);
+        } else {
+          this.subTagging = false;
+          this.assigneeId = "";
+        }
+      } else {
+        this.subTagging = false;
+      }
     },
     autoFilling() {
       if (
@@ -826,7 +875,7 @@ export default {
           ) == "@"
         ) {
           this.tagging = true;
-          console.log("TAGGING: " + this.tagging);
+          // console.log("TAGGING: " + this.tagging);
         } else {
           this.tagging = false;
           this.assigneeId = "";
@@ -1340,14 +1389,24 @@ export default {
     async addSubTask(index, selectedParentTask, issueType, sprintId, dueDate) {
       this.overlay = true;
       let response;
+      let taskName;
+      let assignee;
+
+      if (this.assigneeId != "") {
+        taskName = this.subTaskName.split("@")[0];
+        assignee = this.assigneeId;
+      } else {
+        taskName = this.subTaskName;
+        assignee = this.userId;
+      }
       try {
         response = await this.$axios.$post(
           `/projects/${this.projectId}/tasks`,
           {
-            taskName: this.subTaskName[index],
+            taskName: taskName,
             projectId: this.projectId,
             taskInitiator: this.userId,
-            taskAssignee: this.userId,
+            taskAssignee: assignee,
             taskDueDate: dueDate,
             taskRemindOnDate: "",
             taskStatus: null,
@@ -1357,7 +1416,7 @@ export default {
             parentTaskId: selectedParentTask,
           }
         );
-        this.subTaskName = [];
+        this.subTaskName = "";
         this.component = "success-popup";
         this.successMessage = "Task added successfully";
         setTimeout(() => {
