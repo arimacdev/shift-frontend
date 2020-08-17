@@ -165,8 +165,35 @@
             style="border-radius: 0px"
             @keyup.enter="addTask(null, 'general')"
             clearable
+            @input="autoFilling()"
           ></v-text-field>
         </v-form>
+      </div>
+      <div>
+        <div v-if="tagging" class="taggingPopupBoxTaskCreate overflow-y-auto">
+          <div>
+            <v-list-item-group>
+              <div v-for="(user, index) in assigneeLoadArray()" :key="index">
+                <v-list-item @click="tagPeople(user)" dense>
+                  <v-list-item-avatar size="20">
+                    <v-img v-if="user.img != null && user.img != ''" :src="user.img"></v-img>
+                    <v-img
+                      v-else
+                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                    ></v-img>
+                  </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-subtitle>
+                      {{
+                      user.name
+                      }}
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </div>
+            </v-list-item-group>
+          </div>
+        </div>
       </div>
       <!-- ------ start task list ------- -->
       <div v-for="(task, index) in projectAllTasks" :key="index">
@@ -664,6 +691,8 @@ export default {
   props: ["pagination"],
   data() {
     return {
+      tagging: false,
+      assigneeId: "",
       pagination: this.pagination,
       logs: {},
       searchAssignee: "",
@@ -780,6 +809,69 @@ export default {
     },
   },
   methods: {
+    tagPeople(user) {
+      this.tagging = false;
+      this.assigneeId = user.id;
+      this.updatedTask.taskName = this.updatedTask.taskName + user.display;
+      console.log("SELECTED TAGGING: " + this.assigneeId);
+    },
+    autoFilling() {
+      if (
+        this.updatedTask.taskName != "" &&
+        this.updatedTask.taskName != null
+      ) {
+        if (
+          this.updatedTask.taskName.charAt(
+            this.updatedTask.taskName.length - 1
+          ) == "@"
+        ) {
+          this.tagging = true;
+          console.log("TAGGING: " + this.tagging);
+        } else {
+          this.tagging = false;
+          this.assigneeId = "";
+        }
+      } else {
+        this.tagging = false;
+      }
+    },
+    assigneeLoadArray() {
+      let assigneeList = [];
+      if (this.traversing) {
+        const matches = this.people.filter((user) => {
+          if (
+            user.assigneeFirstName
+              .toLowerCase()
+              .startsWith(this.traverseText.toLowerCase())
+          ) {
+            assigneeList.push({
+              name: user.assigneeFirstName + " " + user.assigneeLastName,
+              id: user.assigneeId,
+              img: user.assigneeProfileImage,
+              display: user.assigneeFirstName + user.assigneeLastName,
+            });
+          }
+        });
+        if (assigneeList.length === 0) {
+          this.tagging = false;
+          this.traversing = false;
+          this.traverseText = "";
+        }
+        return assigneeList;
+      } else {
+        let AssigneeSearchList = this.people;
+        for (let index = 0; index < AssigneeSearchList.length; ++index) {
+          let user = AssigneeSearchList[index];
+          assigneeList.push({
+            name: user.assigneeFirstName + " " + user.assigneeLastName,
+            id: user.assigneeId,
+            img: user.assigneeProfileImage,
+            display: user.assigneeFirstName + user.assigneeLastName,
+          });
+        }
+        return assigneeList;
+      }
+    },
     async closeTask(taskId, filter) {
       this.waiting = true;
       // console.log("onchange updated status ->");
@@ -1200,14 +1292,25 @@ export default {
     async addTask(selectedParentTask, issueType) {
       this.overlay = true;
       let response;
+      let taskName;
+      let assignee;
+
+      if (this.assigneeId != "") {
+        taskName = this.updatedTask.taskName.split("@")[0];
+        assignee = this.assigneeId;
+      } else {
+        taskName = this.updatedTask.taskName;
+        assignee = this.userId;
+      }
+
       try {
         response = await this.$axios.$post(
           `/projects/${this.projectId}/tasks`,
           {
-            taskName: this.updatedTask.taskName,
+            taskName: taskName,
             projectId: this.projectId,
             taskInitiator: this.userId,
-            taskAssignee: this.userId,
+            taskAssignee: assignee,
             taskDueDate: "",
             taskRemindOnDate: "",
             taskStatus: null,
@@ -1519,6 +1622,7 @@ export default {
           name: user.assigneeFirstName + " " + user.assigneeLastName,
           id: user.assigneeId,
           img: user.assigneeProfileImage,
+          display: user.assigneeFirstName + user.assigneeLastName,
         });
       }
       return assigneeList;
@@ -1545,7 +1649,7 @@ export default {
     },
     taskName: {
       get() {
-        return null;
+        return this.updatedTask.taskName;
       },
       set(value) {
         this.updatedTask.taskName = value;
