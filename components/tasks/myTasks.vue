@@ -34,6 +34,7 @@
           flat
           label="Task Name"
           background-color="#FFFFFF"
+          @input="jqlSearch()"
         ></v-text-field>
       </div>
       <div class="filterTriggersDrop" style="width: 15%; float: left; padding-right: 10px">
@@ -53,6 +54,7 @@
           multiple
           clearable
           @click:clear="clearType()"
+          @change="jqlSearch()"
         >
           <template v-slot:selection="{ item, index }">
             <v-chip x-small style="width: 30px" v-if="index === 0">
@@ -78,6 +80,7 @@
           multiple
           clearable
           @click:clear="clearStatus()"
+          @change="jqlSearch()"
         >
           <template v-slot:selection="{ item, index }">
             <v-chip x-small style="width: 30px" v-if="index === 0">
@@ -97,6 +100,7 @@
           noButton
           autoClose
           :clear-icon-cb="clearDate()"
+          @input="jqlSearch()"
         ></VueCtkDateTimePicker>
       </div>
       <div class="filterTriggersDrop" style="width: 5%; float: left; margin-right: 20px">
@@ -109,96 +113,6 @@
           <span class="text-capitalize" style="font-size: 10px !important; ">Clear</span>
         </v-btn>
       </div>
-      <!-- <v-row>
-        <v-col md="2">
-          <v-text-field
-            dense
-            clearable
-            @click:clear="clearName()"
-            v-model="nameOfTask"
-            outlined
-            flat
-            label="Task Name"
-            background-color="#FFFFFF"
-          ></v-text-field>
-        </v-col>
-
-        <v-col md="2">
-          <v-autocomplete
-            v-model="filterType"
-            return-object
-            :items="taskTypeArray"
-            item-text="name"
-            item-value="id"
-            flat
-            outlined
-            dense
-            chips
-            background-color="#FFFFFF"
-            small-chips
-            label="Task Type"
-            multiple
-            clearable
-            @click:clear="clearType()"
-          >
-            <template v-slot:selection="{ item, index }">
-              <v-chip x-small style="width: 30px" v-if="index === 0">
-                <span>{{ item.name }}</span>
-              </v-chip>
-            </template>
-          </v-autocomplete>
-        </v-col>
-        <v-col md="2">
-          <v-autocomplete
-            v-model="filterStatus"
-            return-object
-            :items="taskStatusArray"
-            item-text="name"
-            item-value="id"
-            flat
-            outlined
-            dense
-            chips
-            background-color="#FFFFFF"
-            small-chips
-            label="Task Status"
-            multiple
-            clearable
-            @click:clear="clearStatus()"
-          >
-            <template v-slot:selection="{ item, index }">
-              <v-chip x-small style="width: 30px" v-if="index === 0">
-                <span>{{ item.name }}</span>
-              </v-chip>
-            </template>
-          </v-autocomplete>
-        </v-col>
-        <v-col md="4">
-          <VueCtkDateTimePicker
-            :no-value-to-custom-elem="false"
-            color="#3f51b5"
-            v-model="dateRange"
-            label="Date Range"
-            range
-            right
-            noButton
-            autoClose
-            :clear-icon-cb="clearDate()"
-          ></VueCtkDateTimePicker>
-        </v-col>
-        <v-col md="1">
-          <v-btn @click="jqlSearch()" dark width="100%" height="40px" color="#080848">
-            <v-icon color="#FFFFFF">mdi-filter-outline</v-icon>
-           
-          </v-btn>
-        </v-col>
-        <v-col md="1">
-          <v-btn @click="filterChange()" dark width="100%" height="40px" color="#FF6161">
-            <v-icon color="#FFFFFF">mdi-cancel</v-icon>
-            
-          </v-btn>
-        </v-col>
-      </v-row>-->
     </div>
 
     <div v-if="this.taskFilter == 'none'" class="taskListViewContent overflow-y-auto">
