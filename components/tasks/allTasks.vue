@@ -333,7 +333,7 @@
                     flat
                     dense
                     prepend-inner-icon="mdi-plus"
-                    label="Add a sub task..."
+                    label="Add a sub task. Format: <TaskName> @<Assignee> #<DueDate>"
                     style="margin-top: 5px; border-radius: 0px"
                     @keyup.enter="
                       addSubTask(
@@ -898,10 +898,12 @@ export default {
           // console.log("TAGGING: " + this.tagging);
         } else {
           this.subTagging = false;
+          this.datePickerSubDialog = false;
           // this.assigneeId = "";
         }
       } else {
         this.subTagging = false;
+        this.datePickerSubDialog = false;
       }
     },
     autoFilling() {
