@@ -3306,6 +3306,18 @@
   z-index: 1000;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+.datePopupBoxTaskCreate {
+  /* margin-top: -10px; */
+  position: absolute;
+  z-index: 1000;
+  text-align: center;
+}
+.datePopupBoxSubTaskCreate {
+  margin-top: -50px;
+  position: absolute;
+  z-index: 1000;
+  text-align: center;
+}
 .taggingPopupBoxSubTaskCreate {
   background-color: #f7f2f2 !important;
   border-radius: 5px;

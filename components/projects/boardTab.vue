@@ -43,19 +43,24 @@
                   :class="dueDateCheck(task.parentTask)"
                 >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</div>
               </v-list-item-content>
-              <v-list-item-avatar style="margin-right: 5px" size="25">
-                <v-img
-                  v-if="
+              <v-tooltip left>
+                <template v-slot:activator="{ on }">
+                  <v-list-item-avatar style="margin-right: 5px" size="25" v-on="on">
+                    <v-img
+                      v-if="
                     task.parentTask.taskAssigneeProfileImage != null &&
                       task.parentTask.taskAssigneeProfileImage != ''
                   "
-                  :src="task.parentTask.taskAssigneeProfileImage"
-                ></v-img>
-                <v-img
-                  v-else
-                  src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                ></v-img>
-              </v-list-item-avatar>
+                      :src="task.parentTask.taskAssigneeProfileImage"
+                    ></v-img>
+                    <v-img
+                      v-else
+                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                    ></v-img>
+                  </v-list-item-avatar>
+                </template>
+                <span>{{task.parentTask.firstName}} {{task.parentTask.lastName}}</span>
+              </v-tooltip>
               <!-- <div class="boardTabLinkIcon">
                 <nuxt-link
                   :to="
@@ -111,19 +116,24 @@
                 <v-list-item-title class="fontRestructure12">{{ childTask.taskName }}</v-list-item-title>
                 <div :class="dueDateCheck(childTask)">{{ getProjectDates(childTask.taskDueDateAt) }}</div>
               </v-list-item-content>
-              <v-list-item-avatar style="margin-right: 5px" size="25">
-                <v-img
-                  v-if="
+              <v-tooltip left>
+                <template v-slot:activator="{ on }">
+                  <v-list-item-avatar style="margin-right: 5px" size="25" v-on="on">
+                    <v-img
+                      v-if="
                     childTask.taskAssigneeProfileImage != null &&
                       childTask.taskAssigneeProfileImage != ''
                   "
-                  :src="childTask.taskAssigneeProfileImage"
-                ></v-img>
-                <v-img
-                  v-else
-                  src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                ></v-img>
-              </v-list-item-avatar>
+                      :src="childTask.taskAssigneeProfileImage"
+                    ></v-img>
+                    <v-img
+                      v-else
+                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                    ></v-img>
+                  </v-list-item-avatar>
+                </template>
+                <span>{{childTask.firstName}} {{childTask.lastName}}</span>
+              </v-tooltip>
               <!-- <div class="boardTabLinkIcon">
                 <nuxt-link
                   :to="'/task/' + childTask.taskId + '/?project=' + projectId"
@@ -220,19 +230,24 @@
                           :class="dueDateCheck(task.parentTask)"
                         >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</div>
                       </v-list-item-content>
-                      <v-list-item-avatar style="margin-right: 5px" size="25">
-                        <v-img
-                          v-if="
+                      <v-tooltip left>
+                        <template v-slot:activator="{ on }">
+                          <v-list-item-avatar style="margin-right: 5px" size="25" v-on="on">
+                            <v-img
+                              v-if="
                             task.parentTask.taskAssigneeProfileImage != null &&
                               task.parentTask.taskAssigneeProfileImage != ''
                           "
-                          :src="task.parentTask.taskAssigneeProfileImage"
-                        ></v-img>
-                        <v-img
-                          v-else
-                          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                        ></v-img>
-                      </v-list-item-avatar>
+                              :src="task.parentTask.taskAssigneeProfileImage"
+                            ></v-img>
+                            <v-img
+                              v-else
+                              src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                            ></v-img>
+                          </v-list-item-avatar>
+                        </template>
+                        <span>{{task.parentTask.firstName}} {{task.parentTask.lastName}}</span>
+                      </v-tooltip>
                       <!-- <div class="boardTabLinkIcon">
                         <nuxt-link
                           :to="
@@ -298,19 +313,24 @@
                           :class="dueDateCheck(childTask)"
                         >{{ getProjectDates(childTask.taskDueDateAt) }}</div>
                       </v-list-item-content>
-                      <v-list-item-avatar style="margin-right: 5px" size="25">
-                        <v-img
-                          v-if="
+                      <v-tooltip left>
+                        <template v-slot:activator="{ on }">
+                          <v-list-item-avatar style="margin-right: 5px" size="25" v-on="on">
+                            <v-img
+                              v-if="
                             childTask.taskAssigneeProfileImage != null &&
                               childTask.taskAssigneeProfileImage != ''
                           "
-                          :src="childTask.taskAssigneeProfileImage"
-                        ></v-img>
-                        <v-img
-                          v-else
-                          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                        ></v-img>
-                      </v-list-item-avatar>
+                              :src="childTask.taskAssigneeProfileImage"
+                            ></v-img>
+                            <v-img
+                              v-else
+                              src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                            ></v-img>
+                          </v-list-item-avatar>
+                        </template>
+                        <span>{{childTask.firstName}} {{childTask.lastName}}</span>
+                      </v-tooltip>
                       <!-- <div class="boardTabLinkIcon">
                         <nuxt-link
                           :to="

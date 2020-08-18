@@ -153,6 +153,7 @@
       <div v-if="this.taskFilter == 'none'" class="restructuredTaskCreate allTaskCreateTab">
         <v-form onsubmit="return false" ref="form">
           <v-text-field
+            ref="txtMainTask"
             v-model="taskName"
             background-color="#FFFFFF"
             outlined
@@ -160,7 +161,7 @@
             flat
             dense
             prepend-inner-icon="mdi-plus"
-            label="Add a main task..."
+            label="Add a main task. Format: <TaskName> @<Assignee> #<DueDate>"
             class
             style="border-radius: 0px"
             @keyup.enter="addTask(null, 'general')"
@@ -195,6 +196,9 @@
           </div>
         </div>
       </div>
+      <v-col v-if="datePickerDialog" class="datePopupBoxTaskCreate" cols="12" sm="6" md="4">
+        <v-date-picker @input="datePickerDialog = false; addDate()" v-model="datePicker" scrollable></v-date-picker>
+      </v-col>
       <!-- ------ start task list ------- -->
       <div v-for="(task, index) in projectAllTasks" :key="index">
         <v-hover open-delay="600" v-slot:default="{ hover }">
@@ -278,7 +282,7 @@
                       </v-list-item-title>
                     </v-list-item-action>
                     <!-- <div style="margin-right: -25px"> -->
-                    <v-tooltip top>
+                    <v-tooltip left>
                       <template v-slot:activator="{ on }">
                         <v-list-item-avatar size="25" v-on="on">
                           <v-img
@@ -294,7 +298,7 @@
                           ></v-img>
                         </v-list-item-avatar>
                       </template>
-                      <span>Assignee</span>
+                      <span>{{task.parentTask.firstName}} {{task.parentTask.lastName}}</span>
                     </v-tooltip>
                     <!-- </div> -->
                     <!-- <div class="bluePartMyTask"></div> -->
@@ -320,6 +324,7 @@
               <div class="restructuredSubTaskCreate" v-if="task.parentTask.taskStatus != 'closed'">
                 <v-expand-transition>
                   <v-text-field
+                    ref="txtSubTask"
                     v-if="hover"
                     v-model="subTaskName"
                     background-color="#FFFFFF"
@@ -370,6 +375,19 @@
                     </v-list-item-group>
                   </div>
                 </div>
+                <v-col
+                  v-if="hover && datePickerSubDialog"
+                  class="datePopupBoxSubTaskCreate"
+                  cols="12"
+                  sm="6"
+                  md="4"
+                >
+                  <v-date-picker
+                    @input="datePickerSubDialog = false; addSubDate()"
+                    v-model="datePicker"
+                    scrollable
+                  ></v-date-picker>
+                </v-col>
               </div>
 
               <div class="restructuredSubTaskCreate" v-else style="margin-bottom: -5px;"></div>
@@ -454,7 +472,7 @@
                         </v-list-item-title>
                       </v-list-item-action>
                       <!-- <div style="margin-right: -25px"> -->
-                      <v-tooltip top>
+                      <v-tooltip left>
                         <template v-slot:activator="{ on }">
                           <v-list-item-avatar size="25" v-on="on">
                             <v-img
@@ -470,7 +488,7 @@
                             ></v-img>
                           </v-list-item-avatar>
                         </template>
-                        <span>Assignee</span>
+                        <span>{{childTask.firstName}} {{childTask.lastName}}</span>
                       </v-tooltip>
                       <!-- </div> -->
                     </v-list-item>
@@ -582,7 +600,7 @@
               </v-list-item-title>
             </v-list-item-action>
             <!-- <div> -->
-            <v-tooltip top>
+            <v-tooltip left>
               <template v-slot:activator="{ on }">
                 <v-list-item-avatar size="25" v-on="on">
                   <v-img
@@ -595,7 +613,7 @@
                   ></v-img>
                 </v-list-item-avatar>
               </template>
-              <span>Assignee</span>
+              <span>{{task.firstName}} {{task.lastName}}</span>
             </v-tooltip>
             <!-- </div> -->
           </v-list-item>
@@ -720,6 +738,10 @@ export default {
   props: ["pagination"],
   data() {
     return {
+      datePickerDialog: false,
+      datePickerSubDialog: false,
+      datePicker: new Date().toISOString().substr(0, 10),
+      selectedDueDate: "",
       tagging: false,
       subTagging: false,
       assigneeId: "",
@@ -839,16 +861,29 @@ export default {
     },
   },
   methods: {
+    addDate() {
+      this.selectedDueDate = this.datePicker;
+      this.updatedTask.taskName =
+        this.updatedTask.taskName + this.selectedDueDate;
+      this.$refs.txtMainTask.focus();
+    },
+    addSubDate() {
+      this.selectedDueDate = this.datePicker;
+      this.subTaskName = this.subTaskName + this.selectedDueDate;
+      // this.$refs.txtSubTask.focus();
+    },
     tagPeople(user) {
       this.tagging = false;
       this.assigneeId = user.id;
       this.updatedTask.taskName = this.updatedTask.taskName + user.display;
+      this.$refs.txtMainTask.focus();
       // console.log("SELECTED TAGGING: " + this.assigneeId);
     },
     tagPeopleSubTask(user, index) {
       this.subTagging = false;
       this.assigneeId = user.id;
       this.subTaskName = this.subTaskName + user.display;
+      // this.$refs.txtSubTask.focus();
       // console.log("SELECTED TAGGING INDEX: " + index);
     },
     autoFillingSubTask(index) {
@@ -856,9 +891,14 @@ export default {
         if (this.subTaskName.charAt(this.subTaskName.length - 1) == "@") {
           this.subTagging = true;
           // console.log("TAGGING: " + this.subTagging);
+        } else if (
+          this.subTaskName.charAt(this.subTaskName.length - 1) == "#"
+        ) {
+          this.datePickerSubDialog = true;
+          // console.log("TAGGING: " + this.tagging);
         } else {
           this.subTagging = false;
-          this.assigneeId = "";
+          // this.assigneeId = "";
         }
       } else {
         this.subTagging = false;
@@ -876,12 +916,21 @@ export default {
         ) {
           this.tagging = true;
           // console.log("TAGGING: " + this.tagging);
+        } else if (
+          this.updatedTask.taskName.charAt(
+            this.updatedTask.taskName.length - 1
+          ) == "#"
+        ) {
+          this.datePickerDialog = true;
+          // console.log("TAGGING: " + this.tagging);
         } else {
           this.tagging = false;
-          this.assigneeId = "";
+          // this.assigneeId = "";
+          this.datePickerDialog = false;
         }
       } else {
         this.tagging = false;
+        this.datePickerDialog = false;
       }
     },
     assigneeLoadArray() {
@@ -1344,9 +1393,14 @@ export default {
       let taskName;
       let assignee;
 
-      if (this.assigneeId != "") {
+      if (this.assigneeId != "" && this.selectedDueDate == "") {
         taskName = this.updatedTask.taskName.split("@")[0];
         assignee = this.assigneeId;
+      } else if (this.selectedDueDate != "" && this.assigneeId != "") {
+        taskName = this.updatedTask.taskName.split("@")[0];
+        assignee = this.assigneeId;
+      } else if (this.selectedDueDate != "" && this.assigneeId == "") {
+        taskName = this.updatedTask.taskName.split("#")[0];
       } else {
         taskName = this.updatedTask.taskName;
         assignee = this.userId;
@@ -1360,7 +1414,7 @@ export default {
             projectId: this.projectId,
             taskInitiator: this.userId,
             taskAssignee: assignee,
-            taskDueDate: "",
+            taskDueDate: new Date(this.selectedDueDate),
             taskRemindOnDate: "",
             taskStatus: null,
             taskNotes: "",
@@ -1375,9 +1429,13 @@ export default {
           this.close();
         }, 3000);
         this.overlay = false;
+        this.selectedDueDate = "";
+        this.assigneeId = "";
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
       } catch (e) {
         this.overlay = false;
+        this.selectedDueDate = "";
+        this.assigneeId = "";
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -1391,14 +1449,33 @@ export default {
       let response;
       let taskName;
       let assignee;
+      let taskDue;
 
-      if (this.assigneeId != "") {
+      // if (this.assigneeId != "") {
+      //   taskName = this.subTaskName.split("@")[0];
+      //   assignee = this.assigneeId;
+      // } else {
+      //   taskName = this.subTaskName;
+      //   assignee = this.userId;
+      // }
+
+      if (this.assigneeId != "" && this.selectedDueDate == "") {
+        taskName = this.subTaskName.split("@")[0];
+        taskDue = dueDate;
+        assignee = this.assigneeId;
+      } else if (this.selectedDueDate != "" && this.assigneeId != "") {
         taskName = this.subTaskName.split("@")[0];
         assignee = this.assigneeId;
+        taskDue = this.selectedDueDate;
+      } else if (this.selectedDueDate != "" && this.assigneeId == "") {
+        taskName = this.subTaskName.split("#")[0];
+        taskDue = this.selectedDueDate;
       } else {
         taskName = this.subTaskName;
         assignee = this.userId;
+        taskDue = dueDate;
       }
+
       try {
         response = await this.$axios.$post(
           `/projects/${this.projectId}/tasks`,
@@ -1407,7 +1484,7 @@ export default {
             projectId: this.projectId,
             taskInitiator: this.userId,
             taskAssignee: assignee,
-            taskDueDate: dueDate,
+            taskDueDate: taskDue,
             taskRemindOnDate: "",
             taskStatus: null,
             taskNotes: "",
@@ -1423,6 +1500,8 @@ export default {
           this.close();
         }, 3000);
         this.overlay = false;
+        this.selectedDueDate = "";
+        this.assigneeId = "";
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
       } catch (e) {
         this.errorMessage = e.response.data;
@@ -1431,6 +1510,8 @@ export default {
           this.close();
         }, 3000);
         this.overlay = false;
+        this.selectedDueDate = "";
+        this.assigneeId = "";
         console.log("Error updating a status", e);
       }
     },
