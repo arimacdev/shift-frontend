@@ -14,6 +14,7 @@
             solo
             flat
             background-color="#FFFFFF"
+            @input="jqlSearch()"
           ></v-text-field>
           <v-row align="center">
             <v-col class="searchOptions" md="12">
@@ -36,6 +37,7 @@
                 multiple
                 clearable
                 :clear-icon-cb="clearAssignee()"
+                @change="jqlSearch()"
               ></v-autocomplete>
               <!-- :search-input.sync="searchProject" -->
               <v-autocomplete
@@ -56,6 +58,7 @@
                 multiple
                 clearable
                 :clear-icon-cb="clearProject()"
+                @change="jqlSearch()"
               ></v-autocomplete>
               <v-autocomplete
                 v-model="filterType"
@@ -75,6 +78,7 @@
                 multiple
                 clearable
                 @click:clear="clearType()"
+                @change="jqlSearch()"
               ></v-autocomplete>
               <v-autocomplete
                 v-model="filterStatus"
@@ -94,6 +98,7 @@
                 multiple
                 clearable
                 @click:clear="clearStatus()"
+                @change="jqlSearch()"
               ></v-autocomplete>
               <VueCtkDateTimePicker
                 :no-value-to-custom-elem="false"
@@ -106,6 +111,7 @@
                 noButton
                 autoClose
                 :clear-icon-cb="clearDate()"
+                @input="jqlSearch()"
               ></VueCtkDateTimePicker>
               <v-select
                 class="filterOrderWorkload"
@@ -123,14 +129,15 @@
                 small-chips
                 label="Order By"
                 @click:clear="clearOrderBy()"
+                @change="jqlSearch()"
               ></v-select>
               <v-radio-group v-model="filterOrderSequence">
                 <v-row>
                   <v-col md="6">
-                    <v-radio label="Ascending" value="ASC"></v-radio>
+                    <v-radio @change="jqlSearch()" label="Ascending" value="ASC"></v-radio>
                   </v-col>
                   <v-col md="6">
-                    <v-radio label="Decending" value="DESC"></v-radio>
+                    <v-radio @change="jqlSearch()" label="Decending" value="DESC"></v-radio>
                   </v-col>
                 </v-row>
               </v-radio-group>

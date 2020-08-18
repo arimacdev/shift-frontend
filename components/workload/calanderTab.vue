@@ -14,8 +14,9 @@
             solo
             flat
             background-color="#FFFFFF"
-            dark
+            @input="jqlSearch()"
           ></v-text-field>
+
           <v-row align="center">
             <v-col md="12">
               <v-autocomplete
@@ -36,6 +37,7 @@
                 multiple
                 clearable
                 :clear-icon-cb="clearAssignee()"
+                @change="jqlSearch()"
               ></v-autocomplete>
 
               <v-autocomplete
@@ -56,6 +58,7 @@
                 multiple
                 clearable
                 :clear-icon-cb="clearProject()"
+                @change="jqlSearch()"
               ></v-autocomplete>
               <v-autocomplete
                 dense
@@ -75,6 +78,7 @@
                 multiple
                 clearable
                 @click:clear="clearType()"
+                @change="jqlSearch()"
               ></v-autocomplete>
               <v-autocomplete
                 dense
@@ -94,6 +98,7 @@
                 multiple
                 clearable
                 @click:clear="clearStatus()"
+                @change="jqlSearch()"
               ></v-autocomplete>
             </v-col>
           </v-row>
