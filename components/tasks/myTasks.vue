@@ -118,6 +118,7 @@
     <div v-if="this.taskFilter == 'none'" class="taskListViewContent overflow-y-auto">
       <div v-if="this.taskFilter == 'none'" class="restructuredTaskCreate">
         <v-text-field
+          ref="txtMainTask"
           v-model="taskName"
           background-color="#FFFFFF"
           outlined
@@ -126,12 +127,16 @@
           dense
           prepend-inner-icon="mdi-plus"
           style="border-radius: 0px; margin-top: 5px"
-          label="Add a main task..."
+          label="Add a main task. Format: <TaskName> #<DueDate>"
           class
           @keyup.enter="addTask(null)"
           clearable
+          @input="autoFilling()"
         ></v-text-field>
       </div>
+      <v-col v-if="datePickerDialog" class="datePopupBoxTaskCreate" cols="12" sm="6" md="4">
+        <v-date-picker @input="datePickerDialog = false; addDate()" v-model="datePicker" scrollable></v-date-picker>
+      </v-col>
       <!-- ------ start my task list ------- -->
       <div v-for="(task, index) in projectMyTasks" :key="index">
         <div class>
@@ -446,6 +451,9 @@ export default {
   props: ["myTaskPagination"],
   data() {
     return {
+      datePickerDialog: false,
+      datePicker: new Date().toISOString().substr(0, 10),
+      selectedDueDate: "",
       myTaskPagination: this.myTaskPagination,
       overlay: false,
       projectId: "",
@@ -556,6 +564,19 @@ export default {
     "progress-loading": Progress,
   },
   methods: {
+    addDate() {
+      this.selectedDueDate = this.datePicker;
+      this.taskName = this.taskName + this.selectedDueDate;
+      this.$refs.txtMainTask.focus();
+    },
+    autoFilling() {
+      if (this.taskName.charAt(this.taskName.length - 1) == "#") {
+        this.datePickerDialog = true;
+        // console.log("TAGGING: " + this.tagging);
+      } else {
+        this.datePickerDialog = false;
+      }
+    },
     async closeTask(taskId, filter) {
       this.waiting = true;
       // console.log("onchange updated status ->");
@@ -968,15 +989,23 @@ export default {
     async addTask(selectedParentTask) {
       this.overlay = true;
       let response;
+      let taskName;
+
+      if (this.selectedDueDate != "") {
+        taskName = this.taskName.split("#")[0];
+      } else {
+        taskName = this.taskName;
+      }
+
       try {
         response = await this.$axios.$post(
           `/projects/${this.projectId}/tasks`,
           {
-            taskName: this.taskName,
+            taskName: taskName,
             projectId: this.projectId,
             taskInitiator: this.userId,
             taskAssignee: this.userId,
-            taskDueDate: "",
+            taskDueDate: new Date(this.selectedDueDate),
             taskRemindOnDate: "",
             taskStatus: null,
             taskNotes: "",
