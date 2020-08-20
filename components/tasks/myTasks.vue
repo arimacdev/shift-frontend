@@ -115,9 +115,14 @@
       </div>
     </div>
 
-    <div v-if="this.taskFilter == 'none'" class="taskListViewContent overflow-y-auto">
+    <div
+      v-if="this.taskFilter == 'none'"
+      class="taskListViewContent overflow-y-auto bottomScroll"
+      id="mainDiv"
+    >
       <div v-if="this.taskFilter == 'none'" class="restructuredTaskCreate">
         <v-text-field
+          ref="txtMainTask"
           v-model="taskName"
           background-color="#FFFFFF"
           outlined
@@ -126,12 +131,16 @@
           dense
           prepend-inner-icon="mdi-plus"
           style="border-radius: 0px; margin-top: 5px"
-          label="Add a main task..."
+          label="Add a main task. Format: <TaskName> #<DueDate>"
           class
           @keyup.enter="addTask(null)"
           clearable
+          @input="autoFilling()"
         ></v-text-field>
       </div>
+      <v-col v-if="datePickerDialog" class="datePopupBoxTaskCreate" cols="12" sm="6" md="4">
+        <v-date-picker @input="datePickerDialog = false; addDate()" v-model="datePicker" scrollable></v-date-picker>
+      </v-col>
       <!-- ------ start my task list ------- -->
       <div v-for="(task, index) in projectMyTasks" :key="index">
         <div class>
@@ -220,7 +229,7 @@
           </div>
         </div>
       </div>
-      <div style="margin-top: 50px">
+      <!-- <div style="margin-top: 50px">
         <v-pagination
           @input="getMyTasks()"
           v-model="myTaskPagination"
@@ -228,69 +237,8 @@
           circle
           :total-visible="8"
         ></v-pagination>
-      </div>
+      </div>-->
     </div>
-
-    <!-- -------------- filter list -------------- -->
-    <!-- <div v-else class="taskListViewContent filterListTop overflow-y-auto">
-      <div v-if="this.filterList == ''" class="filterTitleDiv headline">No items to show</div>
-      <div v-for="(task, index) in filterList" :key="index">
-        <div
-          class="taskList"
-          :class="filterStyles(task.isParent)"
-          v-if="task.taskAssignee == userId"
-        >
-          <nuxt-link
-            :to="'/task/' + task.taskId + '/?project=' + projectId"
-            style="text-decoration: none;"
-            target="_blank"
-          >
-            <v-list-item>
-              <v-list-item-action>
-                <v-icon
-                  v-if="task.taskStatus == 'closed'"
-                  size="30"
-                  color="#2EC973"
-                >mdi-checkbox-marked-circle</v-icon>
-                <v-icon
-                  v-else
-                  size="30"
-                  :color="checkBoxColor(task.isParent)"
-                >mdi-checkbox-blank-circle</v-icon>
-              </v-list-item-action>
-              <div class="tasklistTaskNames restructuredMainTaskName">
-                <div>
-                  <span class="restructuredMainTaskCode">{{ task.secondaryTaskId }}</span>
-                  {{ task.taskName }}
-                </div>
-              </div>
-              <div
-                class="restStatusChip"
-                :class="statusCheck(task.issueType)"
-              >{{ taskTypeFormatting(task.issueType) }}</div>
-              <v-list-item-content class="updatedDate">
-                <v-list-item-title
-                  :class="dueDateCheck(task)"
-                >{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
-              </v-list-item-content>
-              <div>
-                <v-list-item-avatar>
-                  <v-img
-                    v-if="task.profileImage != null && task.profileImage != ''"
-                    :src="task.profileImage"
-                  ></v-img>
-                  <v-img
-                    v-else
-                    src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                  ></v-img>
-                </v-list-item-avatar>
-              </div>
-              <div v-if="task.isParent == true" class="bluePart"></div>
-            </v-list-item>
-          </nuxt-link>
-        </div>
-      </div>
-    </div>-->
 
     <div v-else class="taskListViewContent filterListTop overflow-y-auto">
       <div v-if="this.filterList == ''" class="filterTitleDiv headline">No items to show</div>
@@ -377,30 +325,6 @@
       </div>
     </div>
 
-    <!-- -------------- start side bar ----------------- -->
-
-    <!-- <v-navigation-drawer
-      v-model="drawer"
-      fixed
-      temporary
-      right
-      height="100vh"
-      width="800px"
-      class
-      color="#FFFFFF"
-    >
-      <task-side-bar
-        :task="task"
-        :assignee="assignee"
-        :projectId="projectId"
-        :subTasks="subTasks"
-        :taskFiles="taskFiles"
-        :projectUsers="projectUsers"
-        :componentClose="componentClose"
-        @listenChange="listenToChange"
-        @shrinkSideBar="shrinkSideBar"
-      />
-    </v-navigation-drawer>-->
     <!-- ------------ task dialog --------- -->
 
     <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition" persistent>
@@ -432,7 +356,6 @@
 </template>
 
 <script>
-// import TaskSideBar from "~/components/tasks/taskSideBar";
 import TaskDialog from "~/components/tasks/myTaskDialog";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
@@ -446,6 +369,9 @@ export default {
   props: ["myTaskPagination"],
   data() {
     return {
+      datePickerDialog: false,
+      datePicker: new Date().toISOString().substr(0, 10),
+      selectedDueDate: "",
       myTaskPagination: this.myTaskPagination,
       overlay: false,
       projectId: "",
@@ -548,6 +474,20 @@ export default {
   async created() {
     this.projectId = this.$route.params.projects;
   },
+  mounted() {
+    // let scrollCount = 0;
+    // $(".bottomScroll").scroll(function () {
+    //   if (
+    //     $(this).scrollTop() + $(this).innerHeight() >=
+    //     $(this)[0].scrollHeight
+    //   ) {
+    //     console.log("SCROLL COUNT " + scrollCount++);
+    //   }
+    // });
+    // this.getMyTasks();
+    // this.scroll();
+    this.scrollEvent();
+  },
   components: {
     // "task-side-bar": TaskSideBar,
     "task-dialog": TaskDialog,
@@ -556,6 +496,71 @@ export default {
     "progress-loading": Progress,
   },
   methods: {
+    scrollEvent() {
+      let scrollCount = 1;
+
+      var myDiv = document.getElementById("mainDiv");
+      myDiv.onscroll = () => {
+        let bottomOfWindow =
+          myDiv.scrollTop + myDiv.clientHeight === myDiv.scrollHeight;
+
+        if (bottomOfWindow) {
+          scrollCount = scrollCount + 1;
+          // console.log("REACHED COUNT! " + scrollCount);
+          if (scrollCount <= this.myTaskCount / 10 + 1) {
+            // console.log("The scroll arrived at bottom " + myDiv.scrollTop);
+            // console.log("The scroll arrived at bottom " + myDiv.clientHeight);
+            // console.log("The scroll arrived at bottom " + myDiv.scrollHeight);
+            this.getMyTasksLazyLoading(scrollCount);
+          }
+        }
+      };
+    },
+    getMyTasksLazyLoading(scrollCount) {
+      console.log("SCROLL COUNT ");
+      this.$store.dispatch("task/setIndex", {
+        startIndex: scrollCount * 10 - 10,
+        endIndex: scrollCount * 10,
+        isAllTasks: false,
+      });
+      this.$store.dispatch(
+        "task/fetchTasksMyTasks",
+        this.$route.params.projects
+      );
+      this.$store.dispatch(
+        "task/fetchMyTaskCount",
+        this.$route.params.projects
+      );
+    },
+    getMyTasks() {
+      console.log("SCROLL COUNT ");
+      this.$store.dispatch("task/setIndex", {
+        startIndex: this.myTaskPagination * 10 - 10,
+        endIndex: this.myTaskPagination * 10,
+        isAllTasks: false,
+      });
+      this.$store.dispatch(
+        "task/fetchTasksMyTasks",
+        this.$route.params.projects
+      );
+      this.$store.dispatch(
+        "task/fetchMyTaskCount",
+        this.$route.params.projects
+      );
+    },
+    addDate() {
+      this.selectedDueDate = this.datePicker;
+      this.taskName = this.taskName + this.selectedDueDate;
+      this.$refs.txtMainTask.focus();
+    },
+    autoFilling() {
+      if (this.taskName.charAt(this.taskName.length - 1) == "#") {
+        this.datePickerDialog = true;
+        // console.log("TAGGING: " + this.tagging);
+      } else {
+        this.datePickerDialog = false;
+      }
+    },
     async closeTask(taskId, filter) {
       this.waiting = true;
       // console.log("onchange updated status ->");
@@ -599,6 +604,7 @@ export default {
       }
     },
     changeTaskOption() {
+      this.$store.dispatch("task/emptyStore");
       this.$emit("changeTaskOption", "all-tasks");
     },
     taskStatusFormatting(status) {
@@ -752,21 +758,7 @@ export default {
         console.log("Error fetching data", error);
       }
     },
-    getMyTasks() {
-      this.$store.dispatch("task/setIndex", {
-        startIndex: this.myTaskPagination * 10 - 10,
-        endIndex: this.myTaskPagination * 10,
-        isAllTasks: false,
-      });
-      this.$store.dispatch(
-        "task/fetchTasksMyTasks",
-        this.$route.params.projects
-      );
-      this.$store.dispatch(
-        "task/fetchMyTaskCount",
-        this.$route.params.projects
-      );
-    },
+
     filterChange() {
       this.nameOfTask = "";
       this.taskType = [];
@@ -968,15 +960,23 @@ export default {
     async addTask(selectedParentTask) {
       this.overlay = true;
       let response;
+      let taskName;
+
+      if (this.selectedDueDate != "") {
+        taskName = this.taskName.split("#")[0];
+      } else {
+        taskName = this.taskName;
+      }
+
       try {
         response = await this.$axios.$post(
           `/projects/${this.projectId}/tasks`,
           {
-            taskName: this.taskName,
+            taskName: taskName,
             projectId: this.projectId,
             taskInitiator: this.userId,
             taskAssignee: this.userId,
-            taskDueDate: "",
+            taskDueDate: new Date(this.selectedDueDate),
             taskRemindOnDate: "",
             taskStatus: null,
             taskNotes: "",

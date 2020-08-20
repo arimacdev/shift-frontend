@@ -1,515 +1,533 @@
 <template>
-  <div class="projectLogsSection overflow-y-auto">
-    <v-row>
-      <v-col>
-        <v-row>
-          <v-col>
-            <!-- {{ this.taskLogs.activityLogList }} -->
-            <v-text-field style="margin-bottom: -60px" solo flat v-model="taskName" hidden></v-text-field>
-            <v-list-item
-              v-for="(log, index) in this.projectActivityLog.activityLogList"
-              :key="index"
-              class="logItemBackground"
-            >
-              <v-list-item-content v-if="log.operation == 'FLAG'  && log.entityType == 'TASK'">
-                <v-list-item-title>
-                  <v-list-item-avatar>
-                    <v-img
-                      v-if="
-                      log.actorProfileImage != null &&
-                        log.actorProfileImage != ''
-                    "
-                      :src="log.actorProfileImage"
-                    ></v-img>
-                    <v-img
-                      v-else
-                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                    ></v-img>
-                  </v-list-item-avatar>
-                  <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
-                  <span>has deleted the task</span>
-                  <span class="font-weight-bold">{{ log.entityName }}</span>
-                </v-list-item-title>
-              </v-list-item-content>
-              <v-list-item-content v-if="log.operation == 'CREATE'  && log.entityType == 'TASK'">
-                <v-list-item-title>
-                  <v-list-item-avatar>
-                    <v-img
-                      v-if="
-                      log.actorProfileImage != null &&
-                        log.actorProfileImage != ''
-                    "
-                      :src="log.actorProfileImage"
-                    ></v-img>
-                    <v-img
-                      v-else
-                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                    ></v-img>
-                  </v-list-item-avatar>
-                  <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
-                  <span>has created the task</span>
-                  <span class="font-weight-bold">{{ log.entityName }}</span>
-                </v-list-item-title>
-              </v-list-item-content>
-              <v-list-item-content v-if="log.operation == 'UPDATE' && log.entityType == 'TASK'">
-                <v-list-item-title>
-                  <v-list-item-avatar>
-                    <v-img
-                      v-if="
-                      log.actorProfileImage != null &&
-                        log.actorProfileImage != ''
-                    "
-                      :src="log.actorProfileImage"
-                    ></v-img>
-                    <v-img
-                      v-else
-                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                    ></v-img>
-                  </v-list-item-avatar>
-
-                  <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
-                  <span v-if="log.updateType == 'ASSIGNEE'">has changed the</span>
-                  <span
-                    v-if="log.updateType == 'FILE' && log.previousValue.displayValue != undefined"
-                  >removed a</span>
-                  <span
-                    v-else-if="log.updateType == 'FILE' && log.updatedvalue.displayValue != undefined"
-                  >uploaded a</span>
-                  <span v-else>has updated the</span>
-                  <span class="font-weight-bold">{{ updateTypeCheck(log.updateType) }}</span>
-                  <span>of the task</span>
-                  <span class="font-weight-bold">{{ log.entityName }}</span>
-                </v-list-item-title>
-                <v-list-item-subtitle></v-list-item-subtitle>
-                <!-- -------- for assignee ------ -->
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ASSIGNEE'">
-                  <v-list-item-avatar size="25">
-                    <v-img
-                      v-if="
-                      log.previousValue.profileImage != null &&
-                        log.previousValue.profileImage != ''
-                    "
-                      :src="log.previousValue.profileImage"
-                    ></v-img>
-                    <v-img
-                      v-else
-                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                    ></v-img>
-                  </v-list-item-avatar>
-                  <span>{{ log.previousValue.displayValue }} &nbsp; &rarr;</span>
-
-                  <v-list-item-avatar size="25">
-                    <v-img
-                      v-if="
-                      log.updatedvalue.profileImage != null &&
-                        log.updatedvalue.profileImage != ''
-                    "
-                      :src="log.updatedvalue.profileImage"
-                    ></v-img>
-                    <v-img
-                      v-else
-                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                    ></v-img>
-                  </v-list-item-avatar>
-                  <span>&nbsp; {{ log.updatedvalue.displayValue }}</span>
-                </v-list-item-subtitle>
-
-                <!-- ------- for files -------- -->
-
-                <v-list-item-subtitle
-                  class="logSubtitle fontRestructure12"
-                  v-if="log.updateType == 'FILE'"
-                >
-                  <a
-                    style="text-decoration: none;"
-                    :href="log.updatedvalue.value"
-                    target="_blank"
-                  >{{ log.updatedvalue.displayValue }}</a>
-                </v-list-item-subtitle>
-                <v-list-item-subtitle
-                  class="logSubtitle fontRestructure12"
-                  v-if="log.updateType == 'FILE'"
-                >{{ log.previousValue.displayValue }}</v-list-item-subtitle>
-
-                <!-- ------- for due date -------- -->
-
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'DUE_DATE'">
-                  <span v-if="log.previousValue.displayValue != undefined">
-                    {{ getProjectDisplayDates(log.previousValue.displayValue) }}
-                    &nbsp; &rarr; &nbsp;
-                  </span>
-                  <span
-                    v-if="log.previousValue.displayValue == undefined"
-                  >No Due Date &nbsp; &rarr; &nbsp;</span>
-
-                  <span>{{ getProjectDisplayDates(log.updatedvalue.displayValue) }}</span>
-                </v-list-item-subtitle>
-
-                <!-- ------- for task note -------- -->
-
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'TASK_NOTES'">
-                  <v-row>
-                    <v-col md="5" v-if="log.previousValue.displayValue !== undefined">
-                      <v-textarea solo auto-grow disabled v-model="log.previousValue.displayValue"></v-textarea>
-                    </v-col>
-                    <v-col md="1" v-if="log.previousValue.displayValue !== undefined">&rarr;</v-col>
-
-                    <v-col md="5">
-                      <v-textarea solo auto-grow disabled v-model="log.updatedvalue.displayValue"></v-textarea>
-                    </v-col>
-                  </v-row>
-                </v-list-item-subtitle>
-                <!-- ------- for task status -------- -->
-
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'TASK_STATUS'">
-                  <span>
-                    {{
-                    log.previousValue.displayValue.charAt(0).toUpperCase() +
-                    log.previousValue.displayValue.slice(1)
-                    }}
-                    &nbsp; &rarr; &nbsp;
-                  </span>
-
-                  <span>
-                    {{
-                    log.updatedvalue.displayValue.charAt(0).toUpperCase() +
-                    log.updatedvalue.displayValue.slice(1)
-                    }}
-                  </span>
-                </v-list-item-subtitle>
-
-                <!-- ------- for task sprint -------- -->
-
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'TASK_SPRINT'">
-                  <span>
-                    {{ log.previousValue.displayValue }}
-                    &nbsp; &rarr; &nbsp;
-                  </span>
-
-                  <span>{{ log.updatedvalue.displayValue }}</span>
-                </v-list-item-subtitle>
-
-                <!-- ------- for actual weight type -------- -->
-
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ACTUAL_WEIGHT'">
-                  <span>
-                    {{
-                    log.previousValue.displayValue
-                    }}
-                    &nbsp; &rarr; &nbsp;
-                  </span>
-
-                  <span>
-                    {{
-                    log.updatedvalue.displayValue
-                    }}
-                  </span>
-                </v-list-item-subtitle>
-
-                <!-- ------- for estimated weight type -------- -->
-
-                <v-list-item-subtitle
-                  class="logSubtitle"
-                  v-if="log.updateType == 'ESTIMATED_WEIGHT'"
-                >
-                  <span>
-                    {{
-                    log.previousValue.displayValue
-                    }}
-                    &nbsp; &rarr; &nbsp;
-                  </span>
-
-                  <span>
-                    {{
-                    log.updatedvalue.displayValue
-                    }}
-                  </span>
-                </v-list-item-subtitle>
-
-                <!-- ------- for task type -------- -->
-
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ISSUE_TYPE'">
-                  <span>
-                    {{
-                    log.previousValue.displayValue.charAt(0).toUpperCase() +
-                    log.previousValue.displayValue.slice(1)
-                    }}
-                    &nbsp; &rarr; &nbsp;
-                  </span>
-
-                  <span>
-                    {{
-                    log.updatedvalue.displayValue.charAt(0).toUpperCase() +
-                    log.updatedvalue.displayValue.slice(1)
-                    }}
-                  </span>
-                </v-list-item-subtitle>
-
-                <!-- ------- for task name -------- -->
-
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'TASK_NAME'">
-                  <span>
-                    {{ log.previousValue.displayValue }}
-                    &nbsp; &rarr; &nbsp;
-                  </span>
-
-                  <span>{{ log.updatedvalue.displayValue }}</span>
-                </v-list-item-subtitle>
-              </v-list-item-content>
-
-              <v-list-item-content v-if="log.operation == 'CREATE'  && log.entityType == 'PROJECT'">
-                <v-list-item-title>
-                  <v-list-item-avatar>
-                    <v-img
-                      v-if="
-                      log.actorProfileImage != null &&
-                        log.actorProfileImage != ''
-                    "
-                      :src="log.actorProfileImage"
-                    ></v-img>
-                    <v-img
-                      v-else
-                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                    ></v-img>
-                  </v-list-item-avatar>
-                  <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
-                  <span>has created the</span>
-                  <span class="font-weight-bold">Project</span>
-                </v-list-item-title>
-              </v-list-item-content>
-
-              <v-list-item-content
-                v-if="log.operation == 'UPDATE' && log.entityType == 'PROJECT'  "
+  <div>
+    <div class="projectLogsSection overflow-y-auto bottomScroll" id="mainDiv123">
+      <v-row>
+        <v-col>
+          <v-row>
+            <v-col>
+              <!-- {{ this.taskLogs.activityLogList }} -->
+              <v-text-field style="margin-bottom: -60px" solo flat v-model="taskName" hidden></v-text-field>
+              <v-list-item
+                v-for="(log, index) in this.projectLogs"
+                :key="index"
+                class="logItemBackground"
               >
-                <v-list-item-title>
-                  <v-list-item-avatar>
-                    <v-img
-                      v-if="
+                <v-list-item-content v-if="log.operation == 'FLAG'  && log.entityType == 'TASK'">
+                  <v-list-item-title>
+                    <v-list-item-avatar>
+                      <v-img
+                        v-if="
                       log.actorProfileImage != null &&
                         log.actorProfileImage != ''
                     "
-                      :src="log.actorProfileImage"
-                    ></v-img>
-                    <v-img
-                      v-else
-                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                    ></v-img>
-                  </v-list-item-avatar>
-
-                  <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
-                  <span v-if="log.updateType == 'REMOVE_USER'">removed a</span>
-                  <span v-else-if="log.updateType == 'ADD_USER'">added a</span>
-                  <span
-                    v-else-if="log.updateType == 'FILE' && log.previousValue.displayValue != undefined"
-                  >removed a</span>
-                  <span
-                    v-else-if="log.updateType == 'FILE' && log.updatedvalue.displayValue != undefined"
-                  >uploaded a</span>
-                  <span v-else>has updated</span>
-                  <span class="font-weight-bold">{{ updateProjectTypeCheck(log.updateType) }}</span>
-                  <span class="font-weight-bold">{{ log.entityName }}</span>
-                </v-list-item-title>
-                <v-list-item-subtitle></v-list-item-subtitle>
-                <!-- -------- for project name ------ -->
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'PROJECT_NAME'">
-                  <span>{{ log.previousValue.displayValue }} &nbsp; &rarr;</span>
-
-                  <span>&nbsp; {{ log.updatedvalue.displayValue }}</span>
-                </v-list-item-subtitle>
-
-                <!-- ------- for add user -------- -->
-
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ADD_USER'">
-                  <v-list-item-avatar size="25">
-                    <v-img
-                      v-if="
-                      log.updatedvalue.profileImage != null &&
-                        log.updatedvalue.profileImage != ''
+                        :src="log.actorProfileImage"
+                      ></v-img>
+                      <v-img
+                        v-else
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                      ></v-img>
+                    </v-list-item-avatar>
+                    <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
+                    <span>has deleted the task</span>
+                    <span class="font-weight-bold">{{ log.entityName }}</span>
+                  </v-list-item-title>
+                </v-list-item-content>
+                <v-list-item-content v-if="log.operation == 'CREATE'  && log.entityType == 'TASK'">
+                  <v-list-item-title>
+                    <v-list-item-avatar>
+                      <v-img
+                        v-if="
+                      log.actorProfileImage != null &&
+                        log.actorProfileImage != ''
                     "
-                      :src="log.updatedvalue.profileImage"
-                    ></v-img>
-                    <v-img
-                      v-else
-                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                    ></v-img>
-                  </v-list-item-avatar>
-                  <span>{{ log.updatedvalue.displayValue }}</span>
-                </v-list-item-subtitle>
-                <!-- ------- for remove user -------- -->
+                        :src="log.actorProfileImage"
+                      ></v-img>
+                      <v-img
+                        v-else
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                      ></v-img>
+                    </v-list-item-avatar>
+                    <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
+                    <span>has created the task</span>
+                    <span class="font-weight-bold">{{ log.entityName }}</span>
+                  </v-list-item-title>
+                </v-list-item-content>
+                <v-list-item-content v-if="log.operation == 'UPDATE' && log.entityType == 'TASK'">
+                  <v-list-item-title>
+                    <v-list-item-avatar>
+                      <v-img
+                        v-if="
+                      log.actorProfileImage != null &&
+                        log.actorProfileImage != ''
+                    "
+                        :src="log.actorProfileImage"
+                      ></v-img>
+                      <v-img
+                        v-else
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                      ></v-img>
+                    </v-list-item-avatar>
 
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'REMOVE_USER'">
-                  <v-list-item-avatar size="25">
-                    <v-img
-                      v-if="
+                    <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
+                    <span v-if="log.updateType == 'ASSIGNEE'">has changed the</span>
+                    <span
+                      v-if="log.updateType == 'FILE' && log.previousValue.displayValue != undefined"
+                    >removed a</span>
+                    <span
+                      v-else-if="log.updateType == 'FILE' && log.updatedvalue.displayValue != undefined"
+                    >uploaded a</span>
+                    <span v-else>has updated the</span>
+                    <span class="font-weight-bold">{{ updateTypeCheck(log.updateType) }}</span>
+                    <span>of the task</span>
+                    <span class="font-weight-bold">{{ log.entityName }}</span>
+                  </v-list-item-title>
+                  <v-list-item-subtitle></v-list-item-subtitle>
+                  <!-- -------- for assignee ------ -->
+                  <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ASSIGNEE'">
+                    <v-list-item-avatar size="25">
+                      <v-img
+                        v-if="
                       log.previousValue.profileImage != null &&
                         log.previousValue.profileImage != ''
                     "
-                      :src="log.previousValue.profileImage"
-                    ></v-img>
-                    <v-img
-                      v-else
-                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                    ></v-img>
-                  </v-list-item-avatar>
-                  <span>{{ log.previousValue.displayValue }}</span>
-                </v-list-item-subtitle>
-                <!-- ------- for role update -------- -->
+                        :src="log.previousValue.profileImage"
+                      ></v-img>
+                      <v-img
+                        v-else
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                      ></v-img>
+                    </v-list-item-avatar>
+                    <span>{{ log.previousValue.displayValue }} &nbsp; &rarr;</span>
 
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ROLE_UPDATE'">
-                  <span v-if="log.previousValue.displayValue != undefined">
-                    {{ getProjectRoles(log.previousValue.displayValue) }}
-                    &nbsp; &rarr; &nbsp;
-                  </span>
-                  <span
-                    v-if="log.previousValue.displayValue == undefined"
-                  >No Due Date &nbsp; &rarr; &nbsp;</span>
+                    <v-list-item-avatar size="25">
+                      <v-img
+                        v-if="
+                      log.updatedvalue.profileImage != null &&
+                        log.updatedvalue.profileImage != ''
+                    "
+                        :src="log.updatedvalue.profileImage"
+                      ></v-img>
+                      <v-img
+                        v-else
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                      ></v-img>
+                    </v-list-item-avatar>
+                    <span>&nbsp; {{ log.updatedvalue.displayValue }}</span>
+                  </v-list-item-subtitle>
 
-                  <span>{{ getProjectRoles(log.updatedvalue.displayValue) }}</span>
-                </v-list-item-subtitle>
+                  <!-- ------- for files -------- -->
 
-                <!-- ------- for start date -------- -->
+                  <v-list-item-subtitle
+                    class="logSubtitle fontRestructure12"
+                    v-if="log.updateType == 'FILE'"
+                  >
+                    <a
+                      style="text-decoration: none;"
+                      :href="log.updatedvalue.value"
+                      target="_blank"
+                    >{{ log.updatedvalue.displayValue }}</a>
+                  </v-list-item-subtitle>
+                  <v-list-item-subtitle
+                    class="logSubtitle fontRestructure12"
+                    v-if="log.updateType == 'FILE'"
+                  >{{ log.previousValue.displayValue }}</v-list-item-subtitle>
 
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'START_DATE'">
-                  <span v-if="log.previousValue.displayValue != undefined">
-                    {{ getProjectDisplayDates(log.previousValue.displayValue) }}
-                    &nbsp; &rarr; &nbsp;
-                  </span>
-                  <span
-                    v-if="log.previousValue.displayValue == undefined"
-                  >No Due Date &nbsp; &rarr; &nbsp;</span>
+                  <!-- ------- for due date -------- -->
 
-                  <span>{{ getProjectDisplayDates(log.updatedvalue.displayValue) }}</span>
-                </v-list-item-subtitle>
+                  <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'DUE_DATE'">
+                    <span v-if="log.previousValue.displayValue != undefined">
+                      {{ getProjectDisplayDates(log.previousValue.displayValue) }}
+                      &nbsp; &rarr; &nbsp;
+                    </span>
+                    <span
+                      v-if="log.previousValue.displayValue == undefined"
+                    >No Due Date &nbsp; &rarr; &nbsp;</span>
 
-                <!-- ------- for end date -------- -->
+                    <span>{{ getProjectDisplayDates(log.updatedvalue.displayValue) }}</span>
+                  </v-list-item-subtitle>
 
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'END_DATE'">
-                  <span v-if="log.previousValue.displayValue != undefined">
-                    {{ getProjectDisplayDates(log.previousValue.displayValue) }}
-                    &nbsp; &rarr; &nbsp;
-                  </span>
-                  <span
-                    v-if="log.previousValue.displayValue == undefined"
-                  >No Due Date &nbsp; &rarr; &nbsp;</span>
+                  <!-- ------- for task note -------- -->
 
-                  <span>{{ getProjectDisplayDates(log.updatedvalue.displayValue) }}</span>
-                </v-list-item-subtitle>
+                  <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'TASK_NOTES'">
+                    <v-row>
+                      <v-col md="5" v-if="log.previousValue.displayValue !== undefined">
+                        <v-textarea
+                          solo
+                          auto-grow
+                          disabled
+                          v-model="log.previousValue.displayValue"
+                        ></v-textarea>
+                      </v-col>
+                      <v-col md="1" v-if="log.previousValue.displayValue !== undefined">&rarr;</v-col>
 
-                <!-- ------- for alias -------- -->
+                      <v-col md="5">
+                        <v-textarea solo auto-grow disabled v-model="log.updatedvalue.displayValue"></v-textarea>
+                      </v-col>
+                    </v-row>
+                  </v-list-item-subtitle>
+                  <!-- ------- for task status -------- -->
 
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'PROJECT_ALIAS'">
-                  <span>{{ log.previousValue.displayValue }} &nbsp; &rarr;</span>
+                  <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'TASK_STATUS'">
+                    <span>
+                      {{
+                      log.previousValue.displayValue.charAt(0).toUpperCase() +
+                      log.previousValue.displayValue.slice(1)
+                      }}
+                      &nbsp; &rarr; &nbsp;
+                    </span>
 
-                  <span>&nbsp; {{ log.updatedvalue.displayValue }}</span>
-                </v-list-item-subtitle>
+                    <span>
+                      {{
+                      log.updatedvalue.displayValue.charAt(0).toUpperCase() +
+                      log.updatedvalue.displayValue.slice(1)
+                      }}
+                    </span>
+                  </v-list-item-subtitle>
 
-                <!-- ------- for client -------- -->
+                  <!-- ------- for task sprint -------- -->
 
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'CLIENT'">
-                  <span>{{ log.previousValue.displayValue }} &nbsp; &rarr;</span>
+                  <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'TASK_SPRINT'">
+                    <span>
+                      {{ log.previousValue.displayValue }}
+                      &nbsp; &rarr; &nbsp;
+                    </span>
 
-                  <span>&nbsp; {{ log.updatedvalue.displayValue }}</span>
-                </v-list-item-subtitle>
-                <!-- ------- for task status -------- -->
+                    <span>{{ log.updatedvalue.displayValue }}</span>
+                  </v-list-item-subtitle>
 
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'STATUS'">
-                  <span>
-                    {{
-                    updateProjectStatus(log.previousValue.displayValue)
-                    }}
-                    &nbsp; &rarr; &nbsp;
-                  </span>
+                  <!-- ------- for actual weight type -------- -->
 
-                  <span>
-                    {{
-                    updateProjectStatus(log.updatedvalue.displayValue)
-                    }}
-                  </span>
-                </v-list-item-subtitle>
+                  <v-list-item-subtitle
+                    class="logSubtitle"
+                    v-if="log.updateType == 'ACTUAL_WEIGHT'"
+                  >
+                    <span>
+                      {{
+                      log.previousValue.displayValue
+                      }}
+                      &nbsp; &rarr; &nbsp;
+                    </span>
 
-                <!-- ------- for task type -------- -->
+                    <span>
+                      {{
+                      log.updatedvalue.displayValue
+                      }}
+                    </span>
+                  </v-list-item-subtitle>
 
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ISSUE_TYPE'">
-                  <span>
-                    {{
-                    log.previousValue.displayValue.charAt(0).toUpperCase() +
-                    log.previousValue.displayValue.slice(1)
-                    }}
-                    &nbsp; &rarr; &nbsp;
-                  </span>
+                  <!-- ------- for estimated weight type -------- -->
 
-                  <span>
-                    {{
-                    log.updatedvalue.displayValue.charAt(0).toUpperCase() +
-                    log.updatedvalue.displayValue.slice(1)
-                    }}
-                  </span>
-                </v-list-item-subtitle>
+                  <v-list-item-subtitle
+                    class="logSubtitle"
+                    v-if="log.updateType == 'ESTIMATED_WEIGHT'"
+                  >
+                    <span>
+                      {{
+                      log.previousValue.displayValue
+                      }}
+                      &nbsp; &rarr; &nbsp;
+                    </span>
 
-                <!-- ------- for project name -------- -->
+                    <span>
+                      {{
+                      log.updatedvalue.displayValue
+                      }}
+                    </span>
+                  </v-list-item-subtitle>
 
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'TASK_NAME'">
-                  <span>
-                    {{ log.previousValue.displayValue }}
-                    &nbsp; &rarr; &nbsp;
-                  </span>
+                  <!-- ------- for task type -------- -->
 
-                  <span>{{ log.updatedvalue.displayValue }}</span>
-                </v-list-item-subtitle>
+                  <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ISSUE_TYPE'">
+                    <span>
+                      {{
+                      log.previousValue.displayValue.charAt(0).toUpperCase() +
+                      log.previousValue.displayValue.slice(1)
+                      }}
+                      &nbsp; &rarr; &nbsp;
+                    </span>
 
-                <!-- ------- for project weight -------- -->
+                    <span>
+                      {{
+                      log.updatedvalue.displayValue.charAt(0).toUpperCase() +
+                      log.updatedvalue.displayValue.slice(1)
+                      }}
+                    </span>
+                  </v-list-item-subtitle>
 
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'PROJECT_WEIGHT'">
-                  <span v-if="log.previousValue.displayValue == 'story'">
-                    Story Point
-                    &nbsp; &rarr; &nbsp;
-                  </span>
-                  <span v-else-if="log.previousValue.displayValue == 'time'">
-                    Time
-                    &nbsp; &rarr; &nbsp;
-                  </span>
+                  <!-- ------- for task name -------- -->
 
-                  <span v-if="log.updatedvalue.displayValue == 'story'">Story Point</span>
-                  <span v-else-if="log.updatedvalue.displayValue == 'time'">Time</span>
-                </v-list-item-subtitle>
+                  <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'TASK_NAME'">
+                    <span>
+                      {{ log.previousValue.displayValue }}
+                      &nbsp; &rarr; &nbsp;
+                    </span>
 
-                <!-- ------- for files -------- -->
+                    <span>{{ log.updatedvalue.displayValue }}</span>
+                  </v-list-item-subtitle>
+                </v-list-item-content>
 
-                <v-list-item-subtitle
-                  class="logSubtitle fontRestructure12"
-                  v-if="log.updateType == 'FILE'"
+                <v-list-item-content
+                  v-if="log.operation == 'CREATE'  && log.entityType == 'PROJECT'"
                 >
-                  <a
-                    style="text-decoration: none;"
-                    :href="log.updatedvalue.value"
-                    target="_blank"
-                  >{{ log.updatedvalue.displayValue }}</a>
-                </v-list-item-subtitle>
-                <v-list-item-subtitle
-                  class="logSubtitle fontRestructure12"
-                  v-if="log.updateType == 'FILE'"
-                >{{ log.previousValue.displayValue }}</v-list-item-subtitle>
-              </v-list-item-content>
-              <v-list-item-action>
-                <span style="color: #7A8B9F">
-                  &nbsp; &nbsp;
-                  {{ getProjectDisplayDates(log.actionTimestamp) }}
-                </span>
-              </v-list-item-action>
-            </v-list-item>
-          </v-col>
-        </v-row>
-        <div class="text-center">
-          <v-pagination
-            @input="getLogs()"
-            v-model="page"
-            :length="Math.ceil(this.projectActivityLog.activityLogCount / 10)"
-            circle
-            :total-visible="8"
-          ></v-pagination>
-        </div>
-      </v-col>
-    </v-row>
+                  <v-list-item-title>
+                    <v-list-item-avatar>
+                      <v-img
+                        v-if="
+                      log.actorProfileImage != null &&
+                        log.actorProfileImage != ''
+                    "
+                        :src="log.actorProfileImage"
+                      ></v-img>
+                      <v-img
+                        v-else
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                      ></v-img>
+                    </v-list-item-avatar>
+                    <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
+                    <span>has created the</span>
+                    <span class="font-weight-bold">Project</span>
+                  </v-list-item-title>
+                </v-list-item-content>
+
+                <v-list-item-content
+                  v-if="log.operation == 'UPDATE' && log.entityType == 'PROJECT'  "
+                >
+                  <v-list-item-title>
+                    <v-list-item-avatar>
+                      <v-img
+                        v-if="
+                      log.actorProfileImage != null &&
+                        log.actorProfileImage != ''
+                    "
+                        :src="log.actorProfileImage"
+                      ></v-img>
+                      <v-img
+                        v-else
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                      ></v-img>
+                    </v-list-item-avatar>
+
+                    <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
+                    <span v-if="log.updateType == 'REMOVE_USER'">removed a</span>
+                    <span v-else-if="log.updateType == 'ADD_USER'">added a</span>
+                    <span
+                      v-else-if="log.updateType == 'FILE' && log.previousValue.displayValue != undefined"
+                    >removed a</span>
+                    <span
+                      v-else-if="log.updateType == 'FILE' && log.updatedvalue.displayValue != undefined"
+                    >uploaded a</span>
+                    <span v-else>has updated</span>
+                    <span class="font-weight-bold">{{ updateProjectTypeCheck(log.updateType) }}</span>
+                    <span class="font-weight-bold">{{ log.entityName }}</span>
+                  </v-list-item-title>
+                  <v-list-item-subtitle></v-list-item-subtitle>
+                  <!-- -------- for project name ------ -->
+                  <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'PROJECT_NAME'">
+                    <span>{{ log.previousValue.displayValue }} &nbsp; &rarr;</span>
+
+                    <span>&nbsp; {{ log.updatedvalue.displayValue }}</span>
+                  </v-list-item-subtitle>
+
+                  <!-- ------- for add user -------- -->
+
+                  <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ADD_USER'">
+                    <v-list-item-avatar size="25">
+                      <v-img
+                        v-if="
+                      log.updatedvalue.profileImage != null &&
+                        log.updatedvalue.profileImage != ''
+                    "
+                        :src="log.updatedvalue.profileImage"
+                      ></v-img>
+                      <v-img
+                        v-else
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                      ></v-img>
+                    </v-list-item-avatar>
+                    <span>{{ log.updatedvalue.displayValue }}</span>
+                  </v-list-item-subtitle>
+                  <!-- ------- for remove user -------- -->
+
+                  <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'REMOVE_USER'">
+                    <v-list-item-avatar size="25">
+                      <v-img
+                        v-if="
+                      log.previousValue.profileImage != null &&
+                        log.previousValue.profileImage != ''
+                    "
+                        :src="log.previousValue.profileImage"
+                      ></v-img>
+                      <v-img
+                        v-else
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                      ></v-img>
+                    </v-list-item-avatar>
+                    <span>{{ log.previousValue.displayValue }}</span>
+                  </v-list-item-subtitle>
+                  <!-- ------- for role update -------- -->
+
+                  <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ROLE_UPDATE'">
+                    <span v-if="log.previousValue.displayValue != undefined">
+                      {{ getProjectRoles(log.previousValue.displayValue) }}
+                      &nbsp; &rarr; &nbsp;
+                    </span>
+                    <span
+                      v-if="log.previousValue.displayValue == undefined"
+                    >No Due Date &nbsp; &rarr; &nbsp;</span>
+
+                    <span>{{ getProjectRoles(log.updatedvalue.displayValue) }}</span>
+                  </v-list-item-subtitle>
+
+                  <!-- ------- for start date -------- -->
+
+                  <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'START_DATE'">
+                    <span v-if="log.previousValue.displayValue != undefined">
+                      {{ getProjectDisplayDates(log.previousValue.displayValue) }}
+                      &nbsp; &rarr; &nbsp;
+                    </span>
+                    <span
+                      v-if="log.previousValue.displayValue == undefined"
+                    >No Due Date &nbsp; &rarr; &nbsp;</span>
+
+                    <span>{{ getProjectDisplayDates(log.updatedvalue.displayValue) }}</span>
+                  </v-list-item-subtitle>
+
+                  <!-- ------- for end date -------- -->
+
+                  <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'END_DATE'">
+                    <span v-if="log.previousValue.displayValue != undefined">
+                      {{ getProjectDisplayDates(log.previousValue.displayValue) }}
+                      &nbsp; &rarr; &nbsp;
+                    </span>
+                    <span
+                      v-if="log.previousValue.displayValue == undefined"
+                    >No Due Date &nbsp; &rarr; &nbsp;</span>
+
+                    <span>{{ getProjectDisplayDates(log.updatedvalue.displayValue) }}</span>
+                  </v-list-item-subtitle>
+
+                  <!-- ------- for alias -------- -->
+
+                  <v-list-item-subtitle
+                    class="logSubtitle"
+                    v-if="log.updateType == 'PROJECT_ALIAS'"
+                  >
+                    <span>{{ log.previousValue.displayValue }} &nbsp; &rarr;</span>
+
+                    <span>&nbsp; {{ log.updatedvalue.displayValue }}</span>
+                  </v-list-item-subtitle>
+
+                  <!-- ------- for client -------- -->
+
+                  <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'CLIENT'">
+                    <span>{{ log.previousValue.displayValue }} &nbsp; &rarr;</span>
+
+                    <span>&nbsp; {{ log.updatedvalue.displayValue }}</span>
+                  </v-list-item-subtitle>
+                  <!-- ------- for task status -------- -->
+
+                  <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'STATUS'">
+                    <span>
+                      {{
+                      updateProjectStatus(log.previousValue.displayValue)
+                      }}
+                      &nbsp; &rarr; &nbsp;
+                    </span>
+
+                    <span>
+                      {{
+                      updateProjectStatus(log.updatedvalue.displayValue)
+                      }}
+                    </span>
+                  </v-list-item-subtitle>
+
+                  <!-- ------- for task type -------- -->
+
+                  <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ISSUE_TYPE'">
+                    <span>
+                      {{
+                      log.previousValue.displayValue.charAt(0).toUpperCase() +
+                      log.previousValue.displayValue.slice(1)
+                      }}
+                      &nbsp; &rarr; &nbsp;
+                    </span>
+
+                    <span>
+                      {{
+                      log.updatedvalue.displayValue.charAt(0).toUpperCase() +
+                      log.updatedvalue.displayValue.slice(1)
+                      }}
+                    </span>
+                  </v-list-item-subtitle>
+
+                  <!-- ------- for project name -------- -->
+
+                  <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'TASK_NAME'">
+                    <span>
+                      {{ log.previousValue.displayValue }}
+                      &nbsp; &rarr; &nbsp;
+                    </span>
+
+                    <span>{{ log.updatedvalue.displayValue }}</span>
+                  </v-list-item-subtitle>
+
+                  <!-- ------- for project weight -------- -->
+
+                  <v-list-item-subtitle
+                    class="logSubtitle"
+                    v-if="log.updateType == 'PROJECT_WEIGHT'"
+                  >
+                    <span v-if="log.previousValue.displayValue == 'story'">
+                      Story Point
+                      &nbsp; &rarr; &nbsp;
+                    </span>
+                    <span v-else-if="log.previousValue.displayValue == 'time'">
+                      Time
+                      &nbsp; &rarr; &nbsp;
+                    </span>
+
+                    <span v-if="log.updatedvalue.displayValue == 'story'">Story Point</span>
+                    <span v-else-if="log.updatedvalue.displayValue == 'time'">Time</span>
+                  </v-list-item-subtitle>
+
+                  <!-- ------- for files -------- -->
+
+                  <v-list-item-subtitle
+                    class="logSubtitle fontRestructure12"
+                    v-if="log.updateType == 'FILE'"
+                  >
+                    <a
+                      style="text-decoration: none;"
+                      :href="log.updatedvalue.value"
+                      target="_blank"
+                    >{{ log.updatedvalue.displayValue }}</a>
+                  </v-list-item-subtitle>
+                  <v-list-item-subtitle
+                    class="logSubtitle fontRestructure12"
+                    v-if="log.updateType == 'FILE'"
+                  >{{ log.previousValue.displayValue }}</v-list-item-subtitle>
+                </v-list-item-content>
+                <v-list-item-action>
+                  <span style="color: #7A8B9F">
+                    &nbsp; &nbsp;
+                    {{ getProjectDisplayDates(log.actionTimestamp) }}
+                  </span>
+                </v-list-item-action>
+              </v-list-item>
+            </v-col>
+          </v-row>
+          <!-- <div class="text-center">
+            <v-pagination
+              @input="getLogs()"
+              v-model="page"
+              :length="Math.ceil(this.projectActivityLog.activityLogCount / 10)"
+              circle
+              :total-visible="8"
+            ></v-pagination>
+          </div>-->
+        </v-col>
+      </v-row>
+    </div>
     <v-overlay :value="overlay" color="black">
       <progress-loading />
     </v-overlay>
@@ -523,48 +541,78 @@ import Progress from "~/components/popups/progress";
 export default {
   props: ["page"],
   components: {
-    "progress-loading": Progress
+    "progress-loading": Progress,
   },
   data() {
     return {
       overlay: false,
       page: this.page,
-      taskLogs: {}
+      taskLogs: {},
     };
   },
   async created() {
     this.projectId = this.$route.params.projects;
   },
+  mounted() {
+    // let scrollCount = 0;
+    // $(".bottomScroll").scroll(function () {
+    //   if (
+    //     $(this).scrollTop() + $(this).innerHeight() >=
+    //     $(this)[0].scrollHeight
+    //   ) {
+    //     console.log("SCROLL COUNT " + scrollCount++);
+    //   }
+    // });
+    this.scrollEvent();
+  },
 
   methods: {
+    scrollEvent() {
+      let scrollCount = 1;
+
+      var myDiv = document.getElementById("mainDiv123");
+      // console.log("The scroll arrived at bottom " + myDiv.scrollTop);
+      // console.log("The scroll arrived at bottom " + myDiv.clientHeight);
+      // console.log("The scroll arrived at bottom " + myDiv.scrollHeight);
+      myDiv.onscroll = () => {
+        let bottomOfWindow =
+          myDiv.scrollTop + myDiv.clientHeight === myDiv.scrollHeight;
+
+        if (bottomOfWindow) {
+          scrollCount = scrollCount + 1;
+          // console.log("REACHED COUNT! " + scrollCount);
+          if (
+            scrollCount <=
+            Math.ceil(this.projectActivityLog.activityLogCount / 10) + 1
+          ) {
+            this.getLogsLazyLoading(scrollCount);
+          }
+        }
+      };
+    },
+    async getLogsLazyLoading(scrollCount) {
+      this.overlay = true;
+      this.$store
+        .dispatch("activityLog/fetchProjectActivityLog", {
+          projectId: this.$route.params.projects,
+          startIndex: scrollCount * 10 - 10,
+          endIndex: scrollCount * 10,
+        })
+        .finally(() => {
+          this.overlay = false;
+        });
+    },
     async getLogs() {
       this.overlay = true;
       this.$store
         .dispatch("activityLog/fetchProjectActivityLog", {
           projectId: this.$route.params.projects,
           startIndex: this.page * 10 - 10,
-          endIndex: this.page * 10
+          endIndex: this.page * 10,
         })
         .finally(() => {
           this.overlay = false;
         });
-      // console.log("TRIGGERED: " + this.page);
-
-      // let taskLogResponse;
-      // try {
-      //   taskLogResponse = await this.$axios.$get(
-      //     `/activity/project/${this.projectId}?startIndex=${this.page * 10 -
-      //       10}&endIndex=${this.page * 10}`,
-      //     {
-      //       headers: {
-      //         userId: this.$store.state.user.userId
-      //       }
-      //     }
-      //   );
-      //   this.taskLogs = taskLogResponse.data;
-      // } catch (error) {
-      //   console.log("Error fetching data", error);
-      // }
     },
     updateTypeCheck(type) {
       switch (type) {
@@ -733,20 +781,21 @@ export default {
         // stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 16);
         return dueToUtc.toLocaleString();
       }
-    }
+    },
   },
 
   computed: {
     ...mapState({
-      selectedTask: state => state.task.selectedTask,
-      projectActivityLog: state => state.activityLog.activityLog
+      selectedTask: (state) => state.task.selectedTask,
+      projectActivityLog: (state) => state.activityLog.activityLog,
+      projectLogs: (state) => state.activityLog.projectLogs,
     }),
     taskName: {
       get() {
         // this.getLogs();
       },
-      set(name) {}
-    }
-  }
+      set(name) {},
+    },
+  },
 };
 </script>

@@ -492,7 +492,7 @@ export default {
   },
   computed: {
     ...mapState({
-      projectAllTasks: (state) => state.task.allTasks,
+      projectAllTasks: (state) => state.task.sprintTasks,
       projectSprints: (state) => state.sprints.sprint.sprints,
       // projectId: state => state.project.project.projectId,
       selectedTask: (state) => state.task.selectedTask,

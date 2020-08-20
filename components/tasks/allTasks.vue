@@ -149,7 +149,7 @@
       </div>
     </div>
 
-    <div v-if="this.taskFilter == 'none'" class="taskListViewContent overflow-y-auto">
+    <div v-if="this.taskFilter == 'none'" class="taskListViewContent overflow-y-auto" id="mainDiv">
       <div v-if="this.taskFilter == 'none'" class="restructuredTaskCreate allTaskCreateTab">
         <v-form onsubmit="return false" ref="form">
           <v-text-field
@@ -512,7 +512,7 @@
           </div>
         </v-hover>
       </div>
-      <div style="margin-top: 50px">
+      <!-- <div style="margin-top: 50px">
         <v-pagination
           @input="getAllTasks()"
           v-model="pagination"
@@ -520,7 +520,7 @@
           circle
           :total-visible="8"
         ></v-pagination>
-      </div>
+      </div>-->
       <!-- <v-hover v-slot:default="{ hover }">
         <div>
           hi
@@ -860,7 +860,66 @@ export default {
       val && val !== this.selectAssignee && this.loadAssignee(val);
     },
   },
+  mounted() {
+    this.scrollEvent();
+  },
   methods: {
+    scrollEvent() {
+      let scrollCount = 1;
+
+      var myDiv = document.getElementById("mainDiv");
+      myDiv.onscroll = () => {
+        let bottomOfWindow =
+          myDiv.scrollTop + myDiv.clientHeight === myDiv.scrollHeight;
+
+        if (bottomOfWindow) {
+          scrollCount = scrollCount + 1;
+          if (scrollCount <= Math.ceil(this.allTaskCount / 10) + 1) {
+            this.getAllTasksLazyLoading(scrollCount);
+          }
+        }
+      };
+    },
+    getAllTasksLazyLoading(scrollCount) {
+      this.overlay = true;
+      Promise.all([
+        this.$store.dispatch("task/setIndex", {
+          startIndex: scrollCount * 10 - 10,
+          endIndex: scrollCount * 10,
+          isAllTasks: false,
+        }),
+        this.$store.dispatch(
+          "task/fetchTasksAllTasks",
+          this.$route.params.projects
+        ),
+        this.$store.dispatch(
+          "task/fetchTotalTaskCount",
+          this.$route.params.projects
+        ),
+      ]).finally(() => {
+        this.overlay = false;
+      });
+    },
+    getAllTasks() {
+      this.overlay = true;
+      Promise.all([
+        this.$store.dispatch("task/setIndex", {
+          startIndex: this.pagination * 10 - 10,
+          endIndex: this.pagination * 10,
+          isAllTasks: false,
+        }),
+        this.$store.dispatch(
+          "task/fetchTasksAllTasks",
+          this.$route.params.projects
+        ),
+        this.$store.dispatch(
+          "task/fetchTotalTaskCount",
+          this.$route.params.projects
+        ),
+      ]).finally(() => {
+        this.overlay = false;
+      });
+    },
     addDate() {
       this.selectedDueDate = this.datePicker;
       this.updatedTask.taskName =
@@ -1017,6 +1076,7 @@ export default {
       }
     },
     changeTaskOption() {
+      this.$store.dispatch("task/emptyStore");
       this.$emit("changeTaskOption", "my-tasks");
     },
     backPannelDisplay(child) {
@@ -1135,26 +1195,7 @@ export default {
       link.click();
       document.body.removeChild(link);
     },
-    getAllTasks() {
-      this.overlay = true;
-      Promise.all([
-        this.$store.dispatch("task/setIndex", {
-          startIndex: this.pagination * 10 - 10,
-          endIndex: this.pagination * 10,
-          isAllTasks: false,
-        }),
-        this.$store.dispatch(
-          "task/fetchTasksAllTasks",
-          this.$route.params.projects
-        ),
-        this.$store.dispatch(
-          "task/fetchTotalTaskCount",
-          this.$route.params.projects
-        ),
-      ]).finally(() => {
-        this.overlay = false;
-      });
-    },
+
     filterChange() {
       this.nameOfTask = "";
       this.assigneeOfTask = [];
