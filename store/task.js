@@ -1,6 +1,7 @@
 export const state = () => ({
   allTasks: [],
   myTasks: [],
+  sprintTasks: [],
   userCompletionTasks: [],
   projectTaskCompletion: {},
   taskFiles: [],
@@ -37,6 +38,9 @@ export const mutations = {
     } else {
       state.selectedTask = task;
     }
+  },
+  SET_SPRINT_TASKS(state, event) {
+    state.sprintTasks = event;
   },
   SET_ALL_TASKS(state, event) {
     // const sorted = event.sort((a, b) => {
@@ -259,6 +263,29 @@ export const actions = {
         //   response.data.data
         // );
         commit('SET_ALL_TASKS', response.data.data);
+      })
+      .catch((e) => {
+        console.log('error', e);
+      });
+  },
+
+  fetchSprintTasks({ commit, rootState }, projectId) {
+    const userId = rootState.user.userId;
+    this.$axios
+      .get(
+        `projects/${projectId}/tasks?userId=${userId}&startIndex=${rootState.task.startIndex}&endIndex=${rootState.task.endIndex}&allTasks=true`,
+        {
+          headers: {
+            type: 'project',
+          },
+        }
+      )
+      .then((response) => {
+        // console.log(
+        //   'ALL TASKS ARE RETRIEVED SUCCESSFULLY-->',
+        //   response.data.data
+        // );
+        commit('SET_SPRINT_TASKS', response.data.data);
       })
       .catch((e) => {
         console.log('error', e);

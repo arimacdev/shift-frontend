@@ -591,13 +591,9 @@ export default {
               "sprints/sprint/fetchAllProjectSprints",
               this.$route.params.projects
             ),
-            this.$store.dispatch("task/setIndex", {
-              startIndex: 0,
-              endIndex: 10,
-              isAllTasks: true,
-            }),
+
             this.$store.dispatch(
-              "task/fetchTasksAllTasks",
+              "task/fetchSprintTasks",
               this.$route.params.projects
             ),
             this.$store.dispatch(
