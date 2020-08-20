@@ -551,10 +551,10 @@ export default {
             //   "task/fetchTasksAllTasks",
             //   this.$route.params.projects
             // ),
-            // this.$store.dispatch(
-            //   "task/fetchTotalTaskCount",
-            //   this.$route.params.projects
-            // ),
+            this.$store.dispatch(
+              "task/fetchTotalTaskCount",
+              this.$route.params.projects
+            ),
             // this.$store.dispatch(
             //   "task/fetchTasksMyTasks",
             //   this.$route.params.projects
