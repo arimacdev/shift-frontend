@@ -874,7 +874,7 @@ export default {
 
         if (bottomOfWindow) {
           scrollCount = scrollCount + 1;
-          if (scrollCount <= Math.ceil(this.allTaskCount / 10)) {
+          if (scrollCount <= Math.ceil(this.allTaskCount / 10) + 1) {
             this.getAllTasksLazyLoading(scrollCount);
           }
         }

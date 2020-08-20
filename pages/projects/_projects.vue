@@ -555,10 +555,10 @@ export default {
               "task/fetchTotalTaskCount",
               this.$route.params.projects
             ),
-            // this.$store.dispatch(
-            //   "task/fetchTasksMyTasks",
-            //   this.$route.params.projects
-            // ),
+            this.$store.dispatch(
+              "task/fetchTasksMyTasks",
+              this.$route.params.projects
+            ),
             this.$store.dispatch(
               "task/fetchProjectUserCompletionTasks",
               this.$route.params.projects
@@ -642,15 +642,15 @@ export default {
       this.$store.dispatch("project/fetchProject", this.$route.params.projects);
       switch (this.selectedTab) {
         case "task":
-          this.$store.dispatch("task/setIndex", {
-            startIndex: 0,
-            endIndex: 10,
-            isAllTasks: false,
-          });
-          this.$store.dispatch(
-            "task/fetchTasksAllTasks",
-            this.$route.params.projects
-          );
+          // this.$store.dispatch("task/setIndex", {
+          //   startIndex: 0,
+          //   endIndex: 10,
+          //   isAllTasks: false,
+          // });
+          // this.$store.dispatch(
+          //   "task/fetchTasksAllTasks",
+          //   this.$route.params.projects
+          // );
           this.$store.dispatch(
             "task/fetchTotalTaskCount",
             this.$route.params.projects
