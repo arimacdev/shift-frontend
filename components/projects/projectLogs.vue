@@ -571,16 +571,16 @@ export default {
       let scrollCount = 1;
 
       var myDiv = document.getElementById("mainDiv123");
-      console.log("The scroll arrived at bottom " + myDiv.scrollTop);
-      console.log("The scroll arrived at bottom " + myDiv.clientHeight);
-      console.log("The scroll arrived at bottom " + myDiv.scrollHeight);
+      // console.log("The scroll arrived at bottom " + myDiv.scrollTop);
+      // console.log("The scroll arrived at bottom " + myDiv.clientHeight);
+      // console.log("The scroll arrived at bottom " + myDiv.scrollHeight);
       myDiv.onscroll = () => {
         let bottomOfWindow =
           myDiv.scrollTop + myDiv.clientHeight === myDiv.scrollHeight;
 
         if (bottomOfWindow) {
           scrollCount = scrollCount + 1;
-          console.log("REACHED COUNT! " + scrollCount);
+          // console.log("REACHED COUNT! " + scrollCount);
           if (
             scrollCount <=
             Math.ceil(this.projectActivityLog.activityLogCount / 10) + 1
