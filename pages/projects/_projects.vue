@@ -633,6 +633,7 @@ export default {
       }
     },
     async selectProject(project) {
+      this.$store.dispatch("task/emptyStore");
       this.newProject = false;
       this.project = project;
       this.projectDisplayName = this.project.projectId;

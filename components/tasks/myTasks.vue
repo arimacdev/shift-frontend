@@ -115,7 +115,11 @@
       </div>
     </div>
 
-    <div v-if="this.taskFilter == 'none'" class="taskListViewContent overflow-y-auto bottomScroll">
+    <div
+      v-if="this.taskFilter == 'none'"
+      class="taskListViewContent overflow-y-auto bottomScroll"
+      id="mainDiv"
+    >
       <div v-if="this.taskFilter == 'none'" class="restructuredTaskCreate">
         <v-text-field
           ref="txtMainTask"
@@ -225,7 +229,7 @@
           </div>
         </div>
       </div>
-      <div style="margin-top: 50px">
+      <!-- <div style="margin-top: 50px">
         <v-pagination
           @input="getMyTasks()"
           v-model="myTaskPagination"
@@ -233,7 +237,7 @@
           circle
           :total-visible="8"
         ></v-pagination>
-      </div>
+      </div>-->
     </div>
 
     <div v-else class="taskListViewContent filterListTop overflow-y-auto">
@@ -470,18 +474,20 @@ export default {
   async created() {
     this.projectId = this.$route.params.projects;
   },
-  // mounted() {
-  //   let scrollCount = 0;
-  //   $(".bottomScroll").scroll(function () {
-  //     if (
-  //       $(this).scrollTop() + $(this).innerHeight() >=
-  //       $(this)[0].scrollHeight
-  //     ) {
-  //       console.log("SCROLL COUNT " + scrollCount++);
-  //     }
-  //   });
-  //   this.getMyTasks();
-  // },
+  mounted() {
+    // let scrollCount = 0;
+    // $(".bottomScroll").scroll(function () {
+    //   if (
+    //     $(this).scrollTop() + $(this).innerHeight() >=
+    //     $(this)[0].scrollHeight
+    //   ) {
+    //     console.log("SCROLL COUNT " + scrollCount++);
+    //   }
+    // });
+    // this.getMyTasks();
+    // this.scroll();
+    this.scrollEvent();
+  },
   components: {
     // "task-side-bar": TaskSideBar,
     "task-dialog": TaskDialog,
@@ -490,6 +496,42 @@ export default {
     "progress-loading": Progress,
   },
   methods: {
+    scrollEvent() {
+      let scrollCount = 1;
+
+      var myDiv = document.getElementById("mainDiv");
+      myDiv.onscroll = () => {
+        let bottomOfWindow =
+          myDiv.scrollTop + myDiv.clientHeight === myDiv.scrollHeight;
+
+        if (bottomOfWindow) {
+          scrollCount = scrollCount + 1;
+          // console.log("REACHED COUNT! " + scrollCount);
+          if (scrollCount <= this.myTaskCount / 10 + 1) {
+            // console.log("The scroll arrived at bottom " + myDiv.scrollTop);
+            // console.log("The scroll arrived at bottom " + myDiv.clientHeight);
+            // console.log("The scroll arrived at bottom " + myDiv.scrollHeight);
+            this.getMyTasksLazyLoading(scrollCount);
+          }
+        }
+      };
+    },
+    getMyTasksLazyLoading(scrollCount) {
+      console.log("SCROLL COUNT ");
+      this.$store.dispatch("task/setIndex", {
+        startIndex: scrollCount * 10 - 10,
+        endIndex: scrollCount * 10,
+        isAllTasks: false,
+      });
+      this.$store.dispatch(
+        "task/fetchTasksMyTasks",
+        this.$route.params.projects
+      );
+      this.$store.dispatch(
+        "task/fetchMyTaskCount",
+        this.$route.params.projects
+      );
+    },
     getMyTasks() {
       console.log("SCROLL COUNT ");
       this.$store.dispatch("task/setIndex", {
@@ -562,6 +604,7 @@ export default {
       }
     },
     changeTaskOption() {
+      this.$store.dispatch("task/emptyStore");
       this.$emit("changeTaskOption", "all-tasks");
     },
     taskStatusFormatting(status) {

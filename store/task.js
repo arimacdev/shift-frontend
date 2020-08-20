@@ -15,6 +15,10 @@ export const state = () => ({
 });
 
 export const mutations = {
+  EMPTY_STORE(state, elements) {
+    state.allTasks = elements;
+    state.myTasks = elements;
+  },
   SET_TOTAL_COUNT(state, count) {
     state.totalCount = count;
   },
@@ -44,7 +48,8 @@ export const mutations = {
 
     //   return 0;
     // });
-    state.allTasks = event;
+    // state.allTasks = event;
+    state.allTasks = state.allTasks.concat(event);
   },
   SET_CHILD_TASKS(state, children) {
     state.childTasks = children;
@@ -53,7 +58,8 @@ export const mutations = {
     state.parentTask = task;
   },
   SET_MY_TASKS(state, event) {
-    state.myTasks = event;
+    // state.myTasks = event;
+    state.myTasks = state.myTasks.concat(event);
   },
   SET_USER_TASK_COMPLETION(state, event) {
     // const sorted = event.sort((a, b) => {
@@ -117,6 +123,9 @@ export const mutations = {
 };
 
 export const actions = {
+  emptyStore({ commit, rootState }) {
+    commit('EMPTY_STORE', []);
+  },
   async fetchTotalTaskCount({ commit, rootState }, projectId) {
     const user = rootState.user.userId;
     let taskLength;
