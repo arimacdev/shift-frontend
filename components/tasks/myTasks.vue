@@ -507,7 +507,7 @@ export default {
         if (bottomOfWindow) {
           scrollCount = scrollCount + 1;
           // console.log("REACHED COUNT! " + scrollCount);
-          if (scrollCount <= this.myTaskCount / 10 + 1) {
+          if (scrollCount <= this.myTaskCount / 10) {
             // console.log("The scroll arrived at bottom " + myDiv.scrollTop);
             // console.log("The scroll arrived at bottom " + myDiv.clientHeight);
             // console.log("The scroll arrived at bottom " + myDiv.scrollHeight);

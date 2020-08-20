@@ -542,23 +542,23 @@ export default {
         case "task":
           this.overlay = true;
           Promise.all([
-            this.$store.dispatch("task/setIndex", {
-              startIndex: 0,
-              endIndex: 10,
-              isAllTasks: false,
-            }),
-            this.$store.dispatch(
-              "task/fetchTasksAllTasks",
-              this.$route.params.projects
-            ),
-            this.$store.dispatch(
-              "task/fetchTotalTaskCount",
-              this.$route.params.projects
-            ),
-            this.$store.dispatch(
-              "task/fetchTasksMyTasks",
-              this.$route.params.projects
-            ),
+            // this.$store.dispatch("task/setIndex", {
+            //   startIndex: 0,
+            //   endIndex: 10,
+            //   isAllTasks: false,
+            // }),
+            // this.$store.dispatch(
+            //   "task/fetchTasksAllTasks",
+            //   this.$route.params.projects
+            // ),
+            // this.$store.dispatch(
+            //   "task/fetchTotalTaskCount",
+            //   this.$route.params.projects
+            // ),
+            // this.$store.dispatch(
+            //   "task/fetchTasksMyTasks",
+            //   this.$route.params.projects
+            // ),
             this.$store.dispatch(
               "task/fetchProjectUserCompletionTasks",
               this.$route.params.projects
@@ -634,6 +634,7 @@ export default {
     },
     async selectProject(project) {
       this.$store.dispatch("task/emptyStore");
+      this.$store.dispatch("activityLog/emptyStore");
       this.newProject = false;
       this.project = project;
       this.projectDisplayName = this.project.projectId;
