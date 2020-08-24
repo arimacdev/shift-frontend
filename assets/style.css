@@ -276,7 +276,7 @@
 }
 
 .addTaskButtonFail {
-  background-color: rgb(240, 8, 8);
+  background-color: #edf0f5;
   width: 50%;
   margin-bottom: -20px;
   border-radius: 5px;
@@ -3435,5 +3435,9 @@
   color: #ffffff !important;
 }
 .date-time-picker label {
-  color: #ffffff !important;
+  /* color: #ffffff !important; */
+  margin-top: -5px !important;
+}
+.pickerContainer.date-time-picker label {
+  color: red !important;
 }

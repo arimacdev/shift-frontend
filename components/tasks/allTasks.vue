@@ -20,8 +20,8 @@
           dark
           width="100%"
           height="30px"
-          color="#66B35F"
-          @click="changeTaskOption()"
+          color="#060631"
+          @click="changeTaskOption('my-tasks')"
         >
           <v-icon
             size="13"
@@ -31,7 +31,24 @@
           <span class="text-capitalize" style="font-size: 10px !important">My Tasks</span>
         </v-btn>
       </div>
-      <div class="filterTriggers" style="width: 15%; float: left; margin-right: 10px">
+      <div class="filterTriggersDrop" style="width: 10%; float: left; padding-right: 10px">
+        <v-btn
+          depressed
+          dark
+          width="100%"
+          height="30px"
+          color="#66B35F"
+          @click="changeTaskOption('add-task')"
+        >
+          <v-icon
+            size="13"
+            color="#FFFFFF"
+            style="margin-right: 3px; margin-top: 3px !important"
+          >icon-task</v-icon>
+          <span class="text-capitalize" style="font-size: 10px !important">Add Tasks</span>
+        </v-btn>
+      </div>
+      <div class="filterTriggers" style="width: 14%; float: left; margin-right: 10px">
         <v-text-field
           dense
           clearable
@@ -44,7 +61,7 @@
           @input="jqlSearch()"
         ></v-text-field>
       </div>
-      <div class="filterTriggersDrop" style="width: 15%; float: left; padding-right: 10px">
+      <div class="filterTriggersDrop" style="width: 12%; float: left; padding-right: 10px">
         <v-autocomplete
           v-model="filterAssignee"
           return-object
@@ -70,7 +87,7 @@
           </template>
         </v-autocomplete>
       </div>
-      <div class="filterTriggersDrop" style="width: 15%; float: left; padding-right: 10px">
+      <div class="filterTriggersDrop" style="width: 12%; float: left; padding-right: 10px">
         <v-autocomplete
           v-model="filterType"
           return-object
@@ -96,7 +113,7 @@
           </template>
         </v-autocomplete>
       </div>
-      <div class="filterTriggersDrop" style="width: 15%; float: left; padding-right: 10px">
+      <div class="filterTriggersDrop" style="width: 12%; float: left; padding-right: 10px">
         <v-autocomplete
           v-model="filterStatus"
           return-object
@@ -1075,9 +1092,9 @@ export default {
         // console.log("Error updating a status", e);
       }
     },
-    changeTaskOption() {
+    changeTaskOption(type) {
       this.$store.dispatch("task/emptyStore");
-      this.$emit("changeTaskOption", "my-tasks");
+      this.$emit("changeTaskOption", type);
     },
     backPannelDisplay(child) {
       if (child != 0) {
