@@ -5,10 +5,47 @@
         New task -
         <span>#{{ this.projectAllTasks.length + 1 }}</span>
       </div>-->
+      <v-row class="mb-12 formRow" no-gutters>
+        <div class="filterTriggersDrop" style="width: 10%; float: left; padding-right: 10px">
+          <v-btn
+            depressed
+            dark
+            width="100%"
+            height="30px"
+            color="#060631"
+            @click="changeTaskOption('all-tasks')"
+          >
+            <v-icon
+              size="13"
+              color="#FFFFFF"
+              style="margin-right: 3px; margin-top: 3px !important"
+            >icon-task</v-icon>
+            <span class="text-capitalize" style="font-size: 10px !important">All Tasks</span>
+          </v-btn>
+        </div>
+        <div class="filterTriggersDrop" style="width: 10%; float: left; padding-right: 10px">
+          <v-btn
+            depressed
+            dark
+            width="100%"
+            height="30px"
+            color="#66B35F"
+            @click="changeTaskOption('my-tasks')"
+          >
+            <v-icon
+              size="13"
+              color="#FFFFFF"
+              style="margin-right: 3px; margin-top: 3px !important"
+            >icon-task</v-icon>
+            <span class="text-capitalize" style="font-size: 10px !important">My Tasks</span>
+          </v-btn>
+        </div>
+      </v-row>
       <form @submit.prevent="handleSubmit">
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="12" md="12">
             <v-text-field
+              dense
               label="Task name*"
               outlined
               class="createFormElements"
@@ -28,6 +65,7 @@
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="12" md="12">
             <v-select
+              dense
               :menu-props="{ maxHeight: '500' }"
               v-model="addTaskAssignee"
               :items="states"
@@ -44,6 +82,7 @@
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="12" md="12">
             <v-select
+              dense
               :menu-props="{ maxHeight: '500' }"
               v-model="parentTask"
               :items="parentTasks"
@@ -82,6 +121,7 @@
         <v-row class="mb-12 formRow groupFormRow" no-gutters>
           <v-col sm="4" md="4">
             <v-select
+              dense
               v-model="taskType"
               :items="items"
               background-color="#EDF0F5"
@@ -96,6 +136,7 @@
           </v-col>
           <v-col sm="4" md="4">
             <v-select
+              dense
               :menu-props="{ maxHeight: '500' }"
               v-if="this.taskType == 'development'"
               v-model="taskStatus"
@@ -109,6 +150,7 @@
               clearable
             ></v-select>
             <v-select
+              dense
               :menu-props="{ maxHeight: '500' }"
               v-if="this.taskType == 'qa'"
               v-model="taskStatus"
@@ -122,6 +164,7 @@
               clearable
             ></v-select>
             <v-select
+              dense
               :menu-props="{ maxHeight: '500' }"
               v-if="this.taskType == 'design'"
               v-model="taskStatus"
@@ -135,6 +178,7 @@
               clearable
             ></v-select>
             <v-select
+              dense
               :menu-props="{ maxHeight: '500' }"
               v-if="this.taskType == 'bug'"
               v-model="taskStatus"
@@ -148,6 +192,7 @@
               clearable
             ></v-select>
             <v-select
+              dense
               :menu-props="{ maxHeight: '500' }"
               v-if="this.taskType == 'operational'"
               v-model="taskStatus"
@@ -161,6 +206,7 @@
               clearable
             ></v-select>
             <v-select
+              dense
               :menu-props="{ maxHeight: '500' }"
               v-if="this.taskType == 'preSales'"
               v-model="taskStatus"
@@ -174,6 +220,7 @@
               clearable
             ></v-select>
             <v-select
+              dense
               :menu-props="{ maxHeight: '500' }"
               v-if="this.taskType == 'general'"
               v-model="taskStatus"
@@ -189,6 +236,7 @@
           </v-col>
           <v-col sm="4" md="4">
             <v-select
+              dense
               :disabled="this.parentTask != '' && this.parentTask != undefined"
               :menu-props="{ maxHeight: '500' }"
               v-model="taskBoard"
@@ -211,10 +259,9 @@
               <VueCtkDateTimePicker
                 color="#3f51b5"
                 id="due"
-                class="dateTimePickerInternal"
                 v-model="$v.taskDueDate.$model"
                 label="Task due date and time"
-                input-size="lg"
+                input-size
                 :max-date="this.getMaxDueDate()"
               />
               <div
@@ -227,12 +274,10 @@
             <!-- <input v-model="taskRemindOnDate"  type="text" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" placeholder="Reminder" class="formElements"> -->
             <div class="pickerContainer taskDatePickerField pickerDiv">
               <VueCtkDateTimePicker
-                color="#3f51b5"
                 id="reminder"
-                class="dateTimePickerInternal"
                 v-model="$v.taskRemindOnDate.$model"
                 label="Reminder"
-                input-size="lg"
+                input-size
                 :max-date="this.getMaxDueDate()"
               />
               <div
@@ -250,6 +295,7 @@
             <!-- <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Drop files to attach, or browse" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload fileUploadField"/> -->
 
             <v-file-input
+              dense
               label="Attachments"
               v-model="files"
               outlined
@@ -328,7 +374,7 @@ export default {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
 
-    "progress-loading": Progress
+    "progress-loading": Progress,
   },
 
   data() {
@@ -348,7 +394,7 @@ export default {
         taskStatus: "",
         taskDueDate: "",
         taskRemindOnDate: "",
-        taskNotes: ""
+        taskNotes: "",
       },
       taskBoard: "",
       component: "",
@@ -371,7 +417,7 @@ export default {
         { name: "Bug", id: "bug" },
         { name: "Operational", id: "operational" },
         { name: "Pre-sales", id: "preSales" },
-        { name: "General", id: "general" }
+        { name: "General", id: "general" },
       ],
       development: [
         { name: "Pending", id: "pending" },
@@ -380,13 +426,13 @@ export default {
         { name: "Completed", id: "completed" },
         { name: "Implementing", id: "implementing" },
         { name: "Deployed", id: "deployed" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       qa: [
         { name: "Pending", id: "pending" },
         { name: "Testing", id: "testing" },
         { name: "Review", id: "review" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       design: [
         { name: "Pending", id: "pending" },
@@ -401,7 +447,7 @@ export default {
         { name: "Review", id: "review" },
         { name: "Waiting response", id: "waitingResponse" },
         { name: "Rejected", id: "rejected" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       bug: [
         { name: "Pending", id: "pending" },
@@ -415,7 +461,7 @@ export default {
         { name: "Under review", id: "underReview" },
         { name: "Review", id: "review" },
         { name: "Waiting response", id: "waitingResponse" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       operational: [
         { name: "Pending", id: "pending" },
@@ -431,7 +477,7 @@ export default {
         { name: "Waiting response", id: "waitingResponse" },
         { name: "Ready", id: "ready" },
         { name: "Rejected", id: "rejected" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       preSales: [
         { name: "Pending", id: "pending" },
@@ -445,7 +491,7 @@ export default {
         { name: "Discussion", id: "discussion" },
         { name: "Waiting response", id: "waitingResponse" },
         { name: "Rejected", id: "rejected" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       general: [
         { name: "Pending", id: "pending" },
@@ -454,14 +500,14 @@ export default {
         { name: "Cancel", id: "cancel" },
         { name: "In progress", id: "inprogress" },
         { name: "Completed", id: "completed" },
-        { name: "Closed", id: "closed" }
-      ]
+        { name: "Closed", id: "closed" },
+      ],
     };
   },
   validations: {
     taskName: {
       required,
-      maxLength: maxLength(100)
+      maxLength: maxLength(100),
     },
     taskDueDate: {
       dateCheck() {
@@ -486,10 +532,10 @@ export default {
             return true;
           }
         }
-      }
+      },
     },
     taskNotes: {
-      maxLength: maxLength(500)
+      maxLength: maxLength(500),
     },
     taskRemindOnDate: {
       dateCheck() {
@@ -515,10 +561,14 @@ export default {
             return true;
           }
         }
-      }
-    }
+      },
+    },
   },
   methods: {
+    changeTaskOption(type) {
+      this.$store.dispatch("task/emptyStore");
+      this.$emit("changeTaskOption", type);
+    },
     async getSprint() {
       let sprintResponse;
       if (this.parentTask != "" && this.parentTask != undefined) {
@@ -527,8 +577,8 @@ export default {
             `/projects/${this.projectId}/tasks/${this.parentTask}`,
             {
               headers: {
-                user: this.userId
-              }
+                user: this.userId,
+              },
             }
           );
           console.log("sprint--->", sprintResponse.data);
@@ -556,7 +606,7 @@ export default {
         this.states.push({
           name: user.assigneeFirstName + " " + user.assigneeLastName,
           id: user,
-          img: user.assigneeProfileImage
+          img: user.assigneeProfileImage,
         });
       }
       // console.log("nameList", this.states);
@@ -570,7 +620,7 @@ export default {
         let sprint = sprintSearchList[index];
         this.sprints.push({
           name: sprint.sprintName,
-          id: sprint.sprintId
+          id: sprint.sprintId,
         });
       }
       // console.log("nameList", this.states);
@@ -583,14 +633,14 @@ export default {
       this.parentTasks.push({
         name: "",
         id: "",
-        secondaryId: "No parent"
+        secondaryId: "No parent",
       });
       for (let index = 0; index < parentSearchList.length; ++index) {
         let parent = parentSearchList[index];
         this.parentTasks.push({
           name: parent.parentTask.taskName,
           id: parent.parentTask.taskId,
-          secondaryId: parent.parentTask.secondaryTaskId
+          secondaryId: parent.parentTask.secondaryTaskId,
         });
       }
 
@@ -656,7 +706,7 @@ export default {
             taskNotes: this.taskNotes,
             issueType: this.taskType,
             parentTaskId: this.parentTask,
-            sprintId: this.taskBoard
+            sprintId: this.taskBoard,
           }
         );
         this.component = "success-popup";
@@ -681,14 +731,14 @@ export default {
                 {
                   headers: {
                     "Content-Type": "multipart/form-data",
-                    user: this.userId
-                  }
+                    user: this.userId,
+                  },
                 }
               )
-              .then(function(res) {
+              .then(function (res) {
                 console.log("File upload successful");
               })
-              .catch(function() {
+              .catch(function () {
                 console.log("File Upload Failed");
               });
           }
@@ -720,19 +770,19 @@ export default {
         }, 3000);
         console.log("Error updating a status", e);
       }
-    }
+    },
   },
   async created() {
     this.projectId = this.$route.params.projects;
   },
   computed: {
     ...mapState({
-      users: state => state.user.users,
+      users: (state) => state.user.users,
       // projectId: state => state.project.project.projectId,
-      people: state => state.task.userCompletionTasks,
-      projectAllTasks: state => state.task.allTasks,
-      projectSprints: state => state.sprints.sprint.sprints,
-      fetchProject: state => state.project.project
+      people: (state) => state.task.userCompletionTasks,
+      projectAllTasks: (state) => state.task.allTasks,
+      projectSprints: (state) => state.sprints.sprint.sprints,
+      fetchProject: (state) => state.project.project,
     }),
     checkValidation: {
       get() {
@@ -744,7 +794,7 @@ export default {
       },
       set(value) {
         this.taskName = value;
-      }
+      },
     },
     addTaskAssignee: {
       get() {
@@ -753,7 +803,7 @@ export default {
       },
       set(value) {
         this.taskAssignee = value;
-      }
+      },
     },
     addTaskStyling: {
       get() {
@@ -762,8 +812,8 @@ export default {
         } else {
           return "addTaskButtonSuccess";
         }
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
