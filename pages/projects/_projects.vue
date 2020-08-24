@@ -629,6 +629,11 @@ export default {
       }
     },
     async selectProject(project) {
+      this.$store.dispatch("task/setIndex", {
+        startIndex: 0,
+        endIndex: 10,
+        isAllTasks: false,
+      });
       this.$store.dispatch("task/emptyStore");
       this.$store.dispatch("activityLog/emptyStore");
       this.newProject = false;
