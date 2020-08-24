@@ -909,7 +909,7 @@ export default {
     },
     taskDialogClosing() {
       // console.log("Task Dialog Closing");
-      this.scrollCount = 1;
+      // this.scrollCount = 1;
       this.taskDialog = false;
     },
     filterStyles(isParent) {

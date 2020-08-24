@@ -1063,6 +1063,7 @@ export default {
             },
           }
         );
+        this.scrollCount = 1;
         this.$store.dispatch("task/emptyStore");
         this.$store.dispatch("task/setIndex", {
           startIndex: 0,
@@ -1098,6 +1099,7 @@ export default {
       }
     },
     changeTaskOption(type) {
+      this.scrollCount = 1;
       this.$store.dispatch("task/emptyStore");
       this.$store.dispatch("task/setIndex", {
         startIndex: 0,
@@ -1388,7 +1390,6 @@ export default {
       }
     },
     taskDialogClosing() {
-      this.scrollCount = 1;
       console.log("Task Dialog Closing");
       if (this.stomp !== null) {
         this.stomp.disconnect(() => {
@@ -1503,6 +1504,7 @@ export default {
         this.overlay = false;
         this.selectedDueDate = "";
         this.assigneeId = "";
+        this.scrollCount = 1;
         this.$store.dispatch("task/emptyStore");
         this.$store.dispatch("task/setIndex", {
           startIndex: 0,
@@ -1581,6 +1583,7 @@ export default {
         this.overlay = false;
         this.selectedDueDate = "";
         this.assigneeId = "";
+        this.scrollCount = 1;
         this.$store.dispatch("task/emptyStore");
         this.$store.dispatch("task/setIndex", {
           startIndex: 0,
