@@ -634,6 +634,11 @@ export default {
     },
     changeTaskOption(option) {
       this.$store.dispatch("task/emptyStore");
+      this.$store.dispatch("task/setIndex", {
+        startIndex: 0,
+        endIndex: 10,
+        isAllTasks: false,
+      });
       this.$emit("changeTaskOption", option);
     },
     taskStatusFormatting(status) {

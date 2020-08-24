@@ -38,7 +38,7 @@
               </v-list-item-title>
             </v-list-item-content>
             <v-list-item-content class="projectProgressSection">
-              <v-list-item-title class="completedStatus">
+              <v-list-item-title class="completedStatusPeople">
                 {{
                 assignee.tasksCompleted +
                 '/' +
@@ -120,7 +120,7 @@
               </v-list-item-title>
             </v-list-item-content>
             <v-list-item-content class="projectProgressSection">
-              <v-list-item-title class="completedStatus">
+              <v-list-item-title class="completedStatusPeople">
                 {{
                 assignee.tasksCompleted +
                 '/' +
@@ -201,7 +201,7 @@
                 </v-list-item-title>
               </v-list-item-content>
               <v-list-item-content class="projectProgressSection">
-                <v-list-item-title class="completedStatus">
+                <v-list-item-title class="completedStatusPeople">
                   {{
                   assignee.tasksCompleted +
                   '/' +
@@ -259,27 +259,27 @@ export default {
   components: {
     deleteProjectUser,
     editProjectUser,
-    addProjectUser
+    addProjectUser,
   },
   data() {
     return {
       assignee: {},
       // userList: this.people,
       skill: 0,
-      progress: this.progress
+      progress: this.progress,
     };
   },
   methods: {
     fetchUsers() {
       // console.log("projectId", this.projectId);
-    }
+    },
   },
   computed: {
     ...mapState({
-      userCompletionTasks: state => state.task.userCompletionTasks,
-      projectId: state => state.project.project.projectId
-    })
-  }
+      userCompletionTasks: (state) => state.task.userCompletionTasks,
+      projectId: (state) => state.project.project.projectId,
+    }),
+  },
 };
 </script>
 
