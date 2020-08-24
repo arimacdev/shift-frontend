@@ -272,7 +272,7 @@
           :class="filterStyles(task.isParent)"
           v-if="task.taskAssignee == userId"
         >
-          <v-list-item class="upperFilterListItem" @click="selectTask(task, task)">
+          <v-list-item class="upperFilterListItem" @click="selectTask(task)">
             <!-- @click.stop="drawer = !drawer" -->
             <v-list-item-action>
               <v-icon
@@ -393,6 +393,7 @@ export default {
   props: ["myTaskPagination"],
   data() {
     return {
+      scrollCount: 1,
       datePickerDialog: false,
       datePicker: new Date().toISOString().substr(0, 10),
       selectedDueDate: "",
@@ -521,21 +522,19 @@ export default {
   },
   methods: {
     scrollEvent() {
-      let scrollCount = 1;
-
       var myDiv = document.getElementById("mainDiv");
       myDiv.onscroll = () => {
         let bottomOfWindow =
           myDiv.scrollTop + myDiv.clientHeight === myDiv.scrollHeight;
 
         if (bottomOfWindow) {
-          scrollCount = scrollCount + 1;
+          this.scrollCount = this.scrollCount + 1;
           // console.log("REACHED COUNT! " + scrollCount);
-          if (scrollCount <= this.myTaskCount / 10 + 1) {
+          if (this.scrollCount <= this.myTaskCount / 10 + 1) {
             // console.log("The scroll arrived at bottom " + myDiv.scrollTop);
             // console.log("The scroll arrived at bottom " + myDiv.clientHeight);
             // console.log("The scroll arrived at bottom " + myDiv.scrollHeight);
-            this.getMyTasksLazyLoading(scrollCount);
+            this.getMyTasksLazyLoading(this.scrollCount);
           }
         }
       };
@@ -586,6 +585,12 @@ export default {
       }
     },
     async closeTask(taskId, filter) {
+      this.$store.dispatch("task/emptyStore");
+      this.$store.dispatch("task/setIndex", {
+        startIndex: 0,
+        endIndex: 10,
+        isAllTasks: false,
+      });
       this.waiting = true;
       // console.log("onchange updated status ->");
       let response;
@@ -904,6 +909,7 @@ export default {
     },
     taskDialogClosing() {
       // console.log("Task Dialog Closing");
+      this.scrollCount = 1;
       this.taskDialog = false;
     },
     filterStyles(isParent) {
@@ -982,6 +988,13 @@ export default {
       this.component = "";
     },
     async addTask(selectedParentTask) {
+      this.scrollCount = 1;
+      this.$store.dispatch("task/emptyStore");
+      this.$store.dispatch("task/setIndex", {
+        startIndex: 0,
+        endIndex: 10,
+        isAllTasks: false,
+      });
       this.overlay = true;
       let response;
       let taskName;
@@ -1019,14 +1032,13 @@ export default {
         if (this.taskAssignee === this.userId) {
           // console.log("assignee is me", this.taskAssignee, this.userId);
           this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
-          this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         } else {
           // console.log("assignee is NOT me", this.taskAssignee);
           this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
         }
         (this.taskName = ""),
           (this.taskAssignee = ""),
-          (this.taskStatus = "pending"),
+          (this.taskStatus = ""),
           (this.taskDueDate = new Date()),
           (this.taskRemindOnDate = new Date()),
           (this.taskNotes = ""),
@@ -1062,7 +1074,6 @@ export default {
     },
     listenToChange() {
       // console.log("listened to changes ------->");
-      this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
       this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
       this.$store.dispatch("task/fetchProjectTaskCompletion", this.projectId);
     },

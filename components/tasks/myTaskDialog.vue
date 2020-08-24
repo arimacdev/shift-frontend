@@ -1240,7 +1240,10 @@ export default {
         this.component = "success-popup";
         this.overlay = false;
         this.successMessage = "Estimated Weight successfully updated";
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$store.dispatch(
+          "task/fetchTasksMyTasks",
+          this.$route.params.projects
+        );
 
         this.userExists = true;
         setTimeout(() => {
@@ -1294,7 +1297,10 @@ export default {
         });
         this.component = "success-popup";
         this.successMessage = "Actual Weight successfully updated";
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$store.dispatch(
+          "task/fetchTasksMyTasks",
+          this.$route.params.projects
+        );
         this.overlay = false;
         this.userExists = true;
         setTimeout(() => {
@@ -1336,7 +1342,10 @@ export default {
         });
         this.component = "success-popup";
         this.successMessage = "Estimated Weight successfully updated";
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$store.dispatch(
+          "task/fetchTasksMyTasks",
+          this.$route.params.projects
+        );
 
         this.userExists = true;
         setTimeout(() => {
@@ -1380,7 +1389,10 @@ export default {
         });
         this.component = "success-popup";
         this.successMessage = "Actual Weight successfully updated";
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$store.dispatch(
+          "task/fetchTasksMyTasks",
+          this.$route.params.projects
+        );
 
         this.userExists = true;
         this.overlay = false;
@@ -1552,6 +1564,12 @@ export default {
         this.$emit("listenChange");
         this.$emit("shrinkSideBar");
         this.taskDialogClosing();
+        this.$store.dispatch("task/emptyStore");
+        this.$store.dispatch("task/setIndex", {
+          startIndex: 0,
+          endIndex: 10,
+          isAllTasks: false,
+        });
         this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
         // console.log(response.data);
         this.overlay = false;
@@ -1586,6 +1604,12 @@ export default {
             },
           }
         );
+        this.$store.dispatch("task/emptyStore");
+        this.$store.dispatch("task/setIndex", {
+          startIndex: 0,
+          endIndex: 10,
+          isAllTasks: false,
+        });
         this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
 
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
@@ -1627,6 +1651,12 @@ export default {
             },
           }
         );
+        this.$store.dispatch("task/emptyStore");
+        this.$store.dispatch("task/setIndex", {
+          startIndex: 0,
+          endIndex: 10,
+          isAllTasks: false,
+        });
         this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
@@ -1684,6 +1714,12 @@ export default {
             "task/setSelectedTaskName",
             this.updatedTask.taskName
           );
+          this.$store.dispatch("task/emptyStore");
+          this.$store.dispatch("task/setIndex", {
+            startIndex: 0,
+            endIndex: 10,
+            isAllTasks: false,
+          });
           this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
           // }
           setTimeout(() => {
@@ -1729,6 +1765,12 @@ export default {
         });
         this.component = "success-popup";
         this.successMessage = "Assignee successfully updated";
+        this.$store.dispatch("task/emptyStore");
+        this.$store.dispatch("task/setIndex", {
+          startIndex: 0,
+          endIndex: 10,
+          isAllTasks: false,
+        });
         this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
 
         this.userExists = true;
@@ -1899,6 +1941,12 @@ export default {
             },
           }
         );
+        this.$store.dispatch("task/emptyStore");
+        this.$store.dispatch("task/setIndex", {
+          startIndex: 0,
+          endIndex: 10,
+          isAllTasks: false,
+        });
         this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
