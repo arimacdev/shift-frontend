@@ -755,6 +755,7 @@ export default {
   props: ["pagination"],
   data() {
     return {
+      scrollCount: 1,
       datePickerDialog: false,
       datePickerSubDialog: false,
       datePicker: new Date().toISOString().substr(0, 10),
@@ -882,17 +883,15 @@ export default {
   },
   methods: {
     scrollEvent() {
-      let scrollCount = 1;
-
       var myDiv = document.getElementById("mainDiv");
       myDiv.onscroll = () => {
         let bottomOfWindow =
           myDiv.scrollTop + myDiv.clientHeight === myDiv.scrollHeight;
 
         if (bottomOfWindow) {
-          scrollCount = scrollCount + 1;
-          if (scrollCount <= Math.ceil(this.allTaskCount / 10) + 1) {
-            this.getAllTasksLazyLoading(scrollCount);
+          this.scrollCount = this.scrollCount + 1;
+          if (this.scrollCount <= Math.ceil(this.allTaskCount / 10) + 1) {
+            this.getAllTasksLazyLoading(this.scrollCount);
           }
         }
       };
@@ -1065,6 +1064,11 @@ export default {
           }
         );
         this.$store.dispatch("task/emptyStore");
+        this.$store.dispatch("task/setIndex", {
+          startIndex: 0,
+          endIndex: 10,
+          isAllTasks: false,
+        });
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: taskId,
@@ -1095,6 +1099,11 @@ export default {
     },
     changeTaskOption(type) {
       this.$store.dispatch("task/emptyStore");
+      this.$store.dispatch("task/setIndex", {
+        startIndex: 0,
+        endIndex: 10,
+        isAllTasks: false,
+      });
       this.$emit("changeTaskOption", type);
     },
     backPannelDisplay(child) {
@@ -1379,6 +1388,7 @@ export default {
       }
     },
     taskDialogClosing() {
+      this.scrollCount = 1;
       console.log("Task Dialog Closing");
       if (this.stomp !== null) {
         this.stomp.disconnect(() => {
@@ -1449,6 +1459,7 @@ export default {
       this.component = "";
     },
     async addTask(selectedParentTask, issueType) {
+      this.scrollCount = 1;
       this.overlay = true;
       let response;
       let taskName;
@@ -1493,6 +1504,11 @@ export default {
         this.selectedDueDate = "";
         this.assigneeId = "";
         this.$store.dispatch("task/emptyStore");
+        this.$store.dispatch("task/setIndex", {
+          startIndex: 0,
+          endIndex: 10,
+          isAllTasks: false,
+        });
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
       } catch (e) {
         this.overlay = false;
@@ -1507,6 +1523,7 @@ export default {
       }
     },
     async addSubTask(index, selectedParentTask, issueType, sprintId, dueDate) {
+      this.scrollCount = 1;
       this.overlay = true;
       let response;
       let taskName;
@@ -1565,6 +1582,11 @@ export default {
         this.selectedDueDate = "";
         this.assigneeId = "";
         this.$store.dispatch("task/emptyStore");
+        this.$store.dispatch("task/setIndex", {
+          startIndex: 0,
+          endIndex: 10,
+          isAllTasks: false,
+        });
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
       } catch (e) {
         this.errorMessage = e.response.data;
