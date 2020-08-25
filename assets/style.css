@@ -2315,6 +2315,7 @@
 }
 .expansionViewHeaderUpdated {
   height: 100px;
+  margin-left: -15px;
 }
 .addChBtnSection {
   float: right !important;
