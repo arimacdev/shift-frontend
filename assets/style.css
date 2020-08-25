@@ -276,7 +276,7 @@
 }
 
 .addTaskButtonFail {
-  background-color: rgb(240, 8, 8);
+  background-color: #edf0f5;
   width: 50%;
   margin-bottom: -20px;
   border-radius: 5px;
@@ -760,7 +760,7 @@
   color: #b9b9b9;
   font-size: 11px;
 }
-.completedStatus {
+.completedStatusPeople {
   color: #7a8b9f;
   font-size: 14px !important;
   font-weight: 500;
@@ -3435,5 +3435,98 @@
   color: #ffffff !important;
 }
 .date-time-picker label {
+  /* color: #ffffff !important; */
+  margin-top: -5px !important;
+}
+.pickerContainer.date-time-picker label {
+  color: red !important;
+}
+
+.pendingStatus {
+  background-color: #fed147 !important;
+  color: #ffffff !important;
+}
+.onHoldStatus {
+  background-color: #e89f5c !important;
+  color: #ffffff !important;
+}
+.openStatus {
+  background-color: #adbc65 !important;
+  color: #ffffff !important;
+}
+.cancelStatus {
+  background-color: #dc8174 !important;
+  color: #ffffff !important;
+}
+.reOpenedStatus {
+  background-color: #97d5cb !important;
+  color: #ffffff !important;
+}
+.fixingStatus {
+  background-color: #47ae3e !important;
+  color: #ffffff !important;
+}
+.testingStatus {
+  background-color: #6fc5da !important;
+  color: #ffffff !important;
+}
+.resolvedStatus {
+  background-color: #ffa800 !important;
+  color: #ffffff !important;
+}
+.inprogressStatus {
+  background-color: #ff7a00 !important;
+  color: #ffffff !important;
+}
+.completedStatus {
+  background-color: #4ebc44 !important;
+  color: #ffffff !important;
+}
+.implementingStatus {
+  background-color: #ff6161 !important;
+  color: #ffffff !important;
+}
+.underReviewStatus {
+  background-color: #5dc3b4 !important;
+  color: #ffffff !important;
+}
+.waitingForApprovalStatus {
+  background-color: #75838e !important;
+  color: #ffffff !important;
+}
+.reviewStatus {
+  background-color: #183a54 !important;
+  color: #ffffff !important;
+}
+.discussionStatus {
+  background-color: #fcc796 !important;
+  color: #ffffff !important;
+}
+.waitingResponseStatu {
+  background-color: #b45600 !important;
+  color: #ffffff !important;
+}
+.readyStatus {
+  background-color: #85c00b !important;
+  color: #ffffff !important;
+}
+.deployedStatus {
+  background-color: #13b4d1 !important;
+  color: #ffffff !important;
+}
+.fixedStatus {
+  background-color: #00b047 !important;
+  color: #ffffff !important;
+}
+.rejectedStatus {
+  background-color: #ee7071 !important;
+  color: #ffffff !important;
+}
+.closedStatus {
+  background-color: #9f5359 !important;
+  color: #ffffff !important;
+}
+.defaultStatus {
+  background-color: #6a80e4 !important;
   color: #ffffff !important;
 }

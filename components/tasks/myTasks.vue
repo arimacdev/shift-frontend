@@ -15,7 +15,14 @@
     </v-btn>
     <div class="filterSectionAllTasks">
       <div class="filterTriggersDrop" style="width: 10%; float: left; padding-right: 10px">
-        <v-btn depressed dark width="100%" height="30px" color="#060631" @click="changeTaskOption">
+        <v-btn
+          depressed
+          dark
+          width="100%"
+          height="30px"
+          color="#060631"
+          @click="changeTaskOption('all-tasks')"
+        >
           <v-icon
             size="13"
             color="#FFFFFF"
@@ -24,7 +31,24 @@
           <span class="text-capitalize" style="font-size: 10px !important">All Tasks</span>
         </v-btn>
       </div>
-      <div class="filterTriggers" style="width: 20%; float: left; margin-right: 10px">
+      <div class="filterTriggersDrop" style="width: 10%; float: left; padding-right: 10px">
+        <v-btn
+          depressed
+          dark
+          width="100%"
+          height="30px"
+          color="#66B35F"
+          @click="changeTaskOption('add-task')"
+        >
+          <v-icon
+            size="13"
+            color="#FFFFFF"
+            style="margin-right: 3px; margin-top: 3px !important"
+          >icon-task</v-icon>
+          <span class="text-capitalize" style="font-size: 10px !important">Add Tasks</span>
+        </v-btn>
+      </div>
+      <div class="filterTriggers" style="width: 17%; float: left; margin-right: 10px">
         <v-text-field
           dense
           clearable
@@ -37,7 +61,7 @@
           @input="jqlSearch()"
         ></v-text-field>
       </div>
-      <div class="filterTriggersDrop" style="width: 15%; float: left; padding-right: 10px">
+      <div class="filterTriggersDrop" style="width: 13%; float: left; padding-right: 10px">
         <v-autocomplete
           v-model="filterType"
           return-object
@@ -63,7 +87,7 @@
           </template>
         </v-autocomplete>
       </div>
-      <div class="filterTriggersDrop" style="width: 15%; float: left; padding-right: 10px; ">
+      <div class="filterTriggersDrop" style="width: 13%; float: left; padding-right: 10px; ">
         <v-autocomplete
           v-model="filterStatus"
           return-object
@@ -89,7 +113,7 @@
           </template>
         </v-autocomplete>
       </div>
-      <div class="filterTriggersDrop" style="width: 25%; float: left; padding-right: 10px">
+      <div class="filterTriggersDrop" style="width: 22%; float: left; padding-right: 10px">
         <VueCtkDateTimePicker
           :no-value-to-custom-elem="false"
           color="#3f51b5"
@@ -184,12 +208,12 @@
                   :class="statusCheck(task.issueType)"
                 >{{ taskTypeFormatting(task.issueType) }}</div>-->
                 <v-list-item-action>
-                  <v-chip class="chipsContent" :class="statusCheck(task.issueType)" x-small>
+                  <v-chip class="chipsContent" :class="statusCheck(task.taskStatus)" x-small>
                     <span class="fontRestructure12">{{ taskStatusFormatting(task.taskStatus) }}</span>
                   </v-chip>
                 </v-list-item-action>
                 <v-list-item-action>
-                  <v-chip class="chipsContent" :class="statusCheck(task.issueType)" x-small>
+                  <v-chip class="chipsContent" :class="typeCheck(task.issueType)" x-small>
                     <span class="fontRestructure12">{{ taskTypeFormatting(task.issueType) }}</span>
                   </v-chip>
                 </v-list-item-action>
@@ -248,7 +272,7 @@
           :class="filterStyles(task.isParent)"
           v-if="task.taskAssignee == userId"
         >
-          <v-list-item class="upperFilterListItem" @click="selectTask(task, task)">
+          <v-list-item class="upperFilterListItem" @click="selectTask(task)">
             <!-- @click.stop="drawer = !drawer" -->
             <v-list-item-action>
               <v-icon
@@ -291,12 +315,12 @@
                 :class="statusCheck(task.issueType)"
             >{{ taskTypeFormatting(task.issueType) }}</div>-->
             <v-list-item-action>
-              <v-chip class="chipsContent" :class="statusCheck(task.issueType)" x-small>
+              <v-chip class="chipsContent" :class="statusCheck(task.taskStatus)" x-small>
                 <span class="fontRestructure12">{{ taskStatusFormatting(task.taskStatus) }}</span>
               </v-chip>
             </v-list-item-action>
             <v-list-item-action>
-              <v-chip class="chipsContent" :class="statusCheck(task.issueType)" x-small>
+              <v-chip class="chipsContent" :class="typeCheck(task.issueType)" x-small>
                 <span class="fontRestructure12">{{ taskTypeFormatting(task.issueType) }}</span>
               </v-chip>
             </v-list-item-action>
@@ -337,6 +361,7 @@
         :taskObject="taskObject"
         :stomp="stomp"
         @taskDialogClosing="taskDialogClosing()"
+        @clearStore="clearStore()"
       />
     </v-dialog>
 
@@ -369,6 +394,7 @@ export default {
   props: ["myTaskPagination"],
   data() {
     return {
+      scrollCount: 1,
       datePickerDialog: false,
       datePicker: new Date().toISOString().substr(0, 10),
       selectedDueDate: "",
@@ -496,41 +522,52 @@ export default {
     "progress-loading": Progress,
   },
   methods: {
+    clearStore() {
+      this.$store.dispatch("task/emptyStore");
+      this.scrollCount = 1;
+      this.$store.dispatch("task/setIndex", {
+        startIndex: 0,
+        endIndex: 10,
+        isAllTasks: false,
+      });
+    },
     scrollEvent() {
-      let scrollCount = 1;
-
       var myDiv = document.getElementById("mainDiv");
       myDiv.onscroll = () => {
         let bottomOfWindow =
           myDiv.scrollTop + myDiv.clientHeight === myDiv.scrollHeight;
 
         if (bottomOfWindow) {
-          scrollCount = scrollCount + 1;
+          this.scrollCount = this.scrollCount + 1;
           // console.log("REACHED COUNT! " + scrollCount);
-          if (scrollCount <= this.myTaskCount / 10 + 1) {
+          if (this.scrollCount <= this.myTaskCount / 10 + 1) {
             // console.log("The scroll arrived at bottom " + myDiv.scrollTop);
             // console.log("The scroll arrived at bottom " + myDiv.clientHeight);
             // console.log("The scroll arrived at bottom " + myDiv.scrollHeight);
-            this.getMyTasksLazyLoading(scrollCount);
+            this.getMyTasksLazyLoading(this.scrollCount);
           }
         }
       };
     },
     getMyTasksLazyLoading(scrollCount) {
-      console.log("SCROLL COUNT ");
-      this.$store.dispatch("task/setIndex", {
-        startIndex: scrollCount * 10 - 10,
-        endIndex: scrollCount * 10,
-        isAllTasks: false,
+      this.overlay = true;
+      Promise.all([
+        this.$store.dispatch("task/setIndex", {
+          startIndex: scrollCount * 10 - 10,
+          endIndex: scrollCount * 10,
+          isAllTasks: false,
+        }),
+        this.$store.dispatch(
+          "task/fetchTasksMyTasks",
+          this.$route.params.projects
+        ),
+        this.$store.dispatch(
+          "task/fetchMyTaskCount",
+          this.$route.params.projects
+        ),
+      ]).finally(() => {
+        this.overlay = false;
       });
-      this.$store.dispatch(
-        "task/fetchTasksMyTasks",
-        this.$route.params.projects
-      );
-      this.$store.dispatch(
-        "task/fetchMyTaskCount",
-        this.$route.params.projects
-      );
     },
     getMyTasks() {
       console.log("SCROLL COUNT ");
@@ -577,7 +614,13 @@ export default {
             },
           }
         );
-        this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
+        this.$store.dispatch("task/emptyStore");
+        this.scrollCount = 1;
+        this.$store.dispatch("task/setIndex", {
+          startIndex: 0,
+          endIndex: 10,
+          isAllTasks: false,
+        });
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
@@ -592,6 +635,8 @@ export default {
           this.close();
         }, 3000);
         this.waiting = false;
+
+        this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
         // console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
@@ -603,9 +648,14 @@ export default {
         // console.log("Error updating a status", e);
       }
     },
-    changeTaskOption() {
+    changeTaskOption(option) {
       this.$store.dispatch("task/emptyStore");
-      this.$emit("changeTaskOption", "all-tasks");
+      this.$store.dispatch("task/setIndex", {
+        startIndex: 0,
+        endIndex: 10,
+        isAllTasks: false,
+      });
+      this.$emit("changeTaskOption", option);
     },
     taskStatusFormatting(status) {
       switch (status) {
@@ -880,6 +930,7 @@ export default {
     },
     taskDialogClosing() {
       // console.log("Task Dialog Closing");
+      // this.scrollCount = 1;
       this.taskDialog = false;
     },
     filterStyles(isParent) {
@@ -958,6 +1009,13 @@ export default {
       this.component = "";
     },
     async addTask(selectedParentTask) {
+      this.scrollCount = 1;
+      this.$store.dispatch("task/emptyStore");
+      this.$store.dispatch("task/setIndex", {
+        startIndex: 0,
+        endIndex: 10,
+        isAllTasks: false,
+      });
       this.overlay = true;
       let response;
       let taskName;
@@ -995,14 +1053,13 @@ export default {
         if (this.taskAssignee === this.userId) {
           // console.log("assignee is me", this.taskAssignee, this.userId);
           this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
-          this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         } else {
           // console.log("assignee is NOT me", this.taskAssignee);
           this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
         }
         (this.taskName = ""),
           (this.taskAssignee = ""),
-          (this.taskStatus = "pending"),
+          (this.taskStatus = ""),
           (this.taskDueDate = new Date()),
           (this.taskRemindOnDate = new Date()),
           (this.taskNotes = ""),
@@ -1038,7 +1095,6 @@ export default {
     },
     listenToChange() {
       // console.log("listened to changes ------->");
-      this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
       this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
       this.$store.dispatch("task/fetchProjectTaskCompletion", this.projectId);
     },
@@ -1103,7 +1159,7 @@ export default {
 
       this.$store.dispatch("comments/fetchTaskCommentLength", task.taskId);
     },
-    statusCheck(task) {
+    typeCheck(task) {
       if (task === "development") {
         return "developmentStatus";
       } else if (task === "qa") {
@@ -1120,6 +1176,75 @@ export default {
         return "generalStatus";
       } else {
         return "otherStatus";
+      }
+    },
+    statusCheck(task) {
+      switch (task) {
+        case "pending":
+          return "pendingStatus";
+          break;
+        case "onHold":
+          return "onHoldStatus";
+          break;
+        case "open":
+          return "openStatus";
+          break;
+        case "cancel":
+          return "cancelStatus";
+          break;
+        case "reOpened":
+          return "reOpenedStatus";
+          break;
+        case "fixing":
+          return "fixingStatus";
+          break;
+        case "testing":
+          return "testingStatus";
+          break;
+        case "resolved":
+          return "resolvedStatus";
+          break;
+        case "inprogress":
+          return "inprogressStatus";
+          break;
+        case "completed":
+          return "completedStatus";
+          break;
+        case "implementing":
+          return "implementingStatus";
+          break;
+        case "underReview":
+          return "underReviewStatus";
+          break;
+        case "waitingForApproval":
+          return "waitingForApprovalStatus";
+          break;
+        case "review":
+          return "reviewStatus";
+          break;
+        case "discussion":
+          return "discussionStatus";
+          break;
+        case "waitingResponse":
+          return "waitingResponseStatus";
+          break;
+        case "ready":
+          return "readyStatus";
+          break;
+        case "deployed":
+          return "deployedStatus";
+          break;
+        case "fixed":
+          return "fixedStatus";
+          break;
+        case "rejected":
+          return "rejectedStatus";
+          break;
+        case "closed":
+          return "closedStatus";
+          break;
+        default:
+          return "defaultStatus";
       }
     },
     dueDateCheck(task) {
