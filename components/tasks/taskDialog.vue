@@ -519,7 +519,7 @@
                       <v-list-item>
                         <v-list-item-content>
                           <v-list-item-title class="subItem noteSubItem">
-                            <v-textarea name="input-7-4" auto-grow outlined v-model="taskNote"></v-textarea>
+                            <v-textarea name="input-7-4" auto-grow outlined v-model="taskNote" ref="textarearef"></v-textarea>
                           </v-list-item-title>
                           <div class="noteUpdateButton">
                             <v-btn
@@ -866,11 +866,11 @@
                         >
                           <v-icon left>mdi-upload</v-icon>Upload
                         </v-btn>
-                        <v-progress-circular
+                        <!-- <v-progress-circular
                           v-if="uploadLoading == true"
                           indeterminate
                           color="primary"
-                        ></v-progress-circular>
+                        ></v-progress-circular> -->
                       </div>
                     </div>
                     <!-- ------------- file viewer ------------ -->
@@ -1589,6 +1589,7 @@ export default {
       this.$emit("taskDialogClosing");
       Object.assign(this.$data, this.$options.data.apply(this));
       this.selectedTab = "comments";
+      this.$refs.textarearef.reset();
     },
     async updateIssueType() {
       this.waiting = true;
@@ -1946,10 +1947,23 @@ export default {
     // --------- upload task files ----------
 
     async taskFileUpload() {
-      this.waiting = true;
+      //this.waiting = true;
       if (this.files != null) {
         for (let index = 0; index < this.files.length; ++index) {
+          let fileSize = this.files[index].size / 1000000;
           this.uploadLoading = true;
+           if (Math.floor(fileSize) > 5) {
+          const errorMessage = {
+            message: "File Size too Large",
+            status: 422,
+          };
+         // this.waiting = false;
+          this.errorMessage = errorMessage;
+          this.component = "error-popup";
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          } else {
           let formData = new FormData();
           formData.append("files", this.files[index]);
           formData.append("type", "profileImage");
@@ -1990,6 +2004,7 @@ export default {
 
             this.uploadLoading = false;
           }
+        }
         }
       }
       this.waiting = false;
@@ -2257,6 +2272,7 @@ export default {
     },
     taskNote: {
       get() {
+        console.log("task note invoked ", this.selectedTask.taskNote)
         return this.selectedTask.taskNote;
       },
       set(value) {
