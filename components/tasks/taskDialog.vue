@@ -63,10 +63,114 @@
                 </div>
               </v-col>
               <v-col sm="2" md="2">
-                <div
+                <!-- <div
                   :class="statusCheck(taskStatus)"
                   class="taskStatusDropdown"
-                >{{ taskStatusFormatting(taskStatus) }}</div>
+                >{{ taskStatusFormatting(taskStatus) }}</div>-->
+                <div>
+                  <v-row class="mb-12" no-gutters>
+                    <v-col>
+                      <v-select
+                        :menu-props="{ maxHeight: '500' }"
+                        dense
+                        v-if="this.issueTypes == 'development'"
+                        v-model="taskStatus"
+                        :items="development"
+                        item-text="name"
+                        item-value="id"
+                        solo
+                        flat
+                        :background-color="statusCheck(taskStatus)"
+                        class="createFormElements"
+                        @change="updateStatus"
+                      ></v-select>
+                      <v-select
+                        :menu-props="{ maxHeight: '500' }"
+                        dense
+                        v-if="this.issueTypes == 'qa'"
+                        v-model="taskStatus"
+                        :items="qa"
+                        :background-color="statusCheck(taskStatus)"
+                        item-text="name"
+                        item-value="id"
+                        solo
+                        flat
+                        class="createFormElements"
+                        @change="updateStatus"
+                      ></v-select>
+                      <v-select
+                        :menu-props="{ maxHeight: '500' }"
+                        dense
+                        v-if="this.issueTypes == 'design'"
+                        v-model="taskStatus"
+                        :items="design"
+                        :background-color="statusCheck(taskStatus)"
+                        item-text="name"
+                        item-value="id"
+                        solo
+                        flat
+                        class="createFormElements"
+                        @change="updateStatus"
+                      ></v-select>
+                      <v-select
+                        :menu-props="{ maxHeight: '500' }"
+                        dense
+                        v-if="this.issueTypes == 'bug'"
+                        v-model="taskStatus"
+                        :items="bug"
+                        :background-color="statusCheck(taskStatus)"
+                        item-text="name"
+                        item-value="id"
+                        solo
+                        flat
+                        class="createFormElements"
+                        @change="updateStatus"
+                      ></v-select>
+                      <v-select
+                        :menu-props="{ maxHeight: '500' }"
+                        dense
+                        v-if="this.issueTypes == 'operational'"
+                        v-model="taskStatus"
+                        :items="operational"
+                        :background-color="statusCheck(taskStatus)"
+                        item-text="name"
+                        item-value="id"
+                        solo
+                        flat
+                        class="createFormElements"
+                        @change="updateStatus"
+                      ></v-select>
+                      <v-select
+                        :menu-props="{ maxHeight: '500' }"
+                        dense
+                        v-if="this.issueTypes == 'preSales'"
+                        v-model="taskStatus"
+                        :items="preSales"
+                        :background-color="statusCheck(taskStatus)"
+                        item-text="name"
+                        item-value="id"
+                        solo
+                        flat
+                        class="createFormElements"
+                        @change="updateStatus"
+                      ></v-select>
+                      <v-select
+                        :menu-props="{ maxHeight: '500' }"
+                        dense
+                        v-if="this.issueTypes == 'general'"
+                        v-model="taskStatus"
+                        :items="general"
+                        :background-color="statusCheck(taskStatus)"
+                        item-text="name"
+                        item-value="id"
+                        solo
+                        flat
+                        class="createFormElements"
+                        @change="updateStatus"
+                      ></v-select>
+                    </v-col>
+                  </v-row>
+                </div>
               </v-col>
               <v-col sm="8" md="8" class="taskViewLinksDiv">
                 <nuxt-link
@@ -150,11 +254,143 @@
             <!-- --------------- body row ------------ -->
             <div class="formRowTaskDetailsBody">
               <v-row class="mb-12" no-gutters>
-                <v-col sm="8" md="8">
+                <v-col sm="6" md="6">
                   <div class="leftSideColumn">
-                    <v-row v-if="projectAllTasks.length != 1" class="addParentButtonRow" no-gutters>
-                      <v-col sm="6" md="6" no-gutters></v-col>
-                      <v-col sm="3" md="3" no-gutters>
+                    <!-- -------------- task type section ------------- -->
+                    <div class="expansionViewHeader updatedHeaderSection">
+                      <v-list-item class="taskViewTitleSection">
+                        <v-list-item-icon>
+                          <v-icon size="25" color="#0BAFFF">icon-task</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-title class="viewTaskFontColors">Task type</v-list-item-title>
+                      </v-list-item>
+                      <v-list-item-content class="parentChildTaskList">
+                        <!-- ---------- task list --------- -->
+                        <div class="taskViewTaskListPadding">
+                          <v-row class="mb-12" no-gutters>
+                            <v-col sm="6" md="6">
+                              <v-select
+                                :menu-props="{ maxHeight: '500' }"
+                                dense
+                                v-model="issueType"
+                                :items="issueTypeList"
+                                background-color="#EDF0F5"
+                                item-text="name"
+                                item-value="id"
+                                label="Task type"
+                                outlined
+                                class="createFormElements"
+                                @change="updateIssueType"
+                              ></v-select>
+                            </v-col>
+                            <v-col sm="6" md="6">
+                              <v-select
+                                :menu-props="{ maxHeight: '500' }"
+                                dense
+                                v-if="this.issueTypes == 'development'"
+                                v-model="taskStatus"
+                                :items="development"
+                                background-color="#EDF0F5"
+                                item-text="name"
+                                item-value="id"
+                                label="Task status"
+                                outlined
+                                class="createFormElements"
+                                @change="updateStatus"
+                              ></v-select>
+                              <v-select
+                                :menu-props="{ maxHeight: '500' }"
+                                dense
+                                v-if="this.issueTypes == 'qa'"
+                                v-model="taskStatus"
+                                :items="qa"
+                                background-color="#EDF0F5"
+                                item-text="name"
+                                item-value="id"
+                                label="Task status"
+                                outlined
+                                class="createFormElements"
+                                @change="updateStatus"
+                              ></v-select>
+                              <v-select
+                                :menu-props="{ maxHeight: '500' }"
+                                dense
+                                v-if="this.issueTypes == 'design'"
+                                v-model="taskStatus"
+                                :items="design"
+                                background-color="#EDF0F5"
+                                item-text="name"
+                                item-value="id"
+                                label="Task status"
+                                outlined
+                                class="createFormElements"
+                                @change="updateStatus"
+                              ></v-select>
+                              <v-select
+                                :menu-props="{ maxHeight: '500' }"
+                                dense
+                                v-if="this.issueTypes == 'bug'"
+                                v-model="taskStatus"
+                                :items="bug"
+                                background-color="#EDF0F5"
+                                item-text="name"
+                                item-value="id"
+                                label="Task status"
+                                outlined
+                                class="createFormElements"
+                                @change="updateStatus"
+                              ></v-select>
+                              <v-select
+                                :menu-props="{ maxHeight: '500' }"
+                                dense
+                                v-if="this.issueTypes == 'operational'"
+                                v-model="taskStatus"
+                                :items="operational"
+                                background-color="#EDF0F5"
+                                item-text="name"
+                                item-value="id"
+                                label="Task status"
+                                outlined
+                                class="createFormElements"
+                                @change="updateStatus"
+                              ></v-select>
+                              <v-select
+                                :menu-props="{ maxHeight: '500' }"
+                                dense
+                                v-if="this.issueTypes == 'preSales'"
+                                v-model="taskStatus"
+                                :items="preSales"
+                                background-color="#EDF0F5"
+                                item-text="name"
+                                item-value="id"
+                                label="Task status"
+                                outlined
+                                class="createFormElements"
+                                @change="updateStatus"
+                              ></v-select>
+                              <v-select
+                                :menu-props="{ maxHeight: '500' }"
+                                dense
+                                v-if="this.issueTypes == 'general'"
+                                v-model="taskStatus"
+                                :items="general"
+                                background-color="#EDF0F5"
+                                item-text="name"
+                                item-value="id"
+                                label="Task status"
+                                outlined
+                                class="createFormElements"
+                                @change="updateStatus"
+                              ></v-select>
+                            </v-col>
+                          </v-row>
+                        </div>
+                        <!-- --------------- -->
+                      </v-list-item-content>
+                    </div>
+                    <v-divider></v-divider>
+                    <div v-if="projectAllTasks.length != 1" class="addParentButtonRow" no-gutters>
+                      <div class="addChBtnSection">
                         <add-parent-task
                           v-if="
                             taskObject.childTasks.length == 0 &&
@@ -164,15 +400,17 @@
                           :taskId="this.selectedTask.taskId"
                           :projectId="this.projectId"
                         />
-                      </v-col>
-                      <v-col sm="3" md="3" no-gutters>
+                      </div>
+                      <div class="addChBtnSection">
                         <add-child-task
                           v-if="selectedTask.isParent == true"
                           :taskId="selectedTask.taskId"
                           :projectId="this.projectId"
                         />
-                      </v-col>
-                    </v-row>
+                      </div>
+                    </div>
+                    <br />
+                    <br />
                     <!-- ----------- parent task section --------- -->
                     <div v-if="selectedTask.isParent == false">
                       <div class="expansionViewHeader topItemTaskView">
@@ -348,139 +586,6 @@
                       </div>
                       <v-divider></v-divider>
                     </div>
-                    <!-- -------------- task type section ------------- -->
-                    <div class="expansionViewHeader">
-                      <v-list-item class="taskViewTitleSection">
-                        <v-list-item-icon>
-                          <v-icon size="25" color="#0BAFFF">icon-task</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-title class="viewTaskFontColors">Task type</v-list-item-title>
-                      </v-list-item>
-                      <v-list-item-content class="parentChildTaskList">
-                        <!-- ---------- task list --------- -->
-                        <div class="taskViewTaskListPadding">
-                          <v-row class="mb-12" no-gutters>
-                            <v-col sm="6" md="6">
-                              <v-select
-                                :menu-props="{ maxHeight: '500' }"
-                                dense
-                                v-model="issueType"
-                                :items="issueTypeList"
-                                background-color="#EDF0F5"
-                                item-text="name"
-                                item-value="id"
-                                label="Task type"
-                                outlined
-                                class="createFormElements"
-                                @change="updateIssueType"
-                              ></v-select>
-                            </v-col>
-                            <v-col sm="6" md="6">
-                              <v-select
-                                :menu-props="{ maxHeight: '500' }"
-                                dense
-                                v-if="this.issueTypes == 'development'"
-                                v-model="taskStatus"
-                                :items="development"
-                                background-color="#EDF0F5"
-                                item-text="name"
-                                item-value="id"
-                                label="Task status"
-                                outlined
-                                class="createFormElements"
-                                @change="updateStatus"
-                              ></v-select>
-                              <v-select
-                                :menu-props="{ maxHeight: '500' }"
-                                dense
-                                v-if="this.issueTypes == 'qa'"
-                                v-model="taskStatus"
-                                :items="qa"
-                                background-color="#EDF0F5"
-                                item-text="name"
-                                item-value="id"
-                                label="Task status"
-                                outlined
-                                class="createFormElements"
-                                @change="updateStatus"
-                              ></v-select>
-                              <v-select
-                                :menu-props="{ maxHeight: '500' }"
-                                dense
-                                v-if="this.issueTypes == 'design'"
-                                v-model="taskStatus"
-                                :items="design"
-                                background-color="#EDF0F5"
-                                item-text="name"
-                                item-value="id"
-                                label="Task status"
-                                outlined
-                                class="createFormElements"
-                                @change="updateStatus"
-                              ></v-select>
-                              <v-select
-                                :menu-props="{ maxHeight: '500' }"
-                                dense
-                                v-if="this.issueTypes == 'bug'"
-                                v-model="taskStatus"
-                                :items="bug"
-                                background-color="#EDF0F5"
-                                item-text="name"
-                                item-value="id"
-                                label="Task status"
-                                outlined
-                                class="createFormElements"
-                                @change="updateStatus"
-                              ></v-select>
-                              <v-select
-                                :menu-props="{ maxHeight: '500' }"
-                                dense
-                                v-if="this.issueTypes == 'operational'"
-                                v-model="taskStatus"
-                                :items="operational"
-                                background-color="#EDF0F5"
-                                item-text="name"
-                                item-value="id"
-                                label="Task status"
-                                outlined
-                                class="createFormElements"
-                                @change="updateStatus"
-                              ></v-select>
-                              <v-select
-                                :menu-props="{ maxHeight: '500' }"
-                                dense
-                                v-if="this.issueTypes == 'preSales'"
-                                v-model="taskStatus"
-                                :items="preSales"
-                                background-color="#EDF0F5"
-                                item-text="name"
-                                item-value="id"
-                                label="Task status"
-                                outlined
-                                class="createFormElements"
-                                @change="updateStatus"
-                              ></v-select>
-                              <v-select
-                                :menu-props="{ maxHeight: '500' }"
-                                dense
-                                v-if="this.issueTypes == 'general'"
-                                v-model="taskStatus"
-                                :items="general"
-                                background-color="#EDF0F5"
-                                item-text="name"
-                                item-value="id"
-                                label="Task status"
-                                outlined
-                                class="createFormElements"
-                                @change="updateStatus"
-                              ></v-select>
-                            </v-col>
-                          </v-row>
-                        </div>
-                        <!-- --------------- -->
-                      </v-list-item-content>
-                    </div>
-                    <v-divider></v-divider>
 
                     <!-- -------------- project board section ------------- -->
                     <div class="expansionViewHeader">
@@ -531,74 +636,39 @@
                       </v-list-item-content>
                     </div>
                     <v-divider></v-divider>
-                    <!-- -------------- notes section ------------- -->
-                    <div class="expansionViewHeader">
-                      <v-list-item class="taskViewTitleSection">
+
+                    <!-- --------- assignee section ---------- -->
+
+                    <div class="expansionViewHeaderUpdated">
+                      <v-list-item class>
                         <v-list-item-icon>
-                          <v-icon size="30" color="#FF6767">mdi-square-edit-outline</v-icon>
+                          <v-icon size="25" color="#0C97A5">icon-assignee</v-icon>
                         </v-list-item-icon>
-                        <v-list-item-title class="viewTaskFontColors">Notes</v-list-item-title>
+                        <v-list-item-title class="viewTaskFontColors">Assignee</v-list-item-title>
                       </v-list-item>
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title class="subItem noteSubItem">
-                            <v-textarea name="input-7-4" auto-grow outlined v-model="taskNote"></v-textarea>
-                          </v-list-item-title>
-                          <div class="noteUpdateButton">
-                            <v-btn
-                              class="text-capitalize"
-                              small
-                              rounded
-                              depressed
-                              color="#0BAFFF"
-                              dark
-                              @click="updateTaskNote"
-                            >
-                              <v-icon left>mdi-pencil</v-icon>Update note
-                            </v-btn>
-                          </div>
-                        </v-list-item-content>
-                      </v-list-item>
+                      <v-list-item-content class="parentChildTaskList">
+                        <div class="updatedSectionActions">
+                          <v-row class="mb-12" no-gutters>
+                            <v-col sm="12" md="12">
+                              <v-select
+                                style="margin-left: -10px"
+                                dense
+                                v-model="taskAssignee"
+                                :items="assignees"
+                                item-text="name"
+                                item-value="id"
+                                solo
+                                flat
+                                class="createFormElements"
+                                @change="changeAssignee"
+                              ></v-select>
+                            </v-col>
+                          </v-row>
+                        </div>
+                        <!-- --------------- -->
+                      </v-list-item-content>
                     </div>
                     <v-divider></v-divider>
-                  </div>
-                </v-col>
-                <!-- ------------------ right side column ------------- -->
-                <v-col sm="4" md="4">
-                  <v-list-item v-if="!this.userExists">
-                    <v-list-item-action>
-                      <v-icon size="15" color="red">mdi-alert-outline</v-icon>
-                    </v-list-item-action>
-                    <v-list-item-content
-                      class="userBlockedWarning"
-                    >Assignee is no longer a participant of the project</v-list-item-content>
-                  </v-list-item>
-                  <div class="rightSideColumn">
-                    <!-- --------- assignee section ---------- -->
-                    <v-list-item>
-                      <v-list-item-icon
-                        style="background-color: #02C1D4; padding: 10px; border-radius: 50%"
-                      >
-                        <v-icon size="25" color="#FFFFFF">icon-assignee</v-icon>
-                      </v-list-item-icon>
-                      <v-list-item-content>
-                        <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
-                        <v-list-item-title>
-                          <v-select
-                            style="margin-left: -10px"
-                            dense
-                            v-model="taskAssignee"
-                            :items="assignees"
-                            item-text="name"
-                            item-value="id"
-                            solo
-                            flat
-                            class="createFormElements"
-                            @change="changeAssignee"
-                          ></v-select>
-                        </v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
                     <!-- ----------- Due date section --------- -->
 
                     <v-list-item>
@@ -851,13 +921,54 @@
                     </v-list-item>
                     <v-divider class></v-divider>
                     <!-- ----------- end weight section ------- -->
+                  </div>
+                </v-col>
+                <!-- ------------------ right side column ------------- -->
+                <v-col sm="6" md="6">
+                  <v-list-item v-if="!this.userExists">
+                    <v-list-item-action>
+                      <v-icon size="15" color="red">mdi-alert-outline</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content
+                      class="userBlockedWarning"
+                    >Assignee is no longer a participant of the project</v-list-item-content>
+                  </v-list-item>
+                  <div class="rightSideColumn">
+                    <!-- -------------- notes section ------------- -->
+                    <div class>
+                      <v-list-item class="taskViewTitleSection">
+                        <v-list-item-icon>
+                          <v-icon size="30" color="#FF6767">mdi-square-edit-outline</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-title class="viewTaskFontColors">Notes</v-list-item-title>
+                      </v-list-item>
+                      <v-list-item>
+                        <v-list-item-content>
+                          <v-list-item-title class="noteSectionUpdated">
+                            <v-textarea name="input-7-4" auto-grow outlined v-model="taskNote"></v-textarea>
+                          </v-list-item-title>
+                          <div class="noteUpdateButtonUpdated">
+                            <v-btn
+                              class="text-capitalize"
+                              x-small
+                              rounded
+                              depressed
+                              color="#0BAFFF"
+                              dark
+                              @click="updateTaskNote"
+                            >
+                              <v-icon size="20" left>mdi-pencil</v-icon>Update note
+                            </v-btn>
+                          </div>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </div>
+                    <v-divider></v-divider>
 
                     <!-- ----------- Files section --------- -->
                     <v-list-item>
-                      <v-list-item-icon
-                        style="background-color: #FFAE4F; padding: 10px; border-radius: 50%"
-                      >
-                        <v-icon size="25" color="#FFFFFF">mdi-paperclip</v-icon>
+                      <v-list-item-icon>
+                        <v-icon size="20" color="#EDCA14">mdi-paperclip</v-icon>
                       </v-list-item-icon>
                       <v-list-item-content>
                         <v-list-item-title class="rightColumnItemsTitle">Files</v-list-item-title>
@@ -921,13 +1032,14 @@
                             {{ file.firstName }}
                             {{ file.lastName }}
                           </v-list-item-title>
+
                           <v-list-item-subtitle class="fileSubTitles">
                             {{
                             getProjectDates(file.taskFileDate)
                             }}
                           </v-list-item-subtitle>
                         </v-list-item-content>
-                        <div>
+                        <v-list-item-action>
                           <a
                             style="text-decoration: none;"
                             :href="file.taskFileUrl"
@@ -935,14 +1047,14 @@
                           >
                             <v-icon size="25" color="#0BAFFF">mdi-cloud-download</v-icon>
                           </a>
-                        </div>
-                        <div>
+                        </v-list-item-action>
+                        <v-list-item-action>
                           <v-icon
                             @click="handleFileDelete(file.taskFileId)"
                             size="25"
                             color="#FF6161"
                           >mdi-delete-circle</v-icon>
-                        </div>
+                        </v-list-item-action>
                       </v-list-item>
                     </div>
                   </div>

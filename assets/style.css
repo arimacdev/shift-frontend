@@ -151,7 +151,6 @@
 
 .createFormElements {
   width: 98%;
-  /* background-color: red; */
   height: 40px;
 }
 .formRow {
@@ -779,6 +778,10 @@
   margin-top: -30px;
   margin-left: 65px;
 }
+.noteUpdateButtonUpdated {
+  margin-top: -30px;
+  margin-left: 15px;
+}
 .fileUploadButton {
   margin-top: 15px;
   margin-bottom: -10px;
@@ -941,6 +944,9 @@
   margin-left: 65px;
   color: #576377;
   font-size: 14px !important;
+}
+.noteSectionUpdated {
+  margin-left: 15px;
 }
 .subTasksList {
   margin-top: -10px;
@@ -2294,7 +2300,10 @@
 .taskViewTaskListPadding {
   padding-left: 20px;
   height: 50px;
-  margin-top: ;
+}
+.updatedSectionActions {
+  margin-top: -20px;
+  margin-left: 20px;
 }
 .taskViewTitleSection {
   height: 50px;
@@ -2302,6 +2311,21 @@
 .expansionViewHeader {
   margin-bottom: 15px;
   margin-top: 5px;
+  margin-left: -20px;
+}
+.expansionViewHeaderUpdated {
+  height: 100px;
+}
+.addChBtnSection {
+  float: right !important;
+  margin-left: 10px;
+  margin-right: 20px;
+  margin-top: 10px;
+  margin-bottom: -10px;
+}
+.updatedHeaderSection {
+  margin-top: -35px;
+  margin-bottom: -10px;
 }
 .topItemTaskView {
   margin-top: -10px;
@@ -2327,9 +2351,12 @@
   width: 100%;
 }
 .viewTaskPickerDiv {
-  width: 250px;
-  margin-left: 80px;
-  margin-top: -20px;
+  /* width: 250px; */
+  /* margin-left: 80px;
+  margin-top: -20px; */
+  margin-left: 35px;
+  margin-right: 15px;
+  margin-bottom: 15px;
 }
 .viewPageTaskPickerDiv {
   /* width: 250px; */
@@ -2428,12 +2455,14 @@
   border-radius: 5px;
   height: 30px;
   float: right;
+  font-size: 8px !important;
 }
 .addChildButton {
   background-color: #0083e2;
   border-radius: 5px;
   height: 30px;
   float: right;
+  font-size: 8px !important;
 }
 .addParentButtonBody {
   margin-top: -10px;
