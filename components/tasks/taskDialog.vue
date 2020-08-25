@@ -32,7 +32,27 @@
           </button>
         </v-toolbar-items>
       </v-toolbar>
-      <div class="viewDialogTaskContent overflow-y-auto">
+      <v-tabs height="40px" slider-color="#0c0c5a" slider-size="3" v-model="selectedTab">
+        <v-tab
+          class="text-capitalize font-weight-bold tabInactiveStyle"
+          active-class="tabTitleStyle"
+          key="tasks"
+          @click="selectedVTab('tasks')"
+        >Tasks</v-tab>
+        <v-tab
+          class="text-capitalize font-weight-bold tabInactiveStyle"
+          active-class="tabTitleStyle"
+          key="comments"
+          @click="selectedVTab('comments')"
+        >Comments</v-tab>
+        <v-tab
+          class="text-capitalize font-weight-bold tabInactiveStyle"
+          active-class="tabTitleStyle"
+          key="logs"
+          @click="selectedVTab('logs')"
+        >Logs</v-tab>
+      </v-tabs>
+      <div v-if="taskView" class="viewDialogTaskContent overflow-y-auto">
         <div class="taskDialogFormDiv">
           <form>
             <v-row class="mb-12 formRowSpec" no-gutters>
@@ -43,7 +63,10 @@
                 </div>
               </v-col>
               <v-col sm="2" md="2">
-                <div class="taskStatusDropdown">{{ taskStatusFormatting(taskStatus) }}</div>
+                <div
+                  :class="statusCheck(taskStatus)"
+                  class="taskStatusDropdown"
+                >{{ taskStatusFormatting(taskStatus) }}</div>
               </v-col>
               <v-col sm="8" md="8" class="taskViewLinksDiv">
                 <nuxt-link
@@ -980,7 +1003,7 @@
         </v-card>
       </v-dialog>
 
-      <v-tabs height="40px" style="padding-left: 20px" slider-size="3" v-model="selectedTab">
+      <!-- <v-tabs height="40px" style="padding-left: 20px" slider-size="3" v-model="selectedTab">
         <v-tab
           class="text-capitalize activityInactiveTabs"
           key="comments"
@@ -991,7 +1014,7 @@
           key="logs"
           @click="selectedVTab('logs')"
         >Logs</v-tab>
-      </v-tabs>
+      </v-tabs>-->
 
       <div class="RestTaskLogDiv">
         <!-- <div class="RestTaskLogTitle">
@@ -1000,9 +1023,9 @@
           </v-list-item-content>
         </div>-->
 
-        <task-logs v-if="this.activity == 'logs'" :pageNum="page" :page="page" />
+        <task-logs v-if="this.activity == 'logs' && !taskView" :pageNum="page" :page="page" />
         <task-comments
-          v-if="this.activity == 'comments'"
+          v-if="this.activity == 'comments' && !taskView"
           :stomp="this.stomp"
           :commentPage="commentPage"
         />
@@ -1059,6 +1082,7 @@ export default {
   },
   data() {
     return {
+      taskView: true,
       // ---------- for weight section -----------
       estimatedRules: [
         (v) => v < 60 || "Invalid!",
@@ -1076,7 +1100,7 @@ export default {
       updatedEstimatedWeight: "",
       updatedActualWeight: "",
 
-      selectedTab: "comments",
+      selectedTab: "",
       activity: "comments",
       page: 1,
       commentPage: 1,
@@ -1214,6 +1238,75 @@ export default {
     };
   },
   methods: {
+    statusCheck(task) {
+      switch (task) {
+        case "pending":
+          return "pendingStatus";
+          break;
+        case "onHold":
+          return "onHoldStatus";
+          break;
+        case "open":
+          return "openStatus";
+          break;
+        case "cancel":
+          return "cancelStatus";
+          break;
+        case "reOpened":
+          return "reOpenedStatus";
+          break;
+        case "fixing":
+          return "fixingStatus";
+          break;
+        case "testing":
+          return "testingStatus";
+          break;
+        case "resolved":
+          return "resolvedStatus";
+          break;
+        case "inprogress":
+          return "inprogressStatus";
+          break;
+        case "completed":
+          return "completedStatus";
+          break;
+        case "implementing":
+          return "implementingStatus";
+          break;
+        case "underReview":
+          return "underReviewStatus";
+          break;
+        case "waitingForApproval":
+          return "waitingForApprovalStatus";
+          break;
+        case "review":
+          return "reviewStatus";
+          break;
+        case "discussion":
+          return "discussionStatus";
+          break;
+        case "waitingResponse":
+          return "waitingResponseStatus";
+          break;
+        case "ready":
+          return "readyStatus";
+          break;
+        case "deployed":
+          return "deployedStatus";
+          break;
+        case "fixed":
+          return "fixedStatus";
+          break;
+        case "rejected":
+          return "rejectedStatus";
+          break;
+        case "closed":
+          return "closedStatus";
+          break;
+        default:
+          return "defaultStatus";
+      }
+    },
     // -----for weight section ---------
     // ------ update estimated weight ---------
     async changeEstimatedTime() {
@@ -1493,6 +1586,10 @@ export default {
       this.activity = component;
       if (component === "logs") {
         this.overlay = false;
+        this.taskView = false;
+      } else if (component === "tasks") {
+        this.taskView = true;
+        this.overlay = false;
       } else {
         Promise.all([
           this.$store.dispatch("comments/fetchTaskActivityComment", {
@@ -1506,6 +1603,7 @@ export default {
           ),
         ]).finally(() => {
           this.overlay = false;
+          this.taskView = false;
         });
       }
     },
@@ -1593,7 +1691,7 @@ export default {
     taskDialogClosing() {
       this.$emit("taskDialogClosing");
       Object.assign(this.$data, this.$options.data.apply(this));
-      this.selectedTab = "comments";
+      this.selectedTab = "";
     },
     async updateIssueType() {
       this.waiting = true;
@@ -2135,9 +2233,9 @@ export default {
         return false;
       }
     },
-    statusCheck() {
-      return "pendingStatus";
-    },
+    // statusCheck() {
+    //   return "pendingStatus";
+    // },
     EditTaskName() {
       this.editTask = false;
     },

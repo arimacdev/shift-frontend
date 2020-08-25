@@ -662,13 +662,10 @@
 }
 .taskStatusDropdown {
   text-align-last: center;
-  height: 35px;
+  height: 30px;
   padding-top: 5px;
   border-radius: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
   border-style: none;
-  background-color: #0bafff;
   color: #ffffff;
 }
 
@@ -2381,6 +2378,7 @@
   width: 100%;
   padding-left: 20px;
   padding-right: 20px !important;
+  background-color: #ffffff !important;
   /* padding-top: 10px; */
   /* max-height: 100vh; */
 }
@@ -3178,6 +3176,13 @@
   padding: 20px;
   background-color: #ffffff;
   padding-bottom: 300px;
+  min-height: 80vh;
+}
+.logsSectionDiv {
+  padding: 20px;
+  background-color: #ffffff;
+  padding-bottom: 300px;
+  min-height: 80vh;
 }
 .commentEditor {
   /* width: 70vw; */

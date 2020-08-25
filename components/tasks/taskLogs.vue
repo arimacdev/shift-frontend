@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="logsSectionDiv">
     <v-row>
       <v-col>
         <v-row>
@@ -266,12 +266,12 @@ import Progress from "~/components/popups/progress";
 export default {
   props: ["pageNum", "page"],
   components: {
-    "progress-loading": Progress
+    "progress-loading": Progress,
   },
   data() {
     return {
       page: this.page,
-      overlay: false
+      overlay: false,
     };
   },
 
@@ -282,7 +282,7 @@ export default {
         .dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: this.page * 10 - 10,
-          endIndex: this.page * 10
+          endIndex: this.page * 10,
         })
         .finally(() => {
           this.overlay = false;
@@ -362,19 +362,19 @@ export default {
         // stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 16);
         return dueToUtc.toLocaleString();
       }
-    }
+    },
   },
   computed: {
     ...mapState({
-      selectedTask: state => state.task.selectedTask,
-      taskActivityLog: state => state.activityLog.activityLog
+      selectedTask: (state) => state.task.selectedTask,
+      taskActivityLog: (state) => state.activityLog.activityLog,
     }),
     taskName: {
       get() {
         this.getLogs();
       },
-      set(name) {}
-    }
-  }
+      set(name) {},
+    },
+  },
 };
 </script>
