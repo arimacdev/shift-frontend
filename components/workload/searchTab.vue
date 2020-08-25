@@ -7,6 +7,7 @@
 
           <v-text-field
             @click:clear="clearName()"
+            style="border-radius: 0px"
             clearable
             v-model="taskName"
             outlined
@@ -15,18 +16,21 @@
             background-color="#FFFFFF"
           ></v-text-field>
           <v-row align="center">
-            <v-col md="12">
+            <v-col class="searchOptions" md="12">
               <!-- :search-input.sync="searchAssignee" -->
               <v-autocomplete
                 v-model="filterAssignee"
                 return-object
+                dense
+                style="border-radius: 0px; margin-bottom: -10px"
                 :items="assigneeArray"
                 item-text="name"
                 item-value="id"
                 flat
                 outlined
                 chips
-                background-color="#FFFFFF"
+                background-color="#576377"
+                dark
                 small-chips
                 label="Assignee"
                 multiple
@@ -38,12 +42,15 @@
                 v-model="filterProject"
                 return-object
                 :items="projectArray"
+                dense
+                style="border-radius: 0px; margin-bottom: -10px"
                 item-text="name"
                 item-value="id"
                 flat
                 outlined
                 chips
-                background-color="#FFFFFF"
+                background-color="#576377"
+                dark
                 small-chips
                 label="Project"
                 multiple
@@ -52,6 +59,8 @@
               ></v-autocomplete>
               <v-autocomplete
                 v-model="filterType"
+                dense
+                style="border-radius: 0px; margin-bottom: -10px"
                 return-object
                 :items="taskTypeArray"
                 item-text="name"
@@ -59,7 +68,8 @@
                 flat
                 outlined
                 chips
-                background-color="#FFFFFF"
+                background-color="#576377"
+                dark
                 small-chips
                 label="Task Type"
                 multiple
@@ -70,12 +80,15 @@
                 v-model="filterStatus"
                 return-object
                 :items="taskStatusArray"
+                dense
+                style="border-radius: 0px; margin-bottom: -10px"
                 item-text="name"
                 item-value="id"
                 flat
                 outlined
                 chips
-                background-color="#FFFFFF"
+                background-color="#576377"
+                dark
                 small-chips
                 label="Task Status"
                 multiple
@@ -87,6 +100,7 @@
                 color="#3f51b5"
                 v-model="dateRange"
                 label="Date Range"
+                style="border-radius: 0px; margin-bottom: -10px"
                 range
                 left
                 noButton
@@ -95,6 +109,8 @@
               ></VueCtkDateTimePicker>
               <v-select
                 class="filterOrderWorkload"
+                dense
+                style="border-radius: 0px; margin-bottom: -10px"
                 v-model="filterOrderBy"
                 :items="orderByArray"
                 item-text="name"
@@ -102,7 +118,8 @@
                 flat
                 outlined
                 chips
-                background-color="#FFFFFF"
+                background-color="#576377"
+                dark
                 small-chips
                 label="Order By"
                 @click:clear="clearOrderBy()"
@@ -119,10 +136,26 @@
               </v-radio-group>
               <v-row>
                 <v-col md="10">
-                  <v-btn @click="jqlSearch()" height="70px" color="#080848" dark width="100%">Search</v-btn>
+                  <v-btn
+                    @click="jqlSearch()"
+                    class="text-capitalize"
+                    height="70px"
+                    color="#151515"
+                    dark
+                    depressed
+                    width="100%"
+                  >Search</v-btn>
                 </v-col>
                 <v-col md="2">
-                  <v-btn @click="jqlCancel()" height="70px" color="#ff6161" dark width="70%">
+                  <v-btn
+                    depressed
+                    @click="jqlCancel()"
+                    class="text-capitalize"
+                    height="70px"
+                    color="#ff6161"
+                    dark
+                    width="60%"
+                  >
                     <v-icon color="#FFFFFF">mdi-cancel</v-icon>
                   </v-btn>
                 </v-col>
@@ -161,7 +194,14 @@
                       </v-autocomplete>
                     </v-col>
                     <v-col md="4">
-                      <v-btn width="100%" color="primary" @click="loadTemplate">Go</v-btn>
+                      <v-btn
+                        depressed
+                        class="text-capitalize"
+                        width="100%"
+                        color="#66B25F"
+                        dark
+                        @click="loadTemplate"
+                      >Go</v-btn>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -221,8 +261,9 @@
               <div v-for="(task, index) in entityTasks" :key="index">
                 <v-tooltip top color="blue">
                   <template v-slot:activator="{ on }">
-                    <div v-on="on" class="taskList restructuredWorkloadTaskFilterList">
+                    <div v-on="on">
                       <v-list-item
+                        class="workloadTaskItems"
                         @click="
                           selectTask(task);
                           taskDialog = true;
@@ -232,13 +273,13 @@
                         <v-list-item-action>
                           <v-icon
                             v-if="task.taskStatus == 'closed'"
-                            size="30"
-                            color="#2EC973"
-                          >mdi-checkbox-marked-circle</v-icon>
-                          <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                            size="25"
+                            color="#66B25F"
+                          >mdi-checkbox-blank</v-icon>
+                          <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
                         </v-list-item-action>
                         <div class="tasklistTaskNames restructuredMainTaskName">
-                          <div class="body-2">
+                          <div>
                             <span class="restructuredMainTaskCode">
                               {{
                               task.secondaryTaskId
@@ -251,15 +292,15 @@
                         class="restStatusChip"
                         :class="statusCheck(task.issueType)"
                         >{{ task.issueType }}</div>-->
-                        <v-list-item-content class="updatedDate">
-                          <v-list-item-title :class="dueDateCheck(task)">
+                        <v-list-item-content class="updatedDate" style="margin-right: 10px">
+                          <v-list-item-title class="fontRestructure12" :class="dueDateCheck(task)">
                             {{
                             getProjectDates(task.taskDueDateAt)
                             }}
                           </v-list-item-title>
                         </v-list-item-content>
                         <div>
-                          <v-list-item-avatar>
+                          <v-list-item-avatar size="25">
                             <v-img
                               v-if="
                                 task.profileImage != null &&
@@ -296,7 +337,7 @@
         @taskDialogClosing="taskDialogClosing()"
       />
     </v-dialog>
-    <v-overlay :value="overlay">
+    <v-overlay :value="overlay" color="black">
       <progress-loading />
     </v-overlay>
     <div @click="close" class="filterTaskPopupPlacements">
@@ -323,7 +364,7 @@ export default {
     "task-dialog": TaskDialog,
     "progress-loading": Progress,
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
   },
   created() {
     this.$store.dispatch("workload/fetchTemplates");
@@ -374,14 +415,14 @@ export default {
       { name: "Bug", id: "bug" },
       { name: "Operational", id: "operational" },
       { name: "Pre-sales", id: "preSales" },
-      { name: "General", id: "general" }
+      { name: "General", id: "general" },
     ],
     orderByArray: [
       { name: "Assignee", id: "taskAssignee" },
       { name: "Projects", id: "projectName" },
       { name: "Type", id: "issueType" },
       { name: "Status", id: "taskStatus" },
-      { name: "Date", id: "taskDueDateAt" }
+      { name: "Date", id: "taskDueDateAt" },
     ],
     taskStatusArray: [
       { name: "Pending", id: "pending" },
@@ -404,8 +445,8 @@ export default {
       { name: "Deployed", id: "deployed" },
       { name: "Fixed", id: "fixed" },
       { name: "Rejected", id: "rejected" },
-      { name: "Closed", id: "closed" }
-    ]
+      { name: "Closed", id: "closed" },
+    ],
   }),
   watch: {
     searchAssignee(val) {
@@ -416,7 +457,7 @@ export default {
     },
     searchTemplate(val) {
       val && val !== this.selectTemplate && this.loadTempalte(val);
-    }
+    },
   },
 
   methods: {
@@ -444,8 +485,8 @@ export default {
           {
             headers: {
               user: task.taskAssignee,
-              type: "project"
-            }
+              type: "project",
+            },
           }
         );
         // console.log("files--->", taskFilesResponse.data);
@@ -463,8 +504,8 @@ export default {
             `/sprints/${this.projectId}/${task.sprintId}`,
             {
               headers: {
-                userId: task.taskAssignee
-              }
+                userId: task.taskAssignee,
+              },
             }
           );
           // console.log("sprint--->", sprintResponse.data.sprintName);
@@ -546,8 +587,8 @@ export default {
           `/projects/workload/filter?query=${this.filterTemplate.query}`,
           {
             headers: {
-              user: this.$store.state.user.userId
-            }
+              user: this.$store.state.user.userId,
+            },
           }
         );
         this.filterResult = taskFilterResponse.data;
@@ -606,7 +647,7 @@ export default {
             const orderBySequence = orderBySplit[1];
             // console.log("criteria", orderBySequence);
             let filterOrderByType = this.orderByArray.find(
-              type => type.id === orderByType
+              (type) => type.id === orderByType
             );
             // console.log(
             //   "criteria",
@@ -669,7 +710,7 @@ export default {
             let entities = [];
             // console.log("dec", paranthesesMatch[1]);
             if (entityString.includes(",")) {
-              entityString.split(/\s*,\s*/).forEach(assignee => {
+              entityString.split(/\s*,\s*/).forEach((assignee) => {
                 //Remove Quotation Marks
                 assignee = assignee.replace(/^"(.*)"$/, "$1");
                 entities.push(assignee);
@@ -684,38 +725,38 @@ export default {
               switch (criteria) {
                 case "taskAssignee":
                   let filterUser = this.users.find(
-                    user => user.userId === entities[i]
+                    (user) => user.userId === entities[i]
                   );
                   // console.log("filterUser", filterUser);
                   if (filterUser) {
                     this.filterAssignee.push({
                       name: filterUser.firstName,
                       id: filterUser.userId,
-                      img: filterUser.profileImage
+                      img: filterUser.profileImage,
                     });
                   }
                   break;
                 case "projectId":
                   let filterProject = this.allProjects.find(
-                    project => project.projectId === entities[i]
+                    (project) => project.projectId === entities[i]
                   );
                   // console.log("filterProject", filterProject);
                   if (filterProject) {
                     this.filterProject.push({
                       name: filterProject.projectName,
-                      id: filterProject.projectId
+                      id: filterProject.projectId,
                     });
                   }
                   break;
                 case "issueType":
                   let filterIssueType = this.taskTypeArray.find(
-                    issueType => issueType.id === entities[i]
+                    (issueType) => issueType.id === entities[i]
                   );
                   if (filterIssueType) this.filterType.push(filterIssueType);
                   break;
                 case "taskStatus":
                   let filterTaskStatus = this.taskStatusArray.find(
-                    taskStatus => taskStatus.id === entities[i]
+                    (taskStatus) => taskStatus.id === entities[i]
                   );
                   if (filterTaskStatus)
                     this.filterStatus.push(filterTaskStatus);
@@ -830,8 +871,8 @@ export default {
           `/projects/workload/filter?query=${this.jqlQuery}`,
           {
             headers: {
-              user: this.$store.state.user.userId
-            }
+              user: this.$store.state.user.userId,
+            },
           }
         );
         // this.component = "success-popup";
@@ -889,7 +930,7 @@ export default {
         this.assigneeArray.push({
           name: user.firstName + " " + user.lastName,
           id: user.userId,
-          img: user.profileImage
+          img: user.profileImage,
         });
       }
     },
@@ -899,7 +940,7 @@ export default {
         let project = projectSearchList[index];
         this.projectArray.push({
           name: project.projectName,
-          id: project.projectId
+          id: project.projectId,
         });
       }
     },
@@ -917,7 +958,7 @@ export default {
         this.templateArray.push({
           name: template.templateName,
           id: template.templateId,
-          query: template.templateQuery
+          query: template.templateQuery,
         });
       }
     },
@@ -979,7 +1020,7 @@ export default {
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "Add Due Date";
+        return "No Due Date";
       } else if (
         now.getDate() === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
@@ -1004,13 +1045,13 @@ export default {
         stringDate = stringDate.slice(0, 10);
         return stringDate;
       }
-    }
+    },
   },
   computed: {
     ...mapState({
-      users: state => state.user.users,
-      allProjects: state => state.project.projects,
-      templates: state => state.workload.templates
+      users: (state) => state.user.users,
+      allProjects: (state) => state.project.allOrgProjects,
+      templates: (state) => state.workload.templates,
     }),
     assigneeArray() {
       let AssigneeSearchList = this.users;
@@ -1020,7 +1061,7 @@ export default {
         assigneeList.push({
           name: user.firstName + " " + user.lastName,
           id: user.userId,
-          img: user.profileImage
+          img: user.profileImage,
         });
       }
       return assigneeList;
@@ -1032,7 +1073,7 @@ export default {
         let project = projectSearchList[index];
         projectList.push({
           name: project.projectName,
-          id: project.projectId
+          id: project.projectId,
         });
       }
       return projectList;
@@ -1043,7 +1084,7 @@ export default {
       },
       set(value) {
         this.filterAssignee = value;
-      }
+      },
     },
     project: {
       get() {
@@ -1052,7 +1093,7 @@ export default {
       set(value) {
         // console.log("project", value);
         this.filterProject = value;
-      }
+      },
     },
     template: {
       get() {
@@ -1060,27 +1101,27 @@ export default {
       },
       set(value) {
         this.filterTemplate = value;
-      }
+      },
     },
     taskType: {
       get() {},
       set(value) {
         this.filterType = value;
-      }
+      },
     },
     taskStatus: {
       get() {},
       set(value) {
         this.filterStatus = value;
-      }
+      },
     },
     orderBy: {
       get() {},
       set(value) {
         this.filterOrderBy = value;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 

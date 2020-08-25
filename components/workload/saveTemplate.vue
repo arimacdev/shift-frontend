@@ -2,7 +2,13 @@
   <div class="text-center adasd">
     <v-dialog scrollable v-model="dialog" width="600">
       <template v-slot:activator="{ on }">
-        <v-btn width="100%" color="#2EC973" dark v-on="on">Save current filter as a template</v-btn>
+        <v-btn
+          depressed
+          width="100%"
+          color="#333369"
+          dark
+          v-on="on"
+        >Save current filter as a template</v-btn>
       </template>
 
       <v-card height="100%">
@@ -83,8 +89,21 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="#FF6161" dark text @click="dialog = false">Cancel</v-btn>
-            <v-btn color="#2EC973" :disabled="!isValid" @click="saveTemplate">OK</v-btn>
+            <v-btn
+              color="#FF6161"
+              class="text-capitalize"
+              depressed
+              dark
+              text
+              @click="dialog = false"
+            >Cancel</v-btn>
+            <v-btn
+              color="#2EC973"
+              class="text-capitalize"
+              depressed
+              :disabled="!isValid"
+              @click="saveTemplate"
+            >OK</v-btn>
           </v-card-actions>
         </v-form>
       </v-card>
@@ -100,14 +119,14 @@ export default {
     "filterType",
     "filterStatus",
     "from",
-    "to"
+    "to",
   ],
   data() {
     return {
       dialog: false,
       isValid: true,
       templateName: "",
-      nameRules: [value => !!value || "Template name is required!"]
+      nameRules: [(value) => !!value || "Template name is required!"],
     };
   },
   methods: {
@@ -117,7 +136,7 @@ export default {
       const template = {
         templateName: this.templateName,
         templateCreatorId: this.$store.state.user.userId,
-        templateQuery: this.saveTemplateQuery
+        templateQuery: this.saveTemplateQuery,
       };
       try {
         response = await this.$axios.$post(`/template`, template);
@@ -127,7 +146,7 @@ export default {
       } catch (e) {
         console.log("Error adding a User", e);
       }
-    }
-  }
+    },
+  },
 };
 </script>

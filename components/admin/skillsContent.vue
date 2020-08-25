@@ -29,6 +29,7 @@
 
             <v-col>
               <v-btn
+                depressed
                 @click="deleteDialog = true"
                 style="margin-left: 30px; margin-top: -10px "
                 color="error"
@@ -65,11 +66,12 @@
         <v-form v-model="isValid" ref="form">
           <v-text-field outlined v-model="skillName" label="New skill" :rules="skillRules"></v-text-field>
           <v-btn
+            depressed
             :disabled="!isValid"
             style="margin-top: -5px"
             color="#0BAFFF"
             height="45px"
-            class="skillsDiv"
+            class="skillsDiv text-capitalize"
             @click="addSkill()"
           >
             <v-list-item>
@@ -97,9 +99,18 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn width="100px" color="#FF6161" dark @click="deleteDialog = false">Cancel</v-btn>
+          <v-btn
+            depressed
+            class="text-capitalize"
+            width="100px"
+            color="#FF6161"
+            dark
+            @click="deleteDialog = false"
+          >Cancel</v-btn>
 
           <v-btn
+            depressed
+            class="text-capitalize"
             width="100px"
             color="#2EC973"
             dark
@@ -133,9 +144,18 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn width="100px" color="#FF6161" dark @click="updateSkillDialog = false">Cancel</v-btn>
+            <v-btn
+              depressed
+              width="100px"
+              color="#FF6161"
+              dark
+              class="text-capitalize"
+              @click="updateSkillDialog = false"
+            >Cancel</v-btn>
 
             <v-btn
+              depressed
+              class="text-capitalize"
               :disabled="!isValidUpdate"
               width="100px"
               color="#2EC973"
@@ -185,9 +205,18 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn width="100px" color="#FF6161" dark @click="updateCategoryDialog = false">Cancel</v-btn>
+            <v-btn
+              depressed
+              class="text-capitalize"
+              width="100px"
+              color="#FF6161"
+              dark
+              @click="updateCategoryDialog = false"
+            >Cancel</v-btn>
 
             <v-btn
+              depressed
+              class="text-capitalize"
               :disabled="!isValidCatUpdate"
               width="100px"
               color="#2EC973"
@@ -212,9 +241,18 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn width="100px" color="#FF6161" dark @click="deleteSkillDialog = false">Cancel</v-btn>
+          <v-btn
+            depressed
+            class="text-capitalize"
+            width="100px"
+            color="#FF6161"
+            dark
+            @click="deleteSkillDialog = false"
+          >Cancel</v-btn>
 
           <v-btn
+            depressed
+            class="text-capitalize"
             width="100px"
             color="#2EC973"
             dark
@@ -242,7 +280,7 @@ import ErrorPopup from "~/components/popups/errorPopup";
 export default {
   components: {
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
   },
   data() {
     return {
@@ -261,12 +299,12 @@ export default {
       userId: this.$store.state.user.userId,
       errorMessage: "",
       successMessage: "",
-      skillRules: [value => !!value || "Skill is required!"],
-      skillUpdateRules: [value => !!value || "Skill is required!"],
+      skillRules: [(value) => !!value || "Skill is required!"],
+      skillUpdateRules: [(value) => !!value || "Skill is required!"],
       skillCatUpdateRules: [
-        value => !!value || "Skill category name is required!"
+        (value) => !!value || "Skill category name is required!",
       ],
-      component: ""
+      component: "",
     };
   },
   methods: {
@@ -284,12 +322,12 @@ export default {
           response = await this.$axios.$put(
             `/category/${this.selectedCategory.categoryId}/skill/${this.skill.skillId}`,
             {
-              skillName: this.updatedSkillName
+              skillName: this.updatedSkillName,
             },
             {
               headers: {
-                userId: this.userId
-              }
+                userId: this.userId,
+              },
             }
           );
           this.$store.dispatch(
@@ -333,12 +371,12 @@ export default {
           `/category/${this.selectedCategory.categoryId}`,
           {
             categoryName: catName,
-            categoryColorCode: this.updatedColor
+            categoryColorCode: this.updatedColor,
           },
           {
             headers: {
-              userId: this.userId
-            }
+              userId: this.userId,
+            },
           }
         );
         this.$store.dispatch(
@@ -370,8 +408,8 @@ export default {
           `/category/${this.selectedCategory.categoryId}/skill/${this.skill.skillId}`,
           {
             headers: {
-              userId: this.userId
-            }
+              userId: this.userId,
+            },
           }
         );
         this.$store.dispatch(
@@ -398,12 +436,12 @@ export default {
         response = await this.$axios.$post(
           `/category/${this.selectedCategory.categoryId}/skill`,
           {
-            skillName: this.skillName
+            skillName: this.skillName,
           },
           {
             headers: {
-              userId: this.userId
-            }
+              userId: this.userId,
+            },
           }
         );
 
@@ -441,8 +479,8 @@ export default {
           `/category/${this.selectedCategory.categoryId}`,
           {
             headers: {
-              userId: this.userId
-            }
+              userId: this.userId,
+            },
           }
         );
         this.$store.dispatch("skillMatrix/fetchSkillCategory");
@@ -455,12 +493,12 @@ export default {
         }, 3000);
         console.log("Error creating project", e);
       }
-    }
+    },
   },
   computed: {
     ...mapState({
-      selectedCategory: state => state.skillMatrix.selectedCategory,
-      categorySkills: state => state.skillMatrix.skills
+      selectedCategory: (state) => state.skillMatrix.selectedCategory,
+      categorySkills: (state) => state.skillMatrix.skills,
     }),
     categoryName: {
       get() {
@@ -468,7 +506,7 @@ export default {
       },
       set(value) {
         this.updatedName = value;
-      }
+      },
     },
     skillUpdateName: {
       get() {
@@ -476,7 +514,7 @@ export default {
       },
       set(value) {
         this.updatedSkillName = value;
-      }
+      },
     },
     colorPicker: {
       get() {
@@ -484,8 +522,8 @@ export default {
       },
       set(value) {
         this.updatedColor = value;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>

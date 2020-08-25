@@ -300,7 +300,7 @@
         </v-row>
       </form>
     </div>
-    <v-overlay :value="overlay">
+    <v-overlay :value="overlay" color="black">
       <progress-loading />
     </v-overlay>
 

@@ -1,6 +1,6 @@
 <template>
   <v-card width="100vw">
-    <v-toolbar dark color="primary">
+    <v-toolbar dark color="#010101">
       <v-btn icon dark @click="taskDialogClosing()">
         <v-icon>mdi-close</v-icon>
       </v-btn>
@@ -38,7 +38,7 @@
               </div>
             </v-col>
             <v-col sm="2" md="2">
-              <div class="taskStatusDropdown">{{ taskStatus }}</div>
+              <div class="taskStatusDropdown">{{ taskStatusFormatting(taskStatus) }}</div>
             </v-col>
             <v-col sm="8" md="8" class="taskViewLinksDiv">
               <nuxt-link
@@ -167,19 +167,13 @@
                               style="font-size: 14px; font-weight: 800; padding-right: 20px"
                             >{{ parent.secondaryTaskId }}</v-list-item-action>
                             <v-list-item-content style="width: 200px">
-                              <v-list-item-title>
-                                {{
-                                parent.taskName
-                                }}
-                              </v-list-item-title>
+                              <v-list-item-title>{{ parent.taskName }}</v-list-item-title>
                             </v-list-item-content>
                             <div>
                               <v-list-item-action>
-                                <v-list-item-sub-title :class="dueDateCheck(parent)">
-                                  {{
-                                  getProjectDates(parent.taskDueDateAt)
-                                  }}
-                                </v-list-item-sub-title>
+                                <v-list-item-sub-title
+                                  :class="dueDateCheck(parent)"
+                                >{{ getProjectDates(parent.taskDueDateAt) }}</v-list-item-sub-title>
                               </v-list-item-action>
                             </div>
                             <div>
@@ -250,17 +244,9 @@
                               </v-list-item-action>
                               <v-list-item-action
                                 style="font-size: 14px; font-weight: 800; padding-right: 20px"
-                              >
-                                {{
-                                childTask.secondaryTaskId
-                                }}
-                              </v-list-item-action>
+                              >{{ childTask.secondaryTaskId }}</v-list-item-action>
                               <v-list-item-content style="width: 200px">
-                                <v-list-item-title>
-                                  {{
-                                  childTask.taskName
-                                  }}
-                                </v-list-item-title>
+                                <v-list-item-title>{{ childTask.taskName }}</v-list-item-title>
                               </v-list-item-content>
                               <div>
                                 <v-list-item-action>
@@ -513,7 +499,7 @@
                         </v-list-item-title>
                         <div class="noteUpdateButton">
                           <v-btn
-                            class="ma-2"
+                            class="ma-2 text-capitalize"
                             small
                             rounded
                             depressed
@@ -536,9 +522,10 @@
                   <v-list-item-action>
                     <v-icon size="15" color="red">mdi-alert-outline</v-icon>
                   </v-list-item-action>
-                  <v-list-item-content
-                    class="userBlockedWarning"
-                  >Assignee is no longer a participant of the project</v-list-item-content>
+                  <v-list-item-content class="userBlockedWarning">
+                    Assignee is no longer a participant of the
+                    project
+                  </v-list-item-content>
                 </v-list-item>
                 <div class="rightSideColumn">
                   <!-- --------- assignee section ---------- -->
@@ -701,6 +688,143 @@
                   </v-list-item>
 
                   <v-divider class="datePickerDivider"></v-divider>
+
+                  <!-- --------- weight section ---------- -->
+
+                  <!-- -------- story as a weight -------- -->
+                  <v-list-item v-if="this.fetchProject.weightMeasure == 'story'">
+                    <v-list-item-icon
+                      style="background-color: #0BAFFF; padding: 10px; border-radius: 50%"
+                    >
+                      <v-icon size="25" color="#FFFFFF">mdi-weight-lifter</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-subtitle class="rightColumnItemsSubTitle">
+                        Task weight -
+                        <strong>Story Points</strong>
+                      </v-list-item-subtitle>
+                      <v-list-item-title>
+                        <v-form v-model="isValidEstimated" ref="estimatedform">
+                          <v-row>
+                            <v-col md="6">
+                              <v-text-field
+                                type="number"
+                                dense
+                                v-model="estimatedWeight"
+                                flat
+                                label="Estimated"
+                                @keyup.enter="changeEstimatedWeight()"
+                                hint="Update and hit enter"
+                                :rules="estimatedHRules"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col md="6">
+                              <v-text-field
+                                type="number"
+                                dense
+                                v-model="actualWeight"
+                                flat
+                                label="Actual"
+                                @keyup.enter="changeActualWeight()"
+                                hint="Update and hit enter"
+                                :rules="estimatedHRules"
+                              ></v-text-field>
+                            </v-col>
+                          </v-row>
+                        </v-form>
+                      </v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+
+                  <!-- ----------- time as a weight ----------- -->
+
+                  <v-list-item v-if="this.fetchProject.weightMeasure == 'time'">
+                    <v-list-item-icon
+                      style="background-color: #0BAFFF; padding: 10px; border-radius: 50%"
+                    >
+                      <v-icon size="25" color="#FFFFFF">mdi-weight-lifter</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-subtitle class="rightColumnItemsSubTitle">
+                        <strong>
+                          Task weight -
+                          Time
+                        </strong>
+                      </v-list-item-subtitle>
+                      <v-list-item-title>
+                        <v-row>
+                          <v-col md="4" class="rightColumnItemsSubTitle">Estimated Time</v-col>
+                        </v-row>
+                        <v-form v-model="isValidEstimated" ref="estimatedform">
+                          <v-row style="margin-top: -17px">
+                            <v-col md="4">
+                              <v-text-field
+                                dense
+                                type="number"
+                                v-model="estimatedHours"
+                                flat
+                                label="hours"
+                                :rules="estimatedHRules"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col md="4">
+                              <v-text-field
+                                dense
+                                type="number"
+                                v-model="estimatedMin"
+                                flat
+                                label="minutes"
+                                :rules="estimatedRules"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col style="text-align: right" md="4">
+                              <v-btn
+                                :disabled="!isValidEstimated"
+                                @click="changeEstimatedTime()"
+                                icon
+                              >
+                                <v-icon color="deep-orange">mdi-checkbox-marked-circle-outline</v-icon>
+                              </v-btn>
+                            </v-col>
+                          </v-row>
+                        </v-form>
+                        <v-row>
+                          <v-col md="4" class="rightColumnItemsSubTitle">Actual Time</v-col>
+                        </v-row>
+                        <v-form v-model="isValidActual" ref="estimatedform">
+                          <v-row style="margin-top: -17px">
+                            <v-col md="4">
+                              <v-text-field
+                                dense
+                                type="number"
+                                v-model="actualHours"
+                                flat
+                                label="hours"
+                                :rules="actualHRules"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col md="4">
+                              <v-text-field
+                                dense
+                                type="number"
+                                v-model="actualMin"
+                                flat
+                                label="minutes"
+                                :rules="actualRules"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col style="text-align: right" md="4">
+                              <v-btn :disabled="!isValidActual" @click="changeActualTime()" icon>
+                                <v-icon color="deep-orange">mdi-checkbox-marked-circle-outline</v-icon>
+                              </v-btn>
+                            </v-col>
+                          </v-row>
+                        </v-form>
+                      </v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-divider class></v-divider>
+                  <!-- ----------- end weight section ------- -->
                   <!-- ----------- Files section --------- -->
                   <v-list-item>
                     <v-list-item-icon
@@ -729,7 +853,7 @@
                     <div class="fileUploadButton taskViewFileUploadButton">
                       <v-btn
                         @click="taskFileUpload()"
-                        class="ma-2"
+                        class="ma-2 text-capitalize"
                         x-small
                         rounded
                         depressed
@@ -759,22 +883,16 @@
                             target="_blank"
                           >{{ file.taskFileName }}</a>
                         </v-list-item-title>
-                        <v-list-item-subtitle class="fileSubTitles">
-                          {{
-                          file.taskFileSize / 1000
-                          }}KB
-                        </v-list-item-subtitle>
+                        <v-list-item-subtitle class="fileSubTitles">{{ file.taskFileSize / 1000 }}KB</v-list-item-subtitle>
                       </v-list-item-content>
                       <v-list-item-content>
                         <v-list-item-title class="fileTitles">
                           {{ file.firstName }}
                           {{ file.lastName }}
                         </v-list-item-title>
-                        <v-list-item-subtitle class="fileSubTitles">
-                          {{
-                          getProjectDates(file.taskFileDate)
-                          }}
-                        </v-list-item-subtitle>
+                        <v-list-item-subtitle
+                          class="fileSubTitles"
+                        >{{ getProjectDates(file.taskFileDate) }}</v-list-item-subtitle>
                       </v-list-item-content>
                       <div>
                         <a style="text-decoration: none;" :href="file.taskFileUrl" target="_blank">
@@ -817,11 +935,19 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn color="success" width="100px" @click="taskDeleteDialog = false">Cancel</v-btn>
+            <v-btn
+              color="success"
+              class="text-capitalize"
+              depressed
+              width="100px"
+              @click="taskDeleteDialog = false"
+            >Cancel</v-btn>
             <v-spacer></v-spacer>
             <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
             <v-btn
               color="error"
+              depressed
+              class="text-capitalize"
               width="100px"
               @click="
                 taskDeleteDialog = false;
@@ -883,7 +1009,7 @@
       ></component>
       <!-- <success-popup /> -->
     </div>
-    <v-overlay :value="overlay">
+    <v-overlay :value="overlay" color="black">
       <progress-loading />
     </v-overlay>
   </v-card>
@@ -896,7 +1022,7 @@ import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import AddParentTask from "~/components/tasks/addParentTask";
 import AddChildTask from "~/components/tasks/addChildTask";
-import Progress from "~/components/popups/progress";
+import Progress from "~/components/popups/waiting";
 import TaskLogs from "~/components/tasks/taskLogs";
 import TaskComments from "~/components/tasks/taskComments";
 
@@ -909,10 +1035,27 @@ export default {
     "add-child-task": AddChildTask,
     "progress-loading": Progress,
     "task-logs": TaskLogs,
-    "task-comments": TaskComments
+    "task-comments": TaskComments,
   },
   data() {
     return {
+      // ---------- for weight section -----------
+      estimatedRules: [
+        (v) => v < 60 || "Invalid!",
+        (v) => v > -1 || "Invalid!",
+      ],
+      estimatedHRules: [(v) => v > -1 || "Invalid!"],
+      isValidEstimated: true,
+      actualRules: [(v) => v < 60 || "Invalid!", (v) => v > -1 || "Invalid!"],
+      actualHRules: [(v) => v > -1 || "Invalid!"],
+      isValidActual: true,
+      updatedActualMin: "",
+      updatedActualHours: "",
+      updatedEstimatedHours: "",
+      updatedEstimatedMin: "",
+      updatedEstimatedWeight: "",
+      updatedActualWeight: "",
+
       selectedTab: "comments",
       activity: "comments",
       page: 1,
@@ -947,7 +1090,7 @@ export default {
         taskNotes: "",
         taskStatus: "",
         taskRemindOnDate: "",
-        taskDueDateAt: ""
+        taskDueDateAt: "",
       },
       userExists: true,
       // taskStatus: this.task.taskStatus,
@@ -960,7 +1103,7 @@ export default {
         { name: "Bug", id: "bug" },
         { name: "Operational", id: "operational" },
         { name: "Pre-sales", id: "preSales" },
-        { name: "General", id: "general" }
+        { name: "General", id: "general" },
       ],
       development: [
         { name: "Pending", id: "pending" },
@@ -969,13 +1112,13 @@ export default {
         { name: "Completed", id: "completed" },
         { name: "Implementing", id: "implementing" },
         { name: "Deployed", id: "deployed" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       qa: [
         { name: "Pending", id: "pending" },
         { name: "Testing", id: "testing" },
         { name: "Review", id: "review" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       design: [
         { name: "Pending", id: "pending" },
@@ -990,7 +1133,7 @@ export default {
         { name: "Review", id: "review" },
         { name: "Waiting response", id: "waitingResponse" },
         { name: "Rejected", id: "rejected" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       bug: [
         { name: "Pending", id: "pending" },
@@ -1004,7 +1147,7 @@ export default {
         { name: "Under review", id: "underReview" },
         { name: "Review", id: "review" },
         { name: "Waiting response", id: "waitingResponse" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       operational: [
         { name: "Pending", id: "pending" },
@@ -1020,7 +1163,7 @@ export default {
         { name: "Waiting response", id: "waitingResponse" },
         { name: "Ready", id: "ready" },
         { name: "Rejected", id: "rejected" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       preSales: [
         { name: "Pending", id: "pending" },
@@ -1034,7 +1177,7 @@ export default {
         { name: "Discussion", id: "discussion" },
         { name: "Waiting response", id: "waitingResponse" },
         { name: "Rejected", id: "rejected" },
-        { name: "Closed", id: "closed" }
+        { name: "Closed", id: "closed" },
       ],
       general: [
         { name: "Pending", id: "pending" },
@@ -1043,11 +1186,280 @@ export default {
         { name: "Cancel", id: "cancel" },
         { name: "In progress", id: "inprogress" },
         { name: "Completed", id: "completed" },
-        { name: "Closed", id: "closed" }
-      ]
+        { name: "Closed", id: "closed" },
+      ],
     };
   },
   methods: {
+    // -----for weight section ---------
+    // ------ update estimated weight ---------
+    async changeEstimatedTime() {
+      let hours;
+      let min;
+      if (this.updatedEstimatedHours != "") {
+        hours = this.updatedEstimatedHours;
+      } else {
+        hours = this.estimatedHours;
+      }
+      if (this.updatedEstimatedMin != "") {
+        min = this.updatedEstimatedMin;
+      } else {
+        min = this.estimatedMin;
+      }
+      this.waiting = true;
+      console.log("TIME WEIGHT + " + hours + min);
+      let response;
+      this.overlay = true;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
+          {
+            estimatedWeight: parseFloat(hours + "." + min),
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10,
+        });
+        this.component = "success-popup";
+        this.successMessage = "Estimated Weight successfully updated";
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+
+        this.userExists = true;
+        this.overlay = false;
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        // console.log("update task status response", response);
+      } catch (e) {
+        this.overlay = false;
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        console.log("Error updating a status", e);
+      }
+    },
+    async changeActualTime() {
+      let hours;
+      let min;
+      if (this.updatedActualHours != "") {
+        hours = this.updatedActualHours;
+      } else {
+        hours = this.actualHours;
+      }
+      if (this.updatedActualMin != "") {
+        min = this.updatedActualMin;
+      } else {
+        min = this.actualMin;
+      }
+      this.waiting = true;
+      this.overlay = true;
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
+          {
+            actualWeight: parseFloat(hours + "." + min),
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10,
+        });
+        this.overlay = false;
+        this.component = "success-popup";
+        this.successMessage = "Actual Weight successfully updated";
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+
+        this.userExists = true;
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        // console.log("update task status response", response);
+      } catch (e) {
+        this.overlay = false;
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        console.log("Error updating a status", e);
+      }
+    },
+    async changeEstimatedWeight() {
+      this.waiting = true;
+      let response;
+      this.overlay = true;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
+          {
+            estimatedWeight: this.updatedEstimatedWeight,
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10,
+        });
+        this.component = "success-popup";
+        this.successMessage = "Estimated Weight successfully updated";
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+
+        this.userExists = true;
+        this.overlay = false;
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        // console.log("update task status response", response);
+      } catch (e) {
+        this.overlay = false;
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        console.log("Error updating a status", e);
+      }
+    },
+
+    async changeActualWeight() {
+      this.waiting = true;
+      this.overlay = true;
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
+          {
+            actualWeight: this.updatedActualWeight,
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10,
+        });
+        this.component = "success-popup";
+        this.successMessage = "Actual Weight successfully updated";
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+
+        this.userExists = true;
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        this.overlay = false;
+        // console.log("update task status response", response);
+      } catch (e) {
+        this.overlay = false;
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        console.log("Error updating a status", e);
+      }
+    },
+    // ------------ end weight methods -----------
+    taskStatusFormatting(status) {
+      switch (status) {
+        case "pending":
+          return "Pending";
+          break;
+        case "onHold":
+          return "On Hold";
+          break;
+        case "open":
+          return "Open";
+          break;
+        case "cancel":
+          return "Cancel";
+          break;
+        case "reOpened":
+          return "Re Opened";
+          break;
+        case "fixing":
+          return "Fixing";
+          break;
+        case "testing":
+          return "Testing";
+          break;
+        case "resolved":
+          return "Resolved";
+          break;
+        case "inprogress":
+          return "Inprogress";
+          break;
+        case "completed":
+          return "Completed";
+          break;
+        case "implementing":
+          return "Implementing";
+          break;
+        case "underReview":
+          return "UnderReview";
+          break;
+        case "waitingForApproval":
+          return "Waiting for Approval";
+          break;
+        case "review":
+          return "Review";
+          break;
+        case "discussion":
+          return "Discussion";
+          break;
+        case "waitingResponse":
+          return "Waiting Response";
+          break;
+        case "ready":
+          return "Ready";
+          break;
+        case "deployed":
+          return "Deployed";
+          break;
+        case "fixed":
+          return "Fixed";
+          break;
+        case "rejected":
+          return "Rejected";
+          break;
+        case "closed":
+          return "Closed";
+          break;
+        default:
+      }
+    },
     selectedVTab(component) {
       this.activity = component;
       if (component === "logs") {
@@ -1055,7 +1467,7 @@ export default {
         this.$store.dispatch("comments/fetchTaskActivityComment", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
 
         this.$store.dispatch(
@@ -1066,7 +1478,7 @@ export default {
     },
     checkUserExists() {
       const index = this.people.findIndex(
-        user => user.assigneeId === this.selectedTask.taskAssignee
+        (user) => user.assigneeId === this.selectedTask.taskAssignee
       );
       if (index === -1) this.userExists = false;
       else this.userExists = true;
@@ -1123,8 +1535,8 @@ export default {
             data: {},
             headers: {
               user: this.userId,
-              type: "project"
-            }
+              type: "project",
+            },
           }
         );
         // this.component = 'success-popup'
@@ -1146,6 +1558,7 @@ export default {
     },
     taskDialogClosing() {
       this.$emit("taskDialogClosing");
+      this.selectedTab = "comments";
       Object.assign(this.$data, this.$options.data.apply(this));
     },
     async updateIssueType() {
@@ -1156,19 +1569,19 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
           {
-            issueType: this.updatedIssue
+            issueType: this.updatedIssue,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.component = "success-popup";
         this.successMessage = "Type successfully updated";
@@ -1196,19 +1609,19 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
           {
-            taskStatus: this.updatedStatus
+            taskStatus: this.updatedStatus,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.component = "success-popup";
         this.successMessage = "Status successfully updated";
@@ -1236,12 +1649,12 @@ export default {
           response = await this.$axios.$put(
             `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
             {
-              taskName: this.updatedTask.taskName
+              taskName: this.updatedTask.taskName,
             },
             {
               headers: {
-                user: this.userId
-              }
+                user: this.userId,
+              },
             }
           );
           this.component = "success-popup";
@@ -1249,16 +1662,20 @@ export default {
           this.$store.dispatch("activityLog/fetchTaskActivityLog", {
             taskId: this.selectedTask.taskId,
             startIndex: 0,
-            endIndex: 10
+            endIndex: 10,
           });
-          if (this.selectedTask.isParent) {
-            this.$store.dispatch("task/updateTask", {
-              taskId: this.selectedTask.taskId,
-              taskName: this.updatedTask.taskName
-            });
-          } else {
-            this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
-          }
+          // if (this.selectedTask.isParent) {
+          //   this.$store.dispatch("task/updateTask", {
+          //     taskId: this.selectedTask.taskId,
+          //     taskName: this.updatedTask.taskName
+          //   });
+          // } else {
+          this.$store.dispatch(
+            "task/setSelectedTaskName",
+            this.updatedTask.taskName
+          );
+          this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+          // }
           setTimeout(() => {
             this.close();
           }, 3000);
@@ -1287,12 +1704,12 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
           {
-            taskAssignee: this.updatedTask.taskAssignee
+            taskAssignee: this.updatedTask.taskAssignee,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.component = "success-popup";
@@ -1301,7 +1718,7 @@ export default {
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.userExists = true;
         setTimeout(() => {
@@ -1328,7 +1745,7 @@ export default {
         let assignee = assigneeSearchList[index];
         this.assignees.push({
           name: assignee.assigneeFirstName + " " + assignee.assigneeLastName,
-          id: assignee.assigneeId
+          id: assignee.assigneeId,
         });
       }
       // console.log("nameList", this.states);
@@ -1344,19 +1761,19 @@ export default {
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}/sprint`,
           {
             previousSprint: this.selectedTask.sprintId,
-            newSprint: this.updatedSprint
+            newSprint: this.updatedSprint,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.component = "success-popup";
         this.successMessage = "Sprint successfully updated";
@@ -1385,19 +1802,19 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
           {
-            taskNotes: this.updatedTask.taskNote
+            taskNotes: this.updatedTask.taskNote,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.component = "success-popup";
         this.successMessage = "Note successfully updated";
@@ -1432,11 +1849,11 @@ export default {
         dueDate = isoDate;
         remindDate = this.updatedTask.taskRemindOnDate;
         changedDate = {
-          taskDueDate: dueDate
+          taskDueDate: dueDate,
         };
         this.$store.dispatch("task/updateProjectDates", {
           type: "dueDate",
-          date: dueDate
+          date: dueDate,
         });
       } else if (this.updatedTask.taskRemindOnDate != "") {
         // console.log("inside remind on date");
@@ -1448,11 +1865,11 @@ export default {
         dueDate = this.updatedTask.taskDueDateAt;
         remindDate = isoDate;
         changedDate = {
-          taskRemindOnDate: remindDate
+          taskRemindOnDate: remindDate,
         };
         this.$store.dispatch("task/updateProjectDates", {
           type: "remindDate",
-          date: remindDate
+          date: remindDate,
         });
       }
       // console.log("dueDate", dueDate);
@@ -1464,15 +1881,15 @@ export default {
           changedDate,
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
 
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
 
@@ -1511,15 +1928,15 @@ export default {
               formData,
               {
                 headers: {
-                  user: this.userId
-                }
+                  user: this.userId,
+                },
               }
             );
             this.$store.dispatch("task/appendTaskFile", fileResponse.data);
             this.$store.dispatch("activityLog/fetchTaskActivityLog", {
               taskId: this.selectedTask.taskId,
               startIndex: 0,
-              endIndex: 10
+              endIndex: 10,
             });
             this.uploadLoading = false;
             this.component = "success-popup";
@@ -1554,8 +1971,8 @@ export default {
           {
             data: {},
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         // console.log(response.data);
@@ -1563,7 +1980,7 @@ export default {
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
-          endIndex: 10
+          endIndex: 10,
         });
         this.component = "success-popup";
         this.successMessage = "File successfully deleted";
@@ -1625,7 +2042,7 @@ export default {
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "Add Due Date";
+        return "No Due Date";
       } else if (
         now.getDate() === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
@@ -1659,7 +2076,7 @@ export default {
         let sprint = sprintSearchList[index];
         this.sprints.push({
           name: sprint.sprintName,
-          id: sprint.sprintId
+          id: sprint.sprintId,
         });
       }
       // console.log("nameList", this.states);
@@ -1677,7 +2094,7 @@ export default {
     },
     EditTaskName() {
       this.editTask = false;
-    }
+    },
   },
   async created() {
     this.projectId = this.$route.params.projects;
@@ -1697,17 +2114,17 @@ export default {
       }
     },
     ...mapState({
-      parent: state => state.task.parentTask,
-      children: state => state.task.childTasks,
-      people: state => state.task.userCompletionTasks,
-      projectSprints: state => state.sprints.sprint.sprints,
-      projectAllTasks: state => state.task.allTasks,
+      parent: (state) => state.task.parentTask,
+      children: (state) => state.task.childTasks,
+      people: (state) => state.task.userCompletionTasks,
+      projectSprints: (state) => state.sprints.sprint.sprints,
+      projectAllTasks: (state) => state.task.allTasks,
       // projectId: state => state.project.project.projectId,
-      selectedTaskUser: state => state.user.selectedTaskUser,
-      taskFiles: state => state.task.taskFiles,
-      selectedTask: state => state.task.selectedTask,
-      fetchProject: state => state.project.project,
-      parentTaskUser: state => state.user.parentTaskUser
+      selectedTaskUser: (state) => state.user.selectedTaskUser,
+      taskFiles: (state) => state.task.taskFiles,
+      selectedTask: (state) => state.task.selectedTask,
+      fetchProject: (state) => state.project.project,
+      parentTaskUser: (state) => state.user.parentTaskUser,
     }),
     ...mapGetters(["getuserCompletionTasks"]),
     peopleList() {
@@ -1744,7 +2161,7 @@ export default {
       set(assignee) {
         // console.log("spid", sprintId);
         this.updatedTask.taskAssignee = assignee;
-      }
+      },
     },
 
     taskName: {
@@ -1755,7 +2172,7 @@ export default {
       },
       set(name) {
         this.updatedTask.taskName = name;
-      }
+      },
     },
     taskStatus: {
       get() {
@@ -1768,7 +2185,7 @@ export default {
       set(value) {
         // console.log("task status", value);
         this.updatedStatus = value;
-      }
+      },
     },
     issueType: {
       get() {
@@ -1787,7 +2204,7 @@ export default {
         this.updatedIssue = value;
         this.issueTypes = value;
         // console.log("issue type", this.updatedIssue);
-      }
+      },
     },
     selectedSprint: {
       get() {
@@ -1802,7 +2219,7 @@ export default {
       set(sprintId) {
         // console.log("spid", sprintId);
         this.updatedSprint = sprintId;
-      }
+      },
     },
     taskNote: {
       get() {
@@ -1810,7 +2227,7 @@ export default {
       },
       set(value) {
         this.updatedTask.taskNote = value;
-      }
+      },
     },
 
     taskDue: {
@@ -1828,7 +2245,7 @@ export default {
       set(value) {
         // console.log("updated task due ->", value);
         this.updatedTask.taskDueDateAt = value;
-      }
+      },
     },
     taskRemindOn: {
       get() {
@@ -1845,8 +2262,76 @@ export default {
       set(value) {
         // console.log("updated task reminder ->", value);
         this.updatedTask.taskRemindOnDate = value;
-      }
-    }
-  }
+      },
+    },
+    // -------- for weight section ---------
+    estimatedWeight: {
+      get() {
+        return this.selectedTask.estimatedWeight;
+      },
+      set(estimatedWeight) {
+        this.updatedEstimatedWeight = estimatedWeight;
+      },
+    },
+
+    actualWeight: {
+      get() {
+        return this.selectedTask.actualWeight;
+      },
+      set(actualWeight) {
+        this.updatedActualWeight = actualWeight;
+      },
+    },
+    estimatedHours: {
+      get() {
+        return Math.trunc(this.selectedTask.estimatedWeight);
+      },
+      set(estimatedWeight) {
+        this.updatedEstimatedHours = estimatedWeight;
+      },
+    },
+    estimatedMin: {
+      get() {
+        let min = (this.selectedTask.estimatedWeight + "").split(".")[1];
+        if (min == undefined) {
+          return 0;
+        } else {
+          if (min / 10 < 1 && min.toString().length == 1) {
+            return min * 10;
+          } else {
+            return min;
+          }
+        }
+      },
+      set(estimatedWeight) {
+        this.updatedEstimatedMin = estimatedWeight;
+      },
+    },
+    actualHours: {
+      get() {
+        return Math.trunc(this.selectedTask.actualWeight);
+      },
+      set(estimatedWeight) {
+        this.updatedActualHours = estimatedWeight;
+      },
+    },
+    actualMin: {
+      get() {
+        let min = (this.selectedTask.actualWeight + "").split(".")[1];
+        if (min == undefined) {
+          return 0;
+        } else {
+          if (min / 10 < 1 && min.toString().length == 1) {
+            return min * 10;
+          } else {
+            return min;
+          }
+        }
+      },
+      set(actualWeight) {
+        this.updatedActualMin = actualWeight;
+      },
+    },
+  },
 };
 </script>

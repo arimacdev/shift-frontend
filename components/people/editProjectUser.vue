@@ -3,7 +3,7 @@
     <v-row justify="center">
       <v-dialog v-model="dialog" persistent max-width="350">
         <template v-slot:activator="{ on }">
-          <div class="iconBackCircle">
+          <div class="iconBackCirclePeople">
             <v-icon v-on="on" size="17" color="#0BAFFF">mdi-pencil-outline</v-icon>
           </div>
         </template>
@@ -46,6 +46,8 @@
                   <v-spacer></v-spacer>
 
                   <v-btn
+                    depressed
+                    class="text-capitalize"
                     color="error"
                     width="100px"
                     @click="dialog = false"
@@ -53,6 +55,8 @@
                   >Cancel</v-btn>
                   <v-spacer></v-spacer>
                   <v-btn
+                    depressed
+                    class="text-capitalize"
                     :disabled="!isValid"
                     color="success"
                     width="100px"
@@ -70,21 +74,26 @@
     <div @click="close" class="editProjectUserPopup">
       <component v-bind:is="component" :errorMessage="errorMessage"></component>
     </div>
-    <!-- <success-popup /> -->
+    <v-overlay :value="overlay" color="black">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 
 <script>
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
+import Progress from "~/components/popups/progress";
 export default {
   props: ["editUser", "projectId"],
   components: {
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
+    "progress-loading": Progress,
   },
   data() {
     return {
+      overlay: false,
       isValid: true,
       errorMessage: "",
       userId: this.$store.state.user.userId,
@@ -92,7 +101,7 @@ export default {
       isAdmin: false,
       jobRole: this.editUser.projectJobRoleName,
       component: "",
-      projectRoleRules: [value => !!value || "Project role is required!"]
+      projectRoleRules: [(value) => !!value || "Project role is required!"],
     };
   },
   methods: {
@@ -108,6 +117,7 @@ export default {
       } else {
         roleIdValue = 3;
       }
+      this.overlay = true;
       let response;
       try {
         // console.log("edituser", this.editUser);
@@ -116,21 +126,24 @@ export default {
           {
             assignerId: this.userId,
             assigneeJobRole: this.jobRole,
-            assigneeProjectRole: roleIdValue
+            assigneeProjectRole: roleIdValue,
           }
         );
-        this.$store.dispatch(
-          "task/fetchProjectUserCompletionTasks",
-          this.projectId
-        );
+        this.$store
+          .dispatch("task/fetchProjectUserCompletionTasks", this.projectId)
+          .finally(() => {
+            this.overlay = false;
+          });
         this.component = "success-popup";
+        this.overlay = false;
       } catch (e) {
+        this.overlay = false;
         console.log("Error blocking user", e);
         this.errorMessage = e.response.data;
         this.component = "error-popup";
       }
       // console.log(response);
-    }
+    },
   },
   computed: {
     adminStatus: {
@@ -148,9 +161,9 @@ export default {
       },
       set(value) {
         this.isAdmin = value;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 

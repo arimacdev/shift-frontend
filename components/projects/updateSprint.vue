@@ -88,6 +88,8 @@
                 <v-spacer></v-spacer>
 
                 <v-btn
+                  depressed
+                  class="text-capitalize"
                   color="error"
                   width="100px"
                   @click="dialog = false"
@@ -95,6 +97,8 @@
                 >Cancel</v-btn>
                 <v-spacer></v-spacer>
                 <v-btn
+                  class="text-capitalize"
+                  depressed
                   color="success"
                   width="100px"
                   @click="updateSprint"
@@ -129,7 +133,7 @@ export default {
   props: ["projectId", "sprintName", "description", "sprintId"],
   components: {
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
   },
   data() {
     return {
@@ -142,12 +146,12 @@ export default {
       successMessage: "",
       isValid: true,
       userId: this.$store.state.user.userId,
-      sprintNameRules: [value => !!value || "Sprint name is required!"],
+      sprintNameRules: [(value) => !!value || "Sprint name is required!"],
       sprintDescriptionRules: [
-        value => !!value || "Sprint description is required!"
+        (value) => !!value || "Sprint description is required!",
       ],
       dateRangeRules: [
-        value => (!!value && value != " - ") || "Date range is required!"
+        (value) => (!!value && value != " - ") || "Date range is required!",
       ],
       isShow: false,
       selected: false,
@@ -158,13 +162,13 @@ export default {
       select: null,
       states: [],
       component: "",
-      success: ""
+      success: "",
     };
   },
   watch: {
     search(val) {
       val && val !== this.select && this.querySelections(val);
-    }
+    },
   },
   methods: {
     close() {
@@ -178,18 +182,18 @@ export default {
           `/sprints/${this.projectId}/${this.sprintId}`,
           {
             sprintName: this.sprintName,
-            sprintDescription: this.sprintDescription
+            sprintDescription: this.sprintDescription,
           },
           {
             headers: {
-              userId: this.userId
-            }
+              userId: this.userId,
+            },
           }
         );
         this.$store.dispatch("sprints/sprint/updateProjectSprint", {
           sprintId: this.sprintId,
           sprintName: this.sprintName,
-          sprintDescription: this.sprintDescription
+          sprintDescription: this.sprintDescription,
         });
         this.$refs.form.reset();
 
@@ -206,9 +210,9 @@ export default {
           this.close();
         }, 3000);
       }
-    }
+    },
   },
-  computed: {}
+  computed: {},
 };
 </script>
 

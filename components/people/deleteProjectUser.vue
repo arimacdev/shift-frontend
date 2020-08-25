@@ -3,7 +3,7 @@
     <v-row justify="center">
       <v-dialog v-model="dialog" persistent max-width="350">
         <template v-slot:activator="{ on }">
-          <div class="iconBackCircle">
+          <div class="iconBackCirclePeople">
             <v-icon v-on="on" size="17" color="#FF6161">mdi-trash-can-outline</v-icon>
           </div>
         </template>
@@ -16,8 +16,13 @@
               <span>If you are not sure, you can close this popup</span>
             </v-card-text>
 
-            <v-btn class="editButton" text @click="dialog = false">Cancel</v-btn>
-            <v-btn class="deleteButtonSpec" text @click="changeHandler">Block</v-btn>
+            <v-btn class="editButton text-capitalize" depressed text @click="dialog = false">Cancel</v-btn>
+            <v-btn
+              class="deleteButtonSpec text-capitalize"
+              depressed
+              text
+              @click="changeHandler"
+            >Block</v-btn>
           </div>
         </v-card>
       </v-dialog>
@@ -26,35 +31,40 @@
       <component v-bind:is="component" :errorMessage="errorMessage"></component>
       <!-- <success-popup /> -->
     </div>
+    <v-overlay :value="overlay" color="black">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 
 <script>
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
-
+import Progress from "~/components/popups/progress";
 export default {
   props: ["blockedUserId", "projectId"],
   components: {
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
+    "progress-loading": Progress,
   },
   data() {
     return {
+      overlay: false,
       errorMessage: "",
       successMessage: "",
       component: "",
       userId: this.$store.state.user.userId,
-      dialog: false
+      dialog: false,
     };
   },
   methods: {
     close() {
-      this.$refs.form.reset();
       this.component = "";
     },
     async changeHandler() {
       this.dialog = false;
+      this.overlay = true;
       let response;
       try {
         response = await this.$axios.$post(
@@ -62,7 +72,7 @@ export default {
           {
             executorId: this.userId,
             blockedUserId: this.blockedUserId,
-            blockedStatus: true
+            blockedStatus: true,
           }
         );
         this.component = "success-popup";
@@ -70,11 +80,13 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.$store.dispatch(
-          "task/fetchProjectUserCompletionTasks",
-          this.projectId
-        );
+        this.$store
+          .dispatch("task/fetchProjectUserCompletionTasks", this.projectId)
+          .finally(() => {
+            this.overlay = false;
+          });
       } catch (e) {
+        this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -83,8 +95,8 @@ export default {
         console.log("Error blocking user", e);
       }
       // console.log(response);
-    }
-  }
+    },
+  },
 };
 </script>
 

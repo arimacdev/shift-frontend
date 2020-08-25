@@ -22,9 +22,9 @@
 
       <v-list-item-title>
         <div id="name-div">
-          <p id="company-name">ARIMAC</p>
+          <p id="company-name">{{userProfile.firstName}}</p>
 
-          <p id="name">{{userProfile.firstName}} {{userProfile.lastName}}</p>
+          <p id="name">{{userProfile.lastName }}</p>
         </div>
       </v-list-item-title>
     </v-list-item>
@@ -41,10 +41,12 @@
         :key="item.title"
         link
         active-class="active"
+        class="navItem"
       >
         <v-list-item-icon>
-          <!-- <span class="navButtons" :class="item.icon"></span> -->
-          <v-icon size="20" class="navButtons">{{ item.icon }}</v-icon>
+          <div style="margin-top: -8px !important">
+            <v-icon size="15" class="navButtons">{{ item.icon }}</v-icon>
+          </div>
         </v-list-item-icon>
 
         <v-list-item-content>
@@ -60,9 +62,12 @@
         :key="item.title"
         link
         active-class="active"
+        class="navItem"
       >
         <v-list-item-icon>
-          <v-icon class="navButtons">{{ item.icon }}</v-icon>
+          <div style="margin-top: -8px">
+            <v-icon size="15" class="navButtons">{{ item.icon }}</v-icon>
+          </div>
         </v-list-item-icon>
 
         <v-list-item-content>
@@ -75,7 +80,7 @@
       <v-list>
         <v-list-item @click="userLogOut">
           <v-list-item-icon>
-            <v-icon class="navButtons">mdi-power-standby</v-icon>
+            <v-icon size="18" class="navButtons">mdi-power-standby</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -85,9 +90,9 @@
       </v-list>
       <v-list-item>
         <img
-          style="margin-bottom: 10px; margin-left: -10px"
-          width="45px"
-          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1594269856114_1.png"
+          style="margin-bottom: 10px; margin-left: -8px; border-radius:5px; border: 1px solid black"
+          width="40px"
+          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1595564844985_image.png"
         />
         <v-list-item-content style="margin-left: 12px; margin-top: -10px">
           <v-list-item-title class="navText">Arimac Digital</v-list-item-title>
@@ -110,18 +115,18 @@ export default {
         {
           title: "Projects",
           icon: "icon-project",
-          route: "../../projects/projects"
+          route: "../../projects/projects",
         },
         {
           title: "Tasks",
           icon: "icon-task",
-          route: "../../tasks/tasks"
+          route: "../../tasks/tasks",
         },
         // { title: 'Inventory', icon: 'icon-inventory', route: '../inventory'},
         {
           title: "Workload",
           icon: "icon-workload",
-          route: "../../workload/workload"
+          route: "../../workload/workload",
         },
         // {
         //   title: "Users",
@@ -131,9 +136,9 @@ export default {
         {
           title: "Skill Matrix",
           icon: "icon-skills",
-          route: "../../skills/skills"
+          route: "../../skills/skills",
         },
-        { title: "Admin", icon: "icon-admin", route: "../../admin/admin" }
+        { title: "Admin", icon: "icon-admin", route: "../../admin/admin" },
         // { title: "Admin", icon: "icon-admin", route: "../../comments/comments" }
       ],
       mini: true,
@@ -142,31 +147,31 @@ export default {
         {
           title: "Projects",
           icon: "icon-project",
-          route: "../../projects/projects"
+          route: "../../projects/projects",
         },
         {
           title: "Tasks",
           icon: "icon-task",
-          route: "../../tasks/tasks"
+          route: "../../tasks/tasks",
         },
         // { title: 'Inventory', icon: 'icon-inventory', route: '../inventory'},
         {
           title: "Workload",
           icon: "icon-workload",
-          route: "../../workload/workload"
-        }
+          route: "../../workload/workload",
+        },
       ],
-      homePage: process.env.SYSTEM_URL
+      homePage: process.env.SYSTEM_URL,
     };
   },
   computed: {
     ...mapState({
-      userProfile: state => state.userProfile.userProfile,
-      organizationalRoles: state => state.user.organizationalRoles
+      userProfile: (state) => state.userProfile.userProfile,
+      organizationalRoles: (state) => state.user.organizationalRoles,
     }),
     profileImage() {
       // console.log("profile image", this.profilePic);
-    }
+    },
   },
 
   methods: {
@@ -176,16 +181,26 @@ export default {
         "/auth/realms/pm-tool/protocol/openid-connect/logout?redirect_uri=" +
         this.homePage;
       window.location.replace(LOGOUT_URL);
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
 .navButtons {
-  color: #4d4f85;
+  color: #585858;
 }
 
 .navText:visited {
   color: rgb(231, 231, 240);
+}
+.navText {
+  font-size: 14px !important;
+}
+.navItem {
+  min-height: auto !important;
+  max-height: 35px !important;
+}
+.navIcon {
+  /* margin-top: -4px !important; */
 }
 </style>

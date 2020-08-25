@@ -19,17 +19,27 @@
 
       <div class="body-div">
         <div class="workloadTypeSection">
-          <v-tabs background-color="#0b0b53" slider-size="3" dark>
+          <v-tabs
+            class="workloadTwoTabs"
+            height="40px"
+            background-color="#151515"
+            slider-size="3"
+            dark
+          >
             <v-tab
-              class="tabInactiveStyle"
+              class="tabInactiveStyle text-capitalize"
               active-class="adminTabTitleStyle"
-              v-on:click="component='my-workload' "
+              v-on:click="component = 'my-workload'"
             >My Workload</v-tab>
             <v-tab
-              class="tabInactiveStyle"
+              class="tabInactiveStyle text-capitalize"
               active-class="adminTabTitleStyle"
-              v-if="organizationalRoles.indexOf('SUPER_ADMIN') > -1 || organizationalRoles.indexOf('WORKLOAD') > -1 || organizationalRoles.indexOf('ADMIN') > -1"
-              v-on:click="component='org-workload'"
+              v-if="
+                organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
+                  organizationalRoles.indexOf('WORKLOAD') > -1 ||
+                  organizationalRoles.indexOf('ADMIN') > -1
+              "
+              v-on:click="component = 'org-workload'"
             >Organizational Workload</v-tab>
           </v-tabs>
         </div>
@@ -39,13 +49,16 @@
         <component v-bind:is="component"></component>
       </div>
     </div>
+    <v-overlay :value="overlay" color="black">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 <script>
 import NavigationDrawer from "~/components/navigationDrawer";
 import usersSearchBar from "~/components/tools/usersSearchBar";
 import WorkloadContent from "~/components/workload/workloadContent";
-
+import Progress from "~/components/popups/progress";
 import MyWorkload from "~/components/workload/myWorkload";
 import OrgWorkload from "~/components/workload/orgWorkload";
 
@@ -56,10 +69,30 @@ export default {
     NavigationDrawer,
     "workload-content": WorkloadContent,
     "my-workload": MyWorkload,
-    "org-workload": OrgWorkload
+    "org-workload": OrgWorkload,
+    "progress-loading": Progress,
+  },
+  created() {
+    console.log("cretad");
+    this.overlay = true;
+    Promise.all([
+      this.$store.dispatch("user/setAllUsers"),
+      //TODO Remove this
+      this.$store.dispatch("project/fetchAllProjects"),
+      this.$store.dispatch("project/fetchAllOragnizationProjects"),
+      // this.$store.dispatch('workload/fetchAllTaskLoadUsers', {
+      //   userId: 'all',
+      //   from: 0,
+      //   to: 10,
+      // }),
+      this.$store.dispatch("project/clearProject"),
+    ]).finally(() => {
+      this.overlay = false;
+    });
   },
   data() {
     return {
+      overlay: false,
       component: "my-workload",
       userId: this.$store.state.user.userId,
       workLoad: {},
@@ -71,20 +104,15 @@ export default {
       search: null,
       select: {},
       states: [],
-      drawer: null
+      drawer: null,
     };
-  },
-
-  created() {
-    this.$store.dispatch("workload/fetchAllTaskLoadUsers");
-    this.$store.dispatch("project/clearProject");
   },
 
   watch: {
     search(val) {
       console.log("value is ", val);
       val && val !== this.select && this.querySelections(val);
-    }
+    },
   },
   methods: {
     onSelectUser() {
@@ -99,7 +127,7 @@ export default {
         this.$store.dispatch("workload/fetchAllWorkloadTasks", {
           userId: this.select.userId,
           from: "all",
-          to: "all"
+          to: "all",
         });
         //  } else {
         //    this.$store.dispatch('workload/clearWorkLoadTasks');
@@ -117,7 +145,7 @@ export default {
       this.$store.dispatch("workload/fetchAllWorkloadTasks", {
         userId: userData.userId,
         from: "all",
-        to: "all"
+        to: "all",
       });
       // } else {
       //   this.$store.dispatch('workload/clearWorkLoadTasks');
@@ -130,29 +158,25 @@ export default {
         let user = projectSearchList[index];
         this.states.push({
           name: user.firstName + " " + user.lastName,
-          id: user
+          id: user,
         });
       }
       // console.log("usersList for search bar", this.taskWorkLoadUsers, "nameList", this.states)
       this.loading = true;
       setTimeout(() => {
-        this.items = this.states.filter(e => {
+        this.items = this.states.filter((e) => {
           return (e || "").toLowerCase().indexOf((v || "").toLowerCase()) > -1;
         });
         this.loading = false;
       });
       this.loading = false;
-    }
+    },
   },
   computed: {
     ...mapState({
-      taskWorkLoadUsers: state => state.workload.taskWorkLoadUsers,
-      organizationalRoles: state => state.user.organizationalRoles
-    })
+      taskWorkLoadUsers: (state) => state.workload.taskWorkLoadUsers,
+      organizationalRoles: (state) => state.user.organizationalRoles,
+    }),
   },
-  created() {
-    this.$store.dispatch("project/fetchAllProjects");
-    this.$store.dispatch("user/setAllUsers");
-  }
 };
 </script>

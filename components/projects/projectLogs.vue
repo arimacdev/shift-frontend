@@ -26,9 +26,9 @@
                       src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                     ></v-img>
                   </v-list-item-avatar>
-                  <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
+                  <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
                   <span>has deleted the task</span>
-                  <span class="font-weight-medium">{{ log.entityName }}</span>
+                  <span class="font-weight-bold">{{ log.entityName }}</span>
                 </v-list-item-title>
               </v-list-item-content>
               <v-list-item-content v-if="log.operation == 'CREATE'  && log.entityType == 'TASK'">
@@ -46,9 +46,9 @@
                       src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                     ></v-img>
                   </v-list-item-avatar>
-                  <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
+                  <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
                   <span>has created the task</span>
-                  <span class="font-weight-medium">{{ log.entityName }}</span>
+                  <span class="font-weight-bold">{{ log.entityName }}</span>
                 </v-list-item-title>
               </v-list-item-content>
               <v-list-item-content v-if="log.operation == 'UPDATE' && log.entityType == 'TASK'">
@@ -67,7 +67,7 @@
                     ></v-img>
                   </v-list-item-avatar>
 
-                  <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
+                  <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
                   <span v-if="log.updateType == 'ASSIGNEE'">has changed the</span>
                   <span
                     v-if="log.updateType == 'FILE' && log.previousValue.displayValue != undefined"
@@ -76,9 +76,9 @@
                     v-else-if="log.updateType == 'FILE' && log.updatedvalue.displayValue != undefined"
                   >uploaded a</span>
                   <span v-else>has updated the</span>
-                  <span class="font-weight-medium">{{ updateTypeCheck(log.updateType) }}</span>
+                  <span class="font-weight-bold">{{ updateTypeCheck(log.updateType) }}</span>
                   <span>of the task</span>
-                  <span class="font-weight-medium">{{ log.entityName }}</span>
+                  <span class="font-weight-bold">{{ log.entityName }}</span>
                 </v-list-item-title>
                 <v-list-item-subtitle></v-list-item-subtitle>
                 <!-- -------- for assignee ------ -->
@@ -116,7 +116,10 @@
 
                 <!-- ------- for files -------- -->
 
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'FILE'">
+                <v-list-item-subtitle
+                  class="logSubtitle fontRestructure12"
+                  v-if="log.updateType == 'FILE'"
+                >
                   <a
                     style="text-decoration: none;"
                     :href="log.updatedvalue.value"
@@ -124,7 +127,7 @@
                   >{{ log.updatedvalue.displayValue }}</a>
                 </v-list-item-subtitle>
                 <v-list-item-subtitle
-                  class="logSubtitle"
+                  class="logSubtitle fontRestructure12"
                   v-if="log.updateType == 'FILE'"
                 >{{ log.previousValue.displayValue }}</v-list-item-subtitle>
 
@@ -186,6 +189,43 @@
                   <span>{{ log.updatedvalue.displayValue }}</span>
                 </v-list-item-subtitle>
 
+                <!-- ------- for actual weight type -------- -->
+
+                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ACTUAL_WEIGHT'">
+                  <span>
+                    {{
+                    log.previousValue.displayValue
+                    }}
+                    &nbsp; &rarr; &nbsp;
+                  </span>
+
+                  <span>
+                    {{
+                    log.updatedvalue.displayValue
+                    }}
+                  </span>
+                </v-list-item-subtitle>
+
+                <!-- ------- for estimated weight type -------- -->
+
+                <v-list-item-subtitle
+                  class="logSubtitle"
+                  v-if="log.updateType == 'ESTIMATED_WEIGHT'"
+                >
+                  <span>
+                    {{
+                    log.previousValue.displayValue
+                    }}
+                    &nbsp; &rarr; &nbsp;
+                  </span>
+
+                  <span>
+                    {{
+                    log.updatedvalue.displayValue
+                    }}
+                  </span>
+                </v-list-item-subtitle>
+
                 <!-- ------- for task type -------- -->
 
                 <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'ISSUE_TYPE'">
@@ -232,9 +272,9 @@
                       src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
                     ></v-img>
                   </v-list-item-avatar>
-                  <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
+                  <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
                   <span>has created the</span>
-                  <span class="font-weight-medium">Project</span>
+                  <span class="font-weight-bold">Project</span>
                 </v-list-item-title>
               </v-list-item-content>
 
@@ -256,7 +296,7 @@
                     ></v-img>
                   </v-list-item-avatar>
 
-                  <span class="font-weight-medium">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
+                  <span class="font-weight-bold">{{ log.actorFirstName }} {{ log.actorLastName }}</span>
                   <span v-if="log.updateType == 'REMOVE_USER'">removed a</span>
                   <span v-else-if="log.updateType == 'ADD_USER'">added a</span>
                   <span
@@ -266,8 +306,8 @@
                     v-else-if="log.updateType == 'FILE' && log.updatedvalue.displayValue != undefined"
                   >uploaded a</span>
                   <span v-else>has updated</span>
-                  <span class="font-weight-medium">{{ updateProjectTypeCheck(log.updateType) }}</span>
-                  <span class="font-weight-medium">{{ log.entityName }}</span>
+                  <span class="font-weight-bold">{{ updateProjectTypeCheck(log.updateType) }}</span>
+                  <span class="font-weight-bold">{{ log.entityName }}</span>
                 </v-list-item-title>
                 <v-list-item-subtitle></v-list-item-subtitle>
                 <!-- -------- for project name ------ -->
@@ -417,9 +457,28 @@
                   <span>{{ log.updatedvalue.displayValue }}</span>
                 </v-list-item-subtitle>
 
+                <!-- ------- for project weight -------- -->
+
+                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'PROJECT_WEIGHT'">
+                  <span v-if="log.previousValue.displayValue == 'story'">
+                    Story Point
+                    &nbsp; &rarr; &nbsp;
+                  </span>
+                  <span v-else-if="log.previousValue.displayValue == 'time'">
+                    Time
+                    &nbsp; &rarr; &nbsp;
+                  </span>
+
+                  <span v-if="log.updatedvalue.displayValue == 'story'">Story Point</span>
+                  <span v-else-if="log.updatedvalue.displayValue == 'time'">Time</span>
+                </v-list-item-subtitle>
+
                 <!-- ------- for files -------- -->
 
-                <v-list-item-subtitle class="logSubtitle" v-if="log.updateType == 'FILE'">
+                <v-list-item-subtitle
+                  class="logSubtitle fontRestructure12"
+                  v-if="log.updateType == 'FILE'"
+                >
                   <a
                     style="text-decoration: none;"
                     :href="log.updatedvalue.value"
@@ -427,7 +486,7 @@
                   >{{ log.updatedvalue.displayValue }}</a>
                 </v-list-item-subtitle>
                 <v-list-item-subtitle
-                  class="logSubtitle"
+                  class="logSubtitle fontRestructure12"
                   v-if="log.updateType == 'FILE'"
                 >{{ log.previousValue.displayValue }}</v-list-item-subtitle>
               </v-list-item-content>
@@ -451,15 +510,24 @@
         </div>
       </v-col>
     </v-row>
+    <v-overlay :value="overlay" color="black">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import Progress from "~/components/popups/progress";
+
 export default {
   props: ["page"],
+  components: {
+    "progress-loading": Progress
+  },
   data() {
     return {
+      overlay: false,
       page: this.page,
       taskLogs: {}
     };
@@ -470,11 +538,16 @@ export default {
 
   methods: {
     async getLogs() {
-      this.$store.dispatch("activityLog/fetchProjectActivityLog", {
-        projectId: this.$route.params.projects,
-        startIndex: this.page * 10 - 10,
-        endIndex: this.page * 10
-      });
+      this.overlay = true;
+      this.$store
+        .dispatch("activityLog/fetchProjectActivityLog", {
+          projectId: this.$route.params.projects,
+          startIndex: this.page * 10 - 10,
+          endIndex: this.page * 10
+        })
+        .finally(() => {
+          this.overlay = false;
+        });
       // console.log("TRIGGERED: " + this.page);
 
       // let taskLogResponse;
@@ -518,6 +591,12 @@ export default {
           break;
         case "TASK_SPRINT":
           return "Task Sprint";
+          break;
+        case "ACTUAL_WEIGHT":
+          return "Actual Weight";
+          break;
+        case "ESTIMATED_WEIGHT":
+          return "Estimated Weight";
           break;
 
         case "FILE":
@@ -597,6 +676,9 @@ export default {
         case "END_DATE":
           return "Project End Date";
           break;
+        case "PROJECT_WEIGHT":
+          return "Project Weight";
+          break;
         case "ADD_USER":
           return "Project User";
           break;
@@ -614,25 +696,46 @@ export default {
       }
     },
 
+    //   getProjectDisplayDates(date) {
+    //     const dueDate = new Date(date);
+    //     const dueToUtc = new Date(
+    //       dueDate.toLocaleString("en-US", { timeZone: "Asia/Colombo" })
+    //     );
+    //     const dueToUtcDate = new Date(dueToUtc);
+    //     const now = new Date();
+    //     // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
+
+    //     if (date === null || date === "1970-01-01T05:30:00.000+0000") {
+    //       return "Add Task Date";
+    //     } else {
+    //       let stringDate = date + "";
+    //       stringDate = stringDate.toString();
+    //       stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 16);
+    //       return stringDate;
+    //     }
+    //   }
+
     getProjectDisplayDates(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+        dueDate.toLocaleString("en-US", { timeZone: "Asia/Colombo" })
       );
-      const dueToUtcDate = new Date(dueToUtc);
+
+      // const dueToUtcDate = new Date(dueToUtc);
+
       const now = new Date();
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
-
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
         return "Add Task Date";
       } else {
-        let stringDate = date + "";
-        stringDate = stringDate.toString();
-        stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 16);
-        return stringDate;
+        // let stringDate = date + "";
+        // stringDate = stringDate.toString();
+        // stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 16);
+        return dueToUtc.toLocaleString();
       }
     }
   },
+
   computed: {
     ...mapState({
       selectedTask: state => state.task.selectedTask,

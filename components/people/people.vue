@@ -8,18 +8,17 @@
       <div class>
         <div class>
           <p class="peopleRoleTitle" @click="fetchUsers">Project Owner</p>
-          <v-divider></v-divider>
+          <!-- <v-divider></v-divider> -->
         </div>
 
-        <div
-          v-for="(assignee, index) in userCompletionTasks"
-          :key="index"
-          class="taskList peopleListItems"
-        >
+        <div v-for="(assignee, index) in userCompletionTasks" :key="index" class="peopleListItems">
           <v-list-item v-if="assignee.projectRoleId == 1" class="peopleContainer">
-            <v-list-item-avatar>
+            <v-list-item-avatar size="35">
               <v-img
-                v-if="assignee.assigneeProfileImage != null && assignee.assigneeProfileImage != ''"
+                v-if="
+                  assignee.assigneeProfileImage != null &&
+                    assignee.assigneeProfileImage != ''
+                "
                 :src="assignee.assigneeProfileImage"
               ></v-img>
               <v-img
@@ -32,7 +31,11 @@
                 {{ assignee.assigneeFirstName }}
                 {{ assignee.assigneeLastName }}
               </v-list-item-title>
-              <v-list-item-title class="peopleName">{{ assignee.projectJobRoleName }}</v-list-item-title>
+              <v-list-item-title class="peopleName">
+                {{
+                assignee.projectJobRoleName
+                }}
+              </v-list-item-title>
             </v-list-item-content>
             <v-list-item-content class="projectProgressSection">
               <v-list-item-title class="completedStatus">
@@ -50,8 +53,8 @@
                     :value="
                       (assignee.tasksCompleted / assignee.totalTasks) * 100
                     "
-                    color="#2EC973"
-                    background-color="red"
+                    color="#66B25F"
+                    background-color="#FF9F9F"
                     height="13"
                     rounded
                     reactive
@@ -77,7 +80,7 @@
       <div class>
         <div class>
           <p class="peopleRoleTitle" @click="fetchUsers">Admins</p>
-          <v-divider></v-divider>
+          <!-- <v-divider></v-divider> -->
         </div>
 
         <div
@@ -86,12 +89,17 @@
           class="taskList peopleListItems"
         >
           <v-list-item
-            v-if="assignee.projectRoleId == 2 && assignee.isUserBlocked == false"
+            v-if="
+              assignee.projectRoleId == 2 && assignee.isUserBlocked == false
+            "
             class="peopleContainer"
           >
-            <v-list-item-avatar>
+            <v-list-item-avatar size="35">
               <v-img
-                v-if="assignee.assigneeProfileImage != null && assignee.assigneeProfileImage != ''"
+                v-if="
+                  assignee.assigneeProfileImage != null &&
+                    assignee.assigneeProfileImage != ''
+                "
                 :src="assignee.assigneeProfileImage"
               ></v-img>
               <v-img
@@ -105,7 +113,11 @@
                 {{ assignee.assigneeFirstName }}
                 {{ assignee.assigneeLastName }}
               </v-list-item-title>
-              <v-list-item-title class="peopleName">{{ assignee.projectJobRoleName }}</v-list-item-title>
+              <v-list-item-title class="peopleName">
+                {{
+                assignee.projectJobRoleName
+                }}
+              </v-list-item-title>
             </v-list-item-content>
             <v-list-item-content class="projectProgressSection">
               <v-list-item-title class="completedStatus">
@@ -123,8 +135,8 @@
                     :value="
                       (assignee.tasksCompleted / assignee.totalTasks) * 100
                     "
-                    color="#2EC973"
-                    background-color="red"
+                    color="#66B25F"
+                    background-color="#FF9F9F"
                     height="13"
                     rounded
                     reactive
@@ -150,7 +162,7 @@
         <div class>
           <div class>
             <p class="peopleRoleTitle" @click="fetchUsers">Other Users</p>
-            <v-divider></v-divider>
+            <!-- <v-divider></v-divider> -->
           </div>
 
           <div
@@ -159,12 +171,17 @@
             class="taskList peopleListItems"
           >
             <v-list-item
-              v-if="assignee.projectRoleId == 3 && assignee.isUserBlocked == false"
+              v-if="
+                assignee.projectRoleId == 3 && assignee.isUserBlocked == false
+              "
               class="peopleContainer"
             >
-              <v-list-item-avatar>
+              <v-list-item-avatar size="35">
                 <v-img
-                  v-if="assignee.assigneeProfileImage != null && assignee.assigneeProfileImage != ''"
+                  v-if="
+                    assignee.assigneeProfileImage != null &&
+                      assignee.assigneeProfileImage != ''
+                  "
                   :src="assignee.assigneeProfileImage"
                 ></v-img>
                 <v-img
@@ -177,7 +194,11 @@
                   {{ assignee.assigneeFirstName }}
                   {{ assignee.assigneeLastName }}
                 </v-list-item-title>
-                <v-list-item-title class="peopleName">{{ assignee.projectJobRoleName }}</v-list-item-title>
+                <v-list-item-title class="peopleName">
+                  {{
+                  assignee.projectJobRoleName
+                  }}
+                </v-list-item-title>
               </v-list-item-content>
               <v-list-item-content class="projectProgressSection">
                 <v-list-item-title class="completedStatus">
@@ -195,8 +216,8 @@
                       :value="
                         (assignee.tasksCompleted / assignee.totalTasks) * 100
                       "
-                      color="#2EC973"
-                      background-color="red"
+                      color="#66B25F"
+                      background-color="#FF9F9F"
                       height="13"
                       rounded
                       reactive
@@ -265,7 +286,7 @@ export default {
 <style scoped>
 .peopleWrapper {
   width: 100%;
-  padding: 30px;
+  /* padding: 30px; */
 }
 .titleDiv {
   width: 30%;
@@ -276,6 +297,7 @@ export default {
   font-weight: bold;
   font-size: 25px;
   margin-left: 20px;
+  margin-top: 30px;
 }
 .catPeopleTitle {
   font-style: normal;

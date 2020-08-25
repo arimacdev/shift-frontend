@@ -1,6 +1,6 @@
 <template>
   <v-card width="100vw">
-    <v-toolbar dark color="primary">
+    <v-toolbar dark color="#010101">
       <v-btn icon dark @click="taskDialogClosing()">
         <v-icon>mdi-close</v-icon>
       </v-btn>
@@ -139,7 +139,7 @@
                         </v-list-item-title>
                         <div class="noteUpdateButton">
                           <v-btn
-                            class="ma-2"
+                            class="ma-2 text-capitalize"
                             small
                             rounded
                             depressed
@@ -300,7 +300,7 @@
                     <div class="fileUploadButton taskViewFileUploadButton">
                       <v-btn
                         @click="taskFileUpload()"
-                        class="ma-2"
+                        class="ma-2 text-capitalize"
                         x-small
                         rounded
                         depressed
@@ -396,10 +396,18 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn color="success" width="100px" @click="taskDeleteDialog = false">Cancel</v-btn>
+            <v-btn
+              color="success"
+              class="text-capitalize"
+              depressed
+              width="100px"
+              @click="taskDeleteDialog = false"
+            >Cancel</v-btn>
             <v-spacer></v-spacer>
             <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
             <v-btn
+              class="text-capitalize"
+              depressed
               color="error"
               width="100px"
               @click="
@@ -448,7 +456,7 @@ export default {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
     "add-parent-task": AddParentTask,
-    "add-child-task": AddChildTask
+    "add-child-task": AddChildTask,
   },
   data() {
     return {
@@ -477,13 +485,13 @@ export default {
         taskNotes: "",
         // taskStatus: "",
         taskRemindOnDate: "",
-        taskDueDateAt: ""
+        taskDueDateAt: "",
       },
 
       status: [
         { name: "Open", id: "open" },
-        { name: "Closed", id: "closed" }
-      ]
+        { name: "Closed", id: "closed" },
+      ],
     };
   },
   methods: {
@@ -513,8 +521,8 @@ export default {
           {
             data: {},
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("personalTasks/fetchAllPersonalTasks");
@@ -542,12 +550,12 @@ export default {
         response = await this.$axios.$put(
           `/non-project/tasks/personal/${this.selectedTask.taskId}`,
           {
-            taskStatus: this.updatedStatus
+            taskStatus: this.updatedStatus,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("personalTasks/fetchAllPersonalTasks");
@@ -574,12 +582,12 @@ export default {
           response = await this.$axios.$put(
             `/non-project/tasks/personal/${this.selectedTask.taskId}`,
             {
-              taskName: this.updatedTask.taskName
+              taskName: this.updatedTask.taskName,
             },
             {
               headers: {
-                user: this.userId
-              }
+                user: this.userId,
+              },
             }
           );
           this.component = "success-popup";
@@ -611,12 +619,12 @@ export default {
         response = await this.$axios.$put(
           `/non-project/tasks/personal/${this.selectedTask.taskId}`,
           {
-            taskNotes: this.updatedTask.taskNote
+            taskNotes: this.updatedTask.taskNote,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.component = "success-popup";
@@ -649,12 +657,12 @@ export default {
         // console.log("iso edit due date", isoDate);
         dueDate = isoDate;
         changedDate = {
-          taskDueDate: dueDate
+          taskDueDate: dueDate,
         };
         remindDate = this.updatedTask.taskRemindOnDate;
         this.$store.dispatch("personalTasks/updateProjectDates", {
           type: "dueDate",
-          date: dueDate
+          date: dueDate,
         });
       } else if (this.updatedTask.taskRemindOnDate != "") {
         // console.log("inside remind on date");
@@ -666,11 +674,11 @@ export default {
         dueDate = this.updatedTask.taskDueDateAt;
         remindDate = isoDate;
         changedDate = {
-          taskRemindOnDate: remindDate
+          taskRemindOnDate: remindDate,
         };
         this.$store.dispatch("personalTasks/updateProjectDates", {
           type: "remindDate",
-          date: remindDate
+          date: remindDate,
         });
       }
       // console.log("dueDate", dueDate);
@@ -682,8 +690,8 @@ export default {
           changedDate,
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         //remove
@@ -720,8 +728,8 @@ export default {
               formData,
               {
                 headers: {
-                  user: this.userId
-                }
+                  user: this.userId,
+                },
               }
             );
             this.$store.dispatch(
@@ -758,8 +766,8 @@ export default {
           {
             data: {},
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         // console.log(response.data);
@@ -822,7 +830,7 @@ export default {
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "Add Due Date";
+        return "No Due Date";
       } else if (
         now.getDate() === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
@@ -861,15 +869,15 @@ export default {
     },
     EditTaskName() {
       this.editTask = false;
-    }
+    },
   },
   computed: {
     ...mapState({
-      people: state => state.task.userCompletionTasks,
-      projectSprints: state => state.sprints.sprint.sprints,
-      projectAllTasks: state => state.task.allTasks,
-      selectedTask: state => state.personalTasks.selectedTask,
-      taskFiles: state => state.personalTasks.personalTaskFiles
+      people: (state) => state.task.userCompletionTasks,
+      projectSprints: (state) => state.sprints.sprint.sprints,
+      projectAllTasks: (state) => state.task.allTasks,
+      selectedTask: (state) => state.personalTasks.selectedTask,
+      taskFiles: (state) => state.personalTasks.personalTaskFiles,
     }),
     ...mapGetters(["getuserCompletionTasks"]),
 
@@ -881,7 +889,7 @@ export default {
       },
       set(name) {
         this.updatedTask.taskName = name;
-      }
+      },
     },
     taskStatus: {
       get() {
@@ -890,7 +898,7 @@ export default {
       set(value) {
         // console.log("task status", value);
         this.updatedStatus = value;
-      }
+      },
     },
 
     taskNote: {
@@ -899,7 +907,7 @@ export default {
       },
       set(value) {
         this.updatedTask.taskNote = value;
-      }
+      },
     },
 
     taskDue: {
@@ -917,7 +925,7 @@ export default {
       set(value) {
         // console.log("updated task due ->", value);
         this.updatedTask.taskDueDateAt = value;
-      }
+      },
     },
     taskRemindOn: {
       get() {
@@ -934,8 +942,8 @@ export default {
       set(value) {
         // console.log("updated selectedTask reminder ->", value);
         this.updatedTask.taskRemindOnDate = value;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>

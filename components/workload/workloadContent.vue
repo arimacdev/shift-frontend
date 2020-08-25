@@ -53,14 +53,16 @@
             ></VueCtkDateTimePicker>
           </v-col>
           <v-col md="2">
-            <v-btn @click="applyFilter()" dark width="100%" height="40px" color="#080848">
-              <v-icon color="#FFFFFF">mdi-filter-outline</v-icon>
+            <v-btn depressed @click="applyFilter()" dark width="100%" height="40px" color="#080848">
+              <!-- <v-icon color="#FFFFFF">mdi-filter-outline</v-icon> -->
+              <span class="text-capitalize">Search</span>
               <!-- Filter -->
             </v-btn>
           </v-col>
           <v-col md="2">
-            <v-btn dark width="100%" @click="clearFilter()" height="40px" color="#FF6161">
-              <v-icon color="#FFFFFF">mdi-cancel</v-icon>
+            <v-btn depressed dark width="100%" @click="clearFilter()" height="40px" color="#FF6161">
+              <!-- <v-icon color="#FFFFFF">mdi-cancel</v-icon> -->
+              <span class="text-capitalize">Cancel</span>
               <!-- Cancel -->
             </v-btn>
           </v-col>
@@ -80,7 +82,7 @@
           <v-expansion-panel-header
             v-if="project.total > 0"
             class="projectDetailsPannelHeader"
-            color="#080848"
+            color="#292929"
           >
             {{ project.projectName }} - {{ project.completed }}/{{
             project.total
@@ -118,10 +120,10 @@
                 <v-list-item-action>
                   <v-icon
                     v-if="task.taskStatus == 'closed'"
-                    size="30"
-                    color="#2EC973"
-                  >mdi-checkbox-marked-circle</v-icon>
-                  <v-icon v-else size="30" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                    size="25"
+                    color="#66B25F"
+                  >mdi-checkbox-blank</v-icon>
+                  <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
                 </v-list-item-action>
                 <v-list-item-action>
                   <div
@@ -132,9 +134,20 @@
                 <v-list-item-content>
                   <div class="workloadTaskName">{{ task.taskName }}</div>
                 </v-list-item-content>
-
                 <v-list-item-action>
+                  <v-chip class="chipsContent" :class="statusCheck(task.issueType)" x-small>
+                    <span class="fontRestructure12">{{ taskStatusFormatting(task.taskStatus) }}</span>
+                  </v-chip>
+                </v-list-item-action>
+                <v-list-item-action>
+                  <v-chip class="chipsContent" :class="statusCheck(task.issueType)" x-small>
+                    <span class="fontRestructure12">{{ taskTypeFormatting(task.issueType) }}</span>
+                  </v-chip>
+                </v-list-item-action>
+
+                <v-list-item-action class="updatedDate">
                   <v-list-item-title
+                    class="fontRestructure12"
                     :class="dueDateCheck(task)"
                   >{{ getDueDate(task.taskDueDateAt) }}</v-list-item-title>
                 </v-list-item-action>
@@ -169,7 +182,7 @@ export default {
   props: ["selectedUser"],
   components: {
     // "task-side-bar": TaskSideBar,
-    "task-dialog": TaskDialog
+    "task-dialog": TaskDialog,
   },
   data() {
     return {
@@ -185,10 +198,123 @@ export default {
       filterEnd: "",
       looped: false,
       projectTasks: [],
-      emptyTasks: []
+      emptyTasks: [],
     };
   },
   methods: {
+    taskStatusFormatting(status) {
+      switch (status) {
+        case "pending":
+          return "Pending";
+          break;
+        case "onHold":
+          return "On Hold";
+          break;
+        case "open":
+          return "Open";
+          break;
+        case "cancel":
+          return "Cancel";
+          break;
+        case "reOpened":
+          return "Re Opened";
+          break;
+        case "fixing":
+          return "Fixing";
+          break;
+        case "testing":
+          return "Testing";
+          break;
+        case "resolved":
+          return "Resolved";
+          break;
+        case "inprogress":
+          return "Inprogress";
+          break;
+        case "completed":
+          return "Completed";
+          break;
+        case "implementing":
+          return "Implementing";
+          break;
+        case "underReview":
+          return "UnderReview";
+          break;
+        case "waitingForApproval":
+          return "Waiting for Approval";
+          break;
+        case "review":
+          return "Review";
+          break;
+        case "discussion":
+          return "Discussion";
+          break;
+        case "waitingResponse":
+          return "Waiting Response";
+          break;
+        case "ready":
+          return "Ready";
+          break;
+        case "deployed":
+          return "Deployed";
+          break;
+        case "fixed":
+          return "Fixed";
+          break;
+        case "rejected":
+          return "Rejected";
+          break;
+        case "closed":
+          return "Closed";
+          break;
+        default:
+      }
+    },
+    taskTypeFormatting(type) {
+      switch (type) {
+        case "development":
+          return "Development";
+          break;
+        case "qa":
+          return "QA";
+          break;
+        case "design":
+          return "Design";
+          break;
+        case "bug":
+          return "Bug";
+          break;
+        case "operational":
+          return "Operational";
+          break;
+        case "preSales":
+          return "Pre-sales";
+          break;
+        case "general":
+          return "General";
+          break;
+        default:
+      }
+    },
+    statusCheck(task) {
+      if (task === "development") {
+        return "developmentStatus";
+      } else if (task === "qa") {
+        return "qaStatus";
+      } else if (task === "design") {
+        return "designStatus";
+      } else if (task === "bug") {
+        return "bugStatus";
+      } else if (task === "operational") {
+        return "operationalStatus";
+      } else if (task === "preSales") {
+        return "preSalesStatus";
+      } else if (task === "general") {
+        return "generalStatus";
+      } else {
+        return "otherStatus";
+      }
+    },
     taskDialogClosing() {
       // console.log("Task Dialog Closing");
       this.taskDialog = false;
@@ -237,7 +363,7 @@ export default {
         this.$store.dispatch("workload/fetchAllWorkloadTasks", {
           userId: this.selectedUser,
           from: filterStart,
-          to: filterEnd
+          to: filterEnd,
         });
       }
     },
@@ -248,7 +374,7 @@ export default {
       this.$store.dispatch("workload/fetchAllWorkloadTasks", {
         userId: this.selectedUser,
         from: "all",
-        to: "all"
+        to: "all",
       });
     },
     showDates() {
@@ -287,8 +413,8 @@ export default {
           {
             headers: {
               user: task.taskAssignee,
-              type: "project"
-            }
+              type: "project",
+            },
           }
         );
         // console.log("files--->", taskFilesResponse.data);
@@ -306,8 +432,8 @@ export default {
             `/sprints/${this.projectId}/${task.sprintId}`,
             {
               headers: {
-                userId: task.taskAssignee
-              }
+                userId: task.taskAssignee,
+              },
             }
           );
           console.log("sprint--->", sprintResponse.data.sprintName);
@@ -335,7 +461,7 @@ export default {
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "Add Due Date";
+        return "No Due Date";
       } else if (
         now.getDate() === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
@@ -389,11 +515,11 @@ export default {
           return "workLoadTaskHealthy";
         }
       }
-    }
+    },
   },
   computed: {
     ...mapState({
-      workloadTasks: state => state.workload.workloadTasks
+      workloadTasks: (state) => state.workload.workloadTasks,
     }),
     getDateRange: {
       get() {
@@ -410,9 +536,9 @@ export default {
         if (startDate != null && endDate != null) {
           // console.log("Go Ahead!");
         }
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 

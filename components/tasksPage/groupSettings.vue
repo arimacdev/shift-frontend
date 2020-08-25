@@ -10,7 +10,7 @@
           depressed
           color="#0BAFFF"
           height="50px"
-          class="settingsButton white--text"
+          class="settingsButton white--text text-capitalize"
           @click="postData()"
         >Rename</v-btn>
       </v-list-item-action>
@@ -22,7 +22,7 @@
           depressed
           color="#FF6161"
           height="50px"
-          class="settingsButton white--text"
+          class="settingsButton white--text text-capitalize"
           @click="settingsDialog = true"
         >Delete</v-btn>
       </v-list-item-action>
@@ -49,10 +49,18 @@
             <v-card-actions>
               <v-spacer></v-spacer>
 
-              <v-btn color="success" width="100px" @click="settingsDialog = false;">Cancel</v-btn>
+              <v-btn
+                color="success"
+                class="text-capitalize"
+                depressed
+                width="100px"
+                @click="settingsDialog = false;"
+              >Cancel</v-btn>
               <v-spacer></v-spacer>
               <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
               <v-btn
+                class="text-capitalize"
+                depressed
                 color="error"
                 width="100px"
                 @click="settingsDialog = false; deleteData()"
@@ -79,7 +87,7 @@ export default {
   props: ["group"],
   components: {
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
   },
 
   data() {
@@ -88,7 +96,7 @@ export default {
       component: "",
       settingsDialog: false,
       groupName: this.group.taskGroupName,
-      errorMessage: ""
+      errorMessage: "",
     };
   },
   methods: {
@@ -99,13 +107,13 @@ export default {
           `/taskgroup/${this.group.taskGroupId}`,
           {
             taskGroupName: this.groupName,
-            taskGroupEditor: this.userId
+            taskGroupEditor: this.userId,
           }
         );
         this.component = "success-popup";
         this.$store.dispatch("groups/group/updateGroup", {
           groupId: this.group.taskGroupId,
-          name: this.groupName
+          name: this.groupName,
         });
       } catch (e) {
         // console.log("Error edit user", e);
@@ -120,8 +128,8 @@ export default {
           `/taskgroup/${this.group.taskGroupId}`,
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.component = "success-popup";
@@ -139,7 +147,7 @@ export default {
     },
     close() {
       this.component = "";
-    }
+    },
   },
   computed: {
     taskGroupName: {
@@ -148,8 +156,8 @@ export default {
       },
       set(groupName) {
         this.groupName = groupName;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>

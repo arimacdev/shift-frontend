@@ -115,6 +115,24 @@
         </v-col>
       </v-row>
       <v-row class="mb-12 formRow" no-gutters>
+        <v-col sm="6" md="6">
+          <!-- <input v-model="projectTimeLine" disabled placeholder="Estimated project timeline" class="formElements"> -->
+          <v-select
+            v-model="$v.weightType.$model"
+            :items="weight"
+            item-text="name"
+            item-value="id"
+            label="Task weight type"
+            outlined
+            class="createFormElements"
+          ></v-select>
+          <div
+            v-if="$v.weightType.$error && !$v.weightType.required"
+            class="errorTextCreateProject"
+          >Weight type is required</div>
+        </v-col>
+      </v-row>
+      <v-row class="mb-12 formRow" no-gutters>
         <v-col sm="12" md="6" class></v-col>
         <v-col sm="12" md="6" class="buttonGrid">
           <button :class="addProjectStyling" :disabled="checkValidation" @click="postData()">
@@ -131,7 +149,7 @@
         </v-col>
       </v-row>
     </form>
-    <v-overlay :value="overlay">
+    <v-overlay :value="overlay" color="black">
       <progress-loading />
     </v-overlay>
     <div @click="close">
@@ -190,7 +208,8 @@ export default {
           clientId: this.client,
           projectStartDate: this.getStartDate(),
           projectEndDate: this.getEndDate(),
-          projectAlias: this.alias.toUpperCase()
+          projectAlias: this.alias.toUpperCase(),
+          weightType: this.weightType
         });
 
         (this.projectName = ""),
@@ -226,6 +245,11 @@ export default {
   },
   data() {
     return {
+      weightType: "story",
+      weight: [
+        { name: "Story point", id: "story" },
+        { name: "Time", id: "time" }
+      ],
       overlay: false,
       errorMessage: "",
       userId: this.$store.state.user.userId,
@@ -250,6 +274,9 @@ export default {
       maxLength: maxLength(6)
     },
     client: {
+      required
+    },
+    weightType: {
       required
     },
     startDate: {

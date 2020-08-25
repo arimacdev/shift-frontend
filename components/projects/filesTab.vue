@@ -95,10 +95,22 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn color="success" width="100px" @click="taskDialog = false">Cancel</v-btn>
+            <v-btn
+              color="success"
+              class="text-capitalize"
+              depressed
+              width="100px"
+              @click="taskDialog = false"
+            >Cancel</v-btn>
             <v-spacer></v-spacer>
             <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
-            <v-btn color="error" width="100px" @click="removeFiles()">Delete</v-btn>
+            <v-btn
+              color="error"
+              class="text-capitalize"
+              depressed
+              width="100px"
+              @click="removeFiles()"
+            >Delete</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
         </div>
@@ -142,7 +154,7 @@
       </div>
       <!-- <success-popup /> -->
     </div>
-    <v-overlay :value="overlay">
+    <v-overlay :value="overlay" color="black">
       <progress-loading />
     </v-overlay>
   </div>
@@ -160,7 +172,7 @@ export default {
     "file-search-bar": FileSearchBar,
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
-    "progress-loading": Progress
+    "progress-loading": Progress,
   },
   data() {
     return {
@@ -174,15 +186,15 @@ export default {
       uploadLoading: false,
       files: [],
       userId: this.$store.state.user.userId,
-      component: ""
+      component: "",
     };
   },
   computed: {
     ...mapState({
-      AllprojectFiles: state => state.project.projectFiles,
-      userProfile: state => state.userProfile.userProfile,
-      projectId: state => state.project.project.projectId
-    })
+      AllprojectFiles: (state) => state.project.projectFiles,
+      userProfile: (state) => state.userProfile.userProfile,
+      projectId: (state) => state.project.project.projectId,
+    }),
   },
 
   methods: {
@@ -197,8 +209,8 @@ export default {
       axios({
         url: projectFileUrl,
         method: "GET",
-        responseType: "blob"
-      }).then(response => {
+        responseType: "blob",
+      }).then((response) => {
         var fileURL = window.URL.createObjectURL(new Blob([response.data]));
         var fileLink = document.createElement("a");
 
@@ -227,10 +239,10 @@ export default {
         this.$axios
           .$post(`/projects/${this.projectId}/files/upload`, formData, {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           })
-          .then(res => {
+          .then((res) => {
             // console.log("resp", res.data);
             this.uploadLoading = false;
             this.visible = false;
@@ -247,7 +259,7 @@ export default {
             this.$store.dispatch("project/addProjectFile", res.data);
             // console.log("File upload successful", res);
           })
-          .catch(err => {
+          .catch((err) => {
             this.overlay = false;
             this.uploadLoading = false;
             this.visible = false;
@@ -273,8 +285,8 @@ export default {
           {
             data: {},
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("project/removeProjectFile", this.fileId);
@@ -294,7 +306,7 @@ export default {
     getFileSize(fileSize) {
       let stringSize = parseInt(fileSize / 1000);
       return stringSize;
-    }
-  }
+    },
+  },
 };
 </script>

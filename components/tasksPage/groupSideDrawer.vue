@@ -75,10 +75,18 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
 
-                  <v-btn color="success" width="100px" @click="taskDialog = false;">Cancel</v-btn>
+                  <v-btn
+                    color="success"
+                    class="text-capitalize"
+                    depressed
+                    width="100px"
+                    @click="taskDialog = false;"
+                  >Cancel</v-btn>
                   <v-spacer></v-spacer>
                   <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
                   <v-btn
+                    class="text-capitalize"
+                    depressed
                     color="error"
                     width="100px"
                     @click="taskDialog = false; deleteTask()"
@@ -459,7 +467,7 @@ export default {
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
-    datetime: Datetime
+    datetime: Datetime,
   },
   data() {
     return {
@@ -485,18 +493,18 @@ export default {
         taskNotes: "",
         taskStatus: "",
         taskRemindOnDate: "",
-        taskDueDate: ""
+        taskDueDate: "",
       },
       newSubTask: {
         taskId: "",
         subtaskName: "",
-        subtaskStatus: false
+        subtaskStatus: false,
       },
       subTask: {
         //   taskId : this.task.taskId,
         subtaskName: "",
-        subTaskCreator: ""
-      }
+        subTaskCreator: "",
+      },
     };
   },
   //  computed: {
@@ -523,11 +531,13 @@ export default {
           {
             data: {},
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
-        const index = this.taskFiles.findIndex(i => i.taskFileId === taskFile);
+        const index = this.taskFiles.findIndex(
+          (i) => i.taskFileId === taskFile
+        );
         this.taskFiles.splice(index, 1);
         console.log(response.data);
         this.component = "success-popup";
@@ -546,7 +556,7 @@ export default {
     close() {
       this.component = "";
     },
-    showNewSubTaskField: function() {
+    showNewSubTaskField: function () {
       this.showNewSubTask = true;
     },
     EditTaskName() {
@@ -567,12 +577,12 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}`,
           {
-            taskAssignee: this.updatedTask.taskAssignee
+            taskAssignee: this.updatedTask.taskAssignee,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         // this.$store.dispatch('groups/groupTask/changeTaskAssignee',{
@@ -583,7 +593,7 @@ export default {
         // }); // TODO
         this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
           taskGroupId: this.group.taskGroupId,
-          userId: this.userId
+          userId: this.userId,
         });
         this.component = "success-popup";
         setTimeout(() => {
@@ -608,8 +618,8 @@ export default {
             data: {},
             headers: {
               user: this.userId,
-              type: "taskGroup"
-            }
+              type: "taskGroup",
+            },
           }
         );
         this.$store.dispatch(
@@ -642,7 +652,7 @@ export default {
             {
               taskId: this.task.taskId,
               subtaskName: this.newSubTask.subtaskName,
-              subTaskCreator: this.userId
+              subTaskCreator: this.userId,
             }
           );
           this.newSubTask.subtaskName = "";
@@ -675,18 +685,18 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}`,
           {
-            taskNotes: this.updatedTask.taskNotes
+            taskNotes: this.updatedTask.taskNotes,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("groups/groupTask/updateGroupTask", {
           taskId: this.task.taskId,
           type: "taskNote",
-          value: this.updatedTask.taskNotes
+          value: this.updatedTask.taskNotes,
         });
         console.log("edit task response", response);
         this.component = "success-popup";
@@ -709,12 +719,12 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}`,
           {
-            taskName: this.updatedTask.taskName
+            taskName: this.updatedTask.taskName,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.editTask = true;
@@ -722,7 +732,7 @@ export default {
         this.$store.dispatch("groups/groupTask/updateGroupTask", {
           taskId: this.task.taskId,
           type: "taskName",
-          value: this.updatedTask.taskName
+          value: this.updatedTask.taskName,
         });
         console.log("edit task response", response);
         this.component = "success-popup";
@@ -746,22 +756,22 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}`,
           {
-            taskStatus: this.updatedTask.taskStatus
+            taskStatus: this.updatedTask.taskStatus,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("groups/groupTask/updateGroupTask", {
           taskId: this.task.taskId,
           type: "taskStatus",
-          value: this.updatedTask.taskStatus
+          value: this.updatedTask.taskStatus,
         });
         this.$store.dispatch("groups/groupPeople/fetchGroupPeople", {
           taskGroupId: this.group.taskGroupId,
-          userId: this.userId
+          userId: this.userId,
         });
         this.component = "success-popup";
         setTimeout(() => {
@@ -807,18 +817,18 @@ export default {
           `/projects/${this.group.taskGroupId}/tasks/${this.task.taskId}`,
           {
             taskDueDate: dueDate,
-            taskRemindOnDate: remindDate
+            taskRemindOnDate: remindDate,
           },
           {
             headers: {
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         );
         this.$store.dispatch("groups/groupTask/updateGroupTaskDates", {
           taskId: this.task.taskId,
           dueDate: dueDate,
-          remindDate: remindDate
+          remindDate: remindDate,
         });
         this.component = "success-popup";
         setTimeout(() => {
@@ -844,12 +854,12 @@ export default {
             {
               subTaskEditor: this.userId,
               subtaskName: editsubtask.subtaskName,
-              subtaskStatus: editsubtask.subtaskStatus
+              subtaskStatus: editsubtask.subtaskStatus,
             },
             {
               headers: {
-                user: this.userId
-              }
+                user: this.userId,
+              },
             }
           );
           console.log("update sub task status response", response);
@@ -877,8 +887,8 @@ export default {
           {
             headers: {
               user: this.userId,
-              type: "taskGroup"
-            }
+              type: "taskGroup",
+            },
           }
         );
         this.subTasks.splice(this.selectedSubTaskIndex, 1);
@@ -912,11 +922,11 @@ export default {
           {
             headers: {
               "Content-Type": "multipart/form-data",
-              user: this.userId
-            }
+              user: this.userId,
+            },
           }
         )
-        .then(res => {
+        .then((res) => {
           this.taskFiles.push(res.data);
           this.uploadLoading = false;
           console.log("File upload successful", res.data);
@@ -925,7 +935,7 @@ export default {
             this.close();
           }, 2000);
         })
-        .catch(err => {
+        .catch((err) => {
           this.uploadLoading = false;
           console.log("File Upload Failed", err);
           this.errorMessage = err.response.data;
@@ -934,7 +944,7 @@ export default {
             this.close();
           }, 2000);
         });
-    }
+    },
   },
   computed: {
     updatedName: {
@@ -949,7 +959,7 @@ export default {
       set(value) {
         console.log("updated task name ->", value);
         this.updatedTask.taskName = value;
-      }
+      },
     },
 
     taskNotes: {
@@ -959,7 +969,7 @@ export default {
       set(value) {
         console.log("updated task value ->", value);
         this.updatedTask.taskNotes = value;
-      }
+      },
     },
 
     taskAssignee: {
@@ -970,7 +980,7 @@ export default {
       set(value) {
         console.log("updated task assignee ->", value);
         this.updatedTask.taskAssignee = value;
-      }
+      },
     },
 
     taskStatus: {
@@ -980,13 +990,13 @@ export default {
       set(value) {
         console.log("updated task statutus ->", value);
         this.updatedTask.taskStatus = value;
-      }
+      },
     },
 
     taskDue: {
       get() {
         // let stringDate = new Date(this.task.taskDueDateAt);
-        if (this.task.taskDueDateAt == null) return "Add Due Date";
+        if (this.task.taskDueDateAt == null) return "No Due Date";
         let stringDate = this.task.taskDueDateAt + " ";
         // let formateedDate =  stringDate.getFullYear() + "-" + stringDate.getMonth() + "-"+ stringDate.getDate();
         stringDate = stringDate.toString();
@@ -999,7 +1009,7 @@ export default {
         console.log("updated task due ->", value);
         this.updatedTask.taskDueDateAt = value;
         this.updateTaskDates("dueDate");
-      }
+      },
     },
     taskRemindOn: {
       get() {
@@ -1015,7 +1025,7 @@ export default {
         console.log("updated task reminder ->", value);
         this.updatedTask.taskRemindOnDate = value;
         this.updateTaskDates("remindOn");
-      }
+      },
     },
     subTaskDescription: {
       get() {
@@ -1024,9 +1034,9 @@ export default {
       set(value) {
         console.log("updated subtask description ->", value);
         this.subTask.subtaskName = value;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 

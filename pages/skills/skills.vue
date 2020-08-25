@@ -67,7 +67,14 @@
           </v-col>
 
           <v-col md="1">
-            <v-btn @click="cancelSearch()" dark width="100%" height="40px" color="#FF6161">
+            <v-btn
+              depressed
+              @click="cancelSearch()"
+              dark
+              width="100%"
+              height="40px"
+              color="#FF6161"
+            >
               <v-icon color="#FFFFFF">mdi-cancel</v-icon>
               <!-- Cancel -->
             </v-btn>
@@ -376,9 +383,9 @@
                               <v-icon
                                 v-if="skill.isAssigned == true"
                                 size="30"
-                                color="#2EC973"
-                              >mdi-checkbox-marked-circle</v-icon>
-                              <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                                color="#66B25F"
+                              >mdi-checkbox-blank</v-icon>
+                              <v-icon v-else size="30" color="#939393">mdi-checkbox-blank-outline</v-icon>
                             </div>
                           </div>
                         </div>
@@ -408,9 +415,9 @@
                               <v-icon
                                 v-if="skill.isAssigned == true"
                                 size="30"
-                                color="#2EC973"
-                              >mdi-checkbox-marked-circle</v-icon>
-                              <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                                color="#66B25F"
+                              >mdi-checkbox-blank</v-icon>
+                              <v-icon v-else size="30" color="#939393">mdi-checkbox-blank-outline</v-icon>
                             </div>
                           </div>
                         </div>
@@ -440,9 +447,9 @@
                               <v-icon
                                 v-if="skill.isAssigned == true"
                                 size="30"
-                                color="#2EC973"
-                              >mdi-checkbox-marked-circle</v-icon>
-                              <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                                color="#66B25F"
+                              >mdi-checkbox-blank</v-icon>
+                              <v-icon v-else size="30" color="#939393">mdi-checkbox-blank-outline</v-icon>
                             </div>
                           </div>
                         </div>
@@ -453,6 +460,7 @@
                   <br />
                   <div style="position: fixed; bottom: 10px; right: 10px;" v-if="this.matrixView">
                     <v-btn
+                      depressed
                       color="blue"
                       style=" color: #FFFFFF"
                       @click="loadMatrix()"
@@ -463,6 +471,7 @@
                       <v-icon>mdi-plus-circle-outline</v-icon>
                     </v-btn>
                     <v-btn
+                      depressed
                       color="#78CC71"
                       style="color: #FFFFFF"
                       @click="loadAllMatrix()"
@@ -514,9 +523,18 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn width="100px" color="#FF6161" dark @click="searchSkillDialog = false">Cancel</v-btn>
+          <v-btn
+            width="100px"
+            class="text-capitalize"
+            depressed
+            color="#FF6161"
+            dark
+            @click="searchSkillDialog = false"
+          >Cancel</v-btn>
 
           <v-btn
+            class="text-capitalize"
+            depressed
             width="100px"
             color="#2EC973"
             @click="
@@ -529,6 +547,9 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-overlay :value="overlay" color="black" style="z-index:1008">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 
@@ -536,13 +557,16 @@
 import NavigationDrawer from "~/components/navigationDrawer";
 import axios from "axios";
 import { mapState } from "vuex";
+import Progress from "~/components/popups/progress";
 
 export default {
   components: {
-    NavigationDrawer
+    NavigationDrawer,
+    "progress-loading": Progress,
   },
   data() {
     return {
+      overlay: false,
       empty: true,
       userId: this.$store.state.user.userId,
       searchSkillDialog: false,
@@ -556,8 +580,8 @@ export default {
       searchUser: {
         id: "",
         name: "",
-        profileImage: ""
-      }
+        profileImage: "",
+      },
     };
   },
 
@@ -579,30 +603,30 @@ export default {
     return {
       projects: projects,
       users: users,
-      name: users[0].userId
+      name: users[0].userId,
     };
   },
   mounted() {
-    $(document).ready(function() {
-      $("#div2").on("scroll", function() {
+    $(document).ready(function () {
+      $("#div2").on("scroll", function () {
         $("#div1").scrollLeft($(this).scrollLeft());
       });
     });
 
-    $(document).ready(function() {
-      $("#div1").on("scroll", function() {
+    $(document).ready(function () {
+      $("#div1").on("scroll", function () {
         $("#div2").scrollLeft($(this).scrollLeft());
       });
     });
 
-    $(document).ready(function() {
-      $("#div2").on("scroll", function() {
+    $(document).ready(function () {
+      $("#div2").on("scroll", function () {
         $("#div3").scrollTop($(this).scrollTop());
       });
     });
 
-    $(document).ready(function() {
-      $("#div3").on("scroll", function() {
+    $(document).ready(function () {
+      $("#div3").on("scroll", function () {
         $("#div2").scrollTop($(this).scrollTop());
       });
     });
@@ -642,7 +666,7 @@ export default {
     cancelSearch() {
       this.$store.dispatch("skillMatrix/fetchOrganizationSkills", {
         limit: 10,
-        offset: 0
+        offset: 0,
       });
       this.searchUser = null;
       this.searchSkills = "";
@@ -656,14 +680,14 @@ export default {
       this.$store.dispatch("skillMatrix/fetchOrganizationSkills", {
         // limit: this.users.length,
         limit: this.loadLimit,
-        offset: 0
+        offset: 0,
       });
     },
     loadAllMatrix() {
       this.loadLimit = this.users.length + 1;
       this.$store.dispatch("skillMatrix/fetchOrganizationSkills", {
         limit: this.users.length,
-        offset: 0
+        offset: 0,
       });
     },
     searchDialogOpen() {
@@ -676,8 +700,8 @@ export default {
           `/category/${categoryId}/skill`,
           {
             headers: {
-              userId: this.userId
-            }
+              userId: this.userId,
+            },
           }
         );
         console.log("RETRIVED", categorySkillResponse.data);
@@ -685,28 +709,31 @@ export default {
       } catch (error) {
         console.log("Error fetching selected category skills", error);
       }
-    }
+    },
   },
   created() {
-    this.$store.dispatch("skillMatrix/fetchOrganizationSkills", {
-      // limit: this.users.length,
-      limit: 10,
-      offset: 0
+    this.overlay = true;
+    Promise.all([
+      this.$store.dispatch("skillMatrix/fetchOrganizationSkills", {
+        limit: 10,
+        offset: 0,
+      }),
+      this.$store.dispatch("project/clearProject"),
+      this.$store.dispatch("skillMatrix/fetchSkillCategory"),
+      this.$store.dispatch("skillMatrix/fetchCategorySkillMapping"),
+      this.$store.dispatch("skillMatrix/fetchUserSkills", this.userId),
+    ]).finally(() => {
+      this.overlay = false;
     });
-    this.$store.dispatch("project/clearProject");
-    this.$store.dispatch("skillMatrix/fetchSkillCategory");
-    this.$store.dispatch("skillMatrix/fetchCategorySkillMapping");
-
-    this.$store.dispatch("skillMatrix/fetchUserSkills", this.userId);
   },
   computed: {
     ...mapState({
-      skillCategory: state => state.skillMatrix.skillCategory,
-      categorySkills: state => state.skillMatrix.skills,
-      categorySkillMapping: state => state.skillMatrix.categorySkillMapping,
-      userSkills: state => state.skillMatrix.userSkills,
-      organizationSkills: state => state.skillMatrix.organizationSkills,
-      skillFilter: state => state.skillMatrix.skillFilter
+      skillCategory: (state) => state.skillMatrix.skillCategory,
+      categorySkills: (state) => state.skillMatrix.skills,
+      categorySkillMapping: (state) => state.skillMatrix.categorySkillMapping,
+      userSkills: (state) => state.skillMatrix.userSkills,
+      organizationSkills: (state) => state.skillMatrix.organizationSkills,
+      skillFilter: (state) => state.skillMatrix.skillFilter,
     }),
     skillArray() {
       let SkillSearchList = this.categorySkillMapping;
@@ -720,7 +747,7 @@ export default {
           let skill = SkillSearchList[index1].skillSet[index2];
           skillList.push({
             name: skill.skillName,
-            id: skill.skillId
+            id: skill.skillId,
           });
         }
       }
@@ -734,7 +761,7 @@ export default {
         userList.push({
           name: user.firstName + " " + user.lastName,
           id: user.userId,
-          profileImage: user.profileImage
+          profileImage: user.profileImage,
         });
       }
       return userList;
@@ -744,8 +771,8 @@ export default {
       get() {
         return this.selectedSkills;
       },
-      set(value) {}
-    }
-  }
+      set(value) {},
+    },
+  },
 };
 </script>

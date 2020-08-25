@@ -66,6 +66,8 @@
                 <v-spacer></v-spacer>
 
                 <v-btn
+                  depressed
+                  class="text-capitalize"
                   color="error"
                   width="100px"
                   @click="dialog = false"
@@ -73,6 +75,8 @@
                 >Cancel</v-btn>
                 <v-spacer></v-spacer>
                 <v-btn
+                  depressed
+                  class="text-capitalize"
                   :disabled="!isValid"
                   color="success"
                   width="100px"
@@ -95,22 +99,29 @@
       ></component>
     </div>
     <!--  <success-popup /> -->
+    <v-overlay :value="overlay" color="black">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 
 <script>
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
+import TaskComments from "~/components/tasks/taskComments";
 import { required } from "vuelidate/lib/validators";
 import { mapState } from "vuex";
+import Progress from "~/components/popups/progress";
 
 export default {
   components: {
     "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup
+    "error-popup": ErrorPopup,
+    "progress-loading": Progress,
   },
   data() {
     return {
+      overlay: false,
       errorMessage: "",
       successMessage: "",
       isValid: true,
@@ -119,10 +130,10 @@ export default {
         assignerId: this.$store.state.user.userId,
         assigneeId: "",
         assigneeJobRole: "",
-        assigneeProjectRole: this.getProjectRole()
+        assigneeProjectRole: this.getProjectRole(),
       },
-      projectRoleRules: [value => !!value || "Project role is required!"],
-      assigneeRoleRules: [value => !!value || "Assignee is required!"],
+      projectRoleRules: [(value) => !!value || "Project role is required!"],
+      assigneeRoleRules: [(value) => !!value || "Assignee is required!"],
       isShow: false,
       selected: false,
       dialog: false,
@@ -132,13 +143,13 @@ export default {
       select: null,
       states: [],
       component: "",
-      success: ""
+      success: "",
     };
   },
   watch: {
     search(val) {
       val && val !== this.select && this.querySelections(val);
-    }
+    },
   },
   methods: {
     close() {
@@ -154,15 +165,17 @@ export default {
       let assigneeProjectRoleId = this.getProjectRole();
       this.addUser.assigneeProjectRole = assigneeProjectRoleId;
       let response;
+      this.overlay = true;
       try {
         response = await this.$axios.$post(
           `/projects/${this.projectId}/users`,
           this.addUser
         );
-        this.$store.dispatch(
-          "task/fetchProjectUserCompletionTasks",
-          this.projectId
-        );
+        this.$store
+          .dispatch("task/fetchProjectUserCompletionTasks", this.projectId)
+          .finally(() => {
+            this.overlay = false;
+          });
         this.addUser.assigneeId = "";
         this.addUser.assigneeJobRole = "";
         this.selected = false;
@@ -174,6 +187,7 @@ export default {
         this.success = response.message;
         this.$refs.form.reset();
       } catch (e) {
+        this.overlay = false;
         console.log("Error adding a User", e);
         this.errorMessage = e.response.data;
         this.component = "error-popup";
@@ -189,12 +203,12 @@ export default {
         this.states.push({
           name: user.firstName + " " + user.lastName,
           id: user,
-          img: user.profileImage
+          img: user.profileImage,
         });
       }
       this.loading = true;
       setTimeout(() => {
-        this.items = this.states.filter(e => {
+        this.items = this.states.filter((e) => {
           return (e || "").toLowerCase().indexOf((v || "").toLowerCase()) > -1;
         });
         this.loading = false;
@@ -207,12 +221,12 @@ export default {
       } else {
         return 3;
       }
-    }
+    },
   },
   computed: {
     ...mapState({
-      users: state => state.user.users,
-      projectId: state => state.project.project.projectId
+      users: (state) => state.user.users,
+      projectId: (state) => state.project.project.projectId,
     }),
     adminStatus: {
       get() {
@@ -220,9 +234,9 @@ export default {
       },
       set(value) {
         this.selected = !this.selected;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 

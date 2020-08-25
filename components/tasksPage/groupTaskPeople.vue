@@ -41,8 +41,8 @@
                   <v-progress-linear
                     v-if="assignee.totalTasks == 0"
                     value="0"
-                    color="#2EC973"
-                    background-color="red"
+                    color="#66B25F"
+                    background-color="#FF9F9F"
                     height="13"
                     reactive
                   >
@@ -51,8 +51,8 @@
                   <v-progress-linear
                     v-else
                     :value="(assignee.tasksCompleted/assignee.totalTasks)*100"
-                    color="#2EC973"
-                    background-color="red"
+                    color="#66B25F"
+                    background-color="#FF9F9F"
                     height="13"
                     rounded
                     reactive
@@ -107,8 +107,8 @@
                 <div class="progressLine">
                   <v-progress-linear
                     :value="(assignee.tasksCompleted/assignee.totalTasks)*100"
-                    color="#2EC973"
-                    background-color="red"
+                    color="#66B25F"
+                    background-color="#FF9F9F"
                     height="13"
                     rounded
                     reactive
@@ -143,26 +143,26 @@ export default {
   props: ["group", "users"],
   components: {
     removeGroupMember,
-    addGroupPeople
+    addGroupPeople,
   },
   data() {
     return {
       // userList: this.people,
       skill: 0,
-      progress: this.progress
+      progress: this.progress,
     };
   },
 
   methods: {
     fetchUsers() {
       // console.log("projectId", this.projectId);
-    }
+    },
   },
   computed: {
     ...mapState({
-      completionTasks: state => state.groups.groupPeople.groupPeople
-    })
-  }
+      completionTasks: (state) => state.groups.groupPeople.groupPeople,
+    }),
+  },
 };
 </script>
 

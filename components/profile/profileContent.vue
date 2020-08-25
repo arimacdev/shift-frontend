@@ -30,10 +30,11 @@
           </template>
           <div class="pictureUploadButton">
             <v-btn
+              depressed
               :disabled="disableButton"
               :loading="loading"
               color="#0BAFFF"
-              class="ma-2 white--text"
+              class="ma-2 white--text text-capitalize"
               @click="submit()"
               x-small
             >
@@ -41,22 +42,13 @@
               <v-icon right dark>mdi-upload</v-icon>
             </v-btn>
 
-            <v-progress-circular
-              v-if="uploadLoading == true"
-              indeterminate
-              color="primary"
-            ></v-progress-circular>
+            <v-progress-circular v-if="uploadLoading == true" indeterminate color="primary"></v-progress-circular>
           </div>
         </form>
 
         <!-- ----------------------- slack --------------------- -->
 
-        <v-card
-          class="mx-auto slackCard"
-          max-width="344"
-          height="220px"
-          outlined
-        >
+        <v-card class="mx-auto slackCard" max-width="344" height="220px" outlined>
           <v-img
             class="white--text align-end slackImage"
             width="100px"
@@ -73,10 +65,7 @@
                 height
                 width="120"
                 src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1592584747849_add_to_slack.png"
-                srcset="
-                  https://platform.slack-edge.com/img/add_to_slack.png    1x,
-                  https://platform.slack-edge.com/img/add_to_slack@2x.png 2x
-                "
+                srcset="https://platform.slack-edge.com/img/add_to_slack.png    1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"
               />
             </a>
           </div>
@@ -87,9 +76,7 @@
             <!-- <v-btn x-small depressed color="primary" v-if="user.userSlackId != null && user.notification == false" v-show="enableNotification"  @click='changeNotificationStatus(user.notification)' >Enable Notifications</v-btn>  
             <v-btn x-small depressed   v-if="user.userSlackId != null && user.notification == true" v-show="disableNotification"  @click='changeNotificationStatus(user.notification)'>Disable Notifications</v-btn>-->
 
-            <div class="notiTitle" v-if="user.userSlackId != null">
-              Enable Notifications
-            </div>
+            <div class="notiTitle" v-if="user.userSlackId != null">Enable Notifications</div>
             <div class="notiButton">
               <v-switch
                 inset
@@ -100,8 +87,7 @@
                 v-if="user.userSlackId != null && user.notification == false"
                 v-show="enableNotification"
                 @click="changeNotificationStatus(user.notification)"
-                >Enable Notifications</v-switch
-              >
+              >Enable Notifications</v-switch>
               <v-switch
                 inset
                 v-model="switch1"
@@ -111,29 +97,21 @@
                 v-if="user.userSlackId != null && user.notification == true"
                 v-show="disableNotification"
                 @click="changeNotificationStatus(user.notification)"
-                >Disable Notifications</v-switch
-              >
+              >Disable Notifications</v-switch>
             </div>
           </div>
         </v-card>
 
         <!-- --------------------- one signal ----------------- -->
 
-        <v-card
-          class="mx-auto slackCard"
-          max-width="344"
-          height="250px"
-          outlined
-        >
+        <v-card class="mx-auto slackCard" max-width="344" height="250px" outlined>
           <v-img
             class="white--text align-end slackImage"
             width="100px"
             src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1592584626072_onesignal-1534463753064.png"
           ></v-img>
 
-          <div class="cardSlogan">
-            Get updates from all sorts of things that matter to you
-          </div>
+          <div class="cardSlogan">Get updates from all sorts of things that matter to you</div>
           <div class="oneSignalButton">
             <div
               class="onesignal-customlink-container cardOneSignalSlogan"
@@ -145,16 +123,16 @@
               class="text-capitalize oneSignalBtn"
               v-show="getstatus"
               @click="activateOneSignal()"
-              >Activate</v-btn
-            >
+            >Activate</v-btn>
             <v-btn
+              depressed
               color="red"
-              dark=""
+              dark
+              style="margin-top: -15px"
               class="text-capitalize oneSignalBtn"
               v-show="!getstatus"
               @click="deactivateOneSignal()"
-              >Deactivate</v-btn
-            >
+            >Deactivate</v-btn>
           </div>
         </v-card>
 
@@ -169,9 +147,7 @@
       </div>
     </div>
     <v-form @submit.prevent="handleSubmit" v-model="isValid" ref="form">
-      <div class="profileUserName">
-        {{ user.firstName }} {{ user.lastName }}
-      </div>
+      <div class="profileUserName">{{ user.firstName }} {{ user.lastName }}</div>
 
       <div class="userDetails">
         <p class="userName"></p>
@@ -241,9 +217,7 @@
             <div
               v-if="$v.password.$error && !$v.password.minLength"
               class="errorText"
-            >
-              Password must be at least 6 characters
-            </div>
+            >Password must be at least 6 characters</div>
           </v-col>
           <v-col sm="6" md="6">
             <v-text-field
@@ -257,9 +231,7 @@
             <div
               v-if="$v.confirmPassword.$error && !$v.confirmPassword.sameAs"
               class="errorText"
-            >
-              Passwords must be identical
-            </div>
+            >Passwords must be identical</div>
           </v-col>
         </v-row>
         <v-row>
@@ -279,9 +251,7 @@
                   <v-icon size="20" color>icon-user</v-icon>
                 </v-list-item-action>
                 <v-list-item-content class="buttonText">
-                  <v-list-item-title class="bodyWiew"
-                    >Edit profile details</v-list-item-title
-                  >
+                  <v-list-item-title class="bodyWiew">Edit profile details</v-list-item-title>
                 </v-list-item-content>
                 <!-- <div class="iconBackCircle">
                   <v-icon size="17" color="#0BAFFF">mdi-pencil-outline</v-icon>
@@ -290,6 +260,7 @@
             </v-btn>
 
             <v-btn
+              depressed
               v-else-if="
                 this.confirmPassword == '' &&
                   this.password == '' &&
@@ -298,34 +269,31 @@
               "
               height="50px"
               width="300px"
-              class="submitButtonEdit"
+              class="submitButtonEdit text-capitalize"
             >
               <v-list-item @click="postData()" dark>
                 <v-list-item-action>
                   <v-icon size="20" color>icon-user</v-icon>
                 </v-list-item-action>
                 <v-list-item-content class="buttonText">
-                  <v-list-item-title class="bodyWiew"
-                    >Edit profile details</v-list-item-title
-                  >
+                  <v-list-item-title class="bodyWiew">Edit profile details</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-btn>
             <v-btn
+              depressed
               v-else
               disabled
               height="50px"
               width="300px"
-              class="submitButtonEdit"
+              class="submitButtonEdit text-capitalize"
             >
               <v-list-item @click="postData()" dark>
                 <v-list-item-action>
                   <v-icon size="20" color>icon-user</v-icon>
                 </v-list-item-action>
                 <v-list-item-content class="buttonText">
-                  <v-list-item-title class="bodyWiew"
-                    >Edit profile details</v-list-item-title
-                  >
+                  <v-list-item-title class="bodyWiew">Edit profile details</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-btn>
@@ -349,18 +317,14 @@
                   <div
                     class="skillHeader"
                     :style="'background-color:' + category.categoryColorCode"
-                  >
-                    {{ category.categoryName }}
-                  </div>
+                  >{{ category.categoryName }}</div>
 
                   <div class="skillBody">
                     <div
                       style="padding-bottom: 10px"
                       v-for="(skill, index) in category.skillSet"
                       :key="index"
-                    >
-                      {{ skill.skillName }}
-                    </div>
+                    >{{ skill.skillName }}</div>
                   </div>
                 </div>
               </div>
@@ -388,27 +352,27 @@
           />
     <v-btn @click="websock">Connect</v-btn>
     
-    <v-btn @click="sendMessage">Send</v-btn> -->
+    <v-btn @click="sendMessage">Send</v-btn>-->
   </div>
 </template>
 
 <script>
-import EditProfile from '~/components/profile/editProfile';
-import axios from 'axios';
-import qs from 'qs';
-import { mapState } from 'vuex';
-import { required, minLength, sameAs } from 'vuelidate/lib/validators';
-import SuccessPopup from '~/components/popups/successPopup';
-import ErrorPopup from '~/components/popups/errorPopup';
-import Stomp from 'stompjs';
-import SockJS from 'sockjs-client';
+import EditProfile from "~/components/profile/editProfile";
+import axios from "axios";
+import qs from "qs";
+import { mapState } from "vuex";
+import { required, minLength, sameAs } from "vuelidate/lib/validators";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
+import Stomp from "stompjs";
+import SockJS from "sockjs-client";
 
 export default {
-  props: ['user'],
+  props: ["user"],
   components: {
-    'edit-profile': EditProfile,
-    'success-popup': SuccessPopup,
-    'error-popup': ErrorPopup,
+    "edit-profile": EditProfile,
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup,
   },
   // data: function(){
   // return{
@@ -418,11 +382,11 @@ export default {
   data() {
     return {
       isValid: true,
-      firstNameRules: [(value) => !!value || 'First name is required!'],
-      lastNameRules: [(value) => !!value || 'Last name is required!'],
+      firstNameRules: [(value) => !!value || "First name is required!"],
+      lastNameRules: [(value) => !!value || "Last name is required!"],
       emailRules: [
-        (value) => !!value || 'E-mail is required',
-        (value) => /.+@.+\..+/.test(value) || 'E-mail must be valid',
+        (value) => !!value || "E-mail is required",
+        (value) => /.+@.+\..+/.test(value) || "E-mail must be valid",
       ],
       getstatus: false,
       disableButton: true,
@@ -430,8 +394,8 @@ export default {
       switch2: false,
       uploadLoading: false,
       files: [],
-      errorMessage: '',
-      successMessage: '',
+      errorMessage: "",
+      successMessage: "",
       userName: this.user.userName,
       firstName: this.user.firstName,
       lastName: this.user.lastName,
@@ -440,13 +404,13 @@ export default {
       disableNotification: !this.user.notificationStatus,
       loader: null,
       loading: false,
-      password: '',
-      confirmPassword: '',
-      file: '',
+      password: "",
+      confirmPassword: "",
+      file: "",
       userId: this.$store.state.user.userId,
       dismissSecs: 5,
       dismissCountDown: 0,
-      component: '',
+      component: "",
       stompClient: null,
     };
   },
@@ -468,7 +432,7 @@ export default {
   },
 
   created() {
-    console.log('CREATED');
+    console.log("CREATED");
     this.checkActivationStatus();
     // const authCode = this.$route.query.code;
     // // console.log("SLACK CODE", authCode);
@@ -523,21 +487,21 @@ export default {
       if (process.browser) {
         window.OneSignal.isPushNotificationsEnabled((isEnabled) => {
           if (isEnabled) {
-            console.log('Push notifications are enabled!');
+            console.log("Push notifications are enabled!");
             this.getstatus = false;
           } else {
             this.getstatus = true;
-            console.log('Push notifications are not enabled yet.');
+            console.log("Push notifications are not enabled yet.");
           }
         });
       }
     },
     activateOneSignal() {
-      console.log('activate');
+      console.log("activate");
       if (process.browser) {
         window.OneSignal.getUserId().then((userId) => {
           if (userId) {
-            console.log('userId', userId);
+            console.log("userId", userId);
             this.changeOneSignalActivationStatus(userId, true);
             window.OneSignal.setSubscription(true);
             this.getstatus = false;
@@ -546,11 +510,11 @@ export default {
       }
     },
     deactivateOneSignal() {
-      console.log('deactivate');
+      console.log("deactivate");
       if (process.browser) {
         window.OneSignal.getUserId().then((userId) => {
           if (userId) {
-            console.log('userId', userId);
+            console.log("userId", userId);
             this.changeOneSignalActivationStatus(userId, false);
             window.OneSignal.setSubscription(false);
             this.getstatus = true;
@@ -566,8 +530,8 @@ export default {
           {
             subscriptionId: subscriptionId,
             subscriberId: this.$store.state.user.userId,
-            provider: 'OneSignal',
-            platform: 'Web',
+            provider: "OneSignal",
+            platform: "Web",
             notificationStatus: notificationStatus,
           },
           {
@@ -577,7 +541,7 @@ export default {
           }
         );
       } catch (e) {
-        console.log('error', e);
+        console.log("error", e);
       }
     },
     categorizedSkillMap() {
@@ -592,7 +556,7 @@ export default {
       return orderedSkillMap;
     },
     setVisible() {
-      console.log('DISABLED!');
+      console.log("DISABLED!");
 
       this.disableButton = false;
     },
@@ -624,16 +588,16 @@ export default {
         }
         // this.enableNotification = ;
         // this.disableNotification = ;
-        console.log('Notification Status updated successfuly', response);
+        console.log("Notification Status updated successfuly", response);
       } catch (e) {
-        console.log('Error Updating Notification Status', e);
+        console.log("Error Updating Notification Status", e);
       }
     },
 
     async postData() {
       let response;
       try {
-        if (this.password == '') {
+        if (this.password == "") {
           response = await this.$axios.$put(`/users/${this.userId}`, {
             firstName: this.user.firstName,
             lastName: this.user.lastName,
@@ -648,15 +612,15 @@ export default {
           });
         }
 
-        this.component = 'success-popup';
-        this.successMessage = 'Profile successfully updated';
+        this.component = "success-popup";
+        this.successMessage = "Profile successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
         // console.log(response.message);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -673,13 +637,13 @@ export default {
       }
     },
     close() {
-      this.component = '';
+      this.component = "";
     },
     async submit() {
       this.uploadLoading = true;
       let formData = new FormData();
-      formData.append('files', this.files);
-      formData.append('type', 'profileImage');
+      formData.append("files", this.files);
+      formData.append("type", "profileImage");
       this.files = null;
 
       let fileResponse;
@@ -689,20 +653,20 @@ export default {
           formData,
           {
             headers: {
-              'Content-Type': 'multipart/form-data',
+              "Content-Type": "multipart/form-data",
               user: this.userId,
             },
           }
         );
         this.uploadLoading = false;
-        this.component = 'success-popup';
-        this.successMessage = 'Profile successfully updated';
-        console.log('group people response', this.taskFiles);
+        this.component = "success-popup";
+        this.successMessage = "Profile successfully updated";
+        console.log("group people response", this.taskFiles);
         location.reload();
       } catch (e) {
-        console.log('Error uploading prof pic: ', e);
-        this.component = 'error-popup';
-        console.log('File Upload Failed: ' + e);
+        console.log("Error uploading prof pic: ", e);
+        this.component = "error-popup";
+        console.log("File Upload Failed: " + e);
         this.errorMessage = e.response.data;
         this.uploadLoading = false;
       }
@@ -722,7 +686,7 @@ export default {
       minLength: minLength(6),
     },
     confirmPassword: {
-      sameAsPassword: sameAs('password'),
+      sameAsPassword: sameAs("password"),
     },
   },
 };
