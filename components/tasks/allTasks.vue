@@ -673,6 +673,7 @@
         :taskObject="taskObject"
         :stomp="stomp"
         @taskDialogClosing="taskDialogClosing()"
+        @clearStore="clearStore()"
         :pageNum="1"
       />
     </v-dialog>
@@ -882,6 +883,15 @@ export default {
     this.scrollEvent();
   },
   methods: {
+    clearStore() {
+      this.$store.dispatch("task/emptyStore");
+      this.scrollCount = 1;
+      this.$store.dispatch("task/setIndex", {
+        startIndex: 0,
+        endIndex: 10,
+        isAllTasks: false,
+      });
+    },
     scrollEvent() {
       var myDiv = document.getElementById("mainDiv");
       myDiv.onscroll = () => {
@@ -1063,14 +1073,15 @@ export default {
             },
           }
         );
-        this.scrollCount = 1;
+
         this.$store.dispatch("task/emptyStore");
+        this.scrollCount = 1;
         this.$store.dispatch("task/setIndex", {
           startIndex: 0,
           endIndex: 10,
           isAllTasks: false,
         });
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: taskId,
           startIndex: 0,
@@ -1087,8 +1098,11 @@ export default {
         }, 3000);
         this.waiting = false;
 
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+
         // console.log("update task status response", response);
       } catch (e) {
+        // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {

@@ -208,12 +208,12 @@
                   :class="statusCheck(task.issueType)"
                 >{{ taskTypeFormatting(task.issueType) }}</div>-->
                 <v-list-item-action>
-                  <v-chip class="chipsContent" :class="statusCheck(task.issueType)" x-small>
+                  <v-chip class="chipsContent" :class="statusCheck(task.taskStatus)" x-small>
                     <span class="fontRestructure12">{{ taskStatusFormatting(task.taskStatus) }}</span>
                   </v-chip>
                 </v-list-item-action>
                 <v-list-item-action>
-                  <v-chip class="chipsContent" :class="statusCheck(task.issueType)" x-small>
+                  <v-chip class="chipsContent" :class="typeCheck(task.issueType)" x-small>
                     <span class="fontRestructure12">{{ taskTypeFormatting(task.issueType) }}</span>
                   </v-chip>
                 </v-list-item-action>
@@ -315,12 +315,12 @@
                 :class="statusCheck(task.issueType)"
             >{{ taskTypeFormatting(task.issueType) }}</div>-->
             <v-list-item-action>
-              <v-chip class="chipsContent" :class="statusCheck(task.issueType)" x-small>
+              <v-chip class="chipsContent" :class="statusCheck(task.taskStatus)" x-small>
                 <span class="fontRestructure12">{{ taskStatusFormatting(task.taskStatus) }}</span>
               </v-chip>
             </v-list-item-action>
             <v-list-item-action>
-              <v-chip class="chipsContent" :class="statusCheck(task.issueType)" x-small>
+              <v-chip class="chipsContent" :class="typeCheck(task.issueType)" x-small>
                 <span class="fontRestructure12">{{ taskTypeFormatting(task.issueType) }}</span>
               </v-chip>
             </v-list-item-action>
@@ -361,6 +361,7 @@
         :taskObject="taskObject"
         :stomp="stomp"
         @taskDialogClosing="taskDialogClosing()"
+        @clearStore="clearStore()"
       />
     </v-dialog>
 
@@ -521,6 +522,15 @@ export default {
     "progress-loading": Progress,
   },
   methods: {
+    clearStore() {
+      this.$store.dispatch("task/emptyStore");
+      this.scrollCount = 1;
+      this.$store.dispatch("task/setIndex", {
+        startIndex: 0,
+        endIndex: 10,
+        isAllTasks: false,
+      });
+    },
     scrollEvent() {
       var myDiv = document.getElementById("mainDiv");
       myDiv.onscroll = () => {
@@ -540,20 +550,24 @@ export default {
       };
     },
     getMyTasksLazyLoading(scrollCount) {
-      console.log("SCROLL COUNT ");
-      this.$store.dispatch("task/setIndex", {
-        startIndex: scrollCount * 10 - 10,
-        endIndex: scrollCount * 10,
-        isAllTasks: false,
+      this.overlay = true;
+      Promise.all([
+        this.$store.dispatch("task/setIndex", {
+          startIndex: scrollCount * 10 - 10,
+          endIndex: scrollCount * 10,
+          isAllTasks: false,
+        }),
+        this.$store.dispatch(
+          "task/fetchTasksMyTasks",
+          this.$route.params.projects
+        ),
+        this.$store.dispatch(
+          "task/fetchMyTaskCount",
+          this.$route.params.projects
+        ),
+      ]).finally(() => {
+        this.overlay = false;
       });
-      this.$store.dispatch(
-        "task/fetchTasksMyTasks",
-        this.$route.params.projects
-      );
-      this.$store.dispatch(
-        "task/fetchMyTaskCount",
-        this.$route.params.projects
-      );
     },
     getMyTasks() {
       console.log("SCROLL COUNT ");
@@ -585,12 +599,6 @@ export default {
       }
     },
     async closeTask(taskId, filter) {
-      this.$store.dispatch("task/emptyStore");
-      this.$store.dispatch("task/setIndex", {
-        startIndex: 0,
-        endIndex: 10,
-        isAllTasks: false,
-      });
       this.waiting = true;
       // console.log("onchange updated status ->");
       let response;
@@ -606,7 +614,13 @@ export default {
             },
           }
         );
-        this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
+        this.$store.dispatch("task/emptyStore");
+        this.scrollCount = 1;
+        this.$store.dispatch("task/setIndex", {
+          startIndex: 0,
+          endIndex: 10,
+          isAllTasks: false,
+        });
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
@@ -621,6 +635,8 @@ export default {
           this.close();
         }, 3000);
         this.waiting = false;
+
+        this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
         // console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
@@ -1143,7 +1159,7 @@ export default {
 
       this.$store.dispatch("comments/fetchTaskCommentLength", task.taskId);
     },
-    statusCheck(task) {
+    typeCheck(task) {
       if (task === "development") {
         return "developmentStatus";
       } else if (task === "qa") {
@@ -1160,6 +1176,75 @@ export default {
         return "generalStatus";
       } else {
         return "otherStatus";
+      }
+    },
+    statusCheck(task) {
+      switch (task) {
+        case "pending":
+          return "pendingStatus";
+          break;
+        case "onHold":
+          return "onHoldStatus";
+          break;
+        case "open":
+          return "openStatus";
+          break;
+        case "cancel":
+          return "cancelStatus";
+          break;
+        case "reOpened":
+          return "reOpenedStatus";
+          break;
+        case "fixing":
+          return "fixingStatus";
+          break;
+        case "testing":
+          return "testingStatus";
+          break;
+        case "resolved":
+          return "resolvedStatus";
+          break;
+        case "inprogress":
+          return "inprogressStatus";
+          break;
+        case "completed":
+          return "completedStatus";
+          break;
+        case "implementing":
+          return "implementingStatus";
+          break;
+        case "underReview":
+          return "underReviewStatus";
+          break;
+        case "waitingForApproval":
+          return "waitingForApprovalStatus";
+          break;
+        case "review":
+          return "reviewStatus";
+          break;
+        case "discussion":
+          return "discussionStatus";
+          break;
+        case "waitingResponse":
+          return "waitingResponseStatus";
+          break;
+        case "ready":
+          return "readyStatus";
+          break;
+        case "deployed":
+          return "deployedStatus";
+          break;
+        case "fixed":
+          return "fixedStatus";
+          break;
+        case "rejected":
+          return "rejectedStatus";
+          break;
+        case "closed":
+          return "closedStatus";
+          break;
+        default:
+          return "defaultStatus";
       }
     },
     dueDateCheck(task) {

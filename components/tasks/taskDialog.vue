@@ -1252,12 +1252,7 @@ export default {
         });
         this.component = "success-popup";
         this.successMessage = "Estimated Weight successfully updated";
-        this.$store.dispatch("task/emptyStore");
-        this.$store.dispatch("task/setIndex", {
-          startIndex: 0,
-          endIndex: 10,
-          isAllTasks: false,
-        });
+        this.$emit("clearStore");
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
 
         this.userExists = true;
@@ -1313,12 +1308,7 @@ export default {
         });
         this.component = "success-popup";
         this.successMessage = "Actual Weight successfully updated";
-        this.$store.dispatch("task/emptyStore");
-        this.$store.dispatch("task/setIndex", {
-          startIndex: 0,
-          endIndex: 10,
-          isAllTasks: false,
-        });
+        this.$emit("clearStore");
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
 
         this.userExists = true;
@@ -1363,12 +1353,7 @@ export default {
         // this.overlay = false;
         this.component = "success-popup";
         this.successMessage = "Estimated Weight successfully updated";
-        this.$store.dispatch("task/emptyStore");
-        this.$store.dispatch("task/setIndex", {
-          startIndex: 0,
-          endIndex: 10,
-          isAllTasks: false,
-        });
+        this.$emit("clearStore");
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
 
         this.userExists = true;
@@ -1412,12 +1397,7 @@ export default {
         });
         this.component = "success-popup";
         this.successMessage = "Actual Weight successfully updated";
-        this.$store.dispatch("task/emptyStore");
-        this.$store.dispatch("task/setIndex", {
-          startIndex: 0,
-          endIndex: 10,
-          isAllTasks: false,
-        });
+        this.$emit("clearStore");
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
 
         this.userExists = true;
@@ -1596,12 +1576,7 @@ export default {
         this.$emit("listenChange");
         this.$emit("shrinkSideBar");
         this.taskDialogClosing();
-        this.$store.dispatch("task/emptyStore");
-        this.$store.dispatch("task/setIndex", {
-          startIndex: 0,
-          endIndex: 10,
-          isAllTasks: false,
-        });
+        this.$emit("clearStore");
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         // console.log(response.data);
         this.overlay = false;
@@ -1636,12 +1611,7 @@ export default {
             },
           }
         );
-        this.$store.dispatch("task/emptyStore");
-        this.$store.dispatch("task/setIndex", {
-          startIndex: 0,
-          endIndex: 10,
-          isAllTasks: false,
-        });
+        this.$emit("clearStore");
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
 
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
@@ -1683,12 +1653,7 @@ export default {
             },
           }
         );
-        this.$store.dispatch("task/emptyStore");
-        this.$store.dispatch("task/setIndex", {
-          startIndex: 0,
-          endIndex: 10,
-          isAllTasks: false,
-        });
+        this.$emit("clearStore");
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
@@ -1746,12 +1711,7 @@ export default {
             this.updatedTask.taskName
           );
           // } else {
-          this.$store.dispatch("task/emptyStore");
-          this.$store.dispatch("task/setIndex", {
-            startIndex: 0,
-            endIndex: 10,
-            isAllTasks: false,
-          });
+          this.$emit("clearStore");
           this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
           // }
           setTimeout(() => {
@@ -1797,12 +1757,7 @@ export default {
         });
         this.component = "success-popup";
         this.successMessage = "Assignee successfully updated";
-        this.$store.dispatch("task/emptyStore");
-        this.$store.dispatch("task/setIndex", {
-          startIndex: 0,
-          endIndex: 10,
-          isAllTasks: false,
-        });
+        this.$emit("clearStore");
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
 
         this.userExists = true;
@@ -1855,12 +1810,7 @@ export default {
             },
           }
         );
-        this.$store.dispatch("task/emptyStore");
-        this.$store.dispatch("task/setIndex", {
-          startIndex: 0,
-          endIndex: 10,
-          isAllTasks: false,
-        });
+        this.$emit("clearStore");
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
@@ -1903,12 +1853,7 @@ export default {
             },
           }
         );
-        this.$store.dispatch("task/emptyStore");
-        this.$store.dispatch("task/setIndex", {
-          startIndex: 0,
-          endIndex: 10,
-          isAllTasks: false,
-        });
+        this.$emit("clearStore");
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
@@ -1985,12 +1930,7 @@ export default {
             },
           }
         );
-        this.$store.dispatch("task/emptyStore");
-        this.$store.dispatch("task/setIndex", {
-          startIndex: 0,
-          endIndex: 10,
-          isAllTasks: false,
-        });
+        this.$emit("clearStore");
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
