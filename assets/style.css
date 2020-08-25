@@ -2303,7 +2303,11 @@
 }
 .updatedSectionActions {
   margin-top: -20px;
-  margin-left: 20px;
+  margin-left: 10px;
+}
+.updatedSectionActionsDates {
+  margin-top: -30px;
+  margin-left: 5px;
 }
 .taskViewTitleSection {
   height: 50px;

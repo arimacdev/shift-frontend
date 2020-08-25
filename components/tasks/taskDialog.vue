@@ -671,6 +671,65 @@
                     <v-divider></v-divider>
                     <!-- ----------- Due date section --------- -->
 
+                    <div class="expansionViewHeaderUpdated">
+                      <v-list-item class>
+                        <v-list-item-icon>
+                          <v-icon size="25" color="#66B25F">mdi-calendar-blank-outline</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-title class="viewTaskFontColors">Due Date</v-list-item-title>
+                      </v-list-item>
+                      <v-list-item-content class="parentChildTaskList">
+                        <div class="updatedSectionActionsDates">
+                          <v-dialog
+                            ref="dialog"
+                            v-model="modal"
+                            :return-value.sync="dueDate"
+                            persistent
+                            width="290px"
+                          >
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-text-field
+                                v-model="dueDate"
+                                solo
+                                flat
+                                readonly
+                                v-bind="attrs"
+                                v-on="on"
+                                @focus="dueDatePicker = true; dueTimePicker = false"
+                              ></v-text-field>
+                            </template>
+                            <v-date-picker v-if="dueDatePicker" v-model="dueDatePart" scrollable>
+                              <v-spacer></v-spacer>
+                              <v-btn
+                                text
+                                color="primary"
+                                @click="modal = false; dueDatePicker = false; dueTimePicker = false"
+                              >Cancel</v-btn>
+                              <v-btn
+                                text
+                                color="primary"
+                                @click="dueDatePicker = false; dueTimePicker = true"
+                              >OK</v-btn>
+                            </v-date-picker>
+                            <v-time-picker v-if="dueTimePicker" v-model="dueTimePart" scrollable>
+                              <v-spacer></v-spacer>
+                              <v-btn
+                                text
+                                color="primary"
+                                @click="modal = false; dueDatePicker = false; dueTimePicker = false"
+                              >Cancel</v-btn>
+                              <v-btn
+                                text
+                                color="primary"
+                                @click="$refs.dialog.save(dueDatePart +' ' + dueTimePart);"
+                              >OK</v-btn>
+                            </v-time-picker>
+                          </v-dialog>
+                        </div>
+                      </v-list-item-content>
+                    </div>
+                    <v-divider></v-divider>
+
                     <v-list-item>
                       <v-list-item-icon
                         style="background-color: #7CDD00; padding: 10px; border-radius: 50%"
@@ -1194,6 +1253,10 @@ export default {
   },
   data() {
     return {
+      dueDatePicker: false,
+      dueTimePicker: false,
+      dueDatePart: new Date().toISOString().substr(0, 10),
+      dueTimePart: "00:00",
       taskView: true,
       // ---------- for weight section -----------
       estimatedRules: [
@@ -2088,6 +2151,52 @@ export default {
       }
     },
 
+    async updateDueDate(dueDate) {
+      console.log("DUE DATE: " + dueDate);
+      const isoDate = new Date(
+        dueDate.getTime() - dueDate.getTimezoneOffset() * 60000
+      ).toISOString();
+      this.waiting = true;
+
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
+          {
+            taskDueDate: isoDate,
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.$emit("clearStore");
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10,
+        });
+
+        this.component = "success-popup";
+        this.successMessage = "Date successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        // console.log("update task dates response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        // console.log("Error updating a date", e);
+      }
+    },
+
     async updateTaskDates(type) {
       this.waiting = true;
       let dueDate;
@@ -2483,6 +2592,30 @@ export default {
       },
       set(value) {
         this.updatedTask.taskNote = value;
+      },
+    },
+
+    dueDate: {
+      get() {
+        if (
+          this.selectedTask.taskDueDateAt === null ||
+          this.selectedTask.taskDueDateAt === "1970-01-01T05:30:00.000+0000"
+        ) {
+          return "Add Due Date";
+        } else {
+          if (this.updatedTask.taskDueDateAt != "") {
+            return this.updatedTask.taskDueDateAt;
+          } else {
+            return this.selectedTask.taskDueDateAt;
+          }
+        }
+      },
+      set(value) {
+        this.updatedTask.taskDueDateAt = new Date(value);
+        // console.log(
+        //   "SET VALUE " + this.updatedTask.taskDueDateAt.toISOString()
+        // );
+        this.updateDueDate(this.updatedTask.taskDueDateAt);
       },
     },
 
