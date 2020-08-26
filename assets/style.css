@@ -2040,6 +2040,10 @@
   padding-top: 2px;
   /* border-radius: 5px; */
 }
+.emptyMsg {
+  font-size: 16px;
+  color: #576377;
+}
 .restructuredGroupMainTaskFilterList {
   background-color: #edf0f5;
   margin-bottom: 10px;

@@ -113,9 +113,7 @@
 
           <div class="cardSlogan">Get updates from all sorts of things that matter to you</div>
           <div class="oneSignalButton">
-            <div
-              class="onesignal-customlink-container cardOneSignalSlogan"
-            ></div>
+            <div class="onesignal-customlink-container cardOneSignalSlogan"></div>
             <v-btn
               color="teal"
               outlined
@@ -309,13 +307,15 @@
           <v-col>
             <div class="skillDisplayDivProfile">
               <div class="skillProfileScrollingWrapper">
-                <div v-if="userSkillMap.length === 0">
-                  No Skills are added to your profile yet
-                </div>
-                <div v-else
+                <div
+                  class="emptyMsg"
+                  v-if="userSkillMap.length === 0"
+                >No Skills are added to your profile yet</div>
+                <div
+                  v-else
                   class="skillCard text-center"
                   v-for="(category, index) in userSkillMap"
-                  :key="index" 
+                  :key="index"
                 >
                   <div
                     class="skillHeader"
@@ -614,6 +614,8 @@ export default {
             password: this.password,
           });
         }
+
+        this.$store.dispatch("userProfile/fetchProfilePicture");
 
         this.component = "success-popup";
         this.successMessage = "Profile successfully updated";
