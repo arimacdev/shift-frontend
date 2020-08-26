@@ -104,7 +104,7 @@
 
         <!-- --------------------- one signal ----------------- -->
 
-        <v-card class="mx-auto slackCard" max-width="344" height="250px" outlined>
+        <!-- <v-card class="mx-auto slackCard" max-width="344" height="250px" outlined>
           <v-img
             class="white--text align-end slackImage"
             width="100px"
@@ -132,7 +132,7 @@
               @click="deactivateOneSignal()"
             >Deactivate</v-btn>
           </div>
-        </v-card>
+        </v-card>-->
 
         <div>
           <!-- ---- this is a switch button if applicable ---- -->
