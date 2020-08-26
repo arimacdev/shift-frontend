@@ -35,130 +35,63 @@
           </v-form>
           <!-- -------- loop task list here ----------- -->
           <div v-for="(task, index) in groupTasks" :key="index">
-            <v-hover open-delay="600" v-slot:default="{ hover }">
-              <div v-if="taskSelect == 'all'">
-                <div class="restructuredMainTaskList">
-                  <v-list-item class="upperListItemGroup">
-                    <v-list-item class="innerListItemGroup">
-                      <!-- @click.stop="drawer = !drawer" -->
-                      <v-list-item-action>
-                        <v-icon
-                          v-if="task.parentTask.taskStatus == 'closed'"
-                          size="25"
-                          color="#66B25F"
-                        >mdi-checkbox-blank</v-icon>
-                        <v-icon
-                          @click="
-                      closeTask(task.parentTask.taskId)"
-                          v-else
-                          size="25"
-                          color="#939393"
-                        >mdi-checkbox-blank-outline</v-icon>
-                      </v-list-item-action>
-                      <div class="tasklistTaskNames restructuredMainTaskName">
-                        <div
-                          @click="
-              selectGroupTask(task.parentTask, task);"
-                          style="cursor: pointer"
-                        >
-                          <span class="restructuredMainTaskCode">{{task.parentTask.secondaryTaskId}}</span>
-                          {{ task.parentTask.taskName }}
-                        </div>
-                      </div>
-                      <v-list-item-content class="updatedDate">
-                        <v-list-item-title
-                          class="fontRestructure12"
-                          :class="dueDateCheck(task.parentTask)"
-                        >{{ getTaskDueDate(task.parentTask.taskDueDateAt) }}</v-list-item-title>
-                      </v-list-item-content>
-                      <div style="margin-right: -25px; margin-left: 10px">
-                        <v-list-item-avatar size="25">
-                          <v-img
-                            v-if="task.parentTask.taskAssigneeProfileImage != null && task.parentTask.taskAssigneeProfileImage != ''"
-                            :src="task.parentTask.taskAssigneeProfileImage"
-                          ></v-img>
-                          <v-img
-                            v-else
-                            src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                          ></v-img>
-                        </v-list-item-avatar>
-                      </div>
-                    </v-list-item>
-                  </v-list-item>
-                </div>
-
-                <!-- -------------- sub task design --------------- -->
-                <div
-                  class="restructuredSubTaskCreate"
-                  v-if="task.parentTask.taskStatus != 'closed'"
-                >
-                  <v-expand-transition>
-                    <v-text-field
-                      v-if="hover"
-                      v-model="subTaskName[index]"
-                      background-color="#FFFFFF"
-                      outlined
-                      solo
-                      style="margin-top: 5px; border-radius: 0px"
-                      dense
-                      flat
-                      prepend-inner-icon="mdi-plus-circle"
-                      label="Add a sub task..."
-                      class
-                      @keyup.enter="addGroupSubTask(index, task.parentTask.taskId)"
-                      clearable
-                    ></v-text-field>
-                  </v-expand-transition>
-                </div>
-                <div class="restructuredSubTaskCreate" v-else style="margin-bottom: -5px;"></div>
-                <div v-if="task.childTasks.length !== 0">
-                  <div
-                    v-for="(childTask, index) in task.childTasks"
-                    :key="index"
-                    class="restructuredSubTaskListRestructure"
-                  >
+            <div v-if="taskSelect == 'all'">
+              <v-hover open-delay="600" v-slot:default="{ hover }">
+                <div>
+                  <div class="restructuredMainTaskList">
                     <v-list-item class="upperListItemGroup">
                       <v-list-item class="innerListItemGroup">
                         <!-- @click.stop="drawer = !drawer" -->
                         <v-list-item-action>
                           <v-icon
-                            v-if="childTask.taskStatus == 'closed'"
+                            v-if="task.parentTask.taskStatus == 'closed'"
                             size="25"
                             color="#66B25F"
                           >mdi-checkbox-blank</v-icon>
                           <v-icon
                             @click="
-                      closeTask(childTask.taskId)"
-                            style="cursor: pointer"
+                      closeTask(task.parentTask.taskId)"
                             v-else
                             size="25"
                             color="#939393"
                           >mdi-checkbox-blank-outline</v-icon>
                         </v-list-item-action>
-                        <div class="tasklistTaskNames restructuredSubTaskName">
-                          <div
-                            style="cursor: pointer"
-                            @click="
-                selectGroupTask(childTask, task);
-                taskDialog = true;
-              "
-                          >
-                            <span class="restructuredMainTaskCode">{{childTask.secondaryTaskId}}</span>
-                            {{ childTask.taskName }}
+                        <v-list-item-content
+                          @click="
+                      selectTask(task.parentTask, task);
+                      taskDialog = true;"
+                          style="cursor: pointer"
+                        >
+                          <!-- <div class="tasklistTaskNames restructuredMainTaskName"> -->
+                          <div class="fontRestructure12" style="color: #576377">
+                            <span>{{ task.parentTask.taskName }}</span>
                           </div>
-                        </div>
+                          <!-- </div> -->
+                        </v-list-item-content>
 
-                        <v-list-item-content class="updatedDate">
+                        <!-- <div class="tasklistTaskNames restructuredMainTaskName">
+                          <div
+                            @click="
+              selectGroupTask(task.parentTask, task);"
+                            style="cursor: pointer"
+                          >
+                            <span
+                              class="restructuredMainTaskCode"
+                            >{{task.parentTask.secondaryTaskId}}</span>
+                            {{ task.parentTask.taskName }}
+                          </div>
+                        </div>-->
+                        <v-list-item-action class="updatedDate">
                           <v-list-item-title
                             class="fontRestructure12"
-                            :class="dueDateCheck(childTask)"
-                          >{{ getTaskDueDate(childTask.taskDueDateAt) }}</v-list-item-title>
-                        </v-list-item-content>
+                            :class="dueDateCheck(task.parentTask)"
+                          >{{ getTaskDueDate(task.parentTask.taskDueDateAt) }}</v-list-item-title>
+                        </v-list-item-action>
                         <div style="margin-right: -25px; margin-left: 10px">
                           <v-list-item-avatar size="25">
                             <v-img
-                              v-if="childTask.taskAssigneeProfileImage != null && childTask.taskAssigneeProfileImage != ''"
-                              :src="childTask.taskAssigneeProfileImage"
+                              v-if="task.parentTask.taskAssigneeProfileImage != null && task.parentTask.taskAssigneeProfileImage != ''"
+                              :src="task.parentTask.taskAssigneeProfileImage"
                             ></v-img>
                             <v-img
                               v-else
@@ -166,22 +99,119 @@
                             ></v-img>
                           </v-list-item-avatar>
                         </div>
-                        <!-- <div class="boardTabLinkIcon">
+                      </v-list-item>
+                    </v-list-item>
+                  </div>
+
+                  <!-- -------------- sub task design --------------- -->
+                  <div
+                    class="restructuredSubTaskCreate"
+                    v-if="task.parentTask.taskStatus != 'closed'"
+                  >
+                    <v-expand-transition>
+                      <v-text-field
+                        v-if="hover"
+                        v-model="subTaskName[index]"
+                        background-color="#FFFFFF"
+                        outlined
+                        solo
+                        style="margin-top: 5px; border-radius: 0px"
+                        dense
+                        flat
+                        prepend-inner-icon="mdi-plus-circle"
+                        label="Add a sub task..."
+                        class
+                        @keyup.enter="addGroupSubTask(index, task.parentTask.taskId)"
+                        clearable
+                      ></v-text-field>
+                    </v-expand-transition>
+                  </div>
+                  <div class="restructuredSubTaskCreate" v-else style="margin-bottom: -5px;"></div>
+                </div>
+              </v-hover>
+              <div v-if="task.childTasks.length !== 0">
+                <div
+                  v-for="(childTask, index) in task.childTasks"
+                  :key="index"
+                  class="restructuredSubTaskListRestructure"
+                >
+                  <v-list-item class="upperListItemGroup">
+                    <v-list-item class="innerListItemGroup">
+                      <!-- @click.stop="drawer = !drawer" -->
+                      <v-list-item-action>
+                        <v-icon
+                          v-if="childTask.taskStatus == 'closed'"
+                          size="25"
+                          color="#66B25F"
+                        >mdi-checkbox-blank</v-icon>
+                        <v-icon
+                          @click="
+                      closeTask(childTask.taskId)"
+                          style="cursor: pointer"
+                          v-else
+                          size="25"
+                          color="#939393"
+                        >mdi-checkbox-blank-outline</v-icon>
+                      </v-list-item-action>
+                      <!-- <div class="tasklistTaskNames restructuredSubTaskName">
+                        <div
+                          style="cursor: pointer"
+                          @click="
+                selectGroupTask(childTask, task);
+                taskDialog = true;
+              "
+                        >
+                          <span class="restructuredMainTaskCode">{{childTask.secondaryTaskId}}</span>
+                          {{ childTask.taskName }}
+                        </div>
+                      </div>-->
+
+                      <v-list-item-content
+                        @click="
+                      selectTask(task.parentTask, task);
+                      taskDialog = true;"
+                        style="cursor: pointer"
+                      >
+                        <!-- <div class="tasklistTaskNames restructuredMainTaskName"> -->
+                        <div class="fontRestructure12" style="color: #576377">
+                          <span>{{ childTask.taskName }}</span>
+                        </div>
+                        <!-- </div> -->
+                      </v-list-item-content>
+
+                      <v-list-item-action class="updatedDate">
+                        <v-list-item-title
+                          class="fontRestructure12"
+                          :class="dueDateCheck(childTask)"
+                        >{{ getTaskDueDate(childTask.taskDueDateAt) }}</v-list-item-title>
+                      </v-list-item-action>
+                      <div style="margin-right: -25px; margin-left: 10px">
+                        <v-list-item-avatar size="25">
+                          <v-img
+                            v-if="childTask.taskAssigneeProfileImage != null && childTask.taskAssigneeProfileImage != ''"
+                            :src="childTask.taskAssigneeProfileImage"
+                          ></v-img>
+                          <v-img
+                            v-else
+                            src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                          ></v-img>
+                        </v-list-item-avatar>
+                      </div>
+                      <!-- <div class="boardTabLinkIcon">
                       <nuxt-link
                         :to="'/task/' + childTask.taskId + '/?project=' + projectId"
                         style="text-decoration: none;"
                       >
                         <v-icon color="blue">mdi-link-variant</v-icon>
                       </nuxt-link>
-                        </div>-->
-                      </v-list-item>
+                      </div>-->
                     </v-list-item>
-                  </div>
+                  </v-list-item>
                 </div>
-
-                <!-- -------------- end sub task design -------------- -->
               </div>
-            </v-hover>
+
+              <!-- -------------- end sub task design -------------- -->
+            </div>
           </div>
 
           <!-- -------- loop filter list here ----------- -->

@@ -65,9 +65,9 @@
                     style="height: 45px !important"
                     v-for="(project, index) in getProjects('presales')"
                     :key="'preSales' + index"
+                    @click="selectProject(project)"
                   >
                     <v-list-item
-                      @click="selectProject(project)"
                       class="selectedProjectPanel"
                       v-if="
                   project.projectStatus == 'presalesPD' ||
