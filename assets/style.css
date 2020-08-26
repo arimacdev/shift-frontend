@@ -2297,6 +2297,11 @@
   margin-left: 60px;
   margin-right: 20px;
 }
+.weightSection {
+  margin-left: 75px;
+  margin-top: -20px;
+  margin-right: 20px;
+}
 .taskViewTaskListPadding {
   padding-left: 20px;
   height: 50px;
@@ -2411,8 +2416,26 @@
   padding-left: 20px;
   padding-right: 20px !important;
   background-color: #ffffff !important;
+  min-height: 100vh;
   /* padding-top: 10px; */
   /* max-height: 100vh; */
+}
+.viewNewDialogTaskContent {
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px !important;
+  min-height: 100vh;
+  /* padding-top: 10px; */
+  /* max-height: 100vh; */
+}
+
+.statusSection .theme--light.v-select .v-select__selection--comma {
+  color: #ffffff !important;
+}
+.dialogSurround {
+  min-height: 100vh;
+  padding-bottom: 100px;
+  background-color: #ffffff;
 }
 .taskDialogFormDiv {
   padding-top: 30px;
