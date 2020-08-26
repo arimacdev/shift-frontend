@@ -1580,7 +1580,7 @@ export default {
         this.component = "success-popup";
         this.successMessage = "Estimated Weight successfully updated";
         this.$emit("clearStore");
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
 
         this.userExists = true;
         setTimeout(() => {
@@ -1636,7 +1636,7 @@ export default {
         this.component = "success-popup";
         this.successMessage = "Actual Weight successfully updated";
         this.$emit("clearStore");
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
 
         this.userExists = true;
         // this.overlay = false;
@@ -1681,7 +1681,7 @@ export default {
         this.component = "success-popup";
         this.successMessage = "Estimated Weight successfully updated";
         this.$emit("clearStore");
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
 
         this.userExists = true;
         setTimeout(() => {
@@ -1725,7 +1725,7 @@ export default {
         this.component = "success-popup";
         this.successMessage = "Actual Weight successfully updated";
         this.$emit("clearStore");
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
 
         this.userExists = true;
         setTimeout(() => {
@@ -1910,7 +1910,7 @@ export default {
         this.$emit("shrinkSideBar");
         this.taskDialogClosing();
         this.$emit("clearStore");
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         // console.log(response.data);
         this.overlay = false;
       } catch (e) {
@@ -1945,7 +1945,7 @@ export default {
           }
         );
         this.$emit("clearStore");
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
 
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
@@ -1987,7 +1987,7 @@ export default {
           }
         );
         this.$emit("clearStore");
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
@@ -2045,7 +2045,7 @@ export default {
           );
           // } else {
           this.$emit("clearStore");
-          this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+          // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
           // }
           setTimeout(() => {
             this.close();
@@ -2091,7 +2091,7 @@ export default {
         this.component = "success-popup";
         this.successMessage = "Assignee successfully updated";
         this.$emit("clearStore");
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
 
         this.userExists = true;
         setTimeout(() => {
@@ -2144,7 +2144,7 @@ export default {
           }
         );
         this.$emit("clearStore");
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
@@ -2187,7 +2187,7 @@ export default {
           }
         );
         this.$emit("clearStore");
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
@@ -2232,7 +2232,7 @@ export default {
           }
         );
         this.$emit("clearStore");
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
@@ -2278,7 +2278,7 @@ export default {
           }
         );
         this.$emit("clearStore");
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
@@ -2356,7 +2356,7 @@ export default {
           }
         );
         this.$emit("clearStore");
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,

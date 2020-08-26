@@ -891,6 +891,10 @@ export default {
         endIndex: 10,
         isAllTasks: false,
       });
+      this.$store.dispatch(
+        "task/fetchTasksAllTasks",
+        this.$route.params.projects
+      );
     },
     scrollEvent() {
       var myDiv = document.getElementById("mainDiv");

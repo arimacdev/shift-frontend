@@ -453,7 +453,7 @@ import { mapState } from "vuex";
 // import TaskSideBar from "~/components/tasks/taskSideBar";
 import AddSprint from "~/components/projects/addSprint";
 import UpdateSprint from "~/components/projects/updateSprint";
-import TaskDialog from "~/components/tasks/sprintTaskDialog";
+import TaskDialog from "~/components/tasks/taskDialog";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import Stomp from "stompjs";
@@ -502,8 +502,6 @@ export default {
   },
   methods: {
     clearStore() {
-      console.log("CLEARED!");
-      this.$store.dispatch("task/emptyStore");
       this.$store.dispatch("task/setIndex", {
         startIndex: 0,
         endIndex: 10,
