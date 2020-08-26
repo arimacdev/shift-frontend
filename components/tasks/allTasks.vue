@@ -20,8 +20,8 @@
           dark
           width="100%"
           height="30px"
-          color="#66B35F"
-          @click="changeTaskOption()"
+          color="#060631"
+          @click="changeTaskOption('my-tasks')"
         >
           <v-icon
             size="13"
@@ -31,7 +31,24 @@
           <span class="text-capitalize" style="font-size: 10px !important">My Tasks</span>
         </v-btn>
       </div>
-      <div class="filterTriggers" style="width: 15%; float: left; margin-right: 10px">
+      <div class="filterTriggersDrop" style="width: 10%; float: left; padding-right: 10px">
+        <v-btn
+          depressed
+          dark
+          width="100%"
+          height="30px"
+          color="#66B35F"
+          @click="changeTaskOption('add-task')"
+        >
+          <v-icon
+            size="13"
+            color="#FFFFFF"
+            style="margin-right: 3px; margin-top: 3px !important"
+          >icon-task</v-icon>
+          <span class="text-capitalize" style="font-size: 10px !important">Add Tasks</span>
+        </v-btn>
+      </div>
+      <div class="filterTriggers" style="width: 14%; float: left; margin-right: 10px">
         <v-text-field
           dense
           clearable
@@ -41,9 +58,10 @@
           flat
           label="Task Name"
           background-color="#FFFFFF"
+          @input="jqlSearch()"
         ></v-text-field>
       </div>
-      <div class="filterTriggersDrop" style="width: 15%; float: left; padding-right: 10px">
+      <div class="filterTriggersDrop" style="width: 12%; float: left; padding-right: 10px">
         <v-autocomplete
           v-model="filterAssignee"
           return-object
@@ -60,6 +78,7 @@
           multiple
           clearable
           :clear-icon-cb="clearAssignee()"
+          @change="jqlSearch()"
         >
           <template v-slot:selection="{ item, index }">
             <v-chip x-small style="width: 30px" v-if="index === 0">
@@ -68,7 +87,7 @@
           </template>
         </v-autocomplete>
       </div>
-      <div class="filterTriggersDrop" style="width: 15%; float: left; padding-right: 10px">
+      <div class="filterTriggersDrop" style="width: 12%; float: left; padding-right: 10px">
         <v-autocomplete
           v-model="filterType"
           return-object
@@ -85,6 +104,7 @@
           multiple
           clearable
           @click:clear="clearType()"
+          @change="jqlSearch()"
         >
           <template v-slot:selection="{ item, index }">
             <v-chip x-small style="width: 30px" v-if="index === 0">
@@ -93,7 +113,7 @@
           </template>
         </v-autocomplete>
       </div>
-      <div class="filterTriggersDrop" style="width: 15%; float: left; padding-right: 10px">
+      <div class="filterTriggersDrop" style="width: 12%; float: left; padding-right: 10px">
         <v-autocomplete
           v-model="filterStatus"
           return-object
@@ -110,6 +130,7 @@
           multiple
           clearable
           @click:clear="clearStatus()"
+          @change="jqlSearch()"
         >
           <template v-slot:selection="{ item, index }">
             <v-chip x-small style="width: 30px" v-if="index === 0">
@@ -129,11 +150,12 @@
           noButton
           autoClose
           :clear-icon-cb="clearDate()"
+          @input="jqlSearch()"
         ></VueCtkDateTimePicker>
       </div>
 
       <div class="filterTriggersDrop" style="width: 5%; float: left; margin-right: 20px">
-        <v-btn depressed @click="jqlSearch()" dark width="100%" height="30px" color="#080848">
+        <v-btn depressed @click="jqlSearch()" dark width="100%" height="30px" color="#333369">
           <span class="text-capitalize" style="font-size: 10px !important">Search</span>
         </v-btn>
       </div>
@@ -142,120 +164,6 @@
           <span class="text-capitalize" style="font-size: 10px !important; ">Clear</span>
         </v-btn>
       </div>
-      <!-- <v-row>
-        <v-col class="filterTriggers" md="2">
-          <v-text-field
-            dense
-            clearable
-            @click:clear="clearName()"
-            v-model="nameOfTask"
-            outlined
-            flat
-            label="Task Name"
-            background-color="#FFFFFF"
-          ></v-text-field>
-        </v-col>
-        <v-col class="filterTriggersDrop" md="2">
-          <v-autocomplete
-            v-model="filterAssignee"
-            return-object
-            :items="assigneeArray"
-            item-text="name"
-            item-value="id"
-            flat
-            outlined
-            dense
-            chips
-            background-color="#FFFFFF"
-            small-chips
-            label="Assignee"
-            multiple
-            clearable
-            :clear-icon-cb="clearAssignee()"
-          >
-            <template v-slot:selection="{ item, index }">
-              <v-chip x-small style="width: 30px" v-if="index === 0">
-                <span>{{ item.name }}</span>
-              </v-chip>
-            </template>
-          </v-autocomplete>
-        </v-col>
-        <v-col class="filterTriggersDrop" md="2">
-          <v-autocomplete
-            v-model="filterType"
-            return-object
-            :items="taskTypeArray"
-            item-text="name"
-            item-value="id"
-            flat
-            outlined
-            dense
-            chips
-            background-color="#FFFFFF"
-            small-chips
-            label="Task Type"
-            multiple
-            clearable
-            @click:clear="clearType()"
-          >
-            <template v-slot:selection="{ item, index }">
-              <v-chip x-small style="width: 30px" v-if="index === 0">
-                <span>{{ item.name }}</span>
-              </v-chip>
-            </template>
-          </v-autocomplete>
-        </v-col>
-        <v-col class="filterTriggersDrop" md="2">
-          <v-autocomplete
-            v-model="filterStatus"
-            return-object
-            :items="taskStatusArray"
-            item-text="name"
-            item-value="id"
-            flat
-            outlined
-            dense
-            chips
-            background-color="#FFFFFF"
-            small-chips
-            label="Task Status"
-            multiple
-            clearable
-            @click:clear="clearStatus()"
-          >
-            <template v-slot:selection="{ item, index }">
-              <v-chip x-small style="width: 30px" v-if="index === 0">
-                <span>{{ item.name }}</span>
-              </v-chip>
-            </template>
-          </v-autocomplete>
-        </v-col>
-        <v-col class="filterTriggersDrop" md="2">
-          <VueCtkDateTimePicker
-            :no-value-to-custom-elem="false"
-            color="#3f51b5"
-            v-model="dateRange"
-            label="Date Range"
-            range
-            right
-            noButton
-            autoClose
-            :clear-icon-cb="clearDate()"
-          ></VueCtkDateTimePicker>
-        </v-col>
-        <v-col md="1">
-          <v-btn @click="jqlSearch()" dark width="100%" height="30px" color="#080848">
-            <span class="text-capitalize" style="font-size: 10px !important">Search</span>
-           
-          </v-btn>
-        </v-col>
-        <v-col md="1">
-          <v-btn @click="filterChange()" dark width="100%" height="30px" color="#FF6161">
-            <span class="text-capitalize" style="font-size: 10px !important; ">Clear</span>
-            
-          </v-btn>
-        </v-col>
-      </v-row>-->
     </div>
 
     <div v-if="this.taskFilter == 'none'" class="taskListViewContent overflow-y-auto">
@@ -917,9 +825,17 @@ export default {
         // console.log("Error updating a status", e);
       }
     },
-    changeTaskOption() {
-      this.$emit("changeTaskOption", "my-tasks");
+    changeTaskOption(type) {
+      this.scrollCount = 1;
+      this.$store.dispatch("task/emptyStore");
+      this.$store.dispatch("task/setIndex", {
+        startIndex: 0,
+        endIndex: 10,
+        isAllTasks: false,
+      });
+      this.$emit("changeTaskOption", type);
     },
+
     backPannelDisplay(child) {
       if (child != 0) {
         return "backPannelAllTask";
