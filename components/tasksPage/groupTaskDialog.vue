@@ -318,6 +318,7 @@
                             clearable
                             outlined
                             v-model="taskNote"
+                            ref="textareare"
                           ></v-textarea>
                         </v-list-item-title>
                         <div class="noteUpdateButton">
@@ -761,6 +762,7 @@ export default {
     closeTaskDialog() {
       this.$emit("taskDialogClosing");
       Object.assign(this.$data, this.$options.data.apply(this));
+      this.$refs.textareare.reset();
     },
     clickToPrint() {
       // console.log("==============> clicked!!!!");

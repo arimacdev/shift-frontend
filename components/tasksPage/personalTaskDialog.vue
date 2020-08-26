@@ -135,6 +135,7 @@
                             clearable
                             outlined
                             v-model="taskNote"
+                            ref="textareare"
                           ></v-textarea>
                         </v-list-item-title>
                         <div class="noteUpdateButton">
@@ -542,6 +543,7 @@ export default {
     taskDialogClosing() {
       this.$emit("taskDialogClosing");
       Object.assign(this.$data, this.$options.data.apply(this));
+      this.$refs.textareare.reset();
     },
     async updateTaskStatus() {
       // console.log("onchange updated status ->");
