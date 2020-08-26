@@ -38,7 +38,7 @@
             <div v-if="taskSelect == 'all'">
               <v-hover open-delay="600" v-slot:default="{ hover }">
                 <div>
-                  <div class="restructuredMainTaskList">
+                  <div class="restructuredGroupMainTaskList">
                     <v-list-item class="upperListItemGroup">
                       <v-list-item class="innerListItemGroup">
                         <!-- @click.stop="drawer = !drawer" -->
@@ -133,7 +133,7 @@
                 <div
                   v-for="(childTask, index) in task.childTasks"
                   :key="index"
-                  class="restructuredSubTaskListRestructure"
+                  class="restructuredSubTaskListRestructureGroup"
                 >
                   <v-list-item class="upperListItemGroup">
                     <v-list-item class="innerListItemGroup">
