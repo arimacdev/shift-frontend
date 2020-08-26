@@ -58,7 +58,7 @@
                         </v-list-item-action>
                         <v-list-item-content
                           @click="
-                      selectTask(task.parentTask, task);
+              selectGroupTask(task.parentTask, task);
                       taskDialog = true;"
                           style="cursor: pointer"
                         >
@@ -168,8 +168,9 @@
 
                       <v-list-item-content
                         @click="
-                      selectTask(task.parentTask, task);
-                      taskDialog = true;"
+                selectGroupTask(childTask, task);
+                taskDialog = true;
+              "
                         style="cursor: pointer"
                       >
                         <!-- <div class="tasklistTaskNames restructuredMainTaskName"> -->
