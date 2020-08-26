@@ -282,14 +282,14 @@
                 target="_blank"
                 :to="
                     '/task/' +
-                      this.taskObject.parentTask.taskId +
+                      parent.taskId +
                       '/?project=' +
                       this.projectId
                   "
                 style="text-decoration: none;"
               >
                 <v-icon size="18" color="#0083E2">icon-task</v-icon>
-                {{ this.taskObject.parentTask.secondaryTaskId }}
+                {{ parent.secondaryTaskId }}
               </nuxt-link>
               <span v-if="selectedTask.isParent == false">/</span>
 
@@ -490,7 +490,7 @@
                     <div class="addChBtnSection">
                       <add-parent-task
                         v-if="
-                            taskObject.childTasks.length == 0 &&
+                            children.length == 0 &&
                               selectedTask.isParent == true &&
                               children.length == 0
                           "

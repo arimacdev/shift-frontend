@@ -381,7 +381,7 @@
 </template>
 
 <script>
-import TaskDialog from "~/components/tasks/myTaskDialog";
+import TaskDialog from "~/components/tasks/taskDialog";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import Progress from "~/components/popups/progress";
@@ -530,6 +530,10 @@ export default {
         endIndex: 10,
         isAllTasks: false,
       });
+      this.$store.dispatch(
+        "task/fetchTasksMyTasks",
+        this.$route.params.projects
+      );
     },
     scrollEvent() {
       var myDiv = document.getElementById("mainDiv");
