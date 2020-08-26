@@ -523,7 +523,7 @@
             @click="folderView = 'root'"
           >{{selectedFolder.folderName}}</v-btn>
 
-          <view-files :selectedFolder="selectedFolder" @removeComponent="removeComponent" />
+          <view-files :selectedFolder="selectedFolder" @removeComponent="removeComponent()" />
         </div>
       </div>
     </div>
@@ -774,7 +774,7 @@ export default {
       this.folderMove = folderId;
     },
     removeComponent() {
-      this.folderView = true;
+      this.folderView = "root";
     },
     selectFolder(projectFolder) {
       this.selectedFolder = projectFolder;

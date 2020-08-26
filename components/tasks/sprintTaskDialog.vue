@@ -495,6 +495,7 @@
                             clearable
                             outlined
                             v-model="taskNote"
+                            ref="textareare"
                           ></v-textarea>
                         </v-list-item-title>
                         <div class="noteUpdateButton">
@@ -1560,6 +1561,7 @@ export default {
       this.$emit("taskDialogClosing");
       this.selectedTab = "comments";
       Object.assign(this.$data, this.$options.data.apply(this));
+      this.$refs.textareare.reset();
     },
     async updateIssueType() {
       this.overlay = true;
