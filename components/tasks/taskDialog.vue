@@ -82,7 +82,21 @@
                       :background-color="statusCheck(taskStatus)"
                       class="createFormElements"
                       @change="updateStatus"
-                    ></v-select>
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
                     <v-select
                       :menu-props="{ maxHeight: '500' }"
                       dense
@@ -96,7 +110,21 @@
                       flat
                       class="createFormElements"
                       @change="updateStatus"
-                    ></v-select>
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
                     <v-select
                       :menu-props="{ maxHeight: '500' }"
                       dense
@@ -110,7 +138,21 @@
                       flat
                       class="createFormElements"
                       @change="updateStatus"
-                    ></v-select>
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
                     <v-select
                       :menu-props="{ maxHeight: '500' }"
                       dense
@@ -124,7 +166,21 @@
                       flat
                       class="createFormElements"
                       @change="updateStatus"
-                    ></v-select>
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
                     <v-select
                       :menu-props="{ maxHeight: '500' }"
                       dense
@@ -138,7 +194,21 @@
                       flat
                       class="createFormElements"
                       @change="updateStatus"
-                    ></v-select>
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
                     <v-select
                       :menu-props="{ maxHeight: '500' }"
                       dense
@@ -152,7 +222,21 @@
                       flat
                       class="createFormElements"
                       @change="updateStatus"
-                    ></v-select>
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
                     <v-select
                       :menu-props="{ maxHeight: '500' }"
                       dense
@@ -166,7 +250,21 @@
                       flat
                       class="createFormElements"
                       @change="updateStatus"
-                    ></v-select>
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
                   </v-col>
                 </v-row>
               </div>
