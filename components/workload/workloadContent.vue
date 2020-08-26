@@ -135,12 +135,12 @@
                   <div class="workloadTaskName">{{ task.taskName }}</div>
                 </v-list-item-content>
                 <v-list-item-action>
-                  <v-chip class="chipsContent" :class="statusCheck(task.issueType)" x-small>
+                  <v-chip class="chipsContent" :class="statusCheck(task.taskStatus)" x-small>
                     <span class="fontRestructure12">{{ taskStatusFormatting(task.taskStatus) }}</span>
                   </v-chip>
                 </v-list-item-action>
                 <v-list-item-action>
-                  <v-chip class="chipsContent" :class="statusCheck(task.issueType)" x-small>
+                  <v-chip class="chipsContent" :class="typeCheck(task.issueType)" x-small>
                     <span class="fontRestructure12">{{ taskTypeFormatting(task.issueType) }}</span>
                   </v-chip>
                 </v-list-item-action>
@@ -150,6 +150,17 @@
                     class="fontRestructure12"
                     :class="dueDateCheck(task)"
                   >{{ getDueDate(task.taskDueDateAt) }}</v-list-item-title>
+                </v-list-item-action>
+                <v-list-item-action>
+                  <nuxt-link
+                    :to="
+                          '/task/' + task.taskId + '/?project=' + task.projectId
+                        "
+                    style="text-decoration: none;"
+                    target="_blank"
+                  >
+                    <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
+                  </nuxt-link>
                 </v-list-item-action>
               </v-list-item>
             </div>
@@ -296,7 +307,7 @@ export default {
         default:
       }
     },
-    statusCheck(task) {
+    typeCheck(task) {
       if (task === "development") {
         return "developmentStatus";
       } else if (task === "qa") {
@@ -313,6 +324,75 @@ export default {
         return "generalStatus";
       } else {
         return "otherStatus";
+      }
+    },
+    statusCheck(task) {
+      switch (task) {
+        case "pending":
+          return "pendingStatus";
+          break;
+        case "onHold":
+          return "onHoldStatus";
+          break;
+        case "open":
+          return "openStatus";
+          break;
+        case "cancel":
+          return "cancelStatus";
+          break;
+        case "reOpened":
+          return "reOpenedStatus";
+          break;
+        case "fixing":
+          return "fixingStatus";
+          break;
+        case "testing":
+          return "testingStatus";
+          break;
+        case "resolved":
+          return "resolvedStatus";
+          break;
+        case "inprogress":
+          return "inprogressStatus";
+          break;
+        case "completed":
+          return "completedStatus";
+          break;
+        case "implementing":
+          return "implementingStatus";
+          break;
+        case "underReview":
+          return "underReviewStatus";
+          break;
+        case "waitingForApproval":
+          return "waitingForApprovalStatus";
+          break;
+        case "review":
+          return "reviewStatus";
+          break;
+        case "discussion":
+          return "discussionStatus";
+          break;
+        case "waitingResponse":
+          return "waitingResponseStatus";
+          break;
+        case "ready":
+          return "readyStatus";
+          break;
+        case "deployed":
+          return "deployedStatus";
+          break;
+        case "fixed":
+          return "fixedStatus";
+          break;
+        case "rejected":
+          return "rejectedStatus";
+          break;
+        case "closed":
+          return "closedStatus";
+          break;
+        default:
+          return "defaultStatus";
       }
     },
     taskDialogClosing() {
