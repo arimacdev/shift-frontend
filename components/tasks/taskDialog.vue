@@ -1814,11 +1814,11 @@ export default {
 
     getProjectDisplayDates(date) {
       const dueDate = new Date(date);
-      const dueToUtc = new Date(
-        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
-      );
-      const dueToUtcDate = new Date(dueToUtc);
-      const now = new Date();
+      // const dueToUtc = new Date(
+      //   dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+      // );
+      // const dueToUtcDate = new Date(dueToUtc);
+      // const now = new Date();
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
@@ -1827,6 +1827,7 @@ export default {
         let stringDate = date + "";
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 16);
+
         return stringDate;
       }
     },
@@ -2597,25 +2598,18 @@ export default {
 
     dueDate: {
       get() {
-        if (
-          this.selectedTask.taskDueDateAt === null ||
-          this.selectedTask.taskDueDateAt === "1970-01-01T05:30:00.000+0000"
-        ) {
-          return "Add Due Date";
+        if (this.updatedTask.taskDueDateAt != "") {
+          return this.getProjectDisplayDates(this.updatedTask.taskDueDateAt);
         } else {
-          if (this.updatedTask.taskDueDateAt != "") {
-            return this.updatedTask.taskDueDateAt;
-          } else {
-            return this.selectedTask.taskDueDateAt;
-          }
+          return this.getProjectDisplayDates(this.selectedTask.taskDueDateAt);
         }
       },
       set(value) {
-        this.updatedTask.taskDueDateAt = new Date(value);
+        this.updatedTask.taskDueDateAt = value;
         // console.log(
         //   "SET VALUE " + this.updatedTask.taskDueDateAt.toISOString()
         // );
-        this.updateDueDate(this.updatedTask.taskDueDateAt);
+        this.updateDueDate(new Date(value));
       },
     },
 
