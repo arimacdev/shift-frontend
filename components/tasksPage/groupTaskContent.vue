@@ -56,7 +56,20 @@
                             color="#939393"
                           >mdi-checkbox-blank-outline</v-icon>
                         </v-list-item-action>
-                        <div class="tasklistTaskNames restructuredMainTaskName">
+                        <v-list-item-content
+                          @click="
+                      selectTask(task.parentTask, task);
+                      taskDialog = true;"
+                          style="cursor: pointer"
+                        >
+                          <!-- <div class="tasklistTaskNames restructuredMainTaskName"> -->
+                          <div class="fontRestructure12" style="color: #576377">
+                            <span>{{ task.parentTask.taskName }}</span>
+                          </div>
+                          <!-- </div> -->
+                        </v-list-item-content>
+
+                        <!-- <div class="tasklistTaskNames restructuredMainTaskName">
                           <div
                             @click="
               selectGroupTask(task.parentTask, task);"
@@ -67,13 +80,13 @@
                             >{{task.parentTask.secondaryTaskId}}</span>
                             {{ task.parentTask.taskName }}
                           </div>
-                        </div>
-                        <v-list-item-content class="updatedDate">
+                        </div>-->
+                        <v-list-item-action class="updatedDate">
                           <v-list-item-title
                             class="fontRestructure12"
                             :class="dueDateCheck(task.parentTask)"
                           >{{ getTaskDueDate(task.parentTask.taskDueDateAt) }}</v-list-item-title>
-                        </v-list-item-content>
+                        </v-list-item-action>
                         <div style="margin-right: -25px; margin-left: 10px">
                           <v-list-item-avatar size="25">
                             <v-img
@@ -140,7 +153,7 @@
                           color="#939393"
                         >mdi-checkbox-blank-outline</v-icon>
                       </v-list-item-action>
-                      <div class="tasklistTaskNames restructuredSubTaskName">
+                      <!-- <div class="tasklistTaskNames restructuredSubTaskName">
                         <div
                           style="cursor: pointer"
                           @click="
@@ -151,14 +164,27 @@
                           <span class="restructuredMainTaskCode">{{childTask.secondaryTaskId}}</span>
                           {{ childTask.taskName }}
                         </div>
-                      </div>
+                      </div>-->
 
-                      <v-list-item-content class="updatedDate">
+                      <v-list-item-content
+                        @click="
+                      selectTask(task.parentTask, task);
+                      taskDialog = true;"
+                        style="cursor: pointer"
+                      >
+                        <!-- <div class="tasklistTaskNames restructuredMainTaskName"> -->
+                        <div class="fontRestructure12" style="color: #576377">
+                          <span>{{ childTask.taskName }}</span>
+                        </div>
+                        <!-- </div> -->
+                      </v-list-item-content>
+
+                      <v-list-item-action class="updatedDate">
                         <v-list-item-title
                           class="fontRestructure12"
                           :class="dueDateCheck(childTask)"
                         >{{ getTaskDueDate(childTask.taskDueDateAt) }}</v-list-item-title>
-                      </v-list-item-content>
+                      </v-list-item-action>
                       <div style="margin-right: -25px; margin-left: 10px">
                         <v-list-item-avatar size="25">
                           <v-img
