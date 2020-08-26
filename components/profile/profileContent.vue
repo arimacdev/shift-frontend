@@ -309,10 +309,13 @@
           <v-col>
             <div class="skillDisplayDivProfile">
               <div class="skillProfileScrollingWrapper">
-                <div
+                <div v-if="userSkillMap.length === 0">
+                  No Skills are added to your profile yet
+                </div>
+                <div v-else
                   class="skillCard text-center"
                   v-for="(category, index) in userSkillMap"
-                  :key="index"
+                  :key="index" 
                 >
                   <div
                     class="skillHeader"
