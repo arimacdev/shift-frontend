@@ -978,7 +978,7 @@
                             dark
                             @click="updateTaskNote"
                           >
-                            <v-icon size="20" left>mdi-pencil</v-icon>Update note
+                            <v-icon size="15" left>mdi-pencil</v-icon>Update note
                           </v-btn>
                         </div>
                       </v-list-item-content>
@@ -989,7 +989,7 @@
                   <!-- ----------- Files section --------- -->
                   <v-list-item>
                     <v-list-item-icon>
-                      <v-icon size="20" color="#EDCA14">mdi-paperclip</v-icon>
+                      <v-icon size="30" color="#EDCA14">mdi-paperclip</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-title class="rightColumnItemsTitle">Files</v-list-item-title>
@@ -1019,7 +1019,7 @@
                         color="#0BAFFF"
                         dark
                       >
-                        <v-icon left>mdi-upload</v-icon>Upload
+                        <v-icon size="15" left>mdi-upload</v-icon>Upload
                       </v-btn>
                       <v-progress-circular
                         v-if="uploadLoading == true"
