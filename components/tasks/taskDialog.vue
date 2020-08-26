@@ -1304,6 +1304,8 @@ export default {
   },
   data() {
     return {
+      model: false,
+      modalRemind: false,
       dueDatePicker: false,
       dueTimePicker: false,
       dueDatePart: new Date().toISOString().substr(0, 10),

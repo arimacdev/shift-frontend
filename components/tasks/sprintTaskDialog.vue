@@ -1,10 +1,14 @@
 <template>
-  <v-card width="100vw">
+  <div class="dialogSurround overflow-y-auto">
     <v-toolbar dark color="#010101">
       <v-btn icon dark @click="taskDialogClosing()">
         <v-icon>mdi-close</v-icon>
       </v-btn>
-      <v-toolbar-title class="font-weight-bold">{{ taskName }}</v-toolbar-title>
+      <v-toolbar-title class="font-weight-bold">
+        {{
+        taskName
+        }}
+      </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <!-- <v-btn dark text @click="dialog = false">Save</v-btn> -->
@@ -27,7 +31,27 @@
         </button>
       </v-toolbar-items>
     </v-toolbar>
-    <div class="viewDialogTaskContent overflow-y-auto">
+    <v-tabs height="40px" slider-color="#0c0c5a" slider-size="3" v-model="selectedTab">
+      <v-tab
+        class="text-capitalize font-weight-bold tabInactiveStyle"
+        active-class="tabTitleStyle"
+        key="tasks"
+        @click="selectedVTab('tasks')"
+      >Tasks</v-tab>
+      <v-tab
+        class="text-capitalize font-weight-bold tabInactiveStyle"
+        active-class="tabTitleStyle"
+        key="comments"
+        @click="selectedVTab('comments')"
+      >Comments</v-tab>
+      <v-tab
+        class="text-capitalize font-weight-bold tabInactiveStyle"
+        active-class="tabTitleStyle"
+        key="logs"
+        @click="selectedVTab('logs')"
+      >Logs</v-tab>
+    </v-tabs>
+    <div v-if="taskView" class="viewNewDialogTaskContent">
       <div class="taskDialogFormDiv">
         <form>
           <v-row class="mb-12 formRowSpec" no-gutters>
@@ -38,7 +62,212 @@
               </div>
             </v-col>
             <v-col sm="2" md="2">
-              <div class="taskStatusDropdown">{{ taskStatusFormatting(taskStatus) }}</div>
+              <!-- <div
+                  :class="statusCheck(taskStatus)"
+                  class="taskStatusDropdown"
+              >{{ taskStatusFormatting(taskStatus) }}</div>-->
+              <div>
+                <v-row class="mb-12" no-gutters>
+                  <v-col class="statusSection">
+                    <v-select
+                      :menu-props="{ maxHeight: '500' }"
+                      dense
+                      v-if="this.issueTypes == 'development'"
+                      v-model="taskStatus"
+                      :items="development"
+                      item-text="name"
+                      item-value="id"
+                      solo
+                      flat
+                      :background-color="statusCheck(taskStatus)"
+                      class="createFormElements"
+                      @change="updateStatus"
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
+                    <v-select
+                      :menu-props="{ maxHeight: '500' }"
+                      dense
+                      v-if="this.issueTypes == 'qa'"
+                      v-model="taskStatus"
+                      :items="qa"
+                      :background-color="statusCheck(taskStatus)"
+                      item-text="name"
+                      item-value="id"
+                      solo
+                      flat
+                      class="createFormElements"
+                      @change="updateStatus"
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
+                    <v-select
+                      :menu-props="{ maxHeight: '500' }"
+                      dense
+                      v-if="this.issueTypes == 'design'"
+                      v-model="taskStatus"
+                      :items="design"
+                      :background-color="statusCheck(taskStatus)"
+                      item-text="name"
+                      item-value="id"
+                      solo
+                      flat
+                      class="createFormElements"
+                      @change="updateStatus"
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
+                    <v-select
+                      :menu-props="{ maxHeight: '500' }"
+                      dense
+                      v-if="this.issueTypes == 'bug'"
+                      v-model="taskStatus"
+                      :items="bug"
+                      :background-color="statusCheck(taskStatus)"
+                      item-text="name"
+                      item-value="id"
+                      solo
+                      flat
+                      class="createFormElements"
+                      @change="updateStatus"
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
+                    <v-select
+                      :menu-props="{ maxHeight: '500' }"
+                      dense
+                      v-if="this.issueTypes == 'operational'"
+                      v-model="taskStatus"
+                      :items="operational"
+                      :background-color="statusCheck(taskStatus)"
+                      item-text="name"
+                      item-value="id"
+                      solo
+                      flat
+                      class="createFormElements"
+                      @change="updateStatus"
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
+                    <v-select
+                      :menu-props="{ maxHeight: '500' }"
+                      dense
+                      v-if="this.issueTypes == 'preSales'"
+                      v-model="taskStatus"
+                      :items="preSales"
+                      :background-color="statusCheck(taskStatus)"
+                      item-text="name"
+                      item-value="id"
+                      solo
+                      flat
+                      class="createFormElements"
+                      @change="updateStatus"
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
+                    <v-select
+                      :menu-props="{ maxHeight: '500' }"
+                      dense
+                      v-if="this.issueTypes == 'general'"
+                      v-model="taskStatus"
+                      :items="general"
+                      :background-color="statusCheck(taskStatus)"
+                      item-text="name"
+                      item-value="id"
+                      solo
+                      flat
+                      class="createFormElements"
+                      @change="updateStatus"
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
+                  </v-col>
+                </v-row>
+              </div>
             </v-col>
             <v-col sm="8" md="8" class="taskViewLinksDiv">
               <nuxt-link
@@ -52,11 +281,11 @@
                 v-if="selectedTask.isParent == false"
                 target="_blank"
                 :to="
-                  '/task/' +
-                    this.taskObject.parentTask.taskId +
-                    '/?project=' +
-                    this.projectId
-                "
+                    '/task/' +
+                      this.taskObject.parentTask.taskId +
+                      '/?project=' +
+                      this.projectId
+                  "
                 style="text-decoration: none;"
               >
                 <v-icon size="18" color="#0083E2">icon-task</v-icon>
@@ -66,8 +295,11 @@
 
               <nuxt-link
                 :to="
-                  '/task/' + selectedTask.taskId + '/?project=' + this.projectId
-                "
+                    '/task/' +
+                      selectedTask.taskId +
+                      '/?project=' +
+                      this.projectId
+                  "
                 target="_blank"
                 style="text-decoration: none; color: #B9B9B9"
               >
@@ -119,184 +351,10 @@
           <!-- --------------- body row ------------ -->
           <div class="formRowTaskDetailsBody">
             <v-row class="mb-12" no-gutters>
-              <v-col sm="8" md="8">
+              <v-col sm="6" md="6">
                 <div class="leftSideColumn">
-                  <v-row v-if="projectAllTasks.length != 1" class="addParentButtonRow" no-gutters>
-                    <v-col sm="6" md="6" no-gutters></v-col>
-                    <v-col sm="3" md="3" no-gutters>
-                      <add-parent-task
-                        v-if="
-                          taskObject.childTasks.length == 0 &&
-                            selectedTask.isParent == true &&
-                            children.length == 0
-                        "
-                        :taskId="this.selectedTask.taskId"
-                        :projectId="this.projectId"
-                      />
-                    </v-col>
-                    <v-col sm="3" md="3" no-gutters>
-                      <add-child-task
-                        v-if="selectedTask.isParent == true"
-                        :taskId="selectedTask.taskId"
-                        :projectId="this.projectId"
-                      />
-                    </v-col>
-                  </v-row>
-                  <!-- ----------- parent task section --------- -->
-                  <div v-if="selectedTask.isParent == false">
-                    <div class="expansionViewHeader topItemTaskView">
-                      <v-list-item class="taskViewTitleSection">
-                        <v-list-item-icon>
-                          <v-icon size="30" color="#2EC973">mdi-package-variant-closed</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-title class="viewTaskFontColors">Parent Task</v-list-item-title>
-                      </v-list-item>
-                      <v-list-item-content class="parentChildTaskList">
-                        <!-- ---------- task list --------- -->
-                        <div class="taskViewTaskListContent">
-                          <v-list-item>
-                            <v-list-item-action>
-                              <v-icon
-                                v-if="parent.taskStatus == 'closed'"
-                                size="25"
-                                color="#2EC973"
-                              >mdi-checkbox-marked-circle</v-icon>
-                              <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
-                            </v-list-item-action>
-                            <v-list-item-action
-                              style="font-size: 14px; font-weight: 800; padding-right: 20px"
-                            >{{ parent.secondaryTaskId }}</v-list-item-action>
-                            <v-list-item-content style="width: 200px">
-                              <v-list-item-title>{{ parent.taskName }}</v-list-item-title>
-                            </v-list-item-content>
-                            <div>
-                              <v-list-item-action>
-                                <v-list-item-sub-title
-                                  :class="dueDateCheck(parent)"
-                                >{{ getProjectDates(parent.taskDueDateAt) }}</v-list-item-sub-title>
-                              </v-list-item-action>
-                            </div>
-                            <div>
-                              <v-list-item-avatar size="25">
-                                <v-img
-                                  v-if="
-                                    this.parentTaskUser.profileImage != null &&
-                                      this.parentTaskUser.profileImage != ''
-                                  "
-                                  :src="this.parentTaskUser.profileImage"
-                                ></v-img>
-                                <v-img
-                                  v-else
-                                  src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                                ></v-img>
-                              </v-list-item-avatar>
-                            </div>
-                            <div class="boardTabLinkIcon">
-                              <nuxt-link
-                                :to="
-                                  '/task/' +
-                                    parent.taskId +
-                                    '/?project=' +
-                                    projectId
-                                "
-                                style="text-decoration: none;"
-                                target="_blank"
-                              >
-                                <v-icon size="20" color="blue">mdi-link-variant</v-icon>
-                              </nuxt-link>
-                            </div>
-                          </v-list-item>
-                        </div>
-                        <!-- --------------- -->
-                      </v-list-item-content>
-                    </div>
-                    <v-divider></v-divider>
-                  </div>
-                  <!-- -------------- child tasks section ----------- -->
-                  <div v-if="selectedTask.isParent == true">
-                    <div class="expansionViewHeader">
-                      <v-list-group>
-                        <template v-slot:activator>
-                          <v-list-item-icon>
-                            <v-icon size="30" color="#2EC973">mdi-package-variant-closed</v-icon>
-                          </v-list-item-icon>
-                          <v-list-item-title class="viewTaskFontColors">
-                            Child Tasks
-                            <span>- {{ children.length }} Task(s)</span>
-                          </v-list-item-title>
-                        </template>
-
-                        <v-list-item-content class="parentChildTaskList">
-                          <!-- ---------- task list --------- -->
-                          <div
-                            class="taskViewTaskListContent"
-                            v-for="(childTask, index) in children"
-                            :key="index"
-                          >
-                            <v-list-item>
-                              <v-list-item-action>
-                                <v-icon
-                                  v-if="childTask.taskStatus == 'closed'"
-                                  size="25"
-                                  color="#2EC973"
-                                >mdi-checkbox-marked-circle</v-icon>
-                                <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
-                              </v-list-item-action>
-                              <v-list-item-action
-                                style="font-size: 14px; font-weight: 800; padding-right: 20px"
-                              >{{ childTask.secondaryTaskId }}</v-list-item-action>
-                              <v-list-item-content style="width: 200px">
-                                <v-list-item-title>{{ childTask.taskName }}</v-list-item-title>
-                              </v-list-item-content>
-                              <div>
-                                <v-list-item-action>
-                                  <v-list-item-sub-title :class="dueDateCheck(childTask)">
-                                    {{
-                                    getProjectDates(childTask.taskDueDateAt)
-                                    }}
-                                  </v-list-item-sub-title>
-                                </v-list-item-action>
-                              </div>
-                              <div>
-                                <v-list-item-avatar size="25">
-                                  <v-img
-                                    v-if="
-                                      childTask.taskAssigneeProfileImage !=
-                                        null &&
-                                        childTask.taskAssigneeProfileImage != ''
-                                    "
-                                    :src="childTask.taskAssigneeProfileImage"
-                                  ></v-img>
-                                  <v-img
-                                    v-else
-                                    src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                                  ></v-img>
-                                </v-list-item-avatar>
-                              </div>
-                              <div class="boardTabLinkIcon">
-                                <nuxt-link
-                                  :to="
-                                    '/task/' +
-                                      childTask.taskId +
-                                      '/?project=' +
-                                      projectId
-                                  "
-                                  style="text-decoration: none;"
-                                  target="_blank"
-                                >
-                                  <v-icon size="20" color="blue">mdi-link-variant</v-icon>
-                                </nuxt-link>
-                              </div>
-                            </v-list-item>
-                          </div>
-                          <!-- --------------- -->
-                        </v-list-item-content>
-                      </v-list-group>
-                    </div>
-                    <v-divider></v-divider>
-                  </div>
                   <!-- -------------- task type section ------------- -->
-                  <div class="expansionViewHeader">
+                  <div class="expansionViewHeader updatedHeaderSection">
                     <v-list-item class="taskViewTitleSection">
                       <v-list-item-icon>
                         <v-icon size="25" color="#0BAFFF">icon-task</v-icon>
@@ -428,6 +486,203 @@
                     </v-list-item-content>
                   </div>
                   <v-divider></v-divider>
+                  <div v-if="projectAllTasks.length != 1" class="addParentButtonRow" no-gutters>
+                    <div class="addChBtnSection">
+                      <add-parent-task
+                        v-if="
+                            taskObject.childTasks.length == 0 &&
+                              selectedTask.isParent == true &&
+                              children.length == 0
+                          "
+                        :taskId="this.selectedTask.taskId"
+                        :projectId="this.projectId"
+                      />
+                    </div>
+                    <div class="addChBtnSection">
+                      <add-child-task
+                        v-if="selectedTask.isParent == true"
+                        :taskId="selectedTask.taskId"
+                        :projectId="this.projectId"
+                      />
+                    </div>
+                  </div>
+                  <br />
+                  <br />
+                  <!-- ----------- parent task section --------- -->
+                  <div v-if="selectedTask.isParent == false">
+                    <div class="expansionViewHeader topItemTaskView">
+                      <v-list-item class="taskViewTitleSection">
+                        <v-list-item-icon>
+                          <v-icon size="30" color="#2EC973">mdi-package-variant-closed</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-title class="viewTaskFontColors">Parent Task</v-list-item-title>
+                      </v-list-item>
+                      <v-list-item-content class="parentChildTaskList">
+                        <!-- ---------- task list --------- -->
+                        <div class="taskViewTaskListContent">
+                          <v-list-item>
+                            <v-list-item-action>
+                              <v-icon
+                                v-if="parent.taskStatus == 'closed'"
+                                size="25"
+                                color="#2EC973"
+                              >mdi-checkbox-marked-circle</v-icon>
+                              <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-action
+                              style="font-size: 14px; font-weight: 800; padding-right: 20px"
+                            >
+                              {{
+                              parent.secondaryTaskId
+                              }}
+                            </v-list-item-action>
+                            <v-list-item-content style="width: 200px">
+                              <v-list-item-title>
+                                {{
+                                parent.taskName
+                                }}
+                              </v-list-item-title>
+                            </v-list-item-content>
+                            <div>
+                              <v-list-item-action>
+                                <v-list-item-sub-title :class="dueDateCheck(parent)">
+                                  {{
+                                  getProjectDates(parent.taskDueDateAt)
+                                  }}
+                                </v-list-item-sub-title>
+                              </v-list-item-action>
+                            </div>
+                            <div>
+                              <v-list-item-avatar size="25">
+                                <v-img
+                                  v-if="
+                                      this.parentTaskUser.profileImage !=
+                                        null &&
+                                        this.parentTaskUser.profileImage != ''
+                                    "
+                                  :src="this.parentTaskUser.profileImage"
+                                ></v-img>
+                                <v-img
+                                  v-else
+                                  src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                                ></v-img>
+                              </v-list-item-avatar>
+                            </div>
+                            <div class="boardTabLinkIcon">
+                              <nuxt-link
+                                :to="
+                                    '/task/' +
+                                      parent.taskId +
+                                      '/?project=' +
+                                      projectId
+                                  "
+                                style="text-decoration: none;"
+                                target="_blank"
+                              >
+                                <v-icon size="20" color="blue">mdi-link-variant</v-icon>
+                              </nuxt-link>
+                            </div>
+                          </v-list-item>
+                        </div>
+                        <!-- --------------- -->
+                      </v-list-item-content>
+                    </div>
+                    <v-divider></v-divider>
+                  </div>
+                  <!-- -------------- child tasks section ----------- -->
+                  <div v-if="selectedTask.isParent == true">
+                    <div class="expansionViewHeader">
+                      <v-list-group>
+                        <template v-slot:activator>
+                          <v-list-item-icon>
+                            <v-icon size="30" color="#2EC973">mdi-package-variant-closed</v-icon>
+                          </v-list-item-icon>
+                          <v-list-item-title class="viewTaskFontColors">
+                            Child Tasks
+                            <span>- {{ children.length }} Task(s)</span>
+                          </v-list-item-title>
+                        </template>
+
+                        <v-list-item-content class="parentChildTaskList">
+                          <!-- ---------- task list --------- -->
+                          <div
+                            class="taskViewTaskListContent"
+                            v-for="(childTask, index) in children"
+                            :key="index"
+                          >
+                            <v-list-item>
+                              <v-list-item-action>
+                                <v-icon
+                                  v-if="childTask.taskStatus == 'closed'"
+                                  size="25"
+                                  color="#2EC973"
+                                >mdi-checkbox-marked-circle</v-icon>
+                                <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+                              </v-list-item-action>
+                              <v-list-item-action
+                                style="font-size: 14px; font-weight: 800; padding-right: 20px"
+                              >
+                                {{
+                                childTask.secondaryTaskId
+                                }}
+                              </v-list-item-action>
+
+                              <v-list-item-content style="width: 200px">
+                                <v-list-item-title>
+                                  {{
+                                  childTask.taskName
+                                  }}
+                                </v-list-item-title>
+                              </v-list-item-content>
+
+                              <div>
+                                <v-list-item-action>
+                                  <v-list-item-sub-title :class="dueDateCheck(childTask)">
+                                    {{
+                                    getProjectDates(childTask.taskDueDateAt)
+                                    }}
+                                  </v-list-item-sub-title>
+                                </v-list-item-action>
+                              </div>
+                              <div>
+                                <v-list-item-avatar size="25">
+                                  <v-img
+                                    v-if="
+                                        childTask.taskAssigneeProfileImage !=
+                                          null &&
+                                          childTask.taskAssigneeProfileImage !=
+                                            ''
+                                      "
+                                    :src="childTask.taskAssigneeProfileImage"
+                                  ></v-img>
+                                  <v-img
+                                    v-else
+                                    src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                                  ></v-img>
+                                </v-list-item-avatar>
+                              </div>
+                              <div class="boardTabLinkIcon">
+                                <nuxt-link
+                                  :to="
+                                      '/task/' +
+                                        childTask.taskId +
+                                        '/?project=' +
+                                        projectId
+                                    "
+                                  style="text-decoration: none;"
+                                  target="_blank"
+                                >
+                                  <v-icon size="20" color="blue">mdi-link-variant</v-icon>
+                                </nuxt-link>
+                              </div>
+                            </v-list-item>
+                          </div>
+                          <!-- --------------- -->
+                        </v-list-item-content>
+                      </v-list-group>
+                    </div>
+                    <v-divider></v-divider>
+                  </div>
 
                   <!-- -------------- project board section ------------- -->
                   <div class="expansionViewHeader">
@@ -478,231 +733,188 @@
                     </v-list-item-content>
                   </div>
                   <v-divider></v-divider>
-                  <!-- -------------- notes section ------------- -->
-                  <div class="expansionViewHeader">
-                    <v-list-item class="taskViewTitleSection">
+
+                  <!-- --------- assignee section ---------- -->
+
+                  <div class="expansionViewHeaderUpdated">
+                    <v-list-item class>
                       <v-list-item-icon>
-                        <v-icon size="30" color="#FF6767">mdi-square-edit-outline</v-icon>
+                        <v-icon size="25" color="#0C97A5">icon-assignee</v-icon>
                       </v-list-item-icon>
-                      <v-list-item-title class="viewTaskFontColors">Notes</v-list-item-title>
+                      <v-list-item-title class="viewTaskFontColors">Assignee</v-list-item-title>
                     </v-list-item>
-                    <v-list-item>
-                      <v-list-item-content>
-                        <v-list-item-title class="subItem noteSubItem">
-                          <v-textarea
-                            name="input-7-4"
-                            auto-grow
-                            clearable
-                            outlined
-                            v-model="taskNote"
-                          ></v-textarea>
-                        </v-list-item-title>
-                        <div class="noteUpdateButton">
-                          <v-btn
-                            class="ma-2 text-capitalize"
-                            small
-                            rounded
-                            depressed
-                            color="#0BAFFF"
-                            dark
-                            @click="updateTaskNote"
-                          >
-                            <v-icon left>mdi-pencil</v-icon>Update note
-                          </v-btn>
-                        </div>
-                      </v-list-item-content>
-                    </v-list-item>
+                    <v-list-item-content class="parentChildTaskList">
+                      <div class="updatedSectionActions">
+                        <v-row class="mb-12" no-gutters>
+                          <v-col sm="12" md="12">
+                            <v-select
+                              style="margin-left: -10px"
+                              dense
+                              v-model="taskAssignee"
+                              :items="assignees"
+                              item-text="name"
+                              item-value="id"
+                              solo
+                              flat
+                              class="createFormElements"
+                              @change="changeAssignee"
+                            ></v-select>
+                          </v-col>
+                        </v-row>
+                      </div>
+                      <!-- --------------- -->
+                    </v-list-item-content>
                   </div>
                   <v-divider></v-divider>
-                </div>
-              </v-col>
-              <!-- ------------------ right side column ------------- -->
-              <v-col sm="4" md="4">
-                <v-list-item v-if="!this.userExists">
-                  <v-list-item-action>
-                    <v-icon size="15" color="red">mdi-alert-outline</v-icon>
-                  </v-list-item-action>
-                  <v-list-item-content class="userBlockedWarning">
-                    Assignee is no longer a participant of the
-                    project
-                  </v-list-item-content>
-                </v-list-item>
-                <div class="rightSideColumn">
-                  <!-- --------- assignee section ---------- -->
-                  <v-list-item>
-                    <v-list-item-icon
-                      style="background-color: #02C1D4; padding: 10px; border-radius: 50%"
-                    >
-                      <v-icon size="25" color="#FFFFFF">icon-assignee</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
-                      <v-list-item-title>
-                        <!-- <select
-                          v-model="taskAssignee"
-                          @change="changeAssignee"
-                          class="rightColumnItemsText"
-                        >
-                          <option value disabled>
-                            {{ selectedTaskUser.firstName }}
-                            {{ selectedTaskUser.lastName }}
-                          </option>
-                          <option
-                            class="tabListItemsText"
-                            v-for="(taskAssignee, index) in peopleList"
-                            :key="index"
-                            :value="taskAssignee.assigneeId"
-                          >
-                            {{ taskAssignee.assigneeFirstName }}
-                            {{ taskAssignee.assigneeLastName }}
-                          </option>
-                        </select>-->
-                        <v-select
-                          style="margin-left: -10px"
-                          dense
-                          v-model="taskAssignee"
-                          :items="assignees"
-                          item-text="name"
-                          item-value="id"
-                          solo
-                          flat
-                          class="createFormElements"
-                          @change="changeAssignee"
-                        ></v-select>
-                      </v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
                   <!-- ----------- Due date section --------- -->
 
-                  <v-list-item>
-                    <v-list-item-icon
-                      style="background-color: #7CDD00; padding: 10px; border-radius: 50%"
-                    >
-                      <v-icon size="25" color="#FFFFFF">mdi-calendar-blank-outline</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Due Date</v-list-item-subtitle>
-                      <v-list-item-title>
-                        {{
-                        getProjectDisplayDates(
-                        this.selectedTask.taskDueDateAt
-                        )
-                        }}
-                      </v-list-item-title>
+                  <div class="expansionViewHeaderUpdated">
+                    <v-list-item class>
+                      <v-list-item-icon>
+                        <v-icon size="25" color="#66B25F">mdi-calendar-blank-outline</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-title class="viewTaskFontColors">Due Date</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item-content class="parentChildTaskList">
+                      <div class="updatedSectionActionsDates">
+                        <v-dialog
+                          ref="dialog"
+                          v-model="modal"
+                          :return-value.sync="dueDate"
+                          persistent
+                          width="290px"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                              v-model="dueDate"
+                              solo
+                              flat
+                              readonly
+                              v-bind="attrs"
+                              v-on="on"
+                              @focus="dueDatePicker = true; dueTimePicker = false"
+                            ></v-text-field>
+                          </template>
+                          <v-date-picker v-if="dueDatePicker" v-model="dueDatePart" scrollable>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                              text
+                              color="primary"
+                              @click="modal = false; dueDatePicker = false; dueTimePicker = false"
+                            >Cancel</v-btn>
+                            <v-btn
+                              text
+                              color="primary"
+                              @click="dueDatePicker = false; dueTimePicker = true"
+                            >OK</v-btn>
+                          </v-date-picker>
+                          <v-time-picker v-if="dueTimePicker" v-model="dueTimePart" scrollable>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                              text
+                              color="primary"
+                              @click="modal = false; dueDatePicker = false; dueTimePicker = false"
+                            >Cancel</v-btn>
+                            <v-btn
+                              text
+                              color="primary"
+                              @click="$refs.dialog.save(dueDatePart +' ' + dueTimePart);"
+                            >OK</v-btn>
+                          </v-time-picker>
+                        </v-dialog>
+                      </div>
                     </v-list-item-content>
-                    <v-list-item-action>
-                      <datetime
-                        hidden
-                        type="datetime"
-                        v-model="taskDue"
-                        :max-datetime="this.fetchProject.projectEndDate"
-                        zone="local"
-                        input-id="dueDateSprint"
-                      >
-                        <label for="dueDate" slot="before" class="tabListItemsTextDue">
-                          <!-- <span class="dialogPickerNewText">Due Date</span> -->
-                        </label>
-                        <label for="dueDateSprint" slot="after" class>
-                          <v-icon>mdi-pencil-plus</v-icon>
-                        </label>
-                        <template slot="button-cancel">
-                          <fa :icon="['far', 'times']"></fa>Cancel
-                        </template>
-                        <template slot="button-confirm">
-                          <fa :icon="['fas', 'check-circle']"></fa>
-                          <p>Confirm</p>
-                        </template>
-                      </datetime>
-                    </v-list-item-action>
+                  </div>
+                  <v-divider></v-divider>
 
-                    <v-list-item-action>
-                      <v-tooltip left>
-                        <template v-slot:activator="{ on }">
-                          <v-btn v-on="on" icon color="deep-orange">
-                            <v-icon
-                              @click="updateTaskDates('dueDate')"
-                            >mdi-checkbox-marked-circle-outline</v-icon>
-                          </v-btn>
-                        </template>
-                        <span>Select date and click to update</span>
-                      </v-tooltip>
-                    </v-list-item-action>
-                  </v-list-item>
+                  <!-- ----------- Remind date section --------- -->
 
-                  <!-- ----------- Reminder date section --------- -->
-
-                  <!-- ----------- Reminder date section --------- -->
-                  <v-list-item>
-                    <v-list-item-icon
-                      style="background-color: #7CDD00; padding: 10px; border-radius: 50%"
-                    >
-                      <v-icon size="25" color="#FFFFFF">mdi-clock-outline</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Remind Date</v-list-item-subtitle>
-
-                      <v-list-item-title>
-                        {{
-                        getProjectDisplayDates(
-                        this.selectedTask.taskReminderAt
-                        )
-                        }}
-                      </v-list-item-title>
+                  <div class="expansionViewHeaderUpdated">
+                    <v-list-item class>
+                      <v-list-item-icon>
+                        <v-icon size="25" color="#DCB74E">mdi-clock-outline</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-title class="viewTaskFontColors">Remind</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item-content class="parentChildTaskList">
+                      <div class="updatedSectionActionsDates">
+                        <v-dialog
+                          ref="RemindDialog"
+                          v-model="modalRemind"
+                          :return-value.sync="remindDate"
+                          persistent
+                          width="290px"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                              v-model="remindDate"
+                              solo
+                              flat
+                              readonly
+                              v-bind="attrs"
+                              v-on="on"
+                              @focus="remindDatePicker = true; remindTimePicker = false"
+                            ></v-text-field>
+                          </template>
+                          <v-date-picker
+                            v-if="remindDatePicker"
+                            v-model="remindDatePart"
+                            scrollable
+                          >
+                            <v-spacer></v-spacer>
+                            <v-btn
+                              text
+                              color="primary"
+                              @click="modalRemind = false; remindDatePicker = false; remindTimePicker = false"
+                            >Cancel</v-btn>
+                            <v-btn
+                              text
+                              color="primary"
+                              @click="remindDatePicker = false; remindTimePicker = true"
+                            >OK</v-btn>
+                          </v-date-picker>
+                          <v-time-picker
+                            v-if="remindTimePicker"
+                            v-model="remindTimePart"
+                            scrollable
+                          >
+                            <v-spacer></v-spacer>
+                            <v-btn
+                              text
+                              color="primary"
+                              @click="modalRemind = false; remindDatePicker = false; remindTimePicker = false"
+                            >Cancel</v-btn>
+                            <v-btn
+                              text
+                              color="primary"
+                              @click="$refs.RemindDialog.save(remindDatePart +' ' + remindTimePart);"
+                            >OK</v-btn>
+                          </v-time-picker>
+                        </v-dialog>
+                      </div>
                     </v-list-item-content>
-                    <v-list-item-action>
-                      <datetime
-                        hidden
-                        type="datetime"
-                        v-model="taskRemindOn"
-                        zone="local"
-                        input-id="remindDateSprint"
-                        :max-datetime="this.selectedTask.taskDueDateAt"
-                      >
-                        <label for="remindDate" slot="before" class="tabListItemsTextDue">
-                          <!-- <span class="dialogPickerNewText">Remind Date</span> -->
-                        </label>
-                        <label for="remindDateSprint" slot="after" class>
-                          <v-icon>mdi-pencil-plus</v-icon>
-                        </label>
-                        <template slot="button-cancel">
-                          <fa :icon="['far', 'times']"></fa>Cancel
-                        </template>
-                        <template slot="button-confirm">
-                          <fa :icon="['fas', 'check-circle']"></fa>
-                          <p>Confirm</p>
-                        </template>
-                      </datetime>
-                    </v-list-item-action>
-                    <v-list-item-action>
-                      <v-tooltip left>
-                        <template v-slot:activator="{ on }">
-                          <v-btn v-on="on" icon color="deep-orange">
-                            <v-icon
-                              @click="updateTaskDates('remindOn')"
-                            >mdi-checkbox-marked-circle-outline</v-icon>
-                          </v-btn>
-                        </template>
-                        <span>Select date and click to update</span>
-                      </v-tooltip>
-                    </v-list-item-action>
-                  </v-list-item>
+                  </div>
+                  <v-divider></v-divider>
 
-                  <v-divider class="datePickerDivider"></v-divider>
+                  <!-- ---------- end date section -------------- -->
 
                   <!-- --------- weight section ---------- -->
 
                   <!-- -------- story as a weight -------- -->
-                  <v-list-item v-if="this.fetchProject.weightMeasure == 'story'">
-                    <v-list-item-icon
-                      style="background-color: #0BAFFF; padding: 10px; border-radius: 50%"
-                    >
-                      <v-icon size="25" color="#FFFFFF">mdi-weight-lifter</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-subtitle class="rightColumnItemsSubTitle">
+                  <div
+                    class="expansionViewHeaderUpdated"
+                    v-if="this.fetchProject.weightMeasure == 'story'"
+                  >
+                    <v-list-item class>
+                      <v-list-item-icon>
+                        <v-icon size="25" color="#0BAFFF">mdi-weight-lifter</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-title class="viewTaskFontColors">
                         Task weight -
                         <strong>Story Points</strong>
-                      </v-list-item-subtitle>
+                      </v-list-item-title>
+                    </v-list-item>
+                    <v-list-item-content class="weightSection">
                       <v-list-item-title>
                         <v-form v-model="isValidEstimated" ref="estimatedform">
                           <v-row>
@@ -734,30 +946,32 @@
                         </v-form>
                       </v-list-item-title>
                     </v-list-item-content>
-                  </v-list-item>
+                  </div>
+                  <!-- --------------- -->
 
                   <!-- ----------- time as a weight ----------- -->
 
-                  <v-list-item v-if="this.fetchProject.weightMeasure == 'time'">
-                    <v-list-item-icon
-                      style="background-color: #0BAFFF; padding: 10px; border-radius: 50%"
-                    >
-                      <v-icon size="25" color="#FFFFFF">mdi-weight-lifter</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-subtitle class="rightColumnItemsSubTitle">
-                        <strong>
-                          Task weight -
-                          Time
-                        </strong>
-                      </v-list-item-subtitle>
+                  <div
+                    class="expansionViewHeaderUpdated"
+                    v-if="this.fetchProject.weightMeasure == 'time'"
+                  >
+                    <v-list-item class>
+                      <v-list-item-icon>
+                        <v-icon size="25" color="#0BAFFF">mdi-weight-lifter</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-title class="viewTaskFontColors">
+                        Task weight -
+                        <strong>Time</strong>
+                      </v-list-item-title>
+                    </v-list-item>
+                    <v-list-item-content class="weightSection">
                       <v-list-item-title>
                         <v-row>
                           <v-col md="4" class="rightColumnItemsSubTitle">Estimated Time</v-col>
                         </v-row>
                         <v-form v-model="isValidEstimated" ref="estimatedform">
                           <v-row style="margin-top: -17px">
-                            <v-col md="4">
+                            <v-col md="5">
                               <v-text-field
                                 dense
                                 type="number"
@@ -767,7 +981,7 @@
                                 :rules="estimatedHRules"
                               ></v-text-field>
                             </v-col>
-                            <v-col md="4">
+                            <v-col md="5">
                               <v-text-field
                                 dense
                                 type="number"
@@ -777,7 +991,7 @@
                                 :rules="estimatedRules"
                               ></v-text-field>
                             </v-col>
-                            <v-col style="text-align: right" md="4">
+                            <v-col style="text-align: right" md="2">
                               <v-btn
                                 :disabled="!isValidEstimated"
                                 @click="changeEstimatedTime()"
@@ -793,7 +1007,7 @@
                         </v-row>
                         <v-form v-model="isValidActual" ref="estimatedform">
                           <v-row style="margin-top: -17px">
-                            <v-col md="4">
+                            <v-col md="5">
                               <v-text-field
                                 dense
                                 type="number"
@@ -803,7 +1017,7 @@
                                 :rules="actualHRules"
                               ></v-text-field>
                             </v-col>
-                            <v-col md="4">
+                            <v-col md="5">
                               <v-text-field
                                 dense
                                 type="number"
@@ -813,7 +1027,7 @@
                                 :rules="actualRules"
                               ></v-text-field>
                             </v-col>
-                            <v-col style="text-align: right" md="4">
+                            <v-col style="text-align: right" md="2">
                               <v-btn :disabled="!isValidActual" @click="changeActualTime()" icon>
                                 <v-icon color="deep-orange">mdi-checkbox-marked-circle-outline</v-icon>
                               </v-btn>
@@ -822,15 +1036,58 @@
                         </v-form>
                       </v-list-item-title>
                     </v-list-item-content>
-                  </v-list-item>
-                  <v-divider class></v-divider>
+                  </div>
+
+                  <!-- <v-divider class></v-divider> -->
                   <!-- ----------- end weight section ------- -->
+                </div>
+              </v-col>
+              <!-- ------------------ right side column ------------- -->
+              <v-col sm="6" md="6">
+                <v-list-item v-if="!this.userExists">
+                  <v-list-item-action>
+                    <v-icon size="15" color="red">mdi-alert-outline</v-icon>
+                  </v-list-item-action>
+                  <v-list-item-content
+                    class="userBlockedWarning"
+                  >Assignee is no longer a participant of the project</v-list-item-content>
+                </v-list-item>
+                <div class="rightSideColumn">
+                  <!-- -------------- notes section ------------- -->
+                  <div class>
+                    <v-list-item class="taskViewTitleSection">
+                      <v-list-item-icon>
+                        <v-icon size="30" color="#FF6767">mdi-square-edit-outline</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-title class="viewTaskFontColors">Notes</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title class="noteSectionUpdated">
+                          <v-textarea name="input-7-4" auto-grow outlined v-model="taskNote"></v-textarea>
+                        </v-list-item-title>
+                        <div class="noteUpdateButtonUpdated">
+                          <v-btn
+                            class="text-capitalize"
+                            x-small
+                            rounded
+                            depressed
+                            color="#0BAFFF"
+                            dark
+                            @click="updateTaskNote"
+                          >
+                            <v-icon size="15" left>mdi-pencil</v-icon>Update note
+                          </v-btn>
+                        </div>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </div>
+                  <v-divider></v-divider>
+
                   <!-- ----------- Files section --------- -->
                   <v-list-item>
-                    <v-list-item-icon
-                      style="background-color: #FFAE4F; padding: 10px; border-radius: 50%"
-                    >
-                      <v-icon size="25" color="#FFFFFF">mdi-paperclip</v-icon>
+                    <v-list-item-icon>
+                      <v-icon size="30" color="#EDCA14">mdi-paperclip</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-title class="rightColumnItemsTitle">Files</v-list-item-title>
@@ -853,14 +1110,14 @@
                     <div class="fileUploadButton taskViewFileUploadButton">
                       <v-btn
                         @click="taskFileUpload()"
-                        class="ma-2 text-capitalize"
+                        class="text-capitalize"
                         x-small
                         rounded
                         depressed
                         color="#0BAFFF"
                         dark
                       >
-                        <v-icon left>mdi-upload</v-icon>Upload
+                        <v-icon size="15" left>mdi-upload</v-icon>Upload
                       </v-btn>
                       <v-progress-circular
                         v-if="uploadLoading == true"
@@ -883,29 +1140,36 @@
                             target="_blank"
                           >{{ file.taskFileName }}</a>
                         </v-list-item-title>
-                        <v-list-item-subtitle class="fileSubTitles">{{ file.taskFileSize / 1000 }}KB</v-list-item-subtitle>
+                        <v-list-item-subtitle class="fileSubTitles">
+                          {{
+                          file.taskFileSize / 1000
+                          }}KB
+                        </v-list-item-subtitle>
                       </v-list-item-content>
                       <v-list-item-content>
                         <v-list-item-title class="fileTitles">
                           {{ file.firstName }}
                           {{ file.lastName }}
                         </v-list-item-title>
-                        <v-list-item-subtitle
-                          class="fileSubTitles"
-                        >{{ getProjectDates(file.taskFileDate) }}</v-list-item-subtitle>
+
+                        <v-list-item-subtitle class="fileSubTitles">
+                          {{
+                          getProjectDates(file.taskFileDate)
+                          }}
+                        </v-list-item-subtitle>
                       </v-list-item-content>
-                      <div>
+                      <v-list-item-action>
                         <a style="text-decoration: none;" :href="file.taskFileUrl" target="_blank">
                           <v-icon size="25" color="#0BAFFF">mdi-cloud-download</v-icon>
                         </a>
-                      </div>
-                      <div>
+                      </v-list-item-action>
+                      <v-list-item-action>
                         <v-icon
                           @click="handleFileDelete(file.taskFileId)"
                           size="25"
                           color="#FF6161"
                         >mdi-delete-circle</v-icon>
-                      </div>
+                      </v-list-item-action>
                     </v-list-item>
                   </div>
                 </div>
@@ -915,6 +1179,7 @@
         </form>
       </div>
     </div>
+
     <!-- --------------------- delete task popup --------------- -->
 
     <v-dialog v-model="taskDeleteDialog" max-width="380">
@@ -926,8 +1191,8 @@
           <br />
           <span class="alertPopupText">
             You're about to permanantly delete this task, its comments and
-            attachments, and all of its data. If you're not sure, you can cancel
-            this action.
+            attachments, and all of its data. If you're not sure, you can
+            cancel this action.
           </span>
         </div>
 
@@ -945,15 +1210,15 @@
             <v-spacer></v-spacer>
             <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
             <v-btn
-              color="error"
-              depressed
               class="text-capitalize"
+              depressed
+              color="error"
               width="100px"
               @click="
-                taskDeleteDialog = false;
-                taskDialog = false;
-                deleteTask();
-              "
+                  taskDeleteDialog = false;
+                  taskDialog = false;
+                  deleteTask();
+                "
             >Delete</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
@@ -961,20 +1226,18 @@
       </v-card>
     </v-dialog>
 
-    <!-- ---------------------- end popup ------------------ -->
-
-    <v-tabs height="40px" style="padding-left: 20px" slider-size="3" v-model="selectedTab">
-      <v-tab
-        class="text-capitalize activityInactiveTabs"
-        key="comments"
-        @click="selectedVTab('comments')"
-      >Comments</v-tab>
-      <v-tab
-        class="text-capitalize activityInactiveTabs"
-        key="logs"
-        @click="selectedVTab('logs')"
-      >Logs</v-tab>
-    </v-tabs>
+    <!-- <v-tabs height="40px" style="padding-left: 20px" slider-size="3" v-model="selectedTab">
+        <v-tab
+          class="text-capitalize activityInactiveTabs"
+          key="comments"
+          @click="selectedVTab('comments')"
+        >Comments</v-tab>
+        <v-tab
+          class="text-capitalize activityInactiveTabs"
+          key="logs"
+          @click="selectedVTab('logs')"
+        >Logs</v-tab>
+    </v-tabs>-->
 
     <div class="RestTaskLogDiv">
       <!-- <div class="RestTaskLogTitle">
@@ -983,24 +1246,17 @@
           </v-list-item-content>
       </div>-->
 
-      <task-logs v-if="this.activity == 'logs'" :pageNum="page" :page="page" />
+      <task-logs v-if="this.activity == 'logs' && !taskView" :pageNum="page" :page="page" />
       <task-comments
-        v-if="this.activity == 'comments'"
+        v-if="this.activity == 'comments' && !taskView"
         :stomp="this.stomp"
         :commentPage="commentPage"
       />
       <div></div>
     </div>
 
-    <!-- <div class="RestTaskLogDiv">
-      <div class="RestTaskLogTitle">
-        <v-list-item-content>
-          <v-list-item-title class="font-weight-medium">Task Log</v-list-item-title>
-        </v-list-item-content>
-      </div>
+    <!-- ---------------------- end popup ------------------ -->
 
-      <task-logs :page="page" />
-    </div>-->
     <div @click="close" class="taskPopupPopups">
       <component
         v-bind:is="component"
@@ -1012,7 +1268,10 @@
     <v-overlay :value="overlay" color="black">
       <progress-loading />
     </v-overlay>
-  </v-card>
+    <v-overlay :value="waiting" color="black">
+      <waiting />
+    </v-overlay>
+  </div>
 </template>
 
 <script>
@@ -1022,23 +1281,42 @@ import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import AddParentTask from "~/components/tasks/addParentTask";
 import AddChildTask from "~/components/tasks/addChildTask";
-import Progress from "~/components/popups/waiting";
+import Progress from "~/components/popups/progress";
+import Waiting from "~/components/popups/waiting";
 import TaskLogs from "~/components/tasks/taskLogs";
 import TaskComments from "~/components/tasks/taskComments";
 
 export default {
-  props: ["projectId", "people", "taskObject", "stomp", "pageNum"],
+  props: ["projectId", "logs", "people", "taskObject", "stomp", "pageNum"],
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
     "add-parent-task": AddParentTask,
     "add-child-task": AddChildTask,
     "progress-loading": Progress,
+    waiting: Waiting,
     "task-logs": TaskLogs,
     "task-comments": TaskComments,
   },
+  created() {
+    console.log("props--------->");
+    //console.log("props", this.selectedTask);
+  },
   data() {
     return {
+      model: false,
+      modalRemind: false,
+      dueDatePicker: false,
+      dueTimePicker: false,
+      dueDatePart: new Date().toISOString().substr(0, 10),
+      dueTimePart: "00:00",
+
+      remindDatePicker: false,
+      remindTimePicker: false,
+      remindDatePart: new Date().toISOString().substr(0, 10),
+      remindTimePart: "00:00",
+
+      taskView: true,
       // ---------- for weight section -----------
       estimatedRules: [
         (v) => v < 60 || "Invalid!",
@@ -1056,12 +1334,13 @@ export default {
       updatedEstimatedWeight: "",
       updatedActualWeight: "",
 
-      selectedTab: "comments",
+      selectedTab: "",
       activity: "comments",
       page: 1,
       commentPage: 1,
-      uploader: true,
       overlay: false,
+      waiting: false,
+      maxdate: "2020-05-11 12:17",
       taskId: "",
       projectId: "",
       taskDeleteDialog: false,
@@ -1071,7 +1350,7 @@ export default {
       editTask: true,
       // task: {},
       files: [],
-      taskObject: {},
+      // taskObject: {},
       updatedIssue: "",
       updatedStatus: "",
       updatedSprint: "",
@@ -1188,9 +1467,80 @@ export default {
         { name: "Completed", id: "completed" },
         { name: "Closed", id: "closed" },
       ],
+
+      storyPoints: [0, 0.5, 1, 2, 3, 5, 8, 13, 21],
     };
   },
   methods: {
+    statusCheck(task) {
+      switch (task) {
+        case "pending":
+          return "pendingStatus";
+          break;
+        case "onHold":
+          return "onHoldStatus";
+          break;
+        case "open":
+          return "openStatus";
+          break;
+        case "cancel":
+          return "cancelStatus";
+          break;
+        case "reOpened":
+          return "reOpenedStatus";
+          break;
+        case "fixing":
+          return "fixingStatus";
+          break;
+        case "testing":
+          return "testingStatus";
+          break;
+        case "resolved":
+          return "resolvedStatus";
+          break;
+        case "inprogress":
+          return "inprogressStatus";
+          break;
+        case "completed":
+          return "completedStatus";
+          break;
+        case "implementing":
+          return "implementingStatus";
+          break;
+        case "underReview":
+          return "underReviewStatus";
+          break;
+        case "waitingForApproval":
+          return "waitingForApprovalStatus";
+          break;
+        case "review":
+          return "reviewStatus";
+          break;
+        case "discussion":
+          return "discussionStatus";
+          break;
+        case "waitingResponse":
+          return "waitingResponseStatus";
+          break;
+        case "ready":
+          return "readyStatus";
+          break;
+        case "deployed":
+          return "deployedStatus";
+          break;
+        case "fixed":
+          return "fixedStatus";
+          break;
+        case "rejected":
+          return "rejectedStatus";
+          break;
+        case "closed":
+          return "closedStatus";
+          break;
+        default:
+          return "defaultStatus";
+      }
+    },
     // -----for weight section ---------
     // ------ update estimated weight ---------
     async changeEstimatedTime() {
@@ -1209,7 +1559,7 @@ export default {
       this.waiting = true;
       console.log("TIME WEIGHT + " + hours + min);
       let response;
-      this.overlay = true;
+      // this.overlay = true;
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
@@ -1229,17 +1579,17 @@ export default {
         });
         this.component = "success-popup";
         this.successMessage = "Estimated Weight successfully updated";
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$emit("clearStore");
 
         this.userExists = true;
-        this.overlay = false;
         setTimeout(() => {
           this.close();
         }, 3000);
         this.waiting = false;
+        // this.overlay = false;
         // console.log("update task status response", response);
       } catch (e) {
-        this.overlay = false;
+        // this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -1263,8 +1613,8 @@ export default {
         min = this.actualMin;
       }
       this.waiting = true;
-      this.overlay = true;
       let response;
+      // this.overlay = true;
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
@@ -1282,19 +1632,19 @@ export default {
           startIndex: 0,
           endIndex: 10,
         });
-        this.overlay = false;
         this.component = "success-popup";
         this.successMessage = "Actual Weight successfully updated";
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$emit("clearStore");
 
         this.userExists = true;
+        // this.overlay = false;
         setTimeout(() => {
           this.close();
         }, 3000);
         this.waiting = false;
         // console.log("update task status response", response);
       } catch (e) {
-        this.overlay = false;
+        // this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -1307,7 +1657,7 @@ export default {
     async changeEstimatedWeight() {
       this.waiting = true;
       let response;
-      this.overlay = true;
+      // this.overlay = true;
       try {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
@@ -1325,19 +1675,19 @@ export default {
           startIndex: 0,
           endIndex: 10,
         });
+        // this.overlay = false;
         this.component = "success-popup";
         this.successMessage = "Estimated Weight successfully updated";
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$emit("clearStore");
 
         this.userExists = true;
-        this.overlay = false;
         setTimeout(() => {
           this.close();
         }, 3000);
         this.waiting = false;
         // console.log("update task status response", response);
       } catch (e) {
-        this.overlay = false;
+        // this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -1350,7 +1700,7 @@ export default {
 
     async changeActualWeight() {
       this.waiting = true;
-      this.overlay = true;
+      // this.overlay = true;
       let response;
       try {
         response = await this.$axios.$put(
@@ -1371,17 +1721,17 @@ export default {
         });
         this.component = "success-popup";
         this.successMessage = "Actual Weight successfully updated";
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$emit("clearStore");
 
         this.userExists = true;
         setTimeout(() => {
           this.close();
         }, 3000);
         this.waiting = false;
-        this.overlay = false;
+        // this.overlay = false;
         // console.log("update task status response", response);
       } catch (e) {
-        this.overlay = false;
+        // this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -1392,6 +1742,7 @@ export default {
       }
     },
     // ------------ end weight methods -----------
+
     taskStatusFormatting(status) {
       switch (status) {
         case "pending":
@@ -1461,20 +1812,33 @@ export default {
       }
     },
     selectedVTab(component) {
+      this.overlay = true;
       this.activity = component;
       if (component === "logs") {
+        this.overlay = false;
+        this.taskView = false;
+      } else if (component === "tasks") {
+        this.taskView = true;
+        this.overlay = false;
       } else {
-        this.$store.dispatch("comments/fetchTaskActivityComment", {
-          taskId: this.selectedTask.taskId,
-          startIndex: 0,
-          endIndex: 10,
+        Promise.all([
+          this.$store.dispatch("comments/fetchTaskActivityComment", {
+            taskId: this.selectedTask.taskId,
+            startIndex: 0,
+            endIndex: 10,
+          }),
+          this.$store.dispatch(
+            "comments/fetchTaskCommentLength",
+            this.selectedTask.taskId
+          ),
+        ]).finally(() => {
+          this.overlay = false;
+          this.taskView = false;
         });
-
-        this.$store.dispatch(
-          "comments/fetchTaskCommentLength",
-          this.selectedTask.taskId
-        );
       }
+    },
+    getUser() {
+      this.$store.dispatch("user/fetchOwnUser", this.userId);
     },
     checkUserExists() {
       const index = this.people.findIndex(
@@ -1482,9 +1846,6 @@ export default {
       );
       if (index === -1) this.userExists = false;
       else this.userExists = true;
-    },
-    uploadHandler() {
-      this.uploader = false;
     },
     getMaxDueDate() {
       let stringDate = this.fetchProject.projectEndDate + "";
@@ -1508,11 +1869,11 @@ export default {
 
     getProjectDisplayDates(date) {
       const dueDate = new Date(date);
-      const dueToUtc = new Date(
-        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
-      );
-      const dueToUtcDate = new Date(dueToUtc);
-      const now = new Date();
+      // const dueToUtc = new Date(
+      //   dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+      // );
+      // const dueToUtcDate = new Date(dueToUtc);
+      // const now = new Date();
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
       if (date === null || date === "1970-01-01T05:30:00.000+0000") {
@@ -1521,6 +1882,7 @@ export default {
         let stringDate = date + "";
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 10) + " " + stringDate.slice(11, 16);
+
         return stringDate;
       }
     },
@@ -1543,9 +1905,9 @@ export default {
         this.$emit("listenChange");
         this.$emit("shrinkSideBar");
         this.taskDialogClosing();
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
-        this.overlay = false;
+        this.$emit("clearStore");
         // console.log(response.data);
+        this.overlay = false;
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
@@ -1558,11 +1920,11 @@ export default {
     },
     taskDialogClosing() {
       this.$emit("taskDialogClosing");
-      this.selectedTab = "comments";
       Object.assign(this.$data, this.$options.data.apply(this));
+      this.selectedTab = "";
     },
     async updateIssueType() {
-      this.overlay = true;
+      this.waiting = true;
       // console.log("onchange updated status ->");
       let response;
       try {
@@ -1577,7 +1939,8 @@ export default {
             },
           }
         );
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$emit("clearStore");
+
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
@@ -1588,7 +1951,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         // console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
@@ -1596,13 +1959,13 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         console.log("Error updating a status", e);
       }
     },
     // ------------- update task status ----------
     async updateStatus() {
-      this.overlay = true;
+      this.waiting = true;
       // console.log("onchange updated status ->");
       let response;
       try {
@@ -1617,7 +1980,7 @@ export default {
             },
           }
         );
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$emit("clearStore");
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
@@ -1628,7 +1991,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         // console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
@@ -1636,13 +1999,13 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         // console.log("Error updating a status", e);
       }
     },
     async saveEditTaskName() {
       if (this.updatedTask.taskName != "") {
-        this.overlay = true;
+        this.waiting = true;
         // console.log("updatedTaskName ->", this.updatedTask.taskName);
         let response;
         try {
@@ -1665,21 +2028,21 @@ export default {
             endIndex: 10,
           });
           // if (this.selectedTask.isParent) {
-          //   this.$store.dispatch("task/updateTask", {
-          //     taskId: this.selectedTask.taskId,
-          //     taskName: this.updatedTask.taskName
-          //   });
-          // } else {
+          // this.$store.dispatch("task/updateTask", {
+          //   selectedTask: this.selectedTask,
+          //   taskName: this.updatedTask.taskName,
+          // });
           this.$store.dispatch(
             "task/setSelectedTaskName",
             this.updatedTask.taskName
           );
-          this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+          // } else {
+          this.$emit("clearStore");
           // }
           setTimeout(() => {
             this.close();
           }, 3000);
-          this.overlay = false;
+          this.waiting = false;
           this.editTask = true;
           console.log("edit task response", response);
         } catch (e) {
@@ -1689,15 +2052,15 @@ export default {
           setTimeout(() => {
             this.close();
           }, 3000);
-          this.overlay = false;
           this.editTask = true;
+          this.waiting = false;
         }
       }
     },
 
     // ------ update task assignee ---------
     async changeAssignee() {
-      this.overlay = true;
+      this.waiting = true;
       console.log("assignee changed");
       let response;
       try {
@@ -1712,19 +2075,20 @@ export default {
             },
           }
         );
-        this.component = "success-popup";
-        this.successMessage = "Assignee successfully updated";
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
           endIndex: 10,
         });
+        this.component = "success-popup";
+        this.successMessage = "Assignee successfully updated";
+        this.$emit("clearStore");
+
         this.userExists = true;
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         // console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
@@ -1732,10 +2096,11 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         console.log("Error updating a status", e);
       }
     },
+
     getAssigneeDetails(v) {
       // console.log("board list", this.projectSprints);
       this.checkUserExists();
@@ -1753,7 +2118,7 @@ export default {
     },
     // -------- update sprint ----------
     async changeTaskSprint() {
-      this.overlay = true;
+      this.waiting = true;
       // console.log("onchange sprint", this.updatedSprint);
       let response;
       try {
@@ -1769,18 +2134,19 @@ export default {
             },
           }
         );
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$emit("clearStore");
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
           endIndex: 10,
         });
+        // this.$store.dispatch("task/setSelectedTask", task);
         this.component = "success-popup";
         this.successMessage = "Sprint successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         // console.log("update sprint status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
@@ -1788,13 +2154,13 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         // console.log("Error updating a sprint", e);
       }
     },
     // ---------- update task note -----------
     async updateTaskNote() {
-      this.overlay = true;
+      this.waiting = true;
       // console.log("updatedTaskValue ->", this.updatedTask.taskNote);
       let response;
 
@@ -1810,7 +2176,7 @@ export default {
             },
           }
         );
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.$emit("clearStore");
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
@@ -1821,7 +2187,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         // console.log("edit task response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
@@ -1829,13 +2195,103 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         // console.log("Error updating a note", e);
       }
     },
 
+    async updateDueDate(dueDate) {
+      console.log("DUE DATE: " + dueDate);
+      const isoDate = new Date(
+        dueDate.getTime() - dueDate.getTimezoneOffset() * 60000
+      ).toISOString();
+      this.waiting = true;
+
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
+          {
+            taskDueDate: isoDate,
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.$emit("clearStore");
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10,
+        });
+
+        this.component = "success-popup";
+        this.successMessage = "Date successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        // console.log("update task dates response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        // console.log("Error updating a date", e);
+      }
+    },
+
+    async updateRemindDate(remindDate) {
+      console.log("Reming DATE: " + remindDate);
+      const isoDate = new Date(
+        remindDate.getTime() - remindDate.getTimezoneOffset() * 60000
+      ).toISOString();
+      this.waiting = true;
+
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
+          {
+            taskRemindOnDate: isoDate,
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.$emit("clearStore");
+        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+          taskId: this.selectedTask.taskId,
+          startIndex: 0,
+          endIndex: 10,
+        });
+
+        this.component = "success-popup";
+        this.successMessage = "Date successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        // console.log("update task dates response", response);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.waiting = false;
+        // console.log("Error updating a date", e);
+      }
+    },
+
     async updateTaskDates(type) {
-      this.overlay = true;
+      this.waiting = true;
       let dueDate;
       let remindDate;
       let changedDate = {};
@@ -1851,6 +2307,7 @@ export default {
         changedDate = {
           taskDueDate: dueDate,
         };
+
         this.$store.dispatch("task/updateProjectDates", {
           type: "dueDate",
           date: dueDate,
@@ -1885,20 +2342,19 @@ export default {
             },
           }
         );
-
+        this.$emit("clearStore");
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
           endIndex: 10,
         });
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
 
         this.component = "success-popup";
         this.successMessage = "Date successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         // console.log("update task dates response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
@@ -1906,14 +2362,14 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         // console.log("Error updating a date", e);
       }
     },
     // --------- upload task files ----------
 
     async taskFileUpload() {
-      this.overlay = true;
+      this.waiting = true;
       if (this.files != null) {
         for (let index = 0; index < this.files.length; ++index) {
           this.uploadLoading = true;
@@ -1944,26 +2400,27 @@ export default {
             setTimeout(() => {
               this.close();
             }, 3000);
-            this.overlay = false;
+            this.waiting = false;
             // console.log("file response", this.taskFiles);
           } catch (e) {
-            // console.log("Error adding group file", e);
+            this.waiting = false;
+            console.log("Error adding group file", e);
             this.errorMessage = e.response.data;
             this.component = "error-popup";
             setTimeout(() => {
               this.close();
             }, 3000);
-            this.overlay = false;
+
             this.uploadLoading = false;
           }
         }
       }
-      this.overlay = false;
+      this.waiting = false;
       this.files = null;
     },
     // ------------ file remove ---------
     async handleFileDelete(taskFileId) {
-      this.overlay = true;
+      this.waiting = true;
       let response;
       try {
         response = await this.$axios.$delete(
@@ -1987,14 +2444,14 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.overlay = false;
+        this.waiting = false;
         // console.log("Error deleting task", e);
       }
     },
@@ -2003,9 +2460,6 @@ export default {
       this.component = "";
     },
     // ------ listen change ------
-    // listenChange() {
-    //   this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
-    // },
     click() {
       // console.log("select =========>" + this.taskDueDate);
       // this.issueType = issueType;
@@ -2089,9 +2543,9 @@ export default {
         return false;
       }
     },
-    statusCheck() {
-      return "pendingStatus";
-    },
+    // statusCheck() {
+    //   return "pendingStatus";
+    // },
     EditTaskName() {
       this.editTask = false;
     },
@@ -2230,6 +2684,40 @@ export default {
       },
     },
 
+    dueDate: {
+      get() {
+        if (this.updatedTask.taskDueDateAt != "") {
+          return this.getProjectDisplayDates(this.updatedTask.taskDueDateAt);
+        } else {
+          return this.getProjectDisplayDates(this.selectedTask.taskDueDateAt);
+        }
+      },
+      set(value) {
+        this.updatedTask.taskDueDateAt = value;
+        // console.log(
+        //   "SET VALUE " + this.updatedTask.taskDueDateAt.toISOString()
+        // );
+        this.updateDueDate(new Date(value));
+      },
+    },
+
+    remindDate: {
+      get() {
+        if (this.updatedTask.taskRemindOnDate != "") {
+          return this.getProjectDisplayDates(this.updatedTask.taskRemindOnDate);
+        } else {
+          return this.getProjectDisplayDates(this.selectedTask.taskReminderAt);
+        }
+      },
+      set(value) {
+        this.updatedTask.taskRemindOnDate = value;
+        // console.log(
+        //   "SET VALUE " + this.updatedTask.taskDueDateAt.toISOString()
+        // );
+        this.updateRemindDate(new Date(value));
+      },
+    },
+
     taskDue: {
       get() {
         if (
@@ -2264,6 +2752,7 @@ export default {
         this.updatedTask.taskRemindOnDate = value;
       },
     },
+
     // -------- for weight section ---------
     estimatedWeight: {
       get() {
@@ -2293,6 +2782,7 @@ export default {
     estimatedMin: {
       get() {
         let min = (this.selectedTask.estimatedWeight + "").split(".")[1];
+
         if (min == undefined) {
           return 0;
         } else {

@@ -391,6 +391,7 @@
         :componentClose="componentClose"
         :taskObject="taskObject"
         @taskDialogClosing="taskDialogClosing()"
+        @clearStore="clearStore()"
       />
     </v-dialog>
     <!-- --------------------- delete task popup --------------- -->
@@ -500,6 +501,19 @@ export default {
     }),
   },
   methods: {
+    clearStore() {
+      console.log("CLEARED!");
+      this.$store.dispatch("task/emptyStore");
+      this.$store.dispatch("task/setIndex", {
+        startIndex: 0,
+        endIndex: 10,
+        isAllTasks: true,
+      });
+      this.$store.dispatch(
+        "task/fetchSprintTasks",
+        this.$route.params.projects
+      );
+    },
     taskDialogClosing() {
       // console.log("Task Dialog Closing");
       if (this.stomp !== null) {
