@@ -333,14 +333,21 @@
   text-align: center;
 }
 .iconBackCirclePeople {
-  background-color: #ffff;
+  background-color: #0083e2;
   height: 25px;
   width: 25px;
   border-radius: 50%;
   text-align: center;
   padding-top: 2px;
 }
-
+.iconBackCirclePeopleDelete {
+  background-color: #e07857;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  text-align: center;
+  padding-top: 2px;
+}
 .iconBackCircleFiles {
   background-color: #ffff;
   padding-top: 3px;
