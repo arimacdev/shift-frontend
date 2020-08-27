@@ -349,7 +349,6 @@
           </v-row>
 
           <!-- --------------- body row ------------ -->
-          {{this.taskAssignee}}
           <div class="formRowTaskDetailsBody">
             <v-row class="mb-12" no-gutters>
               <v-col sm="6" md="6">
