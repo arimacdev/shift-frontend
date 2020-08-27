@@ -610,6 +610,8 @@ export default {
           });
         }
 
+        this.$store.dispatch("userProfile/fetchProfilePicture");
+
         this.component = "success-popup";
         this.successMessage = "Profile successfully updated";
         setTimeout(() => {

@@ -174,6 +174,7 @@ export default {
           this.$emit("refreshSelectedTab", "folders");
           break;
         case "logs":
+          this.$store.dispatch("activityLog/emptyStore");
           this.overlay = true;
           this.$emit("refreshSelectedTab", "logs");
           Promise.all([

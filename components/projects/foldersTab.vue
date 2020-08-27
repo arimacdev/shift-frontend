@@ -774,7 +774,7 @@ export default {
       this.folderMove = folderId;
     },
     removeComponent() {
-      this.folderView = true;
+      this.folderView = "root";
     },
     selectFolder(projectFolder) {
       this.selectedFolder = projectFolder;
