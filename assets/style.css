@@ -2231,6 +2231,9 @@
 .taskRestFormDiv {
   margin-top: 80px;
 }
+.taskRestFormDivUpdated {
+  margin-top: 40px;
+}
 .taskViewTitle {
   font-size: 18px;
   margin-bottom: -20px;
@@ -3622,4 +3625,9 @@
 .defaultStatus {
   background-color: #6a80e4 !important;
   color: #ffffff !important;
+}
+
+.tabsSection {
+  margin-top: 50px;
+  margin-left: -30px;
 }

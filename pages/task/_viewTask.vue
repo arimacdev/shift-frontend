@@ -30,6 +30,7 @@
         </div>
       </div>
     </v-toolbar>
+
     <!-- --------------------- delete task popup --------------- -->
 
     <v-dialog v-model="taskDeleteDialog" max-width="380">
@@ -77,8 +78,32 @@
     </v-dialog>
 
     <!-- ---------------------- end popup ------------------ -->
+
     <div class="viewTaskContent overflow-y-auto">
-      <div class="taskRestFormDiv">
+      <div class="tabsSection">
+        <v-tabs height="40px" slider-color="#0c0c5a" slider-size="3" v-model="selectedTab">
+          <v-tab
+            class="text-capitalize font-weight-bold tabInactiveStyle"
+            active-class="tabTitleStyle"
+            key="tasks"
+            @click="selectedVTab('tasks')"
+          >Tasks</v-tab>
+          <v-tab
+            class="text-capitalize font-weight-bold tabInactiveStyle"
+            active-class="tabTitleStyle"
+            key="comments"
+            @click="selectedVTab('comments')"
+          >Comments</v-tab>
+          <v-tab
+            class="text-capitalize font-weight-bold tabInactiveStyle"
+            active-class="tabTitleStyle"
+            key="logs"
+            @click="selectedVTab('logs')"
+          >Logs</v-tab>
+        </v-tabs>
+      </div>
+
+      <div v-if="taskView" class="taskRestFormDivUpdated">
         <form>
           <v-row class="mb-12 formRowSpec" no-gutters>
             <v-col sm="2" md="2">
@@ -88,7 +113,210 @@
               </div>
             </v-col>
             <v-col sm="2" md="2">
-              <div class="taskStatusDropdown">{{ this.task.taskStatus }}</div>
+              <!-- <div class="taskStatusDropdown">{{ this.task.taskStatus }}</div> -->
+
+              <div>
+                <v-row class="mb-12" no-gutters>
+                  <v-col class="statusSection">
+                    <v-select
+                      :menu-props="{ maxHeight: '500' }"
+                      dense
+                      v-if="this.issueTypes == 'development'"
+                      v-model="taskStatus"
+                      :items="development"
+                      item-text="name"
+                      item-value="id"
+                      solo
+                      flat
+                      :background-color="statusCheck(this.task.taskStatus)"
+                      class="createFormElements"
+                      @change="updateStatus"
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
+                    <v-select
+                      :menu-props="{ maxHeight: '500' }"
+                      dense
+                      v-if="this.issueTypes == 'qa'"
+                      v-model="taskStatus"
+                      :items="qa"
+                      :background-color="statusCheck(this.task.taskStatus)"
+                      item-text="name"
+                      item-value="id"
+                      solo
+                      flat
+                      class="createFormElements"
+                      @change="updateStatus"
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
+                    <v-select
+                      :menu-props="{ maxHeight: '500' }"
+                      dense
+                      v-if="this.issueTypes == 'design'"
+                      v-model="taskStatus"
+                      :items="design"
+                      :background-color="statusCheck(this.task.taskStatus)"
+                      item-text="name"
+                      item-value="id"
+                      solo
+                      flat
+                      class="createFormElements"
+                      @change="updateStatus"
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
+                    <v-select
+                      :menu-props="{ maxHeight: '500' }"
+                      dense
+                      v-if="this.issueTypes == 'bug'"
+                      v-model="taskStatus"
+                      :items="bug"
+                      :background-color="statusCheck(this.task.taskStatus)"
+                      item-text="name"
+                      item-value="id"
+                      solo
+                      flat
+                      class="createFormElements"
+                      @change="updateStatus"
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
+                    <v-select
+                      :menu-props="{ maxHeight: '500' }"
+                      dense
+                      v-if="this.issueTypes == 'operational'"
+                      v-model="taskStatus"
+                      :items="operational"
+                      :background-color="statusCheck(this.task.taskStatus)"
+                      item-text="name"
+                      item-value="id"
+                      solo
+                      flat
+                      class="createFormElements"
+                      @change="updateStatus"
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
+                    <v-select
+                      :menu-props="{ maxHeight: '500' }"
+                      dense
+                      v-if="this.issueTypes == 'preSales'"
+                      v-model="taskStatus"
+                      :items="preSales"
+                      :background-color="statusCheck(this.task.taskStatus)"
+                      item-text="name"
+                      item-value="id"
+                      solo
+                      flat
+                      class="createFormElements"
+                      @change="updateStatus"
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
+                    <v-select
+                      :menu-props="{ maxHeight: '500' }"
+                      dense
+                      v-if="this.issueTypes == 'general'"
+                      v-model="taskStatus"
+                      :items="general"
+                      :background-color="statusCheck(this.task.taskStatus)"
+                      item-text="name"
+                      item-value="id"
+                      solo
+                      flat
+                      class="createFormElements"
+                      @change="updateStatus"
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
+                  </v-col>
+                </v-row>
+              </div>
             </v-col>
             <v-col sm="8" md="8" class="taskViewLinksDiv">
               <nuxt-link :to="'/projects/' + this.projectId" style="text-decoration: none;">
@@ -166,27 +394,28 @@
             <v-row class="mb-12" no-gutters>
               <v-col sm="8" md="8">
                 <div class="leftSideColumn">
-                  <v-row class="addParentButtonRow" no-gutters>
-                    <v-col sm="6" md="6" no-gutters></v-col>
-                    <v-col sm="3" md="3" no-gutters>
+                  <div class="addParentButtonRow" no-gutters>
+                    <div class="addChBtnSection">
                       <add-parent-task
                         v-if="
-                          this.children.length == 0 &&
-                            this.selectedTask.isParent == true
-                        "
+                            children.length == 0 &&
+                              selectedTask.isParent == true &&
+                              children.length == 0
+                          "
                         :taskId="this.selectedTask.taskId"
                         :projectId="this.projectId"
                       />
-                    </v-col>
-                    <v-col sm="3" md="3" no-gutters>
+                    </div>
+                    <div class="addChBtnSection">
                       <add-child-task
-                        v-if="this.selectedTask.isParent == true"
-                        :taskId="this.selectedTask.taskId"
+                        v-if="selectedTask.isParent == true"
+                        :taskId="selectedTask.taskId"
                         :projectId="this.projectId"
                       />
-                    </v-col>
-                  </v-row>
-
+                    </div>
+                  </div>
+                  <br />
+                  <br />
                   <!-- ----------- parent task section --------- -->
                   <div v-if="!this.selectedTask.isParent">
                     <div class="expansionViewHeader topItemTaskView">
@@ -210,17 +439,23 @@
                             </v-list-item-action>
                             <v-list-item-action
                               style="font-size: 14px; font-weight: 800; padding-right: 20px"
-                            >{{ this.parentTask.secondaryTaskId }}</v-list-item-action>
+                            >
+                              {{
+                              this.parentTask.secondaryTaskId
+                              }}
+                            </v-list-item-action>
                             <v-list-item-content style="width: 200px">
-                              <v-list-item-title>{{ this.parentTask.taskName }}</v-list-item-title>
+                              <v-list-item-title>
+                                {{
+                                this.parentTask.taskName
+                                }}
+                              </v-list-item-title>
                             </v-list-item-content>
                             <div>
                               <v-list-item-action>
                                 <v-list-item-sub-title :class="dueDateCheck(this.parentTask)">
                                   {{
-                                  getProjectDates(
-                                  this.parentTask.taskDueDateAt
-                                  )
+                                  getProjectDates(this.parentTask.taskDueDateAt)
                                   }}
                                 </v-list-item-sub-title>
                               </v-list-item-action>
@@ -229,9 +464,10 @@
                               <v-list-item-avatar size="25">
                                 <v-img
                                   v-if="
-                                    this.parentTaskUser.profileImage != null &&
-                                      this.parentTaskUser.profileImage != ''
-                                  "
+                                      this.parentTaskUser.profileImage !=
+                                        null &&
+                                        this.parentTaskUser.profileImage != ''
+                                    "
                                   :src="this.parentTaskUser.profileImage"
                                 ></v-img>
                                 <v-img
@@ -243,11 +479,11 @@
                             <div class="boardTabLinkIcon">
                               <nuxt-link
                                 :to="
-                                  '/task/' +
-                                    this.parentTask.taskId +
-                                    '/?project=' +
-                                    projectId
-                                "
+                                    '/task/' +
+                                      this.parentTask.taskId +
+                                      '/?project=' +
+                                      projectId
+                                  "
                                 style="text-decoration: none;"
                                 target="_blank"
                               >
@@ -256,13 +492,12 @@
                             </div>
                           </v-list-item>
                         </div>
-                        <!-- --------------- -->
                       </v-list-item-content>
                     </div>
                     <v-divider></v-divider>
                   </div>
                   <!-- -------------- child tasks section ----------- -->
-                  <div v-if="this.selectedTask.isParent">
+                  <div v-if="this.selectedTask.isParent == true">
                     <div class="expansionViewHeader">
                       <v-list-group>
                         <template v-slot:activator>
@@ -270,24 +505,22 @@
                             <v-icon size="30" color="#2EC973">mdi-package-variant-closed</v-icon>
                           </v-list-item-icon>
                           <v-list-item-title class="viewTaskFontColors">
-                            Child Tasks:
-                            <span>{{ childrenCount }} Task(s)</span>
+                            Child Tasks
+                            <span>- {{ childrenCount }} Task(s)</span>
                           </v-list-item-title>
                         </template>
 
                         <v-list-item-content class="parentChildTaskList">
                           <!-- ---------- task list --------- -->
-                          <!-- <nuxt-link :to="'/task/' + child.taskId + '/?project=' + this.projectId" style="text-decoration: none;"> -->
-
                           <div
                             class="taskViewTaskListContent"
-                            v-for="(child, index) in children"
+                            v-for="(childTask, index) in children"
                             :key="index"
                           >
                             <v-list-item>
                               <v-list-item-action>
                                 <v-icon
-                                  v-if="child.taskStatus == 'closed'"
+                                  v-if="childTask.taskStatus == 'closed'"
                                   size="25"
                                   color="#2EC973"
                                 >mdi-checkbox-marked-circle</v-icon>
@@ -295,23 +528,39 @@
                               </v-list-item-action>
                               <v-list-item-action
                                 style="font-size: 14px; font-weight: 800; padding-right: 20px"
-                              >{{ child.secondaryTaskId }}</v-list-item-action>
+                              >
+                                {{
+                                childTask.secondaryTaskId
+                                }}
+                              </v-list-item-action>
+
                               <v-list-item-content style="width: 200px">
-                                <v-list-item-title>{{ child.taskName }}</v-list-item-title>
+                                <v-list-item-title>
+                                  {{
+                                  childTask.taskName
+                                  }}
+                                </v-list-item-title>
                               </v-list-item-content>
+
                               <div>
                                 <v-list-item-action>
-                                  <v-list-item-sub-title>{{ getProjectDates(child.taskDueDateAt) }}</v-list-item-sub-title>
+                                  <v-list-item-sub-title :class="dueDateCheck(childTask)">
+                                    {{
+                                    getProjectDates(childTask.taskDueDateAt)
+                                    }}
+                                  </v-list-item-sub-title>
                                 </v-list-item-action>
                               </div>
                               <div>
                                 <v-list-item-avatar size="25">
                                   <v-img
                                     v-if="
-                                      child.taskAssigneeProfileImage != null &&
-                                        child.taskAssigneeProfileImage != ''
-                                    "
-                                    :src="child.taskAssigneeProfileImage"
+                                        childTask.taskAssigneeProfileImage !=
+                                          null &&
+                                          childTask.taskAssigneeProfileImage !=
+                                            ''
+                                      "
+                                    :src="childTask.taskAssigneeProfileImage"
                                   ></v-img>
                                   <v-img
                                     v-else
@@ -322,11 +571,11 @@
                               <div class="boardTabLinkIcon">
                                 <nuxt-link
                                   :to="
-                                    '/task/' +
-                                      child.taskId +
-                                      '/?project=' +
-                                      projectId
-                                  "
+                                      '/task/' +
+                                        childTask.taskId +
+                                        '/?project=' +
+                                        projectId
+                                    "
                                   style="text-decoration: none;"
                                   target="_blank"
                                 >
@@ -335,10 +584,11 @@
                               </div>
                             </v-list-item>
                           </div>
-                          <!-- </nuxt-link> -->
+                          <!-- --------------- -->
                         </v-list-item-content>
                       </v-list-group>
                     </div>
+                    <v-divider></v-divider>
                   </div>
                   <v-divider></v-divider>
                   <!-- -------------- task type section ------------- -->
@@ -910,7 +1160,7 @@
       </div>
       <task-logs :page="page" />
     </div>-->
-    <v-tabs height="40px" style="padding-left: 20px" slider-size="3" v-model="selectedTab">
+    <!-- <v-tabs height="40px" style="padding-left: 20px" slider-size="3" v-model="selectedTab">
       <v-tab
         class="text-capitalize activityInactiveTabs"
         key="comments"
@@ -921,7 +1171,7 @@
         key="logs"
         @click="selectedVTab('logs')"
       >Logs</v-tab>
-    </v-tabs>
+    </v-tabs>-->
 
     <div class="RestTaskLogDiv">
       <!-- <div class="RestTaskLogTitle">
@@ -985,6 +1235,7 @@ export default {
   },
   data() {
     return {
+      taskView: true,
       // ---------- for weight section -----------
       estimatedRules: [
         (v) => v < 60 || "Invalid!",
@@ -1394,19 +1645,29 @@ export default {
     },
     // ------------ end weight methods -----------
     selectedVTab(component) {
+      this.overlay = true;
       this.activity = component;
       if (component === "logs") {
+        this.overlay = false;
+        this.taskView = false;
+      } else if (component === "tasks") {
+        this.taskView = true;
+        this.overlay = false;
       } else {
-        this.$store.dispatch("comments/fetchTaskActivityComment", {
-          taskId: this.$route.params.viewTask,
-          startIndex: 0,
-          endIndex: 10,
+        Promise.all([
+          this.$store.dispatch("comments/fetchTaskActivityComment", {
+            taskId: this.selectedTask.taskId,
+            startIndex: 0,
+            endIndex: 10,
+          }),
+          this.$store.dispatch(
+            "comments/fetchTaskCommentLength",
+            this.selectedTask.taskId
+          ),
+        ]).finally(() => {
+          this.overlay = false;
+          this.taskView = false;
         });
-
-        this.$store.dispatch(
-          "comments/fetchTaskCommentLength",
-          this.$route.params.viewTask
-        );
       }
     },
     websocketConnectInit(taskId) {
@@ -1506,11 +1767,29 @@ export default {
             },
           }
         );
+        this.$store.dispatch("task/setSelectedTask", this.task);
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
           endIndex: 10,
         });
+        let taskResponse;
+        try {
+          taskResponse = await this.$axios.$get(
+            `/projects/${this.$route.query.project}/tasks/${this.$route.params.viewTask}`,
+            {
+              headers: {
+                user: this.userId,
+                type: "project",
+              },
+            }
+          );
+          this.task = taskResponse.data;
+          this.$store.dispatch("task/setSelectedTask", taskResponse.data);
+          // console.log("Selected Task get response", this.task);
+        } catch (e) {
+          console.log("Error fetching task", e);
+        }
         this.component = "success-popup";
         this.overlay = false;
         this.successMessage = "Status successfully updated";
@@ -1825,8 +2104,77 @@ export default {
         return false;
       }
     },
-    statusCheck() {
-      return "pendingStatus";
+    // statusCheck() {
+    //   return "pendingStatus";
+    // },
+    statusCheck(task) {
+      switch (task) {
+        case "pending":
+          return "pendingStatus";
+          break;
+        case "onHold":
+          return "onHoldStatus";
+          break;
+        case "open":
+          return "openStatus";
+          break;
+        case "cancel":
+          return "cancelStatus";
+          break;
+        case "reOpened":
+          return "reOpenedStatus";
+          break;
+        case "fixing":
+          return "fixingStatus";
+          break;
+        case "testing":
+          return "testingStatus";
+          break;
+        case "resolved":
+          return "resolvedStatus";
+          break;
+        case "inprogress":
+          return "inprogressStatus";
+          break;
+        case "completed":
+          return "completedStatus";
+          break;
+        case "implementing":
+          return "implementingStatus";
+          break;
+        case "underReview":
+          return "underReviewStatus";
+          break;
+        case "waitingForApproval":
+          return "waitingForApprovalStatus";
+          break;
+        case "review":
+          return "reviewStatus";
+          break;
+        case "discussion":
+          return "discussionStatus";
+          break;
+        case "waitingResponse":
+          return "waitingResponseStatus";
+          break;
+        case "ready":
+          return "readyStatus";
+          break;
+        case "deployed":
+          return "deployedStatus";
+          break;
+        case "fixed":
+          return "fixedStatus";
+          break;
+        case "rejected":
+          return "rejectedStatus";
+          break;
+        case "closed":
+          return "closedStatus";
+          break;
+        default:
+          return "defaultStatus";
+      }
     },
     EditTaskName() {
       this.editTask = false;
