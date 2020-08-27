@@ -27,7 +27,7 @@ export const actions = {
     let taskLogResponse;
     try {
       taskLogResponse = await this.$axios.$get(
-        `/activity/task/${taskId}?startIndex=${startIndex}&endIndex=${endIndex}`,
+        `/activity/task/${taskId}?startIndex=${startIndex}&endIndex=200&allLogs=true`,
         {
           headers: {
             userId: user,

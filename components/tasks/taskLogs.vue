@@ -242,7 +242,7 @@
             </v-list-item>
           </v-col>
         </v-row>
-        <div class="text-center">
+        <!-- <div class="text-center">
           <v-pagination
             @input="getLogs()"
             v-model="page"
@@ -250,7 +250,7 @@
             circle
             :total-visible="8"
           ></v-pagination>
-        </div>
+        </div>-->
       </v-col>
     </v-row>
     <v-overlay :value="overlay" color="black">
