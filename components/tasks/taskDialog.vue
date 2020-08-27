@@ -579,7 +579,7 @@
                                 style="text-decoration: none;"
                                 target="_blank"
                               >
-                                <v-icon size="20" color="blue">mdi-link-variant</v-icon>
+                                <v-icon size="15">mdi-open-in-new</v-icon>
                               </nuxt-link>
                             </div>
                           </v-list-item>
@@ -672,7 +672,7 @@
                                   style="text-decoration: none;"
                                   target="_blank"
                                 >
-                                  <v-icon size="20" color="blue">mdi-link-variant</v-icon>
+                                  <v-icon size="15">mdi-open-in-new</v-icon>
                                 </nuxt-link>
                               </div>
                             </v-list-item>

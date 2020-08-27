@@ -2317,6 +2317,7 @@
 .taskViewTaskListContent {
   background-color: #edf0f5 !important;
   border-radius: 5px;
+  width: 90% !important;
 }
 .taskViewTaskNameContentColor {
   color: #080848;
