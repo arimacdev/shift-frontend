@@ -349,6 +349,7 @@
           </v-row>
 
           <!-- --------------- body row ------------ -->
+          {{this.taskAssignee}}
           <div class="formRowTaskDetailsBody">
             <v-row class="mb-12" no-gutters>
               <v-col sm="6" md="6">
@@ -762,7 +763,6 @@
                           </v-col>
                         </v-row>
                       </div>
-                      <!-- --------------- -->
                     </v-list-item-content>
                   </div>
                   <v-divider></v-divider>
@@ -1119,11 +1119,11 @@
                       >
                         <v-icon size="15" left>mdi-upload</v-icon>Upload
                       </v-btn>
-                      <v-progress-circular
+                      <!-- <v-progress-circular
                         v-if="uploadLoading == true"
                         indeterminate
                         color="primary"
-                      ></v-progress-circular>
+                      ></v-progress-circular>-->
                     </div>
                   </div>
                   <!-- ------------- file viewer ------------ -->

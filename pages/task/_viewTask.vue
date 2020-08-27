@@ -765,6 +765,38 @@
                   </div>
                   <v-divider></v-divider>
 
+                  <!-- --------- assignee section ---------- -->
+
+                  <div class="expansionViewHeaderUpdated">
+                    <v-list-item class>
+                      <v-list-item-icon>
+                        <v-icon size="25" color="#0C97A5">icon-assignee</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-title class="viewTaskFontColors">Assignee</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item-content class="parentChildTaskList">
+                      <div class="updatedSectionActions">
+                        <v-row class="mb-12" no-gutters>
+                          <v-col sm="12" md="12">
+                            <v-select
+                              style="margin-left: -10px"
+                              dense
+                              v-model="taskAssignee"
+                              :items="assignees"
+                              item-text="name"
+                              item-value="id"
+                              solo
+                              flat
+                              class="createFormElements"
+                              @change="changeAssignee"
+                            ></v-select>
+                          </v-col>
+                        </v-row>
+                      </div>
+                    </v-list-item-content>
+                  </div>
+                  <v-divider></v-divider>
+
                   <!-- ----------- Due date section --------- -->
 
                   <div class="expansionViewHeaderUpdated">
@@ -1086,260 +1118,39 @@
                   >Assignee is no longer a participant of the project</v-list-item-content>
                 </v-list-item>-->
                 <div class="rightSideColumn">
-                  <!-- --------- assignee section ---------- -->
-                  <v-list-item>
-                    <v-list-item-icon
-                      style="background-color: #02C1D4; padding: 10px; border-radius: 50%"
-                    >
-                      <v-icon size="25" color="#FFFFFF">icon-assignee</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
-                      <v-list-item-title>
-                        <!-- <select
-                          v-model="taskAssignee"
-                          class="rightColumnItemsText"
-                          @change="changeAssignee"
-                        >
-                          <option value disabled>
-                            {{
-                            taskUser
-                            }}
-                          </option>
-                          <option
-                            class="tabListItemsText"
-                            v-for="(taskAssignee, index) in peopleList"
-                            :key="index"
-                            :value="taskAssignee.assigneeId"
+                  <div class>
+                    <v-list-item class="taskViewTitleSection">
+                      <v-list-item-icon>
+                        <v-icon size="30" color="#FF6767">mdi-square-edit-outline</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-title class="viewTaskFontColors">Notes</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title class="noteSectionUpdated">
+                          <v-textarea name="input-7-4" auto-grow outlined v-model="taskNote"></v-textarea>
+                        </v-list-item-title>
+                        <div class="noteUpdateButtonUpdated">
+                          <v-btn
+                            class="text-capitalize"
+                            x-small
+                            rounded
+                            depressed
+                            color="#0BAFFF"
+                            dark
+                            @click="updateTaskNote"
                           >
-                            {{ taskAssignee.assigneeFirstName }}
-                            {{ taskAssignee.assigneeLastName }}
-                          </option>
-                        </select>-->
-
-                        <v-select
-                          style="margin-left: -10px"
-                          dense
-                          v-model="taskAssignee"
-                          :items="assignees"
-                          item-text="name"
-                          item-value="id"
-                          solo
-                          flat
-                          class="createFormElements"
-                          @change="changeAssignee"
-                        ></v-select>
-                      </v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <!-- ----------- Due date section --------- -->
-                  <v-list-item>
-                    <v-list-item-icon
-                      style="background-color: #7CDD00; padding: 10px; border-radius: 50%"
-                    >
-                      <v-icon size="25" color="#FFFFFF">mdi-calendar-blank-outline</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Due Date</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <div class="viewPageTaskPickerDiv">
-                    <v-row>
-                      <v-col md="10">
-                        <VueCtkDateTimePicker
-                          color="#3f51b5"
-                          id="duePicker"
-                          class
-                          v-model="taskDueDate"
-                          label="No due date"
-                          right
-                        />
-                      </v-col>
-                      <v-col md="2">
-                        <v-btn v-on="on" icon color="deep-orange">
-                          <v-icon
-                            @click="updateTaskDates('dueDate')"
-                          >mdi-checkbox-marked-circle-outline</v-icon>
-                        </v-btn>
-                      </v-col>
-                    </v-row>
+                            <v-icon size="15" left>mdi-pencil</v-icon>Update note
+                          </v-btn>
+                        </div>
+                      </v-list-item-content>
+                    </v-list-item>
                   </div>
-                  <!-- ----------- Reminder date section --------- -->
-
-                  <v-list-item>
-                    <v-list-item-icon
-                      style="background-color: #7CDD00; padding: 10px; border-radius: 50%"
-                    >
-                      <v-icon size="25" color="#FFFFFF">mdi-clock-outline</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Remind Date</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <div class="viewPageTaskPickerDiv">
-                    <v-row>
-                      <v-col md="10">
-                        <VueCtkDateTimePicker
-                          color="#3f51b5"
-                          id="reminderPicker"
-                          class
-                          v-model="taskRemindOnDate"
-                          label="Add remind date"
-                          right
-                        />
-                      </v-col>
-                      <v-col md="2">
-                        <v-btn v-on="on" icon color="deep-orange">
-                          <v-icon
-                            @click="updateTaskDates('remindOn')"
-                          >mdi-checkbox-marked-circle-outline</v-icon>
-                        </v-btn>
-                      </v-col>
-                    </v-row>
-                  </div>
-                  <v-divider class="datePickerDivider"></v-divider>
-                  <!-- --------- weight section ---------- -->
-
-                  <!-- -------- story as a weight -------- -->
-                  <v-list-item v-if="this.fetchProject.weightMeasure == 'story'">
-                    <v-list-item-icon
-                      style="background-color: #0BAFFF; padding: 10px; border-radius: 50%"
-                    >
-                      <v-icon size="25" color="#FFFFFF">mdi-weight-lifter</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-subtitle class="rightColumnItemsSubTitle">
-                        Task weight -
-                        <strong>Story Points</strong>
-                      </v-list-item-subtitle>
-                      <v-list-item-title>
-                        <v-form v-model="isValidEstimated" ref="estimatedform">
-                          <v-row>
-                            <v-col md="6">
-                              <v-text-field
-                                type="number"
-                                dense
-                                v-model="estimatedWeight"
-                                flat
-                                label="Estimated"
-                                @keyup.enter="changeEstimatedWeight()"
-                                hint="Update and hit enter"
-                                :rules="estimatedHRules"
-                              ></v-text-field>
-                            </v-col>
-                            <v-col md="6">
-                              <v-text-field
-                                type="number"
-                                dense
-                                v-model="actualWeight"
-                                flat
-                                label="Actual"
-                                @keyup.enter="changeActualWeight()"
-                                hint="Update and hit enter"
-                                :rules="estimatedHRules"
-                              ></v-text-field>
-                            </v-col>
-                          </v-row>
-                        </v-form>
-                      </v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-
-                  <!-- ----------- time as a weight ----------- -->
-
-                  <v-list-item v-if="this.fetchProject.weightMeasure == 'time'">
-                    <v-list-item-icon
-                      style="background-color: #0BAFFF; padding: 10px; border-radius: 50%"
-                    >
-                      <v-icon size="25" color="#FFFFFF">mdi-weight-lifter</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-subtitle class="rightColumnItemsSubTitle">
-                        <strong>
-                          Task weight -
-                          Time
-                        </strong>
-                      </v-list-item-subtitle>
-                      <v-list-item-title>
-                        <v-row>
-                          <v-col md="4" class="rightColumnItemsSubTitle">Estimated Time</v-col>
-                        </v-row>
-                        <v-form v-model="isValidEstimated" ref="estimatedform">
-                          <v-row style="margin-top: -17px">
-                            <v-col md="4">
-                              <v-text-field
-                                dense
-                                type="number"
-                                v-model="estimatedHours"
-                                flat
-                                label="hours"
-                                :rules="estimatedHRules"
-                              ></v-text-field>
-                            </v-col>
-                            <v-col md="4">
-                              <v-text-field
-                                dense
-                                type="number"
-                                v-model="estimatedMin"
-                                flat
-                                label="minutes"
-                                :rules="estimatedRules"
-                              ></v-text-field>
-                            </v-col>
-                            <v-col style="text-align: right" md="4">
-                              <v-btn
-                                :disabled="!isValidEstimated"
-                                @click="changeEstimatedTime()"
-                                icon
-                              >
-                                <v-icon color="deep-orange">mdi-checkbox-marked-circle-outline</v-icon>
-                              </v-btn>
-                            </v-col>
-                          </v-row>
-                        </v-form>
-                        <v-row>
-                          <v-col md="4" class="rightColumnItemsSubTitle">Actual Time</v-col>
-                        </v-row>
-                        <v-form v-model="isValidActual" ref="estimatedform">
-                          <v-row style="margin-top: -17px">
-                            <v-col md="4">
-                              <v-text-field
-                                dense
-                                type="number"
-                                v-model="actualHours"
-                                flat
-                                label="hours"
-                                :rules="actualHRules"
-                              ></v-text-field>
-                            </v-col>
-                            <v-col md="4">
-                              <v-text-field
-                                dense
-                                type="number"
-                                v-model="actualMin"
-                                flat
-                                label="minutes"
-                                :rules="actualRules"
-                              ></v-text-field>
-                            </v-col>
-                            <v-col style="text-align: right" md="4">
-                              <v-btn :disabled="!isValidActual" @click="changeActualTime()" icon>
-                                <v-icon color="deep-orange">mdi-checkbox-marked-circle-outline</v-icon>
-                              </v-btn>
-                            </v-col>
-                          </v-row>
-                        </v-form>
-                      </v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-divider class></v-divider>
-                  <!-- ----------- end weight section ------- -->
+                  <v-divider></v-divider>
                   <!-- ----------- Files section --------- -->
                   <v-list-item>
-                    <v-list-item-icon
-                      style="background-color: #FFAE4F; padding: 10px; border-radius: 50%"
-                    >
-                      <v-icon size="25" color="#FFFFFF">mdi-paperclip</v-icon>
+                    <v-list-item-icon>
+                      <v-icon size="30" color="#EDCA14">mdi-paperclip</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-title class="rightColumnItemsTitle">Files</v-list-item-title>
@@ -1352,30 +1163,30 @@
                       outlined
                       prepend-inner-icon="mdi-upload-outline"
                       prepend-icon
+                      multiple
                       class
                       chips
-                      multiple
                       dense
                     ></v-file-input>
                   </div>
                   <div class="viewTaskPickerDiv">
                     <div class="fileUploadButton taskViewFileUploadButton">
                       <v-btn
-                        class="ma-2 text-capitalize"
+                        @click="taskFileUpload()"
+                        class="text-capitalize"
                         x-small
                         rounded
                         depressed
                         color="#0BAFFF"
                         dark
-                        @click="taskFileUpload()"
                       >
-                        <v-icon left>mdi-upload</v-icon>Upload
+                        <v-icon size="15" left>mdi-upload</v-icon>Upload
                       </v-btn>
-                      <v-progress-circular
+                      <!-- <v-progress-circular
                         v-if="uploadLoading == true"
                         indeterminate
                         color="primary"
-                      ></v-progress-circular>
+                      ></v-progress-circular>-->
                     </div>
                   </div>
                   <!-- ------------- file viewer ------------ -->
@@ -1392,29 +1203,35 @@
                             target="_blank"
                           >{{ file.taskFileName }}</a>
                         </v-list-item-title>
-                        <v-list-item-subtitle class="fileSubTitles">125.54kB</v-list-item-subtitle>
+                        <v-list-item-subtitle class="fileSubTitles">
+                          {{
+                          file.taskFileSize / 1000
+                          }}KB
+                        </v-list-item-subtitle>
                       </v-list-item-content>
                       <v-list-item-content>
                         <v-list-item-title
                           class="fileTitles"
                         >{{ getUserDetails(file.taskFileCreator) }}</v-list-item-title>
 
-                        <v-list-item-subtitle
-                          class="fileSubTitles"
-                        >{{ getProjectDates(file.taskFileDate) }}</v-list-item-subtitle>
+                        <v-list-item-subtitle class="fileSubTitles">
+                          {{
+                          getProjectDates(file.taskFileDate)
+                          }}
+                        </v-list-item-subtitle>
                       </v-list-item-content>
-                      <div>
+                      <v-list-item-action>
                         <a style="text-decoration: none;" :href="file.taskFileUrl" target="_blank">
                           <v-icon size="25" color="#0BAFFF">mdi-cloud-download</v-icon>
                         </a>
-                      </div>
-                      <div>
+                      </v-list-item-action>
+                      <v-list-item-action>
                         <v-icon
                           @click="handleFileDelete(file.taskFileId)"
                           size="25"
                           color="#FF6161"
                         >mdi-delete-circle</v-icon>
-                      </div>
+                      </v-list-item-action>
                     </v-list-item>
                   </div>
                 </div>
@@ -1558,10 +1375,6 @@ export default {
       // taskAssignee: "",
       task: {},
       updatedTaskName: "",
-      updatedTask: {
-        taskName: "",
-        taskAssignee: "",
-      },
       updatedIssue: "",
       updatedStatus: "",
       issueTypes: "",
@@ -1580,6 +1393,8 @@ export default {
       updatedTask: {
         taskRemindOnDate: "",
         taskDueDateAt: "",
+        taskName: "",
+        taskAssignee: "",
       },
       issueTypeList: [
         { name: "Development", id: "development" },
