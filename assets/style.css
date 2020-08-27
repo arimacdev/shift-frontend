@@ -1732,7 +1732,7 @@
 .defaultBoard {
   width: 30%;
   height: 80vh;
-  background-color: #edf0f5;
+  background-color: #fafafa;
   position: absolute;
   left: 20px;
   border-radius: 5px;
@@ -1741,7 +1741,7 @@
 .actualBoard {
   width: 300px;
   height: 80vh;
-  background-color: #edf0f5;
+  background-color: #fafafa;
   left: 20px;
   border-radius: 5px;
   display: inline-block;
@@ -1755,7 +1755,7 @@
 }
 .boardTitle {
   height: 70px;
-  background-color: #060631;
+  background-color: #1c1c1c;
   color: #ffffff;
   font-size: 16px;
   text-align: center;
@@ -1765,7 +1765,7 @@
 }
 .sprintTitle {
   height: 70px;
-  background-color: #0bafff;
+  background-color: #1c1c1c;
   color: #ffffff;
   font-size: 12px !important;
   text-align: center;
@@ -1798,6 +1798,7 @@
   border-radius: 3px;
   height: 60px;
   overflow: hidden;
+  border: 1px solid #c4c4c4;
 }
 .boardTaskChildListItem {
   background-color: #ffffff;
@@ -1805,6 +1806,7 @@
   margin-right: 10px;
   border-radius: 3px;
   margin-top: 5px;
+  border: 1px solid #c4c4c4;
 }
 .boardSprintSection {
   width: 65%;
@@ -2538,10 +2540,10 @@
   position: absolute;
   top: -25px;
   right: -25px;
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   transform: rotate(45deg);
-  background: #333369;
+  background: #1c1c1c;
 }
 .bluePartMyTask {
   position: absolute;
