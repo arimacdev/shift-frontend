@@ -1066,45 +1066,6 @@
                       </v-list-item-title>
                     </v-list-item-content>
                   </div>
-
-                  <!-- <v-divider class></v-divider> -->
-                  <!-- ----------- end weight section ------- -->
-                  <!-- -------------- notes section ------------- -->
-                  <!-- <div class="expansionViewHeader">
-                    <v-list-item class="taskViewTitleSection">
-                      <v-list-item-icon>
-                        <v-icon size="30" color="#FF6767">mdi-square-edit-outline</v-icon>
-                      </v-list-item-icon>
-                      <v-list-item-title class="viewTaskFontColors">Notes</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item>
-                      <v-list-item-content>
-                        <v-list-item-title class="subItem noteSubItem">
-                          <v-textarea
-                            name="input-7-4"
-                            auto-grow
-                            clearable
-                            outlined
-                            v-model="taskNote"
-                          ></v-textarea>
-                        </v-list-item-title>
-                        <div class="noteUpdateButton">
-                          <v-btn
-                            class="text-capitalize"
-                            small
-                            rounded
-                            depressed
-                            color="#0BAFFF"
-                            dark
-                            @click="updateTaskNote"
-                          >
-                            <v-icon left>mdi-pencil</v-icon>Update note
-                          </v-btn>
-                        </div>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </div>-->
-                  <!-- <v-divider></v-divider> -->
                 </div>
               </v-col>
               <!-- ------------------ right side column ------------- -->
@@ -1242,34 +1203,7 @@
       </div>
     </div>
 
-    <!-- <div class="RestTaskLogDiv">
-      <div class="RestTaskLogTitle">
-        <v-list-item-content>
-          <v-list-item-title class="font-weight-medium">Task Log</v-list-item-title>
-        </v-list-item-content>
-      </div>
-      <task-logs :page="page" />
-    </div>-->
-    <!-- <v-tabs height="40px" style="padding-left: 20px" slider-size="3" v-model="selectedTab">
-      <v-tab
-        class="text-capitalize activityInactiveTabs"
-        key="comments"
-        @click="selectedVTab('comments')"
-      >Comments</v-tab>
-      <v-tab
-        class="text-capitalize activityInactiveTabs"
-        key="logs"
-        @click="selectedVTab('logs')"
-      >Logs</v-tab>
-    </v-tabs>-->
-
     <div class="RestTaskLogDiv">
-      <!-- <div class="RestTaskLogTitle">
-          <v-list-item-content>
-            <v-list-item-title class="font-weight-medium">Task Log</v-list-item-title>
-          </v-list-item-content>
-      </div>-->
-
       <task-logs v-if="this.activity == 'logs' && !taskView" :pageNum="page" :page="page" />
       <task-comments
         v-if="this.activity == 'comments' && !taskView"
