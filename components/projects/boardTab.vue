@@ -103,10 +103,10 @@
                 <div class="text-center">
                   <v-icon
                     v-if="childTask.taskStatus == 'closed'"
-                    size="25"
+                    size="20"
                     color="#2EC973"
                   >mdi-checkbox-marked-circle</v-icon>
-                  <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                  <v-icon v-else size="20" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                   <br />
                   <div style="font-size: 10px; font-weight: bold">{{ childTask.secondaryTaskId }}</div>
                 </div>
