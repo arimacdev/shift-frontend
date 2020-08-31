@@ -330,7 +330,7 @@
         <component v-else-if="this.component == 'add-project'" v-bind:is="component"></component>
       </keep-alive>
     </div>
-    <v-overlay :value="overlay" color="black">
+    <v-overlay :value="overlay" color="white" opacity="1">
       <progress-loading />
     </v-overlay>
   </div>
