@@ -159,7 +159,7 @@
         </div>
         <!-- --------- -->
 
-         <div class>
+        <div class>
           <div class>
             <p class="peopleRoleTitle" @click="fetchUsers">Other Users</p>
             <!-- <v-divider></v-divider> -->
@@ -251,10 +251,7 @@
             :key="index"
             class="taskList peopleListItems"
           >
-            <v-list-item
-              v-if="assignee.isUserBlocked == true"
-              class="peopleContainer"
-            >
+            <v-list-item v-if="assignee.isUserBlocked == true" class="peopleContainer">
               <v-list-item-avatar size="35">
                 <v-img
                   v-if="
@@ -311,25 +308,24 @@
               </v-list-item-content>
               <v-list-item-action>
                 <v-btn
-                        depressed
-                        class="text-capitalize"
-                        width="100%"
-                        color="#66B25F"
-                        dark
-                        @click="restoreUser(assignee.assigneeId)"
-                      >Restore</v-btn>
+                  depressed
+                  class="text-capitalize"
+                  small
+                  color="#66B25F"
+                  dark
+                  @click="restoreUser(assignee.assigneeId)"
+                >Restore</v-btn>
               </v-list-item-action>
             </v-list-item>
           </div>
         </div>
-
 
         <!-- ------ -->
       </div>
     </div>
 
     <!-- =============================== second list ===================== -->
-<div @click="close" class="taskPopupPopups">
+    <div @click="close()" class="taskPopupPopups">
       <component
         v-bind:is="component"
         :successMessage="successMessage"
@@ -359,6 +355,7 @@ export default {
   data() {
     return {
       assignee: {},
+      component: "",
       userId: this.$store.state.user.userId,
       // userList: this.people,
       skill: 0,
@@ -366,10 +363,10 @@ export default {
     };
   },
   methods: {
-     close() {
+    close() {
       this.component = "";
     },
-    async restoreUser(blockUser){
+    async restoreUser(blockUser) {
       let response;
       try {
         response = await this.$axios.$post(
@@ -381,7 +378,7 @@ export default {
           }
         );
         this.component = "success-popup";
-        this.successMessage = "User successfully added";
+        this.successMessage = "User successfully restored";
         setTimeout(() => {
           this.close();
         }, 3000);
