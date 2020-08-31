@@ -31,6 +31,7 @@
                   multiple
                   clearable
                   :clear-icon-cb="clearAssignee()"
+                  @change="jqlSearch()"
                 ></v-autocomplete>
               </v-col>
               <v-col md="3">
@@ -44,6 +45,7 @@
                   noButton
                   autoClose
                   :clear-icon-cb="clearDate()"
+                  @input="jqlSearch()"
                 ></VueCtkDateTimePicker>
               </v-col>
               <v-col md="1">
