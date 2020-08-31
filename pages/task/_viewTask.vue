@@ -826,7 +826,12 @@
                               @focus="dueDatePicker = true; dueTimePicker = false"
                             ></v-text-field>
                           </template>
-                          <v-date-picker v-if="dueDatePicker" v-model="dueDatePart" scrollable>
+                          <v-date-picker
+                            :max="this.fetchProject.projectEndDate.substr(0, 10)"
+                            v-if="dueDatePicker"
+                            v-model="dueDatePart"
+                            scrollable
+                          >
                             <v-spacer></v-spacer>
                             <v-btn
                               text
@@ -888,6 +893,7 @@
                             ></v-text-field>
                           </template>
                           <v-date-picker
+                            :max="this.fetchProject.projectEndDate.substr(0, 10)"
                             v-if="remindDatePicker"
                             v-model="remindDatePart"
                             scrollable
