@@ -289,7 +289,8 @@
                           >mdi-checkbox-blank</v-icon>
                           <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
                         </v-list-item-action>
-                        <div class="tasklistTaskNames restructuredMainTaskName">
+                        <v-list-item-content>
+                          <!-- class="tasklistTaskNames restructuredMainTaskName" -->
                           <div>
                             <span class="restructuredMainTaskCode">
                               {{
@@ -298,18 +299,30 @@
                             </span>
                             {{ task.taskName }}
                           </div>
-                        </div>
-                        <!-- <div
-                        class="restStatusChip"
-                        :class="statusCheck(task.issueType)"
-                        >{{ task.issueType }}</div>-->
-                        <v-list-item-content class="updatedDate" style="margin-right: 10px">
+                        </v-list-item-content>
+                        <v-list-item-action>
+                          <v-chip
+                            class="chipsContent"
+                            :class="statusCheck(task.taskStatus)"
+                            x-small
+                          >
+                            <span
+                              class="fontRestructure12"
+                            >{{ taskStatusFormatting(task.taskStatus) }}</span>
+                          </v-chip>
+                        </v-list-item-action>
+                        <v-list-item-action>
+                          <v-chip class="chipsContent" :class="typeCheck(task.issueType)" x-small>
+                            <span class="fontRestructure12">{{ taskTypeFormatting(task.issueType) }}</span>
+                          </v-chip>
+                        </v-list-item-action>
+                        <v-list-item-action class="updatedDate" style="margin-right: 10px">
                           <v-list-item-title class="fontRestructure12" :class="dueDateCheck(task)">
                             {{
                             getProjectDates(task.taskDueDateAt)
                             }}
                           </v-list-item-title>
-                        </v-list-item-content>
+                        </v-list-item-action>
                         <div>
                           <v-list-item-avatar size="25">
                             <v-img
@@ -973,7 +986,7 @@ export default {
         });
       }
     },
-    statusCheck(task) {
+    typeCheck(task) {
       if (task === "development") {
         return "developmentStatus";
       } else if (task === "qa") {
@@ -990,6 +1003,169 @@ export default {
         return "generalStatus";
       } else {
         return "otherStatus";
+      }
+    },
+    statusCheck(task) {
+      switch (task) {
+        case "pending":
+          return "pendingStatus";
+          break;
+        case "onHold":
+          return "onHoldStatus";
+          break;
+        case "open":
+          return "openStatus";
+          break;
+        case "cancel":
+          return "cancelStatus";
+          break;
+        case "reOpened":
+          return "reOpenedStatus";
+          break;
+        case "fixing":
+          return "fixingStatus";
+          break;
+        case "testing":
+          return "testingStatus";
+          break;
+        case "resolved":
+          return "resolvedStatus";
+          break;
+        case "inprogress":
+          return "inprogressStatus";
+          break;
+        case "completed":
+          return "completedStatus";
+          break;
+        case "implementing":
+          return "implementingStatus";
+          break;
+        case "underReview":
+          return "underReviewStatus";
+          break;
+        case "waitingForApproval":
+          return "waitingForApprovalStatus";
+          break;
+        case "review":
+          return "reviewStatus";
+          break;
+        case "discussion":
+          return "discussionStatus";
+          break;
+        case "waitingResponse":
+          return "waitingResponseStatus";
+          break;
+        case "ready":
+          return "readyStatus";
+          break;
+        case "deployed":
+          return "deployedStatus";
+          break;
+        case "fixed":
+          return "fixedStatus";
+          break;
+        case "rejected":
+          return "rejectedStatus";
+          break;
+        case "closed":
+          return "closedStatus";
+          break;
+        default:
+          return "defaultStatus";
+      }
+    },
+    taskStatusFormatting(status) {
+      switch (status) {
+        case "pending":
+          return "Pending";
+          break;
+        case "onHold":
+          return "On Hold";
+          break;
+        case "open":
+          return "Open";
+          break;
+        case "cancel":
+          return "Cancel";
+          break;
+        case "reOpened":
+          return "Re Opened";
+          break;
+        case "fixing":
+          return "Fixing";
+          break;
+        case "testing":
+          return "Testing";
+          break;
+        case "resolved":
+          return "Resolved";
+          break;
+        case "inprogress":
+          return "Inprogress";
+          break;
+        case "completed":
+          return "Completed";
+          break;
+        case "implementing":
+          return "Implementing";
+          break;
+        case "underReview":
+          return "UnderReview";
+          break;
+        case "waitingForApproval":
+          return "Waiting for Approval";
+          break;
+        case "review":
+          return "Review";
+          break;
+        case "discussion":
+          return "Discussion";
+          break;
+        case "waitingResponse":
+          return "Waiting Response";
+          break;
+        case "ready":
+          return "Ready";
+          break;
+        case "deployed":
+          return "Deployed";
+          break;
+        case "fixed":
+          return "Fixed";
+          break;
+        case "rejected":
+          return "Rejected";
+          break;
+        case "closed":
+          return "Closed";
+          break;
+        default:
+      }
+    },
+    taskTypeFormatting(type) {
+      switch (type) {
+        case "development":
+          return "Development";
+          break;
+        case "qa":
+          return "QA";
+          break;
+        case "design":
+          return "Design";
+          break;
+        case "bug":
+          return "Bug";
+          break;
+        case "operational":
+          return "Operational";
+          break;
+        case "preSales":
+          return "Pre-sales";
+          break;
+        case "general":
+          return "General";
+          break;
+        default:
       }
     },
     dueDateCheck(task) {
