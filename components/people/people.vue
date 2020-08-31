@@ -316,7 +316,7 @@
                         width="100%"
                         color="#66B25F"
                         dark
-                        @click=""
+                        @click="restoreUser(assignee.assigneeId)"
                       >Restore</v-btn>
               </v-list-item-action>
             </v-list-item>
@@ -329,7 +329,14 @@
     </div>
 
     <!-- =============================== second list ===================== -->
-
+<div @click="close" class="taskPopupPopups">
+      <component
+        v-bind:is="component"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
+      <!-- <success-popup /> -->
+    </div>
     <!-- =================== end =============== -->
   </div>
 </template>
@@ -339,8 +346,12 @@ import { mapState } from "vuex";
 import deleteProjectUser from "@/components/people/deleteProjectUser.vue";
 import editProjectUser from "@/components/people/editProjectUser.vue";
 import addProjectUser from "@/components/people/addProjectUser.vue";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
 export default {
   components: {
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup,
     deleteProjectUser,
     editProjectUser,
     addProjectUser,
@@ -348,12 +359,47 @@ export default {
   data() {
     return {
       assignee: {},
+      userId: this.$store.state.user.userId,
       // userList: this.people,
       skill: 0,
       progress: this.progress,
     };
   },
   methods: {
+     close() {
+      this.component = "";
+    },
+    async restoreUser(blockUser){
+      let response;
+      try {
+        response = await this.$axios.$post(
+          `/projects/${this.projectId}/users/${blockUser}/block`,
+          {
+            executorId: this.userId,
+            blockedUserId: blockUser,
+            blockedStatus: false,
+          }
+        );
+        this.component = "success-popup";
+        this.successMessage = "User successfully added";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.$store
+          .dispatch("task/fetchProjectUserCompletionTasks", this.projectId)
+          .finally(() => {
+            this.overlay = false;
+          });
+      } catch (e) {
+        this.overlay = false;
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error blocking user", e);
+      }
+    },
     fetchUsers() {
       // console.log("projectId", this.projectId);
     },
