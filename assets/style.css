@@ -509,8 +509,10 @@
   color: #ffffff;
   margin-left: 60px;
   width: 170px;
+  height: 30px;
   text-align: center;
   border-radius: 5px;
+  padding-top: 4px;
 }
 .statusOption1 {
   background-color: #576377;
@@ -528,10 +530,12 @@
   background-color: #36dd5b;
 }
 .tab-health {
-  background-color: #2ec973;
+  background-color: #66b25f;
   color: #ffffff;
   margin-left: 10px;
   width: 110px;
+  padding-top: 4px;
+  height: 30px;
   text-align: center;
   border-radius: 5px;
 }
@@ -562,19 +566,19 @@
   margin-top: -30px;
 }
 .due {
-  background-color: #ffb129;
+  background-color: #e0ca57;
 }
 .overDue {
-  background-color: #e65c62;
+  background-color: #e07857;
 }
 .left {
-  background-color: #704cf1;
+  background-color: #69335d;
 }
 .assign {
   background-color: #67d2e0;
 }
 .completed {
-  background-color: #6fcd17;
+  background-color: #66b25f;
 }
 .projectBoxNumber {
   font-size: 40px;
@@ -3523,13 +3527,16 @@
 }
 
 .searchOptions .field-input {
-  background-color: #576377 !important;
+  background-color: #292929 !important;
   color: #ffffff !important;
-  border-radius: 0px !important;
   font-size: 12px !important;
 }
 .searchOptions .field-input .field-label {
   color: #ffffff !important;
+}
+.searchOptionValue .v-input__control div .v-select__slot label {
+  background-color: #292929 !important;
+  border-radius: 5px;
 }
 .date-time-picker label {
   /* color: #ffffff !important; */
