@@ -32,7 +32,7 @@
     <v-divider></v-divider>
 
     <v-list
-      v-if="organizationalRoles.indexOf('ADMIN') > -1 || organizationalRoles.indexOf('SUPER_ADMIN') > -1"
+      v-if="organizationalRoles.indexOf('ADMIN') > -1 || organizationalRoles.indexOf('SUPER_ADMIN') > -1 || organizationalRoles.indexOf('ORGANIZATION_ADMIN') > -1"
     >
       <v-list-item
         :router="item.path"
