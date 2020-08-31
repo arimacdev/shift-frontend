@@ -128,7 +128,7 @@
         ></VueCtkDateTimePicker>
       </div>
       <div class="filterTriggersDrop" style="width: 5%; float: left; margin-right: 20px">
-        <v-btn depressed @click="jqlSearch()" dark width="100%" height="30px" color="#080848">
+        <v-btn depressed @click="jqlSearch()" dark width="100%" height="30px" color="#333369">
           <span class="text-capitalize" style="font-size: 10px !important">Search</span>
         </v-btn>
       </div>
@@ -381,7 +381,7 @@
 </template>
 
 <script>
-import TaskDialog from "~/components/tasks/myTaskDialog";
+import TaskDialog from "~/components/tasks/taskDialog";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import Progress from "~/components/popups/progress";
@@ -530,6 +530,10 @@ export default {
         endIndex: 10,
         isAllTasks: false,
       });
+      this.$store.dispatch(
+        "task/fetchTasksMyTasks",
+        this.$route.params.projects
+      );
     },
     scrollEvent() {
       var myDiv = document.getElementById("mainDiv");

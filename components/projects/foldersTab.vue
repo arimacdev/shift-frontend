@@ -7,12 +7,9 @@
           <v-col v-if="folderView == 'root'" sm="2" md="2">
             <v-menu min-width="250px">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn rounded outlined color="#949494" v-bind="attrs" v-on="on">
+                <v-btn depressed width="120" dark color="#060631" v-bind="attrs" v-on="on">
                   <v-icon size="20" dark>mdi-plus</v-icon>
-                  <v-list-item-title
-                    style="color: #576377 !important"
-                    class="text-capitalize fontRestructure14"
-                  >New</v-list-item-title>
+                  <v-list-item-title class="text-capitalize fontRestructure14">New</v-list-item-title>
                 </v-btn>
               </template>
               <v-list>
@@ -102,7 +99,7 @@
               <v-list-item-title>Files</v-list-item-title>
             </v-col>
           </v-row>
-          <v-row v-if="AllprojectFolders.file == ''" style="margin-top: 10px">
+          <v-row v-if="AllprojectFolders.files == ''" style="margin-top: 10px">
             <v-col>
               <v-list-item-subtitle>No files to show</v-list-item-subtitle>
             </v-col>
@@ -110,6 +107,7 @@
           <v-row style="margin-top: 10px">
             <v-col>
               <!-- ---------- file display cards --------- -->
+
               <v-card
                 v-for="(projectFile, index) in AllprojectFolders.files"
                 :key="index"
@@ -774,7 +772,7 @@ export default {
       this.folderMove = folderId;
     },
     removeComponent() {
-      this.folderView = true;
+      this.folderView = "root";
     },
     selectFolder(projectFolder) {
       this.selectedFolder = projectFolder;

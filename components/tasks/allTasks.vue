@@ -155,7 +155,7 @@
       </div>
 
       <div class="filterTriggersDrop" style="width: 5%; float: left; margin-right: 20px">
-        <v-btn depressed @click="jqlSearch()" dark width="100%" height="30px" color="#080848">
+        <v-btn depressed @click="jqlSearch()" dark width="100%" height="30px" color="#333369">
           <span class="text-capitalize" style="font-size: 10px !important">Search</span>
         </v-btn>
       </div>
@@ -891,6 +891,10 @@ export default {
         endIndex: 10,
         isAllTasks: false,
       });
+      this.$store.dispatch(
+        "task/fetchTasksAllTasks",
+        this.$route.params.projects
+      );
     },
     scrollEvent() {
       var myDiv = document.getElementById("mainDiv");

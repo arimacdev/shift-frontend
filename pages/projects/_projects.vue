@@ -315,7 +315,29 @@
       </div>
       <keep-alive>
         <div v-if="this.$route.params.projects == 'projects'" class="defaultFilterBackground">
-          <v-icon size="150" color="#EDF0F5">mdi-folder-multiple-outline</v-icon>
+          <div
+            v-if="organizationalRoles.indexOf('ADMIN') > -1 || organizationalRoles.indexOf('SUPER_ADMIN') > -1 || organizationalRoles.indexOf('WORKLOAD') > -1"
+          >
+            <v-icon size="60" color="#BEC4CE">icon-project</v-icon>
+            <div class="newProjectText">Create New Project</div>
+            <v-btn v-on:click="component = 'add-project'" color="#0083E2" dark depressed>
+              <v-list-item>
+                <v-list-item-action>
+                  <v-icon size="17" color="#ffffff">icon-project</v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <span class="text-capitalize">Add new project</span>
+                </v-list-item-content>
+                <v-list-item-action>
+                  <v-icon size="17" color="#ffffff">mdi-plus-circle</v-icon>
+                </v-list-item-action>
+              </v-list-item>
+            </v-btn>
+          </div>
+          <div v-else>
+            <v-icon size="60" color="#BEC4CE">icon-project</v-icon>
+            <div class="newProjectText">Select a Project</div>
+          </div>
         </div>
         <component
           v-if="
@@ -330,7 +352,7 @@
         <component v-else-if="this.component == 'add-project'" v-bind:is="component"></component>
       </keep-alive>
     </div>
-    <v-overlay :value="overlay" color="black">
+    <v-overlay :value="overlay" color="white" opacity="1">
       <progress-loading />
     </v-overlay>
   </div>

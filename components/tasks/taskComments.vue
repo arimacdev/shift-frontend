@@ -516,13 +516,13 @@
         </div>
       </v-col>
     </v-row>
-    <v-pagination
+    <!-- <v-pagination
       @input="getComments()"
       v-model="commentPage"
       :length="Math.ceil(this.allCommentsLength / 10)"
       circle
       :total-visible="10"
-    ></v-pagination>
+    ></v-pagination>-->
     <!-- --------- delete comment dialog ------ -->
     <v-dialog v-model="deleteCommentDialog" max-width="350">
       <v-card style="text-align: center ; padding-bottom: 25px">

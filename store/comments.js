@@ -1,6 +1,6 @@
 export const state = () => ({
   activityComment: [],
-  allCommentsLength: 0
+  allCommentsLength: 0,
 });
 
 export const mutations = {
@@ -16,9 +16,9 @@ export const mutations = {
     });
     state.activityComment = activityComment;
   },
-  SET_TASK_COMMENTS_LENGTH(state, length){
+  SET_TASK_COMMENTS_LENGTH(state, length) {
     state.allCommentsLength = length;
-  }
+  },
 };
 
 export const actions = {
@@ -30,7 +30,7 @@ export const actions = {
     let taskCommentResponse;
     try {
       taskCommentResponse = await this.$axios.$get(
-        `/task/${taskId}/comment?startIndex=${startIndex}&endIndex=${endIndex}`,
+        `/task/${taskId}/comment?startIndex=${startIndex}&endIndex=100&allComments=true`,
         {
           headers: {
             userId: user,
@@ -43,8 +43,7 @@ export const actions = {
     }
   },
 
-  async fetchTaskCommentLength(
-    { commit, rootState }, taskId) {
+  async fetchTaskCommentLength({ commit, rootState }, taskId) {
     const user = rootState.user.userId;
     let taskCommentLength;
     try {
@@ -56,12 +55,10 @@ export const actions = {
           },
         }
       );
-      console.log("comments length", taskCommentLength.data)
+      console.log('comments length', taskCommentLength.data);
       commit('SET_TASK_COMMENTS_LENGTH', taskCommentLength.data);
     } catch (error) {
       console.log('Error fetching count length', error);
     }
   },
-
-
 };

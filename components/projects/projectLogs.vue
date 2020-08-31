@@ -545,6 +545,7 @@ export default {
   },
   data() {
     return {
+      // scrollCount: this.page,
       overlay: false,
       page: this.page,
       taskLogs: {},
@@ -568,7 +569,7 @@ export default {
 
   methods: {
     scrollEvent() {
-      let scrollCount = 1;
+      // this.scrollCount = 1;
 
       var myDiv = document.getElementById("mainDiv123");
       // console.log("The scroll arrived at bottom " + myDiv.scrollTop);
@@ -579,13 +580,13 @@ export default {
           myDiv.scrollTop + myDiv.clientHeight === myDiv.scrollHeight;
 
         if (bottomOfWindow) {
-          scrollCount = scrollCount + 1;
+          this.page = this.page + 1;
           // console.log("REACHED COUNT! " + scrollCount);
           if (
-            scrollCount <=
+            this.page <=
             Math.ceil(this.projectActivityLog.activityLogCount / 10) + 1
           ) {
-            this.getLogsLazyLoading(scrollCount);
+            this.getLogsLazyLoading(this.page);
           }
         }
       };

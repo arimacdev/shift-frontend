@@ -31,6 +31,7 @@
                   multiple
                   clearable
                   :clear-icon-cb="clearAssignee()"
+                  @change="jqlSearch()"
                 ></v-autocomplete>
               </v-col>
               <v-col md="3">
@@ -44,6 +45,7 @@
                   noButton
                   autoClose
                   :clear-icon-cb="clearDate()"
+                  @input="jqlSearch()"
                 ></VueCtkDateTimePicker>
               </v-col>
               <v-col md="1">
@@ -190,7 +192,7 @@
                     <v-expansion-panel-header
                       v-if="project.total > 0"
                       class="projectDetailsPannelHeader"
-                      color="#080848"
+                      color="#292929"
                     >
                       {{ project.projectName }} - {{ project.completed }}/{{
                       project.total
@@ -249,7 +251,7 @@
                           <v-list-item-action>
                             <v-chip
                               class="chipsContent"
-                              :class="statusCheck(task.issueType)"
+                              :class="statusCheck(task.taskStatus)"
                               x-small
                             >
                               <span
@@ -258,11 +260,7 @@
                             </v-chip>
                           </v-list-item-action>
                           <v-list-item-action>
-                            <v-chip
-                              class="chipsContent"
-                              :class="statusCheck(task.issueType)"
-                              x-small
-                            >
+                            <v-chip class="chipsContent" :class="typeCheck(task.issueType)" x-small>
                               <span
                                 class="fontRestructure12"
                               >{{ taskTypeFormatting(task.issueType) }}</span>
@@ -553,6 +551,75 @@ export default {
       }
     },
     statusCheck(task) {
+      switch (task) {
+        case "pending":
+          return "pendingStatus";
+          break;
+        case "onHold":
+          return "onHoldStatus";
+          break;
+        case "open":
+          return "openStatus";
+          break;
+        case "cancel":
+          return "cancelStatus";
+          break;
+        case "reOpened":
+          return "reOpenedStatus";
+          break;
+        case "fixing":
+          return "fixingStatus";
+          break;
+        case "testing":
+          return "testingStatus";
+          break;
+        case "resolved":
+          return "resolvedStatus";
+          break;
+        case "inprogress":
+          return "inprogressStatus";
+          break;
+        case "completed":
+          return "completedStatus";
+          break;
+        case "implementing":
+          return "implementingStatus";
+          break;
+        case "underReview":
+          return "underReviewStatus";
+          break;
+        case "waitingForApproval":
+          return "waitingForApprovalStatus";
+          break;
+        case "review":
+          return "reviewStatus";
+          break;
+        case "discussion":
+          return "discussionStatus";
+          break;
+        case "waitingResponse":
+          return "waitingResponseStatus";
+          break;
+        case "ready":
+          return "readyStatus";
+          break;
+        case "deployed":
+          return "deployedStatus";
+          break;
+        case "fixed":
+          return "fixedStatus";
+          break;
+        case "rejected":
+          return "rejectedStatus";
+          break;
+        case "closed":
+          return "closedStatus";
+          break;
+        default:
+          return "defaultStatus";
+      }
+    },
+    typeCheck(task) {
       if (task === "development") {
         return "developmentStatus";
       } else if (task === "qa") {
@@ -601,8 +668,8 @@ export default {
           this.dateRange.start !== undefined &&
           this.dateRange.end !== undefined
         ) {
-          this.from = this.dateRange.start.slice(0, 10);
-          this.to = this.dateRange.end.slice(0, 10);
+          this.from = this.dateRange.start;
+          this.to = this.dateRange.end;
           const startDate = new Date(this.dateRange.start);
           const isoStartDate = new Date(
             startDate.getTime() - startDate.getTimezoneOffset() * 60000

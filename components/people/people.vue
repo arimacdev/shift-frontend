@@ -240,12 +240,99 @@
           </div>
         </div>
 
+        <div class>
+          <div class>
+            <p class="peopleRoleTitle" @click="fetchUsers">Blocked Users</p>
+            <!-- <v-divider></v-divider> -->
+          </div>
+
+          <div
+            v-for="(assignee, index) in userCompletionTasks"
+            :key="index"
+            class="taskList peopleListItems"
+          >
+            <v-list-item v-if="assignee.isUserBlocked == true" class="peopleContainer">
+              <v-list-item-avatar size="35">
+                <v-img
+                  v-if="
+                    assignee.assigneeProfileImage != null &&
+                      assignee.assigneeProfileImage != ''
+                  "
+                  :src="assignee.assigneeProfileImage"
+                ></v-img>
+                <v-img
+                  v-else
+                  src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                ></v-img>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title class="projectRole">
+                  {{ assignee.assigneeFirstName }}
+                  {{ assignee.assigneeLastName }}
+                </v-list-item-title>
+                <v-list-item-title class="peopleName">
+                  {{
+                  assignee.projectJobRoleName
+                  }}
+                </v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-content class="projectProgressSection">
+                <v-list-item-title class="completedStatusPeople">
+                  {{
+                  assignee.tasksCompleted +
+                  '/' +
+                  assignee.totalTasks +
+                  ' Tasks completed'
+                  }}
+                </v-list-item-title>
+                <v-list-item-title class="projectProgress">
+                  <!-- <div class="progressBar"></div> -->
+                  <div class="progressLine">
+                    <v-progress-linear
+                      :value="
+                        (assignee.tasksCompleted / assignee.totalTasks) * 100
+                      "
+                      color="#66B25F"
+                      background-color="#FF9F9F"
+                      height="13"
+                      rounded
+                      reactive
+                    >
+                      <!-- <template v-slot="{ value }"> -->
+                      <template>
+                        <!-- <span class="presentageValue">{{ Math.ceil(value) }}%</span> -->
+                      </template>
+                    </v-progress-linear>
+                  </div>
+                </v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-action>
+                <v-btn
+                  depressed
+                  class="text-capitalize"
+                  small
+                  color="#66B25F"
+                  dark
+                  @click="restoreUser(assignee.assigneeId)"
+                >Restore</v-btn>
+              </v-list-item-action>
+            </v-list-item>
+          </div>
+        </div>
+
         <!-- ------ -->
       </div>
     </div>
 
     <!-- =============================== second list ===================== -->
-
+    <div @click="close()" class="taskPopupPopups">
+      <component
+        v-bind:is="component"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
+      <!-- <success-popup /> -->
+    </div>
     <!-- =================== end =============== -->
   </div>
 </template>
@@ -255,8 +342,12 @@ import { mapState } from "vuex";
 import deleteProjectUser from "@/components/people/deleteProjectUser.vue";
 import editProjectUser from "@/components/people/editProjectUser.vue";
 import addProjectUser from "@/components/people/addProjectUser.vue";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
 export default {
   components: {
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup,
     deleteProjectUser,
     editProjectUser,
     addProjectUser,
@@ -264,12 +355,48 @@ export default {
   data() {
     return {
       assignee: {},
+      component: "",
+      userId: this.$store.state.user.userId,
       // userList: this.people,
       skill: 0,
       progress: this.progress,
     };
   },
   methods: {
+    close() {
+      this.component = "";
+    },
+    async restoreUser(blockUser) {
+      let response;
+      try {
+        response = await this.$axios.$post(
+          `/projects/${this.projectId}/users/${blockUser}/block`,
+          {
+            executorId: this.userId,
+            blockedUserId: blockUser,
+            blockedStatus: false,
+          }
+        );
+        this.component = "success-popup";
+        this.successMessage = "User successfully restored";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.$store
+          .dispatch("task/fetchProjectUserCompletionTasks", this.projectId)
+          .finally(() => {
+            this.overlay = false;
+          });
+      } catch (e) {
+        this.overlay = false;
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error blocking user", e);
+      }
+    },
     fetchUsers() {
       // console.log("projectId", this.projectId);
     },

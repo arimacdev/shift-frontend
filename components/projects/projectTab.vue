@@ -430,13 +430,13 @@
         <v-col class="projectBox assign">
           <p class="projectBoxNumber">{{ projectTaskCompletion.tasksAssigned }}</p>
           <p class="projectBoxtext">Assigned to you</p>
-          <v-icon size="30" color="white">mdi-account-outline</v-icon>
+          <v-icon size="25" color="white">icon-user</v-icon>
         </v-col>
 
         <v-col class="projectBox completed">
           <p class="projectBoxNumber">{{ projectTaskCompletion.tasksCompleted }}</p>
           <p class="projectBoxtext">Completed</p>
-          <v-icon size="30" color="white">mdi-check-circle-outline</v-icon>
+          <v-icon size="30" color="white">mdi-checkbox-marked-circle-outline</v-icon>
         </v-col>
       </v-row>
     </v-container>

@@ -103,10 +103,10 @@
                 <div class="text-center">
                   <v-icon
                     v-if="childTask.taskStatus == 'closed'"
-                    size="25"
+                    size="20"
                     color="#2EC973"
                   >mdi-checkbox-marked-circle</v-icon>
-                  <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                  <v-icon v-else size="20" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                   <br />
                   <div style="font-size: 10px; font-weight: bold">{{ childTask.secondaryTaskId }}</div>
                 </div>
@@ -391,6 +391,7 @@
         :componentClose="componentClose"
         :taskObject="taskObject"
         @taskDialogClosing="taskDialogClosing()"
+        @clearStore="clearStore()"
       />
     </v-dialog>
     <!-- --------------------- delete task popup --------------- -->
@@ -452,7 +453,7 @@ import { mapState } from "vuex";
 // import TaskSideBar from "~/components/tasks/taskSideBar";
 import AddSprint from "~/components/projects/addSprint";
 import UpdateSprint from "~/components/projects/updateSprint";
-import TaskDialog from "~/components/tasks/sprintTaskDialog";
+import TaskDialog from "~/components/tasks/taskDialog";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import Stomp from "stompjs";
@@ -500,6 +501,17 @@ export default {
     }),
   },
   methods: {
+    clearStore() {
+      this.$store.dispatch("task/setIndex", {
+        startIndex: 0,
+        endIndex: 10,
+        isAllTasks: true,
+      });
+      this.$store.dispatch(
+        "task/fetchSprintTasks",
+        this.$route.params.projects
+      );
+    },
     taskDialogClosing() {
       // console.log("Task Dialog Closing");
       if (this.stomp !== null) {
