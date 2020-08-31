@@ -766,7 +766,6 @@
                   </div>
                   <v-divider></v-divider>
                   <!-- ----------- Due date section --------- -->
-                  {{this.fetchProject.projectEndDate.substr(0, 10)}}
                   <div class="expansionViewHeaderUpdated">
                     <v-list-item class>
                       <v-list-item-icon>
