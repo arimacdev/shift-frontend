@@ -102,7 +102,7 @@
               <v-list-item-title>Files</v-list-item-title>
             </v-col>
           </v-row>
-          <v-row v-if="AllprojectFolders.file == ''" style="margin-top: 10px">
+          <v-row v-if="AllprojectFolders.files == ''" style="margin-top: 10px">
             <v-col>
               <v-list-item-subtitle>No files to show</v-list-item-subtitle>
             </v-col>
@@ -110,6 +110,7 @@
           <v-row style="margin-top: 10px">
             <v-col>
               <!-- ---------- file display cards --------- -->
+
               <v-card
                 v-for="(projectFile, index) in AllprojectFolders.files"
                 :key="index"
