@@ -1068,7 +1068,13 @@
                     <v-list-item>
                       <v-list-item-content>
                         <v-list-item-title class="noteSectionUpdated">
-                          <v-textarea name="input-7-4" auto-grow outlined v-model="taskNote"></v-textarea>
+                          <v-textarea
+                            ref="textarearef"
+                            name="input-7-4"
+                            auto-grow
+                            outlined
+                            v-model="taskNote"
+                          ></v-textarea>
                         </v-list-item-title>
                         <div class="noteUpdateButtonUpdated">
                           <v-btn
@@ -1931,6 +1937,7 @@ export default {
       this.$emit("taskDialogClosing");
       Object.assign(this.$data, this.$options.data.apply(this));
       this.selectedTab = "";
+      this.$refs.textarearef.reset();
     },
     async updateIssueType() {
       this.waiting = true;
