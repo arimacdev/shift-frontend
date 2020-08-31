@@ -237,10 +237,10 @@
       <div class="col2">
         <!-- {{this.filterAssignee}} {{this.filterProject}} {{ this.filterType}} {{ this.filterStatus}} {{this.filterOrderSequence}} -->
         <div class="searchTabRightBar overflow-y-auto">
-          <div v-if="this.filterResult == ''" class="defaultFilterBackground">
-            <v-icon size="150" color="#EDF0F5">mdi-magnify</v-icon>
-          </div>
-          <div v-else>
+          <!-- <div v-if="this.filterResult == ''" class="defaultFilterBackground">
+            <v-icon size="150" color="red">mdi-magnify</v-icon>
+          </div>-->
+          <div>
             <!-- {{this.filterResult}} -->
             <div v-for="(entityTasks, entity, index) in this.orderedTaskList()" :key="index">
               <!-- <span> {{entityTasks}} || {{entity}} || {{index}}</span> -->

@@ -668,7 +668,7 @@ export default {
         let task = taskSearchList[index];
         // console.log("TASK ADDED: " + task);
         this.events.push({
-          name: task.taskName,
+          name: "#" + task.secondaryTaskId + " " + task.taskName,
           start: this.getProjectDisplayDates(task.taskCreatedAt),
           end: this.getProjectDisplayDates(task.taskDueDateAt),
           project: task.projectName,
