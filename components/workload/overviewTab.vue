@@ -666,8 +666,8 @@ export default {
           this.dateRange.start !== undefined &&
           this.dateRange.end !== undefined
         ) {
-          this.from = this.dateRange.start.slice(0, 10);
-          this.to = this.dateRange.end.slice(0, 10);
+          this.from = this.dateRange.start;
+          this.to = this.dateRange.end;
           const startDate = new Date(this.dateRange.start);
           const isoStartDate = new Date(
             startDate.getTime() - startDate.getTimezoneOffset() * 60000

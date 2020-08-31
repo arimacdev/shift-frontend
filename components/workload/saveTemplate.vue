@@ -5,7 +5,7 @@
         <v-btn
           depressed
           width="100%"
-          color="#333369"
+          color="#0083E2"
           dark
           v-on="on"
         >Save current filter as a template</v-btn>

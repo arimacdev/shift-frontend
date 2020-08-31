@@ -21,7 +21,6 @@
             <v-col md="12">
               <v-autocomplete
                 dense
-                style="border-radius: 0px; margin-bottom: -10px"
                 v-model="filterAssignee"
                 return-object
                 :items="assigneeArray"
@@ -30,7 +29,9 @@
                 flat
                 outlined
                 chips
-                background-color="#576377"
+                style=" margin-bottom: -10px"
+                class="searchOptionValue"
+                background-color="#292929"
                 dark
                 small-chips
                 label="Assignee"
@@ -42,7 +43,6 @@
 
               <v-autocomplete
                 dense
-                style="border-radius: 0px; margin-bottom: -10px"
                 v-model="filterProject"
                 return-object
                 :items="projectArray"
@@ -51,7 +51,9 @@
                 flat
                 outlined
                 chips
-                background-color="#576377"
+                style=" margin-bottom: -10px"
+                class="searchOptionValue"
+                background-color="#292929"
                 dark
                 small-chips
                 label="Project"
@@ -62,7 +64,6 @@
               ></v-autocomplete>
               <v-autocomplete
                 dense
-                style="border-radius: 0px; margin-bottom: -10px"
                 v-model="filterType"
                 return-object
                 :items="taskTypeArray"
@@ -71,7 +72,9 @@
                 flat
                 outlined
                 chips
-                background-color="#576377"
+                style=" margin-bottom: -10px"
+                class="searchOptionValue"
+                background-color="#292929"
                 dark
                 small-chips
                 label="Task Type"
@@ -82,7 +85,6 @@
               ></v-autocomplete>
               <v-autocomplete
                 dense
-                style="border-radius: 0px; margin-bottom: -10px"
                 v-model="filterStatus"
                 return-object
                 :items="taskStatusArray"
@@ -91,7 +93,9 @@
                 flat
                 outlined
                 chips
-                background-color="#576377"
+                style=" margin-bottom: -10px"
+                class="searchOptionValue"
+                background-color="#292929"
                 dark
                 small-chips
                 label="Task Status"

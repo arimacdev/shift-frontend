@@ -20,17 +20,18 @@
             <v-col class="searchOptions" md="12">
               <!-- :search-input.sync="searchAssignee" -->
               <v-autocomplete
+                class="searchOptionValue"
                 v-model="filterAssignee"
                 return-object
                 dense
-                style="border-radius: 0px; margin-bottom: -10px"
+                style="margin-bottom: -10px"
                 :items="assigneeArray"
                 item-text="name"
                 item-value="id"
                 flat
                 outlined
                 chips
-                background-color="#576377"
+                background-color="#292929"
                 dark
                 small-chips
                 label="Assignee"
@@ -45,13 +46,14 @@
                 return-object
                 :items="projectArray"
                 dense
-                style="border-radius: 0px; margin-bottom: -10px"
                 item-text="name"
                 item-value="id"
                 flat
                 outlined
                 chips
-                background-color="#576377"
+                style=" margin-bottom: -10px"
+                class="searchOptionValue"
+                background-color="#292929"
                 dark
                 small-chips
                 label="Project"
@@ -63,7 +65,6 @@
               <v-autocomplete
                 v-model="filterType"
                 dense
-                style="border-radius: 0px; margin-bottom: -10px"
                 return-object
                 :items="taskTypeArray"
                 item-text="name"
@@ -71,7 +72,9 @@
                 flat
                 outlined
                 chips
-                background-color="#576377"
+                style=" margin-bottom: -10px"
+                class="searchOptionValue"
+                background-color="#292929"
                 dark
                 small-chips
                 label="Task Type"
@@ -85,13 +88,14 @@
                 return-object
                 :items="taskStatusArray"
                 dense
-                style="border-radius: 0px; margin-bottom: -10px"
                 item-text="name"
                 item-value="id"
                 flat
                 outlined
                 chips
-                background-color="#576377"
+                style=" margin-bottom: -10px"
+                class="searchOptionValue"
+                background-color="#292929"
                 dark
                 small-chips
                 label="Task Status"
@@ -114,9 +118,8 @@
                 @input="jqlSearch()"
               ></VueCtkDateTimePicker>
               <v-select
-                class="filterOrderWorkload"
+                class="filterOrderWorkload searchOptionValue"
                 dense
-                style="border-radius: 0px; margin-bottom: -10px"
                 v-model="filterOrderBy"
                 :items="orderByArray"
                 item-text="name"
@@ -124,7 +127,8 @@
                 flat
                 outlined
                 chips
-                background-color="#576377"
+                style=" margin-bottom: -10px"
+                background-color="#292929"
                 dark
                 small-chips
                 label="Order By"
@@ -146,7 +150,7 @@
                   <v-btn
                     @click="jqlSearch()"
                     class="text-capitalize"
-                    height="70px"
+                    height="50px"
                     color="#151515"
                     dark
                     depressed
@@ -158,7 +162,7 @@
                     depressed
                     @click="jqlCancel()"
                     class="text-capitalize"
-                    height="70px"
+                    height="50px"
                     color="#ff6161"
                     dark
                     width="60%"
