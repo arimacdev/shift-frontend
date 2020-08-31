@@ -2762,7 +2762,18 @@
 }
 .defaultFilterBackground {
   text-align: center;
-  padding-top: 20%;
+  width: 40%;
+  height: 30%;
+  background-color: #edf0f5;
+  position: absolute;
+  left: 35vw;
+  top: 35vh;
+  padding-top: 30px;
+}
+.newProjectText {
+  color: #576377;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 .calanderTabContent {
   width: 80vw;
