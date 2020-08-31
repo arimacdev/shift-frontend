@@ -766,7 +766,7 @@
                   </div>
                   <v-divider></v-divider>
                   <!-- ----------- Due date section --------- -->
-
+                  {{this.fetchProject.projectEndDate.substr(0, 10)}}
                   <div class="expansionViewHeaderUpdated">
                     <v-list-item class>
                       <v-list-item-icon>
@@ -794,7 +794,12 @@
                               @focus="dueDatePicker = true; dueTimePicker = false"
                             ></v-text-field>
                           </template>
-                          <v-date-picker v-if="dueDatePicker" v-model="dueDatePart" scrollable>
+                          <v-date-picker
+                            :max="this.fetchProject.projectEndDate.substr(0, 10)"
+                            v-if="dueDatePicker"
+                            v-model="dueDatePart"
+                            scrollable
+                          >
                             <v-spacer></v-spacer>
                             <v-btn
                               text
@@ -856,6 +861,7 @@
                             ></v-text-field>
                           </template>
                           <v-date-picker
+                            :max="this.fetchProject.projectEndDate.substr(0, 10)"
                             v-if="remindDatePicker"
                             v-model="remindDatePart"
                             scrollable
@@ -2211,94 +2217,98 @@ export default {
     },
 
     async updateDueDate(dueDate) {
-      console.log("DUE DATE: " + dueDate);
-      const isoDate = new Date(
-        dueDate.getTime() - dueDate.getTimezoneOffset() * 60000
-      ).toISOString();
-      this.waiting = true;
+      // console.log("DUE DATE: " + dueDate);
+      if (dueDate != "Invalid Date") {
+        const isoDate = new Date(
+          dueDate.getTime() - dueDate.getTimezoneOffset() * 60000
+        ).toISOString();
+        this.waiting = true;
 
-      let response;
-      try {
-        response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
-          {
-            taskDueDate: isoDate,
-          },
-          {
-            headers: {
-              user: this.userId,
+        let response;
+        try {
+          response = await this.$axios.$put(
+            `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
+            {
+              taskDueDate: isoDate,
             },
-          }
-        );
-        this.$emit("clearStore");
-        // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
-        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
-          taskId: this.selectedTask.taskId,
-          startIndex: 0,
-          endIndex: 10,
-        });
+            {
+              headers: {
+                user: this.userId,
+              },
+            }
+          );
+          this.$emit("clearStore");
+          // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+          this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+            taskId: this.selectedTask.taskId,
+            startIndex: 0,
+            endIndex: 10,
+          });
 
-        this.component = "success-popup";
-        this.successMessage = "Date successfully updated";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        this.waiting = false;
-        // console.log("update task dates response", response);
-      } catch (e) {
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        this.waiting = false;
-        // console.log("Error updating a date", e);
+          this.component = "success-popup";
+          this.successMessage = "Date successfully updated";
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          this.waiting = false;
+          // console.log("update task dates response", response);
+        } catch (e) {
+          this.errorMessage = e.response.data;
+          this.component = "error-popup";
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          this.waiting = false;
+          // console.log("Error updating a date", e);
+        }
       }
     },
 
     async updateRemindDate(remindDate) {
-      console.log("Reming DATE: " + remindDate);
-      const isoDate = new Date(
-        remindDate.getTime() - remindDate.getTimezoneOffset() * 60000
-      ).toISOString();
-      this.waiting = true;
+      // console.log("Reming DATE: " + remindDate);
+      if (remindDate != "Invalid Date") {
+        const isoDate = new Date(
+          remindDate.getTime() - remindDate.getTimezoneOffset() * 60000
+        ).toISOString();
+        this.waiting = true;
 
-      let response;
-      try {
-        response = await this.$axios.$put(
-          `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
-          {
-            taskRemindOnDate: isoDate,
-          },
-          {
-            headers: {
-              user: this.userId,
+        let response;
+        try {
+          response = await this.$axios.$put(
+            `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}`,
+            {
+              taskRemindOnDate: isoDate,
             },
-          }
-        );
-        this.$emit("clearStore");
-        // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
-        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
-          taskId: this.selectedTask.taskId,
-          startIndex: 0,
-          endIndex: 10,
-        });
+            {
+              headers: {
+                user: this.userId,
+              },
+            }
+          );
+          this.$emit("clearStore");
+          // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+          this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+            taskId: this.selectedTask.taskId,
+            startIndex: 0,
+            endIndex: 10,
+          });
 
-        this.component = "success-popup";
-        this.successMessage = "Date successfully updated";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        this.waiting = false;
-        // console.log("update task dates response", response);
-      } catch (e) {
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        this.waiting = false;
-        // console.log("Error updating a date", e);
+          this.component = "success-popup";
+          this.successMessage = "Date successfully updated";
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          this.waiting = false;
+          // console.log("update task dates response", response);
+        } catch (e) {
+          this.errorMessage = e.response.data;
+          this.component = "error-popup";
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          this.waiting = false;
+          // console.log("Error updating a date", e);
+        }
       }
     },
 
@@ -2730,6 +2740,7 @@ export default {
         // console.log(
         //   "SET VALUE " + this.updatedTask.taskDueDateAt.toISOString()
         // );
+
         this.updateRemindDate(new Date(value));
       },
     },
