@@ -7,12 +7,9 @@
           <v-col v-if="folderView == 'root'" sm="2" md="2">
             <v-menu min-width="250px">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn rounded outlined color="#949494" v-bind="attrs" v-on="on">
+                <v-btn depressed width="120" dark color="#060631" v-bind="attrs" v-on="on">
                   <v-icon size="20" dark>mdi-plus</v-icon>
-                  <v-list-item-title
-                    style="color: #576377 !important"
-                    class="text-capitalize fontRestructure14"
-                  >New</v-list-item-title>
+                  <v-list-item-title class="text-capitalize fontRestructure14">New</v-list-item-title>
                 </v-btn>
               </template>
               <v-list>

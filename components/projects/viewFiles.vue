@@ -8,12 +8,9 @@
               v-if="selectedFolder.folderType == 'PROJECT'"
               v-slot:activator="{ on, attrs }"
             >
-              <v-btn small rounded outlined color="#949494" v-bind="attrs" v-on="on">
+              <v-btn depressed width="120" dark color="#060631" v-bind="attrs" v-on="on">
                 <v-icon size="20" dark>mdi-plus</v-icon>
-                <v-list-item-title
-                  style="color: #576377 !important"
-                  class="text-capitalize fontRestructure14"
-                >New</v-list-item-title>
+                <v-list-item-title class="text-capitalize fontRestructure14">New</v-list-item-title>
               </v-btn>
             </template>
             <v-list>
