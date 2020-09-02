@@ -1937,7 +1937,13 @@ export default {
       this.$emit("taskDialogClosing");
       Object.assign(this.$data, this.$options.data.apply(this));
       this.selectedTab = "";
-      this.$refs.textarearef.reset();
+
+      if (this.$refs.textarearef != undefined) {
+        this.$refs.textarearef.reset();
+        // console.log(
+        //   "onchange updated status ->---------" + this.$refs.textarearef
+        // );
+      }
     },
     async updateIssueType() {
       this.waiting = true;
