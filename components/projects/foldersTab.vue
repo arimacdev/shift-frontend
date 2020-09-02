@@ -737,7 +737,8 @@
                     >Main Folder</v-list-item-subtitle>
                   </v-list-item-action>
                 </v-list-item>-->
-                <div v-for="(projectFolder, index) in AllprojectFolders.folders"
+                <div
+                  v-for="(projectFolder, index) in AllprojectFolders.folders"
                   :key="index"
                 >
                   <v-list-item
@@ -758,7 +759,7 @@
                 </div>
               </v-list-item-group>
               <div v-else>
-                <h1>No Project Folders Found </h1>
+                <div>No Project Folders Found</div>
               </div>
             </div>
           </div>
@@ -881,16 +882,15 @@ export default {
       userProfile: (state) => state.userProfile.userProfile,
       projectId: (state) => state.project.project.projectId,
     }),
-  
   },
 
   methods: {
-    getProjectFoldersCount(){
-      console.log("length--->", this.AllprojectFolders.folders)
-      if(this.AllprojectFolders.folders){
-      return this.AllprojectFolders.folders.filter((project)=>{
-        project.folderType === 'PROJECT'
-      }).length;
+    getProjectFoldersCount() {
+      // console.log('length--->', this.AllprojectFolders.folders);
+      if (this.AllprojectFolders.folders) {
+        return this.AllprojectFolders.folders.filter((folder) => {
+          folder.folderType === 'PROJECT';
+        }).length;
       }
     },
     clearFolderState() {
