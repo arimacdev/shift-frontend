@@ -896,6 +896,8 @@ export default {
   methods: {
     clearTaskName() {
       this.subTaskName = "";
+      this.subTagging = false;
+      this.datePickerSubDialog = false;
     },
     clearStore() {
       this.$store.dispatch("task/emptyStore");
