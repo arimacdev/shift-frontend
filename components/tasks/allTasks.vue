@@ -372,6 +372,7 @@
                       "
                       @input="autoFillingSubTask(index)"
                     ></v-text-field>
+                    <div v-else hidden>{{clearTaskName()}}</div>
                   </v-expand-transition>
                   <div
                     v-if="hover && subTagging"
@@ -765,6 +766,7 @@ export default {
   props: ["pagination"],
   data() {
     return {
+      hover: false,
       scrollCount: 1,
       datePickerDialog: false,
       datePickerSubDialog: false,
@@ -892,6 +894,9 @@ export default {
     this.scrollEvent();
   },
   methods: {
+    clearTaskName() {
+      this.subTaskName = "";
+    },
     clearStore() {
       this.$store.dispatch("task/emptyStore");
       this.scrollCount = 1;
