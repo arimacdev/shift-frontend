@@ -182,7 +182,6 @@
             class
             style="border-radius: 0px"
             @keyup.enter="addTask(null, 'general')"
-            clearable
             @input="autoFilling()"
           ></v-text-field>
         </v-form>
@@ -201,11 +200,7 @@
                     ></v-img>
                   </v-list-item-avatar>
                   <v-list-item-content>
-                    <v-list-item-subtitle>
-                      {{
-                      user.name
-                      }}
-                    </v-list-item-subtitle>
+                    <v-list-item-subtitle>{{ user.name }}</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
               </div>
@@ -214,7 +209,14 @@
         </div>
       </div>
       <v-col v-if="datePickerDialog" class="datePopupBoxTaskCreate" cols="12" sm="6" md="4">
-        <v-date-picker @input="datePickerDialog = false; addDate()" v-model="datePicker" scrollable></v-date-picker>
+        <v-date-picker
+          @input="
+            datePickerDialog = false;
+            addDate();
+          "
+          v-model="datePicker"
+          scrollable
+        ></v-date-picker>
       </v-col>
       <!-- ------ start task list ------- -->
       <div v-for="(task, index) in projectAllTasks" :key="index">
@@ -234,8 +236,7 @@
                           color="#66B25F"
                         >mdi-checkbox-blank</v-icon>
                         <v-icon
-                          @click="
-                      closeTask(task.parentTask.taskId, false)"
+                          @click="closeTask(task.parentTask.taskId, false)"
                           style="cursor: pointer"
                           v-else
                           size="25"
@@ -244,17 +245,16 @@
                       </v-list-item-action>
                       <v-list-item-content
                         @click="
-                      selectTask(task.parentTask, task);
-                      taskDialog = true;"
+                          selectTask(task.parentTask, task);
+                          taskDialog = true;
+                        "
                         style="cursor: pointer"
                       >
                         <!-- <div class="tasklistTaskNames restructuredMainTaskName"> -->
                         <div style="color: #576377">
-                          <span class="restructuredMainTaskCode fontRestructure12">
-                            {{
-                            task.parentTask.secondaryTaskId
-                            }}
-                          </span>
+                          <span
+                            class="restructuredMainTaskCode fontRestructure12"
+                          >{{ task.parentTask.secondaryTaskId }}</span>
                           {{ task.parentTask.taskName }}
                         </div>
                         <!-- </div> -->
@@ -273,9 +273,11 @@
                           :class="statusCheck(task.parentTask.taskStatus)"
                           x-small
                         >
-                          <span
-                            class="fontRestructure12"
-                          >{{ taskStatusFormatting(task.parentTask.taskStatus) }}</span>
+                          <span class="fontRestructure12">
+                            {{
+                            taskStatusFormatting(task.parentTask.taskStatus)
+                            }}
+                          </span>
                         </v-chip>
                       </v-list-item-action>
                       <v-list-item-action>
@@ -284,9 +286,11 @@
                           :class="TypeCheck(task.parentTask.issueType)"
                           x-small
                         >
-                          <span
-                            class="fontRestructure12"
-                          >{{ taskTypeFormatting(task.parentTask.issueType) }}</span>
+                          <span class="fontRestructure12">
+                            {{
+                            taskTypeFormatting(task.parentTask.issueType)
+                            }}
+                          </span>
                         </v-chip>
                       </v-list-item-action>
 
@@ -294,11 +298,7 @@
                         <v-list-item-title
                           class="fontRestructure12"
                           :class="dueDateCheck(task.parentTask)"
-                        >
-                          {{
-                          getProjectDates(task.parentTask.taskDueDateAt)
-                          }}
-                        </v-list-item-title>
+                        >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</v-list-item-title>
                       </v-list-item-action>
                       <!-- <div style="margin-right: -25px"> -->
                       <v-tooltip left>
@@ -306,9 +306,10 @@
                           <v-list-item-avatar size="25" v-on="on">
                             <v-img
                               v-if="
-                            task.parentTask.taskAssigneeProfileImage != null &&
-                              task.parentTask.taskAssigneeProfileImage != ''
-                          "
+                                task.parentTask.taskAssigneeProfileImage !=
+                                  null &&
+                                  task.parentTask.taskAssigneeProfileImage != ''
+                              "
                               :src="task.parentTask.taskAssigneeProfileImage"
                             ></v-img>
                             <v-img
@@ -317,7 +318,10 @@
                             ></v-img>
                           </v-list-item-avatar>
                         </template>
-                        <span>{{task.parentTask.firstName}} {{task.parentTask.lastName}}</span>
+                        <span>
+                          {{ task.parentTask.firstName }}
+                          {{ task.parentTask.lastName }}
+                        </span>
                       </v-tooltip>
                       <!-- </div> -->
                       <!-- <div class="bluePartMyTask"></div> -->
@@ -325,11 +329,11 @@
                     <div class="boardTabLinkIcon">
                       <nuxt-link
                         :to="
-                        '/task/' +
-                          task.parentTask.taskId +
-                          '/?project=' +
-                          projectId
-                      "
+                          '/task/' +
+                            task.parentTask.taskId +
+                            '/?project=' +
+                            projectId
+                        "
                         style="text-decoration: none;"
                         target="_blank"
                       >
@@ -358,17 +362,17 @@
                       label="Add a sub task. Format: <TaskName> @<Assignee> #<DueDate>"
                       style="margin-top: 5px; border-radius: 0px"
                       @keyup.enter="
-                      addSubTask(
-                        index,
-                        task.parentTask.taskId,
-                        task.parentTask.issueType,
-                        task.parentTask.sprintId,
-                        task.parentTask.taskDueDateAt
-                      )
-                    "
-                      clearable
+                        addSubTask(
+                          index,
+                          task.parentTask.taskId,
+                          task.parentTask.issueType,
+                          task.parentTask.sprintId,
+                          task.parentTask.taskDueDateAt
+                        )
+                      "
                       @input="autoFillingSubTask(index)"
                     ></v-text-field>
+                    <div v-else hidden>{{clearTaskName()}}</div>
                   </v-expand-transition>
                   <div
                     v-if="hover && subTagging"
@@ -386,11 +390,7 @@
                               ></v-img>
                             </v-list-item-avatar>
                             <v-list-item-content>
-                              <v-list-item-subtitle>
-                                {{
-                                user.name
-                                }}
-                              </v-list-item-subtitle>
+                              <v-list-item-subtitle>{{ user.name }}</v-list-item-subtitle>
                             </v-list-item-content>
                           </v-list-item>
                         </div>
@@ -405,7 +405,10 @@
                     md="4"
                   >
                     <v-date-picker
-                      @input="datePickerSubDialog = false; addSubDate()"
+                      @input="
+                        datePickerSubDialog = false;
+                        addSubDate();
+                      "
                       v-model="datePicker"
                       scrollable
                     ></v-date-picker>
@@ -430,8 +433,7 @@
                         color="#66B25F"
                       >mdi-checkbox-blank</v-icon>
                       <v-icon
-                        @click="
-                      closeTask(childTask.taskId, false)"
+                        @click="closeTask(childTask.taskId, false)"
                         v-else
                         size="25"
                         color="#939393"
@@ -446,11 +448,9 @@
                       style="cursor: pointer"
                     >
                       <div style="color: #576377">
-                        <span class="restructuredMainTaskCode fontRestructure12">
-                          {{
-                          childTask.secondaryTaskId
-                          }}
-                        </span>
+                        <span
+                          class="restructuredMainTaskCode fontRestructure12"
+                        >{{ childTask.secondaryTaskId }}</span>
                         {{ childTask.taskName }}
                       </div>
                     </v-list-item-content>
@@ -469,24 +469,27 @@
                         :class="statusCheck(childTask.taskStatus)"
                         x-small
                       >
-                        <span
-                          class="fontRestructure12"
-                        >{{taskStatusFormatting(childTask.taskStatus) }}</span>
+                        <span class="fontRestructure12">
+                          {{
+                          taskStatusFormatting(childTask.taskStatus)
+                          }}
+                        </span>
                       </v-chip>
                     </v-list-item-action>
                     <v-list-item-action>
                       <v-chip class="chipsContent" :class="TypeCheck(childTask.issueType)" x-small>
-                        <span
-                          class="fontRestructure12"
-                        >{{ taskTypeFormatting(childTask.issueType) }}</span>
+                        <span class="fontRestructure12">
+                          {{
+                          taskTypeFormatting(childTask.issueType)
+                          }}
+                        </span>
                       </v-chip>
                     </v-list-item-action>
                     <v-list-item-action class="updatedDate">
-                      <v-list-item-title class="fontRestructure12" :class="dueDateCheck(childTask)">
-                        {{
-                        getProjectDates(childTask.taskDueDateAt)
-                        }}
-                      </v-list-item-title>
+                      <v-list-item-title
+                        class="fontRestructure12"
+                        :class="dueDateCheck(childTask)"
+                      >{{ getProjectDates(childTask.taskDueDateAt) }}</v-list-item-title>
                     </v-list-item-action>
                     <!-- <div style="margin-right: -25px"> -->
                     <v-tooltip left>
@@ -505,15 +508,18 @@
                           ></v-img>
                         </v-list-item-avatar>
                       </template>
-                      <span>{{childTask.firstName}} {{childTask.lastName}}</span>
+                      <span>
+                        {{ childTask.firstName }}
+                        {{ childTask.lastName }}
+                      </span>
                     </v-tooltip>
                     <!-- </div> -->
                   </v-list-item>
                   <div class="boardTabLinkIcon">
                     <nuxt-link
                       :to="
-                          '/task/' + childTask.taskId + '/?project=' + projectId
-                        "
+                        '/task/' + childTask.taskId + '/?project=' + projectId
+                      "
                       style="text-decoration: none;"
                       target="_blank"
                     >
@@ -565,8 +571,7 @@
                 color="#66B25F"
               >mdi-checkbox-blank</v-icon>
               <v-icon
-                @click="
-                      closeTask(task.taskId, true)"
+                @click="closeTask(task.taskId, true)"
                 v-else
                 size="25"
                 color="#939393"
@@ -581,11 +586,9 @@
                 target="_blank"
               >
                 <div style="color: #576377">
-                  <span class="restructuredMainTaskCode fontRestructure12">
-                    {{
-                    task.secondaryTaskId
-                    }}
-                  </span>
+                  <span
+                    class="restructuredMainTaskCode fontRestructure12"
+                  >{{ task.secondaryTaskId }}</span>
                   {{ task.taskName }}
                 </div>
               </nuxt-link>
@@ -601,20 +604,27 @@
             >{{ taskTypeFormatting(task.issueType) }}</div>-->
             <v-list-item-action>
               <v-chip class="chipsContent" :class="statusCheck(task.taskStatus)" x-small>
-                <span class="fontRestructure12">{{ taskStatusFormatting(task.taskStatus) }}</span>
+                <span class="fontRestructure12">
+                  {{
+                  taskStatusFormatting(task.taskStatus)
+                  }}
+                </span>
               </v-chip>
             </v-list-item-action>
             <v-list-item-action>
               <v-chip class="chipsContent" :class="TypeCheck(task.issueType)" x-small>
-                <span class="fontRestructure12">{{ taskTypeFormatting(task.issueType) }}</span>
+                <span class="fontRestructure12">
+                  {{
+                  taskTypeFormatting(task.issueType)
+                  }}
+                </span>
               </v-chip>
             </v-list-item-action>
             <v-list-item-action class="updatedDate">
-              <v-list-item-title class="fontRestructure12" :class="dueDateCheck(task)">
-                {{
-                getProjectDates(task.taskDueDateAt)
-                }}
-              </v-list-item-title>
+              <v-list-item-title
+                class="fontRestructure12"
+                :class="dueDateCheck(task)"
+              >{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
             </v-list-item-action>
             <!-- <div> -->
             <v-tooltip left>
@@ -630,7 +640,7 @@
                   ></v-img>
                 </v-list-item-avatar>
               </template>
-              <span>{{task.firstName}} {{task.lastName}}</span>
+              <span>{{ task.firstName }} {{ task.lastName }}</span>
             </v-tooltip>
             <!-- </div> -->
           </v-list-item>
@@ -756,6 +766,7 @@ export default {
   props: ["pagination"],
   data() {
     return {
+      hover: false,
       scrollCount: 1,
       datePickerDialog: false,
       datePickerSubDialog: false,
@@ -883,6 +894,11 @@ export default {
     this.scrollEvent();
   },
   methods: {
+    clearTaskName() {
+      this.subTaskName = "";
+      this.subTagging = false;
+      this.datePickerSubDialog = false;
+    },
     clearStore() {
       this.$store.dispatch("task/emptyStore");
       this.scrollCount = 1;
@@ -977,10 +993,18 @@ export default {
     },
     autoFillingSubTask(index) {
       if (this.subTaskName != "" && this.subTaskName != null) {
-        if (this.subTaskName.charAt(this.subTaskName.length - 1) == "@") {
+        if (
+          !this.subTaskName
+            .slice(0, this.subTaskName.length - 1)
+            .includes("@") &&
+          this.subTaskName.charAt(this.subTaskName.length - 1) == "@"
+        ) {
           this.subTagging = true;
           // console.log("TAGGING: " + this.subTagging);
         } else if (
+          !this.subTaskName
+            .slice(0, this.subTaskName.length - 1)
+            .includes("#") &&
           this.subTaskName.charAt(this.subTaskName.length - 1) == "#"
         ) {
           this.datePickerSubDialog = true;
@@ -996,11 +1020,24 @@ export default {
       }
     },
     autoFilling() {
+      // if (
+      //   this.updatedTask.taskName != null &&
+      //   this.updatedTask.taskName
+      //     .slice(0, this.updatedTask.taskName.length - 1)
+      //     .includes('@')
+      // ) {
+      //   console.log('############### true');
+      // } else {
+      //   console.log('############### false');
+      // }
       if (
         this.updatedTask.taskName != "" &&
         this.updatedTask.taskName != null
       ) {
         if (
+          !this.updatedTask.taskName
+            .slice(0, this.updatedTask.taskName.length - 1)
+            .includes("@") &&
           this.updatedTask.taskName.charAt(
             this.updatedTask.taskName.length - 1
           ) == "@"
@@ -1008,6 +1045,9 @@ export default {
           this.tagging = true;
           // console.log("TAGGING: " + this.tagging);
         } else if (
+          !this.updatedTask.taskName
+            .slice(0, this.updatedTask.taskName.length - 1)
+            .includes("#") &&
           this.updatedTask.taskName.charAt(
             this.updatedTask.taskName.length - 1
           ) == "#"
@@ -1484,6 +1524,13 @@ export default {
       let taskName;
       let assignee;
 
+      if (!this.updatedTask.taskName.includes("@")) {
+        this.assigneeId = "";
+      }
+      if (!this.updatedTask.taskName.includes("#")) {
+        this.selectedDueDate = "";
+      }
+
       if (this.assigneeId != "" && this.selectedDueDate == "") {
         taskName = this.updatedTask.taskName.split("@")[0];
         assignee = this.assigneeId;
@@ -1557,6 +1604,13 @@ export default {
       //   taskName = this.subTaskName;
       //   assignee = this.userId;
       // }
+
+      if (!this.subTaskName.includes("@")) {
+        this.assigneeId = "";
+      }
+      if (!this.subTaskName.includes("#")) {
+        this.selectedDueDate = "";
+      }
 
       if (this.assigneeId != "" && this.selectedDueDate == "") {
         taskName = this.subTaskName.split("@")[0];
