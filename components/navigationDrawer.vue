@@ -156,9 +156,9 @@ export default {
         },
         { title: 'Admin', icon: 'icon-admin', route: '../../admin/admin' },
         {
-          title: 'Admin',
-          icon: 'icon-admin',
-          route: '../../comments/comments',
+          title: 'Analytics',
+          icon: 'icon-summary',
+          route: '../../analytics/analytics',
         },
       ],
       mini: true,
