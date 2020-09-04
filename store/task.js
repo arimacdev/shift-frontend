@@ -1,6 +1,7 @@
 export const state = () => ({
   allTasks: [],
   myTasks: [],
+  sprintTasks: [],
   userCompletionTasks: [],
   projectTaskCompletion: {},
   taskFiles: [],
@@ -15,6 +16,10 @@ export const state = () => ({
 });
 
 export const mutations = {
+  EMPTY_STORE(state, elements) {
+    state.allTasks = elements;
+    state.myTasks = elements;
+  },
   SET_TOTAL_COUNT(state, count) {
     state.totalCount = count;
   },
@@ -34,6 +39,9 @@ export const mutations = {
       state.selectedTask = task;
     }
   },
+  SET_SPRINT_TASKS(state, event) {
+    state.sprintTasks = event;
+  },
   SET_ALL_TASKS(state, event) {
     // const sorted = event.sort((a, b) => {
     //   const userA = a.parentTask.taskCreatedAt.toUpperCase();
@@ -44,7 +52,8 @@ export const mutations = {
 
     //   return 0;
     // });
-    state.allTasks = event;
+    // state.allTasks = event;
+    state.allTasks = state.allTasks.concat(event);
   },
   SET_CHILD_TASKS(state, children) {
     state.childTasks = children;
@@ -53,7 +62,8 @@ export const mutations = {
     state.parentTask = task;
   },
   SET_MY_TASKS(state, event) {
-    state.myTasks = event;
+    // state.myTasks = event;
+    state.myTasks = state.myTasks.concat(event);
   },
   SET_USER_TASK_COMPLETION(state, event) {
     // const sorted = event.sort((a, b) => {
@@ -117,6 +127,9 @@ export const mutations = {
 };
 
 export const actions = {
+  emptyStore({ commit, rootState }) {
+    commit('EMPTY_STORE', []);
+  },
   async fetchTotalTaskCount({ commit, rootState }, projectId) {
     const user = rootState.user.userId;
     let taskLength;
@@ -250,6 +263,29 @@ export const actions = {
         //   response.data.data
         // );
         commit('SET_ALL_TASKS', response.data.data);
+      })
+      .catch((e) => {
+        console.log('error', e);
+      });
+  },
+
+  fetchSprintTasks({ commit, rootState }, projectId) {
+    const userId = rootState.user.userId;
+    this.$axios
+      .get(
+        `projects/${projectId}/tasks?userId=${userId}&startIndex=${rootState.task.startIndex}&endIndex=${rootState.task.endIndex}&allTasks=true`,
+        {
+          headers: {
+            type: 'project',
+          },
+        }
+      )
+      .then((response) => {
+        // console.log(
+        //   'ALL TASKS ARE RETRIEVED SUCCESSFULLY-->',
+        //   response.data.data
+        // );
+        commit('SET_SPRINT_TASKS', response.data.data);
       })
       .catch((e) => {
         console.log('error', e);

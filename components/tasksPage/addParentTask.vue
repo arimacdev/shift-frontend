@@ -9,7 +9,7 @@
                 <v-icon size="15" color>mdi-account-outline</v-icon>
               </v-list-item-action>
               <v-list-item-content class="buttonText">
-                <v-list-item-title class>Add Parent</v-list-item-title>
+                <span class>Add Parent</span>
               </v-list-item-content>
             </v-list-item>
           </div>

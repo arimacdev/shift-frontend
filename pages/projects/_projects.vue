@@ -11,7 +11,11 @@
             </v-list-item-content>
 
             <v-list-item-icon
-              v-if="organizationalRoles.indexOf('ADMIN') > -1 || organizationalRoles.indexOf('SUPER_ADMIN') > -1 || organizationalRoles.indexOf('WORKLOAD') > -1"
+              v-if="
+                organizationalRoles.indexOf('ADMIN') > -1 ||
+                  organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
+                  organizationalRoles.indexOf('WORKLOAD') > -1
+              "
             >
               <button v-on:click="component = 'add-project'">
                 <v-icon @click="createNewProject">mdi-plus-circle</v-icon>
@@ -33,7 +37,11 @@
             v-else-if="this.$route.params.projects == 'projects'"
             class="font-weight-bold"
           >Select a project</v-list-item-title>
-          <v-list-item-title v-else class="font-weight-bold">{{ this.fetchProject.projectName }}</v-list-item-title>
+          <v-list-item-title v-else class="font-weight-bold">
+            {{
+            this.fetchProject.projectName
+            }}
+          </v-list-item-title>
         </div>
       </div>
     </v-toolbar>
@@ -70,13 +78,13 @@
                     <v-list-item
                       class="selectedProjectPanel"
                       v-if="
-                  project.projectStatus == 'presalesPD' ||
-                    project.projectStatus == 'preSalesQS' ||
-                    project.projectStatus == 'preSalesN' ||
-                    project.projectStatus == 'preSalesC' ||
-                    project.projectStatus == 'preSalesL' ||
-                    project.projectStatus == 'presales'
-                "
+                        project.projectStatus == 'presalesPD' ||
+                          project.projectStatus == 'preSalesQS' ||
+                          project.projectStatus == 'preSalesN' ||
+                          project.projectStatus == 'preSalesC' ||
+                          project.projectStatus == 'preSalesL' ||
+                          project.projectStatus == 'presales'
+                      "
                       v-on:click="component = 'tab-views'"
                       :to="project.projectId"
                     >
@@ -84,7 +92,11 @@
                         <v-icon size="17" color="deep-orange lighten-1">icon-project</v-icon>
                       </v-list-item-action>
                       <v-list-item-content>
-                        <v-list-item-title class="fontRestructure12">{{ project.projectName }}</v-list-item-title>
+                        <v-list-item-title class="fontRestructure12">
+                          {{
+                          project.projectName
+                          }}
+                        </v-list-item-title>
                         <v-list-item-subtitle
                           v-if="project.projectStatus == 'presalesPD'"
                           class="projectSubtitle"
@@ -133,7 +145,11 @@
                         <v-icon size="17" color="#FFC212">icon-project</v-icon>
                       </v-list-item-action>
                       <v-list-item-content>
-                        <v-list-item-title class="fontRestructure12">{{ project.projectName }}</v-list-item-title>
+                        <v-list-item-title class="fontRestructure12">
+                          {{
+                          project.projectName
+                          }}
+                        </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                   </div>
@@ -162,7 +178,11 @@
                         <v-icon size="17" color="#ED5ED1">icon-project</v-icon>
                       </v-list-item-action>
                       <v-list-item-content>
-                        <v-list-item-title class="fontRestructure12">{{ project.projectName }}</v-list-item-title>
+                        <v-list-item-title class="fontRestructure12">
+                          {{
+                          project.projectName
+                          }}
+                        </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                   </div>
@@ -182,7 +202,7 @@
                   <div
                     style="height: 45px !important"
                     v-for="(project, index) in getProjects('finished')"
-                    :key="'finished'+index"
+                    :key="'finished' + index"
                     v-on:click="component = 'tab-views'"
                     @click="selectProject(project)"
                   >
@@ -191,7 +211,11 @@
                         <v-icon size="17" color="#0BAFFF">icon-project</v-icon>
                       </v-list-item-action>
                       <v-list-item-content>
-                        <v-list-item-title class="fontRestructure12">{{ project.projectName }}</v-list-item-title>
+                        <v-list-item-title class="fontRestructure12">
+                          {{
+                          project.projectName
+                          }}
+                        </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                   </div>
@@ -315,7 +339,39 @@
       </div>
       <keep-alive>
         <div v-if="this.$route.params.projects == 'projects'" class="defaultFilterBackground">
-          <v-icon size="150" color="#EDF0F5">mdi-folder-multiple-outline</v-icon>
+          <div
+            v-if="
+              organizationalRoles.indexOf('ADMIN') > -1 ||
+                organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
+                organizationalRoles.indexOf('WORKLOAD') > -1
+            "
+          >
+            <v-icon size="60" color="#BEC4CE">icon-project</v-icon>
+            <div class="newProjectText">Create New Project</div>
+            <v-btn
+              v-on:click="component = 'add-project'"
+              color="#0083E2"
+              dark
+              depressed
+              height="40px"
+            >
+              <v-list-item>
+                <v-list-item-action>
+                  <v-icon size="17" color="#ffffff">icon-project</v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <span class="text-capitalize">Add new project</span>
+                </v-list-item-content>
+                <v-list-item-action>
+                  <v-icon size="17" color="#ffffff">mdi-plus-circle</v-icon>
+                </v-list-item-action>
+              </v-list-item>
+            </v-btn>
+          </div>
+          <div v-else>
+            <v-icon size="60" color="#BEC4CE">icon-project</v-icon>
+            <div class="newProjectText">Select a Project</div>
+          </div>
         </div>
         <component
           v-if="
@@ -330,7 +386,7 @@
         <component v-else-if="this.component == 'add-project'" v-bind:is="component"></component>
       </keep-alive>
     </div>
-    <v-overlay :value="overlay" color="black">
+    <v-overlay :value="overlay" color="white" opacity="1">
       <progress-loading />
     </v-overlay>
   </div>
@@ -542,23 +598,23 @@ export default {
         case "task":
           this.overlay = true;
           Promise.all([
-            this.$store.dispatch("task/setIndex", {
-              startIndex: 0,
-              endIndex: 10,
-              isAllTasks: false,
-            }),
-            this.$store.dispatch(
-              "task/fetchTasksAllTasks",
-              this.$route.params.projects
-            ),
+            // this.$store.dispatch("task/setIndex", {
+            //   startIndex: 0,
+            //   endIndex: 10,
+            //   isAllTasks: false,
+            // }),
+            // this.$store.dispatch(
+            //   "task/fetchTasksAllTasks",
+            //   this.$route.params.projects
+            // ),
             this.$store.dispatch(
               "task/fetchTotalTaskCount",
               this.$route.params.projects
             ),
-            this.$store.dispatch(
-              "task/fetchTasksMyTasks",
-              this.$route.params.projects
-            ),
+            // this.$store.dispatch(
+            //   "task/fetchTasksMyTasks",
+            //   this.$route.params.projects
+            // ),
             this.$store.dispatch(
               "task/fetchProjectUserCompletionTasks",
               this.$route.params.projects
@@ -591,13 +647,9 @@ export default {
               "sprints/sprint/fetchAllProjectSprints",
               this.$route.params.projects
             ),
-            this.$store.dispatch("task/setIndex", {
-              startIndex: 0,
-              endIndex: 10,
-              isAllTasks: true,
-            }),
+
             this.$store.dispatch(
-              "task/fetchTasksAllTasks",
+              "task/fetchSprintTasks",
               this.$route.params.projects
             ),
             this.$store.dispatch(
@@ -633,6 +685,17 @@ export default {
       }
     },
     async selectProject(project) {
+      this.$store.dispatch("task/setIndex", {
+        startIndex: 0,
+        endIndex: 10,
+        isAllTasks: false,
+      });
+      this.$store.dispatch("task/emptyStore");
+      this.$store.dispatch("activityLog/emptyStore");
+      this.$store.dispatch(
+        "task/fetchTasksAllTasks",
+        this.$route.params.projects
+      );
       this.newProject = false;
       this.project = project;
       this.projectDisplayName = this.project.projectId;
@@ -640,15 +703,15 @@ export default {
       this.$store.dispatch("project/fetchProject", this.$route.params.projects);
       switch (this.selectedTab) {
         case "task":
-          this.$store.dispatch("task/setIndex", {
-            startIndex: 0,
-            endIndex: 10,
-            isAllTasks: false,
-          });
-          this.$store.dispatch(
-            "task/fetchTasksAllTasks",
-            this.$route.params.projects
-          );
+          // this.$store.dispatch("task/setIndex", {
+          //   startIndex: 0,
+          //   endIndex: 10,
+          //   isAllTasks: false,
+          // });
+          // this.$store.dispatch(
+          //   'task/fetchTasksAllTasks',
+          //   this.$route.params.projects
+          // );
           this.$store.dispatch(
             "task/fetchTotalTaskCount",
             this.$route.params.projects

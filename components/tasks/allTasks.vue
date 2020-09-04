@@ -166,10 +166,11 @@
       </div>
     </div>
 
-    <div v-if="this.taskFilter == 'none'" class="taskListViewContent overflow-y-auto">
+    <div v-if="this.taskFilter == 'none'" class="taskListViewContent overflow-y-auto" id="mainDiv">
       <div v-if="this.taskFilter == 'none'" class="restructuredTaskCreate allTaskCreateTab">
         <v-form onsubmit="return false" ref="form">
           <v-text-field
+            ref="txtMainTask"
             v-model="taskName"
             background-color="#FFFFFF"
             outlined
@@ -177,257 +178,161 @@
             flat
             dense
             prepend-inner-icon="mdi-plus"
-            label="Add a main task..."
+            label="Add a main task. Format: <TaskName> @<Assignee> #<DueDate>"
             class
             style="border-radius: 0px"
             @keyup.enter="addTask(null, 'general')"
-            clearable
+            @input="autoFilling()"
           ></v-text-field>
         </v-form>
       </div>
-      <!-- ------ start task list ------- -->
-      <div v-for="(task, index) in projectAllTasks" :key="index">
-        <v-hover open-delay="600" v-slot:default="{ hover }">
+      <div>
+        <div v-if="tagging" class="taggingPopupBoxTaskCreate overflow-y-auto">
           <div>
-            <div>
-              <div class="restructuredMainTaskList">
-                <v-list-item class="upperListItem">
-                  <v-list-item class="innerListItem">
-                    <!-- @click.stop="drawer = !drawer" -->
-                    <v-list-item-action>
-                      <v-icon
-                        v-if="task.parentTask.taskStatus == 'closed'"
-                        size="25"
-                        color="#66B25F"
-                      >mdi-checkbox-blank</v-icon>
-                      <v-icon
-                        @click="
-                      closeTask(task.parentTask.taskId, false)"
-                        style="cursor: pointer"
-                        v-else
-                        size="25"
-                        color="#939393"
-                      >mdi-checkbox-blank-outline</v-icon>
-                    </v-list-item-action>
-                    <v-list-item-content
-                      @click="
-                      selectTask(task.parentTask, task);
-                      taskDialog = true;"
-                      style="cursor: pointer"
-                    >
-                      <!-- <div class="tasklistTaskNames restructuredMainTaskName"> -->
-                      <div style="color: #576377">
-                        <span class="restructuredMainTaskCode fontRestructure12">
-                          {{
-                          task.parentTask.secondaryTaskId
-                          }}
-                        </span>
-                        {{ task.parentTask.taskName }}
-                      </div>
-                      <!-- </div> -->
-                    </v-list-item-content>
-                    <!-- <div
-                      class="restStatusChip"
-                      :class="statusCheck(task.parentTask.issueType)"
-                    >{{ taskStatusFormatting(task.parentTask.taskStatus) }}</div>-->
-                    <!-- <div
-                      class="restStatusChip"
-                      :class="statusCheck(task.parentTask.issueType)"
-                    >{{ taskTypeFormatting(task.parentTask.issueType) }}</div>-->
-                    <v-list-item-action>
-                      <v-chip
-                        class="chipsContent"
-                        :class="statusCheck(task.parentTask.issueType)"
-                        x-small
-                      >
-                        <span
-                          class="fontRestructure12"
-                        >{{ taskStatusFormatting(task.parentTask.taskStatus) }}</span>
-                      </v-chip>
-                    </v-list-item-action>
-                    <v-list-item-action>
-                      <v-chip
-                        class="chipsContent"
-                        :class="statusCheck(task.parentTask.issueType)"
-                        x-small
-                      >
-                        <span
-                          class="fontRestructure12"
-                        >{{ taskTypeFormatting(task.parentTask.issueType) }}</span>
-                      </v-chip>
-                    </v-list-item-action>
-
-                    <v-list-item-action class="updatedDate">
-                      <v-list-item-title
-                        class="fontRestructure12"
-                        :class="dueDateCheck(task.parentTask)"
-                      >
-                        {{
-                        getProjectDates(task.parentTask.taskDueDateAt)
-                        }}
-                      </v-list-item-title>
-                    </v-list-item-action>
-                    <!-- <div style="margin-right: -25px"> -->
-                    <v-list-item-avatar size="25">
-                      <v-img
-                        v-if="
-                            task.parentTask.taskAssigneeProfileImage != null &&
-                              task.parentTask.taskAssigneeProfileImage != ''
-                          "
-                        :src="task.parentTask.taskAssigneeProfileImage"
-                      ></v-img>
-                      <v-img
-                        v-else
-                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                      ></v-img>
-                    </v-list-item-avatar>
-                    <!-- </div> -->
-                    <!-- <div class="bluePartMyTask"></div> -->
-                  </v-list-item>
-                  <div class="boardTabLinkIcon">
-                    <nuxt-link
-                      :to="
-                        '/task/' +
-                          task.parentTask.taskId +
-                          '/?project=' +
-                          projectId
-                      "
-                      style="text-decoration: none;"
-                      target="_blank"
-                    >
-                      <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
-                    </nuxt-link>
-                  </div>
+            <v-list-item-group>
+              <div v-for="(user, index) in assigneeLoadArray()" :key="index">
+                <v-list-item @click="tagPeople(user)" dense>
+                  <v-list-item-avatar size="20">
+                    <v-img v-if="user.img != null && user.img != ''" :src="user.img"></v-img>
+                    <v-img
+                      v-else
+                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                    ></v-img>
+                  </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-subtitle>{{ user.name }}</v-list-item-subtitle>
+                  </v-list-item-content>
                 </v-list-item>
               </div>
-
-              <!-- -------------- sub task design --------------- -->
-              <div class="restructuredSubTaskCreate" v-if="task.parentTask.taskStatus != 'closed'">
-                <v-expand-transition>
-                  <v-text-field
-                    v-if="hover"
-                    v-model="subTaskName[index]"
-                    background-color="#FFFFFF"
-                    outlined
-                    solo
-                    flat
-                    dense
-                    prepend-inner-icon="mdi-plus"
-                    label="Add a sub task..."
-                    style="margin-top: 5px; border-radius: 0px"
-                    @keyup.enter="
-                      addSubTask(
-                        index,
-                        task.parentTask.taskId,
-                        task.parentTask.issueType,
-                        task.parentTask.sprintId
-                      )
-                    "
-                    clearable
-                  ></v-text-field>
-                </v-expand-transition>
-              </div>
-              <div class="restructuredSubTaskCreate" v-else style="margin-bottom: -5px;"></div>
-              <div v-if="task.childTasks.length !== 0">
-                <div
-                  v-for="(childTask, index) in task.childTasks"
-                  :key="index"
-                  class="restructuredSubTaskListRestructure"
-                >
+            </v-list-item-group>
+          </div>
+        </div>
+      </div>
+      <v-col v-if="datePickerDialog" class="datePopupBoxTaskCreate" cols="12" sm="6" md="4">
+        <v-date-picker
+          @input="
+            datePickerDialog = false;
+            addDate();
+          "
+          v-model="datePicker"
+          scrollable
+        ></v-date-picker>
+      </v-col>
+      <!-- ------ start task list ------- -->
+      <div v-for="(task, index) in projectAllTasks" :key="index">
+        <!-- <v-hover open-delay="600" v-slot:default="{ hover }"> -->
+        <div>
+          <div>
+            <v-hover open-delay="600" v-slot:default="{ hover }">
+              <div>
+                <div class="restructuredMainTaskList">
                   <v-list-item class="upperListItem">
                     <v-list-item class="innerListItem">
                       <!-- @click.stop="drawer = !drawer" -->
                       <v-list-item-action>
                         <v-icon
-                          v-if="childTask.taskStatus == 'closed'"
+                          v-if="task.parentTask.taskStatus == 'closed'"
+                          size="25"
                           color="#66B25F"
                         >mdi-checkbox-blank</v-icon>
                         <v-icon
-                          @click="
-                      closeTask(childTask.taskId, false)"
+                          @click="closeTask(task.parentTask.taskId, false)"
+                          style="cursor: pointer"
                           v-else
                           size="25"
                           color="#939393"
                         >mdi-checkbox-blank-outline</v-icon>
                       </v-list-item-action>
-                      <!-- <div class="restructuredSubTaskName"> -->
                       <v-list-item-content
                         @click="
-                        selectTask(childTask, task);
-                        taskDialog = true;
-                      "
+                          selectTask(task.parentTask, task);
+                          taskDialog = true;
+                        "
                         style="cursor: pointer"
                       >
+                        <!-- <div class="tasklistTaskNames restructuredMainTaskName"> -->
                         <div style="color: #576377">
-                          <span class="restructuredMainTaskCode fontRestructure12">
-                            {{
-                            childTask.secondaryTaskId
-                            }}
-                          </span>
-                          {{ childTask.taskName }}
+                          <span
+                            class="restructuredMainTaskCode fontRestructure12"
+                          >{{ task.parentTask.secondaryTaskId }}</span>
+                          {{ task.parentTask.taskName }}
                         </div>
+                        <!-- </div> -->
                       </v-list-item-content>
-                      <!-- </div> -->
                       <!-- <div
-                        class="restStatusChip"
-                        :class="statusCheck(childTask.issueType)"
-                      >{{ taskStatusFormatting(childTask.taskStatus) }}</div>-->
+                      class="restStatusChip"
+                      :class="statusCheck(task.parentTask.issueType)"
+                      >{{ taskStatusFormatting(task.parentTask.taskStatus) }}</div>-->
                       <!-- <div
-                        class="restStatusChip"
-                        :class="statusCheck(task.parentTask.issueType)"
+                      class="restStatusChip"
+                      :class="statusCheck(task.parentTask.issueType)"
                       >{{ taskTypeFormatting(task.parentTask.issueType) }}</div>-->
                       <v-list-item-action>
                         <v-chip
                           class="chipsContent"
-                          :class="statusCheck(childTask.issueType)"
+                          :class="statusCheck(task.parentTask.taskStatus)"
                           x-small
                         >
-                          <span
-                            class="fontRestructure12"
-                          >{{taskStatusFormatting(childTask.taskStatus) }}</span>
+                          <span class="fontRestructure12">
+                            {{
+                            taskStatusFormatting(task.parentTask.taskStatus)
+                            }}
+                          </span>
                         </v-chip>
                       </v-list-item-action>
                       <v-list-item-action>
                         <v-chip
                           class="chipsContent"
-                          :class="statusCheck(childTask.issueType)"
+                          :class="TypeCheck(task.parentTask.issueType)"
                           x-small
                         >
-                          <span
-                            class="fontRestructure12"
-                          >{{ taskTypeFormatting(childTask.issueType) }}</span>
+                          <span class="fontRestructure12">
+                            {{
+                            taskTypeFormatting(task.parentTask.issueType)
+                            }}
+                          </span>
                         </v-chip>
                       </v-list-item-action>
+
                       <v-list-item-action class="updatedDate">
                         <v-list-item-title
                           class="fontRestructure12"
-                          :class="dueDateCheck(childTask)"
-                        >
-                          {{
-                          getProjectDates(childTask.taskDueDateAt)
-                          }}
-                        </v-list-item-title>
+                          :class="dueDateCheck(task.parentTask)"
+                        >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</v-list-item-title>
                       </v-list-item-action>
                       <!-- <div style="margin-right: -25px"> -->
-                      <v-list-item-avatar size="25">
-                        <v-img
-                          v-if="
-                              childTask.taskAssigneeProfileImage != null &&
-                                childTask.taskAssigneeProfileImage != ''
-                            "
-                          :src="childTask.taskAssigneeProfileImage"
-                        ></v-img>
-                        <v-img
-                          v-else
-                          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                        ></v-img>
-                      </v-list-item-avatar>
+                      <v-tooltip left>
+                        <template v-slot:activator="{ on }">
+                          <v-list-item-avatar size="25" v-on="on">
+                            <v-img
+                              v-if="
+                                task.parentTask.taskAssigneeProfileImage !=
+                                  null &&
+                                  task.parentTask.taskAssigneeProfileImage != ''
+                              "
+                              :src="task.parentTask.taskAssigneeProfileImage"
+                            ></v-img>
+                            <v-img
+                              v-else
+                              src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                            ></v-img>
+                          </v-list-item-avatar>
+                        </template>
+                        <span>
+                          {{ task.parentTask.firstName }}
+                          {{ task.parentTask.lastName }}
+                        </span>
+                      </v-tooltip>
                       <!-- </div> -->
+                      <!-- <div class="bluePartMyTask"></div> -->
                     </v-list-item>
                     <div class="boardTabLinkIcon">
                       <nuxt-link
                         :to="
-                          '/task/' + childTask.taskId + '/?project=' + projectId
+                          '/task/' +
+                            task.parentTask.taskId +
+                            '/?project=' +
+                            projectId
                         "
                         style="text-decoration: none;"
                         target="_blank"
@@ -437,14 +342,200 @@
                     </div>
                   </v-list-item>
                 </div>
-              </div>
 
-              <!-- -------------- end sub task design -------------- -->
+                <!-- -------------- sub task design --------------- -->
+                <div
+                  class="restructuredSubTaskCreate"
+                  v-if="task.parentTask.taskStatus != 'closed'"
+                >
+                  <v-expand-transition>
+                    <v-text-field
+                      ref="txtSubTask"
+                      v-if="hover"
+                      v-model="subTaskName"
+                      background-color="#FFFFFF"
+                      outlined
+                      solo
+                      flat
+                      dense
+                      prepend-inner-icon="mdi-plus"
+                      label="Add a sub task. Format: <TaskName> @<Assignee> #<DueDate>"
+                      style="margin-top: 5px; border-radius: 0px"
+                      @keyup.enter="
+                        addSubTask(
+                          index,
+                          task.parentTask.taskId,
+                          task.parentTask.issueType,
+                          task.parentTask.sprintId,
+                          task.parentTask.taskDueDateAt
+                        )
+                      "
+                      @input="autoFillingSubTask(index)"
+                    ></v-text-field>
+                    <div v-else hidden>{{clearTaskName()}}</div>
+                  </v-expand-transition>
+                  <div
+                    v-if="hover && subTagging"
+                    class="taggingPopupBoxSubTaskCreate overflow-y-auto"
+                  >
+                    <div>
+                      <v-list-item-group>
+                        <div v-for="(user, index) in assigneeLoadArray()" :key="index">
+                          <v-list-item @click="tagPeopleSubTask(user, index)" dense>
+                            <v-list-item-avatar size="20">
+                              <v-img v-if="user.img != null && user.img != ''" :src="user.img"></v-img>
+                              <v-img
+                                v-else
+                                src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                              ></v-img>
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                              <v-list-item-subtitle>{{ user.name }}</v-list-item-subtitle>
+                            </v-list-item-content>
+                          </v-list-item>
+                        </div>
+                      </v-list-item-group>
+                    </div>
+                  </div>
+                  <v-col
+                    v-if="hover && datePickerSubDialog"
+                    class="datePopupBoxSubTaskCreate"
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                    <v-date-picker
+                      @input="
+                        datePickerSubDialog = false;
+                        addSubDate();
+                      "
+                      v-model="datePicker"
+                      scrollable
+                    ></v-date-picker>
+                  </v-col>
+                </div>
+
+                <div class="restructuredSubTaskCreate" v-else style="margin-bottom: -5px;"></div>
+              </div>
+            </v-hover>
+            <div v-if="task.childTasks.length !== 0">
+              <div
+                v-for="(childTask, index) in task.childTasks"
+                :key="index"
+                class="restructuredSubTaskListRestructure"
+              >
+                <v-list-item class="upperListItem">
+                  <v-list-item class="innerListItem">
+                    <!-- @click.stop="drawer = !drawer" -->
+                    <v-list-item-action>
+                      <v-icon
+                        v-if="childTask.taskStatus == 'closed'"
+                        color="#66B25F"
+                      >mdi-checkbox-blank</v-icon>
+                      <v-icon
+                        @click="closeTask(childTask.taskId, false)"
+                        v-else
+                        size="25"
+                        color="#939393"
+                      >mdi-checkbox-blank-outline</v-icon>
+                    </v-list-item-action>
+                    <!-- <div class="restructuredSubTaskName"> -->
+                    <v-list-item-content
+                      @click="
+                        selectTask(childTask, task);
+                        taskDialog = true;
+                      "
+                      style="cursor: pointer"
+                    >
+                      <div style="color: #576377">
+                        <span
+                          class="restructuredMainTaskCode fontRestructure12"
+                        >{{ childTask.secondaryTaskId }}</span>
+                        {{ childTask.taskName }}
+                      </div>
+                    </v-list-item-content>
+                    <!-- </div> -->
+                    <!-- <div
+                        class="restStatusChip"
+                        :class="statusCheck(childTask.issueType)"
+                    >{{ taskStatusFormatting(childTask.taskStatus) }}</div>-->
+                    <!-- <div
+                        class="restStatusChip"
+                        :class="statusCheck(task.parentTask.issueType)"
+                    >{{ taskTypeFormatting(task.parentTask.issueType) }}</div>-->
+                    <v-list-item-action>
+                      <v-chip
+                        class="chipsContent"
+                        :class="statusCheck(childTask.taskStatus)"
+                        x-small
+                      >
+                        <span class="fontRestructure12">
+                          {{
+                          taskStatusFormatting(childTask.taskStatus)
+                          }}
+                        </span>
+                      </v-chip>
+                    </v-list-item-action>
+                    <v-list-item-action>
+                      <v-chip class="chipsContent" :class="TypeCheck(childTask.issueType)" x-small>
+                        <span class="fontRestructure12">
+                          {{
+                          taskTypeFormatting(childTask.issueType)
+                          }}
+                        </span>
+                      </v-chip>
+                    </v-list-item-action>
+                    <v-list-item-action class="updatedDate">
+                      <v-list-item-title
+                        class="fontRestructure12"
+                        :class="dueDateCheck(childTask)"
+                      >{{ getProjectDates(childTask.taskDueDateAt) }}</v-list-item-title>
+                    </v-list-item-action>
+                    <!-- <div style="margin-right: -25px"> -->
+                    <v-tooltip left>
+                      <template v-slot:activator="{ on }">
+                        <v-list-item-avatar size="25" v-on="on">
+                          <v-img
+                            v-if="
+                              childTask.taskAssigneeProfileImage != null &&
+                                childTask.taskAssigneeProfileImage != ''
+                            "
+                            :src="childTask.taskAssigneeProfileImage"
+                          ></v-img>
+                          <v-img
+                            v-else
+                            src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                          ></v-img>
+                        </v-list-item-avatar>
+                      </template>
+                      <span>
+                        {{ childTask.firstName }}
+                        {{ childTask.lastName }}
+                      </span>
+                    </v-tooltip>
+                    <!-- </div> -->
+                  </v-list-item>
+                  <div class="boardTabLinkIcon">
+                    <nuxt-link
+                      :to="
+                        '/task/' + childTask.taskId + '/?project=' + projectId
+                      "
+                      style="text-decoration: none;"
+                      target="_blank"
+                    >
+                      <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
+                    </nuxt-link>
+                  </div>
+                </v-list-item>
+              </div>
             </div>
+
+            <!-- -------------- end sub task design -------------- -->
           </div>
-        </v-hover>
+        </div>
+        <!-- </v-hover> -->
       </div>
-      <div style="margin-top: 50px">
+      <!-- <div style="margin-top: 50px">
         <v-pagination
           @input="getAllTasks()"
           v-model="pagination"
@@ -452,7 +543,7 @@
           circle
           :total-visible="8"
         ></v-pagination>
-      </div>
+      </div>-->
       <!-- <v-hover v-slot:default="{ hover }">
         <div>
           hi
@@ -480,8 +571,7 @@
                 color="#66B25F"
               >mdi-checkbox-blank</v-icon>
               <v-icon
-                @click="
-                      closeTask(task.taskId, true)"
+                @click="closeTask(task.taskId, true)"
                 v-else
                 size="25"
                 color="#939393"
@@ -496,11 +586,9 @@
                 target="_blank"
               >
                 <div style="color: #576377">
-                  <span class="restructuredMainTaskCode fontRestructure12">
-                    {{
-                    task.secondaryTaskId
-                    }}
-                  </span>
+                  <span
+                    class="restructuredMainTaskCode fontRestructure12"
+                  >{{ task.secondaryTaskId }}</span>
                   {{ task.taskName }}
                 </div>
               </nuxt-link>
@@ -515,33 +603,45 @@
                 :class="statusCheck(task.issueType)"
             >{{ taskTypeFormatting(task.issueType) }}</div>-->
             <v-list-item-action>
-              <v-chip class="chipsContent" :class="statusCheck(task.issueType)" x-small>
-                <span class="fontRestructure12">{{ taskStatusFormatting(task.taskStatus) }}</span>
+              <v-chip class="chipsContent" :class="statusCheck(task.taskStatus)" x-small>
+                <span class="fontRestructure12">
+                  {{
+                  taskStatusFormatting(task.taskStatus)
+                  }}
+                </span>
               </v-chip>
             </v-list-item-action>
             <v-list-item-action>
-              <v-chip class="chipsContent" :class="statusCheck(task.issueType)" x-small>
-                <span class="fontRestructure12">{{ taskTypeFormatting(task.issueType) }}</span>
+              <v-chip class="chipsContent" :class="TypeCheck(task.issueType)" x-small>
+                <span class="fontRestructure12">
+                  {{
+                  taskTypeFormatting(task.issueType)
+                  }}
+                </span>
               </v-chip>
             </v-list-item-action>
             <v-list-item-action class="updatedDate">
-              <v-list-item-title class="fontRestructure12" :class="dueDateCheck(task)">
-                {{
-                getProjectDates(task.taskDueDateAt)
-                }}
-              </v-list-item-title>
+              <v-list-item-title
+                class="fontRestructure12"
+                :class="dueDateCheck(task)"
+              >{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
             </v-list-item-action>
             <!-- <div> -->
-            <v-list-item-avatar size="25">
-              <v-img
-                v-if="task.profileImage != null && task.profileImage != ''"
-                :src="task.profileImage"
-              ></v-img>
-              <v-img
-                v-else
-                src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-              ></v-img>
-            </v-list-item-avatar>
+            <v-tooltip left>
+              <template v-slot:activator="{ on }">
+                <v-list-item-avatar size="25" v-on="on">
+                  <v-img
+                    v-if="task.profileImage != null && task.profileImage != ''"
+                    :src="task.profileImage"
+                  ></v-img>
+                  <v-img
+                    v-else
+                    src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                  ></v-img>
+                </v-list-item-avatar>
+              </template>
+              <span>{{ task.firstName }} {{ task.lastName }}</span>
+            </v-tooltip>
             <!-- </div> -->
           </v-list-item>
         </div>
@@ -583,6 +683,7 @@
         :taskObject="taskObject"
         :stomp="stomp"
         @taskDialogClosing="taskDialogClosing()"
+        @clearStore="clearStore()"
         :pageNum="1"
       />
     </v-dialog>
@@ -665,11 +766,21 @@ export default {
   props: ["pagination"],
   data() {
     return {
+      traverseText: "",
+      hover: false,
+      scrollCount: 1,
+      datePickerDialog: false,
+      datePickerSubDialog: false,
+      datePicker: new Date().toISOString().substr(0, 10),
+      selectedDueDate: "",
+      tagging: false,
+      subTagging: false,
+      assigneeId: "",
       pagination: this.pagination,
       logs: {},
       searchAssignee: "",
       overlay: false,
-      subTaskName: [],
+      subTaskName: "",
       projectId: "",
       jqlQuery: "",
       assigneeQuery: "",
@@ -780,7 +891,258 @@ export default {
       val && val !== this.selectAssignee && this.loadAssignee(val);
     },
   },
+  mounted() {
+    this.scrollEvent();
+  },
   methods: {
+    clearTaskName() {
+      this.subTaskName = "";
+      this.subTagging = false;
+      this.datePickerSubDialog = false;
+    },
+    clearStore() {
+      this.$store.dispatch("task/emptyStore");
+      this.scrollCount = 1;
+      this.$store.dispatch("task/setIndex", {
+        startIndex: 0,
+        endIndex: 10,
+        isAllTasks: false,
+      });
+      this.$store.dispatch(
+        "task/fetchTasksAllTasks",
+        this.$route.params.projects
+      );
+    },
+    scrollEvent() {
+      var myDiv = document.getElementById("mainDiv");
+      myDiv.onscroll = () => {
+        let bottomOfWindow =
+          myDiv.scrollTop + myDiv.clientHeight === myDiv.scrollHeight;
+
+        if (bottomOfWindow) {
+          this.scrollCount = this.scrollCount + 1;
+          if (this.scrollCount <= Math.ceil(this.allTaskCount / 10) + 1) {
+            this.getAllTasksLazyLoading(this.scrollCount);
+          }
+        }
+      };
+    },
+    getAllTasksLazyLoading(scrollCount) {
+      this.overlay = true;
+      Promise.all([
+        this.$store.dispatch("task/setIndex", {
+          startIndex: scrollCount * 10 - 10,
+          endIndex: scrollCount * 10,
+          isAllTasks: false,
+        }),
+        this.$store.dispatch(
+          "task/fetchTasksAllTasks",
+          this.$route.params.projects
+        ),
+        this.$store.dispatch(
+          "task/fetchTotalTaskCount",
+          this.$route.params.projects
+        ),
+      ]).finally(() => {
+        this.overlay = false;
+      });
+    },
+    getAllTasks() {
+      this.overlay = true;
+      Promise.all([
+        this.$store.dispatch("task/setIndex", {
+          startIndex: this.pagination * 10 - 10,
+          endIndex: this.pagination * 10,
+          isAllTasks: false,
+        }),
+        this.$store.dispatch(
+          "task/fetchTasksAllTasks",
+          this.$route.params.projects
+        ),
+        this.$store.dispatch(
+          "task/fetchTotalTaskCount",
+          this.$route.params.projects
+        ),
+      ]).finally(() => {
+        this.overlay = false;
+      });
+    },
+    addDate() {
+      this.selectedDueDate = this.datePicker;
+      this.updatedTask.taskName =
+        this.updatedTask.taskName + this.selectedDueDate;
+      this.$refs.txtMainTask.focus();
+    },
+    addSubDate() {
+      this.selectedDueDate = this.datePicker;
+      this.subTaskName = this.subTaskName + this.selectedDueDate;
+      // this.$refs.txtSubTask.focus();
+    },
+    tagPeople(user) {
+      this.tagging = false;
+      this.assigneeId = user.id;
+
+      if (this.traverseText != "") {
+        this.updatedTask.taskName =
+          this.updatedTask.taskName.slice(0, -this.traverseText.length) +
+          user.display;
+      } else {
+        this.updatedTask.taskName = this.updatedTask.taskName + user.display;
+      }
+      this.$refs.txtMainTask.focus();
+      // console.log("SELECTED TAGGING: " + this.assigneeId);
+    },
+    tagPeopleSubTask(user, index) {
+      this.subTagging = false;
+      this.assigneeId = user.id;
+      if (this.traverseText != "") {
+        this.subTaskName =
+          this.subTaskName.slice(0, -this.traverseText.length) + user.display;
+      } else {
+        this.subTaskName = this.subTaskName + user.display;
+      }
+
+      // this.$refs.txtSubTask.focus();
+      // console.log("SELECTED TAGGING INDEX: " + index);
+    },
+    autoFillingSubTask(index) {
+      if (this.subTaskName != undefined) {
+        if (
+          this.subTaskName.split("@")[1] != undefined &&
+          this.subTaskName.split("@")[1] != ""
+        ) {
+          this.traverseText = this.subTaskName.split("@")[1];
+          console.log("TAGGING: " + this.subTaskName.split("@")[1]);
+        }
+        if (!this.subTaskName.includes("@")) {
+          this.subTagging = false;
+          this.traverseText = "";
+        }
+      }
+      if (this.subTaskName != "" && this.subTaskName != null) {
+        if (
+          !this.subTaskName
+            .slice(0, this.subTaskName.length - 1)
+            .includes("@") &&
+          this.subTaskName.charAt(this.subTaskName.length - 1) == "@"
+        ) {
+          this.subTagging = true;
+          this.traverseText = "";
+          // console.log("TAGGING: " + this.subTagging);
+        } else if (
+          !this.subTaskName
+            .slice(0, this.subTaskName.length - 1)
+            .includes("#") &&
+          this.subTaskName.charAt(this.subTaskName.length - 1) == "#"
+        ) {
+          this.datePickerSubDialog = true;
+          // console.log("TAGGING: " + this.tagging);
+        } else {
+          // this.subTagging = false;
+          this.datePickerSubDialog = false;
+          // this.assigneeId = "";
+        }
+      } else {
+        // this.subTagging = false;
+        this.datePickerSubDialog = false;
+      }
+    },
+    autoFilling() {
+      // if (
+      //   this.updatedTask.taskName != null &&
+      //   this.updatedTask.taskName
+      //     .slice(0, this.updatedTask.taskName.length - 1)
+      //     .includes('@')
+      // ) {
+      //   console.log('############### true');
+      // } else {
+      //   console.log('############### false');
+      // }
+      if (this.updatedTask.taskName != undefined) {
+        if (
+          this.updatedTask.taskName.split("@")[1] != undefined &&
+          this.updatedTask.taskName.split("@")[1] != ""
+        ) {
+          this.traverseText = this.updatedTask.taskName.split("@")[1];
+          console.log("TAGGING: " + this.updatedTask.taskName.split("@")[1]);
+        }
+        if (!this.updatedTask.taskName.includes("@")) {
+          this.tagging = false;
+          this.traverseText = "";
+        }
+      }
+
+      if (
+        this.updatedTask.taskName != "" &&
+        this.updatedTask.taskName != null
+      ) {
+        if (
+          !this.updatedTask.taskName
+            .slice(0, this.updatedTask.taskName.length - 1)
+            .includes("@") &&
+          this.updatedTask.taskName.charAt(
+            this.updatedTask.taskName.length - 1
+          ) == "@"
+        ) {
+          this.tagging = true;
+          this.traverseText = "";
+        } else if (
+          !this.updatedTask.taskName
+            .slice(0, this.updatedTask.taskName.length - 1)
+            .includes("#") &&
+          this.updatedTask.taskName.charAt(
+            this.updatedTask.taskName.length - 1
+          ) == "#"
+        ) {
+          this.datePickerDialog = true;
+          // console.log("TAGGING: " + this.tagging);
+        } else {
+          // this.tagging = false;
+          // this.assigneeId = "";
+          this.datePickerDialog = false;
+        }
+      } else {
+        // this.tagging = false;
+        this.datePickerDialog = false;
+      }
+    },
+    assigneeLoadArray() {
+      let assigneeList = [];
+      if (this.tagging || this.subTagging) {
+        const matches = this.people.filter((user) => {
+          if (
+            user.assigneeFirstName
+              .toLowerCase()
+              .startsWith(this.traverseText.toLowerCase())
+          ) {
+            assigneeList.push({
+              name: user.assigneeFirstName + " " + user.assigneeLastName,
+              id: user.assigneeId,
+              img: user.assigneeProfileImage,
+              display: user.assigneeFirstName + user.assigneeLastName,
+            });
+          }
+        });
+        if (assigneeList.length === 0) {
+          this.tagging = false;
+          this.subTagging = false;
+          this.traverseText = "";
+        }
+        return assigneeList;
+      } else {
+        let AssigneeSearchList = this.people;
+        for (let index = 0; index < AssigneeSearchList.length; ++index) {
+          let user = AssigneeSearchList[index];
+          assigneeList.push({
+            name: user.assigneeFirstName + " " + user.assigneeLastName,
+            id: user.assigneeId,
+            img: user.assigneeProfileImage,
+            display: user.assigneeFirstName + user.assigneeLastName,
+          });
+        }
+        return assigneeList;
+      }
+    },
     async closeTask(taskId, filter) {
       this.waiting = true;
       // console.log("onchange updated status ->");
@@ -797,9 +1159,17 @@ export default {
             },
           }
         );
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+
+        this.$store.dispatch("task/emptyStore");
+        this.scrollCount = 1;
+        this.$store.dispatch("task/setIndex", {
+          startIndex: 0,
+          endIndex: 10,
+          isAllTasks: false,
+        });
+
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
-          taskId: this.selectedTask.taskId,
+          taskId: taskId,
           startIndex: 0,
           endIndex: 10,
         });
@@ -814,8 +1184,11 @@ export default {
         }, 3000);
         this.waiting = false;
 
+        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+
         // console.log("update task status response", response);
       } catch (e) {
+        // this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -952,26 +1325,7 @@ export default {
       link.click();
       document.body.removeChild(link);
     },
-    getAllTasks() {
-      this.overlay = true;
-      Promise.all([
-        this.$store.dispatch("task/setIndex", {
-          startIndex: this.pagination * 10 - 10,
-          endIndex: this.pagination * 10,
-          isAllTasks: false,
-        }),
-        this.$store.dispatch(
-          "task/fetchTasksAllTasks",
-          this.$route.params.projects
-        ),
-        this.$store.dispatch(
-          "task/fetchTotalTaskCount",
-          this.$route.params.projects
-        ),
-      ]).finally(() => {
-        this.overlay = false;
-      });
-    },
+
     filterChange() {
       this.nameOfTask = "";
       this.assigneeOfTask = [];
@@ -1207,17 +1561,41 @@ export default {
       this.component = "";
     },
     async addTask(selectedParentTask, issueType) {
+      this.scrollCount = 1;
       this.overlay = true;
       let response;
+      let taskName;
+      let assignee;
+
+      if (!this.updatedTask.taskName.includes("@")) {
+        this.assigneeId = "";
+      }
+      if (!this.updatedTask.taskName.includes("#")) {
+        this.selectedDueDate = "";
+      }
+
+      if (this.assigneeId != "" && this.selectedDueDate == "") {
+        taskName = this.updatedTask.taskName.split("@")[0];
+        assignee = this.assigneeId;
+      } else if (this.selectedDueDate != "" && this.assigneeId != "") {
+        taskName = this.updatedTask.taskName.split("@")[0];
+        assignee = this.assigneeId;
+      } else if (this.selectedDueDate != "" && this.assigneeId == "") {
+        taskName = this.updatedTask.taskName.split("#")[0];
+      } else {
+        taskName = this.updatedTask.taskName;
+        assignee = this.userId;
+      }
+
       try {
         response = await this.$axios.$post(
           `/projects/${this.projectId}/tasks`,
           {
-            taskName: this.updatedTask.taskName,
+            taskName: taskName,
             projectId: this.projectId,
             taskInitiator: this.userId,
-            taskAssignee: this.userId,
-            taskDueDate: "",
+            taskAssignee: assignee,
+            taskDueDate: new Date(this.selectedDueDate),
             taskRemindOnDate: "",
             taskStatus: null,
             taskNotes: "",
@@ -1232,9 +1610,20 @@ export default {
           this.close();
         }, 3000);
         this.overlay = false;
+        this.selectedDueDate = "";
+        this.assigneeId = "";
+        this.scrollCount = 1;
+        this.$store.dispatch("task/emptyStore");
+        this.$store.dispatch("task/setIndex", {
+          startIndex: 0,
+          endIndex: 10,
+          isAllTasks: false,
+        });
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
       } catch (e) {
         this.overlay = false;
+        this.selectedDueDate = "";
+        this.assigneeId = "";
         this.errorMessage = e.response.data;
         this.component = "error-popup";
         setTimeout(() => {
@@ -1243,18 +1632,55 @@ export default {
         console.log("Error updating a status", e);
       }
     },
-    async addSubTask(index, selectedParentTask, issueType, sprintId) {
+    async addSubTask(index, selectedParentTask, issueType, sprintId, dueDate) {
+      this.scrollCount = 1;
       this.overlay = true;
       let response;
+      let taskName;
+      let assignee;
+      let taskDue;
+
+      // if (this.assigneeId != "") {
+      //   taskName = this.subTaskName.split("@")[0];
+      //   assignee = this.assigneeId;
+      // } else {
+      //   taskName = this.subTaskName;
+      //   assignee = this.userId;
+      // }
+
+      if (!this.subTaskName.includes("@")) {
+        this.assigneeId = "";
+      }
+      if (!this.subTaskName.includes("#")) {
+        this.selectedDueDate = "";
+      }
+
+      if (this.assigneeId != "" && this.selectedDueDate == "") {
+        taskName = this.subTaskName.split("@")[0];
+        taskDue = dueDate;
+        assignee = this.assigneeId;
+      } else if (this.selectedDueDate != "" && this.assigneeId != "") {
+        taskName = this.subTaskName.split("@")[0];
+        assignee = this.assigneeId;
+        taskDue = this.selectedDueDate;
+      } else if (this.selectedDueDate != "" && this.assigneeId == "") {
+        taskName = this.subTaskName.split("#")[0];
+        taskDue = this.selectedDueDate;
+      } else {
+        taskName = this.subTaskName;
+        assignee = this.userId;
+        taskDue = dueDate;
+      }
+
       try {
         response = await this.$axios.$post(
           `/projects/${this.projectId}/tasks`,
           {
-            taskName: this.subTaskName[index],
+            taskName: taskName,
             projectId: this.projectId,
             taskInitiator: this.userId,
-            taskAssignee: this.userId,
-            taskDueDate: "",
+            taskAssignee: assignee,
+            taskDueDate: taskDue,
             taskRemindOnDate: "",
             taskStatus: null,
             taskNotes: "",
@@ -1263,13 +1689,22 @@ export default {
             parentTaskId: selectedParentTask,
           }
         );
-        this.subTaskName = [];
+        this.subTaskName = "";
         this.component = "success-popup";
         this.successMessage = "Task added successfully";
         setTimeout(() => {
           this.close();
         }, 3000);
         this.overlay = false;
+        this.selectedDueDate = "";
+        this.assigneeId = "";
+        this.scrollCount = 1;
+        this.$store.dispatch("task/emptyStore");
+        this.$store.dispatch("task/setIndex", {
+          startIndex: 0,
+          endIndex: 10,
+          isAllTasks: false,
+        });
         this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
       } catch (e) {
         this.errorMessage = e.response.data;
@@ -1278,6 +1713,8 @@ export default {
           this.close();
         }, 3000);
         this.overlay = false;
+        this.selectedDueDate = "";
+        this.assigneeId = "";
         console.log("Error updating a status", e);
       }
     },
@@ -1428,7 +1865,7 @@ export default {
       //   console.log('Error fetching data', error);
       // }
     },
-    statusCheck(task) {
+    TypeCheck(task) {
       if (task === "development") {
         return "developmentStatus";
       } else if (task === "qa") {
@@ -1445,6 +1882,75 @@ export default {
         return "generalStatus";
       } else {
         return "otherStatus";
+      }
+    },
+    statusCheck(task) {
+      switch (task) {
+        case "pending":
+          return "pendingStatus";
+          break;
+        case "onHold":
+          return "onHoldStatus";
+          break;
+        case "open":
+          return "openStatus";
+          break;
+        case "cancel":
+          return "cancelStatus";
+          break;
+        case "reOpened":
+          return "reOpenedStatus";
+          break;
+        case "fixing":
+          return "fixingStatus";
+          break;
+        case "testing":
+          return "testingStatus";
+          break;
+        case "resolved":
+          return "resolvedStatus";
+          break;
+        case "inprogress":
+          return "inprogressStatus";
+          break;
+        case "completed":
+          return "completedStatus";
+          break;
+        case "implementing":
+          return "implementingStatus";
+          break;
+        case "underReview":
+          return "underReviewStatus";
+          break;
+        case "waitingForApproval":
+          return "waitingForApprovalStatus";
+          break;
+        case "review":
+          return "reviewStatus";
+          break;
+        case "discussion":
+          return "discussionStatus";
+          break;
+        case "waitingResponse":
+          return "waitingResponseStatus";
+          break;
+        case "ready":
+          return "readyStatus";
+          break;
+        case "deployed":
+          return "deployedStatus";
+          break;
+        case "fixed":
+          return "fixedStatus";
+          break;
+        case "rejected":
+          return "rejectedStatus";
+          break;
+        case "closed":
+          return "closedStatus";
+          break;
+        default:
+          return "defaultStatus";
       }
     },
     dueDateCheck(task) {
@@ -1528,6 +2034,7 @@ export default {
           name: user.assigneeFirstName + " " + user.assigneeLastName,
           id: user.assigneeId,
           img: user.assigneeProfileImage,
+          display: user.assigneeFirstName + user.assigneeLastName,
         });
       }
       return assigneeList;
@@ -1554,7 +2061,7 @@ export default {
     },
     taskName: {
       get() {
-        return null;
+        return this.updatedTask.taskName;
       },
       set(value) {
         this.updatedTask.taskName = value;

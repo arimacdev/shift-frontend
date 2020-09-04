@@ -43,19 +43,24 @@
                   :class="dueDateCheck(task.parentTask)"
                 >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</div>
               </v-list-item-content>
-              <v-list-item-avatar style="margin-right: 5px" size="25">
-                <v-img
-                  v-if="
+              <v-tooltip left>
+                <template v-slot:activator="{ on }">
+                  <v-list-item-avatar style="margin-right: 5px" size="25" v-on="on">
+                    <v-img
+                      v-if="
                     task.parentTask.taskAssigneeProfileImage != null &&
                       task.parentTask.taskAssigneeProfileImage != ''
                   "
-                  :src="task.parentTask.taskAssigneeProfileImage"
-                ></v-img>
-                <v-img
-                  v-else
-                  src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                ></v-img>
-              </v-list-item-avatar>
+                      :src="task.parentTask.taskAssigneeProfileImage"
+                    ></v-img>
+                    <v-img
+                      v-else
+                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                    ></v-img>
+                  </v-list-item-avatar>
+                </template>
+                <span>{{task.parentTask.firstName}} {{task.parentTask.lastName}}</span>
+              </v-tooltip>
               <!-- <div class="boardTabLinkIcon">
                 <nuxt-link
                   :to="
@@ -98,10 +103,10 @@
                 <div class="text-center">
                   <v-icon
                     v-if="childTask.taskStatus == 'closed'"
-                    size="25"
+                    size="20"
                     color="#2EC973"
                   >mdi-checkbox-marked-circle</v-icon>
-                  <v-icon v-else size="25" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                  <v-icon v-else size="20" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
                   <br />
                   <div style="font-size: 10px; font-weight: bold">{{ childTask.secondaryTaskId }}</div>
                 </div>
@@ -111,19 +116,24 @@
                 <v-list-item-title class="fontRestructure12">{{ childTask.taskName }}</v-list-item-title>
                 <div :class="dueDateCheck(childTask)">{{ getProjectDates(childTask.taskDueDateAt) }}</div>
               </v-list-item-content>
-              <v-list-item-avatar style="margin-right: 5px" size="25">
-                <v-img
-                  v-if="
+              <v-tooltip left>
+                <template v-slot:activator="{ on }">
+                  <v-list-item-avatar style="margin-right: 5px" size="25" v-on="on">
+                    <v-img
+                      v-if="
                     childTask.taskAssigneeProfileImage != null &&
                       childTask.taskAssigneeProfileImage != ''
                   "
-                  :src="childTask.taskAssigneeProfileImage"
-                ></v-img>
-                <v-img
-                  v-else
-                  src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                ></v-img>
-              </v-list-item-avatar>
+                      :src="childTask.taskAssigneeProfileImage"
+                    ></v-img>
+                    <v-img
+                      v-else
+                      src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                    ></v-img>
+                  </v-list-item-avatar>
+                </template>
+                <span>{{childTask.firstName}} {{childTask.lastName}}</span>
+              </v-tooltip>
               <!-- <div class="boardTabLinkIcon">
                 <nuxt-link
                   :to="'/task/' + childTask.taskId + '/?project=' + projectId"
@@ -220,19 +230,24 @@
                           :class="dueDateCheck(task.parentTask)"
                         >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</div>
                       </v-list-item-content>
-                      <v-list-item-avatar style="margin-right: 5px" size="25">
-                        <v-img
-                          v-if="
+                      <v-tooltip left>
+                        <template v-slot:activator="{ on }">
+                          <v-list-item-avatar style="margin-right: 5px" size="25" v-on="on">
+                            <v-img
+                              v-if="
                             task.parentTask.taskAssigneeProfileImage != null &&
                               task.parentTask.taskAssigneeProfileImage != ''
                           "
-                          :src="task.parentTask.taskAssigneeProfileImage"
-                        ></v-img>
-                        <v-img
-                          v-else
-                          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                        ></v-img>
-                      </v-list-item-avatar>
+                              :src="task.parentTask.taskAssigneeProfileImage"
+                            ></v-img>
+                            <v-img
+                              v-else
+                              src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                            ></v-img>
+                          </v-list-item-avatar>
+                        </template>
+                        <span>{{task.parentTask.firstName}} {{task.parentTask.lastName}}</span>
+                      </v-tooltip>
                       <!-- <div class="boardTabLinkIcon">
                         <nuxt-link
                           :to="
@@ -298,19 +313,24 @@
                           :class="dueDateCheck(childTask)"
                         >{{ getProjectDates(childTask.taskDueDateAt) }}</div>
                       </v-list-item-content>
-                      <v-list-item-avatar style="margin-right: 5px" size="25">
-                        <v-img
-                          v-if="
+                      <v-tooltip left>
+                        <template v-slot:activator="{ on }">
+                          <v-list-item-avatar style="margin-right: 5px" size="25" v-on="on">
+                            <v-img
+                              v-if="
                             childTask.taskAssigneeProfileImage != null &&
                               childTask.taskAssigneeProfileImage != ''
                           "
-                          :src="childTask.taskAssigneeProfileImage"
-                        ></v-img>
-                        <v-img
-                          v-else
-                          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
-                        ></v-img>
-                      </v-list-item-avatar>
+                              :src="childTask.taskAssigneeProfileImage"
+                            ></v-img>
+                            <v-img
+                              v-else
+                              src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+                            ></v-img>
+                          </v-list-item-avatar>
+                        </template>
+                        <span>{{childTask.firstName}} {{childTask.lastName}}</span>
+                      </v-tooltip>
                       <!-- <div class="boardTabLinkIcon">
                         <nuxt-link
                           :to="
@@ -371,6 +391,7 @@
         :componentClose="componentClose"
         :taskObject="taskObject"
         @taskDialogClosing="taskDialogClosing()"
+        @clearStore="clearStore()"
       />
     </v-dialog>
     <!-- --------------------- delete task popup --------------- -->
@@ -432,7 +453,7 @@ import { mapState } from "vuex";
 // import TaskSideBar from "~/components/tasks/taskSideBar";
 import AddSprint from "~/components/projects/addSprint";
 import UpdateSprint from "~/components/projects/updateSprint";
-import TaskDialog from "~/components/tasks/sprintTaskDialog";
+import TaskDialog from "~/components/tasks/taskDialog";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
 import Stomp from "stompjs";
@@ -472,7 +493,7 @@ export default {
   },
   computed: {
     ...mapState({
-      projectAllTasks: (state) => state.task.allTasks,
+      projectAllTasks: (state) => state.task.sprintTasks,
       projectSprints: (state) => state.sprints.sprint.sprints,
       // projectId: state => state.project.project.projectId,
       selectedTask: (state) => state.task.selectedTask,
@@ -480,6 +501,17 @@ export default {
     }),
   },
   methods: {
+    clearStore() {
+      this.$store.dispatch("task/setIndex", {
+        startIndex: 0,
+        endIndex: 10,
+        isAllTasks: true,
+      });
+      this.$store.dispatch(
+        "task/fetchSprintTasks",
+        this.$route.params.projects
+      );
+    },
     taskDialogClosing() {
       // console.log("Task Dialog Closing");
       if (this.stomp !== null) {

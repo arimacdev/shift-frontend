@@ -8,12 +8,18 @@
               v-if="selectedFolder.folderType == 'PROJECT'"
               v-slot:activator="{ on, attrs }"
             >
-              <v-btn small rounded outlined color="#949494" v-bind="attrs" v-on="on">
+              <v-btn
+                depressed
+                width="120"
+                dark
+                color="#060631"
+                v-bind="attrs"
+                v-on="on"
+              >
                 <v-icon size="20" dark>mdi-plus</v-icon>
-                <v-list-item-title
-                  style="color: #576377 !important"
-                  class="text-capitalize fontRestructure14"
-                >New</v-list-item-title>
+                <v-list-item-title class="text-capitalize fontRestructure14"
+                  >New</v-list-item-title
+                >
               </v-btn>
             </template>
             <v-list>
@@ -25,19 +31,23 @@
                   solo
                   prepend-icon="mdi-file-upload-outline"
                   label="New file upload"
-                  @change="projectFileUpload();"
+                  @change="projectFileUpload()"
                 ></v-file-input>
               </v-list-item>
-              <v-list-item-subtitle class="UploaderWarning">(Maximum upload file size : 10MB)</v-list-item-subtitle>
+              <v-list-item-subtitle class="UploaderWarning"
+                >(Maximum upload file size : 10MB)</v-list-item-subtitle
+              >
             </v-list>
           </v-menu>
         </v-list-item-action>
         <v-list-item-content></v-list-item-content>
         <v-list-item-action v-if="selectedFolder.folderType == 'PROJECT'">
-          <v-icon @click="folderDeleteDialog = true;">mdi-trash-can-outline</v-icon>
+          <v-icon @click="folderDeleteDialog = true"
+            >mdi-trash-can-outline</v-icon
+          >
         </v-list-item-action>
         <v-list-item-action v-if="selectedFolder.folderType == 'PROJECT'">
-          <v-icon @click="editFolderDialog = true;">mdi-pencil-circle</v-icon>
+          <v-icon @click="editFolderDialog = true">mdi-pencil-circle</v-icon>
         </v-list-item-action>
       </v-list-item>
     </div>
@@ -52,7 +62,10 @@
       </v-col>
     </v-row>
 
-    <v-row v-if="selectedFolder.folderType == 'PROJECT'" style="margin-top: 10px">
+    <v-row
+      v-if="selectedFolder.folderType == 'PROJECT'"
+      style="margin-top: 10px"
+    >
       <v-col>
         <!-- ---------- project file display cards --------- -->
         <v-card
@@ -64,8 +77,15 @@
           width="23%"
         >
           <div style="height: 150px;">
-            <a style="text-decoration: none;" :href="projectFile.projectFileUrl" target="_blank">
-              <v-btn style="position: absolute; z-index: 101; right:5px; top: 5px" icon>
+            <a
+              style="text-decoration: none;"
+              :href="projectFile.projectFileUrl"
+              target="_blank"
+            >
+              <v-btn
+                style="position: absolute; z-index: 101; right:5px; top: 5px"
+                icon
+              >
                 <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
               </v-btn>
             </a>
@@ -88,11 +108,14 @@
                 v-if="checkFileType(projectFile.projectFileName)"
                 size="20"
                 color="red"
-              >mdi-image</v-icon>
+                >mdi-image</v-icon
+              >
               <v-icon v-else size="20" color="red">mdi-file-document</v-icon>
             </v-list-item-action>
             <v-list-item-content style="margin-left: -25px">
-              <v-list-item-subtitle class="fontRestructure12">{{projectFile.projectFileName}}</v-list-item-subtitle>
+              <v-list-item-subtitle class="fontRestructure12">{{
+                projectFile.projectFileName
+              }}</v-list-item-subtitle>
               <v-list-item-subtitle class="fontRestructure10">
                 {{ projectFile.firstName }}
                 {{ projectFile.lastName }}
@@ -102,15 +125,13 @@
 
           <v-card-actions style="height: 35px !important; margin-top: -10px">
             <v-list-item-subtitle class="fontRestructure10">
-              {{
-              getFileSize(projectFile.projectFileSize)
-              }}
+              {{ getFileSize(projectFile.projectFileSize) }}
               kB
             </v-list-item-subtitle>
             <v-spacer></v-spacer>
-            <v-list-item-subtitle
-              class="fontRestructure10"
-            >{{getUploadDate(projectFile.projectFileAddedOn)}}</v-list-item-subtitle>
+            <v-list-item-subtitle class="fontRestructure10">{{
+              getUploadDate(projectFile.projectFileAddedOn)
+            }}</v-list-item-subtitle>
             <v-btn icon>
               <div class="iconBackCircleFiles">
                 <a
@@ -119,7 +140,9 @@
                   target="_blank"
                   download
                 >
-                  <v-icon size="20" color="#0BAFFF">mdi-download-outline</v-icon>
+                  <v-icon size="20" color="#0BAFFF"
+                    >mdi-download-outline</v-icon
+                  >
                 </a>
               </div>
             </v-btn>
@@ -143,26 +166,30 @@
                 <v-list>
                   <v-list-item
                     @click="
-                    taskDialog = true;
-                    selectFile(projectFile.projectFileId);
-                  "
+                      taskDialog = true;
+                      selectFile(projectFile.projectFileId);
+                    "
                   >
                     <v-list-item-action>
                       <v-icon size="20">mdi-trash-can-outline</v-icon>
                     </v-list-item-action>
-                    <v-list-item-title style="color: #576377 !important">Delete file</v-list-item-title>
+                    <v-list-item-title style="color: #576377 !important"
+                      >Delete file</v-list-item-title
+                    >
                   </v-list-item>
                   <v-divider class="mx-4"></v-divider>
                   <v-list-item
                     @click="
-                    fileMoveDialog = true;
-                    selectFile(projectFile.projectFileId);
-                  "
+                      fileMoveDialog = true;
+                      selectFile(projectFile.projectFileId);
+                    "
                   >
                     <v-list-item-action>
                       <v-icon size="20">mdi-file-move</v-icon>
                     </v-list-item-action>
-                    <v-list-item-title style="color: #576377 !important">Move file</v-list-item-title>
+                    <v-list-item-title style="color: #576377 !important"
+                      >Move file</v-list-item-title
+                    >
                   </v-list-item>
                 </v-list>
               </v-menu>
@@ -172,7 +199,10 @@
       </v-col>
     </v-row>
 
-    <v-row v-else-if="selectedFolder.folderType === 'TASK'" style="margin-top: 10px">
+    <v-row
+      v-else-if="selectedFolder.folderType === 'TASK'"
+      style="margin-top: 10px"
+    >
       <v-col>
         <!-- ---------- task file display cards --------- -->
         <v-card
@@ -184,8 +214,15 @@
           width="23%"
         >
           <div style="height: 150px;">
-            <a style="text-decoration: none;" :href="taskFile.taskFileUrl" target="_blank">
-              <v-btn style="position: absolute; z-index: 101; right:5px; top: 5px" icon>
+            <a
+              style="text-decoration: none;"
+              :href="taskFile.taskFileUrl"
+              target="_blank"
+            >
+              <v-btn
+                style="position: absolute; z-index: 101; right:5px; top: 5px"
+                icon
+              >
                 <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
               </v-btn>
             </a>
@@ -204,11 +241,18 @@
 
           <v-list-item z- style="height: 30px !important; ">
             <v-list-item-action style="margin-left: -10px">
-              <v-icon v-if="checkFileType(taskFile.taskFileName)" size="20" color="red">mdi-image</v-icon>
+              <v-icon
+                v-if="checkFileType(taskFile.taskFileName)"
+                size="20"
+                color="red"
+                >mdi-image</v-icon
+              >
               <v-icon v-else size="20" color="red">mdi-file-document</v-icon>
             </v-list-item-action>
             <v-list-item-content style="margin-left: -25px">
-              <v-list-item-subtitle class="fontRestructure12">{{taskFile.taskFileName}}</v-list-item-subtitle>
+              <v-list-item-subtitle class="fontRestructure12">{{
+                taskFile.taskFileName
+              }}</v-list-item-subtitle>
               <v-list-item-subtitle class="fontRestructure10">
                 {{ taskFile.firstName }}
                 {{ taskFile.lastName }}
@@ -218,13 +262,13 @@
 
           <v-card-actions style="height: 35px !important; margin-top: -10px">
             <v-list-item-subtitle class="fontRestructure10">
-              {{
-              getFileSize(taskFile.taskFileSize)
-              }}
+              {{ getFileSize(taskFile.taskFileSize) }}
               kB
             </v-list-item-subtitle>
             <v-spacer></v-spacer>
-            <v-list-item-subtitle class="fontRestructure10">{{getUploadDate(taskFile.taskFileDate)}}</v-list-item-subtitle>
+            <v-list-item-subtitle class="fontRestructure10">{{
+              getUploadDate(taskFile.taskFileDate)
+            }}</v-list-item-subtitle>
             <v-btn icon>
               <div class="iconBackCircleFiles">
                 <a
@@ -233,7 +277,9 @@
                   target="_blank"
                   download
                 >
-                  <v-icon size="20" color="#0BAFFF">mdi-download-outline</v-icon>
+                  <v-icon size="20" color="#0BAFFF"
+                    >mdi-download-outline</v-icon
+                  >
                 </a>
               </div>
             </v-btn>
@@ -272,12 +318,19 @@
                     <v-list-item-subtitle
                       class="fontRestructure14"
                       style="color: #576377 !important"
-                    >Main Folder</v-list-item-subtitle>
+                      >Main Folder</v-list-item-subtitle
+                    >
                   </v-list-item-action>
                 </v-list-item>
-                <div v-for="(projectFolder, index) in AllprojectFolders.folders" :key="index">
+                <div
+                  v-for="(projectFolder, index) in AllprojectFolders.folders"
+                  :key="index"
+                >
                   <v-list-item
-                    v-if="projectFolder.folderType == 'PROJECT' && projectFolder.folderId != selectedFolder.folderId"
+                    v-if="
+                      projectFolder.folderType == 'PROJECT' &&
+                        projectFolder.folderId != selectedFolder.folderId
+                    "
                     @click="moveFolder(projectFolder.folderId)"
                   >
                     <v-list-item-action>
@@ -287,7 +340,8 @@
                       <v-list-item-subtitle
                         class="fontRestructure14"
                         style="color: #576377 !important"
-                      >{{projectFolder.folderName}}</v-list-item-subtitle>
+                        >{{ projectFolder.folderName }}</v-list-item-subtitle
+                      >
                     </v-list-item-action>
                   </v-list-item>
                 </div>
@@ -308,16 +362,22 @@
                 depressed
                 color="error"
                 width="100px"
-              >Cancel</v-btn>
+                >Cancel</v-btn
+              >
 
               <v-btn
+                :disabled="this.folderMove == ''"
                 class="text-capitalize"
                 depressed
                 small
                 color="primary"
                 width="100px"
-                @click="fileMoveDialog = false; moveFile()"
-              >Move</v-btn>
+                @click="
+                  fileMoveDialog = false;
+                  moveFile();
+                "
+                >Move</v-btn
+              >
             </v-card-actions>
           </div>
         </v-form>
@@ -328,7 +388,12 @@
     <v-dialog v-model="taskDialog" max-width="380">
       <v-card>
         <div class="popupConfirmHeadline">
-          <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
+          <v-icon
+            class="deletePopupIcon"
+            size="60"
+            color="deep-orange lighten-1"
+            >mdi-alert-outline</v-icon
+          >
           <br />
           <span class="alertPopupTitle">Delete File</span>
           <br />
@@ -348,7 +413,8 @@
               depressed
               width="100px"
               @click="taskDialog = false"
-            >Cancel</v-btn>
+              >Cancel</v-btn
+            >
             <v-spacer></v-spacer>
             <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
             <v-btn
@@ -357,7 +423,8 @@
               class="text-capitalize"
               depressed
               @click="removeFiles()"
-            >Delete</v-btn>
+              >Delete</v-btn
+            >
             <v-spacer></v-spacer>
           </v-card-actions>
         </div>
@@ -367,7 +434,12 @@
     <v-dialog v-model="folderDeleteDialog" max-width="380">
       <v-card>
         <div class="popupConfirmHeadline">
-          <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
+          <v-icon
+            class="deletePopupIcon"
+            size="60"
+            color="deep-orange lighten-1"
+            >mdi-alert-outline</v-icon
+          >
           <br />
           <span class="alertPopupTitle">Delete Folder</span>
           <br />
@@ -387,7 +459,8 @@
               depressed
               width="100px"
               @click="folderDeleteDialog = false"
-            >Cancel</v-btn>
+              >Cancel</v-btn
+            >
             <v-spacer></v-spacer>
             <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
             <v-btn
@@ -396,7 +469,8 @@
               depressed
               width="100px"
               @click="removeFolder()"
-            >Delete</v-btn>
+              >Delete</v-btn
+            >
             <v-spacer></v-spacer>
           </v-card-actions>
         </div>
@@ -433,7 +507,8 @@
                 depressed
                 color="error"
                 width="100px"
-              >Cancel</v-btn>
+                >Cancel</v-btn
+              >
 
               <v-btn
                 :disabled="!isValid"
@@ -442,8 +517,12 @@
                 small
                 color="primary"
                 width="100px"
-                @click="editFolderDialog = false; editFolder()"
-              >Update</v-btn>
+                @click="
+                  editFolderDialog = false;
+                  editFolder();
+                "
+                >Update</v-btn
+              >
             </v-card-actions>
           </div>
         </v-form>
@@ -457,7 +536,10 @@
 
       <v-snackbar width="100" right v-model="snackbar">
         File is uploading...
-        <v-progress-circular color="primary" indeterminate></v-progress-circular>
+        <v-progress-circular
+          color="primary"
+          indeterminate
+        ></v-progress-circular>
       </v-snackbar>
     </div>
     <div class="filePopupDiv">
@@ -473,33 +555,33 @@
   </div>
 </template>
 <script>
-import SuccessPopup from "~/components/popups/successPopup";
-import ErrorPopup from "~/components/popups/errorPopup";
-import Progress from "~/components/popups/progress";
-import { mapState } from "vuex";
+import SuccessPopup from '~/components/popups/successPopup';
+import ErrorPopup from '~/components/popups/errorPopup';
+import Progress from '~/components/popups/progress';
+import { mapState } from 'vuex';
 export default {
-  props: ["selectedFolder"],
+  props: ['selectedFolder'],
   components: {
-    "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup,
-    "progress-loading": Progress,
+    'success-popup': SuccessPopup,
+    'error-popup': ErrorPopup,
+    'progress-loading': Progress,
   },
   data() {
     return {
       snackbar: false,
-      errorMessage: "",
-      successMessage: "",
+      errorMessage: '',
+      successMessage: '',
       userId: this.$store.state.user.userId,
-      component: "",
+      component: '',
       files: [],
-      fileId: "",
+      fileId: '',
       taskDialog: false,
       folderDeleteDialog: false,
       editFolderDialog: false,
-      folderNameRules: [(value) => !!value || "Folder name is required!"],
+      folderNameRules: [(value) => !!value || 'Folder name is required!'],
       folderName: this.selectedFolder.folderName,
       fileMoveDialog: false,
-      folderMove: "",
+      folderMove: '',
     };
   },
   methods: {
@@ -522,26 +604,26 @@ export default {
             },
           }
         );
-        this.$store.dispatch("project/fetchAllSelectedFolderFiles", {
+        this.$store.dispatch('project/fetchAllSelectedFolderFiles', {
           projectId: this.$route.params.projects,
           folderId: this.selectedFolder.folderId,
         });
         this.$store.dispatch(
-          "project/fetchAllProjectFolders",
+          'project/fetchAllProjectFolders',
           this.$route.params.projects
         );
-        this.component = "success-popup";
-        this.successMessage = "File successfully moved";
+        this.component = 'success-popup';
+        this.successMessage = 'File successfully moved';
         setTimeout(() => {
           this.close();
         }, 3000);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        (this.folderName = ""), console.log("Error updating a status", e);
+        (this.folderName = ''), console.log('Error updating a status', e);
       }
       this.$refs.form.reset();
     },
@@ -560,22 +642,22 @@ export default {
           }
         );
         this.$store.dispatch(
-          "project/fetchAllProjectFolders",
+          'project/fetchAllProjectFolders',
           this.$route.params.projects
         );
-        this.component = "success-popup";
-        this.successMessage = "Folder successfully updated";
-        (this.folderName = ""),
+        this.component = 'success-popup';
+        this.successMessage = 'Folder successfully updated';
+        (this.folderName = ''),
           setTimeout(() => {
             this.close();
           }, 3000);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        (this.folderName = ""), console.log("Error updating a status", e);
+        (this.folderName = ''), console.log('Error updating a status', e);
       }
       this.$refs.form.reset();
     },
@@ -585,12 +667,12 @@ export default {
 
         if (Math.floor(fileSize) > 5) {
           const errorMessage = {
-            message: "File Size too Large",
+            message: 'File Size too Large',
             status: 422,
           };
           this.errorMessage = errorMessage;
           //this.errorMessage = "File Size too Large"
-          this.component = "error-popup";
+          this.component = 'error-popup';
           setTimeout(() => {
             this.close();
           }, 3000);
@@ -598,9 +680,9 @@ export default {
         } else {
           this.snackbar = true;
           let formData = new FormData();
-          formData.append("files", this.files[index]);
-          formData.append("type", "projectFile");
-          formData.append("folderId", this.selectedFolder.folderId);
+          formData.append('files', this.files[index]);
+          formData.append('type', 'projectFile');
+          formData.append('folderId', this.selectedFolder.folderId);
 
           this.$axios
             .$post(`/projects/${this.projectId}/files/upload`, formData, {
@@ -611,8 +693,8 @@ export default {
             .then((res) => {
               this.snackbar = false;
               // console.log("resp", res.data);
-              this.component = "success-popup";
-              this.successMessage = "File(s) successfully uploaded";
+              this.component = 'success-popup';
+              this.successMessage = 'File(s) successfully uploaded';
               setTimeout(() => {
                 this.close();
               }, 3000);
@@ -622,44 +704,44 @@ export default {
               // uploadedFile.lastName = this.userProfile.lastName;
               // console.log("File upload successful", res.data);
               // this.$store.dispatch("project/addProjectFile", res.data);
-              this.$store.dispatch("project/fetchAllSelectedFolderFiles", {
+              this.$store.dispatch('project/fetchAllSelectedFolderFiles', {
                 projectId: this.$route.params.projects,
                 folderId: this.selectedFolder.folderId,
               });
               // console.log("File upload successful", res);
             })
             .catch((err) => {
-              console.log("File Upload Failed", err);
+              console.log('File Upload Failed', err);
               this.errorMessage = err.response.data;
-              this.component = "error-popup";
+              this.component = 'error-popup';
               setTimeout(() => {
                 this.close();
               }, 3000);
               this.snackbar = false;
-              console.log("File Upload Failed", err);
+              console.log('File Upload Failed', err);
             });
         }
       }
       this.files = null;
     },
     checkFileType(type) {
-      console.log("checkF", type);
+      console.log('checkF', type);
       if (type) {
-        const fileType = type.split(".").pop();
+        const fileType = type.split('.').pop();
         switch (fileType) {
-          case "png":
+          case 'png':
             return true;
             break;
-          case "jpeg":
+          case 'jpeg':
             return true;
             break;
-          case "gif":
+          case 'gif':
             return true;
             break;
-          case "svg":
+          case 'svg':
             return true;
             break;
-          case "jpg":
+          case 'jpg':
             return true;
             break;
           default:
@@ -681,23 +763,23 @@ export default {
             },
           }
         );
-        this.$store.dispatch("project/fetchAllSelectedFolderFiles", {
+        this.$store.dispatch('project/fetchAllSelectedFolderFiles', {
           projectId: this.$route.params.projects,
           folderId: this.selectedFolder.folderId,
         });
-        this.component = "success-popup";
-        this.successMessage = "File successfully deleted";
+        this.component = 'success-popup';
+        this.successMessage = 'File successfully deleted';
         setTimeout(() => {
           this.close();
         }, 3000);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
         this.snackbar = false;
-        console.log("Error deleting task", e);
+        console.log('Error deleting task', e);
         this.taskDialog = false;
       }
     },
@@ -715,29 +797,29 @@ export default {
           }
         );
         this.$store.dispatch(
-          "project/fetchAllProjectFolders",
+          'project/fetchAllProjectFolders',
           this.$route.params.projects
         );
-        this.$emit("removeComponent");
-        this.component = "success-popup";
-        this.successMessage = "Folder successfully deleted";
+        this.$emit('removeComponent');
+        this.component = 'success-popup';
+        this.successMessage = 'Folder successfully deleted';
         setTimeout(() => {
           this.close();
         }, 3000);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
         this.snackbar = false;
-        console.log("Error deleting task", e);
+        console.log('Error deleting task', e);
         this.taskDialog = false;
       }
     },
     getUploadDate(date) {
-      if (date == "1970-01-01T05:30" || date == null) return "No Due Date";
-      let stringDate = date + " ";
+      if (date == '1970-01-01T05:30' || date == null) return 'No Due Date';
+      let stringDate = date + ' ';
       stringDate = stringDate.toString();
       stringDate = stringDate.slice(0, 10);
       return stringDate;
@@ -751,7 +833,7 @@ export default {
       // console.log("file Id " + this.fileId);
     },
     close() {
-      this.component = "";
+      this.component = '';
     },
   },
   computed: {

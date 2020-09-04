@@ -3,8 +3,8 @@
     <v-row justify="center">
       <v-dialog v-model="dialog" persistent max-width="350">
         <template v-slot:activator="{ on }">
-          <div class="iconBackCirclePeople">
-            <v-icon v-on="on" size="17" color="#FF6161">mdi-trash-can-outline</v-icon>
+          <div class="iconBackCirclePeopleDelete">
+            <v-icon v-on="on" size="17" color="#FFFFFF">mdi-trash-can-outline</v-icon>
           </div>
         </template>
         <v-card>
@@ -16,11 +16,18 @@
               <span>If you are not sure, you can close this popup</span>
             </v-card-text>
 
-            <v-btn class="editButton text-capitalize" depressed text @click="dialog = false">Cancel</v-btn>
+            <v-btn
+              class="editButton text-capitalize"
+              dark
+              depressed
+              text
+              @click="dialog = false"
+            >Cancel</v-btn>
             <v-btn
               class="deleteButtonSpec text-capitalize"
               depressed
               text
+              dark
               @click="changeHandler"
             >Block</v-btn>
           </div>
