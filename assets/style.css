@@ -3650,3 +3650,8 @@
   margin-top: 50px;
   margin-left: -30px;
 }
+
+.filterFieldLabel {
+  font-size: 10px;
+  margin-left: 5px;
+}
