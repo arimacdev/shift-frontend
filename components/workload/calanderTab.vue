@@ -175,7 +175,6 @@
                   :event-color="getEventColor"
                   :now="today"
                   :type="type"
-                  event-height="15"
                   @click:event="showEvent"
                   @click:more="viewDay"
                   @click:date="viewDay"
