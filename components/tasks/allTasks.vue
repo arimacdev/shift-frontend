@@ -223,7 +223,7 @@
         <!-- <v-hover open-delay="600" v-slot:default="{ hover }"> -->
         <div>
           <div>
-            <v-hover open-delay="600" v-slot:default="{ hover }">
+            <v-hover open-delay="600" close-delay="1000" v-slot:default="{ hover }">
               <div>
                 <div class="restructuredMainTaskList">
                   <v-list-item class="upperListItem">
