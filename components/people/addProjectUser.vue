@@ -22,6 +22,7 @@
               <v-card-text class="deletePopupTitle">Add member to project</v-card-text>
               <v-card-actions>
                 <v-autocomplete
+                  ref="userName"
                   filled
                   label="Select user*"
                   v-model="addUser.assigneeId"
@@ -186,6 +187,7 @@ export default {
         }, 3000);
         this.success = response.message;
         this.$refs.form.reset();
+        this.$refs.userName.reset();
       } catch (e) {
         this.overlay = false;
         console.log("Error adding a User", e);

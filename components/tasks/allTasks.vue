@@ -223,7 +223,7 @@
         <!-- <v-hover open-delay="600" v-slot:default="{ hover }"> -->
         <div>
           <div>
-            <v-hover open-delay="600" v-slot:default="{ hover }">
+            <v-hover open-delay="600" close-delay="1000" v-slot:default="{ hover }">
               <div>
                 <div class="restructuredMainTaskList">
                   <v-list-item class="upperListItem">
@@ -766,6 +766,7 @@ export default {
   props: ["pagination"],
   data() {
     return {
+      traverseText: "",
       hover: false,
       scrollCount: 1,
       datePickerDialog: false,
@@ -980,18 +981,44 @@ export default {
     tagPeople(user) {
       this.tagging = false;
       this.assigneeId = user.id;
-      this.updatedTask.taskName = this.updatedTask.taskName + user.display;
+
+      if (this.traverseText != "") {
+        this.updatedTask.taskName =
+          this.updatedTask.taskName.slice(0, -this.traverseText.length) +
+          user.display;
+      } else {
+        this.updatedTask.taskName = this.updatedTask.taskName + user.display;
+      }
       this.$refs.txtMainTask.focus();
       // console.log("SELECTED TAGGING: " + this.assigneeId);
     },
     tagPeopleSubTask(user, index) {
       this.subTagging = false;
       this.assigneeId = user.id;
-      this.subTaskName = this.subTaskName + user.display;
+      if (this.traverseText != "") {
+        this.subTaskName =
+          this.subTaskName.slice(0, -this.traverseText.length) + user.display;
+      } else {
+        this.subTaskName = this.subTaskName + user.display;
+      }
+
       // this.$refs.txtSubTask.focus();
       // console.log("SELECTED TAGGING INDEX: " + index);
     },
     autoFillingSubTask(index) {
+      if (this.subTaskName != undefined) {
+        if (
+          this.subTaskName.split("@")[1] != undefined &&
+          this.subTaskName.split("@")[1] != ""
+        ) {
+          this.traverseText = this.subTaskName.split("@")[1];
+          console.log("TAGGING: " + this.subTaskName.split("@")[1]);
+        }
+        if (!this.subTaskName.includes("@")) {
+          this.subTagging = false;
+          this.traverseText = "";
+        }
+      }
       if (this.subTaskName != "" && this.subTaskName != null) {
         if (
           !this.subTaskName
@@ -1000,6 +1027,7 @@ export default {
           this.subTaskName.charAt(this.subTaskName.length - 1) == "@"
         ) {
           this.subTagging = true;
+          this.traverseText = "";
           // console.log("TAGGING: " + this.subTagging);
         } else if (
           !this.subTaskName
@@ -1010,12 +1038,12 @@ export default {
           this.datePickerSubDialog = true;
           // console.log("TAGGING: " + this.tagging);
         } else {
-          this.subTagging = false;
+          // this.subTagging = false;
           this.datePickerSubDialog = false;
           // this.assigneeId = "";
         }
       } else {
-        this.subTagging = false;
+        // this.subTagging = false;
         this.datePickerSubDialog = false;
       }
     },
@@ -1030,6 +1058,20 @@ export default {
       // } else {
       //   console.log('############### false');
       // }
+      if (this.updatedTask.taskName != undefined) {
+        if (
+          this.updatedTask.taskName.split("@")[1] != undefined &&
+          this.updatedTask.taskName.split("@")[1] != ""
+        ) {
+          this.traverseText = this.updatedTask.taskName.split("@")[1];
+          console.log("TAGGING: " + this.updatedTask.taskName.split("@")[1]);
+        }
+        if (!this.updatedTask.taskName.includes("@")) {
+          this.tagging = false;
+          this.traverseText = "";
+        }
+      }
+
       if (
         this.updatedTask.taskName != "" &&
         this.updatedTask.taskName != null
@@ -1043,7 +1085,7 @@ export default {
           ) == "@"
         ) {
           this.tagging = true;
-          // console.log("TAGGING: " + this.tagging);
+          this.traverseText = "";
         } else if (
           !this.updatedTask.taskName
             .slice(0, this.updatedTask.taskName.length - 1)
@@ -1055,18 +1097,18 @@ export default {
           this.datePickerDialog = true;
           // console.log("TAGGING: " + this.tagging);
         } else {
-          this.tagging = false;
+          // this.tagging = false;
           // this.assigneeId = "";
           this.datePickerDialog = false;
         }
       } else {
-        this.tagging = false;
+        // this.tagging = false;
         this.datePickerDialog = false;
       }
     },
     assigneeLoadArray() {
       let assigneeList = [];
-      if (this.traversing) {
+      if (this.tagging || this.subTagging) {
         const matches = this.people.filter((user) => {
           if (
             user.assigneeFirstName
@@ -1083,7 +1125,7 @@ export default {
         });
         if (assigneeList.length === 0) {
           this.tagging = false;
-          this.traversing = false;
+          this.subTagging = false;
           this.traverseText = "";
         }
         return assigneeList;

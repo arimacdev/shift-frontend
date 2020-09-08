@@ -19,6 +19,7 @@
           <v-row align="center">
             <v-col class="searchOptions" md="12">
               <!-- :search-input.sync="searchAssignee" -->
+              <span class="filterFieldLabel">Assignee</span>
               <v-autocomplete
                 class="searchOptionValue"
                 v-model="filterAssignee"
@@ -34,13 +35,15 @@
                 background-color="#292929"
                 dark
                 small-chips
-                label="Assignee"
+                label="Select Assignee"
+                solo
                 multiple
                 clearable
                 :clear-icon-cb="clearAssignee()"
                 @change="jqlSearch()"
               ></v-autocomplete>
               <!-- :search-input.sync="searchProject" -->
+              <span class="filterFieldLabel">Project</span>
               <v-autocomplete
                 v-model="filterProject"
                 return-object
@@ -56,12 +59,14 @@
                 background-color="#292929"
                 dark
                 small-chips
-                label="Project"
+                solo
+                label="Select Project"
                 multiple
                 clearable
                 :clear-icon-cb="clearProject()"
                 @change="jqlSearch()"
               ></v-autocomplete>
+              <span class="filterFieldLabel">Task Type</span>
               <v-autocomplete
                 v-model="filterType"
                 dense
@@ -77,12 +82,14 @@
                 background-color="#292929"
                 dark
                 small-chips
-                label="Task Type"
+                label="Select Task Type"
+                solo
                 multiple
                 clearable
                 @click:clear="clearType()"
                 @change="jqlSearch()"
               ></v-autocomplete>
+              <span class="filterFieldLabel">Task Status</span>
               <v-autocomplete
                 v-model="filterStatus"
                 return-object
@@ -98,17 +105,19 @@
                 background-color="#292929"
                 dark
                 small-chips
-                label="Task Status"
+                label="Select Task Status"
+                solo
                 multiple
                 clearable
                 @click:clear="clearStatus()"
                 @change="jqlSearch()"
               ></v-autocomplete>
+              <span class="filterFieldLabel">Date Range</span>
               <VueCtkDateTimePicker
                 :no-value-to-custom-elem="false"
                 color="#3f51b5"
                 v-model="dateRange"
-                label="Date Range"
+                label="Select Date Range"
                 style="border-radius: 0px; margin-bottom: -10px"
                 range
                 left
@@ -117,8 +126,10 @@
                 :clear-icon-cb="clearDate()"
                 @input="jqlSearch()"
               ></VueCtkDateTimePicker>
+              <br />
+              <span class="filterFieldLabel">Order By</span>
               <v-select
-                class="filterOrderWorkload searchOptionValue"
+                class="searchOptionValue"
                 dense
                 v-model="filterOrderBy"
                 :items="orderByArray"
@@ -130,8 +141,9 @@
                 style=" margin-bottom: -10px"
                 background-color="#292929"
                 dark
+                solo
                 small-chips
-                label="Order By"
+                label="Select Order"
                 @click:clear="clearOrderBy()"
                 @change="jqlSearch()"
               ></v-select>

@@ -19,6 +19,7 @@
 
           <v-row align="center">
             <v-col md="12">
+              <span class="filterFieldLabel">Assignee</span>
               <v-autocomplete
                 dense
                 v-model="filterAssignee"
@@ -34,13 +35,14 @@
                 background-color="#292929"
                 dark
                 small-chips
-                label="Assignee"
+                solo
+                label="Select Assignee"
                 multiple
                 clearable
                 :clear-icon-cb="clearAssignee()"
                 @change="jqlSearch()"
               ></v-autocomplete>
-
+              <span class="filterFieldLabel">Project</span>
               <v-autocomplete
                 dense
                 v-model="filterProject"
@@ -56,12 +58,14 @@
                 background-color="#292929"
                 dark
                 small-chips
-                label="Project"
+                label="Select Project"
                 multiple
+                solo
                 clearable
                 :clear-icon-cb="clearProject()"
                 @change="jqlSearch()"
               ></v-autocomplete>
+              <span class="filterFieldLabel">Task Type</span>
               <v-autocomplete
                 dense
                 v-model="filterType"
@@ -71,18 +75,20 @@
                 item-value="id"
                 flat
                 outlined
+                solo
                 chips
                 style=" margin-bottom: -10px"
                 class="searchOptionValue"
                 background-color="#292929"
                 dark
                 small-chips
-                label="Task Type"
+                label="Select Task Type"
                 multiple
                 clearable
                 @click:clear="clearType()"
                 @change="jqlSearch()"
               ></v-autocomplete>
+              <span class="filterFieldLabel">Task Status</span>
               <v-autocomplete
                 dense
                 v-model="filterStatus"
@@ -93,12 +99,13 @@
                 flat
                 outlined
                 chips
+                solo
                 style=" margin-bottom: -10px"
                 class="searchOptionValue"
                 background-color="#292929"
                 dark
                 small-chips
-                label="Task Status"
+                label="Select Task Status"
                 multiple
                 clearable
                 @click:clear="clearStatus()"
@@ -175,7 +182,6 @@
                   :event-color="getEventColor"
                   :now="today"
                   :type="type"
-                  event-height="15"
                   @click:event="showEvent"
                   @click:more="viewDay"
                   @click:date="viewDay"

@@ -11,8 +11,15 @@
           <!-- <v-divider></v-divider> -->
         </div>
 
-        <div v-for="(assignee, index) in userCompletionTasks" :key="index" class="peopleListItems">
-          <v-list-item v-if="assignee.projectRoleId == 1" class="peopleContainer">
+        <div
+          v-for="(assignee, index) in userCompletionTasks"
+          :key="index"
+          class="peopleListItems"
+        >
+          <v-list-item
+            v-if="assignee.projectRoleId == 1"
+            class="peopleContainer"
+          >
             <v-list-item-avatar size="35">
               <v-img
                 v-if="
@@ -32,18 +39,16 @@
                 {{ assignee.assigneeLastName }}
               </v-list-item-title>
               <v-list-item-title class="peopleName">
-                {{
-                assignee.projectJobRoleName
-                }}
+                {{ assignee.projectJobRoleName }}
               </v-list-item-title>
             </v-list-item-content>
             <v-list-item-content class="projectProgressSection">
               <v-list-item-title class="completedStatusPeople">
                 {{
-                assignee.tasksCompleted +
-                '/' +
-                assignee.totalTasks +
-                ' Tasks completed'
+                  assignee.tasksCompleted +
+                    '/' +
+                    assignee.totalTasks +
+                    ' Tasks completed'
                 }}
               </v-list-item-title>
               <v-list-item-title class="projectProgress">
@@ -71,7 +76,10 @@
               <editProjectUser :editUser="assignee" :projectId="projectId" />
             </v-list-item-action>
             <v-list-item-action>
-              <deleteProjectUser :blockedUserId="assignee.assigneeId" :projectId="projectId" />
+              <deleteProjectUser
+                :blockedUserId="assignee.assigneeId"
+                :projectId="projectId"
+              />
             </v-list-item-action>
           </v-list-item>
         </div>
@@ -114,18 +122,16 @@
                 {{ assignee.assigneeLastName }}
               </v-list-item-title>
               <v-list-item-title class="peopleName">
-                {{
-                assignee.projectJobRoleName
-                }}
+                {{ assignee.projectJobRoleName }}
               </v-list-item-title>
             </v-list-item-content>
             <v-list-item-content class="projectProgressSection">
               <v-list-item-title class="completedStatusPeople">
                 {{
-                assignee.tasksCompleted +
-                '/' +
-                assignee.totalTasks +
-                ' Tasks completed'
+                  assignee.tasksCompleted +
+                    '/' +
+                    assignee.totalTasks +
+                    ' Tasks completed'
                 }}
               </v-list-item-title>
               <v-list-item-title class="projectProgress">
@@ -153,7 +159,10 @@
               <editProjectUser :editUser="assignee" :projectId="projectId" />
             </v-list-item-action>
             <v-list-item-action>
-              <deleteProjectUser :blockedUserId="assignee.assigneeId" :projectId="projectId" />
+              <deleteProjectUser
+                :blockedUserId="assignee.assigneeId"
+                :projectId="projectId"
+              />
             </v-list-item-action>
           </v-list-item>
         </div>
@@ -195,18 +204,16 @@
                   {{ assignee.assigneeLastName }}
                 </v-list-item-title>
                 <v-list-item-title class="peopleName">
-                  {{
-                  assignee.projectJobRoleName
-                  }}
+                  {{ assignee.projectJobRoleName }}
                 </v-list-item-title>
               </v-list-item-content>
               <v-list-item-content class="projectProgressSection">
                 <v-list-item-title class="completedStatusPeople">
                   {{
-                  assignee.tasksCompleted +
-                  '/' +
-                  assignee.totalTasks +
-                  ' Tasks completed'
+                    assignee.tasksCompleted +
+                      '/' +
+                      assignee.totalTasks +
+                      ' Tasks completed'
                   }}
                 </v-list-item-title>
                 <v-list-item-title class="projectProgress">
@@ -234,7 +241,10 @@
                 <editProjectUser :editUser="assignee" :projectId="projectId" />
               </v-list-item-action>
               <v-list-item-action>
-                <deleteProjectUser :blockedUserId="assignee.assigneeId" :projectId="projectId" />
+                <deleteProjectUser
+                  :blockedUserId="assignee.assigneeId"
+                  :projectId="projectId"
+                />
               </v-list-item-action>
             </v-list-item>
           </div>
@@ -251,7 +261,10 @@
             :key="index"
             class="taskList peopleListItems"
           >
-            <v-list-item v-if="assignee.isUserBlocked == true" class="peopleContainer">
+            <v-list-item
+              v-if="assignee.isUserBlocked == true"
+              class="peopleContainer"
+            >
               <v-list-item-avatar size="35">
                 <v-img
                   v-if="
@@ -271,18 +284,16 @@
                   {{ assignee.assigneeLastName }}
                 </v-list-item-title>
                 <v-list-item-title class="peopleName">
-                  {{
-                  assignee.projectJobRoleName
-                  }}
+                  {{ assignee.projectJobRoleName }}
                 </v-list-item-title>
               </v-list-item-content>
               <v-list-item-content class="projectProgressSection">
                 <v-list-item-title class="completedStatusPeople">
                   {{
-                  assignee.tasksCompleted +
-                  '/' +
-                  assignee.totalTasks +
-                  ' Tasks completed'
+                    assignee.tasksCompleted +
+                      '/' +
+                      assignee.totalTasks +
+                      ' Tasks completed'
                   }}
                 </v-list-item-title>
                 <v-list-item-title class="projectProgress">
@@ -313,8 +324,12 @@
                   small
                   color="#66B25F"
                   dark
-                  @click="restoreUser(assignee.assigneeId)"
-                >Restore</v-btn>
+                  @click="
+                    selectAssignee(assignee.assigneeId);
+                    unblockDialog = true;
+                  "
+                  >Restore</v-btn
+                >
               </v-list-item-action>
             </v-list-item>
           </div>
@@ -323,6 +338,38 @@
         <!-- ------ -->
       </div>
     </div>
+
+    <v-dialog v-model="unblockDialog" persistent max-width="350">
+      <v-card>
+        <div class="deletePopupContent">
+          <v-icon class="deletePopup" size="60" color="deep-orange lighten-1"
+            >mdi-alert-outline</v-icon
+          >
+          <v-card-text class="deletePopupTitle">Unblock User</v-card-text>
+          <v-card-text>
+            You are about to unblock the blocked user.
+            <span>If you are not sure, you can cancel this action</span>
+          </v-card-text>
+
+          <v-btn
+            class="editButton text-capitalize"
+            dark
+            depressed
+            text
+            @click="unblockDialog = false"
+            >Cancel</v-btn
+          >
+          <v-btn
+            class="deleteButtonSpec text-capitalize"
+            depressed
+            text
+            dark
+            @click="restoreUser()"
+            >Unblock</v-btn
+          >
+        </div>
+      </v-card>
+    </v-dialog>
 
     <!-- =============================== second list ===================== -->
     <div @click="close()" class="taskPopupPopups">
@@ -338,24 +385,26 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import deleteProjectUser from "@/components/people/deleteProjectUser.vue";
-import editProjectUser from "@/components/people/editProjectUser.vue";
-import addProjectUser from "@/components/people/addProjectUser.vue";
-import SuccessPopup from "~/components/popups/successPopup";
-import ErrorPopup from "~/components/popups/errorPopup";
+import { mapState } from 'vuex';
+import deleteProjectUser from '@/components/people/deleteProjectUser.vue';
+import editProjectUser from '@/components/people/editProjectUser.vue';
+import addProjectUser from '@/components/people/addProjectUser.vue';
+import SuccessPopup from '~/components/popups/successPopup';
+import ErrorPopup from '~/components/popups/errorPopup';
 export default {
   components: {
-    "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup,
+    'success-popup': SuccessPopup,
+    'error-popup': ErrorPopup,
     deleteProjectUser,
     editProjectUser,
     addProjectUser,
   },
   data() {
     return {
+      unblockDialog: false,
+      selectedAssignee: '',
       assignee: {},
-      component: "",
+      component: '',
       userId: this.$store.state.user.userId,
       // userList: this.people,
       skill: 0,
@@ -364,38 +413,43 @@ export default {
   },
   methods: {
     close() {
-      this.component = "";
+      this.component = '';
     },
-    async restoreUser(blockUser) {
+    async restoreUser() {
       let response;
       try {
         response = await this.$axios.$post(
-          `/projects/${this.projectId}/users/${blockUser}/block`,
+          `/projects/${this.projectId}/users/${this.selectedAssignee}/block`,
           {
             executorId: this.userId,
-            blockedUserId: blockUser,
+            blockedUserId: this.selectedAssignee,
             blockedStatus: false,
           }
         );
-        this.component = "success-popup";
-        this.successMessage = "User successfully restored";
+        this.component = 'success-popup';
+        this.successMessage = 'User successfully restored';
         setTimeout(() => {
           this.close();
         }, 3000);
         this.$store
-          .dispatch("task/fetchProjectUserCompletionTasks", this.projectId)
+          .dispatch('task/fetchProjectUserCompletionTasks', this.projectId)
           .finally(() => {
             this.overlay = false;
           });
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error blocking user", e);
+        console.log('Error blocking user', e);
       }
+      this.selectedAssignee = '';
+      this.unblockDialog = false;
+    },
+    selectAssignee(userId) {
+      this.selectedAssignee = userId;
     },
     fetchUsers() {
       // console.log("projectId", this.projectId);
