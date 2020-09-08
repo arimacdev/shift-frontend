@@ -88,10 +88,41 @@
       <div class="summaryTitleSection">
         <div class="titleSectionDiv">Summary</div>
         <div class="titleSearchSection">
-          <v-text-field solo dense background-color="#EDF0F5" flat label="Search here"></v-text-field>
+          <!-- <v-text-field solo dense background-color="#EDF0F5" flat label="Status"></v-text-field> -->
+          <v-autocomplete
+            v-model="filterType"
+            dense
+            return-object
+            :items="statusArray"
+            item-text="name"
+            item-value="id"
+            flat
+            background-color="#EDF0F5"
+            chips
+            small-chips
+            label="Status"
+            solo
+            clearable
+          ></v-autocomplete>
         </div>
         <div class="titleSearchSection">
-          <v-text-field solo dense background-color="#EDF0F5" flat label="Status"></v-text-field>
+          <!-- <v-text-field solo dense background-color="#EDF0F5" flat label="Search here"></v-text-field> -->
+          <v-autocomplete
+            v-model="filterProject"
+            return-object
+            :items="projectArray"
+            dense
+            item-text="name"
+            item-value="id"
+            flat
+            chips
+            small-chips
+            solo
+            background-color="#EDF0F5"
+            label="Search here"
+            multiple
+            clearable
+          ></v-autocomplete>
         </div>
       </div>
     </v-row>
@@ -100,6 +131,9 @@
         <v-list-item dense style="background-color: #010101 !important" dark>
           <v-list-item-content>
             <v-list-item-title class="tableTitle">Project</v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-content>
+            <v-list-item-title class="tableTitle">Status</v-list-item-title>
           </v-list-item-content>
           <v-list-item-content>
             <v-list-item-title class="tableTitle">No of Tasks</v-list-item-title>
@@ -119,6 +153,9 @@
                 <v-list-item-subtitle class="tableText">PM - Tool</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
+                <v-list-item-subtitle class="tableText">Pending</v-list-item-subtitle>
+              </v-list-item-content>
+              <v-list-item-content>
                 <v-list-item-subtitle class="tableText">423</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
@@ -131,6 +168,9 @@
             <v-list-item dense class="tableContentRecord">
               <v-list-item-content>
                 <v-list-item-subtitle class="tableText">PM - Tool</v-list-item-subtitle>
+              </v-list-item-content>
+              <v-list-item-content>
+                <v-list-item-subtitle class="tableText">Pending</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
                 <v-list-item-subtitle class="tableText">423</v-list-item-subtitle>
@@ -150,10 +190,39 @@
       <div class="summaryTitleSection">
         <div class="titleSectionDiv">Project Status</div>
         <div class="titleSearchSection">
-          <v-text-field solo dense background-color="#EDF0F5" flat label="Search here"></v-text-field>
+          <v-autocomplete
+            v-model="filterType"
+            dense
+            return-object
+            :items="statusArray"
+            item-text="name"
+            item-value="id"
+            flat
+            background-color="#EDF0F5"
+            chips
+            small-chips
+            label="Status"
+            solo
+            clearable
+          ></v-autocomplete>
         </div>
         <div class="titleSearchSection">
-          <v-text-field solo dense background-color="#EDF0F5" flat label="Status"></v-text-field>
+          <v-autocomplete
+            v-model="filterProject"
+            return-object
+            :items="projectArray"
+            dense
+            item-text="name"
+            item-value="id"
+            flat
+            chips
+            small-chips
+            solo
+            background-color="#EDF0F5"
+            label="Search here"
+            multiple
+            clearable
+          ></v-autocomplete>
         </div>
       </div>
     </v-row>
@@ -220,3 +289,40 @@
     </v-row>
   </div>
 </template>
+<script>
+import { mapState } from "vuex";
+export default {
+  data: () => ({
+    filterProject: [],
+    filterType: "",
+    statusArray: [
+      { name: "Presales : Project Discovery", id: "presalesPD" },
+      { name: "Presales : Quotation Submission", id: "preSalesQS" },
+      { name: "Presales : Negotiation", id: "preSalesN" },
+      { name: "Presales : Confirmed", id: "preSalesC" },
+      { name: "Presales : Lost", id: "preSalesL" },
+      { name: "Ongoing", id: "ongoing" },
+      { name: "Support", id: "support" },
+      { name: "Finished", id: "finished" },
+    ],
+  }),
+
+  computed: {
+    ...mapState({
+      allProjects: (state) => state.project.allOrgProjects,
+    }),
+    projectArray() {
+      let projectSearchList = this.allProjects;
+      let projectList = [];
+      for (let index = 0; index < projectSearchList.length; ++index) {
+        let project = projectSearchList[index];
+        projectList.push({
+          name: project.projectName,
+          id: project.projectId,
+        });
+      }
+      return projectList;
+    },
+  },
+};
+</script>
