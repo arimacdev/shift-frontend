@@ -111,6 +111,10 @@ export default {
         from: "2020-06-01",
         to: "2020-08-10",
       }),
+      this.$store.dispatch("analytics/projectAnalytics/fetchProjectSummary", {
+        params:
+          "from=all&to=all&key=all&status=all&orderBy=total&orderType=DESC&startIndex=0&endIndex=10",
+      }),
     ]).finally(() => {
       this.overlay = false;
     });

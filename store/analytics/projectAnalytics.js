@@ -5,11 +5,15 @@ export const state = () => ({
     leadsOngoing: {},
     leadConversion: {},
   },
+  projectSummary: [],
 });
 
 export const mutations = {
   SET_PROJECT_OVERVIEW(state, overview) {
     state.projectOverview = overview;
+  },
+  SET_PROJECT_SUMMARY(state, summary) {
+    state.projectSummary = summary;
   },
 };
 
@@ -26,9 +30,27 @@ export const actions = {
         },
       });
       commit('SET_PROJECT_OVERVIEW', projectOverview.data);
-      console.log('OVERVIEW', projectOverview.data);
+      // console.log('OVERVIEW', projectOverview.data);
     } catch (e) {
       console.log('Error fetching project overview', e);
+    }
+  },
+  async fetchProjectSummary({ commit, rootState }, { params }) {
+    const user = rootState.user.userId;
+    let projectSummary;
+    try {
+      projectSummary = await this.$axios.$get(
+        `/analytics/summary/projects?${params}`,
+        {
+          headers: {
+            user: user,
+          },
+        }
+      );
+      commit('SET_PROJECT_SUMMARY', projectSummary.data);
+      console.log('SUMMARY', projectSummary.data);
+    } catch (e) {
+      console.log('Error fetching project summary', e);
     }
   },
 };

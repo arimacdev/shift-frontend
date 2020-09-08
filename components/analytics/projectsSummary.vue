@@ -12,32 +12,30 @@
               </v-list-item-icon>
               <v-list-item-content>
                 <v-list-item-subtitle class="leadsSubTitle">Total Projects</v-list-item-subtitle>
-                <v-list-item-title
-                  class="leadsTitle"
-                >{{projectsOverview.projectOverview.totalProjects.value}}</v-list-item-title>
+                <v-list-item-title class="leadsTitle">{{projectsOverview.totalProjects.value}}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </div>
           <div class="leadsAnalyticsText">
             <span
               style="font-size: 10px; color: #66B25F !important"
-              v-if="projectsOverview.projectOverview.totalProjects.performance == 'increase'"
+              v-if="projectsOverview.totalProjects.performance == 'increase'"
             >&#x2191;</span>
             <span
               style="font-size: 10px; color: #E07857 !important"
-              v-else-if="projectsOverview.projectOverview.totalProjects.performance == 'decrese'"
+              v-else-if="projectsOverview.totalProjects.performance == 'decrese'"
             >&#x2193;</span>
             <span style="font-size: 10px; color: #67D2E0 !important" v-else>&#x2195;</span>
             (
             <span
               style="font-size: 10px; color: #66B25F !important"
-              v-if="projectsOverview.projectOverview.totalProjects.performance == 'increase'"
+              v-if="projectsOverview.totalProjects.performance == 'increase'"
             >+</span>
             <span
               style="font-size: 10px; color: #E07857 !important"
-              v-else-if="projectsOverview.projectOverview.totalProjects.performance == 'decrese'"
+              v-else-if="projectsOverview.totalProjects.performance == 'decrese'"
             >-</span>
-            {{projectsOverview.projectOverview.totalProjects.percentage}}%) over the past {{projectsOverview.projectOverview.totalProjects.days}} days
+            {{projectsOverview.totalProjects.percentage}}%) over the past {{projectsOverview.totalProjects.days}} days
           </div>
         </div>
         <div class="leadsDisplay">
@@ -50,32 +48,30 @@
               </v-list-item-icon>
               <v-list-item-content>
                 <v-list-item-subtitle class="leadsSubTitle">Pending Leads</v-list-item-subtitle>
-                <v-list-item-title
-                  class="leadsTitle"
-                >{{projectsOverview.projectOverview.leadsPending.value}}</v-list-item-title>
+                <v-list-item-title class="leadsTitle">{{projectsOverview.leadsPending.value}}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </div>
           <div class="leadsAnalyticsText">
             <span
               style="font-size: 10px; color: #66B25F !important"
-              v-if="projectsOverview.projectOverview.leadsPending.performance == 'increase'"
+              v-if="projectsOverview.leadsPending.performance == 'increase'"
             >&#x2191;</span>
             <span
               style="font-size: 10px; color: #E07857 !important"
-              v-else-if="projectsOverview.projectOverview.leadsPending.performance == 'decrese'"
+              v-else-if="projectsOverview.leadsPending.performance == 'decrese'"
             >&#x2193;</span>
             <span style="font-size: 10px; color: #67D2E0 !important" v-else>&#x2195;</span>
             (
             <span
               style="font-size: 10px; color: #66B25F !important"
-              v-if="projectsOverview.projectOverview.leadsPending.performance == 'increase'"
+              v-if="projectsOverview.leadsPending.performance == 'increase'"
             >+</span>
             <span
               style="font-size: 10px; color: #E07857 !important"
-              v-else-if="projectsOverview.projectOverview.leadsPending.performance == 'decrese'"
+              v-else-if="projectsOverview.leadsPending.performance == 'decrese'"
             >-</span>
-            {{projectsOverview.projectOverview.leadsPending.percentage}}%) over the past {{projectsOverview.projectOverview.leadsPending.days}} days
+            {{projectsOverview.leadsPending.percentage}}%) over the past {{projectsOverview.leadsPending.days}} days
           </div>
         </div>
         <div class="leadsDisplay">
@@ -88,32 +84,30 @@
               </v-list-item-icon>
               <v-list-item-content>
                 <v-list-item-subtitle class="leadsSubTitle">Leads Ongoing</v-list-item-subtitle>
-                <v-list-item-title
-                  class="leadsTitle"
-                >{{projectsOverview.projectOverview.leadsOngoing.value}}</v-list-item-title>
+                <v-list-item-title class="leadsTitle">{{projectsOverview.leadsOngoing.value}}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </div>
           <div class="leadsAnalyticsText">
             <span
               style="font-size: 10px; color: #66B25F !important"
-              v-if="projectsOverview.projectOverview.leadsOngoing.performance == 'increase'"
+              v-if="projectsOverview.leadsOngoing.performance == 'increase'"
             >&#x2191;</span>
             <span
               style="font-size: 10px; color: #E07857 !important"
-              v-else-if="projectsOverview.projectOverview.leadsOngoing.performance == 'decrese'"
+              v-else-if="projectsOverview.leadsOngoing.performance == 'decrese'"
             >&#x2193;</span>
             <span style="font-size: 10px; color: #67D2E0 !important" v-else>&#x2195;</span>
             (
             <span
               style="font-size: 10px; color: #66B25F !important"
-              v-if="projectsOverview.projectOverview.leadsOngoing.performance == 'increase'"
+              v-if="projectsOverview.leadsOngoing.performance == 'increase'"
             >+</span>
             <span
               style="font-size: 10px; color: #E07857 !important"
-              v-else-if="projectsOverview.projectOverview.leadsOngoing.performance == 'decrese'"
+              v-else-if="projectsOverview.leadsOngoing.performance == 'decrese'"
             >-</span>
-            {{projectsOverview.projectOverview.leadsOngoing.percentage}}%) over the past {{projectsOverview.projectOverview.leadsOngoing.days}} days
+            {{projectsOverview.leadsOngoing.percentage}}%) over the past {{projectsOverview.leadsOngoing.days}} days
           </div>
         </div>
         <div class="leadsDisplay">
@@ -126,32 +120,30 @@
               </v-list-item-icon>
               <v-list-item-content>
                 <v-list-item-subtitle class="leadsSubTitle">Leads Conversion</v-list-item-subtitle>
-                <v-list-item-title
-                  class="leadsTitle"
-                >{{projectsOverview.projectOverview.leadConversion.value}}</v-list-item-title>
+                <v-list-item-title class="leadsTitle">{{projectsOverview.leadConversion.value}}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </div>
           <div class="leadsAnalyticsText">
             <span
               style="font-size: 10px; color: #66B25F !important"
-              v-if="projectsOverview.projectOverview.leadConversion.performance == 'increase'"
+              v-if="projectsOverview.leadConversion.performance == 'increase'"
             >&#x2191;</span>
             <span
               style="font-size: 10px; color: #E07857 !important"
-              v-else-if="projectsOverview.projectOverview.leadConversion.performance == 'decrese'"
+              v-else-if="projectsOverview.leadConversion.performance == 'decrese'"
             >&#x2193;</span>
             <span style="font-size: 10px; color: #67D2E0 !important" v-else>&#x2195;</span>
             (
             <span
               style="font-size: 10px; color: #66B25F !important"
-              v-if="projectsOverview.projectOverview.leadConversion.performance == 'increase'"
+              v-if="projectsOverview.leadConversion.performance == 'increase'"
             >+</span>
             <span
               style="font-size: 10px; color: #E07857 !important"
-              v-else-if="projectsOverview.projectOverview.leadConversion.performance == 'decrese'"
+              v-else-if="projectsOverview.leadConversion.performance == 'decrese'"
             >-</span>
-            {{projectsOverview.projectOverview.leadConversion.percentage}}%) over the past {{projectsOverview.projectOverview.leadConversion.days}} days
+            {{projectsOverview.leadConversion.percentage}}%) over the past {{projectsOverview.leadConversion.days}} days
           </div>
         </div>
         <div class="leadsDisplay">
@@ -294,35 +286,23 @@
         <div class="tableContentScroll overflow-y-auto">
           <!-- ------ loop list here ------ -->
           <v-list-item-group>
-            <v-list-item dense class="tableContentRecord">
+            <v-list-item
+              v-for="(project, index) in projectsSummary"
+              :key="index"
+              dense
+              class="tableContentRecord"
+            >
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">PM - Tool</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{project.projectName}}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
                 <v-list-item-subtitle class="tableText">Pending</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">423</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{project.totalTasks}}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">198</v-list-item-subtitle>
-              </v-list-item-content>
-              <v-list-item-content>
-                <v-list-item-subtitle class="tableText">Healthy</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item dense class="tableContentRecord">
-              <v-list-item-content>
-                <v-list-item-subtitle class="tableText">PM - Tool</v-list-item-subtitle>
-              </v-list-item-content>
-              <v-list-item-content>
-                <v-list-item-subtitle class="tableText">Pending</v-list-item-subtitle>
-              </v-list-item-content>
-              <v-list-item-content>
-                <v-list-item-subtitle class="tableText">423</v-list-item-subtitle>
-              </v-list-item-content>
-              <v-list-item-content>
-                <v-list-item-subtitle class="tableText">198</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{project.completedTaskCount}}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
                 <v-list-item-subtitle class="tableText">Healthy</v-list-item-subtitle>
@@ -433,12 +413,20 @@
         </div>
       </div>
     </v-row>
+    <v-overlay :value="overlay" color="black" style="z-index:1008">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
+import Progress from "~/components/popups/progress";
 export default {
+  components: {
+    "progress-loading": Progress,
+  },
   data: () => ({
+    overlay: false,
     filterProject: [],
     menu: false,
     menu2: false,
@@ -464,9 +452,17 @@ export default {
   }),
   methods: {
     filterOverview() {
-      this.$store.dispatch("analytics/projectAnalytics/fetchProjectOverview", {
-        from: this.dateRange[0],
-        to: this.dateRange[1],
+      this.overlay = true;
+      Promise.all([
+        this.$store.dispatch(
+          "analytics/projectAnalytics/fetchProjectOverview",
+          {
+            from: this.dateRange[0],
+            to: this.dateRange[1],
+          }
+        ),
+      ]).finally(() => {
+        this.overlay = false;
       });
     },
   },
@@ -474,7 +470,10 @@ export default {
   computed: {
     ...mapState({
       allProjects: (state) => state.project.allOrgProjects,
-      projectsOverview: (state) => state.analytics.projectAnalytics,
+      projectsOverview: (state) =>
+        state.analytics.projectAnalytics.projectOverview,
+      projectsSummary: (state) =>
+        state.analytics.projectAnalytics.projectSummary,
     }),
     dateRangeText() {
       if (
