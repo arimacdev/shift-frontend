@@ -97,7 +97,7 @@
     </v-row>
     <v-row>
       <div class="summaryTableDiv">
-        <v-list-item style="background-color: #010101 !important" dark>
+        <v-list-item dense style="background-color: #010101 !important" dark>
           <v-list-item-content>
             <v-list-item-title class="tableTitle">Project</v-list-item-title>
           </v-list-item-content>
@@ -114,7 +114,7 @@
         <div class="tableContentScroll overflow-y-auto">
           <!-- ------ loop list here ------ -->
           <v-list-item-group>
-            <v-list-item class="tableContentRecord">
+            <v-list-item dense class="tableContentRecord">
               <v-list-item-content>
                 <v-list-item-subtitle class="tableText">PM - Tool</v-list-item-subtitle>
               </v-list-item-content>
@@ -128,7 +128,7 @@
                 <v-list-item-subtitle class="tableText">Healthy</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item class="tableContentRecord">
+            <v-list-item dense class="tableContentRecord">
               <v-list-item-content>
                 <v-list-item-subtitle class="tableText">PM - Tool</v-list-item-subtitle>
               </v-list-item-content>
@@ -159,7 +159,7 @@
     </v-row>
     <v-row>
       <div class="summaryTableDiv">
-        <v-list-item style="background-color: #010101 !important" dark>
+        <v-list-item dense style="background-color: #010101 !important" dark>
           <v-list-item-content>
             <v-list-item-title class="tableTitle">Project</v-list-item-title>
           </v-list-item-content>
@@ -188,7 +188,7 @@
         <div class="tableContentScroll overflow-y-auto">
           <!-- ------ loop list here ------ -->
           <v-list-item-group>
-            <v-list-item class="tableContentRecord">
+            <v-list-item dense class="tableContentRecord">
               <v-list-item-content>
                 <v-list-item-subtitle class="tableText">PM - Tool</v-list-item-subtitle>
               </v-list-item-content>
