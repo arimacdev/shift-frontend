@@ -81,6 +81,8 @@ import Projects from "~/components/analytics/projectsSummary";
 import Tasks from "~/components/analytics/tasksSummary";
 import Progress from "~/components/popups/progress";
 
+import { mapState, mapGetters } from "vuex";
+
 export default {
   components: {
     NavigationDrawer,

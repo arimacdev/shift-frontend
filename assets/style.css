@@ -3686,3 +3686,38 @@
   color: #576377;
   margin-left: 12px;
 }
+.summaryTitleSection {
+  width: 100%;
+  padding-top: 30px;
+}
+.titleSectionDiv {
+  width: 30%;
+  float: left;
+  color: #576377;
+  font-weight: 800;
+  font-size: 14px;
+}
+.titleSearchSection {
+  width: 15%;
+  float: right;
+  margin-left: 10px;
+}
+.summaryTableDiv {
+  text-align: center;
+  width: 100%;
+}
+.tableContentScroll {
+  max-height: 300px !important;
+  margin-bottom: 40px;
+}
+.tableTitle {
+  font-size: 14px !important;
+}
+.tableText {
+  color: #576377 !important;
+  font-size: 12px !important;
+}
+.tableContentRecord {
+  background-color: #fafafa !important;
+  border-bottom: solid 1px #c4c4c4;
+}
