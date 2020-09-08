@@ -12,11 +12,33 @@
               </v-list-item-icon>
               <v-list-item-content>
                 <v-list-item-subtitle class="leadsSubTitle">Total Projects</v-list-item-subtitle>
-                <v-list-item-title class="leadsTitle">125</v-list-item-title>
+                <v-list-item-title
+                  class="leadsTitle"
+                >{{projectsOverview.projectOverview.totalProjects.value}}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </div>
-          <div class="leadsAnalyticsText">2 (+1%) over the past 30 days</div>
+          <div class="leadsAnalyticsText">
+            <span
+              style="font-size: 10px; color: #66B25F !important"
+              v-if="projectsOverview.projectOverview.totalProjects.performance == 'increase'"
+            >&#x2191;</span>
+            <span
+              style="font-size: 10px; color: #E07857 !important"
+              v-else-if="projectsOverview.projectOverview.totalProjects.performance == 'decrese'"
+            >&#x2193;</span>
+            <span style="font-size: 10px; color: #67D2E0 !important" v-else>&#x2195;</span>
+            (
+            <span
+              style="font-size: 10px; color: #66B25F !important"
+              v-if="projectsOverview.projectOverview.totalProjects.performance == 'increase'"
+            >+</span>
+            <span
+              style="font-size: 10px; color: #E07857 !important"
+              v-else-if="projectsOverview.projectOverview.totalProjects.performance == 'decrese'"
+            >-</span>
+            {{projectsOverview.projectOverview.totalProjects.percentage}}%) over the past {{projectsOverview.projectOverview.totalProjects.days}} days
+          </div>
         </div>
         <div class="leadsDisplay">
           <div class="leadsContentDiv" style="background-color: #E07857">
@@ -28,11 +50,33 @@
               </v-list-item-icon>
               <v-list-item-content>
                 <v-list-item-subtitle class="leadsSubTitle">Pending Leads</v-list-item-subtitle>
-                <v-list-item-title class="leadsTitle">14</v-list-item-title>
+                <v-list-item-title
+                  class="leadsTitle"
+                >{{projectsOverview.projectOverview.leadsPending.value}}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </div>
-          <div class="leadsAnalyticsText">2 (+1%) over the past 30 days</div>
+          <div class="leadsAnalyticsText">
+            <span
+              style="font-size: 10px; color: #66B25F !important"
+              v-if="projectsOverview.projectOverview.leadsPending.performance == 'increase'"
+            >&#x2191;</span>
+            <span
+              style="font-size: 10px; color: #E07857 !important"
+              v-else-if="projectsOverview.projectOverview.leadsPending.performance == 'decrese'"
+            >&#x2193;</span>
+            <span style="font-size: 10px; color: #67D2E0 !important" v-else>&#x2195;</span>
+            (
+            <span
+              style="font-size: 10px; color: #66B25F !important"
+              v-if="projectsOverview.projectOverview.leadsPending.performance == 'increase'"
+            >+</span>
+            <span
+              style="font-size: 10px; color: #E07857 !important"
+              v-else-if="projectsOverview.projectOverview.leadsPending.performance == 'decrese'"
+            >-</span>
+            {{projectsOverview.projectOverview.leadsPending.percentage}}%) over the past {{projectsOverview.projectOverview.leadsPending.days}} days
+          </div>
         </div>
         <div class="leadsDisplay">
           <div class="leadsContentDiv" style="background-color: #67D2E0">
@@ -44,11 +88,33 @@
               </v-list-item-icon>
               <v-list-item-content>
                 <v-list-item-subtitle class="leadsSubTitle">Leads Ongoing</v-list-item-subtitle>
-                <v-list-item-title class="leadsTitle">44</v-list-item-title>
+                <v-list-item-title
+                  class="leadsTitle"
+                >{{projectsOverview.projectOverview.leadsOngoing.value}}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </div>
-          <div class="leadsAnalyticsText">2 (+1%) over the past 30 days</div>
+          <div class="leadsAnalyticsText">
+            <span
+              style="font-size: 10px; color: #66B25F !important"
+              v-if="projectsOverview.projectOverview.leadsOngoing.performance == 'increase'"
+            >&#x2191;</span>
+            <span
+              style="font-size: 10px; color: #E07857 !important"
+              v-else-if="projectsOverview.projectOverview.leadsOngoing.performance == 'decrese'"
+            >&#x2193;</span>
+            <span style="font-size: 10px; color: #67D2E0 !important" v-else>&#x2195;</span>
+            (
+            <span
+              style="font-size: 10px; color: #66B25F !important"
+              v-if="projectsOverview.projectOverview.leadsOngoing.performance == 'increase'"
+            >+</span>
+            <span
+              style="font-size: 10px; color: #E07857 !important"
+              v-else-if="projectsOverview.projectOverview.leadsOngoing.performance == 'decrese'"
+            >-</span>
+            {{projectsOverview.projectOverview.leadsOngoing.percentage}}%) over the past {{projectsOverview.projectOverview.leadsOngoing.days}} days
+          </div>
         </div>
         <div class="leadsDisplay">
           <div class="leadsContentDiv" style="background-color: #E0CA57">
@@ -60,25 +126,75 @@
               </v-list-item-icon>
               <v-list-item-content>
                 <v-list-item-subtitle class="leadsSubTitle">Leads Conversion</v-list-item-subtitle>
-                <v-list-item-title class="leadsTitle">153</v-list-item-title>
+                <v-list-item-title
+                  class="leadsTitle"
+                >{{projectsOverview.projectOverview.leadConversion.value}}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </div>
-          <div class="leadsAnalyticsText">2 (+1%) over the past 30 days</div>
+          <div class="leadsAnalyticsText">
+            <span
+              style="font-size: 10px; color: #66B25F !important"
+              v-if="projectsOverview.projectOverview.leadConversion.performance == 'increase'"
+            >&#x2191;</span>
+            <span
+              style="font-size: 10px; color: #E07857 !important"
+              v-else-if="projectsOverview.projectOverview.leadConversion.performance == 'decrese'"
+            >&#x2193;</span>
+            <span style="font-size: 10px; color: #67D2E0 !important" v-else>&#x2195;</span>
+            (
+            <span
+              style="font-size: 10px; color: #66B25F !important"
+              v-if="projectsOverview.projectOverview.leadConversion.performance == 'increase'"
+            >+</span>
+            <span
+              style="font-size: 10px; color: #E07857 !important"
+              v-else-if="projectsOverview.projectOverview.leadConversion.performance == 'decrese'"
+            >-</span>
+            {{projectsOverview.projectOverview.leadConversion.percentage}}%) over the past {{projectsOverview.projectOverview.leadConversion.days}} days
+          </div>
         </div>
         <div class="leadsDisplay">
           <div class="leadsContentDiv">
             <div>
-              <v-text-field solo dense background-color="#EDF0F5" flat label="All time"></v-text-field>
-
-              <v-text-field
-                style="margin-top: -20px !important"
-                solo
-                dense
-                background-color="#EDF0F5"
-                flat
-                label="Feb 2020 - Mar 2020"
-              ></v-text-field>
+              <!-- <v-text-field solo dense background-color="#EDF0F5" flat label="All time"></v-text-field> -->
+              <v-btn width="100%" depressed color="#EDF0F5">
+                <span class="text-capitalize" style="color: #576377">All Time</span>
+              </v-btn>
+              <v-menu
+                ref="menu"
+                v-model="menu"
+                :close-on-content-click="false"
+                :return-value.sync="date"
+                transition="scale-transition"
+                offset-x
+                width="100%"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="dateRangeText"
+                    label="Date range"
+                    prepend-inner-icon="mdi-calendar-blank"
+                    readonly
+                    style="margin-top: 5px !important"
+                    solo
+                    dense
+                    background-color="#EDF0F5"
+                    flat
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker range v-model="dateRange" scrollable>
+                  <v-spacer></v-spacer>
+                  <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
+                  <v-btn
+                    text
+                    color="primary"
+                    @click="$refs.menu.save(dateRange); filterOverview()"
+                  >OK</v-btn>
+                </v-date-picker>
+              </v-menu>
             </div>
           </div>
         </div>
@@ -87,8 +203,38 @@
     <v-row>
       <div class="summaryTitleSection">
         <div class="titleSectionDiv">Summary</div>
+        <div class="titleDateSearchSection">
+          <v-menu
+            ref="menu2"
+            v-model="menu2"
+            :close-on-content-click="false"
+            :return-value.sync="date"
+            transition="scale-transition"
+            offset-x
+            width="100%"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="dateRangeTextField"
+                label="Date range"
+                prepend-inner-icon="mdi-calendar-blank"
+                readonly
+                solo
+                dense
+                background-color="#EDF0F5"
+                flat
+                v-bind="attrs"
+                v-on="on"
+              ></v-text-field>
+            </template>
+            <v-date-picker range v-model="dateRangeFilter" scrollable>
+              <v-spacer></v-spacer>
+              <v-btn text color="primary" @click="menu2 = false">Cancel</v-btn>
+              <v-btn text color="primary" @click="$refs.menu2.save(dateRangeFilter); ">OK</v-btn>
+            </v-date-picker>
+          </v-menu>
+        </div>
         <div class="titleSearchSection">
-          <!-- <v-text-field solo dense background-color="#EDF0F5" flat label="Status"></v-text-field> -->
           <v-autocomplete
             v-model="filterType"
             dense
@@ -106,9 +252,9 @@
           ></v-autocomplete>
         </div>
         <div class="titleSearchSection">
-          <!-- <v-text-field solo dense background-color="#EDF0F5" flat label="Search here"></v-text-field> -->
           <v-autocomplete
             v-model="filterProject"
+            prepend-inner-icon="mdi-magnify"
             return-object
             :items="projectArray"
             dense
@@ -189,7 +335,7 @@
     <v-row>
       <div class="summaryTitleSection">
         <div class="titleSectionDiv">Project Status</div>
-        <div class="titleSearchSection">
+        <!-- <div class="titleSearchSection">
           <v-autocomplete
             v-model="filterType"
             dense
@@ -223,7 +369,7 @@
             multiple
             clearable
           ></v-autocomplete>
-        </div>
+        </div>-->
       </div>
     </v-row>
     <v-row>
@@ -294,6 +440,16 @@ import { mapState } from "vuex";
 export default {
   data: () => ({
     filterProject: [],
+    menu: false,
+    menu2: false,
+    dateRangeFilter: [
+      new Date().toISOString().substr(0, 10),
+      new Date().toISOString().substr(0, 10),
+    ],
+    dateRange: [
+      new Date().toISOString().substr(0, 10),
+      new Date().toISOString().substr(0, 10),
+    ],
     filterType: "",
     statusArray: [
       { name: "Presales : Project Discovery", id: "presalesPD" },
@@ -306,11 +462,46 @@ export default {
       { name: "Finished", id: "finished" },
     ],
   }),
+  methods: {
+    filterOverview() {
+      this.$store.dispatch("analytics/projectAnalytics/fetchProjectOverview", {
+        from: this.dateRange[0],
+        to: this.dateRange[1],
+      });
+    },
+  },
 
   computed: {
     ...mapState({
       allProjects: (state) => state.project.allOrgProjects,
+      projectsOverview: (state) => state.analytics.projectAnalytics,
     }),
+    dateRangeText() {
+      if (
+        this.dateRange.toString() ==
+        [
+          new Date().toISOString().substr(0, 10),
+          new Date().toISOString().substr(0, 10),
+        ]
+      ) {
+        return "Select Date Range";
+      } else {
+        return this.dateRange.join(" - ");
+      }
+    },
+    dateRangeTextField() {
+      if (
+        this.dateRangeFilter.toString() ==
+        [
+          new Date().toISOString().substr(0, 10),
+          new Date().toISOString().substr(0, 10),
+        ]
+      ) {
+        return "Select Date Range";
+      } else {
+        return this.dateRangeFilter.join(" - ");
+      }
+    },
     projectArray() {
       let projectSearchList = this.allProjects;
       let projectList = [];

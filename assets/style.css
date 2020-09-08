@@ -3696,9 +3696,15 @@
   color: #576377;
   font-weight: 800;
   font-size: 14px;
+  margin-bottom: 20px;
 }
 .titleSearchSection {
   width: 15%;
+  float: right;
+  margin-left: 10px;
+}
+.titleDateSearchSection {
+  width: 20%;
   float: right;
   margin-left: 10px;
 }

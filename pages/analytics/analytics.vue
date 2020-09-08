@@ -106,7 +106,11 @@ export default {
   created() {
     this.overlay = true;
     Promise.all([
-      //   initial API calls
+      this.$store.dispatch("project/fetchAllOragnizationProjects"),
+      this.$store.dispatch("analytics/projectAnalytics/fetchProjectOverview", {
+        from: "2020-06-01",
+        to: "2020-08-10",
+      }),
     ]).finally(() => {
       this.overlay = false;
     });
