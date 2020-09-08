@@ -3655,3 +3655,34 @@
   font-size: 10px;
   margin-left: 5px;
 }
+
+/* --------- Analytics ---------- */
+
+.projectSummarypage {
+  margin-top: 30px;
+}
+.projectTopSection {
+  width: 100%;
+}
+.leadsDisplay {
+  width: 20%;
+  float: left;
+  padding: 5px;
+}
+.leadsContentDiv {
+  border-radius: 12px;
+  color: #ffffff !important;
+}
+.leadsSubTitle {
+  color: #ffffff !important;
+}
+.leadsTitle {
+  color: #ffffff !important;
+  font-size: 25px !important;
+  font-weight: 900 !important;
+}
+.leadsAnalyticsText {
+  font-size: 10px;
+  color: #576377;
+  margin-left: 12px;
+}
