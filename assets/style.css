@@ -3734,3 +3734,9 @@
 .tableLoadButton {
   margin-top: 20px;
 }
+
+.taskChartArea {
+  width: 80vw;
+  height: 60vh;
+  background-color: red;
+}

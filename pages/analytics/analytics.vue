@@ -97,6 +97,7 @@ export default {
       component: "projects-tab",
     };
   },
+  methods: {},
   computed: {
     ...mapState({
       organizationalRoles: (state) => state.user.organizationalRoles,
@@ -105,6 +106,7 @@ export default {
 
   created() {
     this.overlay = true;
+    let date = new Date();
     Promise.all([
       this.$store.dispatch("analytics/projectAnalytics/emptyStore"),
       this.$store.dispatch("project/fetchAllOragnizationProjects"),
@@ -117,6 +119,15 @@ export default {
           "from=all&to=all&key=all&status=all&orderBy=total&orderType=DESC",
         startIndex: 0,
         endIndex: 10,
+      }),
+      this.$store.dispatch("analytics/taskAnalytics/fetchTaskOverview", {
+        from: new Date(date.getFullYear(), date.getMonth(), 1)
+          .toISOString()
+          .substr(0, 10),
+        to: new Date(date.getFullYear(), date.getMonth() + 1, 0)
+          .toISOString()
+          .substr(0, 10),
+        criteria: "DAY",
       }),
     ]).finally(() => {
       this.overlay = false;
