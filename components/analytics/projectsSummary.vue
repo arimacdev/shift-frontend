@@ -316,7 +316,13 @@
             </v-list-item>
           </v-list-item-group>
           <div class="tableLoadButton text-center">
-            <v-btn @click="loadMoreSummary()" color="#ffffff" depressed>
+            <div v-if="projectsSummary == ''">No records to show</div>
+            <v-btn
+              v-if="projectsSummary != ''"
+              @click="loadMoreSummary()"
+              color="#ffffff"
+              depressed
+            >
               <span class="text-capitalize">Load More</span>
               <v-icon>mdi-chevron-down</v-icon>
             </v-btn>
