@@ -11,6 +11,7 @@ export const state = () => ({
 export const mutations = {
   EMPTY_STORE(state, elements) {
     state.projectSummary = elements;
+    console.log('CLEARED');
   },
   SET_PROJECT_OVERVIEW(state, overview) {
     state.projectOverview = overview;

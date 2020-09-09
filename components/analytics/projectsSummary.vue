@@ -250,7 +250,7 @@
           ></v-autocomplete>
         </div>
         <div class="titleSearchSection">
-          <v-autocomplete
+          <!-- <v-autocomplete
             v-model="filterProject"
             prepend-inner-icon="mdi-magnify"
             return-object
@@ -266,7 +266,18 @@
             label="Search here"
             multiple
             clearable
-          ></v-autocomplete>
+          ></v-autocomplete>-->
+          <v-text-field
+            v-model="key"
+            solo
+            dense
+            flat
+            clearable
+            background-color="#EDF0F5"
+            prepend-inner-icon="mdi-magnify"
+            label="Search here"
+            @input="loadFilterSummary()"
+          ></v-text-field>
         </div>
       </div>
     </v-row>
@@ -445,6 +456,7 @@ export default {
   },
   data: () => ({
     loadSummaryCount: 0,
+    key: "",
     overlay: false,
     filterProject: [],
     menu: false,
@@ -473,10 +485,9 @@ export default {
   }),
   methods: {
     loadFilterSummary() {
-      this.$store.dispatch("analytics/projectAnalytics/emptyStore"),
-        (this.loadSummaryCount = 0);
+      this.loadSummaryCount = 0;
       let dateRange;
-      let key;
+      let key = "";
       let status = "";
       if (this.filterType.length != 0) {
         for (let i = 0; i < this.filterType.length; i++) {
@@ -500,19 +511,31 @@ export default {
       } else {
         dateRange = "from=all&to=all";
       }
+      if (this.key == "" || this.key == null) {
+        key = "&key=all&";
+      } else {
+        key = "&key=" + this.key + "&";
+      }
       this.overlay = true;
       this.summaryParams =
-        dateRange + "&key=all&" + status + "orderBy=total&orderType=DESC";
+        dateRange + key + status + "orderBy=total&orderType=DESC";
       console.log("SUMMARY " + this.summaryParams);
       Promise.all([
-        this.$store.dispatch("analytics/projectAnalytics/fetchProjectSummary", {
-          params: this.summaryParams,
-          startIndex: this.loadSummaryCount * 10,
-          endIndex: this.loadSummaryCount * 10 + 10,
-        }),
+        this.$store.dispatch("analytics/projectAnalytics/emptyStore"),
       ]).finally(() => {
-        this.overlay = false;
-        this.loadSummaryCount++;
+        Promise.all([
+          this.$store.dispatch(
+            "analytics/projectAnalytics/fetchProjectSummary",
+            {
+              params: this.summaryParams,
+              startIndex: this.loadSummaryCount * 10,
+              endIndex: this.loadSummaryCount * 10 + 10,
+            }
+          ),
+        ]).finally(() => {
+          this.overlay = false;
+          this.loadSummaryCount++;
+        });
       });
     },
     loadMoreSummary() {
