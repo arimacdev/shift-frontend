@@ -305,10 +305,16 @@
                 <v-list-item-subtitle class="tableText">{{project.completedTaskCount}}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">Healthy</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText" style="color: #66B25F !important">Healthy</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
+          <div class="tableLoadButton text-center">
+            <v-btn @click="loadMoreSummary()" color="#ffffff" depressed>
+              <span class="text-capitalize">Load More</span>
+              <v-icon>mdi-chevron-down</v-icon>
+            </v-btn>
+          </div>
         </div>
       </div>
     </v-row>
@@ -426,6 +432,7 @@ export default {
     "progress-loading": Progress,
   },
   data: () => ({
+    loadSummaryCount: 0,
     overlay: false,
     filterProject: [],
     menu: false,
@@ -451,6 +458,20 @@ export default {
     ],
   }),
   methods: {
+    loadMoreSummary() {
+      this.loadSummaryCount++;
+      this.overlay = true;
+      Promise.all([
+        this.$store.dispatch("analytics/projectAnalytics/fetchProjectSummary", {
+          params:
+            "from=all&to=all&key=all&status=all&orderBy=total&orderType=DESC",
+          startIndex: this.loadSummaryCount * 10,
+          endIndex: this.loadSummaryCount * 10 + 10,
+        }),
+      ]).finally(() => {
+        this.overlay = false;
+      });
+    },
     filterOverview() {
       this.overlay = true;
       Promise.all([

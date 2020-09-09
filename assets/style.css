@@ -3713,8 +3713,12 @@
   width: 100%;
 }
 .tableContentScroll {
-  max-height: 300px !important;
+  max-height: 500px !important;
   margin-bottom: 40px;
+  padding-bottom: 40px;
+}
+.tableContentScroll::-webkit-scrollbar {
+  display: none;
 }
 .tableTitle {
   font-size: 14px !important;
@@ -3726,4 +3730,7 @@
 .tableContentRecord {
   background-color: #fafafa !important;
   border-bottom: solid 1px #c4c4c4;
+}
+.tableLoadButton {
+  margin-top: 20px;
 }

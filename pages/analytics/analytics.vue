@@ -106,6 +106,7 @@ export default {
   created() {
     this.overlay = true;
     Promise.all([
+      this.$store.dispatch("analytics/projectAnalytics/emptyStore"),
       this.$store.dispatch("project/fetchAllOragnizationProjects"),
       this.$store.dispatch("analytics/projectAnalytics/fetchProjectOverview", {
         from: "2020-06-01",
@@ -113,7 +114,9 @@ export default {
       }),
       this.$store.dispatch("analytics/projectAnalytics/fetchProjectSummary", {
         params:
-          "from=all&to=all&key=all&status=all&orderBy=total&orderType=DESC&startIndex=0&endIndex=10",
+          "from=all&to=all&key=all&status=all&orderBy=total&orderType=DESC",
+        startIndex: 0,
+        endIndex: 10,
       }),
     ]).finally(() => {
       this.overlay = false;

@@ -9,15 +9,21 @@ export const state = () => ({
 });
 
 export const mutations = {
+  EMPTY_STORE(state, elements) {
+    state.projectSummary = elements;
+  },
   SET_PROJECT_OVERVIEW(state, overview) {
     state.projectOverview = overview;
   },
   SET_PROJECT_SUMMARY(state, summary) {
-    state.projectSummary = summary;
+    state.projectSummary = state.projectSummary.concat(summary);
   },
 };
 
 export const actions = {
+  emptyStore({ commit, rootState }) {
+    commit('EMPTY_STORE', []);
+  },
   async fetchProjectOverview({ commit, rootState }, { from, to }) {
     const user = rootState.user.userId;
     let projectOverview;
@@ -35,12 +41,15 @@ export const actions = {
       console.log('Error fetching project overview', e);
     }
   },
-  async fetchProjectSummary({ commit, rootState }, { params }) {
+  async fetchProjectSummary(
+    { commit, rootState },
+    { params, startIndex, endIndex }
+  ) {
     const user = rootState.user.userId;
     let projectSummary;
     try {
       projectSummary = await this.$axios.$get(
-        `/analytics/summary/projects?${params}`,
+        `/analytics/summary/projects?${params}&startIndex=${startIndex}&endIndex=${endIndex}`,
         {
           headers: {
             user: user,
