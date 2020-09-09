@@ -222,7 +222,11 @@
             <v-date-picker range v-model="dateRangeFilter" scrollable>
               <v-spacer></v-spacer>
               <v-btn text color="primary" @click="menu2 = false">Cancel</v-btn>
-              <v-btn text color="primary" @click="$refs.menu2.save(dateRangeFilter); ">OK</v-btn>
+              <v-btn
+                text
+                color="primary"
+                @click="$refs.menu2.save(dateRangeFilter); loadFilterSummary() "
+              >OK</v-btn>
             </v-date-picker>
           </v-menu>
         </div>
@@ -238,9 +242,11 @@
             background-color="#EDF0F5"
             chips
             small-chips
+            multiple
             label="Status"
             solo
             clearable
+            @change="loadFilterSummary()"
           ></v-autocomplete>
         </div>
         <div class="titleSearchSection">
@@ -437,6 +443,8 @@ export default {
     filterProject: [],
     menu: false,
     menu2: false,
+    summaryParams:
+      "from=all&to=all&key=all&status=all&orderBy=total&orderType=DESC",
     dateRangeFilter: [
       new Date().toISOString().substr(0, 10),
       new Date().toISOString().substr(0, 10),
@@ -445,7 +453,7 @@ export default {
       new Date().toISOString().substr(0, 10),
       new Date().toISOString().substr(0, 10),
     ],
-    filterType: "",
+    filterType: [],
     statusArray: [
       { name: "Presales : Project Discovery", id: "presalesPD" },
       { name: "Presales : Quotation Submission", id: "preSalesQS" },
@@ -458,13 +466,55 @@ export default {
     ],
   }),
   methods: {
+    loadFilterSummary() {
+      this.$store.dispatch("analytics/projectAnalytics/emptyStore"),
+        (this.loadSummaryCount = 0);
+      let dateRange;
+      let key;
+      let status = "";
+      if (this.filterType.length != 0) {
+        for (let i = 0; i < this.filterType.length; i++) {
+          status = status + "status=" + this.filterType[i].id + "&";
+          // if (i < this.filterType.length - 1) {
+          //   assigneeList = assigneeList + ",";
+          // }
+        }
+      } else {
+        status = "status=all&";
+      }
+      if (
+        this.dateRangeFilter.toString() !=
+        [
+          new Date().toISOString().substr(0, 10),
+          new Date().toISOString().substr(0, 10),
+        ]
+      ) {
+        dateRange =
+          "from=" + this.dateRangeFilter[0] + "&to=" + this.dateRangeFilter[1];
+      } else {
+        dateRange = "from=all&to=all";
+      }
+      this.overlay = true;
+      this.summaryParams =
+        dateRange + "&key=all&" + status + "orderBy=total&orderType=DESC";
+      console.log("SUMMARY " + this.summaryParams);
+      Promise.all([
+        this.$store.dispatch("analytics/projectAnalytics/fetchProjectSummary", {
+          params: this.summaryParams,
+          startIndex: this.loadSummaryCount * 10,
+          endIndex: this.loadSummaryCount * 10 + 10,
+        }),
+      ]).finally(() => {
+        this.overlay = false;
+        this.loadSummaryCount++;
+      });
+    },
     loadMoreSummary() {
       this.loadSummaryCount++;
       this.overlay = true;
       Promise.all([
         this.$store.dispatch("analytics/projectAnalytics/fetchProjectSummary", {
-          params:
-            "from=all&to=all&key=all&status=all&orderBy=total&orderType=DESC",
+          params: this.summaryParams,
           startIndex: this.loadSummaryCount * 10,
           endIndex: this.loadSummaryCount * 10 + 10,
         }),
