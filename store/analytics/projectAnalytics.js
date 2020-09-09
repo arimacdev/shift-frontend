@@ -6,18 +6,22 @@ export const state = () => ({
     leadConversion: {},
   },
   projectSummary: [],
+  projectDetails: [],
 });
 
 export const mutations = {
   EMPTY_STORE(state, elements) {
     state.projectSummary = elements;
-    console.log('CLEARED');
+    state.projectDetails = elements;
   },
   SET_PROJECT_OVERVIEW(state, overview) {
     state.projectOverview = overview;
   },
   SET_PROJECT_SUMMARY(state, summary) {
     state.projectSummary = state.projectSummary.concat(summary);
+  },
+  SET_PROJECT_DETAILS(state, details) {
+    state.projectDetails = state.projectDetails.concat(details);
   },
 };
 
@@ -58,9 +62,30 @@ export const actions = {
         }
       );
       commit('SET_PROJECT_SUMMARY', projectSummary.data);
-      console.log('SUMMARY', projectSummary.data);
+      // console.log('SUMMARY', projectSummary.data);
     } catch (e) {
       console.log('Error fetching project summary', e);
+    }
+  },
+  async fetchProjectDetails(
+    { commit, rootState },
+    { params, startIndex, endIndex }
+  ) {
+    const user = rootState.user.userId;
+    let projectDetails;
+    try {
+      projectDetails = await this.$axios.$get(
+        `/analytics/details/projects?${params}&startIndex=${startIndex}&endIndex=${endIndex}`,
+        {
+          headers: {
+            user: user,
+          },
+        }
+      );
+      commit('SET_PROJECT_DETAILS', projectDetails.data);
+      // console.log('SUMMARY', projectDetails.data);
+    } catch (e) {
+      console.log('Error fetching project details', e);
     }
   },
 };

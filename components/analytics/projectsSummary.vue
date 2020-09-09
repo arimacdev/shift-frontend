@@ -225,7 +225,7 @@
               <v-btn
                 text
                 color="primary"
-                @click="$refs.menu2.save(dateRangeFilter); loadFilterSummary() "
+                @click="$refs.menu2.save(dateRangeFilter); loadFilterSummary(); loadFilterDetails() "
               >OK</v-btn>
             </v-date-picker>
           </v-menu>
@@ -313,7 +313,7 @@
                 <v-list-item-subtitle class="tableText">{{project.projectName}}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">Pending</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{getStatus(project.projectStatus)}}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
                 <v-list-item-subtitle class="tableText">{{project.totalTasks}}</v-list-item-subtitle>
@@ -344,41 +344,6 @@
     <v-row>
       <div class="summaryTitleSection">
         <div class="titleSectionDiv">Project Status</div>
-        <!-- <div class="titleSearchSection">
-          <v-autocomplete
-            v-model="filterType"
-            dense
-            return-object
-            :items="statusArray"
-            item-text="name"
-            item-value="id"
-            flat
-            background-color="#EDF0F5"
-            chips
-            small-chips
-            label="Status"
-            solo
-            clearable
-          ></v-autocomplete>
-        </div>
-        <div class="titleSearchSection">
-          <v-autocomplete
-            v-model="filterProject"
-            return-object
-            :items="projectArray"
-            dense
-            item-text="name"
-            item-value="id"
-            flat
-            chips
-            small-chips
-            solo
-            background-color="#EDF0F5"
-            label="Search here"
-            multiple
-            clearable
-          ></v-autocomplete>
-        </div>-->
       </div>
     </v-row>
     <v-row>
@@ -412,36 +377,56 @@
         <div class="tableContentScroll overflow-y-auto">
           <!-- ------ loop list here ------ -->
           <v-list-item-group>
-            <v-list-item dense class="tableContentRecord">
+            <v-list-item
+              v-for="(project, index) in projectsDetails"
+              :key="index"
+              dense
+              class="tableContentRecord"
+            >
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">PM - Tool</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{project.projectName}}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">12-10-2020</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{project.projectStartDate.slice(0,10)}}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">Pending</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{getStatus(project.projectStatus)}}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">1245</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{project.taskCount}}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">10</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{project.memberCount}}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">Naveen</v-list-item-subtitle>
+                <v-list-item-subtitle
+                  class="tableText"
+                >{{project.owners[0].firstName}} {{project.owners[0].lastName}}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">12</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{project.engagement}}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">5 Days</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{getDays(project.timeTaken)}}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
+          <div class="tableLoadButton text-center">
+            <div v-if="projectsSummary == ''">No records to show</div>
+            <v-btn
+              v-if="projectsSummary != ''"
+              @click="loadMoreDetails()"
+              color="#ffffff"
+              depressed
+            >
+              <span class="text-capitalize">Load More</span>
+              <v-icon>mdi-chevron-down</v-icon>
+            </v-btn>
+          </div>
         </div>
       </div>
     </v-row>
+
     <v-overlay :value="overlay" color="black" style="z-index:1008">
       <progress-loading />
     </v-overlay>
@@ -456,6 +441,7 @@ export default {
   },
   data: () => ({
     loadSummaryCount: 0,
+    loadDetailsCount: 0,
     key: "",
     overlay: false,
     filterProject: [],
@@ -463,6 +449,7 @@ export default {
     menu2: false,
     summaryParams:
       "from=all&to=all&key=all&status=all&orderBy=total&orderType=DESC",
+    detailsParams: "from=all&to=all&orderBy=timeTaken&orderType=DESC",
     dateRangeFilter: [
       new Date().toISOString().substr(0, 10),
       new Date().toISOString().substr(0, 10),
@@ -484,6 +471,45 @@ export default {
     ],
   }),
   methods: {
+    getDays(ms) {
+      let oneDay = 1000 * 60 * 60 * 24;
+      return Math.round(ms / oneDay) + " Days";
+    },
+    getStatus(status) {
+      switch (status) {
+        case "presalesPD":
+          return "Presales : Discovery";
+          break;
+        case "preSalesQS":
+          return "Presales : Quotation Submission";
+          break;
+        case "preSalesN":
+          return "Presales : Negotiation";
+          break;
+        case "preSalesC":
+          return "Presales : Confirmed";
+          break;
+        case "preSalesL":
+          return "Presales : Lost";
+          break;
+        case "ongoing":
+          return "Ongoing";
+          break;
+        case "support":
+          return "Support";
+          break;
+        case "finished":
+          return "Finished";
+          break;
+      }
+    },
+    clearDate() {
+      // this.dateRange = [
+      //   new Date().toISOString().substr(0, 10),
+      //   new Date().toISOString().substr(0, 10),
+      // ];
+      // this.loadFilterSummary();
+    },
     loadFilterSummary() {
       this.loadSummaryCount = 0;
       let dateRange;
@@ -519,7 +545,7 @@ export default {
       this.overlay = true;
       this.summaryParams =
         dateRange + key + status + "orderBy=total&orderType=DESC";
-      console.log("SUMMARY " + this.summaryParams);
+      // console.log("SUMMARY " + this.summaryParams);
       Promise.all([
         this.$store.dispatch("analytics/projectAnalytics/emptyStore"),
       ]).finally(() => {
@@ -535,6 +561,44 @@ export default {
         ]).finally(() => {
           this.overlay = false;
           this.loadSummaryCount++;
+        });
+      });
+    },
+    loadFilterDetails() {
+      this.loadDetailsCount = 0;
+      let dateRange;
+
+      if (
+        this.dateRangeFilter.toString() !=
+        [
+          new Date().toISOString().substr(0, 10),
+          new Date().toISOString().substr(0, 10),
+        ]
+      ) {
+        dateRange =
+          "from=" + this.dateRangeFilter[0] + "&to=" + this.dateRangeFilter[1];
+      } else {
+        dateRange = "from=all&to=all";
+      }
+
+      this.overlay = true;
+      this.detailsParams = dateRange + "&orderBy=timeTaken&orderType=DESC";
+      // console.log("SUMMARY " + this.summaryParams);
+      Promise.all([
+        this.$store.dispatch("analytics/projectAnalytics/emptyStore"),
+      ]).finally(() => {
+        Promise.all([
+          this.$store.dispatch(
+            "analytics/projectAnalytics/fetchProjectDetails",
+            {
+              params: this.detailsParams,
+              startIndex: this.loadDetailsCount * 10,
+              endIndex: this.loadDetailsCount * 10 + 10,
+            }
+          ),
+        ]).finally(() => {
+          this.overlay = false;
+          this.loadDetailsCount++;
         });
       });
     },
@@ -565,6 +629,19 @@ export default {
         this.overlay = false;
       });
     },
+    loadMoreDetails() {
+      this.loadDetailsCount++;
+      this.overlay = true;
+      Promise.all([
+        this.$store.dispatch("analytics/projectAnalytics/fetchProjectDetails", {
+          params: this.detailsParams,
+          startIndex: this.loadDetailsCount * 10,
+          endIndex: this.loadDetailsCount * 10 + 10,
+        }),
+      ]).finally(() => {
+        this.overlay = false;
+      });
+    },
   },
 
   computed: {
@@ -574,6 +651,8 @@ export default {
         state.analytics.projectAnalytics.projectOverview,
       projectsSummary: (state) =>
         state.analytics.projectAnalytics.projectSummary,
+      projectsDetails: (state) =>
+        state.analytics.projectAnalytics.projectDetails,
     }),
     dateRangeText() {
       if (
