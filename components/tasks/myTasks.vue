@@ -257,9 +257,9 @@
                 >
                   <!-- <div class="tasklistTaskNames restructuredMainTaskName"> -->
                   <div style="color: #576377">
-                    <span class="restructuredMainTaskCode fontRestructure12">{{
-                      task.secondaryTaskId
-                    }}</span>
+                    <span class="restructuredMainTaskCode fontRestructure12">
+                      {{ task.secondaryTaskId }}
+                    </span>
                     {{ task.taskName }}
                   </div>
                   <!-- </div> -->
@@ -274,9 +274,9 @@
                     :class="statusCheck(task.taskStatus)"
                     x-small
                   >
-                    <span class="fontRestructure12">{{
-                      taskStatusFormatting(task.taskStatus)
-                    }}</span>
+                    <span class="fontRestructure12">
+                      {{ taskStatusFormatting(task.taskStatus) }}
+                    </span>
                   </v-chip>
                 </v-list-item-action>
                 <v-list-item-action>
@@ -285,19 +285,18 @@
                     :class="typeCheck(task.issueType)"
                     x-small
                   >
-                    <span class="fontRestructure12">{{
-                      taskTypeFormatting(task.issueType)
-                    }}</span>
+                    <span class="fontRestructure12">
+                      {{ taskTypeFormatting(task.issueType) }}
+                    </span>
                   </v-chip>
                 </v-list-item-action>
                 <v-list-item-action class="updatedDate">
                   <v-list-item-title
                     class="fontRestructure12"
                     :class="dueDateCheck(task)"
-                    >{{
-                      getProjectDates(task.taskDueDateAt)
-                    }}</v-list-item-title
                   >
+                    {{ getProjectDates(task.taskDueDateAt) }}
+                  </v-list-item-title>
                 </v-list-item-action>
                 <!-- <div style="margin-right: -25px"> -->
                 <v-list-item-avatar size="25">
@@ -338,6 +337,20 @@
           :total-visible="8"
         ></v-pagination>
       </div>-->
+      <div
+        v-if="this.scrollCount <= this.myTaskCount / 10"
+        class="loadMoreTasks text-center"
+      >
+        <v-btn
+          v-if="projectsSummary != ''"
+          @click="loadMoreButtonAction()"
+          color="#ffffff"
+          depressed
+        >
+          <span class="text-capitalize">Load More Tasks</span>
+          <v-icon>mdi-chevron-down</v-icon>
+        </v-btn>
+      </div>
     </div>
 
     <div v-else class="taskListViewContent filterListTop overflow-y-auto">
@@ -375,9 +388,9 @@
                 target="_blank"
               >
                 <div style="color: #576377">
-                  <span class="restructuredMainTaskCode fontRestructure12">
-                    {{ task.secondaryTaskId }}
-                  </span>
+                  <span class="restructuredMainTaskCode fontRestructure12">{{
+                    task.secondaryTaskId
+                  }}</span>
                   {{ task.taskName }}
                 </div>
               </nuxt-link>
@@ -397,9 +410,9 @@
                 :class="statusCheck(task.taskStatus)"
                 x-small
               >
-                <span class="fontRestructure12">{{
-                  taskStatusFormatting(task.taskStatus)
-                }}</span>
+                <span class="fontRestructure12">
+                  {{ taskStatusFormatting(task.taskStatus) }}
+                </span>
               </v-chip>
             </v-list-item-action>
             <v-list-item-action>
@@ -408,18 +421,17 @@
                 :class="typeCheck(task.issueType)"
                 x-small
               >
-                <span class="fontRestructure12">{{
-                  taskTypeFormatting(task.issueType)
-                }}</span>
+                <span class="fontRestructure12">
+                  {{ taskTypeFormatting(task.issueType) }}
+                </span>
               </v-chip>
             </v-list-item-action>
             <v-list-item-action class="updatedDate">
               <v-list-item-title
                 class="fontRestructure12"
                 :class="dueDateCheck(task)"
+                >{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title
               >
-                {{ getProjectDates(task.taskDueDateAt) }}
-              </v-list-item-title>
             </v-list-item-action>
             <!-- <div> -->
             <v-list-item-avatar size="25">
@@ -640,13 +652,14 @@ export default {
           this.scrollCount = this.scrollCount + 1;
           // console.log("REACHED COUNT! " + scrollCount);
           if (this.scrollCount <= this.myTaskCount / 10 + 1) {
-            // console.log("The scroll arrived at bottom " + myDiv.scrollTop);
-            // console.log("The scroll arrived at bottom " + myDiv.clientHeight);
-            // console.log("The scroll arrived at bottom " + myDiv.scrollHeight);
             this.getMyTasksLazyLoading(this.scrollCount);
           }
         }
       };
+    },
+    loadMoreButtonAction() {
+      this.scrollCount = this.scrollCount + 1;
+      this.getMyTasksLazyLoading(this.scrollCount);
     },
     getMyTasksLazyLoading(scrollCount) {
       this.overlay = true;
@@ -1171,6 +1184,7 @@ export default {
           (this.taskNotes = ''),
           (this.files = null);
       } catch (e) {
+        this.$store.dispatch('task/fetchTasksMyTasks', this.projectId);
         this.overlay = false;
         this.errorMessage = e.response.data;
         this.component = 'error-popup';
