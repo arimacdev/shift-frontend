@@ -556,7 +556,22 @@
           </v-expand-transition>
         </div>
       </v-hover>-->
+      <div
+        v-if="this.scrollCount <= Math.ceil(this.allTaskCount / 10) "
+        class="loadMoreTasks text-center"
+      >
+        <v-btn
+          v-if="projectsSummary != ''"
+          @click="loadMoreButtonAction()"
+          color="#ffffff"
+          depressed
+        >
+          <span class="text-capitalize">Load More Tasks</span>
+          <v-icon>mdi-chevron-down</v-icon>
+        </v-btn>
+      </div>
     </div>
+
     <!-- -------------- filter list -------------- -->
     <div v-else class="taskListViewContent filterListTop overflow-y-auto">
       <div v-if="this.filterList == ''" class="filterTitleDiv headline">No items to show</div>
@@ -926,6 +941,10 @@ export default {
           }
         }
       };
+    },
+    loadMoreButtonAction() {
+      this.scrollCount = this.scrollCount + 1;
+      this.getAllTasksLazyLoading(this.scrollCount);
     },
     getAllTasksLazyLoading(scrollCount) {
       this.overlay = true;
@@ -1623,6 +1642,7 @@ export default {
             isAllTasks: false,
           });
           this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+          this.updatedTask.taskName = "";
         } catch (e) {
           this.overlay = false;
           this.selectedDueDate = "";
