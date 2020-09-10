@@ -121,7 +121,7 @@ export default {
         endIndex: 10,
       }),
       this.$store.dispatch("analytics/projectAnalytics/fetchProjectDetails", {
-        params: "from=all&to=all&orderBy=timeTaken&orderType=DESC",
+        params: "from=all&to=all&orderBy=taskcount&orderType=DESC",
         startIndex: 0,
         endIndex: 10,
       }),

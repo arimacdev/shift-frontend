@@ -10,8 +10,10 @@ export const state = () => ({
 });
 
 export const mutations = {
-  EMPTY_STORE(state, elements) {
+  EMPTY_SUMMARY_STORE(state, elements) {
     state.projectSummary = elements;
+  },
+  EMPTY_DETAILS_STORE(state, elements) {
     state.projectDetails = elements;
   },
   SET_PROJECT_OVERVIEW(state, overview) {
@@ -26,8 +28,11 @@ export const mutations = {
 };
 
 export const actions = {
-  emptyStore({ commit, rootState }) {
-    commit('EMPTY_STORE', []);
+  emptySummaryStore({ commit, rootState }) {
+    commit('EMPTY_SUMMARY_STORE', []);
+  },
+  emptyDetailsStore({ commit, rootState }) {
+    commit('EMPTY_DETAILS_STORE', []);
   },
   async fetchProjectOverview({ commit, rootState }, { from, to }) {
     const user = rootState.user.userId;

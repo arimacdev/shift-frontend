@@ -1560,75 +1560,80 @@ export default {
       this.component = "";
     },
     async addTask(selectedParentTask, issueType) {
-      this.scrollCount = 1;
-      this.overlay = true;
-      let response;
-      let taskName;
-      let assignee;
-
-      if (!this.updatedTask.taskName.includes("@")) {
-        this.assigneeId = "";
-      }
-      if (!this.updatedTask.taskName.includes("#")) {
-        this.selectedDueDate = "";
-      }
-
-      if (this.assigneeId != "" && this.selectedDueDate == "") {
-        taskName = this.updatedTask.taskName.split("@")[0];
-        assignee = this.assigneeId;
-      } else if (this.selectedDueDate != "" && this.assigneeId != "") {
-        taskName = this.updatedTask.taskName.split("@")[0];
-        assignee = this.assigneeId;
-      } else if (this.selectedDueDate != "" && this.assigneeId == "") {
-        taskName = this.updatedTask.taskName.split("#")[0];
-      } else {
-        taskName = this.updatedTask.taskName;
-        assignee = this.userId;
-      }
-
-      try {
-        response = await this.$axios.$post(
-          `/projects/${this.projectId}/tasks`,
-          {
-            taskName: taskName,
-            projectId: this.projectId,
-            taskInitiator: this.userId,
-            taskAssignee: assignee,
-            taskDueDate: new Date(this.selectedDueDate),
-            taskRemindOnDate: "",
-            taskStatus: null,
-            taskNotes: "",
-            issueType: issueType,
-            parentTaskId: selectedParentTask,
-          }
-        );
-        this.$refs.form.reset();
-        this.component = "success-popup";
-        this.successMessage = "Task added successfully";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        this.overlay = false;
-        this.selectedDueDate = "";
-        this.assigneeId = "";
+      if (
+        this.updatedTask.taskName != "" ||
+        this.updatedTask.taskName != null
+      ) {
         this.scrollCount = 1;
-        this.$store.dispatch("task/emptyStore");
-        this.$store.dispatch("task/setIndex", {
-          startIndex: 0,
-          endIndex: 10,
-          isAllTasks: false,
-        });
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
-      } catch (e) {
-        this.overlay = false;
-        this.selectedDueDate = "";
-        this.assigneeId = "";
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        console.log("Error updating a status", e);
+        this.overlay = true;
+        let response;
+        let taskName;
+        let assignee;
+
+        if (!this.updatedTask.taskName.includes("@")) {
+          this.assigneeId = "";
+        }
+        if (!this.updatedTask.taskName.includes("#")) {
+          this.selectedDueDate = "";
+        }
+
+        if (this.assigneeId != "" && this.selectedDueDate == "") {
+          taskName = this.updatedTask.taskName.split("@")[0];
+          assignee = this.assigneeId;
+        } else if (this.selectedDueDate != "" && this.assigneeId != "") {
+          taskName = this.updatedTask.taskName.split("@")[0];
+          assignee = this.assigneeId;
+        } else if (this.selectedDueDate != "" && this.assigneeId == "") {
+          taskName = this.updatedTask.taskName.split("#")[0];
+        } else {
+          taskName = this.updatedTask.taskName;
+          assignee = this.userId;
+        }
+
+        try {
+          response = await this.$axios.$post(
+            `/projects/${this.projectId}/tasks`,
+            {
+              taskName: taskName,
+              projectId: this.projectId,
+              taskInitiator: this.userId,
+              taskAssignee: assignee,
+              taskDueDate: new Date(this.selectedDueDate),
+              taskRemindOnDate: "",
+              taskStatus: null,
+              taskNotes: "",
+              issueType: issueType,
+              parentTaskId: selectedParentTask,
+            }
+          );
+          this.$refs.form.reset();
+          this.component = "success-popup";
+          this.successMessage = "Task added successfully";
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          this.overlay = false;
+          this.selectedDueDate = "";
+          this.assigneeId = "";
+          this.scrollCount = 1;
+          this.$store.dispatch("task/emptyStore");
+          this.$store.dispatch("task/setIndex", {
+            startIndex: 0,
+            endIndex: 10,
+            isAllTasks: false,
+          });
+          this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        } catch (e) {
+          this.overlay = false;
+          this.selectedDueDate = "";
+          this.assigneeId = "";
+          this.errorMessage = e.response.data;
+          this.component = "error-popup";
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          console.log("Error updating a status", e);
+        }
       }
     },
     async addSubTask(index, selectedParentTask, issueType, sprintId, dueDate) {

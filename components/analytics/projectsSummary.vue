@@ -291,10 +291,30 @@
             <v-list-item-title class="tableTitle">Status</v-list-item-title>
           </v-list-item-content>
           <v-list-item-content>
-            <v-list-item-title class="tableTitle">No of Tasks</v-list-item-title>
+            <v-list-item-title class="tableTitle">
+              No of Tasks
+              <v-icon
+                v-if="this.summaryOrder == 'DESC'"
+                @click="setSummaryOrderBy('total'); summaryOrder = 'ASC'; orderFilterSummary()"
+              >mdi-menu-up</v-icon>
+              <v-icon
+                v-else
+                @click="setSummaryOrderBy('total'); summaryOrder = 'DESC'; orderFilterSummary()"
+              >mdi-menu-down</v-icon>
+            </v-list-item-title>
           </v-list-item-content>
           <v-list-item-content>
-            <v-list-item-title class="tableTitle">Completed Tasks</v-list-item-title>
+            <v-list-item-title class="tableTitle">
+              Completed Tasks
+              <v-icon
+                v-if="this.summaryOrder == 'DESC'"
+                @click="setSummaryOrderBy('completed'); summaryOrder = 'ASC'; orderFilterSummary()"
+              >mdi-menu-up</v-icon>
+              <v-icon
+                v-else
+                @click="setSummaryOrderBy('completed'); summaryOrder = 'DESC'; orderFilterSummary()"
+              >mdi-menu-down</v-icon>
+            </v-list-item-title>
           </v-list-item-content>
           <v-list-item-content>
             <v-list-item-title class="tableTitle">Health</v-list-item-title>
@@ -350,19 +370,69 @@
       <div class="summaryTableDiv">
         <v-list-item dense style="background-color: #010101 !important" dark>
           <v-list-item-content>
-            <v-list-item-title class="tableTitle">Project</v-list-item-title>
+            <v-list-item-title class="tableTitle">
+              Project
+              <v-icon
+                v-if="this.detailsOrder == 'DESC'"
+                @click="setDetailsOrderBy('projectName'); detailsOrder = 'ASC'; orderDetailsSummary()"
+              >mdi-menu-up</v-icon>
+              <v-icon
+                v-else
+                @click="setDetailsOrderBy('projectName'); detailsOrder = 'DESC'; orderDetailsSummary()"
+              >mdi-menu-down</v-icon>
+            </v-list-item-title>
           </v-list-item-content>
           <v-list-item-content>
-            <v-list-item-title class="tableTitle">Created</v-list-item-title>
+            <v-list-item-title class="tableTitle">
+              Created
+              <v-icon
+                v-if="this.detailsOrder == 'DESC'"
+                @click="setDetailsOrderBy('projectCreatedDate'); detailsOrder = 'ASC'; orderDetailsSummary()"
+              >mdi-menu-up</v-icon>
+              <v-icon
+                v-else
+                @click="setDetailsOrderBy('projectCreatedDate'); detailsOrder = 'DESC'; orderDetailsSummary()"
+              >mdi-menu-down</v-icon>
+            </v-list-item-title>
           </v-list-item-content>
           <v-list-item-content>
-            <v-list-item-title class="tableTitle">Status</v-list-item-title>
+            <v-list-item-title class="tableTitle">
+              Status
+              <v-icon
+                v-if="this.detailsOrder == 'DESC'"
+                @click="setDetailsOrderBy('projectStatus'); detailsOrder = 'ASC'; orderDetailsSummary()"
+              >mdi-menu-up</v-icon>
+              <v-icon
+                v-else
+                @click="setDetailsOrderBy('projectStatus'); detailsOrder = 'DESC'; orderDetailsSummary()"
+              >mdi-menu-down</v-icon>
+            </v-list-item-title>
           </v-list-item-content>
           <v-list-item-content>
-            <v-list-item-title class="tableTitle">Total Tasks</v-list-item-title>
+            <v-list-item-title class="tableTitle">
+              Total Tasks
+              <v-icon
+                v-if="this.detailsOrder == 'DESC'"
+                @click="setDetailsOrderBy('taskcount'); detailsOrder = 'ASC'; orderDetailsSummary()"
+              >mdi-menu-up</v-icon>
+              <v-icon
+                v-else
+                @click="setDetailsOrderBy('taskcount'); detailsOrder = 'DESC'; orderDetailsSummary()"
+              >mdi-menu-down</v-icon>
+            </v-list-item-title>
           </v-list-item-content>
           <v-list-item-content>
-            <v-list-item-title class="tableTitle">Members</v-list-item-title>
+            <v-list-item-title class="tableTitle">
+              Members
+              <v-icon
+                v-if="this.detailsOrder == 'DESC'"
+                @click="setDetailsOrderBy('memberCount'); detailsOrder = 'ASC'; orderDetailsSummary()"
+              >mdi-menu-up</v-icon>
+              <v-icon
+                v-else
+                @click="setDetailsOrderBy('memberCount'); detailsOrder = 'DESC'; orderDetailsSummary()"
+              >mdi-menu-down</v-icon>
+            </v-list-item-title>
           </v-list-item-content>
           <v-list-item-content>
             <v-list-item-title class="tableTitle">Owner</v-list-item-title>
@@ -371,7 +441,17 @@
             <v-list-item-title class="tableTitle">Engagement</v-list-item-title>
           </v-list-item-content>
           <v-list-item-content>
-            <v-list-item-title class="tableTitle">Time Taken</v-list-item-title>
+            <v-list-item-title class="tableTitle">
+              Time Taken
+              <v-icon
+                v-if="this.detailsOrder == 'DESC'"
+                @click="setDetailsOrderBy('timeTaken'); detailsOrder = 'ASC'; orderDetailsSummary()"
+              >mdi-menu-up</v-icon>
+              <v-icon
+                v-else
+                @click="setDetailsOrderBy('timeTaken'); detailsOrder = 'DESC'; orderDetailsSummary()"
+              >mdi-menu-down</v-icon>
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <div class="tableContentScroll overflow-y-auto">
@@ -440,8 +520,18 @@ export default {
     "progress-loading": Progress,
   },
   data: () => ({
+    summaryDateRange: "from=all&to=all",
+    summaryKey: "&key=all&",
+    summaryStatus: "status=all&",
+
+    dateRangeQuery: "from=all&to=all",
+
     loadSummaryCount: 0,
     loadDetailsCount: 0,
+    summaryOrder: "DESC",
+    summaryOrderBy: "total",
+    detailsOrder: "DESC",
+    detailsOrderBy: "taskcount",
     key: "",
     overlay: false,
     filterProject: [],
@@ -449,7 +539,7 @@ export default {
     menu2: false,
     summaryParams:
       "from=all&to=all&key=all&status=all&orderBy=total&orderType=DESC",
-    detailsParams: "from=all&to=all&orderBy=timeTaken&orderType=DESC",
+    detailsParams: "from=all&to=all&orderBy=taskcount&orderType=DESC",
     dateRangeFilter: [
       new Date().toISOString().substr(0, 10),
       new Date().toISOString().substr(0, 10),
@@ -471,6 +561,12 @@ export default {
     ],
   }),
   methods: {
+    setSummaryOrderBy(orderBy) {
+      this.summaryOrderBy = orderBy;
+    },
+    setDetailsOrderBy(orderBy) {
+      this.detailsOrderBy = orderBy;
+    },
     getDays(ms) {
       let oneDay = 1000 * 60 * 60 * 24;
       return Math.round(ms / oneDay) + " Days";
@@ -510,20 +606,82 @@ export default {
       // ];
       // this.loadFilterSummary();
     },
+    orderDetailsSummary() {
+      this.loadDetailsCount = 0;
+      // let dateRange;
+
+      this.overlay = true;
+      this.detailsParams =
+        this.dateRangeQuery +
+        "&orderBy=" +
+        this.detailsOrderBy +
+        "&orderType=" +
+        this.detailsOrder;
+      // console.log("SUMMARY " + this.summaryParams);
+      Promise.all([
+        this.$store.dispatch("analytics/projectAnalytics/emptyDetailsStore"),
+      ]).finally(() => {
+        Promise.all([
+          this.$store.dispatch(
+            "analytics/projectAnalytics/fetchProjectDetails",
+            {
+              params: this.detailsParams,
+              startIndex: this.loadDetailsCount * 10,
+              endIndex: this.loadDetailsCount * 10 + 10,
+            }
+          ),
+        ]).finally(() => {
+          this.overlay = false;
+          this.loadDetailsCount++;
+        });
+      });
+    },
+    orderFilterSummary() {
+      this.overlay = true;
+      this.loadSummaryCount = 0;
+      this.summaryParams =
+        this.summaryDateRange +
+        this.summaryKey +
+        this.summaryStatus +
+        "orderBy=" +
+        this.summaryOrderBy +
+        "&orderType=" +
+        this.summaryOrder;
+
+      Promise.all([
+        this.$store.dispatch("analytics/projectAnalytics/emptySummaryStore"),
+      ]).finally(() => {
+        Promise.all([
+          this.$store.dispatch(
+            "analytics/projectAnalytics/fetchProjectSummary",
+            {
+              params: this.summaryParams,
+              startIndex: this.loadSummaryCount * 10,
+              endIndex: this.loadSummaryCount * 10 + 10,
+            }
+          ),
+        ]).finally(() => {
+          this.overlay = false;
+          this.loadSummaryCount++;
+        });
+      });
+    },
     loadFilterSummary() {
       this.loadSummaryCount = 0;
-      let dateRange;
-      let key = "";
-      let status = "";
+      // this.summaryDateRange = "";
+      // this.summaryKey = "";
+      // this.summaryStatus = "";
       if (this.filterType.length != 0) {
+        this.summaryStatus = "";
         for (let i = 0; i < this.filterType.length; i++) {
-          status = status + "status=" + this.filterType[i].id + "&";
+          this.summaryStatus =
+            this.summaryStatus + "status=" + this.filterType[i].id + "&";
           // if (i < this.filterType.length - 1) {
           //   assigneeList = assigneeList + ",";
           // }
         }
       } else {
-        status = "status=all&";
+        this.summaryStatus = "status=all&";
       }
       if (
         this.dateRangeFilter.toString() !=
@@ -532,22 +690,28 @@ export default {
           new Date().toISOString().substr(0, 10),
         ]
       ) {
-        dateRange =
+        this.summaryDateRange =
           "from=" + this.dateRangeFilter[0] + "&to=" + this.dateRangeFilter[1];
       } else {
-        dateRange = "from=all&to=all";
+        this.summaryDateRange = "from=all&to=all";
       }
       if (this.key == "" || this.key == null) {
-        key = "&key=all&";
+        this.summaryKey = "&key=all&";
       } else {
-        key = "&key=" + this.key + "&";
+        this.summaryKey = "&key=" + this.key + "&";
       }
       this.overlay = true;
       this.summaryParams =
-        dateRange + key + status + "orderBy=total&orderType=DESC";
+        this.summaryDateRange +
+        this.summaryKey +
+        this.summaryStatus +
+        "orderBy=" +
+        this.summaryOrderBy +
+        "&orderType=" +
+        this.summaryOrder;
       // console.log("SUMMARY " + this.summaryParams);
       Promise.all([
-        this.$store.dispatch("analytics/projectAnalytics/emptyStore"),
+        this.$store.dispatch("analytics/projectAnalytics/emptySummaryStore"),
       ]).finally(() => {
         Promise.all([
           this.$store.dispatch(
@@ -566,7 +730,7 @@ export default {
     },
     loadFilterDetails() {
       this.loadDetailsCount = 0;
-      let dateRange;
+      // let dateRange;
 
       if (
         this.dateRangeFilter.toString() !=
@@ -575,17 +739,22 @@ export default {
           new Date().toISOString().substr(0, 10),
         ]
       ) {
-        dateRange =
+        this.dateRangeQuery =
           "from=" + this.dateRangeFilter[0] + "&to=" + this.dateRangeFilter[1];
       } else {
-        dateRange = "from=all&to=all";
+        this.dateRangeQuery = "from=all&to=all";
       }
 
       this.overlay = true;
-      this.detailsParams = dateRange + "&orderBy=timeTaken&orderType=DESC";
+      this.detailsParams =
+        this.dateRangeQuery +
+        "&orderBy=" +
+        this.detailsOrderBy +
+        "&orderType=" +
+        this.detailsOrder;
       // console.log("SUMMARY " + this.summaryParams);
       Promise.all([
-        this.$store.dispatch("analytics/projectAnalytics/emptyStore"),
+        this.$store.dispatch("analytics/projectAnalytics/emptyDetailsStore"),
       ]).finally(() => {
         Promise.all([
           this.$store.dispatch(
