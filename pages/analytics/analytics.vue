@@ -1,19 +1,30 @@
 <template>
   <div>
     <div
-      v-if="organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
-                  organizationalRoles.indexOf('WORKLOAD') > -1 ||
-                  organizationalRoles.indexOf('ADMIN') > -1"
+      v-if="
+        organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
+          organizationalRoles.indexOf('WORKLOAD') > -1 ||
+          organizationalRoles.indexOf('ADMIN') > -1
+      "
       class="top-nav"
     >
       <navigation-drawer :user="user" />
 
-      <v-toolbar app color dark fixed :clipped-left="clipped" class="toolBarFilter tool-bar">
+      <v-toolbar
+        app
+        color
+        dark
+        fixed
+        :clipped-left="clipped"
+        class="toolBarFilter tool-bar"
+      >
         <div class="title-div">
           <div class="name-div">
             <v-list-item>
               <v-list-item-content>
-                <v-list-item-title class="font-weight-bold">Analytics</v-list-item-title>
+                <v-list-item-title class="font-weight-bold"
+                  >Analytics</v-list-item-title
+                >
               </v-list-item-content>
 
               <v-divider class="mx-4" inset vertical></v-divider>
@@ -29,22 +40,27 @@
               class="tabInactiveStyle text-capitalize"
               active-class="adminTabTitleStyle text-capitalize"
               v-on:click="component = 'projects-tab'"
-            >Projects</v-tab>
+              >Projects</v-tab
+            >
             <v-tab
               class="tabInactiveStyle text-capitalize"
               active-class="adminTabTitleStyle text-capitalize text-capitalize"
               v-on:click="component = 'tasks-tab'"
-            >Tasks</v-tab>
+              >Tasks</v-tab
+            >
             <v-tab
               class="tabInactiveStyle text-capitalize"
               active-class="adminTabTitleStyle text-capitalize"
               v-on:click="component = 'users-tab'"
-            >Users</v-tab>
+              >Users</v-tab
+            >
           </v-tabs>
         </div>
       </div>
       <div class="workloadV2Body">
-        <component v-bind:is="component"></component>
+        <keep-alive>
+          <component v-bind:is="component"></component>
+        </keep-alive>
       </div>
       <v-overlay :value="overlay" color="black" style="z-index:1008">
         <progress-loading />
@@ -75,26 +91,26 @@
   </div>
 </template>
 <script>
-import NavigationDrawer from "~/components/navigationDrawer";
-import Users from "~/components/analytics/usersSummary";
-import Projects from "~/components/analytics/projectsSummary";
-import Tasks from "~/components/analytics/tasksSummary";
-import Progress from "~/components/popups/progress";
+import NavigationDrawer from '~/components/navigationDrawer';
+import Users from '~/components/analytics/usersSummary';
+import Projects from '~/components/analytics/projectsSummary';
+import Tasks from '~/components/analytics/tasksSummary';
+import Progress from '~/components/popups/progress';
 
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters } from 'vuex';
 
 export default {
   components: {
     NavigationDrawer,
-    "users-tab": Users,
-    "projects-tab": Projects,
-    "tasks-tab": Tasks,
-    "progress-loading": Progress,
+    'users-tab': Users,
+    'projects-tab': Projects,
+    'tasks-tab': Tasks,
+    'progress-loading': Progress,
   },
   data() {
     return {
       overlay: false,
-      component: "projects-tab",
+      component: 'projects-tab',
     };
   },
   methods: {},
@@ -108,31 +124,37 @@ export default {
     this.overlay = true;
     let date = new Date();
     Promise.all([
-      this.$store.dispatch("analytics/projectAnalytics/emptyStore"),
-      this.$store.dispatch("project/fetchAllOragnizationProjects"),
-      this.$store.dispatch("analytics/projectAnalytics/fetchProjectOverview", {
-        from: "2020-06-01",
-        to: "2020-08-10",
+      this.$store.dispatch('analytics/projectAnalytics/emptyStore'),
+      this.$store.dispatch('project/fetchAllOragnizationProjects'),
+      this.$store.dispatch('user/setAllUsers'),
+      this.$store.dispatch('analytics/projectAnalytics/fetchProjectOverview', {
+        from: '2020-06-01',
+        to: '2020-08-10',
       }),
-      this.$store.dispatch("analytics/projectAnalytics/fetchProjectSummary", {
+      this.$store.dispatch('analytics/projectAnalytics/fetchProjectSummary', {
         params:
-          "from=all&to=all&key=all&status=all&orderBy=total&orderType=DESC",
+          'from=all&to=all&key=all&status=all&orderBy=total&orderType=DESC',
         startIndex: 0,
         endIndex: 10,
       }),
-      this.$store.dispatch("analytics/projectAnalytics/fetchProjectDetails", {
-        params: "from=all&to=all&orderBy=taskcount&orderType=DESC",
+      this.$store.dispatch('analytics/projectAnalytics/fetchProjectDetails', {
+        params: 'from=all&to=all&orderBy=taskcount&orderType=DESC',
         startIndex: 0,
         endIndex: 10,
       }),
-      this.$store.dispatch("analytics/taskAnalytics/fetchTaskOverview", {
+      this.$store.dispatch('analytics/userAnalytics/fetchMemberDetails', {
+        params: 'userId=all&orderType=DESC&orderBy=projectCount',
+        startIndex: 0,
+        endIndex: 10,
+      }),
+      this.$store.dispatch('analytics/taskAnalytics/fetchTaskOverview', {
         from: new Date(date.getFullYear(), date.getMonth(), 1)
           .toISOString()
           .substr(0, 10),
         to: new Date(date.getFullYear(), date.getMonth() + 1, 0)
           .toISOString()
           .substr(0, 10),
-        criteria: "DAY",
+        criteria: 'DAY',
       }),
     ]).finally(() => {
       this.overlay = false;
