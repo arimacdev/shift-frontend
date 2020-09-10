@@ -519,10 +519,12 @@
                         "
                         :taskId="this.selectedTask.taskId"
                         :projectId="this.projectId"
+                        @clearStore="clearStore()"
                       />
                     </div>
                     <div class="addChBtnSection">
                       <add-child-task
+                        @clearStore="clearStore()"
                         v-if="selectedTask.isParent == true"
                         :taskId="selectedTask.taskId"
                         :projectId="this.projectId"
@@ -1616,6 +1618,9 @@ export default {
     };
   },
   methods: {
+    clearStore() {
+      this.$emit('clearStore');
+    },
     statusCheck(task) {
       switch (task) {
         case 'pending':
