@@ -290,13 +290,13 @@
       <div class="summaryTableDiv">
         <v-list-item dense style="background-color: #010101 !important" dark>
           <v-list-item-content>
-            <v-list-item-title class="tableTitle">Project</v-list-item-title>
+            <span class="tableTitle">Project</span>
           </v-list-item-content>
           <v-list-item-content>
-            <v-list-item-title class="tableTitle">Status</v-list-item-title>
+            <span class="tableTitle">Status</span>
           </v-list-item-content>
           <v-list-item-content>
-            <v-list-item-title class="tableTitle">
+            <span class="tableTitle">
               No of Tasks
               <v-icon
                 v-if="this.summaryOrder == 'DESC'"
@@ -306,10 +306,10 @@
                 v-else
                 @click="setSummaryOrderBy('total'); summaryOrder = 'DESC'; orderFilterSummary()"
               >mdi-menu-down</v-icon>
-            </v-list-item-title>
+            </span>
           </v-list-item-content>
           <v-list-item-content>
-            <v-list-item-title class="tableTitle">
+            <span class="tableTitle">
               Completed Tasks
               <v-icon
                 v-if="this.summaryOrder == 'DESC'"
@@ -319,10 +319,10 @@
                 v-else
                 @click="setSummaryOrderBy('completed'); summaryOrder = 'DESC'; orderFilterSummary()"
               >mdi-menu-down</v-icon>
-            </v-list-item-title>
+            </span>
           </v-list-item-content>
           <v-list-item-content>
-            <v-list-item-title class="tableTitle">Health</v-list-item-title>
+            <span class="tableTitle">Health</span>
           </v-list-item-content>
         </v-list-item>
         <div class="tableContentScroll overflow-y-auto">
@@ -375,7 +375,7 @@
       <div class="summaryTableDiv">
         <v-list-item dense style="background-color: #010101 !important" dark>
           <v-list-item-content>
-            <v-list-item-title class="tableTitle">
+            <span class="tableTitle">
               Project
               <v-icon
                 v-if="this.detailsOrder == 'DESC'"
@@ -385,10 +385,10 @@
                 v-else
                 @click="setDetailsOrderBy('projectName'); detailsOrder = 'DESC'; orderDetailsSummary()"
               >mdi-menu-down</v-icon>
-            </v-list-item-title>
+            </span>
           </v-list-item-content>
           <v-list-item-content>
-            <v-list-item-title class="tableTitle">
+            <span class="tableTitle">
               Created
               <v-icon
                 v-if="this.detailsOrder == 'DESC'"
@@ -398,10 +398,10 @@
                 v-else
                 @click="setDetailsOrderBy('projectCreatedDate'); detailsOrder = 'DESC'; orderDetailsSummary()"
               >mdi-menu-down</v-icon>
-            </v-list-item-title>
+            </span>
           </v-list-item-content>
           <v-list-item-content>
-            <v-list-item-title class="tableTitle">
+            <span class="tableTitle">
               Status
               <v-icon
                 v-if="this.detailsOrder == 'DESC'"
@@ -411,10 +411,10 @@
                 v-else
                 @click="setDetailsOrderBy('projectStatus'); detailsOrder = 'DESC'; orderDetailsSummary()"
               >mdi-menu-down</v-icon>
-            </v-list-item-title>
+            </span>
           </v-list-item-content>
           <v-list-item-content>
-            <v-list-item-title class="tableTitle">
+            <span class="tableTitle">
               Total Tasks
               <v-icon
                 v-if="this.detailsOrder == 'DESC'"
@@ -424,10 +424,10 @@
                 v-else
                 @click="setDetailsOrderBy('taskcount'); detailsOrder = 'DESC'; orderDetailsSummary()"
               >mdi-menu-down</v-icon>
-            </v-list-item-title>
+            </span>
           </v-list-item-content>
           <v-list-item-content>
-            <v-list-item-title class="tableTitle">
+            <span class="tableTitle">
               Members
               <v-icon
                 v-if="this.detailsOrder == 'DESC'"
@@ -437,16 +437,16 @@
                 v-else
                 @click="setDetailsOrderBy('memberCount'); detailsOrder = 'DESC'; orderDetailsSummary()"
               >mdi-menu-down</v-icon>
-            </v-list-item-title>
+            </span>
           </v-list-item-content>
           <v-list-item-content>
-            <v-list-item-title class="tableTitle">Owner</v-list-item-title>
+            <span class="tableTitle">Owner</span>
           </v-list-item-content>
           <v-list-item-content>
-            <v-list-item-title class="tableTitle">Engagement</v-list-item-title>
+            <span class="tableTitle">Engagement</span>
           </v-list-item-content>
           <v-list-item-content>
-            <v-list-item-title class="tableTitle">
+            <span class="tableTitle">
               Time Taken
               <v-icon
                 v-if="this.detailsOrder == 'DESC'"
@@ -456,7 +456,7 @@
                 v-else
                 @click="setDetailsOrderBy('timeTaken'); detailsOrder = 'DESC'; orderDetailsSummary()"
               >mdi-menu-down</v-icon>
-            </v-list-item-title>
+            </span>
           </v-list-item-content>
         </v-list-item>
         <div class="tableContentScroll overflow-y-auto">
