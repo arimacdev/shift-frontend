@@ -3695,7 +3695,7 @@
   padding-top: 30px;
 }
 .titleSectionDiv {
-  width: 30%;
+  width: 10%;
   float: left;
   color: #576377;
   font-weight: 800;
@@ -3708,7 +3708,7 @@
   margin-left: 10px;
 }
 .titleDateSearchSection {
-  width: 20%;
+  width: 180px;
   float: right;
   margin-left: 10px;
 }

@@ -196,6 +196,11 @@
       <div class="summaryTitleSection">
         <div class="titleSectionDiv">Summary</div>
         <div class="titleDateSearchSection">
+          <v-btn @click="setAllTime()" width="100%" depressed color="#EDF0F5">
+            <span class="text-capitalize" style="color: #576377">All Time</span>
+          </v-btn>
+        </div>
+        <div class="titleDateSearchSection">
           <v-menu
             ref="menu2"
             v-model="menu2"
@@ -562,6 +567,14 @@ export default {
     ],
   }),
   methods: {
+    setAllTime() {
+      (this.dateRangeFilter = [
+        new Date().toISOString().substr(0, 10),
+        new Date().toISOString().substr(0, 10),
+      ]),
+        this.loadFilterSummary();
+      this.loadFilterDetails();
+    },
     setSummaryOrderBy(orderBy) {
       this.summaryOrderBy = orderBy;
     },
