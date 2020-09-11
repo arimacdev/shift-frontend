@@ -2,6 +2,70 @@
   <div class="projectSummarypage">
     <v-row>
       <div class="summaryTitleSection">
+        <div class="titleSectionDiv">Member Activity</div>
+        <div class="titleSearchSection">
+          <v-select
+            v-model="filterCryteria"
+            dense
+            :items="criteriaArray"
+            item-text="name"
+            item-value="id"
+            flat
+            background-color="#EDF0F5"
+            label="Select Criteria"
+            solo
+            @change="loadMemberActivity()"
+          ></v-select>
+        </div>
+        <div class="titleDateSearchSection">
+          <v-menu
+            ref="menu2"
+            v-model="menu2"
+            :close-on-content-click="false"
+            :return-value.sync="date"
+            transition="scale-transition"
+            offset-x
+            width="100%"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="dateRangeTextField"
+                label="Date range"
+                prepend-inner-icon="mdi-calendar-blank"
+                readonly
+                solo
+                dense
+                background-color="#EDF0F5"
+                flat
+                v-bind="attrs"
+                v-on="on"
+              ></v-text-field>
+            </template>
+            <v-date-picker range v-model="dateRangeFilter" scrollable>
+              <v-spacer></v-spacer>
+              <v-btn text color="primary" @click="menu2 = false">Cancel</v-btn>
+              <v-btn
+                text
+                color="primary"
+                @click="$refs.menu2.save(dateRangeFilter); loadMemberActivity(); "
+              >OK</v-btn>
+            </v-date-picker>
+          </v-menu>
+        </div>
+      </div>
+    </v-row>
+    <div class="small">
+      <line-chart
+        id="taskChart"
+        width="400"
+        height="400"
+        :chart-data="datacollection"
+        :options="options"
+      ></line-chart>
+      <!-- <button @click="fillData()">Randomize</button> -->
+    </div>
+    <v-row>
+      <div class="summaryTitleSection">
         <div class="titleSectionDiv">Members</div>
 
         <div class="titleSearchSection">
@@ -202,70 +266,7 @@
         </div>
       </div>
     </v-row>
-    <v-row>
-      <div class="summaryTitleSection">
-        <div class="titleSectionDiv">Member Activity</div>
-        <div class="titleSearchSection">
-          <v-select
-            v-model="filterCryteria"
-            dense
-            :items="criteriaArray"
-            item-text="name"
-            item-value="id"
-            flat
-            background-color="#EDF0F5"
-            label="Select Criteria"
-            solo
-            @change="loadMemberActivity()"
-          ></v-select>
-        </div>
-        <div class="titleDateSearchSection">
-          <v-menu
-            ref="menu2"
-            v-model="menu2"
-            :close-on-content-click="false"
-            :return-value.sync="date"
-            transition="scale-transition"
-            offset-x
-            width="100%"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="dateRangeTextField"
-                label="Date range"
-                prepend-inner-icon="mdi-calendar-blank"
-                readonly
-                solo
-                dense
-                background-color="#EDF0F5"
-                flat
-                v-bind="attrs"
-                v-on="on"
-              ></v-text-field>
-            </template>
-            <v-date-picker range v-model="dateRangeFilter" scrollable>
-              <v-spacer></v-spacer>
-              <v-btn text color="primary" @click="menu2 = false">Cancel</v-btn>
-              <v-btn
-                text
-                color="primary"
-                @click="$refs.menu2.save(dateRangeFilter); loadMemberActivity(); "
-              >OK</v-btn>
-            </v-date-picker>
-          </v-menu>
-        </div>
-      </div>
-    </v-row>
-    <div class="small">
-      <line-chart
-        id="taskChart"
-        width="400"
-        height="400"
-        :chart-data="datacollection"
-        :options="options"
-      ></line-chart>
-      <!-- <button @click="fillData()">Randomize</button> -->
-    </div>
+
     <v-overlay :value="overlay" color="black" style="z-index:1008">
       <progress-loading />
     </v-overlay>

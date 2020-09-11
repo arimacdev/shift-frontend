@@ -3695,7 +3695,7 @@
   padding-top: 30px;
 }
 .titleSectionDiv {
-  width: 10%;
+  width: 200px;
   float: left;
   color: #576377;
   font-weight: 800;
@@ -3715,6 +3715,7 @@
 .summaryTableDiv {
   text-align: center;
   width: 100%;
+  margin-bottom: -50px;
 }
 .tableContentScroll {
   max-height: 500px !important;

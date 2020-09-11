@@ -371,7 +371,7 @@
     </v-row>
     <v-row>
       <div class="summaryTitleSection">
-        <div class="titleSectionDiv">Project Status</div>
+        <div class="titleSectionDiv">Project Detailed View</div>
       </div>
     </v-row>
     <v-row>
