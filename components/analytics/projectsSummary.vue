@@ -479,9 +479,10 @@
                 <v-list-item-subtitle class="tableText">{{project.memberCount}}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle
-                  class="tableText"
-                >{{project.owners[0].firstName}} {{project.owners[0].lastName}}</v-list-item-subtitle>
+                <span v-for="(owner, index) in project.owners" :key="index" class="tableText">
+                  {{owner.firstName}}
+                  <span v-if="index != project.owners.length-1">/</span>
+                </span>
               </v-list-item-content>
               <v-list-item-content>
                 <v-list-item-subtitle class="tableText">{{project.engagement}}</v-list-item-subtitle>
