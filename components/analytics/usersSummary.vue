@@ -30,7 +30,17 @@
       <div class="summaryTableDiv">
         <v-list-item dense style="background-color: #010101 !important" dark>
           <v-list-item-content>
-            <span class="tableTitle">Name</span>
+            <span class="tableTitle">
+              Name
+              <v-icon
+                v-if="this.summaryOrder == 'DESC'"
+                @click="setSummaryOrderBy('firstName'); summaryOrder = 'ASC'; orderFilterSummary()"
+              >mdi-menu-up</v-icon>
+              <v-icon
+                v-else
+                @click="setSummaryOrderBy('firstName'); summaryOrder = 'DESC'; orderFilterSummary()"
+              >mdi-menu-down</v-icon>
+            </span>
           </v-list-item-content>
           <v-list-item-content>
             <span class="tableTitle">Joined</span>
@@ -39,22 +49,72 @@
             <span class="tableTitle">AdminStatus</span>
           </v-list-item-content>
           <v-list-item-content>
-            <span class="tableTitle">Projects In</span>
+            <span class="tableTitle">
+              Projects In
+              <v-icon
+                v-if="this.summaryOrder == 'DESC'"
+                @click="setSummaryOrderBy('projectCount'); summaryOrder = 'ASC'; orderFilterSummary()"
+              >mdi-menu-up</v-icon>
+              <v-icon
+                v-else
+                @click="setSummaryOrderBy('projectCount'); summaryOrder = 'DESC'; orderFilterSummary()"
+              >mdi-menu-down</v-icon>
+            </span>
           </v-list-item-content>
           <v-list-item-content>
-            <span class="tableTitle">Projects With Tasks</span>
+            <span class="tableTitle">
+              Active Projects
+              <v-icon
+                v-if="this.summaryOrder == 'DESC'"
+                @click="setSummaryOrderBy('activeProjectCount'); summaryOrder = 'ASC'; orderFilterSummary()"
+              >mdi-menu-up</v-icon>
+              <v-icon
+                v-else
+                @click="setSummaryOrderBy('activeProjectCount'); summaryOrder = 'DESC'; orderFilterSummary()"
+              >mdi-menu-down</v-icon>
+            </span>
           </v-list-item-content>
           <v-list-item-content>
-            <span class="tableTitle">Total Tasks Assigned</span>
+            <span class="tableTitle">
+              Assigned Tasks
+              <v-icon
+                v-if="this.summaryOrder == 'DESC'"
+                @click="setSummaryOrderBy('assignedTasks'); summaryOrder = 'ASC'; orderFilterSummary()"
+              >mdi-menu-up</v-icon>
+              <v-icon
+                v-else
+                @click="setSummaryOrderBy('assignedTasks'); summaryOrder = 'DESC'; orderFilterSummary()"
+              >mdi-menu-down</v-icon>
+            </span>
           </v-list-item-content>
           <v-list-item-content>
             <span class="tableTitle">Groups</span>
           </v-list-item-content>
           <v-list-item-content>
-            <span class="tableTitle">Personal Tasks</span>
+            <span class="tableTitle">
+              Personal Tasks
+              <v-icon
+                v-if="this.summaryOrder == 'DESC'"
+                @click="setSummaryOrderBy('personalTaskCount'); summaryOrder = 'ASC'; orderFilterSummary()"
+              >mdi-menu-up</v-icon>
+              <v-icon
+                v-else
+                @click="setSummaryOrderBy('personalTaskCount'); summaryOrder = 'DESC'; orderFilterSummary()"
+              >mdi-menu-down</v-icon>
+            </span>
           </v-list-item-content>
           <v-list-item-content>
-            <span class="tableTitle">Group Tasks Assigned</span>
+            <span class="tableTitle">
+              Group Tasks
+              <v-icon
+                v-if="this.summaryOrder == 'DESC'"
+                @click="setSummaryOrderBy('taskGroupTaskCount'); summaryOrder = 'ASC'; orderFilterSummary()"
+              >mdi-menu-up</v-icon>
+              <v-icon
+                v-else
+                @click="setSummaryOrderBy('taskGroupTaskCount'); summaryOrder = 'DESC'; orderFilterSummary()"
+              >mdi-menu-down</v-icon>
+            </span>
           </v-list-item-content>
         </v-list-item>
         <div class="tableContentScroll overflow-y-auto">
@@ -163,7 +223,7 @@ export default {
     loadDetailsCount: 0,
 
     detailsOrder: "DESC",
-    detailsOrderBy: "taskcount",
+    detailsOrderBy: "projectCount",
     key: "",
     overlay: false,
     filterUser: [],
@@ -220,33 +280,30 @@ export default {
       this.detailsOrderBy = orderBy;
     },
 
-    orderDetailsSummary() {
-      this.loadDetailsCount = 0;
+    orderFilterSummary() {
+      this.loadSummaryCount = 0;
       // let dateRange;
 
       this.overlay = true;
-      this.detailsParams =
-        this.dateRangeQuery +
-        "&orderBy=" +
-        this.detailsOrderBy +
+      this.summaryParams =
+        this.userIdArray +
+        "orderBy=" +
+        this.summaryOrderBy +
         "&orderType=" +
-        this.detailsOrder;
+        this.summaryOrder;
       // console.log("SUMMARY " + this.summaryParams);
       Promise.all([
-        this.$store.dispatch("analytics/projectAnalytics/emptyDetailsStore"),
+        this.$store.dispatch("analytics/userAnalytics/emptyUserStore"),
       ]).finally(() => {
         Promise.all([
-          this.$store.dispatch(
-            "analytics/projectAnalytics/fetchProjectDetails",
-            {
-              params: this.detailsParams,
-              startIndex: this.loadDetailsCount * 10,
-              endIndex: this.loadDetailsCount * 10 + 10,
-            }
-          ),
+          this.$store.dispatch("analytics/userAnalytics/fetchMemberDetails", {
+            params: this.summaryParams,
+            startIndex: this.loadSummaryCount * 10,
+            endIndex: this.loadSummaryCount * 10 + 10,
+          }),
         ]).finally(() => {
           this.overlay = false;
-          this.loadDetailsCount++;
+          this.loadSummaryCount++;
         });
       });
     },
