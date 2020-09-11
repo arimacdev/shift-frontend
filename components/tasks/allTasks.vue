@@ -360,9 +360,9 @@
                           :class="TypeCheck(task.parentTask.issueType)"
                           x-small
                         >
-                          <span class="fontRestructure12">
-                            {{ taskTypeFormatting(task.parentTask.issueType) }}
-                          </span>
+                          <span class="fontRestructure12">{{
+                            taskTypeFormatting(task.parentTask.issueType)
+                          }}</span>
                         </v-chip>
                       </v-list-item-action>
 
@@ -370,10 +370,9 @@
                         <v-list-item-title
                           class="fontRestructure12"
                           :class="dueDateCheck(task.parentTask)"
-                          >{{
-                            getProjectDates(task.parentTask.taskDueDateAt)
-                          }}</v-list-item-title
                         >
+                          {{ getProjectDates(task.parentTask.taskDueDateAt) }}
+                        </v-list-item-title>
                       </v-list-item-action>
                       <!-- <div style="margin-right: -25px"> -->
                       <v-tooltip left>
@@ -476,9 +475,9 @@
                               ></v-img>
                             </v-list-item-avatar>
                             <v-list-item-content>
-                              <v-list-item-subtitle>{{
-                                user.name
-                              }}</v-list-item-subtitle>
+                              <v-list-item-subtitle>
+                                {{ user.name }}
+                              </v-list-item-subtitle>
                             </v-list-item-content>
                           </v-list-item>
                         </div>
@@ -564,9 +563,9 @@
                         :class="statusCheck(childTask.taskStatus)"
                         x-small
                       >
-                        <span class="fontRestructure12">
-                          {{ taskStatusFormatting(childTask.taskStatus) }}
-                        </span>
+                        <span class="fontRestructure12">{{
+                          taskStatusFormatting(childTask.taskStatus)
+                        }}</span>
                       </v-chip>
                     </v-list-item-action>
                     <v-list-item-action>
@@ -575,19 +574,18 @@
                         :class="TypeCheck(childTask.issueType)"
                         x-small
                       >
-                        <span class="fontRestructure12">
-                          {{ taskTypeFormatting(childTask.issueType) }}
-                        </span>
+                        <span class="fontRestructure12">{{
+                          taskTypeFormatting(childTask.issueType)
+                        }}</span>
                       </v-chip>
                     </v-list-item-action>
                     <v-list-item-action class="updatedDate">
                       <v-list-item-title
                         class="fontRestructure12"
                         :class="dueDateCheck(childTask)"
-                        >{{
-                          getProjectDates(childTask.taskDueDateAt)
-                        }}</v-list-item-title
                       >
+                        {{ getProjectDates(childTask.taskDueDateAt) }}
+                      </v-list-item-title>
                     </v-list-item-action>
                     <!-- <div style="margin-right: -25px"> -->
                     <v-tooltip left>
@@ -706,9 +704,9 @@
                 target="_blank"
               >
                 <div style="color: #576377">
-                  <span class="restructuredMainTaskCode fontRestructure12">{{
-                    task.secondaryTaskId
-                  }}</span>
+                  <span class="restructuredMainTaskCode fontRestructure12">
+                    {{ task.secondaryTaskId }}
+                  </span>
                   {{ task.taskName }}
                 </div>
               </nuxt-link>
@@ -728,9 +726,9 @@
                 :class="statusCheck(task.taskStatus)"
                 x-small
               >
-                <span class="fontRestructure12">
-                  {{ taskStatusFormatting(task.taskStatus) }}
-                </span>
+                <span class="fontRestructure12">{{
+                  taskStatusFormatting(task.taskStatus)
+                }}</span>
               </v-chip>
             </v-list-item-action>
             <v-list-item-action>
@@ -739,9 +737,9 @@
                 :class="TypeCheck(task.issueType)"
                 x-small
               >
-                <span class="fontRestructure12">
-                  {{ taskTypeFormatting(task.issueType) }}
-                </span>
+                <span class="fontRestructure12">{{
+                  taskTypeFormatting(task.issueType)
+                }}</span>
               </v-chip>
             </v-list-item-action>
             <v-list-item-action class="updatedDate">
@@ -1286,6 +1284,7 @@ export default {
     },
     async closeTask(taskId, filter) {
       this.waiting = true;
+
       // console.log("onchange updated status ->");
       let response;
       try {
@@ -1300,14 +1299,6 @@ export default {
             },
           }
         );
-
-        this.$store.dispatch('task/emptyStore');
-        this.scrollCount = 1;
-        this.$store.dispatch('task/setIndex', {
-          startIndex: 0,
-          endIndex: 10,
-          isAllTasks: false,
-        });
 
         this.$store.dispatch('activityLog/fetchTaskActivityLog', {
           taskId: taskId,
@@ -1325,7 +1316,7 @@ export default {
         }, 3000);
         this.waiting = false;
 
-        this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
+        this.clearStore();
 
         // console.log("update task status response", response);
       } catch (e) {

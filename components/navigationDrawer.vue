@@ -11,7 +11,9 @@
     <v-list-item class="px-2 background" :to="'../../profile/profile'">
       <v-list-item-avatar>
         <v-img
-          v-if="userProfile.profileImage != null && userProfile.profileImage != ''"
+          v-if="
+            userProfile.profileImage != null && userProfile.profileImage != ''
+          "
           :src="userProfile.profileImage"
         ></v-img>
         <v-img
@@ -22,9 +24,9 @@
 
       <v-list-item-title>
         <div id="name-div">
-          <p id="company-name">{{userProfile.firstName}}</p>
+          <p id="company-name">{{ userProfile.firstName }}</p>
 
-          <p id="name">{{userProfile.lastName }}</p>
+          <p id="name">{{ userProfile.lastName }}</p>
         </div>
       </v-list-item-title>
     </v-list-item>
@@ -32,7 +34,11 @@
     <v-divider></v-divider>
 
     <v-list
-      v-if="organizationalRoles.indexOf('ADMIN') > -1 || organizationalRoles.indexOf('SUPER_ADMIN') > -1 || organizationalRoles.indexOf('ORGANIZATION_ADMIN') > -1"
+      v-if="
+        organizationalRoles.indexOf('ADMIN') > -1 ||
+          organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
+          organizationalRoles.indexOf('ORGANIZATION_ADMIN') > -1
+      "
     >
       <v-list-item
         :router="item.path"
@@ -50,7 +56,14 @@
         </v-list-item-icon>
 
         <v-list-item-content>
-          <v-list-item-title class="navText">{{ item.title }}</v-list-item-title>
+          <v-list-item-title class="navText">
+            {{
+            item.title
+            }}
+            <v-chip class="newChip" x-small color="red" dark v-if="item.title == 'Analytics'">
+              <span style="font-size: 10px !important">New</span>
+            </v-chip>
+          </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -71,7 +84,11 @@
         </v-list-item-icon>
 
         <v-list-item-content>
-          <v-list-item-title class="navText">{{ item.title }}</v-list-item-title>
+          <v-list-item-title class="navText">
+            {{
+            item.title
+            }}
+          </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -122,7 +139,11 @@ export default {
           icon: "icon-task",
           route: "../../tasks/tasks",
         },
-        // { title: 'Inventory', icon: 'icon-inventory', route: '../inventory'},
+        // {
+        //   title: 'Inventory',
+        //   icon: 'icon-inventory',
+        //   route: '../../inventory',
+        // },
         {
           title: "Workload",
           icon: "icon-workload",
@@ -139,7 +160,11 @@ export default {
           route: "../../skills/skills",
         },
         { title: "Admin", icon: "icon-admin", route: "../../admin/admin" },
-        // { title: "Admin", icon: "icon-admin", route: "../../comments/comments" }
+        {
+          title: "Analytics",
+          icon: "icon-summary",
+          route: "../../analytics/analytics",
+        },
       ],
       mini: true,
       userItems: [

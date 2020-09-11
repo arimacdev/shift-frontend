@@ -3655,6 +3655,96 @@
   font-size: 10px;
   margin-left: 5px;
 }
+
 .loadMoreTasks {
   margin-top: 20px;
+}
+
+/* --------- Analytics ---------- */
+
+.projectSummarypage {
+  margin-top: 30px;
+}
+.projectTopSection {
+  width: 100%;
+}
+.leadsDisplay {
+  width: 20%;
+  float: left;
+  padding: 5px;
+}
+.leadsContentDiv {
+  border-radius: 12px;
+  color: #ffffff !important;
+}
+.leadsSubTitle {
+  color: #ffffff !important;
+}
+.leadsTitle {
+  color: #ffffff !important;
+  font-size: 25px !important;
+  font-weight: 900 !important;
+}
+.leadsAnalyticsText {
+  font-size: 10px;
+  color: #576377;
+  margin-left: 12px;
+}
+.summaryTitleSection {
+  width: 100%;
+  padding-top: 30px;
+}
+.titleSectionDiv {
+  width: 200px;
+  float: left;
+  color: #576377;
+  font-weight: 800;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.titleSearchSection {
+  width: 15%;
+  float: right;
+  margin-left: 10px;
+}
+.titleDateSearchSection {
+  width: 220px;
+  float: right;
+  margin-left: 10px;
+}
+.summaryTableDiv {
+  text-align: center;
+  width: 100%;
+  margin-bottom: -50px;
+}
+.tableContentScroll {
+  max-height: 500px !important;
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+}
+.tableContentScroll::-webkit-scrollbar {
+  display: none;
+}
+.tableTitle {
+  font-size: 14px !important;
+}
+.tableText {
+  color: #576377 !important;
+  font-size: 12px !important;
+}
+.tableContentRecord {
+  background-color: #fafafa !important;
+  border-bottom: solid 1px #c4c4c4;
+}
+.tableLoadButton {
+  margin-top: 20px;
+}
+
+.taskChartArea {
+  width: 80vw;
+  height: 60vh;
+  background-color: red;
+}
+.newChip {
+  margin-left: 10px;
 }

@@ -692,10 +692,10 @@ export default {
       });
       this.$store.dispatch("task/emptyStore");
       this.$store.dispatch("activityLog/emptyStore");
-      this.$store.dispatch(
-        "task/fetchTasksAllTasks",
-        this.$route.params.projects
-      );
+      // this.$store.dispatch(
+      //   "task/fetchTasksAllTasks",
+      //   this.$route.params.projects
+      // );
       this.newProject = false;
       this.project = project;
       this.projectDisplayName = this.project.projectId;
