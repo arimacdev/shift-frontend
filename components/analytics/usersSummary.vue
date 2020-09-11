@@ -152,7 +152,17 @@
             </span>
           </v-list-item-content>
           <v-list-item-content>
-            <span class="tableTitle">Groups</span>
+            <span class="tableTitle">
+              Groups
+              <v-icon
+                v-if="this.summaryOrder == 'DESC'"
+                @click="setSummaryOrderBy('taskGroupCount'); summaryOrder = 'ASC'; orderFilterSummary()"
+              >mdi-menu-up</v-icon>
+              <v-icon
+                v-else
+                @click="setSummaryOrderBy('taskGroupCount'); summaryOrder = 'DESC'; orderFilterSummary()"
+              >mdi-menu-down</v-icon>
+            </span>
           </v-list-item-content>
           <v-list-item-content>
             <span class="tableTitle">
