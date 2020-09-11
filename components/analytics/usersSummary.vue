@@ -204,7 +204,7 @@
     </v-row>
     <v-row>
       <div class="summaryTitleSection">
-        <div class="titleSectionDiv">Task Rate</div>
+        <div class="titleSectionDiv">Member Activity</div>
         <div class="titleSearchSection">
           <v-select
             v-model="filterCryteria"
