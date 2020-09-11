@@ -99,11 +99,11 @@
               <v-icon
                 v-if="this.summaryOrder == 'DESC'"
                 @click="setSummaryOrderBy('firstName'); summaryOrder = 'ASC'; orderFilterSummary()"
-              >mdi-menu-up</v-icon>
+              >mdi-menu-down</v-icon>
               <v-icon
                 v-else
                 @click="setSummaryOrderBy('firstName'); summaryOrder = 'DESC'; orderFilterSummary()"
-              >mdi-menu-down</v-icon>
+              >mdi-menu-up</v-icon>
             </span>
           </v-list-item-content>
           <v-list-item-content>
@@ -118,11 +118,11 @@
               <v-icon
                 v-if="this.summaryOrder == 'DESC'"
                 @click="setSummaryOrderBy('projectCount'); summaryOrder = 'ASC'; orderFilterSummary()"
-              >mdi-menu-up</v-icon>
+              >mdi-menu-down</v-icon>
               <v-icon
                 v-else
                 @click="setSummaryOrderBy('projectCount'); summaryOrder = 'DESC'; orderFilterSummary()"
-              >mdi-menu-down</v-icon>
+              >mdi-menu-up</v-icon>
             </span>
           </v-list-item-content>
           <v-list-item-content>
@@ -131,11 +131,11 @@
               <v-icon
                 v-if="this.summaryOrder == 'DESC'"
                 @click="setSummaryOrderBy('activeProjectCount'); summaryOrder = 'ASC'; orderFilterSummary()"
-              >mdi-menu-up</v-icon>
+              >mdi-menu-down</v-icon>
               <v-icon
                 v-else
                 @click="setSummaryOrderBy('activeProjectCount'); summaryOrder = 'DESC'; orderFilterSummary()"
-              >mdi-menu-down</v-icon>
+              >mdi-menu-up</v-icon>
             </span>
           </v-list-item-content>
           <v-list-item-content>
@@ -144,11 +144,11 @@
               <v-icon
                 v-if="this.summaryOrder == 'DESC'"
                 @click="setSummaryOrderBy('assignedTasks'); summaryOrder = 'ASC'; orderFilterSummary()"
-              >mdi-menu-up</v-icon>
+              >mdi-menu-down</v-icon>
               <v-icon
                 v-else
                 @click="setSummaryOrderBy('assignedTasks'); summaryOrder = 'DESC'; orderFilterSummary()"
-              >mdi-menu-down</v-icon>
+              >mdi-menu-up</v-icon>
             </span>
           </v-list-item-content>
           <v-list-item-content>
@@ -157,11 +157,11 @@
               <v-icon
                 v-if="this.summaryOrder == 'DESC'"
                 @click="setSummaryOrderBy('taskGroupCount'); summaryOrder = 'ASC'; orderFilterSummary()"
-              >mdi-menu-up</v-icon>
+              >mdi-menu-down</v-icon>
               <v-icon
                 v-else
                 @click="setSummaryOrderBy('taskGroupCount'); summaryOrder = 'DESC'; orderFilterSummary()"
-              >mdi-menu-down</v-icon>
+              >mdi-menu-up</v-icon>
             </span>
           </v-list-item-content>
           <v-list-item-content>
@@ -170,11 +170,11 @@
               <v-icon
                 v-if="this.summaryOrder == 'DESC'"
                 @click="setSummaryOrderBy('personalTaskCount'); summaryOrder = 'ASC'; orderFilterSummary()"
-              >mdi-menu-up</v-icon>
+              >mdi-menu-down</v-icon>
               <v-icon
                 v-else
                 @click="setSummaryOrderBy('personalTaskCount'); summaryOrder = 'DESC'; orderFilterSummary()"
-              >mdi-menu-down</v-icon>
+              >mdi-menu-up</v-icon>
             </span>
           </v-list-item-content>
           <v-list-item-content>
@@ -183,11 +183,11 @@
               <v-icon
                 v-if="this.summaryOrder == 'DESC'"
                 @click="setSummaryOrderBy('taskGroupTaskCount'); summaryOrder = 'ASC'; orderFilterSummary()"
-              >mdi-menu-up</v-icon>
+              >mdi-menu-down</v-icon>
               <v-icon
                 v-else
                 @click="setSummaryOrderBy('taskGroupTaskCount'); summaryOrder = 'DESC'; orderFilterSummary()"
-              >mdi-menu-down</v-icon>
+              >mdi-menu-up</v-icon>
             </span>
           </v-list-item-content>
         </v-list-item>

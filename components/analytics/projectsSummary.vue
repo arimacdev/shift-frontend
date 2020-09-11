@@ -304,11 +304,11 @@
               <v-icon
                 v-if="this.summaryOrder == 'DESC'"
                 @click="setSummaryOrderBy('total'); summaryOrder = 'ASC'; orderFilterSummary()"
-              >mdi-menu-up</v-icon>
+              >mdi-menu-down</v-icon>
               <v-icon
                 v-else
                 @click="setSummaryOrderBy('total'); summaryOrder = 'DESC'; orderFilterSummary()"
-              >mdi-menu-down</v-icon>
+              >mdi-menu-up</v-icon>
             </span>
           </v-list-item-content>
           <v-list-item-content>
@@ -317,11 +317,11 @@
               <v-icon
                 v-if="this.summaryOrder == 'DESC'"
                 @click="setSummaryOrderBy('completed'); summaryOrder = 'ASC'; orderFilterSummary()"
-              >mdi-menu-up</v-icon>
+              >mdi-menu-down</v-icon>
               <v-icon
                 v-else
                 @click="setSummaryOrderBy('completed'); summaryOrder = 'DESC'; orderFilterSummary()"
-              >mdi-menu-down</v-icon>
+              >mdi-menu-up</v-icon>
             </span>
           </v-list-item-content>
           <v-list-item-content>
@@ -383,11 +383,11 @@
               <v-icon
                 v-if="this.detailsOrder == 'DESC'"
                 @click="setDetailsOrderBy('projectName'); detailsOrder = 'ASC'; orderDetailsSummary()"
-              >mdi-menu-up</v-icon>
+              >mdi-menu-down</v-icon>
               <v-icon
                 v-else
                 @click="setDetailsOrderBy('projectName'); detailsOrder = 'DESC'; orderDetailsSummary()"
-              >mdi-menu-down</v-icon>
+              >mdi-menu-up</v-icon>
             </span>
           </v-list-item-content>
           <v-list-item-content>
@@ -396,11 +396,11 @@
               <v-icon
                 v-if="this.detailsOrder == 'DESC'"
                 @click="setDetailsOrderBy('projectCreatedDate'); detailsOrder = 'ASC'; orderDetailsSummary()"
-              >mdi-menu-up</v-icon>
+              >mdi-menu-down</v-icon>
               <v-icon
                 v-else
                 @click="setDetailsOrderBy('projectCreatedDate'); detailsOrder = 'DESC'; orderDetailsSummary()"
-              >mdi-menu-down</v-icon>
+              >mdi-menu-up</v-icon>
             </span>
           </v-list-item-content>
           <v-list-item-content>
@@ -409,11 +409,11 @@
               <v-icon
                 v-if="this.detailsOrder == 'DESC'"
                 @click="setDetailsOrderBy('projectStatus'); detailsOrder = 'ASC'; orderDetailsSummary()"
-              >mdi-menu-up</v-icon>
+              >mdi-menu-down</v-icon>
               <v-icon
                 v-else
                 @click="setDetailsOrderBy('projectStatus'); detailsOrder = 'DESC'; orderDetailsSummary()"
-              >mdi-menu-down</v-icon>
+              >mdi-menu-up</v-icon>
             </span>
           </v-list-item-content>
           <v-list-item-content>
@@ -422,11 +422,11 @@
               <v-icon
                 v-if="this.detailsOrder == 'DESC'"
                 @click="setDetailsOrderBy('taskcount'); detailsOrder = 'ASC'; orderDetailsSummary()"
-              >mdi-menu-up</v-icon>
+              >mdi-menu-down</v-icon>
               <v-icon
                 v-else
                 @click="setDetailsOrderBy('taskcount'); detailsOrder = 'DESC'; orderDetailsSummary()"
-              >mdi-menu-down</v-icon>
+              >mdi-menu-up</v-icon>
             </span>
           </v-list-item-content>
           <v-list-item-content>
@@ -435,11 +435,11 @@
               <v-icon
                 v-if="this.detailsOrder == 'DESC'"
                 @click="setDetailsOrderBy('memberCount'); detailsOrder = 'ASC'; orderDetailsSummary()"
-              >mdi-menu-up</v-icon>
+              >mdi-menu-down</v-icon>
               <v-icon
                 v-else
                 @click="setDetailsOrderBy('memberCount'); detailsOrder = 'DESC'; orderDetailsSummary()"
-              >mdi-menu-down</v-icon>
+              >mdi-menu-up</v-icon>
             </span>
           </v-list-item-content>
           <v-list-item-content>
@@ -454,11 +454,11 @@
               <v-icon
                 v-if="this.detailsOrder == 'DESC'"
                 @click="setDetailsOrderBy('timeTaken'); detailsOrder = 'ASC'; orderDetailsSummary()"
-              >mdi-menu-up</v-icon>
+              >mdi-menu-down</v-icon>
               <v-icon
                 v-else
                 @click="setDetailsOrderBy('timeTaken'); detailsOrder = 'DESC'; orderDetailsSummary()"
-              >mdi-menu-down</v-icon>
+              >mdi-menu-up</v-icon>
             </span>
           </v-list-item-content>
         </v-list-item>
