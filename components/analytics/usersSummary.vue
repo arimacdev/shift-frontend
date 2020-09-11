@@ -281,6 +281,7 @@ export default {
     LineChart,
   },
   data: () => ({
+    filterCryteria: "DAY",
     totalActiveMemberCount: [],
     totalTaskCompletionMemberCount: [],
     labels: [],
@@ -319,16 +320,6 @@ export default {
       new Date().toISOString().substr(0, 10),
     ],
     filterType: [],
-    statusArray: [
-      { name: "Presales : Project Discovery", id: "presalesPD" },
-      { name: "Presales : Quotation Submission", id: "preSalesQS" },
-      { name: "Presales : Negotiation", id: "preSalesN" },
-      { name: "Presales : Confirmed", id: "preSalesC" },
-      { name: "Presales : Lost", id: "preSalesL" },
-      { name: "Ongoing", id: "ongoing" },
-      { name: "Support", id: "support" },
-      { name: "Finished", id: "finished" },
-    ],
   }),
   mounted() {
     this.fillData();
@@ -440,9 +431,6 @@ export default {
     setSummaryOrderBy(orderBy) {
       this.summaryOrderBy = orderBy;
     },
-    setDetailsOrderBy(orderBy) {
-      this.detailsOrderBy = orderBy;
-    },
 
     orderFilterSummary() {
       this.loadSummaryCount = 0;
@@ -531,19 +519,6 @@ export default {
             to: this.dateRange[1],
           }
         ),
-      ]).finally(() => {
-        this.overlay = false;
-      });
-    },
-    loadMoreDetails() {
-      this.loadDetailsCount++;
-      this.overlay = true;
-      Promise.all([
-        this.$store.dispatch("analytics/projectAnalytics/fetchProjectDetails", {
-          params: this.detailsParams,
-          startIndex: this.loadDetailsCount * 10,
-          endIndex: this.loadDetailsCount * 10 + 10,
-        }),
       ]).finally(() => {
         this.overlay = false;
       });
