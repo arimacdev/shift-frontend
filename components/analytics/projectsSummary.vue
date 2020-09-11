@@ -192,9 +192,9 @@
         </div>
       </div>
     </v-row>
+
     <v-row>
       <div class="summaryTitleSection">
-        <div class="titleSectionDiv">Summary</div>
         <div class="titleDateSearchSection">
           <v-btn @click="setAllTime()" width="100%" depressed color="#EDF0F5">
             <span class="text-capitalize" style="color: #576377">All Time</span>
@@ -285,6 +285,9 @@
           ></v-text-field>
         </div>
       </div>
+    </v-row>
+    <v-row>
+      <div class="titleSectionDiv">Summary</div>
     </v-row>
     <v-row>
       <div class="summaryTableDiv">
