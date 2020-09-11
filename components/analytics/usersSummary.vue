@@ -542,7 +542,19 @@ export default {
       memberDetails: (state) => state.analytics.userAnalytics.memberDetails,
       memberActivity: (state) => state.analytics.userAnalytics.memberActivity,
     }),
-
+    dateRangeTextField() {
+      if (
+        this.dateRangeFilter.toString() ==
+        [
+          new Date().toISOString().substr(0, 10),
+          new Date().toISOString().substr(0, 10),
+        ]
+      ) {
+        return "Select Date Range";
+      } else {
+        return this.dateRangeFilter.join(" - ");
+      }
+    },
     userArray() {
       let AssigneeSearchList = this.users;
       let assigneeList = [];
