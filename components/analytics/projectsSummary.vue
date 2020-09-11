@@ -150,9 +150,9 @@
           <div class="leadsContentDiv">
             <div>
               <!-- <v-text-field solo dense background-color="#EDF0F5" flat label="All time"></v-text-field> -->
-              <v-btn width="100%" depressed color="#EDF0F5">
+              <!-- <v-btn width="100%" depressed color="#EDF0F5">
                 <span class="text-capitalize" style="color: #576377">All Time</span>
-              </v-btn>
+              </v-btn>-->
               <v-menu
                 ref="menu"
                 v-model="menu"
