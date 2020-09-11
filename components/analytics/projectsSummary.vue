@@ -119,8 +119,8 @@
                 <v-icon size="20">icon-project</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-subtitle class="leadsSubTitle">Leads Conversion</v-list-item-subtitle>
-                <v-list-item-title class="leadsTitle">{{projectsOverview.leadConversion.value}}</v-list-item-title>
+                <v-list-item-subtitle class="leadsSubTitle">Lead Conversion</v-list-item-subtitle>
+                <v-list-item-title class="leadsTitle">{{projectsOverview.leadConversion.value}}%</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </div>

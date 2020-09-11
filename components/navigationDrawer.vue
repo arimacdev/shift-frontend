@@ -56,9 +56,14 @@
         </v-list-item-icon>
 
         <v-list-item-content>
-          <v-list-item-title class="navText">{{
+          <v-list-item-title class="navText">
+            {{
             item.title
-          }}</v-list-item-title>
+            }}
+            <v-chip class="newChip" x-small color="red" dark v-if="item.title == 'Analytics'">
+              <span style="font-size: 10px !important">New</span>
+            </v-chip>
+          </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -79,9 +84,11 @@
         </v-list-item-icon>
 
         <v-list-item-content>
-          <v-list-item-title class="navText">{{
+          <v-list-item-title class="navText">
+            {{
             item.title
-          }}</v-list-item-title>
+            }}
+          </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -106,9 +113,7 @@
         />
         <v-list-item-content style="margin-left: 12px; margin-top: -10px">
           <v-list-item-title class="navText">Arimac Digital</v-list-item-title>
-          <v-list-item-subtitle style="font-size: 10px"
-            >Arimac Lanka PVT LTD</v-list-item-subtitle
-          >
+          <v-list-item-subtitle style="font-size: 10px">Arimac Lanka PVT LTD</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </div>
@@ -116,7 +121,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -125,14 +130,14 @@ export default {
       adminItems: [
         // { title: 'Summary', icon: 'icon-summary', route: '../summary'},
         {
-          title: 'Projects',
-          icon: 'icon-project',
-          route: '../../projects/projects',
+          title: "Projects",
+          icon: "icon-project",
+          route: "../../projects/projects",
         },
         {
-          title: 'Tasks',
-          icon: 'icon-task',
-          route: '../../tasks/tasks',
+          title: "Tasks",
+          icon: "icon-task",
+          route: "../../tasks/tasks",
         },
         // {
         //   title: 'Inventory',
@@ -140,9 +145,9 @@ export default {
         //   route: '../../inventory',
         // },
         {
-          title: 'Workload',
-          icon: 'icon-workload',
-          route: '../../workload/workload',
+          title: "Workload",
+          icon: "icon-workload",
+          route: "../../workload/workload",
         },
         // {
         //   title: "Users",
@@ -150,35 +155,35 @@ export default {
         //   route: "../../users/users"
         // },
         {
-          title: 'Skill Matrix',
-          icon: 'icon-skills',
-          route: '../../skills/skills',
+          title: "Skill Matrix",
+          icon: "icon-skills",
+          route: "../../skills/skills",
         },
-        { title: 'Admin', icon: 'icon-admin', route: '../../admin/admin' },
+        { title: "Admin", icon: "icon-admin", route: "../../admin/admin" },
         {
-          title: 'Analytics',
-          icon: 'icon-summary',
-          route: '../../analytics/analytics',
+          title: "Analytics",
+          icon: "icon-summary",
+          route: "../../analytics/analytics",
         },
       ],
       mini: true,
       userItems: [
         // { title: 'Summary', icon: 'icon-summary', route: '../summary'},
         {
-          title: 'Projects',
-          icon: 'icon-project',
-          route: '../../projects/projects',
+          title: "Projects",
+          icon: "icon-project",
+          route: "../../projects/projects",
         },
         {
-          title: 'Tasks',
-          icon: 'icon-task',
-          route: '../../tasks/tasks',
+          title: "Tasks",
+          icon: "icon-task",
+          route: "../../tasks/tasks",
         },
         // { title: 'Inventory', icon: 'icon-inventory', route: '../inventory'},
         {
-          title: 'Workload',
-          icon: 'icon-workload',
-          route: '../../workload/workload',
+          title: "Workload",
+          icon: "icon-workload",
+          route: "../../workload/workload",
         },
       ],
       homePage: process.env.SYSTEM_URL,
@@ -198,7 +203,7 @@ export default {
     userLogOut() {
       const LOGOUT_URL =
         this.homePage +
-        '/auth/realms/pm-tool/protocol/openid-connect/logout?redirect_uri=' +
+        "/auth/realms/pm-tool/protocol/openid-connect/logout?redirect_uri=" +
         this.homePage;
       window.location.replace(LOGOUT_URL);
     },
