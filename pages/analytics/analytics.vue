@@ -148,6 +148,15 @@ export default {
           .substr(0, 10),
         criteria: "DAY",
       }),
+      this.$store.dispatch("analytics/userAnalytics/fetchMemberActivity", {
+        from: new Date(date.getFullYear(), date.getMonth(), 1)
+          .toISOString()
+          .substr(0, 10),
+        to: new Date(date.getFullYear(), date.getMonth() + 1, 0)
+          .toISOString()
+          .substr(0, 10),
+        criteria: "DAY",
+      }),
     ]).finally(() => {
       this.overlay = false;
     });

@@ -72,11 +72,13 @@
 
 <script>
 import LineChart from "~/components/charts/chart";
+import Progress from "~/components/popups/progress";
 import { mapState } from "vuex";
 
 export default {
   components: {
     LineChart,
+    "progress-loading": Progress,
   },
   data() {
     return {

@@ -202,6 +202,70 @@
         </div>
       </div>
     </v-row>
+    <v-row>
+      <div class="summaryTitleSection">
+        <div class="titleSectionDiv">Task Rate</div>
+        <div class="titleSearchSection">
+          <v-select
+            v-model="filterCryteria"
+            dense
+            :items="criteriaArray"
+            item-text="name"
+            item-value="id"
+            flat
+            background-color="#EDF0F5"
+            label="Select Criteria"
+            solo
+            @change="loadMemberActivity()"
+          ></v-select>
+        </div>
+        <div class="titleDateSearchSection">
+          <v-menu
+            ref="menu2"
+            v-model="menu2"
+            :close-on-content-click="false"
+            :return-value.sync="date"
+            transition="scale-transition"
+            offset-x
+            width="100%"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="dateRangeTextField"
+                label="Date range"
+                prepend-inner-icon="mdi-calendar-blank"
+                readonly
+                solo
+                dense
+                background-color="#EDF0F5"
+                flat
+                v-bind="attrs"
+                v-on="on"
+              ></v-text-field>
+            </template>
+            <v-date-picker range v-model="dateRangeFilter" scrollable>
+              <v-spacer></v-spacer>
+              <v-btn text color="primary" @click="menu2 = false">Cancel</v-btn>
+              <v-btn
+                text
+                color="primary"
+                @click="$refs.menu2.save(dateRangeFilter); loadMemberActivity(); "
+              >OK</v-btn>
+            </v-date-picker>
+          </v-menu>
+        </div>
+      </div>
+    </v-row>
+    <div class="small">
+      <line-chart
+        id="taskChart"
+        width="400"
+        height="400"
+        :chart-data="datacollection"
+        :options="options"
+      ></line-chart>
+      <!-- <button @click="fillData()">Randomize</button> -->
+    </div>
     <v-overlay :value="overlay" color="black" style="z-index:1008">
       <progress-loading />
     </v-overlay>
@@ -209,12 +273,25 @@
 </template>
 <script>
 import { mapState } from "vuex";
+import LineChart from "~/components/charts/chart";
 import Progress from "~/components/popups/progress";
 export default {
   components: {
     "progress-loading": Progress,
+    LineChart,
   },
   data: () => ({
+    totalActiveMemberCount: [],
+    totalTaskCompletionMemberCount: [],
+    labels: [],
+    datacollection: null,
+    options: null,
+    criteriaArray: [
+      { name: "Day", id: "DAY" },
+      { name: "Month", id: "MONTH" },
+      { name: "Year", id: "YEAR" },
+    ],
+
     userIdArray: "userId=all&",
 
     dateRangeQuery: "from=all&to=all",
@@ -253,7 +330,94 @@ export default {
       { name: "Finished", id: "finished" },
     ],
   }),
+  mounted() {
+    this.fillData();
+  },
   methods: {
+    loadMemberActivity() {
+      this.overlay = true;
+      this.totalActiveMemberCount = [];
+      this.totalTaskCompletionMemberCount = [];
+      this.labels = [];
+      let date = new Date();
+      let from;
+      let to;
+      if (
+        this.dateRangeFilter.toString() ==
+        [
+          new Date().toISOString().substr(0, 10),
+          new Date().toISOString().substr(0, 10),
+        ]
+      ) {
+        from = new Date(date.getFullYear(), date.getMonth(), 1)
+          .toISOString()
+          .substr(0, 10);
+        to = new Date(date.getFullYear(), date.getMonth() + 1, 0)
+          .toISOString()
+          .substr(0, 10);
+      } else {
+        from = this.dateRangeFilter[0];
+        to = this.dateRangeFilter[1];
+      }
+      Promise.all([
+        this.$store.dispatch("analytics/userAnalytics/fetchMemberActivity", {
+          from: from,
+          to: to,
+          criteria: this.filterCryteria,
+        }),
+      ]).finally(() => {
+        this.overlay = false;
+        this.fillData();
+      });
+    },
+    fillData() {
+      let memberActivity = this.memberActivity;
+      Promise.all([]).finally(() => {});
+
+      for (let index = 0; index < memberActivity.length; ++index) {
+        let record = memberActivity[index];
+        this.totalActiveMemberCount[index] = record.totalActiveMemberCount;
+        this.totalTaskCompletionMemberCount[index] =
+          record.totalTaskCompletionMemberCount;
+        this.labels[index] = record.date;
+      }
+      this.datacollection = {
+        labels: this.labels,
+        datasets: [
+          {
+            label: "Member who were active",
+            borderColor: "#4F5CC9",
+            pointBackgroundColor: "#4F5CC9",
+            fill: false,
+            data: this.totalActiveMemberCount,
+            borderWidth: 2,
+            lineTension: 0,
+          },
+          {
+            label: "Members who completed tasks",
+            borderColor: "#4FC971",
+            pointBackgroundColor: "#4FC971",
+            fill: false,
+            data: this.totalTaskCompletionMemberCount,
+            borderWidth: 2,
+            lineTension: 0,
+          },
+        ],
+      };
+      this.options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+          display: true,
+          position: "bottom",
+          align: "start",
+          labels: {
+            boxWidth: 12,
+            fontColor: "#576377",
+          },
+        },
+      };
+    },
     getUserRole(role) {
       switch (role) {
         case "USER":
@@ -390,6 +554,7 @@ export default {
     ...mapState({
       users: (state) => state.user.users,
       memberDetails: (state) => state.analytics.userAnalytics.memberDetails,
+      memberActivity: (state) => state.analytics.userAnalytics.memberActivity,
     }),
 
     userArray() {
@@ -408,3 +573,16 @@ export default {
   },
 };
 </script>
+<style>
+.small {
+  width: 90vw !important;
+  padding-top: 150px auto;
+  height: 500px;
+}
+#taskChart {
+  background-color: #fafafa;
+  border: 1px solid #c4c4c4;
+  border-radius: 5px;
+  padding-top: 10px;
+}
+</style>
