@@ -21,6 +21,7 @@
             label="Search here"
             multiple
             clearable
+            @change="loadFilterSummary()"
           ></v-autocomplete>
         </div>
       </div>
@@ -35,14 +36,10 @@
             <span class="tableTitle">Joined</span>
           </v-list-item-content>
           <v-list-item-content>
-            <span class="tableTitle">
-              AdminStatus
-            </span>
+            <span class="tableTitle">AdminStatus</span>
           </v-list-item-content>
           <v-list-item-content>
-            <span class="tableTitle">
-              Projects In
-            </span>
+            <span class="tableTitle">Projects In</span>
           </v-list-item-content>
           <v-list-item-content>
             <span class="tableTitle">Projects With Tasks</span>
@@ -70,51 +67,63 @@
               class="tableContentRecord"
             >
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText"
-                  >{{ user.firstName }}
-                  {{ user.lastName }}</v-list-item-subtitle
-                >
+                <v-list-item-subtitle class="tableText">
+                  {{ user.firstName }}
+                  {{ user.lastName }}
+                </v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText"
-                  >6-16-2020</v-list-item-subtitle
-                >
+                <v-list-item-subtitle class="tableText">6-16-2020</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">{{
+                <v-list-item-subtitle class="tableText">
+                  {{
                   getUserRole(user.userRole)
-                }}</v-list-item-subtitle>
+                  }}
+                </v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">{{
+                <v-list-item-subtitle class="tableText">
+                  {{
                   user.projectCount
-                }}</v-list-item-subtitle>
+                  }}
+                </v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">{{
+                <v-list-item-subtitle class="tableText">
+                  {{
                   user.activeProjectCount
-                }}</v-list-item-subtitle>
+                  }}
+                </v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">{{
+                <v-list-item-subtitle class="tableText">
+                  {{
                   user.assignedTasks
-                }}</v-list-item-subtitle>
+                  }}
+                </v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">{{
+                <v-list-item-subtitle class="tableText">
+                  {{
                   user.taskGroupCount
-                }}</v-list-item-subtitle>
+                  }}
+                </v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">{{
+                <v-list-item-subtitle class="tableText">
+                  {{
                   user.personalTaskCount
-                }}</v-list-item-subtitle>
+                  }}
+                </v-list-item-subtitle>
               </v-list-item-content>
 
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">{{
+                <v-list-item-subtitle class="tableText">
+                  {{
                   user.taskGroupTaskCount
-                }}</v-list-item-subtitle>
+                  }}
+                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
@@ -139,32 +148,31 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex';
-import Progress from '~/components/popups/progress';
+import { mapState } from "vuex";
+import Progress from "~/components/popups/progress";
 export default {
   components: {
-    'progress-loading': Progress,
+    "progress-loading": Progress,
   },
   data: () => ({
-    summaryDateRange: 'from=all&to=all',
-    summaryKey: '&key=all&',
-    summaryStatus: 'status=all&',
+    userIdArray: "userId=all&",
 
-    dateRangeQuery: 'from=all&to=all',
+    dateRangeQuery: "from=all&to=all",
 
     loadSummaryCount: 0,
     loadDetailsCount: 0,
-    summaryOrder: 'DESC',
-    summaryOrderBy: 'total',
-    detailsOrder: 'DESC',
-    detailsOrderBy: 'taskcount',
-    key: '',
+
+    detailsOrder: "DESC",
+    detailsOrderBy: "taskcount",
+    key: "",
     overlay: false,
     filterUser: [],
     menu: false,
     menu2: false,
-    summaryParams: 'userId=all&orderType=DESC&orderBy=projectCount',
-    detailsParams: 'from=all&to=all&orderBy=taskcount&orderType=DESC',
+    summaryOrder: "DESC",
+    summaryOrderBy: "projectCount",
+    summaryParams: "userId=all&orderType=DESC&orderBy=projectCount",
+    detailsParams: "from=all&to=all&orderBy=taskcount&orderType=DESC",
     dateRangeFilter: [
       new Date().toISOString().substr(0, 10),
       new Date().toISOString().substr(0, 10),
@@ -175,33 +183,33 @@ export default {
     ],
     filterType: [],
     statusArray: [
-      { name: 'Presales : Project Discovery', id: 'presalesPD' },
-      { name: 'Presales : Quotation Submission', id: 'preSalesQS' },
-      { name: 'Presales : Negotiation', id: 'preSalesN' },
-      { name: 'Presales : Confirmed', id: 'preSalesC' },
-      { name: 'Presales : Lost', id: 'preSalesL' },
-      { name: 'Ongoing', id: 'ongoing' },
-      { name: 'Support', id: 'support' },
-      { name: 'Finished', id: 'finished' },
+      { name: "Presales : Project Discovery", id: "presalesPD" },
+      { name: "Presales : Quotation Submission", id: "preSalesQS" },
+      { name: "Presales : Negotiation", id: "preSalesN" },
+      { name: "Presales : Confirmed", id: "preSalesC" },
+      { name: "Presales : Lost", id: "preSalesL" },
+      { name: "Ongoing", id: "ongoing" },
+      { name: "Support", id: "support" },
+      { name: "Finished", id: "finished" },
     ],
   }),
   methods: {
     getUserRole(role) {
       switch (role) {
-        case 'USER':
-          return 'User';
+        case "USER":
+          return "User";
           break;
-        case 'WORKLOAD':
-          return 'Workload';
+        case "WORKLOAD":
+          return "Workload";
           break;
-        case 'ADMIN':
-          return 'Admin';
+        case "ADMIN":
+          return "Admin";
           break;
-        case 'SUPER_ADMIN':
-          return 'Super Admin';
+        case "SUPER_ADMIN":
+          return "Super Admin";
           break;
-        case 'ORGANIZATION_ADMIN':
-          return 'Organization Admin';
+        case "ORGANIZATION_ADMIN":
+          return "Organization Admin";
           break;
       }
     },
@@ -219,17 +227,17 @@ export default {
       this.overlay = true;
       this.detailsParams =
         this.dateRangeQuery +
-        '&orderBy=' +
+        "&orderBy=" +
         this.detailsOrderBy +
-        '&orderType=' +
+        "&orderType=" +
         this.detailsOrder;
       // console.log("SUMMARY " + this.summaryParams);
       Promise.all([
-        this.$store.dispatch('analytics/projectAnalytics/emptyDetailsStore'),
+        this.$store.dispatch("analytics/projectAnalytics/emptyDetailsStore"),
       ]).finally(() => {
         Promise.all([
           this.$store.dispatch(
-            'analytics/projectAnalytics/fetchProjectDetails',
+            "analytics/projectAnalytics/fetchProjectDetails",
             {
               params: this.detailsParams,
               startIndex: this.loadDetailsCount * 10,
@@ -245,60 +253,33 @@ export default {
 
     loadFilterSummary() {
       this.loadSummaryCount = 0;
-      // this.summaryDateRange = "";
-      // this.summaryKey = "";
-      // this.summaryStatus = "";
-      if (this.filterType.length != 0) {
-        this.summaryStatus = '';
-        for (let i = 0; i < this.filterType.length; i++) {
-          this.summaryStatus =
-            this.summaryStatus + 'status=' + this.filterType[i].id + '&';
-          // if (i < this.filterType.length - 1) {
-          //   assigneeList = assigneeList + ",";
-          // }
+      if (this.filterUser.length != 0) {
+        this.userIdArray = "";
+        for (let i = 0; i < this.filterUser.length; i++) {
+          this.userIdArray =
+            this.userIdArray + "userId=" + this.filterUser[i].id + "&";
         }
       } else {
-        this.summaryStatus = 'status=all&';
+        this.userIdArray = "userId=all&";
       }
-      if (
-        this.dateRangeFilter.toString() !=
-        [
-          new Date().toISOString().substr(0, 10),
-          new Date().toISOString().substr(0, 10),
-        ]
-      ) {
-        this.summaryDateRange =
-          'from=' + this.dateRangeFilter[0] + '&to=' + this.dateRangeFilter[1];
-      } else {
-        this.summaryDateRange = 'from=all&to=all';
-      }
-      if (this.key == '' || this.key == null) {
-        this.summaryKey = '&key=all&';
-      } else {
-        this.summaryKey = '&key=' + this.key + '&';
-      }
+
       this.overlay = true;
       this.summaryParams =
-        this.summaryDateRange +
-        this.summaryKey +
-        this.summaryStatus +
-        'orderBy=' +
+        this.userIdArray +
+        "orderBy=" +
         this.summaryOrderBy +
-        '&orderType=' +
+        "&orderType=" +
         this.summaryOrder;
       // console.log("SUMMARY " + this.summaryParams);
       Promise.all([
-        this.$store.dispatch('analytics/projectAnalytics/emptySummaryStore'),
+        this.$store.dispatch("analytics/userAnalytics/emptyUserStore"),
       ]).finally(() => {
         Promise.all([
-          this.$store.dispatch(
-            'analytics/projectAnalytics/fetchProjectSummary',
-            {
-              params: this.summaryParams,
-              startIndex: this.loadSummaryCount * 10,
-              endIndex: this.loadSummaryCount * 10 + 10,
-            }
-          ),
+          this.$store.dispatch("analytics/userAnalytics/fetchMemberDetails", {
+            params: this.summaryParams,
+            startIndex: this.loadSummaryCount * 10,
+            endIndex: this.loadSummaryCount * 10 + 10,
+          }),
         ]).finally(() => {
           this.overlay = false;
           this.loadSummaryCount++;
@@ -310,7 +291,7 @@ export default {
       this.loadSummaryCount++;
       this.overlay = true;
       Promise.all([
-        this.$store.dispatch('analytics/userAnalytics/fetchMemberDetails', {
+        this.$store.dispatch("analytics/userAnalytics/fetchMemberDetails", {
           params: this.summaryParams,
           startIndex: this.loadSummaryCount * 10,
           endIndex: this.loadSummaryCount * 10 + 10,
@@ -323,7 +304,7 @@ export default {
       this.overlay = true;
       Promise.all([
         this.$store.dispatch(
-          'analytics/projectAnalytics/fetchProjectOverview',
+          "analytics/projectAnalytics/fetchProjectOverview",
           {
             from: this.dateRange[0],
             to: this.dateRange[1],
@@ -337,7 +318,7 @@ export default {
       this.loadDetailsCount++;
       this.overlay = true;
       Promise.all([
-        this.$store.dispatch('analytics/projectAnalytics/fetchProjectDetails', {
+        this.$store.dispatch("analytics/projectAnalytics/fetchProjectDetails", {
           params: this.detailsParams,
           startIndex: this.loadDetailsCount * 10,
           endIndex: this.loadDetailsCount * 10 + 10,
@@ -360,7 +341,7 @@ export default {
       for (let index = 0; index < AssigneeSearchList.length; ++index) {
         let user = AssigneeSearchList[index];
         assigneeList.push({
-          name: user.firstName + ' ' + user.lastName,
+          name: user.firstName + " " + user.lastName,
           id: user.userId,
           img: user.profileImage,
         });

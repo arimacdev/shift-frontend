@@ -6,9 +6,15 @@ export const mutations = {
   SET_MEMBER_DETAILS(state, overview) {
     state.memberDetails = state.memberDetails.concat(overview);
   },
+  EMPTY_USER_STORE(state, elements) {
+    state.memberDetails = elements;
+  },
 };
 
 export const actions = {
+  emptyUserStore({ commit, rootState }) {
+    commit('EMPTY_USER_STORE', []);
+  },
   async fetchMemberDetails(
     { commit, rootState },
     { params, startIndex, endIndex }
