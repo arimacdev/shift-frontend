@@ -554,6 +554,7 @@ export default {
   width: 90vw !important;
   padding-top: 150px auto;
   height: 500px;
+  margin-bottom: -50px;
 }
 #taskChart {
   background-color: #fafafa;
