@@ -3707,6 +3707,11 @@
   float: right;
   margin-left: 10px;
 }
+.titleUserSearchSection {
+  max-width: 60%;
+  float: right;
+  margin-left: 10px;
+}
 .titleDateSearchSection {
   width: 220px;
   float: right;

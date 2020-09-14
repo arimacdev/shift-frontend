@@ -68,7 +68,7 @@
       <div class="summaryTitleSection">
         <div class="titleSectionDiv">Members</div>
 
-        <div class="titleSearchSection">
+        <div class="titleUserSearchSection">
           <v-autocomplete
             v-model="filterUser"
             prepend-inner-icon="mdi-magnify"
