@@ -496,7 +496,7 @@
                 <v-list-item-subtitle class="tableText">{{project.engagement}}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">{{getDays(project.timeTaken)}}</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{project.timeTaken}} Days</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
