@@ -255,8 +255,8 @@
           ></v-autocomplete>
         </div>
         <div class="titleSearchSection">
-          <!-- <v-autocomplete
-            v-model="filterProject"
+          <v-autocomplete
+            v-model="key"
             prepend-inner-icon="mdi-magnify"
             return-object
             :items="projectArray"
@@ -271,8 +271,9 @@
             label="Search here"
             multiple
             clearable
-          ></v-autocomplete>-->
-          <v-text-field
+            @change="loadFilterSummary()"
+          ></v-autocomplete>
+          <!-- <v-text-field
             v-model="key"
             solo
             dense
@@ -282,7 +283,7 @@
             prepend-inner-icon="mdi-magnify"
             label="Search here"
             @input="loadFilterSummary()"
-          ></v-text-field>
+          ></v-text-field>-->
         </div>
       </div>
     </v-row>
@@ -529,8 +530,8 @@ export default {
     "progress-loading": Progress,
   },
   data: () => ({
-    summaryDateRange: "from=all&to=all",
-    summaryKey: "&key=all&",
+    summaryDateRange: "from=all&to=all&",
+    summaryKey: "project=all&",
     summaryStatus: "status=all&",
 
     dateRangeQuery: "from=all&to=all",
@@ -541,7 +542,7 @@ export default {
     summaryOrderBy: "total",
     detailsOrder: "DESC",
     detailsOrderBy: "taskcount",
-    key: "",
+    key: [],
     overlay: false,
     filterProject: [],
     menu: false,
@@ -690,13 +691,20 @@ export default {
         for (let i = 0; i < this.filterType.length; i++) {
           this.summaryStatus =
             this.summaryStatus + "status=" + this.filterType[i].id + "&";
-          // if (i < this.filterType.length - 1) {
-          //   assigneeList = assigneeList + ",";
-          // }
         }
       } else {
         this.summaryStatus = "status=all&";
       }
+
+      if (this.key.length != 0) {
+        this.summaryKey = "";
+        for (let i = 0; i < this.key.length; i++) {
+          this.summaryKey = this.summaryKey + "project=" + this.key[i].id + "&";
+        }
+      } else {
+        this.summaryKey = "project=all&";
+      }
+
       if (
         this.dateRangeFilter.toString() !=
         [
@@ -705,15 +713,19 @@ export default {
         ]
       ) {
         this.summaryDateRange =
-          "from=" + this.dateRangeFilter[0] + "&to=" + this.dateRangeFilter[1];
+          "from=" +
+          this.dateRangeFilter[0] +
+          "&to=" +
+          this.dateRangeFilter[1] +
+          "&";
       } else {
-        this.summaryDateRange = "from=all&to=all";
+        this.summaryDateRange = "from=all&to=all&";
       }
-      if (this.key == "" || this.key == null) {
-        this.summaryKey = "&key=all&";
-      } else {
-        this.summaryKey = "&key=" + this.key + "&";
-      }
+      // if (this.key == "" || this.key == null) {
+      //   this.summaryKey = "&key=all&";
+      // } else {
+      //   this.summaryKey = "&key=" + this.key + "&";
+      // }
       this.overlay = true;
       this.summaryParams =
         this.summaryDateRange +
