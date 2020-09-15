@@ -496,7 +496,7 @@
                 <v-list-item-subtitle class="tableText">{{project.engagement}}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">{{project.timeTaken}} Days</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{getDays(project.timeTaken)}} Days</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
@@ -584,8 +584,13 @@ export default {
       this.detailsOrderBy = orderBy;
     },
     getDays(ms) {
-      let oneDay = 1000 * 60 * 60 * 24;
-      return Math.round(ms / oneDay) + " Days";
+      // let oneDay = 1000 * 60 * 60 * 24;
+      // return Math.round(ms / oneDay) + " Days";
+      if (ms <= 0) {
+        return 0;
+      } else {
+        return ms;
+      }
     },
     getStatus(status) {
       switch (status) {
