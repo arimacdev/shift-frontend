@@ -269,7 +269,7 @@
               color="#ffffff"
               depressed
             >
-              <span class="text-capitalize">Load More</span>
+              <span style="color: #576377" class="text-capitalize">Load More</span>
               <v-icon>mdi-chevron-down</v-icon>
             </v-btn>
           </div>

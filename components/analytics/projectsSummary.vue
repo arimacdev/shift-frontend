@@ -362,7 +362,7 @@
               color="#ffffff"
               depressed
             >
-              <span class="text-capitalize">Load More</span>
+              <span style="color: #576377" class="text-capitalize">Load More</span>
               <v-icon>mdi-chevron-down</v-icon>
             </v-btn>
           </div>
@@ -508,7 +508,7 @@
               color="#ffffff"
               depressed
             >
-              <span class="text-capitalize">Load More</span>
+              <span style="color: #576377" class="text-capitalize">Load More</span>
               <v-icon>mdi-chevron-down</v-icon>
             </v-btn>
           </div>
@@ -685,9 +685,6 @@ export default {
     },
     loadFilterSummary() {
       this.loadSummaryCount = 0;
-      // this.summaryDateRange = "";
-      // this.summaryKey = "";
-      // this.summaryStatus = "";
       if (this.filterType.length != 0) {
         this.summaryStatus = "";
         for (let i = 0; i < this.filterType.length; i++) {
