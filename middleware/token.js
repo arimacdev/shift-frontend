@@ -34,7 +34,7 @@ export default async function({ store, error, app }) {
       }
     });
     // if (organizationRole.indexOf('SUPER_ADMIN') > -1) {
-    console.log('user roles --->', userRoles);
+    // console.log('user roles --->', userRoles);
     store.commit('user/setOrganizationalRole', userRoles);
     // } else {
     //   // console.log('user role --->', 'USER');

@@ -125,7 +125,7 @@ export default {
       }),
       this.$store.dispatch("analytics/projectAnalytics/fetchProjectSummary", {
         params:
-          "from=all&to=all&key=all&status=all&orderBy=total&orderType=DESC",
+          "from=all&to=all&project=all&status=all&orderBy=total&orderType=DESC",
         startIndex: 0,
         endIndex: 10,
       }),

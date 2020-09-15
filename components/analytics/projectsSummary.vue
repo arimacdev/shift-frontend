@@ -192,7 +192,6 @@
         </div>
       </div>
     </v-row>
-
     <v-row>
       <div class="summaryTitleSection">
         <div class="titleDateSearchSection">
@@ -255,8 +254,8 @@
           ></v-autocomplete>
         </div>
         <div class="titleSearchSection">
-          <!-- <v-autocomplete
-            v-model="filterProject"
+          <v-autocomplete
+            v-model="key"
             prepend-inner-icon="mdi-magnify"
             return-object
             :items="projectArray"
@@ -271,8 +270,9 @@
             label="Search here"
             multiple
             clearable
-          ></v-autocomplete>-->
-          <v-text-field
+            @change="loadFilterSummary()"
+          ></v-autocomplete>
+          <!-- <v-text-field
             v-model="key"
             solo
             dense
@@ -282,7 +282,7 @@
             prepend-inner-icon="mdi-magnify"
             label="Search here"
             @input="loadFilterSummary()"
-          ></v-text-field>
+          ></v-text-field>-->
         </div>
       </div>
     </v-row>
@@ -357,12 +357,12 @@
           <div class="tableLoadButton text-center">
             <div v-if="projectsSummary == ''">No records to show</div>
             <v-btn
-              v-if="projectsSummary != ''"
+              v-if="projectsSummary != '' && isSummaryLoaded == false"
               @click="loadMoreSummary()"
               color="#ffffff"
               depressed
             >
-              <span class="text-capitalize">Load More</span>
+              <span style="color: #576377" class="text-capitalize">Load More</span>
               <v-icon>mdi-chevron-down</v-icon>
             </v-btn>
           </div>
@@ -496,26 +496,25 @@
                 <v-list-item-subtitle class="tableText">{{project.engagement}}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">{{getDays(project.timeTaken)}}</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{project.timeTaken}} Days</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
           <div class="tableLoadButton text-center">
-            <div v-if="projectsSummary == ''">No records to show</div>
+            <div v-if="projectsDetails == ''">No records to show</div>
             <v-btn
-              v-if="projectsSummary != ''"
+              v-if="projectsDetails != '' && isDetailsLoaded == false"
               @click="loadMoreDetails()"
               color="#ffffff"
               depressed
             >
-              <span class="text-capitalize">Load More</span>
+              <span style="color: #576377" class="text-capitalize">Load More</span>
               <v-icon>mdi-chevron-down</v-icon>
             </v-btn>
           </div>
         </div>
       </div>
     </v-row>
-
     <v-overlay :value="overlay" color="black" style="z-index:1008">
       <progress-loading />
     </v-overlay>
@@ -529,8 +528,8 @@ export default {
     "progress-loading": Progress,
   },
   data: () => ({
-    summaryDateRange: "from=all&to=all",
-    summaryKey: "&key=all&",
+    summaryDateRange: "from=all&to=all&",
+    summaryKey: "project=all&",
     summaryStatus: "status=all&",
 
     dateRangeQuery: "from=all&to=all",
@@ -541,13 +540,13 @@ export default {
     summaryOrderBy: "total",
     detailsOrder: "DESC",
     detailsOrderBy: "taskcount",
-    key: "",
+    key: [],
     overlay: false,
     filterProject: [],
     menu: false,
     menu2: false,
     summaryParams:
-      "from=all&to=all&key=all&status=all&orderBy=total&orderType=DESC",
+      "from=all&to=all&project=all&status=all&orderBy=total&orderType=DESC",
     detailsParams: "from=all&to=all&orderBy=taskcount&orderType=DESC",
     dateRangeFilter: [
       new Date().toISOString().substr(0, 10),
@@ -685,21 +684,25 @@ export default {
     },
     loadFilterSummary() {
       this.loadSummaryCount = 0;
-      // this.summaryDateRange = "";
-      // this.summaryKey = "";
-      // this.summaryStatus = "";
       if (this.filterType.length != 0) {
         this.summaryStatus = "";
         for (let i = 0; i < this.filterType.length; i++) {
           this.summaryStatus =
             this.summaryStatus + "status=" + this.filterType[i].id + "&";
-          // if (i < this.filterType.length - 1) {
-          //   assigneeList = assigneeList + ",";
-          // }
         }
       } else {
         this.summaryStatus = "status=all&";
       }
+
+      if (this.key.length != 0) {
+        this.summaryKey = "";
+        for (let i = 0; i < this.key.length; i++) {
+          this.summaryKey = this.summaryKey + "project=" + this.key[i].id + "&";
+        }
+      } else {
+        this.summaryKey = "project=all&";
+      }
+
       if (
         this.dateRangeFilter.toString() !=
         [
@@ -708,15 +711,19 @@ export default {
         ]
       ) {
         this.summaryDateRange =
-          "from=" + this.dateRangeFilter[0] + "&to=" + this.dateRangeFilter[1];
+          "from=" +
+          this.dateRangeFilter[0] +
+          "&to=" +
+          this.dateRangeFilter[1] +
+          "&";
       } else {
-        this.summaryDateRange = "from=all&to=all";
+        this.summaryDateRange = "from=all&to=all&";
       }
-      if (this.key == "" || this.key == null) {
-        this.summaryKey = "&key=all&";
-      } else {
-        this.summaryKey = "&key=" + this.key + "&";
-      }
+      // if (this.key == "" || this.key == null) {
+      //   this.summaryKey = "&key=all&";
+      // } else {
+      //   this.summaryKey = "&key=" + this.key + "&";
+      // }
       this.overlay = true;
       this.summaryParams =
         this.summaryDateRange +
@@ -839,6 +846,10 @@ export default {
         state.analytics.projectAnalytics.projectSummary,
       projectsDetails: (state) =>
         state.analytics.projectAnalytics.projectDetails,
+      isSummaryLoaded: (state) =>
+        state.analytics.projectAnalytics.isSummaryLoaded,
+      isDetailsLoaded: (state) =>
+        state.analytics.projectAnalytics.isDetailsLoaded,
     }),
     dateRangeText() {
       if (
