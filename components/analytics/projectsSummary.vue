@@ -192,7 +192,6 @@
         </div>
       </div>
     </v-row>
-
     <v-row>
       <div class="summaryTitleSection">
         <div class="titleDateSearchSection">
@@ -358,7 +357,7 @@
           <div class="tableLoadButton text-center">
             <div v-if="projectsSummary == ''">No records to show</div>
             <v-btn
-              v-if="projectsSummary != ''"
+              v-if="projectsSummary != '' && isSummaryLoaded == false"
               @click="loadMoreSummary()"
               color="#ffffff"
               depressed
@@ -502,9 +501,9 @@
             </v-list-item>
           </v-list-item-group>
           <div class="tableLoadButton text-center">
-            <div v-if="projectsSummary == ''">No records to show</div>
+            <div v-if="projectsDetails == ''">No records to show</div>
             <v-btn
-              v-if="projectsSummary != ''"
+              v-if="projectsDetails != '' && isDetailsLoaded == false"
               @click="loadMoreDetails()"
               color="#ffffff"
               depressed
@@ -516,7 +515,6 @@
         </div>
       </div>
     </v-row>
-
     <v-overlay :value="overlay" color="black" style="z-index:1008">
       <progress-loading />
     </v-overlay>
@@ -548,7 +546,7 @@ export default {
     menu: false,
     menu2: false,
     summaryParams:
-      "from=all&to=all&key=all&status=all&orderBy=total&orderType=DESC",
+      "from=all&to=all&project=all&status=all&orderBy=total&orderType=DESC",
     detailsParams: "from=all&to=all&orderBy=taskcount&orderType=DESC",
     dateRangeFilter: [
       new Date().toISOString().substr(0, 10),
@@ -848,6 +846,10 @@ export default {
         state.analytics.projectAnalytics.projectSummary,
       projectsDetails: (state) =>
         state.analytics.projectAnalytics.projectDetails,
+      isSummaryLoaded: (state) =>
+        state.analytics.projectAnalytics.isSummaryLoaded,
+      isDetailsLoaded: (state) =>
+        state.analytics.projectAnalytics.isDetailsLoaded,
     }),
     dateRangeText() {
       if (

@@ -7,22 +7,33 @@ export const state = () => ({
   },
   projectSummary: [],
   projectDetails: [],
+  isSummaryLoaded: false,
+  isDetailsLoaded: false,
 });
 
 export const mutations = {
   EMPTY_SUMMARY_STORE(state, elements) {
     state.projectSummary = elements;
+    state.isSummaryLoaded = false;
   },
   EMPTY_DETAILS_STORE(state, elements) {
     state.projectDetails = elements;
+    state.isDetailsLoaded = false;
   },
   SET_PROJECT_OVERVIEW(state, overview) {
     state.projectOverview = overview;
   },
   SET_PROJECT_SUMMARY(state, summary) {
+    if (summary.length == 0 || summary.length < 10) {
+      state.isSummaryLoaded = true;
+    }
     state.projectSummary = state.projectSummary.concat(summary);
   },
   SET_PROJECT_DETAILS(state, details) {
+    console.log('DETAILS ' + details);
+    if (details.length == 0) {
+      state.isDetailsLoaded = true;
+    }
     state.projectDetails = state.projectDetails.concat(details);
   },
 };
