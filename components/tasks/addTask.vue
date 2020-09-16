@@ -81,9 +81,9 @@
         </v-row>
         <v-row class="mb-12 formRow" no-gutters>
           <v-col sm="12" md="12">
-            <v-select
+            <v-autocomplete
               dense
-              :menu-props="{ maxHeight: '500' }"
+              :menu-props="{ maxHeight: '300' }"
               v-model="parentTask"
               :items="parentTasks"
               item-text="name"
@@ -115,7 +115,7 @@
                   </v-list-item-content>
                 </template>
               </template>
-            </v-select>
+            </v-autocomplete>
           </v-col>
         </v-row>
         <v-row class="mb-12 formRow groupFormRow" no-gutters>
