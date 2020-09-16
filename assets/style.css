@@ -2446,6 +2446,14 @@
   /* margin-right: 10px; */
   width: 80px !important;
 }
+.updatedDateFilter {
+  padding-right: 10px !important;
+  width: 90px !important;
+}
+.updatedDateFilterMyTasks {
+  width: 100px !important;
+  margin-right: 10px;
+}
 
 /* ------------- task dialog ------------- */
 

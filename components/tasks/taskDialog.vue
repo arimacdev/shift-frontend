@@ -286,7 +286,7 @@
                 <v-icon size="18" color="#0083E2">icon-project</v-icon>Project
               </nuxt-link>/
               <nuxt-link
-                v-if="selectedTask.isParent == false"
+                v-if="selectedTask.isParent == false || selectedTask.parent == false"
                 target="_blank"
                 :to="'/task/' + parent.taskId + '/?project=' + this.projectId"
                 style="text-decoration: none;"
@@ -294,7 +294,7 @@
                 <v-icon size="18" color="#0083E2">icon-task</v-icon>
                 {{ parent.secondaryTaskId }}
               </nuxt-link>
-              <span v-if="selectedTask.isParent == false">/</span>
+              <span v-if="selectedTask.isParent == false || selectedTask.parent == false">/</span>
 
               <nuxt-link
                 :to="
@@ -491,7 +491,7 @@
                       <add-parent-task
                         v-if="
                           children.length == 0 &&
-                            selectedTask.isParent == true &&
+                            selectedTask.isParent == true || selectedTask.parent == true &&
                             children.length == 0
                         "
                         :taskId="this.selectedTask.taskId"
@@ -502,7 +502,7 @@
                     <div class="addChBtnSection">
                       <add-child-task
                         @clearStore="clearStore()"
-                        v-if="selectedTask.isParent == true"
+                        v-if="selectedTask.isParent == true || selectedTask.parent == true"
                         :taskId="selectedTask.taskId"
                         :projectId="this.projectId"
                       />
@@ -511,7 +511,7 @@
                   <br />
                   <br />
                   <!-- ----------- parent task section --------- -->
-                  <div v-if="selectedTask.isParent == false">
+                  <div v-if="selectedTask.isParent == false || selectedTask.parent == false">
                     <div class="expansionViewHeader topItemTaskView">
                       <v-list-item class="taskViewTitleSection">
                         <v-list-item-icon>
@@ -581,7 +581,7 @@
                     <v-divider></v-divider>
                   </div>
                   <!-- -------------- child tasks section ----------- -->
-                  <div v-if="selectedTask.isParent == true">
+                  <div v-if="selectedTask.isParent == true || selectedTask.parent == true">
                     <div class="expansionViewHeader">
                       <v-list-group>
                         <template v-slot:activator>
@@ -680,7 +680,7 @@
                         <v-row class="mb-12" no-gutters>
                           <v-col sm="12" md="12">
                             <v-select
-                              v-if="selectedTask.isParent == true"
+                              v-if="selectedTask.isParent == true || selectedTask.parent == true"
                               :menu-props="{ maxHeight: '500' }"
                               dense
                               v-model="selectedSprint"
