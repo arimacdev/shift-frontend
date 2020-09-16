@@ -76,11 +76,11 @@ export const actions = {
         },
       });
       commit('SET_USERS', userResponse.data);
-      console.log(
-        '###############' +
-          process.env.SYSTEM_URL +
-          '/auth/realms/pm-tool/protocol/openid-connect/token'
-      );
+      // console.log(
+      //   '###############' +
+      //     process.env.SYSTEM_URL +
+      //     '/auth/realms/pm-tool/protocol/openid-connect/token'
+      // );
     } catch (e) {
       console.log('Error fetching user from store =', e);
       if (e.response.status == 422) {

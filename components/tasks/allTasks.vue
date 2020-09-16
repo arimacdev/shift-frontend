@@ -597,21 +597,21 @@
             </v-list-item-action>
             <!-- <div class="tasklistFilterTaskNames restructuredMainTaskName"> -->
 
-            <v-list-item-content>
-              <nuxt-link
-                :to="'/task/' + task.taskId + '/?project=' + projectId"
-                style="text-decoration: none;"
-                target="_blank"
-              >
-                <div style="color: #576377">
-                  <span class="restructuredMainTaskCode fontRestructure12">
-                    {{
-                    task.secondaryTaskId
-                    }}
-                  </span>
-                  {{ task.taskName }}
-                </div>
-              </nuxt-link>
+            <v-list-item-content
+              style="cursor: pointer"
+              @click="
+                        selectTask(task, task);
+                        taskDialog = true;
+                      "
+            >
+              <div style="color: #576377">
+                <span class="restructuredMainTaskCode fontRestructure12">
+                  {{
+                  task.secondaryTaskId
+                  }}
+                </span>
+                {{ task.taskName }}
+              </div>
             </v-list-item-content>
             <!-- </div> -->
             <!-- <div
@@ -632,7 +632,7 @@
                 <span class="fontRestructure12">{{ taskTypeFormatting(task.issueType) }}</span>
               </v-chip>
             </v-list-item-action>
-            <v-list-item-action class="updatedDate">
+            <v-list-item-action class="updatedDateFilter">
               <v-list-item-title
                 class="fontRestructure12"
                 :class="dueDateCheck(task)"
@@ -655,6 +655,15 @@
               <span>{{ task.firstName }} {{ task.lastName }}</span>
             </v-tooltip>
             <!-- </div> -->
+            <v-list-item-action style="cursor: pointer">
+              <nuxt-link
+                :to="'/task/' + task.taskId + '/?project=' + projectId"
+                style="text-decoration: none;"
+                target="_blank"
+              >
+                <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
+              </nuxt-link>
+            </v-list-item-action>
           </v-list-item>
         </div>
       </div>
@@ -1499,13 +1508,17 @@ export default {
       }
     },
     taskDialogClosing() {
+      if (this.filterList != "" && this.taskFilter != "none") {
+        console.log("TRIGGERED");
+        this.jqlSearch();
+      }
+      this.taskDialog = false;
       console.log("Task Dialog Closing");
       if (this.stomp !== null) {
         this.stomp.disconnect(() => {
           console.log("client disconnected");
         });
       }
-      this.taskDialog = false;
     },
     // async filterTasks(filterType, assignee, from, to, issueType) {
     //   console.log(
@@ -1817,18 +1830,45 @@ export default {
         this.assignee = response.data.data;
       });
       this.$store.dispatch("user/setSelectedTaskUser", task.taskAssignee);
-      if (this.task.isParent) {
-        // console.log("parent task");
-        this.$store.dispatch("task/fetchChildren", {
-          projectId: this.projectId,
-          taskId: this.task.taskId,
-        });
+      if (this.filterList != "" && this.taskFilter != "none") {
+        if (this.task.parent) {
+          console.log("parent task 1");
+          this.$store.dispatch("task/fetchChildren", {
+            projectId: this.projectId,
+            taskId: this.task.taskId,
+          });
+        } else {
+          this.$store.dispatch("task/fetchParentTask", {
+            projectId: this.projectId,
+            taskId: this.task.parentId,
+          });
+        }
       } else {
-        this.$store.dispatch("task/fetchParentTask", {
-          projectId: this.projectId,
-          taskId: this.task.parentId,
-        });
+        if (this.task.isParent) {
+          console.log("parent task 2");
+          this.$store.dispatch("task/fetchChildren", {
+            projectId: this.projectId,
+            taskId: this.task.taskId,
+          });
+        } else {
+          this.$store.dispatch("task/fetchParentTask", {
+            projectId: this.projectId,
+            taskId: this.task.parentId,
+          });
+        }
       }
+      // if (this.task.isParent) {
+      //   // console.log("parent task");
+      //   this.$store.dispatch("task/fetchChildren", {
+      //     projectId: this.projectId,
+      //     taskId: this.task.taskId,
+      //   });
+      // } else {
+      //   this.$store.dispatch("task/fetchParentTask", {
+      //     projectId: this.projectId,
+      //     taskId: this.task.parentId,
+      //   });
+      // }
       let taskFilesResponse;
       try {
         taskFilesResponse = await this.$axios.$get(
