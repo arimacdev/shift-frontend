@@ -11,7 +11,7 @@ export const mutations = {
   SET_ACTIVITY_LOG(state, activityLog) {
     state.activityLog = activityLog;
     state.projectLogs = state.projectLogs.concat(activityLog.activityLogList);
-    console.log(state.projectLogs);
+    // console.log(state.projectLogs);
   },
 };
 

@@ -4,9 +4,7 @@
       <v-btn icon dark @click="taskDialogClosing()">
         <v-icon>mdi-close</v-icon>
       </v-btn>
-      <v-toolbar-title class="font-weight-bold">
-        {{ taskName }}
-      </v-toolbar-title>
+      <v-toolbar-title class="font-weight-bold">{{ taskName }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <!-- <v-btn dark text @click="dialog = false">Save</v-btn> -->
@@ -68,6 +66,19 @@
                 <span class="secondaryId"
                   >#{{ selectedTask.secondaryTaskId }}</span
                 >
+                <input type="hidden" id="testing-code" :value="getTaskName()" />
+                <v-tooltip top>
+                  <template v-slot:activator="{ on }">
+                    <v-icon
+                      class="copyIcon"
+                      size="15"
+                      @click.stop.prevent="copyName()"
+                      v-on="on"
+                      >mdi-content-copy</v-icon
+                    >
+                  </template>
+                  <span>Copy Task Name</span>
+                </v-tooltip>
               </div>
             </v-col>
             <v-col sm="2" md="2">
@@ -302,7 +313,9 @@
                 >Project </nuxt-link
               >/
               <nuxt-link
-                v-if="selectedTask.isParent == false"
+                v-if="
+                  selectedTask.isParent == false || selectedTask.parent == false
+                "
                 target="_blank"
                 :to="'/task/' + parent.taskId + '/?project=' + this.projectId"
                 style="text-decoration: none;"
@@ -310,7 +323,12 @@
                 <v-icon size="18" color="#0083E2">icon-task</v-icon>
                 {{ parent.secondaryTaskId }}
               </nuxt-link>
-              <span v-if="selectedTask.isParent == false">/</span>
+              <span
+                v-if="
+                  selectedTask.isParent == false || selectedTask.parent == false
+                "
+                >/</span
+              >
 
               <nuxt-link
                 :to="
@@ -513,17 +531,23 @@
                     <div class="addChBtnSection">
                       <add-parent-task
                         v-if="
-                          children.length == 0 &&
-                            selectedTask.isParent == true &&
-                            children.length == 0
+                          (children.length == 0 &&
+                            selectedTask.isParent == true) ||
+                            (selectedTask.parent == true &&
+                              children.length == 0)
                         "
                         :taskId="this.selectedTask.taskId"
                         :projectId="this.projectId"
+                        @clearStore="clearStore()"
                       />
                     </div>
                     <div class="addChBtnSection">
                       <add-child-task
-                        v-if="selectedTask.isParent == true"
+                        @clearStore="clearStore()"
+                        v-if="
+                          selectedTask.isParent == true ||
+                            selectedTask.parent == true
+                        "
                         :taskId="selectedTask.taskId"
                         :projectId="this.projectId"
                       />
@@ -532,7 +556,12 @@
                   <br />
                   <br />
                   <!-- ----------- parent task section --------- -->
-                  <div v-if="selectedTask.isParent == false">
+                  <div
+                    v-if="
+                      selectedTask.isParent == false ||
+                        selectedTask.parent == false
+                    "
+                  >
                     <div class="expansionViewHeader topItemTaskView">
                       <v-list-item class="taskViewTitleSection">
                         <v-list-item-icon>
@@ -561,21 +590,21 @@
                             </v-list-item-action>
                             <v-list-item-action
                               style="font-size: 14px; font-weight: 800; padding-right: 20px"
+                              >{{ parent.secondaryTaskId }}</v-list-item-action
                             >
-                              {{ parent.secondaryTaskId }}
-                            </v-list-item-action>
                             <v-list-item-content style="width: 200px">
-                              <v-list-item-title>
-                                {{ parent.taskName }}
-                              </v-list-item-title>
+                              <v-list-item-title>{{
+                                parent.taskName
+                              }}</v-list-item-title>
                             </v-list-item-content>
                             <div>
                               <v-list-item-action>
                                 <v-list-item-sub-title
                                   :class="dueDateCheck(parent)"
+                                  >{{
+                                    getProjectDates(parent.taskDueDateAt)
+                                  }}</v-list-item-sub-title
                                 >
-                                  {{ getProjectDates(parent.taskDueDateAt) }}
-                                </v-list-item-sub-title>
                               </v-list-item-action>
                             </div>
                             <div>
@@ -615,7 +644,12 @@
                     <v-divider></v-divider>
                   </div>
                   <!-- -------------- child tasks section ----------- -->
-                  <div v-if="selectedTask.isParent == true">
+                  <div
+                    v-if="
+                      selectedTask.isParent == true ||
+                        selectedTask.parent == true
+                    "
+                  >
                     <div class="expansionViewHeader">
                       <v-list-group>
                         <template v-slot:activator>
@@ -651,14 +685,15 @@
                               </v-list-item-action>
                               <v-list-item-action
                                 style="font-size: 14px; font-weight: 800; padding-right: 20px"
+                                >{{
+                                  childTask.secondaryTaskId
+                                }}</v-list-item-action
                               >
-                                {{ childTask.secondaryTaskId }}
-                              </v-list-item-action>
 
                               <v-list-item-content style="width: 200px">
-                                <v-list-item-title>
-                                  {{ childTask.taskName }}
-                                </v-list-item-title>
+                                <v-list-item-title>{{
+                                  childTask.taskName
+                                }}</v-list-item-title>
                               </v-list-item-content>
 
                               <div>
@@ -727,7 +762,10 @@
                         <v-row class="mb-12" no-gutters>
                           <v-col sm="12" md="12">
                             <v-select
-                              v-if="selectedTask.isParent == true"
+                              v-if="
+                                selectedTask.isParent == true ||
+                                  selectedTask.parent == true
+                              "
                               :menu-props="{ maxHeight: '500' }"
                               dense
                               v-model="selectedSprint"
@@ -1159,10 +1197,9 @@
                   <v-list-item-action>
                     <v-icon size="15" color="red">mdi-alert-outline</v-icon>
                   </v-list-item-action>
-                  <v-list-item-content class="userBlockedWarning"
-                    >Assignee is no longer a participant of the
-                    project</v-list-item-content
-                  >
+                  <v-list-item-content class="userBlockedWarning">
+                    Assignee is no longer a participant of the project
+                  </v-list-item-content>
                 </v-list-item>
                 <div class="rightSideColumn">
                   <!-- -------------- notes section ------------- -->
@@ -1270,9 +1307,11 @@
                             >{{ file.taskFileName }}</a
                           >
                         </v-list-item-title>
-                        <v-list-item-subtitle class="fileSubTitles">
-                          {{ file.taskFileSize / 1000 }}KB
-                        </v-list-item-subtitle>
+                        <v-list-item-subtitle class="fileSubTitles"
+                          >{{
+                            file.taskFileSize / 1000
+                          }}KB</v-list-item-subtitle
+                        >
                       </v-list-item-content>
                       <v-list-item-content>
                         <v-list-item-title class="fileTitles">
@@ -1280,9 +1319,9 @@
                           {{ file.lastName }}
                         </v-list-item-title>
 
-                        <v-list-item-subtitle class="fileSubTitles">
-                          {{ getProjectDates(file.taskFileDate) }}
-                        </v-list-item-subtitle>
+                        <v-list-item-subtitle class="fileSubTitles">{{
+                          getProjectDates(file.taskFileDate)
+                        }}</v-list-item-subtitle>
                       </v-list-item-content>
                       <v-list-item-action>
                         <a
@@ -1616,6 +1655,30 @@ export default {
     };
   },
   methods: {
+    getTaskName() {
+      let name =
+        this.selectedTask.secondaryTaskId + ' ' + this.selectedTask.taskName;
+      return name;
+    },
+    copyName() {
+      let testingCodeToCopy = document.querySelector('#testing-code');
+      testingCodeToCopy.setAttribute('type', 'text');
+      testingCodeToCopy.select();
+
+      try {
+        var successful = document.execCommand('copy');
+        var msg = successful ? 'successful' : 'unsuccessful';
+      } catch (err) {
+        console.log('Error: ' + err);
+      }
+
+      /* unselect the range */
+      testingCodeToCopy.setAttribute('type', 'hidden');
+      window.getSelection().removeAllRanges();
+    },
+    clearStore() {
+      this.$emit('clearStore');
+    },
     statusCheck(task) {
       switch (task) {
         case 'pending':
@@ -2537,63 +2600,49 @@ export default {
     // --------- upload task files ----------
 
     async taskFileUpload() {
-      //this.waiting = true;
+      this.waiting = true;
       if (this.files != null) {
         for (let index = 0; index < this.files.length; ++index) {
-          let fileSize = this.files[index].size / 1000000;
           this.uploadLoading = true;
-          if (Math.floor(fileSize) > 5) {
-            const errorMessage = {
-              message: 'File Size too Large',
-              status: 422,
-            };
-            // this.waiting = false;
-            this.errorMessage = errorMessage;
+          let formData = new FormData();
+          formData.append('files', this.files[index]);
+          formData.append('type', 'profileImage');
+          formData.append('taskType', 'project');
+          let fileResponse;
+          try {
+            fileResponse = await this.$axios.$post(
+              `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}/upload`,
+              formData,
+              {
+                headers: {
+                  user: this.userId,
+                },
+              }
+            );
+            this.$store.dispatch('task/appendTaskFile', fileResponse.data);
+            this.$store.dispatch('activityLog/fetchTaskActivityLog', {
+              taskId: this.selectedTask.taskId,
+              startIndex: 0,
+              endIndex: 10,
+            });
+            this.uploadLoading = false;
+            this.component = 'success-popup';
+            this.successMessage = 'File(s) successfully uploaded';
+            setTimeout(() => {
+              this.close();
+            }, 3000);
+            this.waiting = false;
+            // console.log("file response", this.taskFiles);
+          } catch (e) {
+            this.waiting = false;
+            console.log('Error adding group file', e);
+            this.errorMessage = e.response.data;
             this.component = 'error-popup';
             setTimeout(() => {
               this.close();
             }, 3000);
-          } else {
-            let formData = new FormData();
-            formData.append('files', this.files[index]);
-            formData.append('type', 'profileImage');
-            formData.append('taskType', 'project');
-            let fileResponse;
-            try {
-              fileResponse = await this.$axios.$post(
-                `/projects/${this.projectId}/tasks/${this.selectedTask.taskId}/upload`,
-                formData,
-                {
-                  headers: {
-                    user: this.userId,
-                  },
-                }
-              );
-              this.$store.dispatch('task/appendTaskFile', fileResponse.data);
-              this.$store.dispatch('activityLog/fetchTaskActivityLog', {
-                taskId: this.selectedTask.taskId,
-                startIndex: 0,
-                endIndex: 10,
-              });
-              this.uploadLoading = false;
-              this.component = 'success-popup';
-              this.successMessage = 'File(s) successfully uploaded';
-              setTimeout(() => {
-                this.close();
-              }, 3000);
-              this.waiting = false;
-              // console.log("file response", this.taskFiles);
-            } catch (e) {
-              this.waiting = false;
-              console.log('Error adding group file', e);
-              this.errorMessage = e.response.data;
-              this.component = 'error-popup';
-              setTimeout(() => {
-                this.close();
-              }, 3000);
 
-              this.uploadLoading = false;
-            }
+            this.uploadLoading = false;
           }
         }
       }
@@ -2862,7 +2911,6 @@ export default {
     },
     taskNote: {
       get() {
-        console.log('task note invoked ', this.selectedTask.taskNote);
         return this.selectedTask.taskNote;
       },
       set(value) {

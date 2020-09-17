@@ -372,7 +372,7 @@
                       "
                       @input="autoFillingSubTask(index)"
                     ></v-text-field>
-                    <div v-else hidden>{{clearTaskName()}}</div>
+                    <div v-else hidden>{{ clearTaskName() }}</div>
                   </v-expand-transition>
                   <div
                     v-if="hover && subTagging"
@@ -556,7 +556,22 @@
           </v-expand-transition>
         </div>
       </v-hover>-->
+      <div
+        v-if="this.scrollCount <= Math.ceil(this.allTaskCount / 10)"
+        class="loadMoreTasks text-center"
+      >
+        <v-btn
+          v-if="projectsSummary != ''"
+          @click="loadMoreButtonAction()"
+          color="#ffffff"
+          depressed
+        >
+          <span style="color: #576377" class="text-capitalize">Load More Tasks</span>
+          <v-icon>mdi-chevron-down</v-icon>
+        </v-btn>
+      </div>
     </div>
+
     <!-- -------------- filter list -------------- -->
     <div v-else class="taskListViewContent filterListTop overflow-y-auto">
       <div v-if="this.filterList == ''" class="filterTitleDiv headline">No items to show</div>
@@ -579,19 +594,21 @@
             </v-list-item-action>
             <!-- <div class="tasklistFilterTaskNames restructuredMainTaskName"> -->
 
-            <v-list-item-content>
-              <nuxt-link
-                :to="'/task/' + task.taskId + '/?project=' + projectId"
-                style="text-decoration: none;"
-                target="_blank"
-              >
-                <div style="color: #576377">
-                  <span
-                    class="restructuredMainTaskCode fontRestructure12"
-                  >{{ task.secondaryTaskId }}</span>
-                  {{ task.taskName }}
-                </div>
-              </nuxt-link>
+            <v-list-item-content
+              style="cursor: pointer"
+              @click="
+                        selectTask(task, task);
+                        taskDialog = true;
+                      "
+            >
+              <div style="color: #576377">
+                <span class="restructuredMainTaskCode fontRestructure12">
+                  {{
+                  task.secondaryTaskId
+                  }}
+                </span>
+                {{ task.taskName }}
+              </div>
             </v-list-item-content>
             <!-- </div> -->
             <!-- <div
@@ -620,7 +637,7 @@
                 </span>
               </v-chip>
             </v-list-item-action>
-            <v-list-item-action class="updatedDate">
+            <v-list-item-action class="updatedDateFilter">
               <v-list-item-title
                 class="fontRestructure12"
                 :class="dueDateCheck(task)"
@@ -643,6 +660,15 @@
               <span>{{ task.firstName }} {{ task.lastName }}</span>
             </v-tooltip>
             <!-- </div> -->
+            <v-list-item-action style="cursor: pointer">
+              <nuxt-link
+                :to="'/task/' + task.taskId + '/?project=' + projectId"
+                style="text-decoration: none;"
+                target="_blank"
+              >
+                <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
+              </nuxt-link>
+            </v-list-item-action>
           </v-list-item>
         </div>
       </div>
@@ -927,6 +953,10 @@ export default {
         }
       };
     },
+    loadMoreButtonAction() {
+      this.scrollCount = this.scrollCount + 1;
+      this.getAllTasksLazyLoading(this.scrollCount);
+    },
     getAllTasksLazyLoading(scrollCount) {
       this.overlay = true;
       Promise.all([
@@ -1145,6 +1175,7 @@ export default {
     },
     async closeTask(taskId, filter) {
       this.waiting = true;
+
       // console.log("onchange updated status ->");
       let response;
       try {
@@ -1159,14 +1190,6 @@ export default {
             },
           }
         );
-
-        this.$store.dispatch("task/emptyStore");
-        this.scrollCount = 1;
-        this.$store.dispatch("task/setIndex", {
-          startIndex: 0,
-          endIndex: 10,
-          isAllTasks: false,
-        });
 
         this.$store.dispatch("activityLog/fetchTaskActivityLog", {
           taskId: taskId,
@@ -1184,7 +1207,7 @@ export default {
         }, 3000);
         this.waiting = false;
 
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+        this.clearStore();
 
         // console.log("update task status response", response);
       } catch (e) {
@@ -1491,13 +1514,17 @@ export default {
       }
     },
     taskDialogClosing() {
+      if (this.filterList != "" && this.taskFilter != "none") {
+        console.log("TRIGGERED");
+        this.jqlSearch();
+      }
+      this.taskDialog = false;
       console.log("Task Dialog Closing");
       if (this.stomp !== null) {
         this.stomp.disconnect(() => {
           console.log("client disconnected");
         });
       }
-      this.taskDialog = false;
     },
     // async filterTasks(filterType, assignee, from, to, issueType) {
     //   console.log(
@@ -1561,75 +1588,81 @@ export default {
       this.component = "";
     },
     async addTask(selectedParentTask, issueType) {
-      this.scrollCount = 1;
-      this.overlay = true;
-      let response;
-      let taskName;
-      let assignee;
-
-      if (!this.updatedTask.taskName.includes("@")) {
-        this.assigneeId = "";
-      }
-      if (!this.updatedTask.taskName.includes("#")) {
-        this.selectedDueDate = "";
-      }
-
-      if (this.assigneeId != "" && this.selectedDueDate == "") {
-        taskName = this.updatedTask.taskName.split("@")[0];
-        assignee = this.assigneeId;
-      } else if (this.selectedDueDate != "" && this.assigneeId != "") {
-        taskName = this.updatedTask.taskName.split("@")[0];
-        assignee = this.assigneeId;
-      } else if (this.selectedDueDate != "" && this.assigneeId == "") {
-        taskName = this.updatedTask.taskName.split("#")[0];
-      } else {
-        taskName = this.updatedTask.taskName;
-        assignee = this.userId;
-      }
-
-      try {
-        response = await this.$axios.$post(
-          `/projects/${this.projectId}/tasks`,
-          {
-            taskName: taskName,
-            projectId: this.projectId,
-            taskInitiator: this.userId,
-            taskAssignee: assignee,
-            taskDueDate: new Date(this.selectedDueDate),
-            taskRemindOnDate: "",
-            taskStatus: null,
-            taskNotes: "",
-            issueType: issueType,
-            parentTaskId: selectedParentTask,
-          }
-        );
-        this.$refs.form.reset();
-        this.component = "success-popup";
-        this.successMessage = "Task added successfully";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        this.overlay = false;
-        this.selectedDueDate = "";
-        this.assigneeId = "";
+      if (
+        this.updatedTask.taskName != "" ||
+        this.updatedTask.taskName != null
+      ) {
         this.scrollCount = 1;
-        this.$store.dispatch("task/emptyStore");
-        this.$store.dispatch("task/setIndex", {
-          startIndex: 0,
-          endIndex: 10,
-          isAllTasks: false,
-        });
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
-      } catch (e) {
-        this.overlay = false;
-        this.selectedDueDate = "";
-        this.assigneeId = "";
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        console.log("Error updating a status", e);
+        this.overlay = true;
+        let response;
+        let taskName;
+        let assignee;
+
+        if (!this.updatedTask.taskName.includes("@")) {
+          this.assigneeId = "";
+        }
+        if (!this.updatedTask.taskName.includes("#")) {
+          this.selectedDueDate = "";
+        }
+
+        if (this.assigneeId != "" && this.selectedDueDate == "") {
+          taskName = this.updatedTask.taskName.split("@")[0];
+          assignee = this.assigneeId;
+        } else if (this.selectedDueDate != "" && this.assigneeId != "") {
+          taskName = this.updatedTask.taskName.split("@")[0];
+          assignee = this.assigneeId;
+        } else if (this.selectedDueDate != "" && this.assigneeId == "") {
+          taskName = this.updatedTask.taskName.split("#")[0];
+        } else {
+          taskName = this.updatedTask.taskName;
+          assignee = this.userId;
+        }
+
+        try {
+          response = await this.$axios.$post(
+            `/projects/${this.projectId}/tasks`,
+            {
+              taskName: taskName,
+              projectId: this.projectId,
+              taskInitiator: this.userId,
+              taskAssignee: assignee,
+              taskDueDate: new Date(this.selectedDueDate),
+              taskRemindOnDate: "",
+              taskStatus: null,
+              taskNotes: "",
+              issueType: issueType,
+              parentTaskId: selectedParentTask,
+            }
+          );
+          this.$refs.form.reset();
+          this.component = "success-popup";
+          this.successMessage = "Task added successfully";
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          this.overlay = false;
+          this.selectedDueDate = "";
+          this.assigneeId = "";
+          this.scrollCount = 1;
+          this.$store.dispatch("task/emptyStore");
+          this.$store.dispatch("task/setIndex", {
+            startIndex: 0,
+            endIndex: 10,
+            isAllTasks: false,
+          });
+          this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+          this.updatedTask.taskName = "";
+        } catch (e) {
+          this.overlay = false;
+          this.selectedDueDate = "";
+          this.assigneeId = "";
+          this.errorMessage = e.response.data;
+          this.component = "error-popup";
+          setTimeout(() => {
+            this.close();
+          }, 3000);
+          console.log("Error updating a status", e);
+        }
       }
     },
     async addSubTask(index, selectedParentTask, issueType, sprintId, dueDate) {
@@ -1803,18 +1836,45 @@ export default {
         this.assignee = response.data.data;
       });
       this.$store.dispatch("user/setSelectedTaskUser", task.taskAssignee);
-      if (this.task.isParent) {
-        // console.log("parent task");
-        this.$store.dispatch("task/fetchChildren", {
-          projectId: this.projectId,
-          taskId: this.task.taskId,
-        });
+      if (this.filterList != "" && this.taskFilter != "none") {
+        if (this.task.parent) {
+          console.log("parent task 1");
+          this.$store.dispatch("task/fetchChildren", {
+            projectId: this.projectId,
+            taskId: this.task.taskId,
+          });
+        } else {
+          this.$store.dispatch("task/fetchParentTask", {
+            projectId: this.projectId,
+            taskId: this.task.parentId,
+          });
+        }
       } else {
-        this.$store.dispatch("task/fetchParentTask", {
-          projectId: this.projectId,
-          taskId: this.task.parentId,
-        });
+        if (this.task.isParent) {
+          console.log("parent task 2");
+          this.$store.dispatch("task/fetchChildren", {
+            projectId: this.projectId,
+            taskId: this.task.taskId,
+          });
+        } else {
+          this.$store.dispatch("task/fetchParentTask", {
+            projectId: this.projectId,
+            taskId: this.task.parentId,
+          });
+        }
       }
+      // if (this.task.isParent) {
+      //   // console.log("parent task");
+      //   this.$store.dispatch("task/fetchChildren", {
+      //     projectId: this.projectId,
+      //     taskId: this.task.taskId,
+      //   });
+      // } else {
+      //   this.$store.dispatch("task/fetchParentTask", {
+      //     projectId: this.projectId,
+      //     taskId: this.task.parentId,
+      //   });
+      // }
       let taskFilesResponse;
       try {
         taskFilesResponse = await this.$axios.$get(

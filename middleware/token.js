@@ -2,7 +2,11 @@ import jwt from 'jsonwebtoken';
 
 export default async function({ store, error, app }) {
   let token = ' ' + app.$auth.getToken('keycloak');
+  let re_token = ' ' + app.$auth.getRefreshToken('keycloak');
+
+  let refresh_token = re_token.slice(8, re_token.length).trimLeft();
   store.commit('user/setAccessToken', token);
+  store.commit('user/setRefreshToken', refresh_token);
   token = token.slice(8, token.length).trimLeft();
   const decodedJwt = jwt.decode(token);
   const currentTime = new Date();
@@ -30,7 +34,7 @@ export default async function({ store, error, app }) {
       }
     });
     // if (organizationRole.indexOf('SUPER_ADMIN') > -1) {
-    console.log('user roles --->', userRoles);
+    // console.log('user roles --->', userRoles);
     store.commit('user/setOrganizationalRole', userRoles);
     // } else {
     //   // console.log('user role --->', 'USER');

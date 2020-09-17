@@ -1,5 +1,7 @@
+import qs from 'qs';
 export const state = () => ({
   access_token: '',
+  refresh_token: '',
   userId: '',
   organizationalRoles: [],
   users: [],
@@ -12,7 +14,11 @@ export const state = () => ({
 
 export const mutations = {
   setAccessToken(state, value) {
+    // console.log('Token Changed ' + value);
     state.access_token = value;
+  },
+  setRefreshToken(state, value) {
+    state.refresh_token = value;
   },
   setUserId(state, value) {
     state.userId = value;
@@ -70,9 +76,50 @@ export const actions = {
         },
       });
       commit('SET_USERS', userResponse.data);
-      // console.log('fetch all user response from store', userResponse.data);
+      // console.log(
+      //   '###############' +
+      //     process.env.SYSTEM_URL +
+      //     '/auth/realms/pm-tool/protocol/openid-connect/token'
+      // );
     } catch (e) {
-      console.log('Error fetching user from store', e);
+      console.log('Error fetching user from store =', e);
+      if (e.response.status == 422) {
+        const refresh_token = rootState.user.refresh_token;
+        // console.log('REFRESH ' + refresh_token);
+
+        const requestBody = {
+          refresh_token: refresh_token,
+          client_id: 'pmtool-frontend',
+          grant_type: 'refresh_token',
+        };
+        const config = {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        };
+        // const url = 'https://pmtool.devops.arimac.xyz/auth/realms/pm-tool/protocol/openid-connect/token';
+
+        const url =
+          process.env.SYSTEM_URL +
+          '/auth/realms/pm-tool/protocol/openid-connect/token';
+
+        const response = await this.$axios.post(
+          url,
+          qs.stringify(requestBody),
+          config
+        );
+
+        // store.commit('user/setAccessToken', response.access_token);
+
+        // commit('setAccessToken', 'Bearer ' + response.data.access_token);
+
+        this.$auth.setToken('keycloak', 'Bearer ' + response.data.access_token);
+
+        // console.log(
+        //   'RESPONSE_------->' + 'Bearer ' + response.data.access_token
+        // );
+        location.reload();
+      }
     }
   },
 
