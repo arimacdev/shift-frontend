@@ -160,6 +160,11 @@ export default {
           route: "../../skills/skills",
         },
         { title: "Admin", icon: "icon-admin", route: "../../admin/admin" },
+        {
+          title: "Analytics",
+          icon: "icon-summary",
+          route: "../../analytics/analytics",
+        },
       ],
       mini: true,
       userItems: [

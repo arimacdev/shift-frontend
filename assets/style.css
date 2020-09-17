@@ -2616,7 +2616,7 @@
 .parentChildPopup {
   z-index: 1000;
   position: fixed;
-  bottom: 0;
+  bottom: 40px;
   right: 40px;
 }
 
