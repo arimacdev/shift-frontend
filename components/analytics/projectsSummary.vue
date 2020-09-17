@@ -11,8 +11,12 @@
                 <v-icon size="20">icon-project</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-subtitle class="leadsSubTitle">Total Projects</v-list-item-subtitle>
-                <v-list-item-title class="leadsTitle">{{projectsOverview.totalProjects.value}}</v-list-item-title>
+                <v-list-item-subtitle class="leadsSubTitle"
+                  >Total Projects</v-list-item-subtitle
+                >
+                <v-list-item-title class="leadsTitle">{{
+                  projectsOverview.totalProjects.value
+                }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </div>
@@ -20,22 +24,33 @@
             <span
               style="font-size: 10px; color: #66B25F !important"
               v-if="projectsOverview.totalProjects.performance == 'increase'"
-            >&#x2191;</span>
+              >&#x2191;</span
+            >
             <span
               style="font-size: 10px; color: #E07857 !important"
-              v-else-if="projectsOverview.totalProjects.performance == 'decrese'"
-            >&#x2193;</span>
-            <span style="font-size: 10px; color: #67D2E0 !important" v-else>&#x2195;</span>
+              v-else-if="
+                projectsOverview.totalProjects.performance == 'decrese'
+              "
+              >&#x2193;</span
+            >
+            <span style="font-size: 10px; color: #67D2E0 !important" v-else
+              >&#x2195;</span
+            >
             (
             <span
               style="font-size: 10px; color: #66B25F !important"
               v-if="projectsOverview.totalProjects.performance == 'increase'"
-            >+</span>
+              >+</span
+            >
             <span
               style="font-size: 10px; color: #E07857 !important"
-              v-else-if="projectsOverview.totalProjects.performance == 'decrese'"
-            >-</span>
-            {{projectsOverview.totalProjects.percentage}}%) over the past {{projectsOverview.totalProjects.days}} days
+              v-else-if="
+                projectsOverview.totalProjects.performance == 'decrese'
+              "
+              >-</span
+            >
+            {{ projectsOverview.totalProjects.percentage }}%) over the past
+            {{ projectsOverview.totalProjects.days }} days
           </div>
         </div>
         <div class="leadsDisplay">
@@ -47,8 +62,12 @@
                 <v-icon size="20">icon-project</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-subtitle class="leadsSubTitle">Pending Leads</v-list-item-subtitle>
-                <v-list-item-title class="leadsTitle">{{projectsOverview.leadsPending.value}}</v-list-item-title>
+                <v-list-item-subtitle class="leadsSubTitle"
+                  >Pending Leads</v-list-item-subtitle
+                >
+                <v-list-item-title class="leadsTitle">{{
+                  projectsOverview.leadsPending.value
+                }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </div>
@@ -56,22 +75,29 @@
             <span
               style="font-size: 10px; color: #66B25F !important"
               v-if="projectsOverview.leadsPending.performance == 'increase'"
-            >&#x2191;</span>
+              >&#x2191;</span
+            >
             <span
               style="font-size: 10px; color: #E07857 !important"
               v-else-if="projectsOverview.leadsPending.performance == 'decrese'"
-            >&#x2193;</span>
-            <span style="font-size: 10px; color: #67D2E0 !important" v-else>&#x2195;</span>
+              >&#x2193;</span
+            >
+            <span style="font-size: 10px; color: #67D2E0 !important" v-else
+              >&#x2195;</span
+            >
             (
             <span
               style="font-size: 10px; color: #66B25F !important"
               v-if="projectsOverview.leadsPending.performance == 'increase'"
-            >+</span>
+              >+</span
+            >
             <span
               style="font-size: 10px; color: #E07857 !important"
               v-else-if="projectsOverview.leadsPending.performance == 'decrese'"
-            >-</span>
-            {{projectsOverview.leadsPending.percentage}}%) over the past {{projectsOverview.leadsPending.days}} days
+              >-</span
+            >
+            {{ projectsOverview.leadsPending.percentage }}%) over the past
+            {{ projectsOverview.leadsPending.days }} days
           </div>
         </div>
         <div class="leadsDisplay">
@@ -83,8 +109,12 @@
                 <v-icon size="20">icon-project</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-subtitle class="leadsSubTitle">Leads Ongoing</v-list-item-subtitle>
-                <v-list-item-title class="leadsTitle">{{projectsOverview.leadsOngoing.value}}</v-list-item-title>
+                <v-list-item-subtitle class="leadsSubTitle"
+                  >Leads Ongoing</v-list-item-subtitle
+                >
+                <v-list-item-title class="leadsTitle">{{
+                  projectsOverview.leadsOngoing.value
+                }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </div>
@@ -92,22 +122,29 @@
             <span
               style="font-size: 10px; color: #66B25F !important"
               v-if="projectsOverview.leadsOngoing.performance == 'increase'"
-            >&#x2191;</span>
+              >&#x2191;</span
+            >
             <span
               style="font-size: 10px; color: #E07857 !important"
               v-else-if="projectsOverview.leadsOngoing.performance == 'decrese'"
-            >&#x2193;</span>
-            <span style="font-size: 10px; color: #67D2E0 !important" v-else>&#x2195;</span>
+              >&#x2193;</span
+            >
+            <span style="font-size: 10px; color: #67D2E0 !important" v-else
+              >&#x2195;</span
+            >
             (
             <span
               style="font-size: 10px; color: #66B25F !important"
               v-if="projectsOverview.leadsOngoing.performance == 'increase'"
-            >+</span>
+              >+</span
+            >
             <span
               style="font-size: 10px; color: #E07857 !important"
               v-else-if="projectsOverview.leadsOngoing.performance == 'decrese'"
-            >-</span>
-            {{projectsOverview.leadsOngoing.percentage}}%) over the past {{projectsOverview.leadsOngoing.days}} days
+              >-</span
+            >
+            {{ projectsOverview.leadsOngoing.percentage }}%) over the past
+            {{ projectsOverview.leadsOngoing.days }} days
           </div>
         </div>
         <div class="leadsDisplay">
@@ -119,8 +156,14 @@
                 <v-icon size="20">icon-project</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-subtitle class="leadsSubTitle">Lead Conversion</v-list-item-subtitle>
-                <v-list-item-title class="leadsTitle">{{projectsOverview.leadConversion.value}}%</v-list-item-title>
+                <v-list-item-subtitle class="leadsSubTitle"
+                  >Lead Conversion</v-list-item-subtitle
+                >
+                <v-list-item-title class="leadsTitle"
+                  >{{
+                    projectsOverview.leadConversion.value
+                  }}%</v-list-item-title
+                >
               </v-list-item-content>
             </v-list-item>
           </div>
@@ -128,22 +171,33 @@
             <span
               style="font-size: 10px; color: #66B25F !important"
               v-if="projectsOverview.leadConversion.performance == 'increase'"
-            >&#x2191;</span>
+              >&#x2191;</span
+            >
             <span
               style="font-size: 10px; color: #E07857 !important"
-              v-else-if="projectsOverview.leadConversion.performance == 'decrese'"
-            >&#x2193;</span>
-            <span style="font-size: 10px; color: #67D2E0 !important" v-else>&#x2195;</span>
+              v-else-if="
+                projectsOverview.leadConversion.performance == 'decrese'
+              "
+              >&#x2193;</span
+            >
+            <span style="font-size: 10px; color: #67D2E0 !important" v-else
+              >&#x2195;</span
+            >
             (
             <span
               style="font-size: 10px; color: #66B25F !important"
               v-if="projectsOverview.leadConversion.performance == 'increase'"
-            >+</span>
+              >+</span
+            >
             <span
               style="font-size: 10px; color: #E07857 !important"
-              v-else-if="projectsOverview.leadConversion.performance == 'decrese'"
-            >-</span>
-            {{projectsOverview.leadConversion.percentage}}%) over the past {{projectsOverview.leadConversion.days}} days
+              v-else-if="
+                projectsOverview.leadConversion.performance == 'decrese'
+              "
+              >-</span
+            >
+            {{ projectsOverview.leadConversion.percentage }}%) over the past
+            {{ projectsOverview.leadConversion.days }} days
           </div>
         </div>
         <div class="leadsDisplay">
@@ -179,12 +233,18 @@
                 </template>
                 <v-date-picker range v-model="dateRange" scrollable>
                   <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
+                  <v-btn text color="primary" @click="menu = false"
+                    >Cancel</v-btn
+                  >
                   <v-btn
                     text
                     color="primary"
-                    @click="$refs.menu.save(dateRange); filterOverview()"
-                  >OK</v-btn>
+                    @click="
+                      $refs.menu.save(dateRange);
+                      filterOverview();
+                    "
+                    >OK</v-btn
+                  >
                 </v-date-picker>
               </v-menu>
             </div>
@@ -229,8 +289,13 @@
               <v-btn
                 text
                 color="primary"
-                @click="$refs.menu2.save(dateRangeFilter); loadFilterSummary(); loadFilterDetails() "
-              >OK</v-btn>
+                @click="
+                  $refs.menu2.save(dateRangeFilter);
+                  loadFilterSummary();
+                  loadFilterDetails();
+                "
+                >OK</v-btn
+              >
             </v-date-picker>
           </v-menu>
         </div>
@@ -303,12 +368,22 @@
               No of Tasks
               <v-icon
                 v-if="this.summaryOrder == 'DESC'"
-                @click="setSummaryOrderBy('total'); summaryOrder = 'ASC'; orderFilterSummary()"
-              >mdi-menu-down</v-icon>
+                @click="
+                  setSummaryOrderBy('total');
+                  summaryOrder = 'ASC';
+                  orderFilterSummary();
+                "
+                >mdi-menu-down</v-icon
+              >
               <v-icon
                 v-else
-                @click="setSummaryOrderBy('total'); summaryOrder = 'DESC'; orderFilterSummary()"
-              >mdi-menu-up</v-icon>
+                @click="
+                  setSummaryOrderBy('total');
+                  summaryOrder = 'DESC';
+                  orderFilterSummary();
+                "
+                >mdi-menu-up</v-icon
+              >
             </span>
           </v-list-item-content>
           <v-list-item-content>
@@ -316,12 +391,22 @@
               Completed Tasks
               <v-icon
                 v-if="this.summaryOrder == 'DESC'"
-                @click="setSummaryOrderBy('completed'); summaryOrder = 'ASC'; orderFilterSummary()"
-              >mdi-menu-down</v-icon>
+                @click="
+                  setSummaryOrderBy('completed');
+                  summaryOrder = 'ASC';
+                  orderFilterSummary();
+                "
+                >mdi-menu-down</v-icon
+              >
               <v-icon
                 v-else
-                @click="setSummaryOrderBy('completed'); summaryOrder = 'DESC'; orderFilterSummary()"
-              >mdi-menu-up</v-icon>
+                @click="
+                  setSummaryOrderBy('completed');
+                  summaryOrder = 'DESC';
+                  orderFilterSummary();
+                "
+                >mdi-menu-up</v-icon
+              >
             </span>
           </v-list-item-content>
           <v-list-item-content>
@@ -338,19 +423,31 @@
               class="tableContentRecord"
             >
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">{{project.projectName}}</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{
+                  project.projectName
+                }}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">{{getStatus(project.projectStatus)}}</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{
+                  getStatus(project.projectStatus)
+                }}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">{{project.totalTasks}}</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{
+                  project.totalTasks
+                }}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">{{project.completedTaskCount}}</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{
+                  project.completedTaskCount
+                }}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText" style="color: #66B25F !important">Healthy</v-list-item-subtitle>
+                <v-list-item-subtitle
+                  class="tableText"
+                  style="color: #66B25F !important"
+                  >Healthy</v-list-item-subtitle
+                >
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
@@ -362,7 +459,9 @@
               color="#ffffff"
               depressed
             >
-              <span style="color: #576377" class="text-capitalize">Load More</span>
+              <span style="color: #576377" class="text-capitalize"
+                >Load More</span
+              >
               <v-icon>mdi-chevron-down</v-icon>
             </v-btn>
           </div>
@@ -382,12 +481,22 @@
               Project
               <v-icon
                 v-if="this.detailsOrder == 'DESC'"
-                @click="setDetailsOrderBy('projectName'); detailsOrder = 'ASC'; orderDetailsSummary()"
-              >mdi-menu-down</v-icon>
+                @click="
+                  setDetailsOrderBy('projectName');
+                  detailsOrder = 'ASC';
+                  orderDetailsSummary();
+                "
+                >mdi-menu-down</v-icon
+              >
               <v-icon
                 v-else
-                @click="setDetailsOrderBy('projectName'); detailsOrder = 'DESC'; orderDetailsSummary()"
-              >mdi-menu-up</v-icon>
+                @click="
+                  setDetailsOrderBy('projectName');
+                  detailsOrder = 'DESC';
+                  orderDetailsSummary();
+                "
+                >mdi-menu-up</v-icon
+              >
             </span>
           </v-list-item-content>
           <v-list-item-content>
@@ -395,12 +504,22 @@
               Created
               <v-icon
                 v-if="this.detailsOrder == 'DESC'"
-                @click="setDetailsOrderBy('projectCreatedDate'); detailsOrder = 'ASC'; orderDetailsSummary()"
-              >mdi-menu-down</v-icon>
+                @click="
+                  setDetailsOrderBy('projectStartDate');
+                  detailsOrder = 'ASC';
+                  orderDetailsSummary();
+                "
+                >mdi-menu-down</v-icon
+              >
               <v-icon
                 v-else
-                @click="setDetailsOrderBy('projectCreatedDate'); detailsOrder = 'DESC'; orderDetailsSummary()"
-              >mdi-menu-up</v-icon>
+                @click="
+                  setDetailsOrderBy('projectStartDate');
+                  detailsOrder = 'DESC';
+                  orderDetailsSummary();
+                "
+                >mdi-menu-up</v-icon
+              >
             </span>
           </v-list-item-content>
           <v-list-item-content>
@@ -408,12 +527,22 @@
               Status
               <v-icon
                 v-if="this.detailsOrder == 'DESC'"
-                @click="setDetailsOrderBy('projectStatus'); detailsOrder = 'ASC'; orderDetailsSummary()"
-              >mdi-menu-down</v-icon>
+                @click="
+                  setDetailsOrderBy('projectStatus');
+                  detailsOrder = 'ASC';
+                  orderDetailsSummary();
+                "
+                >mdi-menu-down</v-icon
+              >
               <v-icon
                 v-else
-                @click="setDetailsOrderBy('projectStatus'); detailsOrder = 'DESC'; orderDetailsSummary()"
-              >mdi-menu-up</v-icon>
+                @click="
+                  setDetailsOrderBy('projectStatus');
+                  detailsOrder = 'DESC';
+                  orderDetailsSummary();
+                "
+                >mdi-menu-up</v-icon
+              >
             </span>
           </v-list-item-content>
           <v-list-item-content>
@@ -421,12 +550,22 @@
               Total Tasks
               <v-icon
                 v-if="this.detailsOrder == 'DESC'"
-                @click="setDetailsOrderBy('taskcount'); detailsOrder = 'ASC'; orderDetailsSummary()"
-              >mdi-menu-down</v-icon>
+                @click="
+                  setDetailsOrderBy('taskcount');
+                  detailsOrder = 'ASC';
+                  orderDetailsSummary();
+                "
+                >mdi-menu-down</v-icon
+              >
               <v-icon
                 v-else
-                @click="setDetailsOrderBy('taskcount'); detailsOrder = 'DESC'; orderDetailsSummary()"
-              >mdi-menu-up</v-icon>
+                @click="
+                  setDetailsOrderBy('taskcount');
+                  detailsOrder = 'DESC';
+                  orderDetailsSummary();
+                "
+                >mdi-menu-up</v-icon
+              >
             </span>
           </v-list-item-content>
           <v-list-item-content>
@@ -434,12 +573,22 @@
               Members
               <v-icon
                 v-if="this.detailsOrder == 'DESC'"
-                @click="setDetailsOrderBy('memberCount'); detailsOrder = 'ASC'; orderDetailsSummary()"
-              >mdi-menu-down</v-icon>
+                @click="
+                  setDetailsOrderBy('memberCount');
+                  detailsOrder = 'ASC';
+                  orderDetailsSummary();
+                "
+                >mdi-menu-down</v-icon
+              >
               <v-icon
                 v-else
-                @click="setDetailsOrderBy('memberCount'); detailsOrder = 'DESC'; orderDetailsSummary()"
-              >mdi-menu-up</v-icon>
+                @click="
+                  setDetailsOrderBy('memberCount');
+                  detailsOrder = 'DESC';
+                  orderDetailsSummary();
+                "
+                >mdi-menu-up</v-icon
+              >
             </span>
           </v-list-item-content>
           <v-list-item-content>
@@ -453,12 +602,22 @@
               Time Taken
               <v-icon
                 v-if="this.detailsOrder == 'DESC'"
-                @click="setDetailsOrderBy('timeTaken'); detailsOrder = 'ASC'; orderDetailsSummary()"
-              >mdi-menu-down</v-icon>
+                @click="
+                  setDetailsOrderBy('timeTaken');
+                  detailsOrder = 'ASC';
+                  orderDetailsSummary();
+                "
+                >mdi-menu-down</v-icon
+              >
               <v-icon
                 v-else
-                @click="setDetailsOrderBy('timeTaken'); detailsOrder = 'DESC'; orderDetailsSummary()"
-              >mdi-menu-up</v-icon>
+                @click="
+                  setDetailsOrderBy('timeTaken');
+                  detailsOrder = 'DESC';
+                  orderDetailsSummary();
+                "
+                >mdi-menu-up</v-icon
+              >
             </span>
           </v-list-item-content>
         </v-list-item>
@@ -472,31 +631,49 @@
               class="tableContentRecord"
             >
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">{{project.projectName}}</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{
+                  project.projectName
+                }}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">{{project.projectStartDate.slice(0,10)}}</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{
+                  project.projectStartDate.slice(0, 10)
+                }}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">{{getStatus(project.projectStatus)}}</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{
+                  getStatus(project.projectStatus)
+                }}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">{{project.taskCount}}</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{
+                  project.taskCount
+                }}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">{{project.memberCount}}</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{
+                  project.memberCount
+                }}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <span v-for="(owner, index) in project.owners" :key="index" class="tableText">
-                  {{owner.firstName}}
-                  <span v-if="index != project.owners.length-1">/</span>
+                <span
+                  v-for="(owner, index) in project.owners"
+                  :key="index"
+                  class="tableText"
+                >
+                  {{ owner.firstName }}
+                  <span v-if="index != project.owners.length - 1">/</span>
                 </span>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">{{project.engagement}}</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText">{{
+                  project.engagement
+                }}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-content>
-                <v-list-item-subtitle class="tableText">{{getDays(project.timeTaken)}} Days</v-list-item-subtitle>
+                <v-list-item-subtitle class="tableText"
+                  >{{ getDays(project.timeTaken) }} Days</v-list-item-subtitle
+                >
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
@@ -508,7 +685,9 @@
               color="#ffffff"
               depressed
             >
-              <span style="color: #576377" class="text-capitalize">Load More</span>
+              <span style="color: #576377" class="text-capitalize"
+                >Load More</span
+              >
               <v-icon>mdi-chevron-down</v-icon>
             </v-btn>
           </div>
@@ -521,33 +700,33 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
-import Progress from "~/components/popups/progress";
+import { mapState } from 'vuex';
+import Progress from '~/components/popups/progress';
 export default {
   components: {
-    "progress-loading": Progress,
+    'progress-loading': Progress,
   },
   data: () => ({
-    summaryDateRange: "from=all&to=all&",
-    summaryKey: "project=all&",
-    summaryStatus: "status=all&",
+    summaryDateRange: 'from=all&to=all&',
+    summaryKey: 'project=all&',
+    summaryStatus: 'status=all&',
 
-    dateRangeQuery: "from=all&to=all",
+    dateRangeQuery: 'from=all&to=all',
 
     loadSummaryCount: 0,
     loadDetailsCount: 0,
-    summaryOrder: "DESC",
-    summaryOrderBy: "total",
-    detailsOrder: "DESC",
-    detailsOrderBy: "taskcount",
+    summaryOrder: 'DESC',
+    summaryOrderBy: 'total',
+    detailsOrder: 'DESC',
+    detailsOrderBy: 'taskcount',
     key: [],
     overlay: false,
     filterProject: [],
     menu: false,
     menu2: false,
     summaryParams:
-      "from=all&to=all&project=all&status=all&orderBy=total&orderType=DESC",
-    detailsParams: "from=all&to=all&orderBy=taskcount&orderType=DESC",
+      'from=all&to=all&project=all&status=all&orderBy=total&orderType=DESC',
+    detailsParams: 'from=all&to=all&orderBy=taskcount&orderType=DESC',
     dateRangeFilter: [
       new Date().toISOString().substr(0, 10),
       new Date().toISOString().substr(0, 10),
@@ -558,14 +737,14 @@ export default {
     ],
     filterType: [],
     statusArray: [
-      { name: "Presales : Project Discovery", id: "presalesPD" },
-      { name: "Presales : Quotation Submission", id: "preSalesQS" },
-      { name: "Presales : Negotiation", id: "preSalesN" },
-      { name: "Presales : Confirmed", id: "preSalesC" },
-      { name: "Presales : Lost", id: "preSalesL" },
-      { name: "Ongoing", id: "ongoing" },
-      { name: "Support", id: "support" },
-      { name: "Finished", id: "finished" },
+      { name: 'Presales : Project Discovery', id: 'presalesPD' },
+      { name: 'Presales : Quotation Submission', id: 'preSalesQS' },
+      { name: 'Presales : Negotiation', id: 'preSalesN' },
+      { name: 'Presales : Confirmed', id: 'preSalesC' },
+      { name: 'Presales : Lost', id: 'preSalesL' },
+      { name: 'Ongoing', id: 'ongoing' },
+      { name: 'Support', id: 'support' },
+      { name: 'Finished', id: 'finished' },
     ],
   }),
   methods: {
@@ -594,29 +773,29 @@ export default {
     },
     getStatus(status) {
       switch (status) {
-        case "presalesPD":
-          return "Presales : Discovery";
+        case 'presalesPD':
+          return 'Presales : Discovery';
           break;
-        case "preSalesQS":
-          return "Presales : Quotation Submission";
+        case 'preSalesQS':
+          return 'Presales : Quotation Submission';
           break;
-        case "preSalesN":
-          return "Presales : Negotiation";
+        case 'preSalesN':
+          return 'Presales : Negotiation';
           break;
-        case "preSalesC":
-          return "Presales : Confirmed";
+        case 'preSalesC':
+          return 'Presales : Confirmed';
           break;
-        case "preSalesL":
-          return "Presales : Lost";
+        case 'preSalesL':
+          return 'Presales : Lost';
           break;
-        case "ongoing":
-          return "Ongoing";
+        case 'ongoing':
+          return 'Ongoing';
           break;
-        case "support":
-          return "Support";
+        case 'support':
+          return 'Support';
           break;
-        case "finished":
-          return "Finished";
+        case 'finished':
+          return 'Finished';
           break;
       }
     },
@@ -634,17 +813,17 @@ export default {
       this.overlay = true;
       this.detailsParams =
         this.dateRangeQuery +
-        "&orderBy=" +
+        '&orderBy=' +
         this.detailsOrderBy +
-        "&orderType=" +
+        '&orderType=' +
         this.detailsOrder;
       // console.log("SUMMARY " + this.summaryParams);
       Promise.all([
-        this.$store.dispatch("analytics/projectAnalytics/emptyDetailsStore"),
+        this.$store.dispatch('analytics/projectAnalytics/emptyDetailsStore'),
       ]).finally(() => {
         Promise.all([
           this.$store.dispatch(
-            "analytics/projectAnalytics/fetchProjectDetails",
+            'analytics/projectAnalytics/fetchProjectDetails',
             {
               params: this.detailsParams,
               startIndex: this.loadDetailsCount * 10,
@@ -664,17 +843,17 @@ export default {
         this.summaryDateRange +
         this.summaryKey +
         this.summaryStatus +
-        "orderBy=" +
+        'orderBy=' +
         this.summaryOrderBy +
-        "&orderType=" +
+        '&orderType=' +
         this.summaryOrder;
 
       Promise.all([
-        this.$store.dispatch("analytics/projectAnalytics/emptySummaryStore"),
+        this.$store.dispatch('analytics/projectAnalytics/emptySummaryStore'),
       ]).finally(() => {
         Promise.all([
           this.$store.dispatch(
-            "analytics/projectAnalytics/fetchProjectSummary",
+            'analytics/projectAnalytics/fetchProjectSummary',
             {
               params: this.summaryParams,
               startIndex: this.loadSummaryCount * 10,
@@ -690,22 +869,22 @@ export default {
     loadFilterSummary() {
       this.loadSummaryCount = 0;
       if (this.filterType.length != 0) {
-        this.summaryStatus = "";
+        this.summaryStatus = '';
         for (let i = 0; i < this.filterType.length; i++) {
           this.summaryStatus =
-            this.summaryStatus + "status=" + this.filterType[i].id + "&";
+            this.summaryStatus + 'status=' + this.filterType[i].id + '&';
         }
       } else {
-        this.summaryStatus = "status=all&";
+        this.summaryStatus = 'status=all&';
       }
 
       if (this.key.length != 0) {
-        this.summaryKey = "";
+        this.summaryKey = '';
         for (let i = 0; i < this.key.length; i++) {
-          this.summaryKey = this.summaryKey + "project=" + this.key[i].id + "&";
+          this.summaryKey = this.summaryKey + 'project=' + this.key[i].id + '&';
         }
       } else {
-        this.summaryKey = "project=all&";
+        this.summaryKey = 'project=all&';
       }
 
       if (
@@ -716,13 +895,13 @@ export default {
         ]
       ) {
         this.summaryDateRange =
-          "from=" +
+          'from=' +
           this.dateRangeFilter[0] +
-          "&to=" +
+          '&to=' +
           this.dateRangeFilter[1] +
-          "&";
+          '&';
       } else {
-        this.summaryDateRange = "from=all&to=all&";
+        this.summaryDateRange = 'from=all&to=all&';
       }
       // if (this.key == "" || this.key == null) {
       //   this.summaryKey = "&key=all&";
@@ -734,17 +913,17 @@ export default {
         this.summaryDateRange +
         this.summaryKey +
         this.summaryStatus +
-        "orderBy=" +
+        'orderBy=' +
         this.summaryOrderBy +
-        "&orderType=" +
+        '&orderType=' +
         this.summaryOrder;
       // console.log("SUMMARY " + this.summaryParams);
       Promise.all([
-        this.$store.dispatch("analytics/projectAnalytics/emptySummaryStore"),
+        this.$store.dispatch('analytics/projectAnalytics/emptySummaryStore'),
       ]).finally(() => {
         Promise.all([
           this.$store.dispatch(
-            "analytics/projectAnalytics/fetchProjectSummary",
+            'analytics/projectAnalytics/fetchProjectSummary',
             {
               params: this.summaryParams,
               startIndex: this.loadSummaryCount * 10,
@@ -769,25 +948,25 @@ export default {
         ]
       ) {
         this.dateRangeQuery =
-          "from=" + this.dateRangeFilter[0] + "&to=" + this.dateRangeFilter[1];
+          'from=' + this.dateRangeFilter[0] + '&to=' + this.dateRangeFilter[1];
       } else {
-        this.dateRangeQuery = "from=all&to=all";
+        this.dateRangeQuery = 'from=all&to=all';
       }
 
       this.overlay = true;
       this.detailsParams =
         this.dateRangeQuery +
-        "&orderBy=" +
+        '&orderBy=' +
         this.detailsOrderBy +
-        "&orderType=" +
+        '&orderType=' +
         this.detailsOrder;
       // console.log("SUMMARY " + this.summaryParams);
       Promise.all([
-        this.$store.dispatch("analytics/projectAnalytics/emptyDetailsStore"),
+        this.$store.dispatch('analytics/projectAnalytics/emptyDetailsStore'),
       ]).finally(() => {
         Promise.all([
           this.$store.dispatch(
-            "analytics/projectAnalytics/fetchProjectDetails",
+            'analytics/projectAnalytics/fetchProjectDetails',
             {
               params: this.detailsParams,
               startIndex: this.loadDetailsCount * 10,
@@ -804,7 +983,7 @@ export default {
       this.loadSummaryCount++;
       this.overlay = true;
       Promise.all([
-        this.$store.dispatch("analytics/projectAnalytics/fetchProjectSummary", {
+        this.$store.dispatch('analytics/projectAnalytics/fetchProjectSummary', {
           params: this.summaryParams,
           startIndex: this.loadSummaryCount * 10,
           endIndex: this.loadSummaryCount * 10 + 10,
@@ -817,7 +996,7 @@ export default {
       this.overlay = true;
       Promise.all([
         this.$store.dispatch(
-          "analytics/projectAnalytics/fetchProjectOverview",
+          'analytics/projectAnalytics/fetchProjectOverview',
           {
             from: this.dateRange[0],
             to: this.dateRange[1],
@@ -831,7 +1010,7 @@ export default {
       this.loadDetailsCount++;
       this.overlay = true;
       Promise.all([
-        this.$store.dispatch("analytics/projectAnalytics/fetchProjectDetails", {
+        this.$store.dispatch('analytics/projectAnalytics/fetchProjectDetails', {
           params: this.detailsParams,
           startIndex: this.loadDetailsCount * 10,
           endIndex: this.loadDetailsCount * 10 + 10,
@@ -864,9 +1043,9 @@ export default {
           new Date().toISOString().substr(0, 10),
         ]
       ) {
-        return "Select Date Range";
+        return 'Select Date Range';
       } else {
-        return this.dateRange.join(" - ");
+        return this.dateRange.join(' - ');
       }
     },
     dateRangeTextField() {
@@ -877,9 +1056,9 @@ export default {
           new Date().toISOString().substr(0, 10),
         ]
       ) {
-        return "Select Date Range";
+        return 'Select Date Range';
       } else {
-        return this.dateRangeFilter.join(" - ");
+        return this.dateRangeFilter.join(' - ');
       }
     },
     projectArray() {

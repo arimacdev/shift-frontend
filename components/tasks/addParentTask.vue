@@ -4,7 +4,11 @@
       <v-dialog v-model="dialog" persistent max-width="350">
         <template v-slot:activator="{ on }">
           <div v-on="on" class="addParentButton" @click="loadDetails()">
-            <v-list-item class="addParentButtonBody" v-on:click="component = 'add-task'" dark>
+            <v-list-item
+              class="addParentButtonBody"
+              v-on:click="component = 'add-task'"
+              dark
+            >
               <v-list-item-action>
                 <v-icon size="15" color>mdi-account-outline</v-icon>
               </v-list-item-action>
@@ -17,10 +21,14 @@
         <v-card class="addUserPopup">
           <v-form v-model="isValid" ref="form">
             <div class="popupFormContent">
-              <v-icon class size="60" color="deep-orange lighten-1">mdi-account-outline</v-icon>
-              <v-card-text class="deletePopupTitle">Add parent task</v-card-text>
+              <v-icon class size="60" color="deep-orange lighten-1"
+                >mdi-account-outline</v-icon
+              >
+              <v-card-text class="deletePopupTitle"
+                >Add parent task</v-card-text
+              >
               <v-card-actions>
-                <v-select
+                <v-autocomplete
                   class="popupFormGroupElement"
                   v-model="parentTask"
                   :items="parentTasks"
@@ -35,23 +43,31 @@
                   <template v-slot:selection="data">
                     <template>
                       <v-list-item-action>
-                        <v-list-item-subtitle v-html="data.item.secondaryId"></v-list-item-subtitle>
+                        <v-list-item-subtitle
+                          v-html="data.item.secondaryId"
+                        ></v-list-item-subtitle>
                       </v-list-item-action>
                       <v-list-item-content>
-                        <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                        <v-list-item-title
+                          v-html="data.item.name"
+                        ></v-list-item-title>
                       </v-list-item-content>
                     </template>
                   </template>
                   <template v-slot:item="data">
                     <template>
                       <v-list-item-content>
-                        <v-list-item-subtitle v-html="data.item.secondaryId"></v-list-item-subtitle>
+                        <v-list-item-subtitle
+                          v-html="data.item.secondaryId"
+                        ></v-list-item-subtitle>
 
-                        <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                        <v-list-item-title
+                          v-html="data.item.name"
+                        ></v-list-item-title>
                       </v-list-item-content>
                     </template>
                   </template>
-                </v-select>
+                </v-autocomplete>
               </v-card-actions>
             </div>
 
@@ -72,7 +88,8 @@
                     clearStore();
                   "
                   :retain-focus="false"
-                >Cancel</v-btn>
+                  >Cancel</v-btn
+                >
                 <v-spacer></v-spacer>
                 <v-btn
                   class="text-capitalize"
@@ -85,7 +102,8 @@
                   "
                   :retain-focus="false"
                   :disabled="!isValid"
-                >Save</v-btn>
+                  >Save</v-btn
+                >
                 <v-spacer></v-spacer>
               </v-card-actions>
             </div>
@@ -105,14 +123,14 @@
 </template>
 
 <script>
-import SuccessPopup from "~/components/popups/successPopup";
-import ErrorPopup from "~/components/popups/errorPopup";
-import { mapState } from "vuex";
+import SuccessPopup from '~/components/popups/successPopup';
+import ErrorPopup from '~/components/popups/errorPopup';
+import { mapState } from 'vuex';
 export default {
-  props: ["taskId", "projectId"],
+  props: ['taskId', 'projectId'],
   components: {
-    "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup,
+    'success-popup': SuccessPopup,
+    'error-popup': ErrorPopup,
   },
   created() {
     // console.log("alltasks", this.projectAllTasks);
@@ -120,7 +138,7 @@ export default {
     if (this.projectAllTasks.length === 0) {
       // console.log("alltasks");
       this.$store.dispatch(
-        "task/fetchTasksAllTasks",
+        'task/fetchTasksAllTasks',
         this.$route.query.project
       );
     }
@@ -128,11 +146,11 @@ export default {
   data() {
     return {
       parentTasks: [],
-      errorMessage: "",
+      errorMessage: '',
       isValid: true,
       userId: this.$store.state.user.userId,
-      successMessage: "",
-      assigneeRules: [(value) => !!value || "Parent task is required!"],
+      successMessage: '',
+      assigneeRules: [(value) => !!value || 'Parent task is required!'],
       isShow: false,
       selected: false,
       dialog: false,
@@ -141,8 +159,8 @@ export default {
       search: null,
       select: null,
       states: [],
-      component: "",
-      success: "",
+      component: '',
+      success: '',
     };
   },
   watch: {
@@ -152,20 +170,20 @@ export default {
   },
   methods: {
     clearStore() {
-      this.$emit("clearStore");
+      this.$emit('clearStore');
     },
     loadDetails() {
-      this.$store.dispatch("task/emptyStore");
-      this.$store.dispatch("task/setIndex", {
+      this.$store.dispatch('task/emptyStore');
+      this.$store.dispatch('task/setIndex', {
         startIndex: 0,
         endIndex: 10,
         isAllTasks: true,
       });
-      this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+      this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
     },
     close() {
       this.$refs.form.reset();
-      this.component = "";
+      this.component = '';
     },
 
     getParentTasks(v) {
@@ -210,28 +228,28 @@ export default {
           }
         );
         this.dialog = false;
-        this.component = "success-popup";
-        this.successMessage = "Parent Task Added Successfully";
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
-        this.$store.dispatch("task/setCurrentTask", {
+        this.component = 'success-popup';
+        this.successMessage = 'Parent Task Added Successfully';
+        this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
+        this.$store.dispatch('task/setCurrentTask', {
           projectId: this.projectId,
           taskId: this.taskId,
         });
-        this.$store.dispatch("task/fetchParentTask", {
+        this.$store.dispatch('task/fetchParentTask', {
           projectId: this.projectId,
           taskId: this.parentTask,
         });
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("update parent task", response);
+        console.log('update parent task', response);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error Adding parent task", e);
+        console.log('Error Adding parent task', e);
       }
     },
   },
