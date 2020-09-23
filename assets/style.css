@@ -3764,3 +3764,22 @@
 .copyIcon {
   margin-top: -10px;
 }
+
+/* ---------- meeting minute ------------- */
+
+.viewMinuteBtnDiv {
+  width: 200px;
+  padding-top: 30px;
+  float: right !important;
+}
+.minuteViewSection {
+  width: 100%;
+}
+.pointFormHeader {
+  font-size: 16px;
+  color: red;
+  font-weight: 700;
+}
+.sideByRow {
+  margin-bottom: -20px;
+}

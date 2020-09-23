@@ -39,6 +39,11 @@
             class="tabInactiveStyle text-capitalize"
             active-class="tabTitleStyle"
           >Logs</v-tab>
+          <v-tab
+            @click="changeTabView('logs')"
+            class="tabInactiveStyle text-capitalize"
+            active-class="tabTitleStyle"
+          >Meetings</v-tab>
 
           <v-tab-item>
             <v-divider class="mx-4"></v-divider>
@@ -85,6 +90,12 @@
               <project-logs :page="page" />
             </v-card>
           </v-tab-item>
+          <v-tab-item>
+            <v-divider class="mx-4"></v-divider>
+            <v-card flat>
+              <meeting-minutes />
+            </v-card>
+          </v-tab-item>
         </v-tabs>
       </v-card>
     </div>
@@ -96,6 +107,7 @@
 
 <script>
 import Tasks from "~/components/tabsView/tasks";
+import Meetings from "~/components/projects/meetings";
 import TaskDrawer from "~/components/projects/taskDrawer";
 import People from "~/components/people/people";
 import ProjectTab from "~/components/projects/projectTab";
@@ -136,6 +148,7 @@ export default {
     tasks: Tasks,
     "task-drawer": TaskDrawer,
     people: People,
+    "meeting-minutes": Meetings,
     "project-tab": ProjectTab,
     "files-tab": FilesTab,
     "folders-tab": FoldersTab,
