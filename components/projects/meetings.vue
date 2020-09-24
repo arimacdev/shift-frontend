@@ -20,13 +20,18 @@
 
         <v-divider></v-divider>
         <!-- :editable="this.meetingObject != null" -->
-        <v-stepper-step editable :complete="e1 > 2" step="2"
+        <v-stepper-step
+          :editable="this.meetingObject != null"
+          :complete="e1 > 2"
+          step="2"
           >Discussion Points</v-stepper-step
         >
 
         <v-divider></v-divider>
         <!-- :editable="this.meetingObject != null" -->
-        <v-stepper-step editable step="3">Close Meeting</v-stepper-step>
+        <v-stepper-step :editable="this.meetingObject != null" step="3"
+          >Close Meeting</v-stepper-step
+        >
       </v-stepper-header>
 
       <v-stepper-items>
@@ -648,11 +653,11 @@ export default {
       this.$refs.discussionPointForm.reset();
       this.discussionPointData.description = '';
     },
-    async taskTransition() {
+    async taskTransition(minuteId) {
       let taskResponse;
       try {
         taskResponse = await this.$axios.$post(
-          `/meeting/${this.meetingObject.data.meetingId}/discussion/93bbfd90-4e93-4293-b6d7-4cb1d6c41e1e/transition`,
+          `/meeting/${this.meetingObject.data.meetingId}/discussion/${minuteId}/transition`,
           {
             projectId: this.projectId,
             taskName: this.discussionPointData.taskName,
@@ -669,6 +674,13 @@ export default {
         );
         this.component = 'success-popup';
         this.successMessage = 'Discussion point added';
+        this.$store.dispatch('meetings/meeting/fetchDiscussionPoints', {
+          meetingId: this.meetingObject.data.meetingId,
+          // meetingId: '19a4edb0-0610-4fad-88f3-a3a01c141155',
+          projectId: this.projectId,
+        });
+        this.$refs.discussionPointForm.reset();
+        this.discussionPointData.description = '';
 
         setTimeout(() => {
           this.close();
@@ -682,8 +694,6 @@ export default {
         }, 3000);
         console.log('Error creating task', e);
       }
-      this.$refs.discussionPointForm.reset();
-      this.discussionPointData.description = '';
     },
     async addDiscussionPoint() {
       let response;
@@ -717,7 +727,7 @@ export default {
         });
 
         if (this.discussionPointData.switch2) {
-          this.taskTransition();
+          this.taskTransition(response.data.minuteId);
         } else {
           this.$refs.discussionPointForm.reset();
           this.discussionPointData.description = '';
