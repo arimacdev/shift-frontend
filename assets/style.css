@@ -3783,3 +3783,15 @@
 .sideByRow {
   margin-bottom: -20px;
 }
+.discussionPointCardStyle {
+  padding: 10px;
+  margin-top: 20px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.htmlViewDiv {
+  border: 1px #5f6163 solid;
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+}

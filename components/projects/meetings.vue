@@ -10,7 +10,6 @@
 
     <br />
     <br />
-    {{ this.meetingObject }}
     <!-- ------------ Start Stepper ----------- -->
 
     <v-stepper v-model="e1">
@@ -215,138 +214,161 @@
             <v-row>
               <v-col>
                 <span class="pointFormHeader">Add Discussion Point</span>
-
-                <v-row class="sideByRow">
-                  <v-col md="3">
-                    <!--discussionPoints -->
-                    <v-text-field
-                      v-model="discussionPointData.discussionPointCount"
-                      outlined
-                      dense
-                      clearable
-                      disabled
-                      label="Discussion Point"
-                    ></v-text-field>
-                  </v-col>
-                  <!-- <v-col md="1">
+                <v-form v-model="isValidDiscussion" ref="discussionPointForm">
+                  <v-row class="sideByRow">
+                    <v-col md="3">
+                      <!--discussionPoints -->
+                      <v-text-field
+                        v-model="discussionPointsInput"
+                        outlined
+                        dense
+                        clearable
+                        disabled
+                        label="Discussion Point"
+                      ></v-text-field>
+                    </v-col>
+                    <!-- <v-col md="1">
                     <span style="font-size: 8px">Action by guest</span>
                   </v-col>-->
-                  <v-col md="3">
-                    <div style="float: right; margin-top: -10px">
-                      <v-switch
-                        v-model="switch1"
-                        label="Action by guest"
-                      ></v-switch>
-                    </div>
-                  </v-col>
-                  <v-col md="6">
-                    <!--actionBy -->
-                    <v-autocomplete
-                      v-if="!switch1"
-                      v-model="discussionPointData.actionBy"
-                      :items="userArray"
-                      dense
-                      item-text="name"
-                      item-value="id"
-                      flat
-                      chips
-                      small-chips
-                      outlined
-                      label="Action By"
-                      clearable
-                    ></v-autocomplete>
-                    <v-text-field
-                      v-else
-                      v-model="discussionPointData.actionBy"
-                      outlined
-                      dense
-                      clearable
-                      label="Action By Guest (Ex: Guest1)"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-row class="sideByRow">
-                  <v-col>
-                    <v-dialog
-                      ref="dialog"
-                      v-model="modalDiscussion"
-                      :return-value.sync="discussionPointData.dueDate"
-                      persistent
-                      width="290px"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
+                    <v-col md="3">
+                      <div style="float: right; margin-top: -10px">
+                        <v-switch
+                          v-model="discussionPointData.switch1"
+                          label="Action by guest"
+                        ></v-switch>
+                      </div>
+                    </v-col>
+                    <v-col md="6">
+                      <!--actionBy -->
+                      <v-autocomplete
+                        :rules="defaultRules"
+                        v-if="!switch1"
+                        v-model="discussionPointData.actionBy"
+                        :items="userArray"
+                        dense
+                        item-text="name"
+                        item-value="id"
+                        flat
+                        chips
+                        small-chips
+                        outlined
+                        label="Action By"
+                        clearable
+                      ></v-autocomplete>
+                      <v-text-field
+                        v-else
+                        v-model="discussionPointData.actionBy"
+                        outlined
+                        dense
+                        clearable
+                        label="Action By Guest (Ex: Guest1)"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row class="sideByRow">
+                    <v-col>
+                      <v-dialog
+                        ref="dialog"
+                        v-model="modalDiscussion"
+                        :return-value.sync="discussionPointData.dueDate"
+                        persistent
+                        width="290px"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            outlined
+                            dense
+                            v-model="discussionPointData.dueDate"
+                            label="Date"
+                            prepend-inner-icon="mdi-calendar-outline"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                            style="width: 100%"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="discussionPointData.dueDate"
+                          scrollable
+                        >
+                          <v-spacer></v-spacer>
+                          <v-btn text color="primary" @click="modal2 = false"
+                            >Cancel</v-btn
+                          >
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="
+                              $refs.dialog.save(discussionPointData.dueDate)
+                            "
+                            >OK</v-btn
+                          >
+                        </v-date-picker>
+                      </v-dialog>
+                    </v-col>
+                    <v-col>
+                      <!--remarks -->
+                      <v-text-field
+                        v-model="discussionPointData.remarks"
+                        outlined
+                        dense
+                        clearable
+                        label="Remarks"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col>
+                      <vue-editor
+                        placeholder="Add a description"
+                        v-model="discussionPointData.description"
+                      ></vue-editor>
+                    </v-col>
+                  </v-row>
+                  <v-row v-if="!switch1">
+                    <v-col md="3">
+                      <div style="margin-left: 10px">
+                        <v-switch
+                          v-model="discussionPointData.switch2"
+                          label="Convert to a task"
+                        ></v-switch>
+                      </div>
+                    </v-col>
+                    <v-col md="6" v-if="discussionPointData.switch2">
+                      <div style="margin-left: 10px">
+                        <!--remarks -->
                         <v-text-field
                           :rules="defaultRules"
+                          v-model="discussionPointData.taskName"
                           outlined
                           dense
-                          v-model="discussionPointData.dueDate"
-                          label="Date"
-                          prepend-inner-icon="mdi-calendar-outline"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                          style="width: 100%"
+                          clearable
+                          label="Task Name"
                         ></v-text-field>
-                      </template>
-                      <v-date-picker
-                        v-model="discussionPointData.dueDate"
-                        scrollable
-                      >
-                        <v-spacer></v-spacer>
-                        <v-btn text color="primary" @click="modal2 = false"
-                          >Cancel</v-btn
-                        >
-                        <v-btn
-                          text
-                          color="primary"
-                          @click="
-                            $refs.dialog.save(discussionPointData.dueDate)
-                          "
-                          >OK</v-btn
-                        >
-                      </v-date-picker>
-                    </v-dialog>
-                  </v-col>
-                  <v-col>
-                    <!--remarks -->
-                    <v-text-field
-                      v-model="discussionPointData.remarks"
-                      outlined
-                      dense
-                      clearable
-                      label="Remarks"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col>
-                    <!-- <vue-editor v-model="content"></vue-editor> -->
-                  </v-col>
-                </v-row>
-                <v-row v-if="!switch1">
-                  <v-col>
-                    <div style="margin-left: 10px">
-                      <v-switch
-                        v-model="switch2"
-                        label="Convert to a task"
-                      ></v-switch>
-                    </div>
-                  </v-col>
-                </v-row>
+                      </div>
+                    </v-col>
+                  </v-row>
+                </v-form>
               </v-col>
             </v-row>
           </v-card>
 
-          <v-btn
-            style="color: #FFFFFF"
-            :disabled="!isValid"
-            @click
-            depressed
-            color="green"
-            >Close Meeting</v-btn
-          >
+          <div style="margin-top: -60px !important; margin-bottom: 50px">
+            <v-btn
+              :disabled="!isValidDiscussion"
+              style="color: #FFFFFF"
+              @click="addDiscussionPoint()"
+              depressed
+              color="green"
+              >Add Discussion Point</v-btn
+            >
 
-          <v-btn text color="red" @click>Reset</v-btn>
+            <v-btn text color="red" @click="resetDiscussionForm()">Reset</v-btn>
+          </div>
+
+          <v-divider></v-divider>
+
+          <view-discussion />
         </v-stepper-content>
 
         <v-stepper-content step="3">
@@ -548,27 +570,26 @@
 </template>
 
 <script>
-// import { VueEditor, Quill } from 'vue2-editor';
 import { mapState } from 'vuex';
 import SuccessPopup from '~/components/popups/successPopup';
 import ErrorPopup from '~/components/popups/errorPopup';
+import viewDiscussion from '~/components/meetings/viewDiscussionPoints';
 
 export default {
   components: {
     'success-popup': SuccessPopup,
     'error-popup': ErrorPopup,
-    // VueEditor,
+    'view-discussion': viewDiscussion,
   },
   data() {
     return {
-      content: '<h1>Some initial content</h1>',
-
-      switch1: false,
-      switch2: false,
-
       e1: 1,
       isValid: true,
       isValidSubForm: true,
+      isValidDiscussion: true,
+
+      errorMessage: '',
+      successMessage: '',
 
       component: '',
       meetingObject: null,
@@ -587,6 +608,10 @@ export default {
         actionBy: null,
         dueDate: null,
         remarks: null,
+        description: '',
+        switch1: false,
+        switch2: false,
+        taskName: null,
       },
       mainFormData: {
         meetingId: null,
@@ -618,6 +643,98 @@ export default {
     },
     resetSubForm() {
       this.$refs.subForm.reset();
+    },
+    resetDiscussionForm() {
+      this.$refs.discussionPointForm.reset();
+      this.discussionPointData.description = '';
+    },
+    async taskTransition() {
+      let taskResponse;
+      try {
+        taskResponse = await this.$axios.$post(
+          `/meeting/${this.meetingObject.data.meetingId}/discussion/93bbfd90-4e93-4293-b6d7-4cb1d6c41e1e/transition`,
+          {
+            projectId: this.projectId,
+            taskName: this.discussionPointData.taskName,
+            taskInitiator: this.userId,
+            taskAssignee: this.discussionPointData.actionBy,
+            taskDueDate: this.discussionPointData.dueDate,
+            issueType: 'general',
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.component = 'success-popup';
+        this.successMessage = 'Discussion point added';
+
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+      } catch (e) {
+        this.overlay = false;
+        this.errorMessage = e.response.data;
+        this.component = 'error-popup';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log('Error creating task', e);
+      }
+      this.$refs.discussionPointForm.reset();
+      this.discussionPointData.description = '';
+    },
+    async addDiscussionPoint() {
+      let response;
+      try {
+        response = await this.$axios.$post(
+          `/meeting/discussion`,
+          {
+            projectId: this.projectId,
+            meetingId: this.meetingObject.data.meetingId,
+            // meetingId: '19a4edb0-0610-4fad-88f3-a3a01c141155',
+            description: this.discussionPointData.description,
+            discussionPoint: this.discussionPointData.discussionPointCount,
+            remarks: this.discussionPointData.remarks,
+            actionBy: this.discussionPointData.actionBy,
+            actionByGuest: this.discussionPointData.switch1,
+            addedBy: this.userId,
+            dueDate: this.discussionPointData.dueDate,
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.component = 'success-popup';
+        this.successMessage = 'Discussion point added';
+        this.$store.dispatch('meetings/meeting/fetchDiscussionPoints', {
+          meetingId: this.meetingObject.data.meetingId,
+          // meetingId: '19a4edb0-0610-4fad-88f3-a3a01c141155',
+          projectId: this.projectId,
+        });
+
+        if (this.discussionPointData.switch2) {
+          this.taskTransition();
+        } else {
+          this.$refs.discussionPointForm.reset();
+          this.discussionPointData.description = '';
+        }
+
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+      } catch (e) {
+        this.overlay = false;
+        this.errorMessage = e.response.data;
+        this.component = 'error-popup';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log('Error creating meeting', e);
+      }
     },
     async InitiateMeeting() {
       let scheduledTime = new Date(
@@ -653,10 +770,16 @@ export default {
         this.component = 'success-popup';
         this.successMessage = 'Meeting Successfully initiated';
         this.e1 = 2;
+
         setTimeout(() => {
           this.close();
         }, 3000);
         this.meetingObject = response;
+        this.$store.dispatch('meetings/meeting/fetchDiscussionPoints', {
+          meetingId: this.meetingObject.data.meetingId,
+          // meetingId: '19a4edb0-0610-4fad-88f3-a3a01c141155',
+          projectId: this.projectId,
+        });
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
@@ -883,7 +1006,16 @@ export default {
     ...mapState({
       users: (state) => state.user.users,
       projectId: (state) => state.project.project.projectId,
+      discussionPoints: (state) => state.meetings.meeting.discussionPoints,
     }),
+    discussionPointsInput: {
+      get() {
+        return this.discussionPoints.length + 1;
+      },
+      set(value) {
+        this.discussionPointData.discussionPointCount = value;
+      },
+    },
     userArray() {
       let AssigneeSearchList = this.users;
       let assigneeList = [];
