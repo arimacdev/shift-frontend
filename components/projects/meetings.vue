@@ -10,16 +10,20 @@
 
     <br />
     <br />
-    {{this.meetingObject}}
+    {{ this.meetingObject }}
     <!-- ------------ Start Stepper ----------- -->
 
     <v-stepper v-model="e1">
       <v-stepper-header>
-        <v-stepper-step editable :complete="e1 > 1" step="1">Initiate Meeting</v-stepper-step>
+        <v-stepper-step editable :complete="e1 > 1" step="1"
+          >Initiate Meeting</v-stepper-step
+        >
 
         <v-divider></v-divider>
         <!-- :editable="this.meetingObject != null" -->
-        <v-stepper-step editable :complete="e1 > 2" step="2">Discussion Points</v-stepper-step>
+        <v-stepper-step editable :complete="e1 > 2" step="2"
+          >Discussion Points</v-stepper-step
+        >
 
         <v-divider></v-divider>
         <!-- :editable="this.meetingObject != null" -->
@@ -54,14 +58,20 @@
                           style="width: 100%"
                         ></v-text-field>
                       </template>
-                      <v-date-picker v-model="mainFormData.meetingDate" scrollable>
+                      <v-date-picker
+                        v-model="mainFormData.meetingDate"
+                        scrollable
+                      >
                         <v-spacer></v-spacer>
-                        <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
+                        <v-btn text color="primary" @click="modal = false"
+                          >Cancel</v-btn
+                        >
                         <v-btn
                           text
                           color="primary"
                           @click="$refs.dialog.save(mainFormData.meetingDate)"
-                        >OK</v-btn>
+                          >OK</v-btn
+                        >
                       </v-date-picker>
                     </v-dialog>
 
@@ -103,14 +113,21 @@
                           v-on="on"
                         ></v-text-field>
                       </template>
-                      <v-time-picker v-if="modal2" v-model="mainFormData.scheduleTime" full-width>
+                      <v-time-picker
+                        v-if="modal2"
+                        v-model="mainFormData.scheduleTime"
+                        full-width
+                      >
                         <v-spacer></v-spacer>
-                        <v-btn text color="primary" @click="modal2 = false">Cancel</v-btn>
+                        <v-btn text color="primary" @click="modal2 = false"
+                          >Cancel</v-btn
+                        >
                         <v-btn
                           text
                           color="primary"
                           @click="$refs.dialog1.save(mainFormData.scheduleTime)"
-                        >OK</v-btn>
+                          >OK</v-btn
+                        >
                       </v-time-picker>
                     </v-dialog>
 
@@ -135,14 +152,21 @@
                           v-on="on"
                         ></v-text-field>
                       </template>
-                      <v-time-picker v-if="modal3" v-model="mainFormData.actualTime" full-width>
+                      <v-time-picker
+                        v-if="modal3"
+                        v-model="mainFormData.actualTime"
+                        full-width
+                      >
                         <v-spacer></v-spacer>
-                        <v-btn text color="primary" @click="modal3 = false">Cancel</v-btn>
+                        <v-btn text color="primary" @click="modal3 = false"
+                          >Cancel</v-btn
+                        >
                         <v-btn
                           text
                           color="primary"
                           @click="$refs.dialog2.save(mainFormData.actualTime)"
-                        >OK</v-btn>
+                          >OK</v-btn
+                        >
                       </v-time-picker>
                     </v-dialog>
                     <!--plannedDurationOfTheMeeting -->
@@ -180,7 +204,8 @@
             @click="InitiateMeeting()"
             depressed
             color="green"
-          >Initiate Meeting</v-btn>
+            >Initiate Meeting</v-btn
+          >
 
           <v-btn text color="red" @click="resetForm()">Reset</v-btn>
         </v-stepper-content>
@@ -191,8 +216,122 @@
               <v-col>
                 <span class="pointFormHeader">Add Discussion Point</span>
 
+                <v-row class="sideByRow">
+                  <v-col md="3">
+                    <!--discussionPoints -->
+                    <v-text-field
+                      v-model="discussionPointData.discussionPointCount"
+                      outlined
+                      dense
+                      clearable
+                      disabled
+                      label="Discussion Point"
+                    ></v-text-field>
+                  </v-col>
+                  <!-- <v-col md="1">
+                    <span style="font-size: 8px">Action by guest</span>
+                  </v-col>-->
+                  <v-col md="3">
+                    <div style="float: right; margin-top: -10px">
+                      <v-switch
+                        v-model="switch1"
+                        label="Action by guest"
+                      ></v-switch>
+                    </div>
+                  </v-col>
+                  <v-col md="6">
+                    <!--actionBy -->
+                    <v-autocomplete
+                      v-if="!switch1"
+                      v-model="discussionPointData.actionBy"
+                      :items="userArray"
+                      dense
+                      item-text="name"
+                      item-value="id"
+                      flat
+                      chips
+                      small-chips
+                      outlined
+                      label="Action By"
+                      clearable
+                    ></v-autocomplete>
+                    <v-text-field
+                      v-else
+                      v-model="discussionPointData.actionBy"
+                      outlined
+                      dense
+                      clearable
+                      label="Action By Guest (Ex: Guest1)"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row class="sideByRow">
+                  <v-col>
+                    <v-dialog
+                      ref="dialog"
+                      v-model="modalDiscussion"
+                      :return-value.sync="discussionPointData.dueDate"
+                      persistent
+                      width="290px"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          :rules="defaultRules"
+                          outlined
+                          dense
+                          v-model="discussionPointData.dueDate"
+                          label="Date"
+                          prepend-inner-icon="mdi-calendar-outline"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                          style="width: 100%"
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker
+                        v-model="discussionPointData.dueDate"
+                        scrollable
+                      >
+                        <v-spacer></v-spacer>
+                        <v-btn text color="primary" @click="modal2 = false"
+                          >Cancel</v-btn
+                        >
+                        <v-btn
+                          text
+                          color="primary"
+                          @click="
+                            $refs.dialog.save(discussionPointData.dueDate)
+                          "
+                          >OK</v-btn
+                        >
+                      </v-date-picker>
+                    </v-dialog>
+                  </v-col>
+                  <v-col>
+                    <!--remarks -->
+                    <v-text-field
+                      v-model="discussionPointData.remarks"
+                      outlined
+                      dense
+                      clearable
+                      label="Remarks"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
                 <v-row>
-                  <v-col></v-col>
+                  <v-col>
+                    <!-- <vue-editor v-model="content"></vue-editor> -->
+                  </v-col>
+                </v-row>
+                <v-row v-if="!switch1">
+                  <v-col>
+                    <div style="margin-left: 10px">
+                      <v-switch
+                        v-model="switch2"
+                        label="Convert to a task"
+                      ></v-switch>
+                    </div>
+                  </v-col>
                 </v-row>
               </v-col>
             </v-row>
@@ -204,7 +343,8 @@
             @click
             depressed
             color="green"
-          >Close Meeting</v-btn>
+            >Close Meeting</v-btn
+          >
 
           <v-btn text color="red" @click>Reset</v-btn>
         </v-stepper-content>
@@ -384,7 +524,8 @@
             @click="closeMeeting()"
             depressed
             color="green"
-          >End Meeting</v-btn>
+            >End Meeting</v-btn
+          >
 
           <v-btn text color="red" @click="resetSubForm()">Reset</v-btn>
         </v-stepper-content>
@@ -407,22 +548,29 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import SuccessPopup from "~/components/popups/successPopup";
-import ErrorPopup from "~/components/popups/errorPopup";
+// import { VueEditor, Quill } from 'vue2-editor';
+import { mapState } from 'vuex';
+import SuccessPopup from '~/components/popups/successPopup';
+import ErrorPopup from '~/components/popups/errorPopup';
 
 export default {
   components: {
-    "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup,
+    'success-popup': SuccessPopup,
+    'error-popup': ErrorPopup,
+    // VueEditor,
   },
   data() {
     return {
+      content: '<h1>Some initial content</h1>',
+
+      switch1: false,
+      switch2: false,
+
       e1: 1,
       isValid: true,
       isValidSubForm: true,
 
-      component: "",
+      component: '',
       meetingObject: null,
       userId: this.$store.state.user.userId,
 
@@ -430,9 +578,16 @@ export default {
       menu: false,
 
       modal: false,
+      modalDiscussion: false,
 
       modal2: false,
       modal3: false,
+      discussionPointData: {
+        discussionPointCount: 1,
+        actionBy: null,
+        dueDate: null,
+        remarks: null,
+      },
       mainFormData: {
         meetingId: null,
         meetingDate: new Date().toISOString().substr(0, 10),
@@ -454,7 +609,7 @@ export default {
         additionalCopiesToNonOrg: null,
         minutesOfMeetingPreparedByNonOrg: null,
       },
-      defaultRules: [(value) => !!value || "Required."],
+      defaultRules: [(value) => !!value || 'Required.'],
     };
   },
   methods: {
@@ -466,10 +621,10 @@ export default {
     },
     async InitiateMeeting() {
       let scheduledTime = new Date(
-        this.mainFormData.meetingDate + " " + this.mainFormData.scheduleTime
+        this.mainFormData.meetingDate + ' ' + this.mainFormData.scheduleTime
       );
       let actualTime = new Date(
-        this.mainFormData.meetingDate + " " + this.mainFormData.actualTime
+        this.mainFormData.meetingDate + ' ' + this.mainFormData.actualTime
       );
 
       let response;
@@ -495,8 +650,8 @@ export default {
             },
           }
         );
-        this.component = "success-popup";
-        this.successMessage = "Meeting Successfully initiated";
+        this.component = 'success-popup';
+        this.successMessage = 'Meeting Successfully initiated';
         this.e1 = 2;
         setTimeout(() => {
           this.close();
@@ -505,11 +660,11 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error creating meeting", e);
+        console.log('Error creating meeting', e);
       }
     },
     async closeMeeting() {
@@ -527,7 +682,7 @@ export default {
       // ---- attended by ----
       if (
         this.mainFormData.meetingAttendedBy != null &&
-        this.mainFormData.meetingAttendedBy != ""
+        this.mainFormData.meetingAttendedBy != ''
       ) {
         for (
           let index = 0;
@@ -543,7 +698,7 @@ export default {
       }
       if (
         this.mainFormData.meetingAttendedByNonOrg != null &&
-        this.mainFormData.meetingAttendedByNonOrg != ""
+        this.mainFormData.meetingAttendedByNonOrg != ''
       ) {
         meetingAttended.push({
           attendeeId: this.mainFormData.meetingAttendedByNonOrg,
@@ -559,7 +714,7 @@ export default {
       // ---- chaired by ----
       if (
         this.mainFormData.chairedBy != null &&
-        this.mainFormData.chairedBy != ""
+        this.mainFormData.chairedBy != ''
       ) {
         for (
           let index = 0;
@@ -575,7 +730,7 @@ export default {
       }
       if (
         this.mainFormData.chairedByNonOrg != null &&
-        this.mainFormData.chairedByNonOrg != ""
+        this.mainFormData.chairedByNonOrg != ''
       ) {
         meetingChaired.push({
           attendeeId: this.mainFormData.chairedByNonOrg,
@@ -591,7 +746,7 @@ export default {
       // ---- member absent ----
       if (
         this.mainFormData.membersAbsent != null &&
-        this.mainFormData.membersAbsent != ""
+        this.mainFormData.membersAbsent != ''
       ) {
         for (
           let index = 0;
@@ -607,7 +762,7 @@ export default {
       }
       if (
         this.mainFormData.membersAbsentNonOrg != null &&
-        this.mainFormData.membersAbsentNonOrg != ""
+        this.mainFormData.membersAbsentNonOrg != ''
       ) {
         meetingAbsent.push({
           attendeeId: this.mainFormData.membersAbsentNonOrg,
@@ -623,7 +778,7 @@ export default {
       // ---- additional copies to ----
       if (
         this.mainFormData.additionalCopiesTo != null &&
-        this.mainFormData.additionalCopiesTo != ""
+        this.mainFormData.additionalCopiesTo != ''
       ) {
         for (
           let index = 0;
@@ -639,7 +794,7 @@ export default {
       }
       if (
         this.mainFormData.additionalCopiesToNonOrg != null &&
-        this.mainFormData.additionalCopiesToNonOrg != ""
+        this.mainFormData.additionalCopiesToNonOrg != ''
       ) {
         meetingCopiesTo.push({
           attendeeId: this.mainFormData.additionalCopiesToNonOrg,
@@ -655,7 +810,7 @@ export default {
       // ---- prepared by ----
       if (
         this.mainFormData.minutesOfMeetingPreparedBy != null &&
-        this.mainFormData.minutesOfMeetingPreparedBy != ""
+        this.mainFormData.minutesOfMeetingPreparedBy != ''
       ) {
         for (
           let index = 0;
@@ -671,7 +826,7 @@ export default {
       }
       if (
         this.mainFormData.minutesOfMeetingPreparedByNonOrg != null &&
-        this.mainFormData.minutesOfMeetingPreparedByNonOrg != ""
+        this.mainFormData.minutesOfMeetingPreparedByNonOrg != ''
       ) {
         meetingPrepared.push({
           attendeeId: this.mainFormData.minutesOfMeetingPreparedByNonOrg,
@@ -703,8 +858,8 @@ export default {
             },
           }
         );
-        this.component = "success-popup";
-        this.successMessage = "Meeting Successfully closed";
+        this.component = 'success-popup';
+        this.successMessage = 'Meeting Successfully closed';
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -713,15 +868,15 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error creating meeting", e);
+        console.log('Error creating meeting', e);
       }
     },
     close() {
-      this.component = "";
+      this.component = '';
     },
   },
   computed: {
@@ -735,7 +890,7 @@ export default {
       for (let index = 0; index < AssigneeSearchList.length; ++index) {
         let user = AssigneeSearchList[index];
         assigneeList.push({
-          name: user.firstName + " " + user.lastName,
+          name: user.firstName + ' ' + user.lastName,
           id: user.userId,
           img: user.profileImage,
         });
