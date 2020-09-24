@@ -1,319 +1,407 @@
 <template>
   <div class="projectTabContent overflow-y-auto">
-    <div class="minuteViewSection">
-      <div class="viewMinuteBtnDiv">
-        <v-btn depressed color="red" dark>View Minute</v-btn>
+    <v-row>
+      <div class="minuteViewSection">
+        <div class="viewMinuteBtnDiv">
+          <v-btn depressed color="red" dark>View Minute</v-btn>
+        </div>
       </div>
-    </div>
+    </v-row>
+
     <br />
     <br />
-    <v-container style="margin-top: 30px">
-      <v-row style="height: 100%">
-        <v-col md="12">
-          <v-form ref="mainForm">
-            <v-dialog
-              ref="dialog"
-              v-model="modal"
-              :return-value.sync="mainFormData.meetingDate"
-              persistent
-              width="290px"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  :rules="defaultRules"
-                  outlined
-                  dense
-                  v-model="mainFormData.meetingDate"
-                  label="Date"
-                  prepend-inner-icon="mdi-calendar-outline"
-                  readonly
-                  v-bind="attrs"
-                  v-on="on"
-                  style="width: 100%"
-                ></v-text-field>
-              </template>
-              <v-date-picker v-model="mainFormData.meetingDate" scrollable>
-                <v-spacer></v-spacer>
-                <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-                <v-btn text color="primary" @click="$refs.dialog.save(mainFormData.meetingDate)">OK</v-btn>
-              </v-date-picker>
-            </v-dialog>
+    {{this.meetingObject}}
+    <!-- ------------ Start Stepper ----------- -->
 
-            <v-text-field
-              :rules="defaultRules"
-              v-model="mainFormData.topicForTheMeeting"
-              outlined
-              dense
-              label="Topic for the Meeting"
-            ></v-text-field>
+    <v-stepper v-model="e1">
+      <v-stepper-header>
+        <v-stepper-step editable :complete="e1 > 1" step="1">Initiate Meeting</v-stepper-step>
 
-            <!--scheduleTime -->
-            <v-dialog
-              ref="dialog1"
-              v-model="modal2"
-              :return-value.sync="mainFormData.scheduleTime"
-              persistent
-              width="290px"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  :rules="defaultRules"
-                  outlined
-                  dense
-                  v-model="mainFormData.scheduleTime"
-                  label="Schedule Time of Start"
-                  prepend-inner-icon="mdi-clock-outline"
-                  readonly
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-time-picker v-if="modal2" v-model="mainFormData.scheduleTime" full-width>
-                <v-spacer></v-spacer>
-                <v-btn text color="primary" @click="modal2 = false">Cancel</v-btn>
-                <v-btn
-                  text
-                  color="primary"
-                  @click="$refs.dialog1.save(mainFormData.scheduleTime)"
-                >OK</v-btn>
-              </v-time-picker>
-            </v-dialog>
+        <v-divider></v-divider>
+        <!-- :editable="this.meetingObject != null" -->
+        <v-stepper-step editable :complete="e1 > 2" step="2">Discussion Points</v-stepper-step>
 
-            <!--actualTime -->
-            <v-dialog
-              ref="dialog2"
-              v-model="modal3"
-              :return-value.sync="mainFormData.actualTime"
-              persistent
-              width="290px"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  :rules="defaultRules"
-                  outlined
-                  dense
-                  v-model="mainFormData.actualTime"
-                  label="Actual Time of Start"
-                  prepend-inner-icon="mdi-clock-outline"
-                  readonly
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-time-picker v-if="modal3" v-model="mainFormData.actualTime" full-width>
-                <v-spacer></v-spacer>
-                <v-btn text color="primary" @click="modal3 = false">Cancel</v-btn>
-                <v-btn text color="primary" @click="$refs.dialog2.save(mainFormData.actualTime)">OK</v-btn>
-              </v-time-picker>
-            </v-dialog>
-            <!--plannedDurationOfTheMeeting -->
-            <v-text-field
-              :rules="defaultRules"
-              v-model="mainFormData.plannedDurationOfTheMeeting"
-              outlined
-              dense
-              type="number"
-              label="Planned Duration of the Meeting (min)"
-            ></v-text-field>
-            <!--actualDurationOfTheMeeting -->
-            <v-text-field
-              :rules="defaultRules"
-              v-model="mainFormData.actualDurationOfTheMeeting"
-              outlined
-              dense
-              type="number"
-              label="Actual Duration of the Meeting (min)"
-            ></v-text-field>
-            <!-- attendance -->
-            <v-text-field
-              :rules="defaultRules"
-              v-model="mainFormData.attendance"
-              outlined
-              dense
-              type="number"
-              label="Attendance %"
-            ></v-text-field>
-            <!--venue -->
-            <v-text-field
-              :rules="defaultRules"
-              v-model="mainFormData.venue"
-              outlined
-              dense
-              label="Venue"
-            ></v-text-field>
-            <v-row class="sideByRow">
+        <v-divider></v-divider>
+        <!-- :editable="this.meetingObject != null" -->
+        <v-stepper-step editable step="3">Close Meeting</v-stepper-step>
+      </v-stepper-header>
+
+      <v-stepper-items>
+        <v-stepper-content step="1">
+          <v-card flat class="mb-12">
+            <v-container style="margin-top: 30px">
+              <v-row style="height: 100%">
+                <v-col md="12">
+                  <v-form v-model="isValid" ref="mainForm">
+                    <v-dialog
+                      ref="dialog"
+                      v-model="modal"
+                      :return-value.sync="mainFormData.meetingDate"
+                      persistent
+                      width="290px"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          :rules="defaultRules"
+                          outlined
+                          dense
+                          v-model="mainFormData.meetingDate"
+                          label="Date"
+                          prepend-inner-icon="mdi-calendar-outline"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                          style="width: 100%"
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker v-model="mainFormData.meetingDate" scrollable>
+                        <v-spacer></v-spacer>
+                        <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
+                        <v-btn
+                          text
+                          color="primary"
+                          @click="$refs.dialog.save(mainFormData.meetingDate)"
+                        >OK</v-btn>
+                      </v-date-picker>
+                    </v-dialog>
+
+                    <v-text-field
+                      :rules="defaultRules"
+                      v-model="mainFormData.topicForTheMeeting"
+                      outlined
+                      dense
+                      label="Topic for the Meeting"
+                    ></v-text-field>
+
+                    <!--venue -->
+                    <v-text-field
+                      :rules="defaultRules"
+                      v-model="mainFormData.venue"
+                      outlined
+                      dense
+                      label="Venue"
+                    ></v-text-field>
+
+                    <!--scheduleTime -->
+                    <v-dialog
+                      ref="dialog1"
+                      v-model="modal2"
+                      :return-value.sync="mainFormData.scheduleTime"
+                      persistent
+                      width="290px"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          :rules="defaultRules"
+                          outlined
+                          dense
+                          v-model="mainFormData.scheduleTime"
+                          label="Schedule Time of Start"
+                          prepend-inner-icon="mdi-clock-outline"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-time-picker v-if="modal2" v-model="mainFormData.scheduleTime" full-width>
+                        <v-spacer></v-spacer>
+                        <v-btn text color="primary" @click="modal2 = false">Cancel</v-btn>
+                        <v-btn
+                          text
+                          color="primary"
+                          @click="$refs.dialog1.save(mainFormData.scheduleTime)"
+                        >OK</v-btn>
+                      </v-time-picker>
+                    </v-dialog>
+
+                    <!--actualTime -->
+                    <v-dialog
+                      ref="dialog2"
+                      v-model="modal3"
+                      :return-value.sync="mainFormData.actualTime"
+                      persistent
+                      width="290px"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          :rules="defaultRules"
+                          outlined
+                          dense
+                          v-model="mainFormData.actualTime"
+                          label="Actual Time of Start"
+                          prepend-inner-icon="mdi-clock-outline"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-time-picker v-if="modal3" v-model="mainFormData.actualTime" full-width>
+                        <v-spacer></v-spacer>
+                        <v-btn text color="primary" @click="modal3 = false">Cancel</v-btn>
+                        <v-btn
+                          text
+                          color="primary"
+                          @click="$refs.dialog2.save(mainFormData.actualTime)"
+                        >OK</v-btn>
+                      </v-time-picker>
+                    </v-dialog>
+                    <!--plannedDurationOfTheMeeting -->
+                    <v-text-field
+                      :rules="defaultRules"
+                      v-model="mainFormData.plannedDurationOfTheMeeting"
+                      outlined
+                      dense
+                      type="number"
+                      label="Planned Duration of the Meeting (min)"
+                    ></v-text-field>
+
+                    <!-- <v-row>
+                      <div class="minuteViewSection">
+                        <div class="viewMinuteBtnDiv">
+                          <v-btn
+                            style="color: #FFFFFF"
+                            :disabled="!isValid"
+                            @click="InitiateMeeting()"
+                            depressed
+                            color="green"
+                          >Initiate Meeting</v-btn>
+                        </div>
+                      </div>
+                    </v-row>-->
+                  </v-form>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card>
+
+          <v-btn
+            style="color: #FFFFFF"
+            :disabled="!isValid"
+            @click="InitiateMeeting()"
+            depressed
+            color="green"
+          >Initiate Meeting</v-btn>
+
+          <v-btn text color="red" @click="resetForm()">Reset</v-btn>
+        </v-stepper-content>
+
+        <v-stepper-content step="2">
+          <v-card flat class="mb-12">
+            <v-row>
               <v-col>
-                <!--chairedBy -->
-                <v-autocomplete
-                  :rules="defaultRules"
-                  v-model="mainFormData.chairedBy"
-                  return-object
-                  :items="userArray"
-                  dense
-                  item-text="name"
-                  item-value="id"
-                  flat
-                  chips
-                  small-chips
-                  outlined
-                  label="Chaired By"
-                  multiple
-                  clearable
-                ></v-autocomplete>
-              </v-col>
-              <v-col>
-                <!--nonOrgChaired -->
-                <v-text-field
-                  v-model="mainFormData.chairedByNonOrg"
-                  outlined
-                  dense
-                  label="Chaired By - Non Org (Ex: Member 1, Member 2)"
-                ></v-text-field>
+                <span class="pointFormHeader">Add Discussion Point</span>
+
+                <v-row>
+                  <v-col></v-col>
+                </v-row>
               </v-col>
             </v-row>
+          </v-card>
 
-            <v-row class="sideByRow">
-              <v-col>
-                <!--attendedBy -->
-                <v-autocomplete
-                  :rules="defaultRules"
-                  v-model="mainFormData.meetingAttendedBy"
-                  return-object
-                  :items="userArray"
-                  dense
-                  item-text="name"
-                  item-value="id"
-                  flat
-                  chips
-                  small-chips
-                  outlined
-                  label="Meeting Attended by"
-                  multiple
-                  clearable
-                ></v-autocomplete>
-              </v-col>
-              <v-col>
-                <!--nonOrgAttendees -->
-                <v-text-field
-                  v-model="mainFormData.meetingAttendedByNonOrg"
-                  outlined
-                  dense
-                  label="Meeting Attended by - Non Org (Ex: Member 1, Member 2)"
-                ></v-text-field>
-              </v-col>
-            </v-row>
+          <v-btn
+            style="color: #FFFFFF"
+            :disabled="!isValid"
+            @click
+            depressed
+            color="green"
+          >Close Meeting</v-btn>
 
-            <v-row class="sideByRow">
-              <v-col>
-                <!--absent -->
-                <v-autocomplete
-                  :rules="defaultRules"
-                  v-model="mainFormData.membersAbsent"
-                  return-object
-                  :items="userArray"
-                  dense
-                  item-text="name"
-                  item-value="id"
-                  flat
-                  chips
-                  small-chips
-                  outlined
-                  label="Members Absent"
-                  multiple
-                  clearable
-                ></v-autocomplete>
-              </v-col>
-              <v-col>
-                <!--nonOrgAbsent -->
-                <v-text-field
-                  v-model="mainFormData.membersAbsentNonOrg"
-                  outlined
-                  dense
-                  label="Members Absent - Non Org (Ex: Member 1, Member 2)"
-                ></v-text-field>
-              </v-col>
-            </v-row>
+          <v-btn text color="red" @click>Reset</v-btn>
+        </v-stepper-content>
 
-            <v-row class="sideByRow">
-              <v-col>
-                <!--additionalCopiesTo -->
-                <v-autocomplete
-                  :rules="defaultRules"
-                  v-model="mainFormData.additionalCopiesTo"
-                  :items="userArray"
-                  return-object
-                  dense
-                  item-text="name"
-                  item-value="id"
-                  flat
-                  chips
-                  small-chips
-                  outlined
-                  label="Additional Copies to"
-                  multiple
-                  clearable
-                ></v-autocomplete>
-              </v-col>
-              <v-col>
-                <!--nonOrgCopies -->
-                <v-text-field
-                  v-model="mainFormData.additionalCopiesToNonOrg"
-                  outlined
-                  dense
-                  label="Additional Copies to - Non Org (Ex: Member 1, Member 2)"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row class="sideByRow">
-              <v-col>
-                <!--preaparedBy -->
-                <v-autocomplete
-                  :rules="defaultRules"
-                  v-model="mainFormData.minutesOfMeetingPreparedBy"
-                  :items="userArray"
-                  return-object
-                  dense
-                  item-text="name"
-                  item-value="id"
-                  flat
-                  chips
-                  small-chips
-                  outlined
-                  label="Minutes of Meeting Prepared by"
-                  multiple
-                  clearable
-                ></v-autocomplete>
-              </v-col>
-              <v-col>
-                <!--nonOrgPrepared -->
-                <v-text-field
-                  v-model="mainFormData.minutesOfMeetingPreparedByNonOrg"
-                  outlined
-                  dense
-                  label="Prepared by - Non Org (Ex: Member 1, Member 2)"
-                ></v-text-field>
-              </v-col>
-            </v-row>
+        <v-stepper-content step="3">
+          <v-card flat class="mb-12">
+            <v-form v-model="isValidSubForm" ref="subForm">
+              <!--actualDurationOfTheMeeting -->
+              <v-text-field
+                :rules="defaultRules"
+                v-model="mainFormData.actualDurationOfTheMeeting"
+                outlined
+                dense
+                type="number"
+                label="Actual Duration of the Meeting (min)"
+              ></v-text-field>
 
-            <div class="minuteViewSection">
-              <div class="viewMinuteBtnDiv">
-                <v-btn @click="addMeeting()" depressed color="green" dark>Initiate Meeting</v-btn>
-              </div>
-            </div>
-          </v-form>
-        </v-col>
-      </v-row>
-    </v-container>
+              <v-row class="sideByRow">
+                <v-col>
+                  <!--chairedBy -->
+                  <v-autocomplete
+                    v-model="mainFormData.chairedBy"
+                    return-object
+                    :items="userArray"
+                    dense
+                    item-text="name"
+                    item-value="id"
+                    flat
+                    chips
+                    small-chips
+                    outlined
+                    label="Chaired By"
+                    multiple
+                    clearable
+                  ></v-autocomplete>
+                </v-col>
+                <v-col>
+                  <!--nonOrgChaired -->
+                  <v-text-field
+                    v-model="mainFormData.chairedByNonOrg"
+                    outlined
+                    dense
+                    clearable
+                    label="Chaired By - Non Org (Ex: Member 1, Member 2)"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+
+              <v-row class="sideByRow">
+                <v-col>
+                  <!--attendedBy -->
+                  <v-autocomplete
+                    v-model="mainFormData.meetingAttendedBy"
+                    return-object
+                    :items="userArray"
+                    dense
+                    item-text="name"
+                    item-value="id"
+                    flat
+                    chips
+                    small-chips
+                    outlined
+                    label="Meeting Attended by"
+                    multiple
+                    clearable
+                  ></v-autocomplete>
+                </v-col>
+                <v-col>
+                  <!--nonOrgAttendees -->
+                  <v-text-field
+                    v-model="mainFormData.meetingAttendedByNonOrg"
+                    outlined
+                    clearable
+                    dense
+                    label="Meeting Attended by - Non Org (Ex: Member 1, Member 2)"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+
+              <v-row class="sideByRow">
+                <v-col>
+                  <!--absent -->
+                  <v-autocomplete
+                    v-model="mainFormData.membersAbsent"
+                    return-object
+                    :items="userArray"
+                    dense
+                    item-text="name"
+                    item-value="id"
+                    flat
+                    chips
+                    small-chips
+                    outlined
+                    label="Members Absent"
+                    multiple
+                    clearable
+                  ></v-autocomplete>
+                </v-col>
+                <v-col>
+                  <!--nonOrgAbsent -->
+                  <v-text-field
+                    v-model="mainFormData.membersAbsentNonOrg"
+                    outlined
+                    clearable
+                    dense
+                    label="Members Absent - Non Org (Ex: Member 1, Member 2)"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+
+              <v-row class="sideByRow">
+                <v-col>
+                  <!--additionalCopiesTo -->
+                  <v-autocomplete
+                    v-model="mainFormData.additionalCopiesTo"
+                    :items="userArray"
+                    return-object
+                    dense
+                    item-text="name"
+                    item-value="id"
+                    flat
+                    chips
+                    small-chips
+                    outlined
+                    label="Additional Copies to"
+                    multiple
+                    clearable
+                  ></v-autocomplete>
+                </v-col>
+                <v-col>
+                  <!--nonOrgCopies -->
+                  <v-text-field
+                    v-model="mainFormData.additionalCopiesToNonOrg"
+                    outlined
+                    clearable
+                    dense
+                    label="Additional Copies to - Non Org (Ex: Member 1, Member 2)"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row class="sideByRow">
+                <v-col>
+                  <!--preaparedBy -->
+                  <v-autocomplete
+                    v-model="mainFormData.minutesOfMeetingPreparedBy"
+                    :items="userArray"
+                    return-object
+                    dense
+                    item-text="name"
+                    item-value="id"
+                    flat
+                    chips
+                    small-chips
+                    outlined
+                    label="Minutes of Meeting Prepared by"
+                    multiple
+                    clearable
+                  ></v-autocomplete>
+                </v-col>
+                <v-col>
+                  <!--nonOrgPrepared -->
+                  <v-text-field
+                    v-model="mainFormData.minutesOfMeetingPreparedByNonOrg"
+                    outlined
+                    clearable
+                    dense
+                    label="Prepared by - Non Org (Ex: Member 1, Member 2)"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-form>
+          </v-card>
+
+          <v-btn
+            style="color: #FFFFFF"
+            :disabled="!isValidSubForm"
+            @click="closeMeeting()"
+            depressed
+            color="green"
+          >End Meeting</v-btn>
+
+          <v-btn text color="red" @click="resetSubForm()">Reset</v-btn>
+        </v-stepper-content>
+      </v-stepper-items>
+    </v-stepper>
+
+    <!-- ----------------- end Stepper ------------ -->
+
     <v-container>
-      <v-row>
-        <v-col>
-          <span class="pointFormHeader">Add Discussion Point</span>
-          <v-form ref="subForm"></v-form>
-          <v-row>
-            <v-col></v-col>
-          </v-row>
-        </v-col>
-      </v-row>
+      <div @click="close()" class="popupBox">
+        <component
+          v-bind:is="component"
+          :successMessage="successMessage"
+          :errorMessage="errorMessage"
+        ></component>
+        <!-- <success-popup /> -->
+      </div>
     </v-container>
   </div>
 </template>
@@ -330,8 +418,12 @@ export default {
   },
   data() {
     return {
+      e1: 1,
+      isValid: true,
+      isValidSubForm: true,
+
       component: "",
-      meetingObject: {},
+      meetingObject: null,
       userId: this.$store.state.user.userId,
 
       dialog: false,
@@ -366,18 +458,72 @@ export default {
     };
   },
   methods: {
-    async addMeeting() {
-      let meetingAttended = [];
-      let meetingAbsent = [];
-      let meetingCopiesTo = [];
-      let meetingPrepared = [];
-      let meetingChaired = [];
+    resetForm() {
+      this.$refs.mainForm.reset();
+    },
+    resetSubForm() {
+      this.$refs.subForm.reset();
+    },
+    async InitiateMeeting() {
       let scheduledTime = new Date(
         this.mainFormData.meetingDate + " " + this.mainFormData.scheduleTime
       );
       let actualTime = new Date(
         this.mainFormData.meetingDate + " " + this.mainFormData.actualTime
       );
+
+      let response;
+      try {
+        response = await this.$axios.$post(
+          `meeting`,
+          {
+            projectId: this.projectId,
+            meetingTopic: this.mainFormData.topicForTheMeeting,
+            meetingVenue: this.mainFormData.venue,
+            meetingExpectedTime: scheduledTime,
+            meetingActualTime: actualTime,
+            expectedDuration: this.mainFormData.plannedDurationOfTheMeeting,
+            meetingAttended: [],
+            meetingChaired: [],
+            meetingAbsent: [],
+            meetingCopiesTo: [],
+            meetingPrepared: [],
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.component = "success-popup";
+        this.successMessage = "Meeting Successfully initiated";
+        this.e1 = 2;
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.meetingObject = response;
+      } catch (e) {
+        this.overlay = false;
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error creating meeting", e);
+      }
+    },
+    async closeMeeting() {
+      let meetingAttendedObject = {};
+      let meetingAttended = [];
+      let meetingAbsentObject = {};
+      let meetingAbsent = [];
+      let meetingCopiesToObject = {};
+      let meetingCopiesTo = [];
+      let meetingPreparedObject = {};
+      let meetingPrepared = [];
+      let meetingChairedObject = {};
+      let meetingChaired = [];
+
       // ---- attended by ----
       if (
         this.mainFormData.meetingAttendedBy != null &&
@@ -404,6 +550,11 @@ export default {
           isGuest: true,
         });
       }
+
+      meetingAttendedObject = {
+        isUpdated: true,
+        attendees: meetingAttended,
+      };
 
       // ---- chaired by ----
       if (
@@ -432,6 +583,11 @@ export default {
         });
       }
 
+      meetingChairedObject = {
+        isUpdated: true,
+        attendees: meetingChaired,
+      };
+
       // ---- member absent ----
       if (
         this.mainFormData.membersAbsent != null &&
@@ -458,6 +614,11 @@ export default {
           isGuest: true,
         });
       }
+
+      meetingAbsentObject = {
+        isUpdated: true,
+        attendees: meetingAbsent,
+      };
 
       // ---- additional copies to ----
       if (
@@ -486,6 +647,11 @@ export default {
         });
       }
 
+      meetingCopiesToObject = {
+        isUpdated: true,
+        attendees: meetingCopiesTo,
+      };
+
       // ---- prepared by ----
       if (
         this.mainFormData.minutesOfMeetingPreparedBy != null &&
@@ -513,23 +679,23 @@ export default {
         });
       }
 
+      meetingPreparedObject = {
+        isUpdated: true,
+        attendees: meetingPrepared,
+      };
+
       let response;
       try {
-        response = await this.$axios.$post(
-          `meeting`,
+        response = await this.$axios.$put(
+          `meeting/${this.meetingObject.data.meetingId}`,
           {
             projectId: this.projectId,
-            meetingTopic: this.mainFormData.topicForTheMeeting,
-            meetingVenue: this.mainFormData.venue,
-            meetingExpectedTime: scheduledTime,
-            meetingActualTime: actualTime,
-            expectedDuration: this.mainFormData.plannedDurationOfTheMeeting,
             actualDuration: this.mainFormData.actualDurationOfTheMeeting,
-            meetingAttended: meetingAttended,
-            meetingChaired: meetingChaired,
-            meetingAbsent: meetingAbsent,
-            meetingCopiesTo: meetingCopiesTo,
-            meetingPrepared: meetingPrepared,
+            meetingAttended: meetingAttendedObject,
+            meetingChaired: meetingChairedObject,
+            meetingAbsent: meetingAbsentObject,
+            meetingCopiesTo: meetingCopiesToObject,
+            meetingPrepared: meetingPreparedObject,
           },
           {
             headers: {
@@ -538,11 +704,12 @@ export default {
           }
         );
         this.component = "success-popup";
-        this.successMessage = "Meeting Successfully initiated";
+        this.successMessage = "Meeting Successfully closed";
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.meetingObject = response;
+        this.resetSubForm();
+        this.resetForm();
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
@@ -552,6 +719,9 @@ export default {
         }, 3000);
         console.log("Error creating meeting", e);
       }
+    },
+    close() {
+      this.component = "";
     },
   },
   computed: {

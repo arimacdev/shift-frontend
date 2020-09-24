@@ -1175,6 +1175,7 @@ export default {
     },
     async closeTask(taskId, filter) {
       this.waiting = true;
+      this.scrollCount = 1;
 
       // console.log("onchange updated status ->");
       let response;
@@ -1199,6 +1200,12 @@ export default {
         if (filter) {
           this.jqlSearch();
         }
+
+        this.$store.dispatch("task/setIndex", {
+          startIndex: 0,
+          endIndex: 10,
+          isAllTasks: false,
+        });
 
         this.component = "success-popup";
         this.successMessage = "Status successfully updated";
