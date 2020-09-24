@@ -993,6 +993,7 @@ export default {
         );
         this.component = 'success-popup';
         this.successMessage = 'Meeting Successfully closed';
+        this.e1 = 1;
         setTimeout(() => {
           this.close();
         }, 3000);
