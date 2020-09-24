@@ -1,12 +1,17 @@
 <template>
   <v-card flat>
     <span class="pointFormHeader">Discussion Points</span>
-    <v-card outlined class="discussionPointCardStyle">
+    <v-card
+      v-for="(discussion, index) in discussionPoints"
+      :key="index"
+      outlined
+      class="discussionPointCardStyle"
+    >
       <v-row class="sideByRow">
         <v-col md="3">
           <!--discussionPoints -->
           <v-text-field
-            value="30"
+            :value="discussion.discussionPoint"
             outlined
             dense
             readonly
@@ -19,7 +24,7 @@
         <v-col md="3">
           <div style="float: right; margin-top: -10px">
             <v-switch
-              input-value="true"
+              :input-value="discussion.actionByGuest"
               readonly
               label="Action by guest"
             ></v-switch>
@@ -28,7 +33,11 @@
         <v-col md="6">
           <!--actionBy -->
           <v-text-field
-            value="Buddhika Priyabhashana"
+            :value="
+              discussion.meetingUser.firstName +
+                ' ' +
+                discussion.meetingUser.lastName
+            "
             outlined
             dense
             readonly
@@ -41,7 +50,7 @@
           <v-text-field
             outlined
             dense
-            value="2020-10-10"
+            :value="new Date(discussion.dueDate).toISOString().substr(0, 10)"
             label="Date"
             prepend-inner-icon="mdi-calendar-outline"
             readonly
@@ -51,7 +60,7 @@
         <v-col>
           <!--remarks -->
           <v-text-field
-            value="Arimac"
+            :value="discussion.remarks"
             outlined
             dense
             readonly
@@ -59,16 +68,14 @@
           ></v-text-field>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row
+        v-if="discussion.description != '' && discussion.description != null"
+      >
         <v-col>
-          <div
-            class="htmlViewDiv"
-            v-html="'<p>This <strong>is a </strong><em>Description</em></p>'"
-          ></div>
+          <div class="htmlViewDiv" v-html="discussion.description"></div>
         </v-col>
       </v-row>
     </v-card>
-    {{ discussionPoints }}
   </v-card>
 </template>
 <script>

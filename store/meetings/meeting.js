@@ -29,7 +29,7 @@ export const actions = {
           },
         }
       );
-      console.log('discussion points', response.data);
+      // console.log('discussion points', response.data);
       commit('SET_DISCUSSION_POINTS', response.data);
     } catch (error) {
       console.log('Error fetching discussion points', error);

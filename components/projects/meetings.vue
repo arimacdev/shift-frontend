@@ -224,7 +224,8 @@
                     <v-col md="3">
                       <!--discussionPoints -->
                       <v-text-field
-                        v-model="discussionPointsInput"
+                        v-model="discussionPointData.discussionPointCount"
+                        type="number"
                         outlined
                         dense
                         clearable
@@ -608,6 +609,8 @@ export default {
 
       modal2: false,
       modal3: false,
+
+      disPointCount: 1,
       discussionPointData: {
         discussionPointCount: 1,
         actionBy: null,
@@ -694,8 +697,10 @@ export default {
         }, 3000);
         console.log('Error creating task', e);
       }
+      this.discussionPointData.discussionPointCount = ++this.disPointCount;
     },
     async addDiscussionPoint() {
+      // this.disPointCount = ++this.disPointCount;
       let response;
       try {
         response = await this.$axios.$post(
@@ -705,7 +710,7 @@ export default {
             meetingId: this.meetingObject.data.meetingId,
             // meetingId: '19a4edb0-0610-4fad-88f3-a3a01c141155',
             description: this.discussionPointData.description,
-            discussionPoint: this.discussionPointData.discussionPointCount,
+            discussionPoint: this.disPointCount,
             remarks: this.discussionPointData.remarks,
             actionBy: this.discussionPointData.actionBy,
             actionByGuest: this.discussionPointData.switch1,
@@ -731,6 +736,7 @@ export default {
         } else {
           this.$refs.discussionPointForm.reset();
           this.discussionPointData.description = '';
+          this.discussionPointData.discussionPointCount = ++this.disPointCount;
         }
 
         setTimeout(() => {
@@ -1019,14 +1025,14 @@ export default {
       projectId: (state) => state.project.project.projectId,
       discussionPoints: (state) => state.meetings.meeting.discussionPoints,
     }),
-    discussionPointsInput: {
-      get() {
-        return this.discussionPoints.length + 1;
-      },
-      set(value) {
-        this.discussionPointData.discussionPointCount = value;
-      },
-    },
+    // discussionPointsInput: {
+    //   get() {
+    //     return this.discussionPoints.length + 1;
+    //   },
+    //   set(value) {
+    //     this.discussionPointData.discussionPointCount = value;
+    //   },
+    // },
     userArray() {
       let AssigneeSearchList = this.users;
       let assigneeList = [];
