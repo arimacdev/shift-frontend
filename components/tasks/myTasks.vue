@@ -536,7 +536,7 @@ export default {
     // });
     // this.getMyTasks();
     // this.scroll();
-    this.scrollEvent();
+    // this.scrollEvent();
   },
   components: {
     // "task-side-bar": TaskSideBar,

@@ -918,7 +918,7 @@ export default {
     },
   },
   mounted() {
-    this.scrollEvent();
+    // this.scrollEvent();
   },
   methods: {
     clearTaskName() {
@@ -1673,7 +1673,7 @@ export default {
       }
     },
     async addSubTask(index, selectedParentTask, issueType, sprintId, dueDate) {
-      this.scrollCount = 1;
+      // this.scrollCount = 1;
       this.overlay = true;
       let response;
       let taskName;
