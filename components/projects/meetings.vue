@@ -44,7 +44,10 @@
 
           <v-divider></v-divider>
           <!-- :editable="this.meetingObject != null" -->
-          <v-stepper-step editable :complete="e1 > 2" step="2"
+          <v-stepper-step
+            :editable="this.meetingObject != null"
+            :complete="e1 > 2"
+            step="2"
             >Discussion Points</v-stepper-step
           >
 

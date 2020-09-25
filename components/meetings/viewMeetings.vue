@@ -56,7 +56,7 @@
               <span>Topic</span>
             </v-list-item-content>
             <v-list-item-content>
-              <span>Venu</span>
+              <span>Venue</span>
             </v-list-item-content>
             <v-list-item-content>
               <span>Chaired By</span>
@@ -73,6 +73,7 @@
 
           <v-list-item-group>
             <v-list-item
+              class="tableContentRecord"
               v-for="(meeting, index) in projectMeetings"
               :key="index"
             >
