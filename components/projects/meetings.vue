@@ -66,7 +66,7 @@
                   <v-col md="12">
                     <v-form v-model="isValid" ref="mainForm">
                       <v-dialog
-                        ref="dialog"
+                        ref="dialogDate"
                         v-model="modal"
                         :return-value.sync="mainFormData.meetingDate"
                         persistent
@@ -98,7 +98,7 @@
                             text
                             color="primary"
                             @click="
-                              $refs.dialog.save(mainFormData.meetingDate);
+                              $refs.dialogDate.save(mainFormData.meetingDate);
                               modal = false;
                             "
                             >OK</v-btn
@@ -837,11 +837,11 @@ export default {
           this.close();
         }, 3000);
         this.meetingObject = response;
-        this.$store.dispatch("meetings/meeting/fetchDiscussionPoints", {
-          meetingId: this.meetingObject.data.meetingId,
-          // meetingId: '19a4edb0-0610-4fad-88f3-a3a01c141155',
-          projectId: this.projectId,
-        });
+        // this.$store.dispatch("meetings/meeting/fetchDiscussionPoints", {
+        //   meetingId: this.meetingObject.data.meetingId,
+        //   // meetingId: '19a4edb0-0610-4fad-88f3-a3a01c141155',
+        //   projectId: this.projectId,
+        // });
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
