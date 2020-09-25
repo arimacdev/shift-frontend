@@ -44,10 +44,7 @@
 
           <v-divider></v-divider>
           <!-- :editable="this.meetingObject != null" -->
-          <v-stepper-step
-            :editable="this.meetingObject != null"
-            :complete="e1 > 2"
-            step="2"
+          <v-stepper-step editable :complete="e1 > 2" step="2"
             >Discussion Points</v-stepper-step
           >
 
@@ -277,7 +274,7 @@
                         <!--actionBy -->
                         <v-autocomplete
                           :rules="defaultRules"
-                          v-if="!switch1"
+                          v-if="!discussionPointData.switch1"
                           v-model="discussionPointData.actionBy"
                           :items="userArray"
                           dense
@@ -360,7 +357,7 @@
                         ></vue-editor>
                       </v-col>
                     </v-row>
-                    <v-row v-if="!switch1">
+                    <v-row v-if="!discussionPointData.switch1">
                       <v-col md="3">
                         <div style="margin-left: 10px">
                           <v-switch
@@ -1051,6 +1048,7 @@ export default {
         }, 3000);
         this.resetSubForm();
         this.resetForm();
+        this.meetingObject = null;
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
