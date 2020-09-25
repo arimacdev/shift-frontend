@@ -1,189 +1,208 @@
 <template>
   <div class="projectTabContent overflow-y-auto">
-    <v-row>
+    <v-row v-if="!isMeetingViewer">
       <div class="minuteViewSection">
         <div class="viewMinuteBtnDiv">
-          <v-btn depressed color="red" dark>View Minute</v-btn>
+          <v-btn @click="isMeetingViewer = true" depressed color="red" dark
+            >View Minute</v-btn
+          >
+        </div>
+      </div>
+    </v-row>
+
+    <v-row v-else>
+      <div class="minuteViewSection">
+        <div class="viewMinuteBtnDiv">
+          <v-btn @click="isMeetingViewer = false" depressed color="red" dark
+            >Add Minute</v-btn
+          >
         </div>
       </div>
     </v-row>
 
     <br />
     <br />
+    <!-- ---- meetings viewer ------ -->
+
+    <div v-if="isMeetingViewer">
+      <view-meetings />
+    </div>
     <!-- ------------ Start Stepper ----------- -->
+    <div v-else>
+      <v-stepper v-model="e1">
+        <v-stepper-header>
+          <v-stepper-step editable :complete="e1 > 1" step="1"
+            >Initiate Meeting</v-stepper-step
+          >
 
-    <v-stepper v-model="e1">
-      <v-stepper-header>
-        <v-stepper-step editable :complete="e1 > 1" step="1"
-          >Initiate Meeting</v-stepper-step
-        >
+          <v-divider></v-divider>
+          <!-- :editable="this.meetingObject != null" -->
+          <v-stepper-step
+            :editable="this.meetingObject != null"
+            :complete="e1 > 2"
+            step="2"
+            >Discussion Points</v-stepper-step
+          >
 
-        <v-divider></v-divider>
-        <!-- :editable="this.meetingObject != null" -->
-        <v-stepper-step
-          :editable="this.meetingObject != null"
-          :complete="e1 > 2"
-          step="2"
-          >Discussion Points</v-stepper-step
-        >
+          <v-divider></v-divider>
+          <!-- :editable="this.meetingObject != null" -->
+          <v-stepper-step :editable="this.meetingObject != null" step="3"
+            >Close Meeting</v-stepper-step
+          >
+        </v-stepper-header>
 
-        <v-divider></v-divider>
-        <!-- :editable="this.meetingObject != null" -->
-        <v-stepper-step :editable="this.meetingObject != null" step="3"
-          >Close Meeting</v-stepper-step
-        >
-      </v-stepper-header>
-
-      <v-stepper-items>
-        <v-stepper-content step="1">
-          <v-card flat class="mb-12">
-            <v-container style="margin-top: 30px">
-              <v-row style="height: 100%">
-                <v-col md="12">
-                  <v-form v-model="isValid" ref="mainForm">
-                    <v-dialog
-                      ref="dialog"
-                      v-model="modal"
-                      :return-value.sync="mainFormData.meetingDate"
-                      persistent
-                      width="290px"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          :rules="defaultRules"
-                          outlined
-                          dense
+        <v-stepper-items>
+          <v-stepper-content step="1">
+            <v-card flat class="mb-12">
+              <v-container style="margin-top: 30px">
+                <v-row style="height: 100%">
+                  <v-col md="12">
+                    <v-form v-model="isValid" ref="mainForm">
+                      <v-dialog
+                        ref="dialog"
+                        v-model="modal"
+                        :return-value.sync="mainFormData.meetingDate"
+                        persistent
+                        width="290px"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            :rules="defaultRules"
+                            outlined
+                            dense
+                            v-model="mainFormData.meetingDate"
+                            label="Date"
+                            prepend-inner-icon="mdi-calendar-outline"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                            style="width: 100%"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
                           v-model="mainFormData.meetingDate"
-                          label="Date"
-                          prepend-inner-icon="mdi-calendar-outline"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                          style="width: 100%"
-                        ></v-text-field>
-                      </template>
-                      <v-date-picker
-                        v-model="mainFormData.meetingDate"
-                        scrollable
+                          scrollable
+                        >
+                          <v-spacer></v-spacer>
+                          <v-btn text color="primary" @click="modal = false"
+                            >Cancel</v-btn
+                          >
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="$refs.dialog.save(mainFormData.meetingDate)"
+                            >OK</v-btn
+                          >
+                        </v-date-picker>
+                      </v-dialog>
+
+                      <v-text-field
+                        :rules="defaultRules"
+                        v-model="mainFormData.topicForTheMeeting"
+                        outlined
+                        dense
+                        label="Topic for the Meeting"
+                      ></v-text-field>
+
+                      <!--venue -->
+                      <v-text-field
+                        :rules="defaultRules"
+                        v-model="mainFormData.venue"
+                        outlined
+                        dense
+                        label="Venue"
+                      ></v-text-field>
+
+                      <!--scheduleTime -->
+                      <v-dialog
+                        ref="dialog1"
+                        v-model="modal2"
+                        :return-value.sync="mainFormData.scheduleTime"
+                        persistent
+                        width="290px"
                       >
-                        <v-spacer></v-spacer>
-                        <v-btn text color="primary" @click="modal = false"
-                          >Cancel</v-btn
-                        >
-                        <v-btn
-                          text
-                          color="primary"
-                          @click="$refs.dialog.save(mainFormData.meetingDate)"
-                          >OK</v-btn
-                        >
-                      </v-date-picker>
-                    </v-dialog>
-
-                    <v-text-field
-                      :rules="defaultRules"
-                      v-model="mainFormData.topicForTheMeeting"
-                      outlined
-                      dense
-                      label="Topic for the Meeting"
-                    ></v-text-field>
-
-                    <!--venue -->
-                    <v-text-field
-                      :rules="defaultRules"
-                      v-model="mainFormData.venue"
-                      outlined
-                      dense
-                      label="Venue"
-                    ></v-text-field>
-
-                    <!--scheduleTime -->
-                    <v-dialog
-                      ref="dialog1"
-                      v-model="modal2"
-                      :return-value.sync="mainFormData.scheduleTime"
-                      persistent
-                      width="290px"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          :rules="defaultRules"
-                          outlined
-                          dense
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            :rules="defaultRules"
+                            outlined
+                            dense
+                            v-model="mainFormData.scheduleTime"
+                            label="Schedule Time of Start"
+                            prepend-inner-icon="mdi-clock-outline"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-time-picker
+                          v-if="modal2"
                           v-model="mainFormData.scheduleTime"
-                          label="Schedule Time of Start"
-                          prepend-inner-icon="mdi-clock-outline"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                        ></v-text-field>
-                      </template>
-                      <v-time-picker
-                        v-if="modal2"
-                        v-model="mainFormData.scheduleTime"
-                        full-width
-                      >
-                        <v-spacer></v-spacer>
-                        <v-btn text color="primary" @click="modal2 = false"
-                          >Cancel</v-btn
+                          full-width
                         >
-                        <v-btn
-                          text
-                          color="primary"
-                          @click="$refs.dialog1.save(mainFormData.scheduleTime)"
-                          >OK</v-btn
-                        >
-                      </v-time-picker>
-                    </v-dialog>
+                          <v-spacer></v-spacer>
+                          <v-btn text color="primary" @click="modal2 = false"
+                            >Cancel</v-btn
+                          >
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="
+                              $refs.dialog1.save(mainFormData.scheduleTime)
+                            "
+                            >OK</v-btn
+                          >
+                        </v-time-picker>
+                      </v-dialog>
 
-                    <!--actualTime -->
-                    <v-dialog
-                      ref="dialog2"
-                      v-model="modal3"
-                      :return-value.sync="mainFormData.actualTime"
-                      persistent
-                      width="290px"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          :rules="defaultRules"
-                          outlined
-                          dense
+                      <!--actualTime -->
+                      <v-dialog
+                        ref="dialog2"
+                        v-model="modal3"
+                        :return-value.sync="mainFormData.actualTime"
+                        persistent
+                        width="290px"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            :rules="defaultRules"
+                            outlined
+                            dense
+                            v-model="mainFormData.actualTime"
+                            label="Actual Time of Start"
+                            prepend-inner-icon="mdi-clock-outline"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-time-picker
+                          v-if="modal3"
                           v-model="mainFormData.actualTime"
-                          label="Actual Time of Start"
-                          prepend-inner-icon="mdi-clock-outline"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                        ></v-text-field>
-                      </template>
-                      <v-time-picker
-                        v-if="modal3"
-                        v-model="mainFormData.actualTime"
-                        full-width
-                      >
-                        <v-spacer></v-spacer>
-                        <v-btn text color="primary" @click="modal3 = false"
-                          >Cancel</v-btn
+                          full-width
                         >
-                        <v-btn
-                          text
-                          color="primary"
-                          @click="$refs.dialog2.save(mainFormData.actualTime)"
-                          >OK</v-btn
-                        >
-                      </v-time-picker>
-                    </v-dialog>
-                    <!--plannedDurationOfTheMeeting -->
-                    <v-text-field
-                      :rules="defaultRules"
-                      v-model="mainFormData.plannedDurationOfTheMeeting"
-                      outlined
-                      dense
-                      type="number"
-                      label="Planned Duration of the Meeting (min)"
-                    ></v-text-field>
+                          <v-spacer></v-spacer>
+                          <v-btn text color="primary" @click="modal3 = false"
+                            >Cancel</v-btn
+                          >
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="$refs.dialog2.save(mainFormData.actualTime)"
+                            >OK</v-btn
+                          >
+                        </v-time-picker>
+                      </v-dialog>
+                      <!--plannedDurationOfTheMeeting -->
+                      <v-text-field
+                        :rules="defaultRules"
+                        v-model="mainFormData.plannedDurationOfTheMeeting"
+                        outlined
+                        dense
+                        type="number"
+                        label="Planned Duration of the Meeting (min)"
+                      ></v-text-field>
 
-                    <!-- <v-row>
+                      <!-- <v-row>
                       <div class="minuteViewSection">
                         <div class="viewMinuteBtnDiv">
                           <v-btn
@@ -196,369 +215,372 @@
                         </div>
                       </div>
                     </v-row>-->
-                  </v-form>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card>
+                    </v-form>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card>
 
-          <v-btn
-            style="color: #FFFFFF"
-            :disabled="!isValid"
-            @click="InitiateMeeting()"
-            depressed
-            color="green"
-            >Initiate Meeting</v-btn
-          >
+            <v-btn
+              style="color: #ffffff"
+              :disabled="!isValid"
+              @click="InitiateMeeting()"
+              depressed
+              color="green"
+              >Initiate Meeting</v-btn
+            >
 
-          <v-btn text color="red" @click="resetForm()">Reset</v-btn>
-        </v-stepper-content>
+            <v-btn text color="red" @click="resetForm()">Reset</v-btn>
+          </v-stepper-content>
 
-        <v-stepper-content step="2">
-          <v-card flat class="mb-12">
-            <v-row>
-              <v-col>
-                <span class="pointFormHeader">Add Discussion Point</span>
-                <v-form v-model="isValidDiscussion" ref="discussionPointForm">
-                  <v-row class="sideByRow">
-                    <v-col md="3">
-                      <!--discussionPoints -->
-                      <v-text-field
-                        v-model="discussionPointData.discussionPointCount"
-                        type="number"
-                        outlined
-                        dense
-                        clearable
-                        disabled
-                        label="Discussion Point"
-                      ></v-text-field>
-                    </v-col>
-                    <!-- <v-col md="1">
-                    <span style="font-size: 8px">Action by guest</span>
-                  </v-col>-->
-                    <v-col md="3">
-                      <div style="float: right; margin-top: -10px">
-                        <v-switch
-                          v-model="discussionPointData.switch1"
-                          label="Action by guest"
-                        ></v-switch>
-                      </div>
-                    </v-col>
-                    <v-col md="6">
-                      <!--actionBy -->
-                      <v-autocomplete
-                        :rules="defaultRules"
-                        v-if="!switch1"
-                        v-model="discussionPointData.actionBy"
-                        :items="userArray"
-                        dense
-                        item-text="name"
-                        item-value="id"
-                        flat
-                        chips
-                        small-chips
-                        outlined
-                        label="Action By"
-                        clearable
-                      ></v-autocomplete>
-                      <v-text-field
-                        v-else
-                        v-model="discussionPointData.actionBy"
-                        outlined
-                        dense
-                        clearable
-                        label="Action By Guest (Ex: Guest1)"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                  <v-row class="sideByRow">
-                    <v-col>
-                      <v-dialog
-                        ref="dialog"
-                        v-model="modalDiscussion"
-                        :return-value.sync="discussionPointData.dueDate"
-                        persistent
-                        width="290px"
-                      >
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-text-field
-                            outlined
-                            dense
-                            v-model="discussionPointData.dueDate"
-                            label="Date"
-                            prepend-inner-icon="mdi-calendar-outline"
-                            readonly
-                            v-bind="attrs"
-                            v-on="on"
-                            style="width: 100%"
-                          ></v-text-field>
-                        </template>
-                        <v-date-picker
-                          v-model="discussionPointData.dueDate"
-                          scrollable
-                        >
-                          <v-spacer></v-spacer>
-                          <v-btn text color="primary" @click="modal2 = false"
-                            >Cancel</v-btn
-                          >
-                          <v-btn
-                            text
-                            color="primary"
-                            @click="
-                              $refs.dialog.save(discussionPointData.dueDate)
-                            "
-                            >OK</v-btn
-                          >
-                        </v-date-picker>
-                      </v-dialog>
-                    </v-col>
-                    <v-col>
-                      <!--remarks -->
-                      <v-text-field
-                        v-model="discussionPointData.remarks"
-                        outlined
-                        dense
-                        clearable
-                        label="Remarks"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col>
-                      <vue-editor
-                        placeholder="Add a description"
-                        v-model="discussionPointData.description"
-                      ></vue-editor>
-                    </v-col>
-                  </v-row>
-                  <v-row v-if="!switch1">
-                    <v-col md="3">
-                      <div style="margin-left: 10px">
-                        <v-switch
-                          v-model="discussionPointData.switch2"
-                          label="Convert to a task"
-                        ></v-switch>
-                      </div>
-                    </v-col>
-                    <v-col md="6" v-if="discussionPointData.switch2">
-                      <div style="margin-left: 10px">
-                        <!--remarks -->
+          <v-stepper-content step="2">
+            <v-card flat class="mb-12">
+              <v-row>
+                <v-col>
+                  <span class="pointFormHeader">Add Discussion Point</span>
+                  <v-form v-model="isValidDiscussion" ref="discussionPointForm">
+                    <v-row class="sideByRow">
+                      <v-col md="3">
+                        <!--discussionPoints -->
                         <v-text-field
-                          :rules="defaultRules"
-                          v-model="discussionPointData.taskName"
+                          v-model="discussionPointData.discussionPointCount"
+                          type="number"
                           outlined
                           dense
                           clearable
-                          label="Task Name"
+                          disabled
+                          label="Discussion Point"
                         ></v-text-field>
-                      </div>
-                    </v-col>
-                  </v-row>
-                </v-form>
-              </v-col>
-            </v-row>
-          </v-card>
+                      </v-col>
+                      <!-- <v-col md="1">
+                    <span style="font-size: 8px">Action by guest</span>
+                  </v-col>-->
+                      <v-col md="3">
+                        <div style="float: right; margin-top: -10px">
+                          <v-switch
+                            v-model="discussionPointData.switch1"
+                            label="Action by guest"
+                          ></v-switch>
+                        </div>
+                      </v-col>
+                      <v-col md="6">
+                        <!--actionBy -->
+                        <v-autocomplete
+                          :rules="defaultRules"
+                          v-if="!switch1"
+                          v-model="discussionPointData.actionBy"
+                          :items="userArray"
+                          dense
+                          item-text="name"
+                          item-value="id"
+                          flat
+                          chips
+                          small-chips
+                          outlined
+                          label="Action By"
+                          clearable
+                        ></v-autocomplete>
+                        <v-text-field
+                          v-else
+                          v-model="discussionPointData.actionBy"
+                          outlined
+                          dense
+                          clearable
+                          label="Action By Guest (Ex: Guest1)"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                    <v-row class="sideByRow">
+                      <v-col>
+                        <v-dialog
+                          ref="dialog"
+                          v-model="modalDiscussion"
+                          :return-value.sync="discussionPointData.dueDate"
+                          persistent
+                          width="290px"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                              outlined
+                              dense
+                              v-model="discussionPointData.dueDate"
+                              label="Date"
+                              prepend-inner-icon="mdi-calendar-outline"
+                              readonly
+                              v-bind="attrs"
+                              v-on="on"
+                              style="width: 100%"
+                            ></v-text-field>
+                          </template>
+                          <v-date-picker
+                            v-model="discussionPointData.dueDate"
+                            scrollable
+                          >
+                            <v-spacer></v-spacer>
+                            <v-btn text color="primary" @click="modal2 = false"
+                              >Cancel</v-btn
+                            >
+                            <v-btn
+                              text
+                              color="primary"
+                              @click="
+                                $refs.dialog.save(discussionPointData.dueDate)
+                              "
+                              >OK</v-btn
+                            >
+                          </v-date-picker>
+                        </v-dialog>
+                      </v-col>
+                      <v-col>
+                        <!--remarks -->
+                        <v-text-field
+                          v-model="discussionPointData.remarks"
+                          outlined
+                          dense
+                          clearable
+                          label="Remarks"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col>
+                        <vue-editor
+                          placeholder="Add a description"
+                          v-model="discussionPointData.description"
+                        ></vue-editor>
+                      </v-col>
+                    </v-row>
+                    <v-row v-if="!switch1">
+                      <v-col md="3">
+                        <div style="margin-left: 10px">
+                          <v-switch
+                            v-model="discussionPointData.switch2"
+                            label="Convert to a task"
+                          ></v-switch>
+                        </div>
+                      </v-col>
+                      <v-col md="6" v-if="discussionPointData.switch2">
+                        <div style="margin-left: 10px">
+                          <!--remarks -->
+                          <v-text-field
+                            :rules="defaultRules"
+                            v-model="discussionPointData.taskName"
+                            outlined
+                            dense
+                            clearable
+                            label="Task Name"
+                          ></v-text-field>
+                        </div>
+                      </v-col>
+                    </v-row>
+                  </v-form>
+                </v-col>
+              </v-row>
+            </v-card>
 
-          <div style="margin-top: -60px !important; margin-bottom: 50px">
+            <div style="margin-top: -60px !important; margin-bottom: 50px">
+              <v-btn
+                :disabled="!isValidDiscussion"
+                style="color: #ffffff"
+                @click="addDiscussionPoint()"
+                depressed
+                color="green"
+                >Add Discussion Point</v-btn
+              >
+
+              <v-btn text color="red" @click="resetDiscussionForm()"
+                >Reset</v-btn
+              >
+            </div>
+
+            <v-divider></v-divider>
+
+            <view-discussion />
+          </v-stepper-content>
+
+          <v-stepper-content step="3">
+            <v-card flat class="mb-12">
+              <v-form v-model="isValidSubForm" ref="subForm">
+                <!--actualDurationOfTheMeeting -->
+                <v-text-field
+                  :rules="defaultRules"
+                  v-model="mainFormData.actualDurationOfTheMeeting"
+                  outlined
+                  dense
+                  type="number"
+                  label="Actual Duration of the Meeting (min)"
+                ></v-text-field>
+
+                <v-row class="sideByRow">
+                  <v-col>
+                    <!--chairedBy -->
+                    <v-autocomplete
+                      v-model="mainFormData.chairedBy"
+                      return-object
+                      :items="userArray"
+                      dense
+                      item-text="name"
+                      item-value="id"
+                      flat
+                      chips
+                      small-chips
+                      outlined
+                      label="Chaired By"
+                      multiple
+                      clearable
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col>
+                    <!--nonOrgChaired -->
+                    <v-text-field
+                      v-model="mainFormData.chairedByNonOrg"
+                      outlined
+                      dense
+                      clearable
+                      label="Chaired By - Non Org (Ex: Member 1, Member 2)"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+
+                <v-row class="sideByRow">
+                  <v-col>
+                    <!--attendedBy -->
+                    <v-autocomplete
+                      v-model="mainFormData.meetingAttendedBy"
+                      return-object
+                      :items="userArray"
+                      dense
+                      item-text="name"
+                      item-value="id"
+                      flat
+                      chips
+                      small-chips
+                      outlined
+                      label="Meeting Attended by"
+                      multiple
+                      clearable
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col>
+                    <!--nonOrgAttendees -->
+                    <v-text-field
+                      v-model="mainFormData.meetingAttendedByNonOrg"
+                      outlined
+                      clearable
+                      dense
+                      label="Meeting Attended by - Non Org (Ex: Member 1, Member 2)"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+
+                <v-row class="sideByRow">
+                  <v-col>
+                    <!--absent -->
+                    <v-autocomplete
+                      v-model="mainFormData.membersAbsent"
+                      return-object
+                      :items="userArray"
+                      dense
+                      item-text="name"
+                      item-value="id"
+                      flat
+                      chips
+                      small-chips
+                      outlined
+                      label="Members Absent"
+                      multiple
+                      clearable
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col>
+                    <!--nonOrgAbsent -->
+                    <v-text-field
+                      v-model="mainFormData.membersAbsentNonOrg"
+                      outlined
+                      clearable
+                      dense
+                      label="Members Absent - Non Org (Ex: Member 1, Member 2)"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+
+                <v-row class="sideByRow">
+                  <v-col>
+                    <!--additionalCopiesTo -->
+                    <v-autocomplete
+                      v-model="mainFormData.additionalCopiesTo"
+                      :items="userArray"
+                      return-object
+                      dense
+                      item-text="name"
+                      item-value="id"
+                      flat
+                      chips
+                      small-chips
+                      outlined
+                      label="Additional Copies to"
+                      multiple
+                      clearable
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col>
+                    <!--nonOrgCopies -->
+                    <v-text-field
+                      v-model="mainFormData.additionalCopiesToNonOrg"
+                      outlined
+                      clearable
+                      dense
+                      label="Additional Copies to - Non Org (Ex: Member 1, Member 2)"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row class="sideByRow">
+                  <v-col>
+                    <!--preaparedBy -->
+                    <v-autocomplete
+                      v-model="mainFormData.minutesOfMeetingPreparedBy"
+                      :items="userArray"
+                      return-object
+                      dense
+                      item-text="name"
+                      item-value="id"
+                      flat
+                      chips
+                      small-chips
+                      outlined
+                      label="Minutes of Meeting Prepared by"
+                      multiple
+                      clearable
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col>
+                    <!--nonOrgPrepared -->
+                    <v-text-field
+                      v-model="mainFormData.minutesOfMeetingPreparedByNonOrg"
+                      outlined
+                      clearable
+                      dense
+                      label="Prepared by - Non Org (Ex: Member 1, Member 2)"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-form>
+            </v-card>
+
             <v-btn
-              :disabled="!isValidDiscussion"
-              style="color: #FFFFFF"
-              @click="addDiscussionPoint()"
+              style="color: #ffffff"
+              :disabled="!isValidSubForm"
+              @click="closeMeeting()"
               depressed
               color="green"
-              >Add Discussion Point</v-btn
+              >End Meeting</v-btn
             >
 
-            <v-btn text color="red" @click="resetDiscussionForm()">Reset</v-btn>
-          </div>
-
-          <v-divider></v-divider>
-
-          <view-discussion />
-        </v-stepper-content>
-
-        <v-stepper-content step="3">
-          <v-card flat class="mb-12">
-            <v-form v-model="isValidSubForm" ref="subForm">
-              <!--actualDurationOfTheMeeting -->
-              <v-text-field
-                :rules="defaultRules"
-                v-model="mainFormData.actualDurationOfTheMeeting"
-                outlined
-                dense
-                type="number"
-                label="Actual Duration of the Meeting (min)"
-              ></v-text-field>
-
-              <v-row class="sideByRow">
-                <v-col>
-                  <!--chairedBy -->
-                  <v-autocomplete
-                    v-model="mainFormData.chairedBy"
-                    return-object
-                    :items="userArray"
-                    dense
-                    item-text="name"
-                    item-value="id"
-                    flat
-                    chips
-                    small-chips
-                    outlined
-                    label="Chaired By"
-                    multiple
-                    clearable
-                  ></v-autocomplete>
-                </v-col>
-                <v-col>
-                  <!--nonOrgChaired -->
-                  <v-text-field
-                    v-model="mainFormData.chairedByNonOrg"
-                    outlined
-                    dense
-                    clearable
-                    label="Chaired By - Non Org (Ex: Member 1, Member 2)"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-
-              <v-row class="sideByRow">
-                <v-col>
-                  <!--attendedBy -->
-                  <v-autocomplete
-                    v-model="mainFormData.meetingAttendedBy"
-                    return-object
-                    :items="userArray"
-                    dense
-                    item-text="name"
-                    item-value="id"
-                    flat
-                    chips
-                    small-chips
-                    outlined
-                    label="Meeting Attended by"
-                    multiple
-                    clearable
-                  ></v-autocomplete>
-                </v-col>
-                <v-col>
-                  <!--nonOrgAttendees -->
-                  <v-text-field
-                    v-model="mainFormData.meetingAttendedByNonOrg"
-                    outlined
-                    clearable
-                    dense
-                    label="Meeting Attended by - Non Org (Ex: Member 1, Member 2)"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-
-              <v-row class="sideByRow">
-                <v-col>
-                  <!--absent -->
-                  <v-autocomplete
-                    v-model="mainFormData.membersAbsent"
-                    return-object
-                    :items="userArray"
-                    dense
-                    item-text="name"
-                    item-value="id"
-                    flat
-                    chips
-                    small-chips
-                    outlined
-                    label="Members Absent"
-                    multiple
-                    clearable
-                  ></v-autocomplete>
-                </v-col>
-                <v-col>
-                  <!--nonOrgAbsent -->
-                  <v-text-field
-                    v-model="mainFormData.membersAbsentNonOrg"
-                    outlined
-                    clearable
-                    dense
-                    label="Members Absent - Non Org (Ex: Member 1, Member 2)"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-
-              <v-row class="sideByRow">
-                <v-col>
-                  <!--additionalCopiesTo -->
-                  <v-autocomplete
-                    v-model="mainFormData.additionalCopiesTo"
-                    :items="userArray"
-                    return-object
-                    dense
-                    item-text="name"
-                    item-value="id"
-                    flat
-                    chips
-                    small-chips
-                    outlined
-                    label="Additional Copies to"
-                    multiple
-                    clearable
-                  ></v-autocomplete>
-                </v-col>
-                <v-col>
-                  <!--nonOrgCopies -->
-                  <v-text-field
-                    v-model="mainFormData.additionalCopiesToNonOrg"
-                    outlined
-                    clearable
-                    dense
-                    label="Additional Copies to - Non Org (Ex: Member 1, Member 2)"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row class="sideByRow">
-                <v-col>
-                  <!--preaparedBy -->
-                  <v-autocomplete
-                    v-model="mainFormData.minutesOfMeetingPreparedBy"
-                    :items="userArray"
-                    return-object
-                    dense
-                    item-text="name"
-                    item-value="id"
-                    flat
-                    chips
-                    small-chips
-                    outlined
-                    label="Minutes of Meeting Prepared by"
-                    multiple
-                    clearable
-                  ></v-autocomplete>
-                </v-col>
-                <v-col>
-                  <!--nonOrgPrepared -->
-                  <v-text-field
-                    v-model="mainFormData.minutesOfMeetingPreparedByNonOrg"
-                    outlined
-                    clearable
-                    dense
-                    label="Prepared by - Non Org (Ex: Member 1, Member 2)"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-form>
-          </v-card>
-
-          <v-btn
-            style="color: #FFFFFF"
-            :disabled="!isValidSubForm"
-            @click="closeMeeting()"
-            depressed
-            color="green"
-            >End Meeting</v-btn
-          >
-
-          <v-btn text color="red" @click="resetSubForm()">Reset</v-btn>
-        </v-stepper-content>
-      </v-stepper-items>
-    </v-stepper>
+            <v-btn text color="red" @click="resetSubForm()">Reset</v-btn>
+          </v-stepper-content>
+        </v-stepper-items>
+      </v-stepper>
+    </div>
 
     <!-- ----------------- end Stepper ------------ -->
 
@@ -576,28 +598,32 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import SuccessPopup from '~/components/popups/successPopup';
-import ErrorPopup from '~/components/popups/errorPopup';
-import viewDiscussion from '~/components/meetings/viewDiscussionPoints';
+import { mapState } from "vuex";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
+import viewDiscussion from "~/components/meetings/viewDiscussionPoints";
+import viewMeetings from "~/components/meetings/viewMeetings";
 
 export default {
   components: {
-    'success-popup': SuccessPopup,
-    'error-popup': ErrorPopup,
-    'view-discussion': viewDiscussion,
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup,
+    "view-discussion": viewDiscussion,
+    "view-meetings": viewMeetings,
   },
   data() {
     return {
+      isMeetingViewer: false,
+
       e1: 1,
       isValid: true,
       isValidSubForm: true,
       isValidDiscussion: true,
 
-      errorMessage: '',
-      successMessage: '',
+      errorMessage: "",
+      successMessage: "",
 
-      component: '',
+      component: "",
       meetingObject: null,
       userId: this.$store.state.user.userId,
 
@@ -616,7 +642,7 @@ export default {
         actionBy: null,
         dueDate: null,
         remarks: null,
-        description: '',
+        description: "",
         switch1: false,
         switch2: false,
         taskName: null,
@@ -642,7 +668,7 @@ export default {
         additionalCopiesToNonOrg: null,
         minutesOfMeetingPreparedByNonOrg: null,
       },
-      defaultRules: [(value) => !!value || 'Required.'],
+      defaultRules: [(value) => !!value || "Required."],
     };
   },
   methods: {
@@ -654,7 +680,7 @@ export default {
     },
     resetDiscussionForm() {
       this.$refs.discussionPointForm.reset();
-      this.discussionPointData.description = '';
+      this.discussionPointData.description = "";
     },
     async taskTransition(minuteId) {
       let taskResponse;
@@ -667,7 +693,7 @@ export default {
             taskInitiator: this.userId,
             taskAssignee: this.discussionPointData.actionBy,
             taskDueDate: this.discussionPointData.dueDate,
-            issueType: 'general',
+            issueType: "general",
           },
           {
             headers: {
@@ -675,15 +701,15 @@ export default {
             },
           }
         );
-        this.component = 'success-popup';
-        this.successMessage = 'Discussion point added';
-        this.$store.dispatch('meetings/meeting/fetchDiscussionPoints', {
+        this.component = "success-popup";
+        this.successMessage = "Discussion point added";
+        this.$store.dispatch("meetings/meeting/fetchDiscussionPoints", {
           meetingId: this.meetingObject.data.meetingId,
           // meetingId: '19a4edb0-0610-4fad-88f3-a3a01c141155',
           projectId: this.projectId,
         });
         this.$refs.discussionPointForm.reset();
-        this.discussionPointData.description = '';
+        this.discussionPointData.description = "";
 
         setTimeout(() => {
           this.close();
@@ -691,11 +717,11 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error creating task', e);
+        console.log("Error creating task", e);
       }
       this.discussionPointData.discussionPointCount = ++this.disPointCount;
     },
@@ -723,9 +749,9 @@ export default {
             },
           }
         );
-        this.component = 'success-popup';
-        this.successMessage = 'Discussion point added';
-        this.$store.dispatch('meetings/meeting/fetchDiscussionPoints', {
+        this.component = "success-popup";
+        this.successMessage = "Discussion point added";
+        this.$store.dispatch("meetings/meeting/fetchDiscussionPoints", {
           meetingId: this.meetingObject.data.meetingId,
           // meetingId: '19a4edb0-0610-4fad-88f3-a3a01c141155',
           projectId: this.projectId,
@@ -735,7 +761,7 @@ export default {
           this.taskTransition(response.data.minuteId);
         } else {
           this.$refs.discussionPointForm.reset();
-          this.discussionPointData.description = '';
+          this.discussionPointData.description = "";
           this.discussionPointData.discussionPointCount = ++this.disPointCount;
         }
 
@@ -745,19 +771,19 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error creating meeting', e);
+        console.log("Error creating meeting", e);
       }
     },
     async InitiateMeeting() {
       let scheduledTime = new Date(
-        this.mainFormData.meetingDate + ' ' + this.mainFormData.scheduleTime
+        this.mainFormData.meetingDate + " " + this.mainFormData.scheduleTime
       );
       let actualTime = new Date(
-        this.mainFormData.meetingDate + ' ' + this.mainFormData.actualTime
+        this.mainFormData.meetingDate + " " + this.mainFormData.actualTime
       );
 
       let response;
@@ -783,15 +809,15 @@ export default {
             },
           }
         );
-        this.component = 'success-popup';
-        this.successMessage = 'Meeting Successfully initiated';
+        this.component = "success-popup";
+        this.successMessage = "Meeting Successfully initiated";
         this.e1 = 2;
 
         setTimeout(() => {
           this.close();
         }, 3000);
         this.meetingObject = response;
-        this.$store.dispatch('meetings/meeting/fetchDiscussionPoints', {
+        this.$store.dispatch("meetings/meeting/fetchDiscussionPoints", {
           meetingId: this.meetingObject.data.meetingId,
           // meetingId: '19a4edb0-0610-4fad-88f3-a3a01c141155',
           projectId: this.projectId,
@@ -799,11 +825,11 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error creating meeting', e);
+        console.log("Error creating meeting", e);
       }
     },
     async closeMeeting() {
@@ -821,7 +847,7 @@ export default {
       // ---- attended by ----
       if (
         this.mainFormData.meetingAttendedBy != null &&
-        this.mainFormData.meetingAttendedBy != ''
+        this.mainFormData.meetingAttendedBy != ""
       ) {
         for (
           let index = 0;
@@ -837,7 +863,7 @@ export default {
       }
       if (
         this.mainFormData.meetingAttendedByNonOrg != null &&
-        this.mainFormData.meetingAttendedByNonOrg != ''
+        this.mainFormData.meetingAttendedByNonOrg != ""
       ) {
         meetingAttended.push({
           attendeeId: this.mainFormData.meetingAttendedByNonOrg,
@@ -853,7 +879,7 @@ export default {
       // ---- chaired by ----
       if (
         this.mainFormData.chairedBy != null &&
-        this.mainFormData.chairedBy != ''
+        this.mainFormData.chairedBy != ""
       ) {
         for (
           let index = 0;
@@ -869,7 +895,7 @@ export default {
       }
       if (
         this.mainFormData.chairedByNonOrg != null &&
-        this.mainFormData.chairedByNonOrg != ''
+        this.mainFormData.chairedByNonOrg != ""
       ) {
         meetingChaired.push({
           attendeeId: this.mainFormData.chairedByNonOrg,
@@ -885,7 +911,7 @@ export default {
       // ---- member absent ----
       if (
         this.mainFormData.membersAbsent != null &&
-        this.mainFormData.membersAbsent != ''
+        this.mainFormData.membersAbsent != ""
       ) {
         for (
           let index = 0;
@@ -901,7 +927,7 @@ export default {
       }
       if (
         this.mainFormData.membersAbsentNonOrg != null &&
-        this.mainFormData.membersAbsentNonOrg != ''
+        this.mainFormData.membersAbsentNonOrg != ""
       ) {
         meetingAbsent.push({
           attendeeId: this.mainFormData.membersAbsentNonOrg,
@@ -917,7 +943,7 @@ export default {
       // ---- additional copies to ----
       if (
         this.mainFormData.additionalCopiesTo != null &&
-        this.mainFormData.additionalCopiesTo != ''
+        this.mainFormData.additionalCopiesTo != ""
       ) {
         for (
           let index = 0;
@@ -933,7 +959,7 @@ export default {
       }
       if (
         this.mainFormData.additionalCopiesToNonOrg != null &&
-        this.mainFormData.additionalCopiesToNonOrg != ''
+        this.mainFormData.additionalCopiesToNonOrg != ""
       ) {
         meetingCopiesTo.push({
           attendeeId: this.mainFormData.additionalCopiesToNonOrg,
@@ -949,7 +975,7 @@ export default {
       // ---- prepared by ----
       if (
         this.mainFormData.minutesOfMeetingPreparedBy != null &&
-        this.mainFormData.minutesOfMeetingPreparedBy != ''
+        this.mainFormData.minutesOfMeetingPreparedBy != ""
       ) {
         for (
           let index = 0;
@@ -965,7 +991,7 @@ export default {
       }
       if (
         this.mainFormData.minutesOfMeetingPreparedByNonOrg != null &&
-        this.mainFormData.minutesOfMeetingPreparedByNonOrg != ''
+        this.mainFormData.minutesOfMeetingPreparedByNonOrg != ""
       ) {
         meetingPrepared.push({
           attendeeId: this.mainFormData.minutesOfMeetingPreparedByNonOrg,
@@ -997,8 +1023,8 @@ export default {
             },
           }
         );
-        this.component = 'success-popup';
-        this.successMessage = 'Meeting Successfully closed';
+        this.component = "success-popup";
+        this.successMessage = "Meeting Successfully closed";
         this.e1 = 1;
         setTimeout(() => {
           this.close();
@@ -1008,15 +1034,15 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error creating meeting', e);
+        console.log("Error creating meeting", e);
       }
     },
     close() {
-      this.component = '';
+      this.component = "";
     },
   },
   computed: {
@@ -1039,7 +1065,7 @@ export default {
       for (let index = 0; index < AssigneeSearchList.length; ++index) {
         let user = AssigneeSearchList[index];
         assigneeList.push({
-          name: user.firstName + ' ' + user.lastName,
+          name: user.firstName + " " + user.lastName,
           id: user.userId,
           img: user.profileImage,
         });
