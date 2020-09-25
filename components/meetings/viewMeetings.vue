@@ -121,19 +121,67 @@
                 >
               </v-list-item-content>
               <v-list-item-icon>
-                <v-icon>mdi-file-pdf-outline</v-icon>
+                <v-icon color="#0083E2">mdi-file-pdf-outline</v-icon>
+              </v-list-item-icon>
+              <v-list-item-icon style="margin-left: 20px !important">
+                <v-icon color="#66B25F">mdi-file-document-edit-outline</v-icon>
               </v-list-item-icon>
               <v-list-item-icon>
-                <v-icon>mdi-file-pdf-outline</v-icon>
-              </v-list-item-icon>
-              <v-list-item-icon>
-                <v-icon>mdi-file-pdf-outline</v-icon>
+                <v-icon
+                  @click="
+                    deleteMeetingDialog = true;
+                    selectMeeting(meeting);
+                  "
+                  color="#E07857"
+                  >mdi-delete-outline</v-icon
+                >
               </v-list-item-icon>
             </v-list-item>
           </v-list-item-group>
         </div>
       </v-col>
     </v-row>
+    <v-dialog v-model="deleteMeetingDialog" max-width="350">
+      <v-card style="text-align: center; padding-bottom: 25px">
+        <v-card-title style="text-align: center">
+          <v-spacer></v-spacer>Delete Meeting
+          <v-spacer></v-spacer>
+        </v-card-title>
+
+        <v-card-text
+          >If you delete the meeting, all the details will be
+          missing.</v-card-text
+        >
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+            depressed
+            class="text-capitalize"
+            width="100px"
+            color="#FF6161"
+            dark
+            @click="deleteMeetingDialog = false"
+            >Cancel</v-btn
+          >
+
+          <v-btn
+            depressed
+            class="text-capitalize"
+            width="100px"
+            color="#2EC973"
+            dark
+            @click="
+              deleteMeetingDialog = false;
+              deleteMeeting();
+            "
+            >Ok</v-btn
+          >
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -142,10 +190,54 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
+      selectedMeeting: {},
       modal: false,
       dateFilter: "",
       keyFilter: "",
+      deleteMeetingDialog: false,
+
+      userId: this.$store.state.user.userId,
     };
+  },
+  methods: {
+    selectMeeting(meeting) {
+      this.selectedMeeting = meeting;
+    },
+    async deleteMeeting() {
+      let response;
+      try {
+        response = await this.$axios.$delete(
+          `/meeting/${this.selectedMeeting.meetingId}?projectId=${this.projectId}`,
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+
+        this.$store.dispatch("meetings/meeting/fetchProjectMeetings", {
+          projectId: this.projectId,
+          startIndex: 0,
+          endIndex: 10,
+          filter: false,
+          key: "",
+          date: "",
+        });
+
+        this.successMessage = "Meeting deleted successfully";
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error creating project", e);
+      }
+    },
   },
   computed: {
     ...mapState({
