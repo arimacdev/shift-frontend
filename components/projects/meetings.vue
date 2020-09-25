@@ -3,7 +3,14 @@
     <v-row v-if="!isMeetingViewer">
       <div class="minuteViewSection">
         <div class="viewMinuteBtnDiv">
-          <v-btn @click="isMeetingViewer = true" depressed color="red" dark
+          <v-btn
+            @click="
+              isMeetingViewer = true;
+              getMeetings();
+            "
+            depressed
+            color="red"
+            dark
             >View Minute</v-btn
           >
         </div>
@@ -90,7 +97,10 @@
                           <v-btn
                             text
                             color="primary"
-                            @click="$refs.dialog.save(mainFormData.meetingDate)"
+                            @click="
+                              $refs.dialog.save(mainFormData.meetingDate);
+                              modal = false;
+                            "
                             >OK</v-btn
                           >
                         </v-date-picker>
@@ -672,6 +682,16 @@ export default {
     };
   },
   methods: {
+    getMeetings() {
+      this.$store.dispatch("meetings/meeting/fetchProjectMeetings", {
+        projectId: this.projectId,
+        startIndex: 0,
+        endIndex: 10,
+        filter: false,
+        key: "",
+        date: "",
+      });
+    },
     resetForm() {
       this.$refs.mainForm.reset();
     },
