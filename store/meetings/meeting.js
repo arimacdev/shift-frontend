@@ -18,7 +18,7 @@ export const mutations = {
     state.discussionPoints = data;
   },
   SET_PROJECT_MEETINGS(state, meetings) {
-    if (meetings.length == 0 || meetings.length < 10) {
+    if (meetings.length == 0) {
       state.isMeetingLoaded = true;
     }
     state.projectMeetings = state.projectMeetings.concat(meetings);

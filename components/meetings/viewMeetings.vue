@@ -156,7 +156,7 @@
     <div class="LoadMeetingButton text-center">
       <div v-if="projectMeetings == ''">No records to show</div>
       <v-btn
-        v-if="projectMeetings != ''"
+        v-if="projectMeetings != '' && !isMeetingLoaded"
         @click="loadMoreMeetings()"
         color="#ffffff"
         depressed
@@ -213,11 +213,11 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import Progress from "~/components/popups/progress";
+import { mapState } from 'vuex';
+import Progress from '~/components/popups/progress';
 export default {
   components: {
-    "progress-loading": Progress,
+    'progress-loading': Progress,
   },
   data() {
     return {
@@ -225,13 +225,13 @@ export default {
       loadMore: 1,
 
       isFilter: false,
-      filterKey: "",
-      filterDate: "",
+      filterKey: '',
+      filterDate: '',
 
       selectedMeeting: {},
       modal: false,
-      dateFilter: "",
-      keyFilter: "",
+      dateFilter: '',
+      keyFilter: '',
       deleteMeetingDialog: false,
 
       userId: this.$store.state.user.userId,
@@ -244,17 +244,17 @@ export default {
       this.overlay = true;
 
       if (this.dateFilter == null) {
-        this.dateFilter = "";
+        this.dateFilter = '';
       }
-      if (this.dateFilter == "" && this.keyFilter == "") {
+      if (this.dateFilter == '' && this.keyFilter == '') {
         this.isFilter = false;
         this.loadMore = 0;
       }
 
       Promise.all([
-        this.$store.dispatch("meetings/meeting/emptyMeetingStore"),
+        this.$store.dispatch('meetings/meeting/emptyMeetingStore'),
 
-        this.$store.dispatch("meetings/meeting/fetchProjectMeetings", {
+        this.$store.dispatch('meetings/meeting/fetchProjectMeetings', {
           projectId: this.projectId,
           startIndex: this.loadMore * 10,
           endIndex: this.loadMore * 10 + 10,
@@ -269,7 +269,7 @@ export default {
     loadMoreMeetings() {
       this.overlay = true;
       Promise.all([
-        this.$store.dispatch("meetings/meeting/fetchProjectMeetings", {
+        this.$store.dispatch('meetings/meeting/fetchProjectMeetings', {
           projectId: this.projectId,
           startIndex: this.loadMore * 10,
           endIndex: this.loadMore * 10 + 10,
@@ -297,27 +297,27 @@ export default {
           }
         );
 
-        this.$store.dispatch("meetings/meeting/fetchProjectMeetings", {
+        this.$store.dispatch('meetings/meeting/fetchProjectMeetings', {
           projectId: this.projectId,
           startIndex: 0,
           endIndex: 10,
           filter: false,
-          key: "",
-          date: "",
+          key: '',
+          date: '',
         });
 
-        this.successMessage = "Meeting deleted successfully";
-        this.component = "success-popup";
+        this.successMessage = 'Meeting deleted successfully';
+        this.component = 'success-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error creating project", e);
+        console.log('Error creating project', e);
       }
     },
   },
