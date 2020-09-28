@@ -222,7 +222,7 @@ export default {
   data() {
     return {
       overlay: false,
-      loadMore: 0,
+      loadMore: 1,
 
       isFilter: false,
       filterKey: "",
@@ -246,10 +246,29 @@ export default {
       if (this.dateFilter == null) {
         this.dateFilter = "";
       }
+      if (this.dateFilter == "" && this.keyFilter == "") {
+        this.isFilter = false;
+        this.loadMore = 0;
+      }
 
       Promise.all([
         this.$store.dispatch("meetings/meeting/emptyMeetingStore"),
-        this.loadMore++,
+
+        this.$store.dispatch("meetings/meeting/fetchProjectMeetings", {
+          projectId: this.projectId,
+          startIndex: this.loadMore * 10,
+          endIndex: this.loadMore * 10 + 10,
+          filter: this.isFilter,
+          key: this.keyFilter,
+          date: this.dateFilter,
+        }),
+      ]).finally(() => {
+        (this.loadMore = this.loadMore + 1), (this.overlay = false);
+      });
+    },
+    loadMoreMeetings() {
+      this.overlay = true;
+      Promise.all([
         this.$store.dispatch("meetings/meeting/fetchProjectMeetings", {
           projectId: this.projectId,
           startIndex: this.loadMore * 10,
@@ -260,22 +279,7 @@ export default {
         }),
       ]).finally(() => {
         this.overlay = false;
-      });
-    },
-    loadMoreMeetings() {
-      this.loadMore++;
-      this.overlay = true;
-      Promise.all([
-        this.$store.dispatch("meetings/meeting/fetchProjectMeetings", {
-          projectId: this.projectId,
-          startIndex: this.loadMore * 10,
-          endIndex: this.loadMore * 10 + 10,
-          filter: this.isFilter,
-          key: this.dateFilter,
-          date: this.keyFilter,
-        }),
-      ]).finally(() => {
-        this.overlay = false;
+        this.loadMore = this.loadMore + 1;
       });
     },
     selectMeeting(meeting) {
