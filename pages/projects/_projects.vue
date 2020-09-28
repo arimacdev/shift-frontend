@@ -7,7 +7,9 @@
         <div class="name-div">
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title class="font-weight-bold">Projects</v-list-item-title>
+              <v-list-item-title class="font-weight-bold"
+                >Projects</v-list-item-title
+              >
             </v-list-item-content>
 
             <v-list-item-icon
@@ -31,16 +33,16 @@
           <v-list-item-title
             v-if="this.newProject == true"
             class="font-weight-bold"
-          >Create a project</v-list-item-title>
+            >Create a project</v-list-item-title
+          >
 
           <v-list-item-title
             v-else-if="this.$route.params.projects == 'projects'"
             class="font-weight-bold"
-          >Select a project</v-list-item-title>
+            >Select a project</v-list-item-title
+          >
           <v-list-item-title v-else class="font-weight-bold">
-            {{
-            this.fetchProject.projectName
-            }}
+            {{ this.fetchProject.projectName }}
           </v-list-item-title>
         </div>
       </div>
@@ -68,7 +70,10 @@
                   </div>-->
                   <div class="fontRestructure14">Presales</div>
                 </v-expansion-panel-header>
-                <v-expansion-panel-content class="projectPanelContent" color="#EDF0F5">
+                <v-expansion-panel-content
+                  class="projectPanelContent"
+                  color="#EDF0F5"
+                >
                   <div
                     style="height: 45px !important"
                     v-for="(project, index) in getProjects('presales')"
@@ -89,34 +94,39 @@
                       :to="project.projectId"
                     >
                       <v-list-item-action>
-                        <v-icon size="17" color="deep-orange lighten-1">icon-project</v-icon>
+                        <v-icon size="17" color="deep-orange lighten-1"
+                          >icon-project</v-icon
+                        >
                       </v-list-item-action>
                       <v-list-item-content>
                         <v-list-item-title class="fontRestructure12">
-                          {{
-                          project.projectName
-                          }}
+                          {{ project.projectName }}
                         </v-list-item-title>
                         <v-list-item-subtitle
                           v-if="project.projectStatus == 'presalesPD'"
                           class="projectSubtitle"
-                        >(Project discovery)</v-list-item-subtitle>
+                          >(Project discovery)</v-list-item-subtitle
+                        >
                         <v-list-item-subtitle
                           v-if="project.projectStatus == 'preSalesQS'"
                           class="projectSubtitle"
-                        >(Quotation submission)</v-list-item-subtitle>
+                          >(Quotation submission)</v-list-item-subtitle
+                        >
                         <v-list-item-subtitle
                           v-if="project.projectStatus == 'preSalesN'"
                           class="projectSubtitle"
-                        >(Negotiation)</v-list-item-subtitle>
+                          >(Negotiation)</v-list-item-subtitle
+                        >
                         <v-list-item-subtitle
                           v-if="project.projectStatus == 'preSalesC'"
                           class="projectSubtitle"
-                        >(Confirm)</v-list-item-subtitle>
+                          >(Confirm)</v-list-item-subtitle
+                        >
                         <v-list-item-subtitle
                           v-if="project.projectStatus == 'preSalesL'"
                           class="projectSubtitle"
-                        >(Lost)</v-list-item-subtitle>
+                          >(Lost)</v-list-item-subtitle
+                        >
                       </v-list-item-content>
                     </v-list-item>
                   </div>
@@ -132,7 +142,10 @@
                   </div>-->
                   <div class="fontRestructure14">Ongoing</div>
                 </v-expansion-panel-header>
-                <v-expansion-panel-content class="projectPanelContent" color="#EDF0F5">
+                <v-expansion-panel-content
+                  class="projectPanelContent"
+                  color="#EDF0F5"
+                >
                   <div
                     style="height: 45px !important"
                     v-for="(project, index) in getProjects('ongoing')"
@@ -140,15 +153,16 @@
                     v-on:click="component = 'tab-views'"
                     @click="selectProject(project)"
                   >
-                    <v-list-item class="selectedProjectPanel" :to="project.projectId">
+                    <v-list-item
+                      class="selectedProjectPanel"
+                      :to="project.projectId"
+                    >
                       <v-list-item-action>
                         <v-icon size="17" color="#FFC212">icon-project</v-icon>
                       </v-list-item-action>
                       <v-list-item-content>
                         <v-list-item-title class="fontRestructure12">
-                          {{
-                          project.projectName
-                          }}
+                          {{ project.projectName }}
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -165,7 +179,10 @@
                   </div>-->
                   <div class="fontRestructure14">Support</div>
                 </v-expansion-panel-header>
-                <v-expansion-panel-content class="projectPanelContent" color="#EDF0F5">
+                <v-expansion-panel-content
+                  class="projectPanelContent"
+                  color="#EDF0F5"
+                >
                   <div
                     style="height: 45px !important"
                     v-for="(project, index) in getProjects('support')"
@@ -173,15 +190,16 @@
                     v-on:click="component = 'tab-views'"
                     @click="selectProject(project)"
                   >
-                    <v-list-item class="selectedProjectPanel" :to="project.projectId">
+                    <v-list-item
+                      class="selectedProjectPanel"
+                      :to="project.projectId"
+                    >
                       <v-list-item-action>
                         <v-icon size="17" color="#ED5ED1">icon-project</v-icon>
                       </v-list-item-action>
                       <v-list-item-content>
                         <v-list-item-title class="fontRestructure12">
-                          {{
-                          project.projectName
-                          }}
+                          {{ project.projectName }}
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -198,7 +216,10 @@
                   </div>-->
                   <div class="fontRestructure14">Finished</div>
                 </v-expansion-panel-header>
-                <v-expansion-panel-content class="projectPanelContent" color="#EDF0F5">
+                <v-expansion-panel-content
+                  class="projectPanelContent"
+                  color="#EDF0F5"
+                >
                   <div
                     style="height: 45px !important"
                     v-for="(project, index) in getProjects('finished')"
@@ -206,15 +227,16 @@
                     v-on:click="component = 'tab-views'"
                     @click="selectProject(project)"
                   >
-                    <v-list-item class="selectedProjectPanel" :to="project.projectId">
+                    <v-list-item
+                      class="selectedProjectPanel"
+                      :to="project.projectId"
+                    >
                       <v-list-item-action>
                         <v-icon size="17" color="#0BAFFF">icon-project</v-icon>
                       </v-list-item-action>
                       <v-list-item-content>
                         <v-list-item-title class="fontRestructure12">
-                          {{
-                          project.projectName
-                          }}
+                          {{ project.projectName }}
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -338,7 +360,10 @@
         </v-list-item-group>
       </div>
       <keep-alive>
-        <div v-if="this.$route.params.projects == 'projects'" class="defaultFilterBackground">
+        <div
+          v-if="this.$route.params.projects == 'projects'"
+          class="defaultFilterBackground"
+        >
           <div
             v-if="
               organizationalRoles.indexOf('ADMIN') > -1 ||
@@ -383,7 +408,10 @@
           :pagination="pagination"
           @refreshSelectedTab="refreshSelectedTab"
         ></component>
-        <component v-else-if="this.component == 'add-project'" v-bind:is="component"></component>
+        <component
+          v-else-if="this.component == 'add-project'"
+          v-bind:is="component"
+        ></component>
       </keep-alive>
     </div>
     <v-overlay :value="overlay" color="white" opacity="1">
@@ -393,28 +421,28 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import NavigationDrawer from "~/components/navigationDrawer";
-import Logo from "~/components/Logo.vue";
-import VuetifyLogo from "~/components/VuetifyLogo.vue";
-import TabViews from "~/components/projects/tabViews";
-import SearchBar from "~/components/tools/searchBar";
-import AddProject from "~/components/projects/addProject";
-import Progress from "~/components/popups/progress";
+import { mapState } from 'vuex';
+import NavigationDrawer from '~/components/navigationDrawer';
+import Logo from '~/components/Logo.vue';
+import VuetifyLogo from '~/components/VuetifyLogo.vue';
+import TabViews from '~/components/projects/tabViews';
+import SearchBar from '~/components/tools/searchBar';
+import AddProject from '~/components/projects/addProject';
+import Progress from '~/components/popups/progress';
 
 export default {
   components: {
     NavigationDrawer,
-    "tab-views": TabViews,
-    "search-bar": SearchBar,
-    "add-project": AddProject,
-    "progress-loading": Progress,
+    'tab-views': TabViews,
+    'search-bar': SearchBar,
+    'add-project': AddProject,
+    'progress-loading': Progress,
   },
   data() {
     return {
       overlay: false,
       pagination: 1,
-      component: "tab-views",
+      component: 'tab-views',
       project: {},
       taskLog: [],
       Alltasks: [],
@@ -431,50 +459,51 @@ export default {
       looped: false,
       projectSprint: {},
       newProject: false,
-      projectDisplayName: "",
+      projectDisplayName: '',
     };
   },
 
   created() {
     this.overlay = true;
     Promise.all([
-      this.$store.dispatch("project/fetchAllProjects"),
-      this.$store.dispatch("user/setAllUsers"),
-      this.$store.dispatch("project/clearProject"),
+      this.$store.dispatch('project/fetchAllProjects'),
+      this.$store.dispatch('user/setAllUsers'),
+      this.$store.dispatch('project/clearProject'),
     ]).finally(() => {
       this.overlay = false;
     });
-    if (this.$route.params.projects != "projects") {
-      this.$store.dispatch("project/fetchProject", this.$route.params.projects);
+    if (this.$route.params.projects != 'projects') {
+      this.$store.dispatch('project/fetchProject', this.$route.params.projects);
     }
     switch (this.selectedTab) {
-      case "task":
-        if (this.$route.params.projects != "projects") {
+      case 'task':
+        if (this.$route.params.projects != 'projects') {
           this.overlay = true;
           Promise.all([
-            this.$store.dispatch("task/setIndex", {
-              startIndex: 0,
-              endIndex: 10,
-              isAllTasks: false,
-            }),
+            this.$store.dispatch('task/emptyStore'),
+            // this.$store.dispatch('task/setIndex', {
+            //   startIndex: 0,
+            //   endIndex: 10,
+            //   isAllTasks: false,
+            // }),
+            // this.$store.dispatch(
+            //   'task/fetchTasksAllTasks',
+            //   this.$route.params.projects
+            // ),
             this.$store.dispatch(
-              "task/fetchTasksAllTasks",
+              'task/fetchTotalTaskCount',
               this.$route.params.projects
             ),
             this.$store.dispatch(
-              "task/fetchTotalTaskCount",
+              'task/fetchTasksMyTasks',
               this.$route.params.projects
             ),
             this.$store.dispatch(
-              "task/fetchTasksMyTasks",
+              'task/fetchProjectUserCompletionTasks',
               this.$route.params.projects
             ),
             this.$store.dispatch(
-              "task/fetchProjectUserCompletionTasks",
-              this.$route.params.projects
-            ),
-            this.$store.dispatch(
-              "sprints/sprint/fetchAllProjectSprints",
+              'sprints/sprint/fetchAllProjectSprints',
               this.$route.params.projects
             ),
           ]).finally(() => {
@@ -482,62 +511,62 @@ export default {
           });
         }
         break;
-      case "people":
+      case 'people':
         this.overlay = true;
         Promise.all([
           this.$store.dispatch(
-            "task/fetchProjectUserCompletionTasks",
+            'task/fetchProjectUserCompletionTasks',
             this.$route.params.projects
           ),
         ]).finally(() => {
           this.overlay = false;
         });
         break;
-      case "project":
+      case 'project':
         this.$store.dispatch(
-          "task/fetchProjectTaskCompletion",
+          'task/fetchProjectTaskCompletion',
           this.$route.params.projects
         );
         break;
-      case "board":
-        console.log("board -------->");
+      case 'board':
+        console.log('board -------->');
         this.overlay = true;
         Promise.all([
           this.$store.dispatch(
-            "sprints/sprint/fetchAllProjectSprints",
+            'sprints/sprint/fetchAllProjectSprints',
             this.$route.params.projects
           ),
-          this.$store.dispatch("task/setIndex", {
+          this.$store.dispatch('task/setIndex', {
             startIndex: 0,
             endIndex: 10,
             isAllTasks: true,
           }),
           this.$store.dispatch(
-            "task/fetchTasksAllTasks",
+            'task/fetchTasksAllTasks',
             this.$route.params.projects
           ),
           this.$store.dispatch(
-            "task/fetchTotalTaskCount",
+            'task/fetchTotalTaskCount',
             this.$route.params.projects
           ),
         ]).finally(() => {
           this.overlay = false;
         });
         break;
-      case "files":
+      case 'files':
         this.$store.dispatch(
-          "project/fetchAllProjectFiles",
+          'project/fetchAllProjectFiles',
           this.$route.params.projects
         );
         break;
       default:
-        console.log("Home Page");
+        console.log('Home Page');
     }
   },
 
   methods: {
     getProjectName(name) {
-      return name.replace(/\s+/g, "-").toLowerCase();
+      return name.replace(/\s+/g, '-').toLowerCase();
     },
 
     getProjects(type) {
@@ -547,13 +576,13 @@ export default {
         for (let i = 0; i < projectsAll.length; i++) {
           let projectType = projectsAll[i].projectStatus;
           switch (projectType) {
-            case "ongoing":
+            case 'ongoing':
               this.ongoingArray.push(projectsAll[i]);
               break;
-            case "support":
+            case 'support':
               this.supportArray.push(projectsAll[i]);
               break;
-            case "finished":
+            case 'finished':
               this.finishedArray.push(projectsAll[i]);
               break;
             default:
@@ -564,15 +593,15 @@ export default {
         }
       }
       switch (type) {
-        case "ongoing":
+        case 'ongoing':
           return this.ongoingArray;
           break;
-        case "support":
+        case 'support':
           return this.supportArray;
           break;
-        case "finished":
+        case 'finished':
           return this.finishedArray;
-        case "presales":
+        case 'presales':
           return this.preSalesArray;
       }
     },
@@ -581,12 +610,12 @@ export default {
     },
     refreshSelectedTab(tab) {
       switch (tab) {
-        case "people":
+        case 'people':
           this.overlay = true;
           Promise.all([
             // console.log("people"),
             this.$store.dispatch(
-              "task/fetchProjectUserCompletionTasks",
+              'task/fetchProjectUserCompletionTasks',
               this.$route.params.projects
             ),
           ]).finally(() => {
@@ -595,7 +624,7 @@ export default {
             // }, 100);
           });
           break;
-        case "task":
+        case 'task':
           this.overlay = true;
           Promise.all([
             // this.$store.dispatch("task/setIndex", {
@@ -608,7 +637,7 @@ export default {
             //   this.$route.params.projects
             // ),
             this.$store.dispatch(
-              "task/fetchTotalTaskCount",
+              'task/fetchTotalTaskCount',
               this.$route.params.projects
             ),
             // this.$store.dispatch(
@@ -616,22 +645,22 @@ export default {
             //   this.$route.params.projects
             // ),
             this.$store.dispatch(
-              "task/fetchProjectUserCompletionTasks",
+              'task/fetchProjectUserCompletionTasks',
               this.$route.params.projects
             ),
             this.$store.dispatch(
-              "sprints/sprint/fetchAllProjectSprints",
+              'sprints/sprint/fetchAllProjectSprints',
               this.$route.params.projects
             ),
           ]).finally(() => {
             this.overlay = false;
           });
           break;
-        case "project":
+        case 'project':
           this.overlay = true;
           Promise.all([
             this.$store.dispatch(
-              "task/fetchProjectTaskCompletion",
+              'task/fetchProjectTaskCompletion',
               this.$route.params.projects
             ),
           ]).finally(() => {
@@ -640,42 +669,42 @@ export default {
             }, 100);
           });
           break;
-        case "board":
+        case 'board':
           this.overlay = true;
           Promise.all([
             this.$store.dispatch(
-              "sprints/sprint/fetchAllProjectSprints",
+              'sprints/sprint/fetchAllProjectSprints',
               this.$route.params.projects
             ),
 
             this.$store.dispatch(
-              "task/fetchSprintTasks",
+              'task/fetchSprintTasks',
               this.$route.params.projects
             ),
             this.$store.dispatch(
-              "task/fetchTotalTaskCount",
-              this.$route.params.projects
-            ),
-          ]).finally(() => {
-            this.overlay = false;
-          });
-          break;
-        case "files":
-          this.overlay = true;
-          Promise.all([
-            this.$store.dispatch(
-              "project/fetchAllProjectFiles",
+              'task/fetchTotalTaskCount',
               this.$route.params.projects
             ),
           ]).finally(() => {
             this.overlay = false;
           });
           break;
-        case "folders":
+        case 'files':
           this.overlay = true;
           Promise.all([
             this.$store.dispatch(
-              "project/fetchAllProjectFolders",
+              'project/fetchAllProjectFiles',
+              this.$route.params.projects
+            ),
+          ]).finally(() => {
+            this.overlay = false;
+          });
+          break;
+        case 'folders':
+          this.overlay = true;
+          Promise.all([
+            this.$store.dispatch(
+              'project/fetchAllProjectFolders',
               this.$route.params.projects
             ),
           ]).finally(() => {
@@ -685,24 +714,24 @@ export default {
       }
     },
     async selectProject(project) {
-      this.$store.dispatch("task/setIndex", {
+      this.$store.dispatch('task/setIndex', {
         startIndex: 0,
         endIndex: 10,
         isAllTasks: false,
       });
-      this.$store.dispatch("task/emptyStore");
-      this.$store.dispatch("activityLog/emptyStore");
-      // this.$store.dispatch(
-      //   "task/fetchTasksAllTasks",
-      //   this.$route.params.projects
-      // );
+      this.$store.dispatch('task/emptyStore');
+      this.$store.dispatch('activityLog/emptyStore');
+      this.$store.dispatch(
+        'task/fetchTasksAllTasks',
+        this.$route.params.projects
+      );
       this.newProject = false;
       this.project = project;
       this.projectDisplayName = this.project.projectId;
       // console.log("selected project ---------->", project, this.selectedTab);
-      this.$store.dispatch("project/fetchProject", this.$route.params.projects);
+      this.$store.dispatch('project/fetchProject', this.$route.params.projects);
       switch (this.selectedTab) {
-        case "task":
+        case 'task':
           // this.$store.dispatch("task/setIndex", {
           //   startIndex: 0,
           //   endIndex: 10,
@@ -713,56 +742,56 @@ export default {
           //   this.$route.params.projects
           // );
           this.$store.dispatch(
-            "task/fetchTotalTaskCount",
+            'task/fetchTotalTaskCount',
             this.$route.params.projects
           );
           this.$store.dispatch(
-            "task/fetchTasksMyTasks",
+            'task/fetchTasksMyTasks',
             this.$route.params.projects
           );
           this.$store.dispatch(
-            "task/fetchProjectUserCompletionTasks",
+            'task/fetchProjectUserCompletionTasks',
             this.$route.params.projects
           );
           this.$store.dispatch(
-            "sprints/sprint/fetchAllProjectSprints",
+            'sprints/sprint/fetchAllProjectSprints',
             this.$route.params.projects
           );
           break;
-        case "people":
+        case 'people':
           this.$store.dispatch(
-            "task/fetchProjectUserCompletionTasks",
+            'task/fetchProjectUserCompletionTasks',
             this.$route.params.projects
           );
           break;
-        case "project":
+        case 'project':
           this.$store.dispatch(
-            "task/fetchProjectTaskCompletion",
+            'task/fetchProjectTaskCompletion',
             this.$route.params.projects
           );
           break;
-        case "board":
+        case 'board':
           this.$store.dispatch(
-            "sprints/sprint/fetchAllProjectSprints",
+            'sprints/sprint/fetchAllProjectSprints',
             this.$route.params.projects
           );
-          this.$store.dispatch("task/setIndex", {
+          this.$store.dispatch('task/setIndex', {
             startIndex: 0,
             endIndex: 10,
             isAllTasks: true,
           });
           this.$store.dispatch(
-            "task/fetchTasksAllTasks",
+            'task/fetchTasksAllTasks',
             this.$route.params.projects
           );
           this.$store.dispatch(
-            "task/fetchTotalTaskCount",
+            'task/fetchTotalTaskCount',
             this.$route.params.projects
           );
           break;
-        case "files":
+        case 'files':
           this.$store.dispatch(
-            "project/fetchAllProjectFiles",
+            'project/fetchAllProjectFiles',
             this.$route.params.projects
           );
           break;
