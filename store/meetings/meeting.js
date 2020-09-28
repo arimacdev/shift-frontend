@@ -7,6 +7,10 @@ export const state = () => ({
   selectedMeeting: {
     meeting: {
       meetingChaired: [],
+      meetingAttendedBy: [],
+      meetingAbsent: [],
+      meetingCopiesTo: [],
+      meetingPrepared: [],
     },
   },
 });

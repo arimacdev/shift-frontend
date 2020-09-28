@@ -194,7 +194,7 @@
                 <v-col>
                   <!--attendedBy -->
                   <v-autocomplete
-                    v-model="mainFormData.meetingAttendedBy"
+                    v-model="meetingAttendedBy"
                     return-object
                     :items="userArray"
                     dense
@@ -212,7 +212,7 @@
                 <v-col>
                   <!--nonOrgAttendees -->
                   <v-text-field
-                    v-model="mainFormData.meetingAttendedByNonOrg"
+                    v-model="meetingAttendedByNonOrg"
                     outlined
                     clearable
                     dense
@@ -225,7 +225,7 @@
                 <v-col>
                   <!--absent -->
                   <v-autocomplete
-                    v-model="mainFormData.membersAbsent"
+                    v-model="membersAbsent"
                     return-object
                     :items="userArray"
                     dense
@@ -243,7 +243,7 @@
                 <v-col>
                   <!--nonOrgAbsent -->
                   <v-text-field
-                    v-model="mainFormData.membersAbsentNonOrg"
+                    v-model="membersAbsentNonOrg"
                     outlined
                     clearable
                     dense
@@ -256,7 +256,7 @@
                 <v-col>
                   <!--additionalCopiesTo -->
                   <v-autocomplete
-                    v-model="mainFormData.additionalCopiesTo"
+                    v-model="additionalCopiesTo"
                     :items="userArray"
                     return-object
                     dense
@@ -274,7 +274,7 @@
                 <v-col>
                   <!--nonOrgCopies -->
                   <v-text-field
-                    v-model="mainFormData.additionalCopiesToNonOrg"
+                    v-model="additionalCopiesToNonOrg"
                     outlined
                     clearable
                     dense
@@ -286,7 +286,7 @@
                 <v-col>
                   <!--preaparedBy -->
                   <v-autocomplete
-                    v-model="mainFormData.minutesOfMeetingPreparedBy"
+                    v-model="minutesOfMeetingPreparedBy"
                     :items="userArray"
                     return-object
                     dense
@@ -304,7 +304,7 @@
                 <v-col>
                   <!--nonOrgPrepared -->
                   <v-text-field
-                    v-model="mainFormData.minutesOfMeetingPreparedByNonOrg"
+                    v-model="minutesOfMeetingPreparedByNonOrg"
                     outlined
                     clearable
                     dense
@@ -385,7 +385,7 @@ export default {
     },
     chairedBy: {
       get() {
-        let meetingChaired = [];
+        let chairedBy = [];
         if (this.selectedMeeting.meeting.meetingChaired.length != 0) {
           for (
             let index = 0;
@@ -394,11 +394,11 @@ export default {
           ) {
             let user = this.selectedMeeting.meeting.meetingChaired[index];
             if (user.guest !== true) {
-              meetingChaired[index] = user.attendeeId;
+              chairedBy[index] = user.attendeeId;
             }
           }
         }
-        return meetingChaired;
+        return chairedBy;
       },
       set(value) {
         this.mainFormData.chairedBy = value;
@@ -423,6 +423,174 @@ export default {
       },
       set(value) {
         this.mainFormData.chairedByNonOrg = value;
+      },
+    },
+    meetingAttendedBy: {
+      get() {
+        let meetingAttendedBy = [];
+        if (this.selectedMeeting.meeting.meetingAttended.length != 0) {
+          for (
+            let index = 0;
+            index < this.selectedMeeting.meeting.meetingAttended.length;
+            ++index
+          ) {
+            let user = this.selectedMeeting.meeting.meetingAttended[index];
+            if (user.guest !== true) {
+              meetingAttendedBy[index] = user.attendeeId;
+            }
+          }
+        }
+        return meetingAttendedBy;
+      },
+      set(value) {
+        this.mainFormData.meetingAttendedBy = value;
+      },
+    },
+    meetingAttendedByNonOrg: {
+      get() {
+        let meetingAttendedByNonOrg = '';
+        if (this.selectedMeeting.meeting.meetingAttended.length != 0) {
+          for (
+            let index = 0;
+            index < this.selectedMeeting.meeting.meetingAttended.length;
+            ++index
+          ) {
+            let user = this.selectedMeeting.meeting.meetingAttended[index];
+            if (user.guest == true) {
+              meetingAttendedByNonOrg = user.attendeeId;
+            }
+          }
+        }
+        return meetingAttendedByNonOrg;
+      },
+      set(value) {
+        this.mainFormData.meetingAttendedByNonOrg = value;
+      },
+    },
+    membersAbsent: {
+      get() {
+        let membersAbsent = [];
+        if (this.selectedMeeting.meeting.meetingAbsent.length != 0) {
+          for (
+            let index = 0;
+            index < this.selectedMeeting.meeting.meetingAbsent.length;
+            ++index
+          ) {
+            let user = this.selectedMeeting.meeting.meetingAbsent[index];
+            if (user.guest !== true) {
+              membersAbsent[index] = user.attendeeId;
+            }
+          }
+        }
+        return membersAbsent;
+      },
+      set(value) {
+        this.mainFormData.membersAbsent = value;
+      },
+    },
+    membersAbsentNonOrg: {
+      get() {
+        let membersAbsentNonOrg = '';
+        if (this.selectedMeeting.meeting.meetingAbsent.length != 0) {
+          for (
+            let index = 0;
+            index < this.selectedMeeting.meeting.meetingAbsent.length;
+            ++index
+          ) {
+            let user = this.selectedMeeting.meeting.meetingAbsent[index];
+            if (user.guest == true) {
+              membersAbsentNonOrg = user.attendeeId;
+            }
+          }
+        }
+        return membersAbsentNonOrg;
+      },
+      set(value) {
+        this.mainFormData.membersAbsentNonOrg = value;
+      },
+    },
+    additionalCopiesTo: {
+      get() {
+        let additionalCopiesTo = [];
+        if (this.selectedMeeting.meeting.meetingCopiesTo.length != 0) {
+          for (
+            let index = 0;
+            index < this.selectedMeeting.meeting.meetingCopiesTo.length;
+            ++index
+          ) {
+            let user = this.selectedMeeting.meeting.meetingCopiesTo[index];
+            if (user.guest !== true) {
+              additionalCopiesTo[index] = user.attendeeId;
+            }
+          }
+        }
+        return additionalCopiesTo;
+      },
+      set(value) {
+        this.mainFormData.additionalCopiesTo = value;
+      },
+    },
+    additionalCopiesToNonOrg: {
+      get() {
+        let additionalCopiesToNonOrg = '';
+        if (this.selectedMeeting.meeting.meetingCopiesTo.length != 0) {
+          for (
+            let index = 0;
+            index < this.selectedMeeting.meeting.meetingCopiesTo.length;
+            ++index
+          ) {
+            let user = this.selectedMeeting.meeting.meetingCopiesTo[index];
+            if (user.guest == true) {
+              additionalCopiesToNonOrg = user.attendeeId;
+            }
+          }
+        }
+        return additionalCopiesToNonOrg;
+      },
+      set(value) {
+        this.mainFormData.additionalCopiesToNonOrg = value;
+      },
+    },
+    minutesOfMeetingPreparedBy: {
+      get() {
+        let minutesOfMeetingPreparedBy = [];
+        if (this.selectedMeeting.meeting.meetingPrepared.length != 0) {
+          for (
+            let index = 0;
+            index < this.selectedMeeting.meeting.meetingPrepared.length;
+            ++index
+          ) {
+            let user = this.selectedMeeting.meeting.meetingPrepared[index];
+            if (user.guest !== true) {
+              minutesOfMeetingPreparedBy[index] = user.attendeeId;
+            }
+          }
+        }
+        return minutesOfMeetingPreparedBy;
+      },
+      set(value) {
+        this.mainFormData.minutesOfMeetingPreparedBy = value;
+      },
+    },
+    minutesOfMeetingPreparedByNonOrg: {
+      get() {
+        let minutesOfMeetingPreparedByNonOrg = '';
+        if (this.selectedMeeting.meeting.meetingPrepared.length != 0) {
+          for (
+            let index = 0;
+            index < this.selectedMeeting.meeting.meetingPrepared.length;
+            ++index
+          ) {
+            let user = this.selectedMeeting.meeting.meetingPrepared[index];
+            if (user.guest == true) {
+              minutesOfMeetingPreparedByNonOrg = user.attendeeId;
+            }
+          }
+        }
+        return minutesOfMeetingPreparedByNonOrg;
+      },
+      set(value) {
+        this.mainFormData.minutesOfMeetingPreparedByNonOrg = value;
       },
     },
   },
