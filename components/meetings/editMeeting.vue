@@ -1,6 +1,5 @@
 <template>
   <v-card color="#FFFFFF" height="90vh">
-    {{ this.mainFormData.chairedBy }}
     <div
       id="meetingEditDiv"
       style="height: 80vh; padding-bottom: 300px"
@@ -182,7 +181,7 @@
                 <v-col>
                   <!--nonOrgChaired -->
                   <v-text-field
-                    v-model="mainFormData.chairedByNonOrg"
+                    v-model="chairedByNonOrg"
                     outlined
                     dense
                     clearable
@@ -403,6 +402,27 @@ export default {
       },
       set(value) {
         this.mainFormData.chairedBy = value;
+      },
+    },
+    chairedByNonOrg: {
+      get() {
+        let chairedByNonOrg = '';
+        if (this.selectedMeeting.meeting.meetingChaired.length != 0) {
+          for (
+            let index = 0;
+            index < this.selectedMeeting.meeting.meetingChaired.length;
+            ++index
+          ) {
+            let user = this.selectedMeeting.meeting.meetingChaired[index];
+            if (user.guest == true) {
+              chairedByNonOrg = user.attendeeId;
+            }
+          }
+        }
+        return chairedByNonOrg;
+      },
+      set(value) {
+        this.mainFormData.chairedByNonOrg = value;
       },
     },
   },
