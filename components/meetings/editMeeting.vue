@@ -1,6 +1,11 @@
 <template>
   <v-card color="#FFFFFF" height="90vh">
-    <div id="meetingEditDiv" style="height: 80vh" class="overflow-y-auto">
+    {{ this.mainFormData.chairedBy }}
+    <div
+      id="meetingEditDiv"
+      style="height: 80vh; padding-bottom: 300px"
+      class="overflow-y-auto"
+    >
       <v-card-text>
         <v-row style="height: 100%">
           <v-col md="12">
@@ -146,6 +151,168 @@
                 type="number"
                 label="Planned Duration of the Meeting (min)"
               ></v-text-field>
+
+              <v-text-field
+                :rules="defaultRules"
+                v-model="mainFormData.actualDurationOfTheMeeting"
+                outlined
+                dense
+                type="number"
+                label="Actual Duration of the Meeting (min)"
+              ></v-text-field>
+
+              <v-row class="sideByRow">
+                <v-col>
+                  <!--chairedBy -->
+                  <v-autocomplete
+                    v-model="chairedBy"
+                    :items="userArray"
+                    dense
+                    item-text="name"
+                    item-value="id"
+                    flat
+                    chips
+                    small-chips
+                    outlined
+                    label="Chaired By"
+                    multiple
+                    clearable
+                  ></v-autocomplete>
+                </v-col>
+                <v-col>
+                  <!--nonOrgChaired -->
+                  <v-text-field
+                    v-model="mainFormData.chairedByNonOrg"
+                    outlined
+                    dense
+                    clearable
+                    label="Chaired By - Non Org (Ex: Member 1, Member 2)"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+
+              <v-row class="sideByRow">
+                <v-col>
+                  <!--attendedBy -->
+                  <v-autocomplete
+                    v-model="mainFormData.meetingAttendedBy"
+                    return-object
+                    :items="userArray"
+                    dense
+                    item-text="name"
+                    item-value="id"
+                    flat
+                    chips
+                    small-chips
+                    outlined
+                    label="Meeting Attended by"
+                    multiple
+                    clearable
+                  ></v-autocomplete>
+                </v-col>
+                <v-col>
+                  <!--nonOrgAttendees -->
+                  <v-text-field
+                    v-model="mainFormData.meetingAttendedByNonOrg"
+                    outlined
+                    clearable
+                    dense
+                    label="Meeting Attended by - Non Org (Ex: Member 1, Member 2)"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+
+              <v-row class="sideByRow">
+                <v-col>
+                  <!--absent -->
+                  <v-autocomplete
+                    v-model="mainFormData.membersAbsent"
+                    return-object
+                    :items="userArray"
+                    dense
+                    item-text="name"
+                    item-value="id"
+                    flat
+                    chips
+                    small-chips
+                    outlined
+                    label="Members Absent"
+                    multiple
+                    clearable
+                  ></v-autocomplete>
+                </v-col>
+                <v-col>
+                  <!--nonOrgAbsent -->
+                  <v-text-field
+                    v-model="mainFormData.membersAbsentNonOrg"
+                    outlined
+                    clearable
+                    dense
+                    label="Members Absent - Non Org (Ex: Member 1, Member 2)"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+
+              <v-row class="sideByRow">
+                <v-col>
+                  <!--additionalCopiesTo -->
+                  <v-autocomplete
+                    v-model="mainFormData.additionalCopiesTo"
+                    :items="userArray"
+                    return-object
+                    dense
+                    item-text="name"
+                    item-value="id"
+                    flat
+                    chips
+                    small-chips
+                    outlined
+                    label="Additional Copies to"
+                    multiple
+                    clearable
+                  ></v-autocomplete>
+                </v-col>
+                <v-col>
+                  <!--nonOrgCopies -->
+                  <v-text-field
+                    v-model="mainFormData.additionalCopiesToNonOrg"
+                    outlined
+                    clearable
+                    dense
+                    label="Additional Copies to - Non Org (Ex: Member 1, Member 2)"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row class="sideByRow">
+                <v-col>
+                  <!--preaparedBy -->
+                  <v-autocomplete
+                    v-model="mainFormData.minutesOfMeetingPreparedBy"
+                    :items="userArray"
+                    return-object
+                    dense
+                    item-text="name"
+                    item-value="id"
+                    flat
+                    chips
+                    small-chips
+                    outlined
+                    label="Minutes of Meeting Prepared by"
+                    multiple
+                    clearable
+                  ></v-autocomplete>
+                </v-col>
+                <v-col>
+                  <!--nonOrgPrepared -->
+                  <v-text-field
+                    v-model="mainFormData.minutesOfMeetingPreparedByNonOrg"
+                    outlined
+                    clearable
+                    dense
+                    label="Prepared by - Non Org (Ex: Member 1, Member 2)"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
             </v-form>
           </v-col>
         </v-row>
@@ -217,15 +384,25 @@ export default {
       }
       return assigneeList;
     },
-    meetingDate: {
+    chairedBy: {
       get() {
-        let stringDate = this.selectedMeeting.meeting.meetingActualTime + ' ';
-        stringDate = stringDate.toString();
-        stringDate = stringDate.slice(0, 10);
-        return stringDate;
+        let meetingChaired = [];
+        if (this.selectedMeeting.meeting.meetingChaired.length != 0) {
+          for (
+            let index = 0;
+            index < this.selectedMeeting.meeting.meetingChaired.length;
+            ++index
+          ) {
+            let user = this.selectedMeeting.meeting.meetingChaired[index];
+            if (user.guest !== true) {
+              meetingChaired[index] = user.attendeeId;
+            }
+          }
+        }
+        return meetingChaired;
       },
       set(value) {
-        this.mainFormData.meetingDate = value;
+        this.mainFormData.chairedBy = value;
       },
     },
   },

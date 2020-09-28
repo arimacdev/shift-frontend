@@ -5,7 +5,9 @@ export const state = () => ({
 
   isMeetingLoaded: false,
   selectedMeeting: {
-    meeting: {},
+    meeting: {
+      meetingChaired: [],
+    },
   },
 });
 

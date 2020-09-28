@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div v-if="this.isView">
+    <div
+      style="margin-top: -50px"
+      class="projectTabContent overflow-y-auto"
+      v-if="this.isView"
+    >
       <v-row>
         <v-col>
           <v-text-field

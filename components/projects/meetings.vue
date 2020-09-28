@@ -1,5 +1,5 @@
 <template>
-  <div class="projectTabContent overflow-y-auto">
+  <div>
     <v-row v-if="!isMeetingViewer">
       <div class="minuteViewSection">
         <div class="viewMinuteBtnDiv">
@@ -35,7 +35,7 @@
       <view-meetings />
     </div>
     <!-- ------------ Start Stepper ----------- -->
-    <div v-else>
+    <div class="projectTabContent overflow-y-auto" v-else>
       <v-stepper v-model="e1">
         <v-stepper-header>
           <v-stepper-step editable :complete="e1 > 1" step="1"
