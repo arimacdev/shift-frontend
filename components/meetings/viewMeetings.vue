@@ -142,6 +142,18 @@
         </div>
       </v-col>
     </v-row>
+    <div class="LoadMeetingButton text-center">
+      <div v-if="projectMeetings == ''">No records to show</div>
+      <v-btn
+        v-if="projectMeetings != ''"
+        @click="loadMoreMeetings()"
+        color="#ffffff"
+        depressed
+      >
+        <span style="color: #576377" class="text-capitalize">Load More</span>
+        <v-icon>mdi-chevron-down</v-icon>
+      </v-btn>
+    </div>
     <v-dialog v-model="deleteMeetingDialog" max-width="350">
       <v-card style="text-align: center; padding-bottom: 25px">
         <v-card-title style="text-align: center">
@@ -183,14 +195,24 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-overlay :value="overlay" color="black" style="z-index: 1008">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import Progress from "~/components/popups/progress";
 export default {
+  components: {
+    "progress-loading": Progress,
+  },
   data() {
     return {
+      overlay: false,
+      loadMore: 0,
+
       selectedMeeting: {},
       modal: false,
       dateFilter: "",
@@ -201,6 +223,22 @@ export default {
     };
   },
   methods: {
+    loadMoreMeetings() {
+      this.loadMore++;
+      this.overlay = true;
+      Promise.all([
+        this.$store.dispatch("meetings/meeting/fetchProjectMeetings", {
+          projectId: this.projectId,
+          startIndex: this.loadMore * 10,
+          endIndex: this.loadMore * 10 + 10,
+          filter: false,
+          key: "",
+          date: "",
+        }),
+      ]).finally(() => {
+        this.overlay = false;
+      });
+    },
     selectMeeting(meeting) {
       this.selectedMeeting = meeting;
     },
@@ -244,6 +282,7 @@ export default {
     ...mapState({
       projectId: (state) => state.project.project.projectId,
       projectMeetings: (state) => state.meetings.meeting.projectMeetings,
+      isMeetingLoaded: (state) => state.meetings.meeting.isMeetingLoaded,
     }),
   },
 };

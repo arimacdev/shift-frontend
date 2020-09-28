@@ -262,9 +262,8 @@
             </v-list-item>
           </v-list-item-group>
           <div class="tableLoadButton text-center">
-            <div v-if="projectsSummary == ''">No records to show</div>
+            <!-- <div v-if="projectsSummary == ''">No records to show</div> -->
             <v-btn
-              v-if="projectsSummary != ''"
               @click="loadMoreMembers()"
               color="#ffffff"
               depressed

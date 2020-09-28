@@ -683,14 +683,15 @@ export default {
   },
   methods: {
     getMeetings() {
-      this.$store.dispatch("meetings/meeting/fetchProjectMeetings", {
-        projectId: this.projectId,
-        startIndex: 0,
-        endIndex: 10,
-        filter: false,
-        key: "",
-        date: "",
-      });
+      this.$store.dispatch("meetings/meeting/emptyMeetingStore"),
+        this.$store.dispatch("meetings/meeting/fetchProjectMeetings", {
+          projectId: this.projectId,
+          startIndex: 0,
+          endIndex: 10,
+          filter: false,
+          key: "",
+          date: "",
+        });
     },
     resetForm() {
       this.$refs.mainForm.reset();

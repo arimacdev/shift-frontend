@@ -2,9 +2,15 @@ export const state = () => ({
   initiatedMeeting: {},
   discussionPoints: [],
   projectMeetings: [],
+
+  isMeetingLoaded: false,
 });
 
 export const mutations = {
+  EMPTY_MEETING_STORE(state, elements) {
+    state.projectMeetings = elements;
+    state.isMeetingLoaded = false;
+  },
   SET_INITIATED_MEETING(state, meeting) {
     state.initiatedMeeting = meeting;
   },
@@ -12,11 +18,17 @@ export const mutations = {
     state.discussionPoints = data;
   },
   SET_PROJECT_MEETINGS(state, meetings) {
-    state.projectMeetings = meetings;
+    if (meetings.length == 0 || meetings.length < 10) {
+      state.isMeetingLoaded = true;
+    }
+    state.projectMeetings = state.projectMeetings.concat(meetings);
   },
 };
 
 export const actions = {
+  emptyMeetingStore({ commit, rootState }) {
+    commit('EMPTY_MEETING_STORE', []);
+  },
   async fetchOrgOverview({ commit, rootState }, meeting) {
     commit('SET_INITIATED_MEETING', meeting);
   },
