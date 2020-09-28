@@ -136,7 +136,14 @@
                 <v-icon color="#0083E2">mdi-file-pdf-outline</v-icon>
               </v-list-item-icon>
               <v-list-item-icon style="margin-left: 20px !important">
-                <v-icon color="#66B25F">mdi-file-document-edit-outline</v-icon>
+                <v-icon
+                  @click="
+                    editMeetingDialog = true;
+                    selectMeeting(meeting);
+                  "
+                  color="#66B25F"
+                  >mdi-file-document-edit-outline</v-icon
+                >
               </v-list-item-icon>
               <v-list-item-icon>
                 <v-icon
@@ -206,6 +213,9 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="editMeetingDialog" max-width="90vw">
+      <edit-meeting />
+    </v-dialog>
     <v-overlay :value="overlay" color="black" style="z-index: 1008">
       <progress-loading />
     </v-overlay>
@@ -215,9 +225,11 @@
 <script>
 import { mapState } from 'vuex';
 import Progress from '~/components/popups/progress';
+import EditMeeting from '~/components/meetings/editMeeting';
 export default {
   components: {
     'progress-loading': Progress,
+    'edit-meeting': EditMeeting,
   },
   data() {
     return {
@@ -233,6 +245,7 @@ export default {
       dateFilter: '',
       keyFilter: '',
       deleteMeetingDialog: false,
+      editMeetingDialog: false,
 
       userId: this.$store.state.user.userId,
     };
