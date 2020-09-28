@@ -286,6 +286,8 @@ export default {
       this.selectedMeeting = meeting;
     },
     async deleteMeeting() {
+      this.$store.dispatch('meetings/meeting/emptyMeetingStore'),
+        (this.loadMore = 1);
       let response;
       try {
         response = await this.$axios.$delete(
@@ -301,9 +303,9 @@ export default {
           projectId: this.projectId,
           startIndex: 0,
           endIndex: 10,
-          filter: false,
-          key: '',
-          date: '',
+          filter: this.isFilter,
+          key: this.keyFilter,
+          date: this.dateFilter,
         });
 
         this.successMessage = 'Meeting deleted successfully';
