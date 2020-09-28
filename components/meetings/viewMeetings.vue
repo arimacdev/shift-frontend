@@ -8,6 +8,7 @@
           outlined
           dense
           label="Filter By Key"
+          @input="filterMeetings(true)"
         ></v-text-field>
       </v-col>
       <v-col>
@@ -26,7 +27,11 @@
               v-model="dateFilter"
               label="Filter By Date"
               prepend-inner-icon="mdi-calendar-outline"
-              readonly
+              clearable
+              @click:clear="
+                dateFilter = '';
+                filterMeetings(false);
+              "
               v-bind="attrs"
               v-on="on"
               style="width: 100%"
@@ -35,7 +40,13 @@
           <v-date-picker v-model="dateFilter" scrollable>
             <v-spacer></v-spacer>
             <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-            <v-btn text color="primary" @click="$refs.dialog.save(dateFilter)"
+            <v-btn
+              text
+              color="primary"
+              @click="
+                $refs.dialog.save(dateFilter);
+                filterMeetings(true);
+              "
               >OK</v-btn
             >
           </v-date-picker>
@@ -213,6 +224,10 @@ export default {
       overlay: false,
       loadMore: 0,
 
+      isFilter: false,
+      filterKey: "",
+      filterDate: "",
+
       selectedMeeting: {},
       modal: false,
       dateFilter: "",
@@ -223,6 +238,30 @@ export default {
     };
   },
   methods: {
+    filterMeetings(isFilter) {
+      this.loadMore = 0;
+      this.isFilter = isFilter;
+      this.overlay = true;
+
+      if (this.dateFilter == null) {
+        this.dateFilter = "";
+      }
+
+      Promise.all([
+        this.$store.dispatch("meetings/meeting/emptyMeetingStore"),
+        this.loadMore++,
+        this.$store.dispatch("meetings/meeting/fetchProjectMeetings", {
+          projectId: this.projectId,
+          startIndex: this.loadMore * 10,
+          endIndex: this.loadMore * 10 + 10,
+          filter: this.isFilter,
+          key: this.keyFilter,
+          date: this.dateFilter,
+        }),
+      ]).finally(() => {
+        this.overlay = false;
+      });
+    },
     loadMoreMeetings() {
       this.loadMore++;
       this.overlay = true;
@@ -231,9 +270,9 @@ export default {
           projectId: this.projectId,
           startIndex: this.loadMore * 10,
           endIndex: this.loadMore * 10 + 10,
-          filter: false,
-          key: "",
-          date: "",
+          filter: this.isFilter,
+          key: this.dateFilter,
+          date: this.keyFilter,
         }),
       ]).finally(() => {
         this.overlay = false;
