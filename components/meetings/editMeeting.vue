@@ -41,6 +41,7 @@
                     @click="
                       $refs.dialogDate.save(mainFormData.meetingDate);
                       modal = false;
+                      updateDate();
                     "
                     >OK</v-btn
                   >
@@ -322,15 +323,39 @@
       <v-btn color="blue darken-1" text> Close </v-btn>
       <v-btn color="blue darken-1" text @click="dialog = false"> Save </v-btn>
     </v-card-actions>
+    <div @click="close()" class="popupBoxMeetig">
+      <component
+        v-bind:is="component"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
+      <!-- <success-popup /> -->
+    </div>
+    <v-overlay :value="overlay" color="black" style="z-index: 1008">
+      <progress-loading />
+    </v-overlay>
   </v-card>
 </template>
 <script>
 import { mapState } from "vuex";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
+import Progress from "~/components/popups/progress";
 
 export default {
   props: ["meetingObject"],
+  components: {
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup,
+    "progress-loading": Progress,
+  },
   data() {
     return {
+      errorMessage: "",
+      successMessage: "",
+      component: "",
+      overlay: false,
+
       modal: false,
       modalDiscussion: false,
 
@@ -360,9 +385,56 @@ export default {
       defaultRules: [(value) => !!value || "Required."],
     };
   },
-  methods: {},
+  methods: {
+    close() {
+      this.component = "";
+    },
+    // ---------- update meeting ---------
+
+    // ------ date update ------
+    async updateDate() {
+      let response;
+      this.overlay = true;
+      let scheduledTime = new Date(
+        this.mainFormData.meetingDate + " " + this.mainFormData.scheduleTime
+      );
+      let actualTime = new Date(
+        this.mainFormData.meetingDate + " " + this.mainFormData.actualTime
+      );
+      try {
+        response = await this.$axios.$put(
+          `meeting/${this.meetingObject.meetingId}`,
+          {
+            projectId: this.projectId,
+            meetingExpectedTime: scheduledTime,
+            meetingActualTime: actualTime,
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.component = "success-popup";
+        this.successMessage = "Date Successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
+      } catch (e) {
+        this.overlay = false;
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error creating meeting", e);
+      }
+    },
+  },
   computed: {
     ...mapState({
+      projectId: (state) => state.project.project.projectId,
       selectedMeeting: (state) => state.meetings.meeting.selectedMeeting,
       users: (state) => state.user.users,
     }),

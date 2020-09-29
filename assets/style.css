@@ -881,6 +881,12 @@
   right: 50px;
   bottom: 10px;
 }
+.popupBoxMeetig {
+  z-index: 100;
+  position: fixed;
+  right: 50px;
+  bottom: 10px;
+}
 
 /* -------------- add people to project ------------- */
 
