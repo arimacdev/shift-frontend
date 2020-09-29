@@ -319,20 +319,16 @@
     </div>
     <v-divider></v-divider>
     <v-card-actions>
-      <v-btn color="blue darken-1" text>
-        Close
-      </v-btn>
-      <v-btn color="blue darken-1" text @click="dialog = false">
-        Save
-      </v-btn>
+      <v-btn color="blue darken-1" text> Close </v-btn>
+      <v-btn color="blue darken-1" text @click="dialog = false"> Save </v-btn>
     </v-card-actions>
   </v-card>
 </template>
 <script>
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 
 export default {
-  props: ['meetingObject'],
+  props: ["meetingObject"],
   data() {
     return {
       modal: false,
@@ -361,7 +357,7 @@ export default {
         additionalCopiesToNonOrg: null,
         minutesOfMeetingPreparedByNonOrg: null,
       },
-      defaultRules: [(value) => !!value || 'Required.'],
+      defaultRules: [(value) => !!value || "Required."],
     };
   },
   methods: {},
@@ -376,7 +372,7 @@ export default {
       for (let index = 0; index < AssigneeSearchList.length; ++index) {
         let user = AssigneeSearchList[index];
         assigneeList.push({
-          name: user.firstName + ' ' + user.lastName,
+          name: user.firstName + " " + user.lastName,
           id: user.userId,
           img: user.profileImage,
         });
@@ -406,7 +402,7 @@ export default {
     },
     chairedByNonOrg: {
       get() {
-        let chairedByNonOrg = '';
+        let chairedByNonOrg = "";
         if (this.selectedMeeting.meeting.meetingChaired.length != 0) {
           for (
             let index = 0;
@@ -448,7 +444,7 @@ export default {
     },
     meetingAttendedByNonOrg: {
       get() {
-        let meetingAttendedByNonOrg = '';
+        let meetingAttendedByNonOrg = "";
         if (this.selectedMeeting.meeting.meetingAttended.length != 0) {
           for (
             let index = 0;
@@ -490,7 +486,7 @@ export default {
     },
     membersAbsentNonOrg: {
       get() {
-        let membersAbsentNonOrg = '';
+        let membersAbsentNonOrg = "";
         if (this.selectedMeeting.meeting.meetingAbsent.length != 0) {
           for (
             let index = 0;
@@ -532,7 +528,7 @@ export default {
     },
     additionalCopiesToNonOrg: {
       get() {
-        let additionalCopiesToNonOrg = '';
+        let additionalCopiesToNonOrg = "";
         if (this.selectedMeeting.meeting.meetingCopiesTo.length != 0) {
           for (
             let index = 0;
@@ -574,7 +570,7 @@ export default {
     },
     minutesOfMeetingPreparedByNonOrg: {
       get() {
-        let minutesOfMeetingPreparedByNonOrg = '';
+        let minutesOfMeetingPreparedByNonOrg = "";
         if (this.selectedMeeting.meeting.meetingPrepared.length != 0) {
           for (
             let index = 0;

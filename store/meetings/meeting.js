@@ -7,7 +7,7 @@ export const state = () => ({
   selectedMeeting: {
     meeting: {
       meetingChaired: [],
-      meetingAttendedBy: [],
+      meetingAttended: [],
       meetingAbsent: [],
       meetingCopiesTo: [],
       meetingPrepared: [],
