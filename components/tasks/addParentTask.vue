@@ -173,6 +173,7 @@ export default {
   },
   methods: {
     clearStore() {
+      console.log('CONDSOJDKDS');
       this.$emit('clearStore');
     },
     loadDetails() {
@@ -238,7 +239,8 @@ export default {
         this.dialog = false;
         this.component = 'success-popup';
         this.successMessage = 'Parent Task Added Successfully';
-        this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
+        this.clearStore();
+        // this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
         this.$store.dispatch('task/setCurrentTask', {
           projectId: this.projectId,
           taskId: this.taskId,
@@ -251,7 +253,6 @@ export default {
           this.close();
         }, 3000);
         // console.log('update parent task', response);
-        this.clearStore();
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = 'error-popup';
