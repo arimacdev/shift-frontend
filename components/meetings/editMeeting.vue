@@ -330,7 +330,6 @@
           </v-col>
         </v-row>
         <v-btn @click="updatePeople()">Update people</v-btn>
-        {{ mainFormData.chairedByNonOrg }}
       </v-card-text>
     </div>
 
