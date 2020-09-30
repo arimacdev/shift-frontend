@@ -54,6 +54,7 @@
                 outlined
                 dense
                 label="Topic for the Meeting"
+                hint="Update and hit enter"
                 @keyup.enter="updateTopic()"
               ></v-text-field>
 
@@ -64,6 +65,7 @@
                 outlined
                 dense
                 label="Venue"
+                hint="Update and hit enter"
                 @keyup.enter="updateVenu()"
               ></v-text-field>
 
@@ -158,6 +160,7 @@
                 dense
                 type="number"
                 label="Planned Duration of the Meeting (min)"
+                hint="Update and hit enter"
                 @keyup.enter="updatePlannedDuration()"
               ></v-text-field>
 
@@ -168,6 +171,7 @@
                 dense
                 type="number"
                 label="Actual Duration of the Meeting (min)"
+                hint="Update and hit enter"
                 @keyup.enter="updateActualDuration()"
               ></v-text-field>
 
