@@ -199,7 +199,6 @@
                     v-model="chairedByNonOrg"
                     outlined
                     dense
-                    clearable
                     label="Chaired By - Non Org (Ex: Member 1, Member 2)"
                   ></v-text-field>
                 </v-col>
@@ -330,8 +329,11 @@
             </v-form>
           </v-col>
         </v-row>
+        <v-btn @click="updatePeople()">Update people</v-btn>
+        {{ mainFormData.chairedByNonOrg }}
       </v-card-text>
     </div>
+
     <v-divider></v-divider>
     <v-card-actions>
       <v-btn color="blue darken-1" text> Close </v-btn>
@@ -406,6 +408,130 @@ export default {
       this.component = '';
     },
     // ---------- update meeting ---------
+
+    //  ---------- update chaired by -------
+
+    async updatePeople() {
+      let meetingChairedObject = {};
+      let meetingChaired = [];
+      let isChairUpdate = false;
+
+      // ---- chaired by ----
+
+      let chairedBy = [];
+      let chairedByNonOrg = '';
+      if (this.selectedMeeting.meeting.meetingChaired.length != 0) {
+        for (
+          let index = 0;
+          index < this.selectedMeeting.meeting.meetingChaired.length;
+          ++index
+        ) {
+          let user = this.selectedMeeting.meeting.meetingChaired[index];
+          if (user.guest !== true) {
+            chairedBy.push({
+              attendeeId: user.attendeeId,
+              isGuest: false,
+            });
+          } else {
+            chairedByNonOrg = {
+              attendeeId: user.attendeeId,
+              isGuest: true,
+            };
+          }
+        }
+      }
+
+      if (
+        this.mainFormData.chairedBy != null &&
+        this.mainFormData.chairedByNonOrg == null
+      ) {
+        isChairUpdate = true;
+
+        for (
+          let index = 0;
+          index < this.mainFormData.chairedBy.length;
+          ++index
+        ) {
+          let user = this.mainFormData.chairedBy[index];
+          meetingChaired.push({
+            attendeeId: user,
+            isGuest: false,
+          });
+        }
+
+        if (chairedByNonOrg != '') {
+          meetingChaired.push(chairedByNonOrg);
+        } else {
+        }
+        meetingChairedObject = {
+          isUpdated: isChairUpdate,
+          attendees: meetingChaired,
+        };
+      } else if (
+        this.mainFormData.chairedBy == null &&
+        this.mainFormData.chairedByNonOrg != null
+      ) {
+        isChairUpdate = true;
+
+        if (chairedBy != []) {
+          meetingChaired = chairedBy;
+        }
+
+        if (this.mainFormData.chairedByNonOrg != '') {
+          meetingChaired.push({
+            attendeeId: this.mainFormData.chairedByNonOrg,
+            isGuest: true,
+          });
+        }
+        meetingChairedObject = {
+          isUpdated: isChairUpdate,
+          attendees: meetingChaired,
+        };
+      }
+
+      let response;
+      this.overlay = true;
+      try {
+        response = await this.$axios.$put(
+          `meeting/${this.meetingObject.meetingId}`,
+          {
+            projectId: this.projectId,
+            actualDuration: this.mainFormData.actualDurationOfTheMeeting,
+            meetingChaired: meetingChairedObject,
+            meetingAttended: { isUpdated: false, attendees: [] },
+            meetingAbsent: { isUpdated: false, attendees: [] },
+            meetingCopiesTo: { isUpdated: false, attendees: [] },
+            meetingPrepared: { isUpdated: false, attendees: [] },
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.component = 'success-popup';
+        this.successMessage = 'People Successfully updated';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
+          meetingId: this.meetingObject.meetingId,
+          projectId: this.projectId,
+        });
+
+        this.mainFormData.chairedByNonOrg = null;
+        this.mainFormData.chairedBy = null;
+        this.overlay = false;
+      } catch (e) {
+        this.overlay = false;
+        this.errorMessage = e.response.data;
+        this.component = 'error-popup';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log('Error update people', e);
+      }
+    },
 
     // ------ update actual duration ------
 
