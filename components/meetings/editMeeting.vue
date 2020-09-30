@@ -54,6 +54,7 @@
                 outlined
                 dense
                 label="Topic for the Meeting"
+                @keyup.enter="updateTopic()"
               ></v-text-field>
 
               <!--venue -->
@@ -63,6 +64,7 @@
                 outlined
                 dense
                 label="Venue"
+                @keyup.enter="updateVenu()"
               ></v-text-field>
 
               <!--scheduleTime -->
@@ -98,7 +100,10 @@
                   <v-btn
                     text
                     color="primary"
-                    @click="$refs.dialog1.save(mainFormData.scheduleTime)"
+                    @click="
+                      $refs.dialog1.save(mainFormData.scheduleTime);
+                      updateDate();
+                    "
                     >OK</v-btn
                   >
                 </v-time-picker>
@@ -137,7 +142,10 @@
                   <v-btn
                     text
                     color="primary"
-                    @click="$refs.dialog2.save(mainFormData.actualTime)"
+                    @click="
+                      $refs.dialog2.save(mainFormData.actualTime);
+                      updateDate();
+                    "
                     >OK</v-btn
                   >
                 </v-time-picker>
@@ -150,6 +158,7 @@
                 dense
                 type="number"
                 label="Planned Duration of the Meeting (min)"
+                @keyup.enter="updatePlannedDuration()"
               ></v-text-field>
 
               <v-text-field
@@ -159,6 +168,7 @@
                 dense
                 type="number"
                 label="Actual Duration of the Meeting (min)"
+                @keyup.enter="updateActualDuration()"
               ></v-text-field>
 
               <v-row class="sideByRow">
@@ -337,27 +347,29 @@
   </v-card>
 </template>
 <script>
-import { mapState } from "vuex";
-import SuccessPopup from "~/components/popups/successPopup";
-import ErrorPopup from "~/components/popups/errorPopup";
-import Progress from "~/components/popups/progress";
+import { mapState } from 'vuex';
+import SuccessPopup from '~/components/popups/successPopup';
+import ErrorPopup from '~/components/popups/errorPopup';
+import Progress from '~/components/popups/progress';
 
 export default {
-  props: ["meetingObject"],
+  props: ['meetingObject'],
   components: {
-    "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup,
-    "progress-loading": Progress,
+    'success-popup': SuccessPopup,
+    'error-popup': ErrorPopup,
+    'progress-loading': Progress,
   },
   data() {
     return {
-      errorMessage: "",
-      successMessage: "",
-      component: "",
+      errorMessage: '',
+      successMessage: '',
+      component: '',
       overlay: false,
 
       modal: false,
       modalDiscussion: false,
+
+      userId: this.$store.state.user.userId,
 
       modal2: false,
       modal3: false,
@@ -382,32 +394,31 @@ export default {
         additionalCopiesToNonOrg: null,
         minutesOfMeetingPreparedByNonOrg: null,
       },
-      defaultRules: [(value) => !!value || "Required."],
+      defaultRules: [(value) => !!value || 'Required.'],
     };
   },
   methods: {
     close() {
-      this.component = "";
+      this.component = '';
     },
     // ---------- update meeting ---------
 
-    // ------ date update ------
-    async updateDate() {
+    // ------ update actual duration ------
+
+    async updateActualDuration() {
       let response;
       this.overlay = true;
-      let scheduledTime = new Date(
-        this.mainFormData.meetingDate + " " + this.mainFormData.scheduleTime
-      );
-      let actualTime = new Date(
-        this.mainFormData.meetingDate + " " + this.mainFormData.actualTime
-      );
       try {
         response = await this.$axios.$put(
           `meeting/${this.meetingObject.meetingId}`,
           {
             projectId: this.projectId,
-            meetingExpectedTime: scheduledTime,
-            meetingActualTime: actualTime,
+            actualDuration: this.mainFormData.actualDurationOfTheMeeting,
+            meetingChaired: { isUpdated: false, attendees: [] },
+            meetingAttended: { isUpdated: false, attendees: [] },
+            meetingAbsent: { isUpdated: false, attendees: [] },
+            meetingCopiesTo: { isUpdated: false, attendees: [] },
+            meetingPrepared: { isUpdated: false, attendees: [] },
           },
           {
             headers: {
@@ -415,20 +426,209 @@ export default {
             },
           }
         );
-        this.component = "success-popup";
-        this.successMessage = "Date Successfully updated";
+        this.component = 'success-popup';
+        this.successMessage = 'Duration Successfully updated';
         setTimeout(() => {
           this.close();
         }, 3000);
+        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
+          meetingId: this.meetingObject.meetingId,
+          projectId: this.projectId,
+        });
         this.overlay = false;
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error creating meeting", e);
+        console.log('Error update actual duration', e);
+      }
+    },
+
+    // ------ update planned duration ------
+    async updatePlannedDuration() {
+      let response;
+      this.overlay = true;
+      try {
+        response = await this.$axios.$put(
+          `meeting/${this.meetingObject.meetingId}`,
+          {
+            projectId: this.projectId,
+            expectedDuration: this.mainFormData.plannedDurationOfTheMeeting,
+            meetingChaired: { isUpdated: false, attendees: [] },
+            meetingAttended: { isUpdated: false, attendees: [] },
+            meetingAbsent: { isUpdated: false, attendees: [] },
+            meetingCopiesTo: { isUpdated: false, attendees: [] },
+            meetingPrepared: { isUpdated: false, attendees: [] },
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.component = 'success-popup';
+        this.successMessage = 'Duration Successfully updated';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
+          meetingId: this.meetingObject.meetingId,
+          projectId: this.projectId,
+        });
+        this.overlay = false;
+      } catch (e) {
+        this.overlay = false;
+        this.errorMessage = e.response.data;
+        this.component = 'error-popup';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log('Error update planned duration', e);
+      }
+    },
+
+    // ------ update topic ------
+    async updateTopic() {
+      let response;
+      this.overlay = true;
+      try {
+        response = await this.$axios.$put(
+          `meeting/${this.meetingObject.meetingId}`,
+          {
+            projectId: this.projectId,
+            meetingTopic: this.mainFormData.topicForTheMeeting,
+            meetingChaired: { isUpdated: false, attendees: [] },
+            meetingAttended: { isUpdated: false, attendees: [] },
+            meetingAbsent: { isUpdated: false, attendees: [] },
+            meetingCopiesTo: { isUpdated: false, attendees: [] },
+            meetingPrepared: { isUpdated: false, attendees: [] },
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.component = 'success-popup';
+        this.successMessage = 'Topic Successfully updated';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
+          meetingId: this.meetingObject.meetingId,
+          projectId: this.projectId,
+        });
+        this.overlay = false;
+      } catch (e) {
+        this.overlay = false;
+        this.errorMessage = e.response.data;
+        this.component = 'error-popup';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log('Error update topic', e);
+      }
+    },
+
+    // ------ update venu ------
+    async updateVenu() {
+      let response;
+      this.overlay = true;
+      try {
+        response = await this.$axios.$put(
+          `meeting/${this.meetingObject.meetingId}`,
+          {
+            projectId: this.projectId,
+            meetingVenue: this.mainFormData.venue,
+            meetingChaired: { isUpdated: false, attendees: [] },
+            meetingAttended: { isUpdated: false, attendees: [] },
+            meetingAbsent: { isUpdated: false, attendees: [] },
+            meetingCopiesTo: { isUpdated: false, attendees: [] },
+            meetingPrepared: { isUpdated: false, attendees: [] },
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.component = 'success-popup';
+        this.successMessage = 'Venu Successfully updated';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
+          meetingId: this.meetingObject.meetingId,
+          projectId: this.projectId,
+        });
+        this.overlay = false;
+      } catch (e) {
+        this.overlay = false;
+        this.errorMessage = e.response.data;
+        this.component = 'error-popup';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log('Error update venu', e);
+      }
+    },
+
+    // ------ date update ------
+    async updateDate() {
+      let response;
+      this.overlay = true;
+      let scheduledTime = new Date(
+        this.mainFormData.meetingDate + ' ' + this.mainFormData.scheduleTime
+      );
+      const isoScheduledTime = new Date(
+        scheduledTime.getTime() - scheduledTime.getTimezoneOffset() * 60000
+      ).toISOString();
+      let actualTime = new Date(
+        this.mainFormData.meetingDate + ' ' + this.mainFormData.actualTime
+      );
+      const isoActualTime = new Date(
+        actualTime.getTime() - actualTime.getTimezoneOffset() * 60000
+      ).toISOString();
+      try {
+        response = await this.$axios.$put(
+          `meeting/${this.meetingObject.meetingId}`,
+          {
+            projectId: this.projectId,
+            meetingExpectedTime: isoScheduledTime,
+            meetingActualTime: isoActualTime,
+            meetingChaired: { isUpdated: false, attendees: [] },
+            meetingAttended: { isUpdated: false, attendees: [] },
+            meetingAbsent: { isUpdated: false, attendees: [] },
+            meetingCopiesTo: { isUpdated: false, attendees: [] },
+            meetingPrepared: { isUpdated: false, attendees: [] },
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.component = 'success-popup';
+        this.successMessage = 'Date Successfully updated';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
+          meetingId: this.meetingObject.meetingId,
+          projectId: this.projectId,
+        });
+        this.overlay = false;
+      } catch (e) {
+        this.overlay = false;
+        this.errorMessage = e.response.data;
+        this.component = 'error-popup';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log('Error update date', e);
       }
     },
   },
@@ -444,7 +644,7 @@ export default {
       for (let index = 0; index < AssigneeSearchList.length; ++index) {
         let user = AssigneeSearchList[index];
         assigneeList.push({
-          name: user.firstName + " " + user.lastName,
+          name: user.firstName + ' ' + user.lastName,
           id: user.userId,
           img: user.profileImage,
         });
@@ -474,7 +674,7 @@ export default {
     },
     chairedByNonOrg: {
       get() {
-        let chairedByNonOrg = "";
+        let chairedByNonOrg = '';
         if (this.selectedMeeting.meeting.meetingChaired.length != 0) {
           for (
             let index = 0;
@@ -516,7 +716,7 @@ export default {
     },
     meetingAttendedByNonOrg: {
       get() {
-        let meetingAttendedByNonOrg = "";
+        let meetingAttendedByNonOrg = '';
         if (this.selectedMeeting.meeting.meetingAttended.length != 0) {
           for (
             let index = 0;
@@ -558,7 +758,7 @@ export default {
     },
     membersAbsentNonOrg: {
       get() {
-        let membersAbsentNonOrg = "";
+        let membersAbsentNonOrg = '';
         if (this.selectedMeeting.meeting.meetingAbsent.length != 0) {
           for (
             let index = 0;
@@ -600,7 +800,7 @@ export default {
     },
     additionalCopiesToNonOrg: {
       get() {
-        let additionalCopiesToNonOrg = "";
+        let additionalCopiesToNonOrg = '';
         if (this.selectedMeeting.meeting.meetingCopiesTo.length != 0) {
           for (
             let index = 0;
@@ -642,7 +842,7 @@ export default {
     },
     minutesOfMeetingPreparedByNonOrg: {
       get() {
-        let minutesOfMeetingPreparedByNonOrg = "";
+        let minutesOfMeetingPreparedByNonOrg = '';
         if (this.selectedMeeting.meeting.meetingPrepared.length != 0) {
           for (
             let index = 0;

@@ -319,7 +319,6 @@ export default {
       this.selectedMeeting = meeting;
       this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
         meetingId: meeting.meetingId,
-        // meetingId: '19a4edb0-0610-4fad-88f3-a3a01c141155',
         projectId: this.projectId,
       });
     },
