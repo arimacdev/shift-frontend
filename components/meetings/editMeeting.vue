@@ -6,6 +6,7 @@
       class="overflow-y-auto"
     >
       <v-card-text>
+        <span>Meeting Details</span>
         <v-row style="height: 100%">
           <v-col md="12">
             <v-form v-model="isValid" ref="mainForm">
@@ -175,6 +176,8 @@
                 @keyup.enter="updateActualDuration()"
               ></v-text-field>
 
+              <span>Member Details</span>
+
               <v-row class="sideByRow">
                 <v-col>
                   <!--chairedBy -->
@@ -329,7 +332,9 @@
             </v-form>
           </v-col>
         </v-row>
-        <v-btn @click="updatePeople()">Update people</v-btn>
+        <v-btn @click="updatePeople()" depressed color="green" dark
+          >Update Member Details</v-btn
+        >
       </v-card-text>
     </div>
 
@@ -460,7 +465,6 @@ export default {
 
         if (chairedByNonOrg != '') {
           meetingChaired.push(chairedByNonOrg);
-        } else {
         }
         meetingChairedObject = {
           isUpdated: isChairUpdate,
@@ -482,6 +486,35 @@ export default {
             isGuest: true,
           });
         }
+        meetingChairedObject = {
+          isUpdated: isChairUpdate,
+          attendees: meetingChaired,
+        };
+      } else if (
+        this.mainFormData.chairedBy != null &&
+        this.mainFormData.chairedByNonOrg != null
+      ) {
+        isChairUpdate = true;
+
+        for (
+          let index = 0;
+          index < this.mainFormData.chairedBy.length;
+          ++index
+        ) {
+          let user = this.mainFormData.chairedBy[index];
+          meetingChaired.push({
+            attendeeId: user,
+            isGuest: false,
+          });
+        }
+
+        if (this.mainFormData.chairedByNonOrg != '') {
+          meetingChaired.push({
+            attendeeId: this.mainFormData.chairedByNonOrg,
+            isGuest: true,
+          });
+        }
+
         meetingChairedObject = {
           isUpdated: isChairUpdate,
           attendees: meetingChaired,
@@ -520,6 +553,7 @@ export default {
 
         this.mainFormData.chairedByNonOrg = null;
         this.mainFormData.chairedBy = null;
+        isChairUpdate = false;
         this.overlay = false;
       } catch (e) {
         this.overlay = false;
