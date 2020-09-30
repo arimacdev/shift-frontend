@@ -175,6 +175,9 @@
                 hint="Update and hit enter"
                 @keyup.enter="updateActualDuration()"
               ></v-text-field>
+              <br /><br />
+              <v-divider></v-divider>
+              <br /><br />
 
               <span>Member Details</span>
 
@@ -420,6 +423,22 @@ export default {
       let meetingChaired = [];
       let isChairUpdate = false;
 
+      let meetingAttendedObject = {};
+      let meetingAttended = [];
+      let isAttendedUpdate = false;
+
+      let meetingAbsentObject = {};
+      let meetingAbsent = [];
+      let isAbsentUpdate = false;
+
+      let meetingCopiesToObject = {};
+      let meetingCopiesTo = [];
+      let isCopiesToUpdate = false;
+
+      let meetingPreparedObject = {};
+      let meetingPrepared = [];
+      let isPreparedUpdate = false;
+
       // ---- chaired by ----
 
       let chairedBy = [];
@@ -519,6 +538,11 @@ export default {
           isUpdated: isChairUpdate,
           attendees: meetingChaired,
         };
+      } else {
+        meetingChairedObject = {
+          isUpdated: false,
+          attendees: meetingChaired,
+        };
       }
 
       let response;
@@ -530,7 +554,7 @@ export default {
             projectId: this.projectId,
             actualDuration: this.mainFormData.actualDurationOfTheMeeting,
             meetingChaired: meetingChairedObject,
-            meetingAttended: { isUpdated: false, attendees: [] },
+            meetingAttended: meetingAttendedObject,
             meetingAbsent: { isUpdated: false, attendees: [] },
             meetingCopiesTo: { isUpdated: false, attendees: [] },
             meetingPrepared: { isUpdated: false, attendees: [] },
@@ -553,6 +577,9 @@ export default {
 
         this.mainFormData.chairedByNonOrg = null;
         this.mainFormData.chairedBy = null;
+        isChairUpdate = false;
+        this.mainFormData.attendedByNonOrg = null;
+        this.mainFormData.attendedBy = null;
         isChairUpdate = false;
         this.overlay = false;
       } catch (e) {
