@@ -641,6 +641,324 @@ export default {
         };
       }
 
+      // ---- meeting absent ----
+
+      let absentBy = [];
+      let absentByNonOrg = "";
+      if (this.selectedMeeting.meeting.meetingAbsent.length != 0) {
+        for (
+          let index = 0;
+          index < this.selectedMeeting.meeting.meetingAbsent.length;
+          ++index
+        ) {
+          let user = this.selectedMeeting.meeting.meetingAbsent[index];
+          if (user.guest !== true) {
+            absentBy.push({
+              attendeeId: user.attendeeId,
+              isGuest: false,
+            });
+          } else {
+            absentByNonOrg = {
+              attendeeId: user.attendeeId,
+              isGuest: true,
+            };
+          }
+        }
+      }
+
+      if (
+        this.mainFormData.membersAbsent != null &&
+        this.mainFormData.membersAbsentNonOrg == null
+      ) {
+        isAbsentUpdate = true;
+
+        for (
+          let index = 0;
+          index < this.mainFormData.membersAbsent.length;
+          ++index
+        ) {
+          let user = this.mainFormData.membersAbsent[index];
+          meetingAbsent.push({
+            attendeeId: user,
+            isGuest: false,
+          });
+        }
+
+        if (absentByNonOrg != "") {
+          meetingAbsent.push(absentByNonOrg);
+        }
+        meetingAbsentObject = {
+          isUpdated: isAbsentUpdate,
+          attendees: meetingAbsent,
+        };
+      } else if (
+        this.mainFormData.membersAbsent == null &&
+        this.mainFormData.membersAbsentNonOrg != null
+      ) {
+        isAbsentUpdate = true;
+
+        if (absentBy != []) {
+          meetingAbsent = absentBy;
+        }
+
+        if (this.mainFormData.membersAbsentNonOrg != "") {
+          meetingAbsent.push({
+            attendeeId: this.mainFormData.membersAbsentNonOrg,
+            isGuest: true,
+          });
+        }
+        meetingAbsentObject = {
+          isUpdated: isAbsentUpdate,
+          attendees: meetingAbsent,
+        };
+      } else if (
+        this.mainFormData.membersAbsent != null &&
+        this.mainFormData.membersAbsentNonOrg != null
+      ) {
+        isAbsentUpdate = true;
+
+        for (
+          let index = 0;
+          index < this.mainFormData.membersAbsent.length;
+          ++index
+        ) {
+          let user = this.mainFormData.membersAbsent[index];
+          meetingAbsent.push({
+            attendeeId: user,
+            isGuest: false,
+          });
+        }
+
+        if (this.mainFormData.membersAbsentNonOrg != "") {
+          meetingAbsent.push({
+            attendeeId: this.mainFormData.membersAbsentNonOrg,
+            isGuest: true,
+          });
+        }
+
+        meetingAbsentObject = {
+          isUpdated: isAbsentUpdate,
+          attendees: meetingAbsent,
+        };
+      } else {
+        meetingAbsentObject = {
+          isUpdated: false,
+          attendees: meetingAbsent,
+        };
+      }
+
+      // ---- meeting copies to ----
+
+      let copiesTo = [];
+      let copiesToNonOrg = "";
+      if (this.selectedMeeting.meeting.meetingCopiesTo.length != 0) {
+        for (
+          let index = 0;
+          index < this.selectedMeeting.meeting.meetingCopiesTo.length;
+          ++index
+        ) {
+          let user = this.selectedMeeting.meeting.meetingCopiesTo[index];
+          if (user.guest !== true) {
+            copiesTo.push({
+              attendeeId: user.attendeeId,
+              isGuest: false,
+            });
+          } else {
+            copiesToNonOrg = {
+              attendeeId: user.attendeeId,
+              isGuest: true,
+            };
+          }
+        }
+      }
+
+      if (
+        this.mainFormData.additionalCopiesTo != null &&
+        this.mainFormData.additionalCopiesToNonOrg == null
+      ) {
+        isCopiesToUpdate = true;
+
+        for (
+          let index = 0;
+          index < this.mainFormData.additionalCopiesTo.length;
+          ++index
+        ) {
+          let user = this.mainFormData.additionalCopiesTo[index];
+          meetingCopiesTo.push({
+            attendeeId: user,
+            isGuest: false,
+          });
+        }
+
+        if (copiesToNonOrg != "") {
+          meetingCopiesTo.push(copiesToNonOrg);
+        }
+        meetingCopiesToObject = {
+          isUpdated: isCopiesToUpdate,
+          attendees: meetingCopiesTo,
+        };
+      } else if (
+        this.mainFormData.additionalCopiesTo == null &&
+        this.mainFormData.additionalCopiesToNonOrg != null
+      ) {
+        isCopiesToUpdate = true;
+
+        if (copiesTo != []) {
+          meetingCopiesTo = copiesTo;
+        }
+
+        if (this.mainFormData.additionalCopiesToNonOrg != "") {
+          meetingCopiesTo.push({
+            attendeeId: this.mainFormData.additionalCopiesToNonOrg,
+            isGuest: true,
+          });
+        }
+        meetingCopiesToObject = {
+          isUpdated: isCopiesToUpdate,
+          attendees: meetingCopiesTo,
+        };
+      } else if (
+        this.mainFormData.additionalCopiesTo != null &&
+        this.mainFormData.additionalCopiesToNonOrg != null
+      ) {
+        isCopiesToUpdate = true;
+
+        for (
+          let index = 0;
+          index < this.mainFormData.additionalCopiesTo.length;
+          ++index
+        ) {
+          let user = this.mainFormData.additionalCopiesTo[index];
+          meetingCopiesTo.push({
+            attendeeId: user,
+            isGuest: false,
+          });
+        }
+
+        if (this.mainFormData.additionalCopiesToNonOrg != "") {
+          meetingCopiesTo.push({
+            attendeeId: this.mainFormData.additionalCopiesToNonOrg,
+            isGuest: true,
+          });
+        }
+
+        meetingCopiesToObject = {
+          isUpdated: isCopiesToUpdate,
+          attendees: meetingCopiesTo,
+        };
+      } else {
+        meetingCopiesToObject = {
+          isUpdated: false,
+          attendees: meetingCopiesTo,
+        };
+      }
+
+      // ---- meeting prepared by ----
+
+      let preparedBy = [];
+      let preparedByNonOrg = "";
+      if (this.selectedMeeting.meeting.meetingPrepared.length != 0) {
+        for (
+          let index = 0;
+          index < this.selectedMeeting.meeting.meetingPrepared.length;
+          ++index
+        ) {
+          let user = this.selectedMeeting.meeting.meetingPrepared[index];
+          if (user.guest !== true) {
+            preparedBy.push({
+              attendeeId: user.attendeeId,
+              isGuest: false,
+            });
+          } else {
+            preparedByNonOrg = {
+              attendeeId: user.attendeeId,
+              isGuest: true,
+            };
+          }
+        }
+      }
+
+      if (
+        this.mainFormData.minutesOfMeetingPreparedBy != null &&
+        this.mainFormData.minutesOfMeetingPreparedByNonOrg == null
+      ) {
+        isPreparedUpdate = true;
+
+        for (
+          let index = 0;
+          index < this.mainFormData.minutesOfMeetingPreparedBy.length;
+          ++index
+        ) {
+          let user = this.mainFormData.minutesOfMeetingPreparedBy[index];
+          meetingPrepared.push({
+            attendeeId: user,
+            isGuest: false,
+          });
+        }
+
+        if (preparedByNonOrg != "") {
+          meetingPrepared.push(preparedByNonOrg);
+        }
+        meetingPreparedObject = {
+          isUpdated: isPreparedUpdate,
+          attendees: meetingPrepared,
+        };
+      } else if (
+        this.mainFormData.minutesOfMeetingPreparedBy == null &&
+        this.mainFormData.minutesOfMeetingPreparedByNonOrg != null
+      ) {
+        isPreparedUpdate = true;
+
+        if (preparedBy != []) {
+          meetingPrepared = preparedBy;
+        }
+
+        if (this.mainFormData.minutesOfMeetingPreparedBy != "") {
+          meetingPrepared.push({
+            attendeeId: this.mainFormData.minutesOfMeetingPreparedByNonOrg,
+            isGuest: true,
+          });
+        }
+        meetingPreparedObject = {
+          isUpdated: isPreparedUpdate,
+          attendees: meetingPrepared,
+        };
+      } else if (
+        this.mainFormData.minutesOfMeetingPreparedBy != null &&
+        this.mainFormData.minutesOfMeetingPreparedByNonOrg != null
+      ) {
+        isPreparedUpdate = true;
+
+        for (
+          let index = 0;
+          index < this.mainFormData.minutesOfMeetingPreparedBy.length;
+          ++index
+        ) {
+          let user = this.mainFormData.minutesOfMeetingPreparedBy[index];
+          meetingPrepared.push({
+            attendeeId: user,
+            isGuest: false,
+          });
+        }
+
+        if (this.mainFormData.minutesOfMeetingPreparedByNonOrg != "") {
+          meetingPrepared.push({
+            attendeeId: this.mainFormData.minutesOfMeetingPreparedByNonOrg,
+            isGuest: true,
+          });
+        }
+
+        meetingPreparedObject = {
+          isUpdated: isPreparedUpdate,
+          attendees: meetingPrepared,
+        };
+      } else {
+        meetingPreparedObject = {
+          isUpdated: false,
+          attendees: meetingPrepared,
+        };
+      }
+
       let response;
       this.overlay = true;
       try {
@@ -651,9 +969,9 @@ export default {
             actualDuration: this.mainFormData.actualDurationOfTheMeeting,
             meetingChaired: meetingChairedObject,
             meetingAttended: meetingAttendedObject,
-            meetingAbsent: { isUpdated: false, attendees: [] },
-            meetingCopiesTo: { isUpdated: false, attendees: [] },
-            meetingPrepared: { isUpdated: false, attendees: [] },
+            meetingAbsent: meetingAbsentObject,
+            meetingCopiesTo: meetingCopiesToObject,
+            meetingPrepared: meetingPreparedObject,
           },
           {
             headers: {
@@ -674,9 +992,23 @@ export default {
         this.mainFormData.chairedByNonOrg = null;
         this.mainFormData.chairedBy = null;
         isChairUpdate = false;
+
         this.mainFormData.attendedByNonOrg = null;
         this.mainFormData.attendedBy = null;
         isAttendedUpdate = false;
+
+        this.mainFormData.membersAbsentNonOrg = null;
+        this.mainFormData.membersAbsent = null;
+        isAbsentUpdate = false;
+
+        this.mainFormData.additionalCopiesToNonOrg = null;
+        this.mainFormData.additionalCopiesTo = null;
+        isCopiesToUpdate = false;
+
+        this.mainFormData.minutesOfMeetingPreparedByNonOrg = null;
+        this.mainFormData.minutesOfMeetingPreparedBy = null;
+        isPreparedUpdate = false;
+
         this.overlay = false;
       } catch (e) {
         this.overlay = false;
