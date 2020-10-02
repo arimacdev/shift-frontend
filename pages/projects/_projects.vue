@@ -595,16 +595,20 @@ export default {
         if (this.$route.params.projects != "projects") {
           this.overlay = true;
           Promise.all([
-            this.$store.dispatch("task/emptyStore"),
-            this.$store.dispatch("task/setIndex", {
-              startIndex: 0,
-              endIndex: 10,
-              isAllTasks: false,
-            }),
-            this.$store.dispatch(
-              "task/fetchTasksAllTasks",
-              this.$route.params.projects
+            Promise.all([this.$store.dispatch("task/emptyStore")]).finally(
+              () => {
+                this.$store.dispatch("task/setIndex", {
+                  startIndex: 0,
+                  endIndex: 10,
+                  isAllTasks: false,
+                }),
+                  this.$store.dispatch(
+                    "task/fetchTasksAllTasks",
+                    this.$route.params.projects
+                  );
+              }
             ),
+
             this.$store.dispatch(
               "task/fetchTotalTaskCount",
               this.$route.params.projects
@@ -906,23 +910,19 @@ export default {
       }
     },
     async selectProject(project) {
-      if (this.$route.params.projects == project.projectId) {
-        this.$store.dispatch("task/setIndex", {
-          startIndex: 0,
-          endIndex: 10,
-          isAllTasks: false,
-        });
-        this.$store.dispatch("task/emptyStore"),
-          this.$store.dispatch("task/setIndex", {
-            startIndex: 0,
-            endIndex: 10,
-            isAllTasks: false,
-          }),
-          this.$store.dispatch(
-            "task/fetchTasksAllTasks",
-            this.$route.params.projects
-          );
-      }
+      // if (this.$route.params.projects == project.projectId) {
+      //   Promise.all([this.$store.dispatch("task/emptyStore")]).finally(() => {
+      //     this.$store.dispatch("task/setIndex", {
+      //       startIndex: 0,
+      //       endIndex: 10,
+      //       isAllTasks: false,
+      //     }),
+      //       this.$store.dispatch(
+      //         "task/fetchTasksAllTasks",
+      //         this.$route.params.projects
+      //       );
+      //   });
+      // }
 
       this.$store.dispatch("task/setIndex", {
         startIndex: 0,
