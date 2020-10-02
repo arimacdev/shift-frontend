@@ -12,6 +12,7 @@ export const state = () => ({
       meetingCopiesTo: [],
       meetingPrepared: [],
     },
+    discussionPoints: {},
   },
 });
 

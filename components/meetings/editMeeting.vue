@@ -330,7 +330,265 @@
         <v-btn @click="updatePeople()" depressed color="green" dark
           >Update Member Details</v-btn
         >
+
+        <v-row>
+          <v-col>
+            <br /><br />
+            <v-divider></v-divider>
+            <br /><br />
+
+            <span>Add Discussion Points</span>
+            <v-form v-model="isValidDiscussion" ref="discussionPointForm">
+              <v-row class="sideByRow">
+                <v-col md="3">
+                  <!--discussionPoints -->
+                  <v-text-field
+                    v-model="discussionPointCount"
+                    type="number"
+                    outlined
+                    dense
+                    clearable
+                    disabled
+                    label="Discussion Point"
+                  ></v-text-field>
+                </v-col>
+                <!-- <v-col md="1">
+                    <span style="font-size: 8px">Action by guest</span>
+                  </v-col>-->
+                <v-col md="3">
+                  <div style="float: right; margin-top: -10px">
+                    <v-switch
+                      v-model="discussionPointData.switch1"
+                      label="Action by guest"
+                    ></v-switch>
+                  </div>
+                </v-col>
+                <v-col md="6">
+                  <!--actionBy -->
+                  <v-autocomplete
+                    :rules="defaultRules"
+                    v-if="!discussionPointData.switch1"
+                    v-model="discussionPointData.actionBy"
+                    :items="userArray"
+                    dense
+                    item-text="name"
+                    item-value="id"
+                    flat
+                    chips
+                    small-chips
+                    outlined
+                    label="Action By"
+                    clearable
+                  ></v-autocomplete>
+                  <v-text-field
+                    v-else
+                    v-model="discussionPointData.actionBy"
+                    outlined
+                    dense
+                    clearable
+                    label="Action By Guest (Ex: Guest1)"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row class="sideByRow">
+                <v-col>
+                  <v-dialog
+                    ref="dialog"
+                    v-model="modalDiscussion"
+                    :return-value.sync="discussionPointData.dueDate"
+                    persistent
+                    width="290px"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        outlined
+                        dense
+                        v-model="discussionPointData.dueDate"
+                        label="Date"
+                        prepend-inner-icon="mdi-calendar-outline"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                        style="width: 100%"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                      v-model="discussionPointData.dueDate"
+                      scrollable
+                    >
+                      <v-spacer></v-spacer>
+                      <v-btn text color="primary" @click="modal2 = false"
+                        >Cancel</v-btn
+                      >
+                      <v-btn
+                        text
+                        color="primary"
+                        @click="$refs.dialog.save(discussionPointData.dueDate)"
+                        >OK</v-btn
+                      >
+                    </v-date-picker>
+                  </v-dialog>
+                </v-col>
+                <v-col>
+                  <!--remarks -->
+                  <v-text-field
+                    v-model="discussionPointData.remarks"
+                    outlined
+                    dense
+                    clearable
+                    label="Remarks"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <vue-editor
+                    placeholder="Add a description"
+                    v-model="discussionPointData.description"
+                  ></vue-editor>
+                </v-col>
+              </v-row>
+              <v-row v-if="!discussionPointData.switch1">
+                <v-col md="3">
+                  <div style="margin-left: 10px">
+                    <v-switch
+                      v-model="discussionPointData.switch2"
+                      label="Convert to a task"
+                    ></v-switch>
+                  </div>
+                </v-col>
+                <v-col md="6" v-if="discussionPointData.switch2">
+                  <div style="margin-left: 10px">
+                    <!--remarks -->
+                    <v-text-field
+                      :rules="defaultRules"
+                      v-model="discussionPointData.taskName"
+                      outlined
+                      dense
+                      clearable
+                      label="Task Name"
+                    ></v-text-field>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-form>
+          </v-col>
+        </v-row>
+        <div>
+          <v-btn
+            :disabled="!isValidDiscussion"
+            style="color: #ffffff"
+            @click="addDiscussionPoint()"
+            depressed
+            color="green"
+            >Add Discussion Point</v-btn
+          >
+
+          <v-btn text color="red" @click="resetDiscussionForm()">Reset</v-btn>
+        </div>
+
+        <br /><br />
+        <v-divider></v-divider>
+        <br /><br />
+
+        <span>Discussion Points</span>
+
+        <v-card
+          v-for="(discussion, index) in selectedMeeting.discussionPoints"
+          :key="index"
+          outlined
+          class="discussionPointCardStyle"
+        >
+          <v-row class="disPointIcons" align="center" justify="end">
+            <v-btn icon
+              ><v-icon color="#0083E2">mdi-pencil-outline</v-icon></v-btn
+            >
+            <v-btn icon
+              ><v-icon
+                @click="
+                  selectDiscussionPoint(discussion);
+                  deleteDiscussionDialog = true;
+                "
+                color="#E07857"
+                >mdi-trash-can-outline</v-icon
+              ></v-btn
+            >
+          </v-row>
+          <v-row class="sideByRow">
+            <v-col md="3">
+              <!--discussionPoints -->
+              <v-text-field
+                :value="discussion.discussionPoint"
+                outlined
+                dense
+                readonly
+                label="Discussion Point"
+              ></v-text-field>
+            </v-col>
+            <!-- <v-col md="1">
+                    <span style="font-size: 8px">Action by guest</span>
+                  </v-col>-->
+            <v-col md="3">
+              <div style="float: right; margin-top: -10px">
+                <v-switch
+                  :input-value="discussion.actionByGuest"
+                  readonly
+                  label="Action by guest"
+                ></v-switch>
+              </div>
+            </v-col>
+            <v-col md="6">
+              <!--actionBy -->
+              <v-text-field
+                :value="
+                  discussion.meetingUser.firstName +
+                  ' ' +
+                  discussion.meetingUser.lastName
+                "
+                outlined
+                dense
+                readonly
+                label="Action By"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row class="sideByRow">
+            <v-col>
+              <v-text-field
+                outlined
+                dense
+                :value="
+                  new Date(discussion.dueDate).toISOString().substr(0, 10)
+                "
+                label="Date"
+                prepend-inner-icon="mdi-calendar-outline"
+                readonly
+                style="width: 100%"
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <!--remarks -->
+              <v-text-field
+                :value="discussion.remarks"
+                outlined
+                dense
+                readonly
+                label="Remarks"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row
+            v-if="
+              discussion.description != '' && discussion.description != null
+            "
+          >
+            <v-col>
+              <div class="htmlViewDiv" v-html="discussion.description"></div>
+            </v-col>
+          </v-row>
+        </v-card>
       </v-card-text>
+      {{ selectedMeeting.discussionPoints }}
     </div>
 
     <v-divider></v-divider>
@@ -338,6 +596,48 @@
       <v-btn color="blue darken-1" text> Close </v-btn>
       <v-btn color="blue darken-1" text @click="dialog = false"> Save </v-btn>
     </v-card-actions>
+
+    <v-dialog v-model="deleteDiscussionDialog" max-width="350">
+      <v-card style="text-align: center; padding-bottom: 25px">
+        <v-card-title style="text-align: center">
+          <v-spacer></v-spacer>Delete Discussion Point
+          <v-spacer></v-spacer>
+        </v-card-title>
+
+        <v-card-text
+          >If you delete the discussion point, all the details will be
+          loss.</v-card-text
+        >
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+            depressed
+            class="text-capitalize"
+            width="100px"
+            color="#FF6161"
+            dark
+            @click="deleteDiscussionDialog = false"
+            >Cancel</v-btn
+          >
+
+          <v-btn
+            depressed
+            class="text-capitalize"
+            width="100px"
+            color="#2EC973"
+            dark
+            @click="
+              deleteDiscussionDialog = false;
+              deleteDiscussionPoint();
+            "
+            >Ok</v-btn
+          >
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <div @click="close()" class="popupBoxMeetig">
       <component
         v-bind:is="component"
@@ -376,6 +676,22 @@ export default {
 
       userId: this.$store.state.user.userId,
 
+      selectedDiscussionPoint: {},
+      deleteDiscussionDialog: false,
+      isValidDiscussion: true,
+      defaultRules: [(value) => !!value || "Required."],
+
+      discussionPointData: {
+        discussionPointCount: 1,
+        actionBy: null,
+        dueDate: null,
+        remarks: null,
+        description: "",
+        switch1: false,
+        switch2: false,
+        taskName: null,
+      },
+
       modal2: false,
       modal3: false,
       mainFormData: {
@@ -403,6 +719,135 @@ export default {
     };
   },
   methods: {
+    async addDiscussionPoint() {
+      let response;
+      try {
+        response = await this.$axios.$post(
+          `/meeting/discussion`,
+          {
+            projectId: this.projectId,
+            meetingId: this.meetingObject.meetingId,
+            description: this.discussionPointData.description,
+            discussionPoint: this.discussionPointData.discussionPointCount,
+            remarks: this.discussionPointData.remarks,
+            actionBy: this.discussionPointData.actionBy,
+            actionByGuest: this.discussionPointData.switch1,
+            addedBy: this.userId,
+            dueDate: this.discussionPointData.dueDate,
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.component = "success-popup";
+        this.successMessage = "Discussion point added";
+        this.$store.dispatch("meetings/meeting/fetchSelectedMeeting", {
+          meetingId: this.meetingObject.meetingId,
+          projectId: this.projectId,
+        });
+
+        if (this.discussionPointData.switch2) {
+          this.taskTransition(response.data.minuteId);
+        } else {
+          this.$refs.discussionPointForm.reset();
+          this.discussionPointData.description = "";
+        }
+
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+      } catch (e) {
+        this.overlay = false;
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error creating meeting", e);
+      }
+    },
+    async taskTransition(minuteId) {
+      let taskResponse;
+      try {
+        taskResponse = await this.$axios.$post(
+          `/meeting/${this.meetingObject.meetingId}/discussion/${minuteId}/transition`,
+          {
+            projectId: this.projectId,
+            taskName: this.discussionPointData.taskName,
+            taskInitiator: this.userId,
+            taskAssignee: this.discussionPointData.actionBy,
+            taskDueDate: this.discussionPointData.dueDate,
+            issueType: "general",
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.component = "success-popup";
+        this.successMessage = "Discussion point added";
+        this.$store.dispatch("meetings/meeting/fetchDiscussionPoints", {
+          meetingId: this.meetingObject.meetingId,
+          // meetingId: '19a4edb0-0610-4fad-88f3-a3a01c141155',
+          projectId: this.projectId,
+        });
+        this.$refs.discussionPointForm.reset();
+        this.discussionPointData.description = "";
+
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+      } catch (e) {
+        this.overlay = false;
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error creating task", e);
+      }
+    },
+    resetDiscussionForm() {
+      this.$refs.discussionPointForm.reset();
+      this.discussionPointData.description = "";
+    },
+    async deleteDiscussionPoint() {
+      let response;
+      try {
+        response = await this.$axios.$delete(
+          `/meeting/${this.meetingObject.meetingId}/discussion/${this.selectedDiscussionPoint.minuteId}?projectId=${this.projectId}`,
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+
+        this.$store.dispatch("meetings/meeting/fetchSelectedMeeting", {
+          meetingId: this.meetingObject.meetingId,
+          projectId: this.projectId,
+        });
+
+        this.successMessage = "Discussion deleted successfully";
+        this.component = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log("Error delete discuusion point", e);
+      }
+    },
+    selectDiscussionPoint(discussion) {
+      this.selectedDiscussionPoint = discussion;
+    },
     close() {
       this.component = "";
     },
@@ -1268,6 +1713,13 @@ export default {
         });
       }
       return assigneeList;
+    },
+    discussionPointCount: {
+      get() {
+        this.discussionPointData.discussionPointCount =
+          this.selectedMeeting.discussionPoints.length + 1;
+        return this.selectedMeeting.discussionPoints.length + 1;
+      },
     },
     chairedBy: {
       get() {
