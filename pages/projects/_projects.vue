@@ -15,8 +15,8 @@
             <v-list-item-icon
               v-if="
                 organizationalRoles.indexOf('ADMIN') > -1 ||
-                  organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
-                  organizationalRoles.indexOf('WORKLOAD') > -1
+                organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
+                organizationalRoles.indexOf('WORKLOAD') > -1
               "
             >
               <button v-on:click="component = 'add-project'">
@@ -58,6 +58,60 @@
           >
             <!-- --------------- Pre sales loop ----------- -->
             <!-- <v-divider class="mx-4"></v-divider> -->
+            <div class="pinnedContent">
+              <div
+                style="margin-bottom: 15px; margin-left: -15px"
+                class="grey--text text--darken-2 font-weight-bold titles"
+              >
+                Starred Projects
+              </div>
+              <div
+                class="grey--text text--darken-2"
+                style="margin-left: 10px; font-size: 10px; margin-top: -10px"
+                v-if="this.pinnedArray == ''"
+              >
+                Pin your important projects here
+              </div>
+              <div
+                style="pinnedProjects"
+                v-for="(project, index) in getProjects('pinned')"
+                :key="index"
+                v-on:click="component = 'tab-views'"
+                @click="selectProject(project)"
+              >
+                <v-list-item
+                  class="selectedProjectPanel"
+                  :to="project.projectId"
+                >
+                  <v-list-item-action>
+                    <v-icon size="17" color="blue">icon-project</v-icon>
+                  </v-list-item-action>
+                  <v-list-item-content>
+                    <v-list-item-title class="fontRestructure12">
+                      {{ project.projectName }}
+                    </v-list-item-title>
+                    <v-list-item-subtitle class="projectSubtitle">{{
+                      updateProjectStatus(project.projectStatus)
+                    }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                  <v-list-item-action
+                    ><v-icon
+                      v-if="project.isStarred == false"
+                      @click="pinProject(project)"
+                      size="17"
+                      >mdi-hexagram-outline</v-icon
+                    >
+                    <v-icon
+                      color="orange"
+                      v-else
+                      @click="unpinProject(project)"
+                      size="17"
+                      >mdi-hexagram</v-icon
+                    >
+                  </v-list-item-action>
+                </v-list-item>
+              </div>
+            </div>
 
             <v-expansion-panels accordion flat multiple focusable hover>
               <v-expansion-panel class="projectDetailsPannels">
@@ -84,11 +138,11 @@
                       class="selectedProjectPanel"
                       v-if="
                         project.projectStatus == 'presalesPD' ||
-                          project.projectStatus == 'preSalesQS' ||
-                          project.projectStatus == 'preSalesN' ||
-                          project.projectStatus == 'preSalesC' ||
-                          project.projectStatus == 'preSalesL' ||
-                          project.projectStatus == 'presales'
+                        project.projectStatus == 'preSalesQS' ||
+                        project.projectStatus == 'preSalesN' ||
+                        project.projectStatus == 'preSalesC' ||
+                        project.projectStatus == 'preSalesL' ||
+                        project.projectStatus == 'presales'
                       "
                       v-on:click="component = 'tab-views'"
                       :to="project.projectId"
@@ -128,6 +182,21 @@
                           >(Lost)</v-list-item-subtitle
                         >
                       </v-list-item-content>
+                      <v-list-item-action
+                        ><v-icon
+                          v-if="project.isStarred == false"
+                          @click="pinProject(project)"
+                          size="17"
+                          >mdi-hexagram-outline</v-icon
+                        >
+                        <v-icon
+                          color="orange"
+                          v-else
+                          @click="unpinProject(project)"
+                          size="17"
+                          >mdi-hexagram</v-icon
+                        >
+                      </v-list-item-action>
                     </v-list-item>
                   </div>
                 </v-expansion-panel-content>
@@ -165,6 +234,21 @@
                           {{ project.projectName }}
                         </v-list-item-title>
                       </v-list-item-content>
+                      <v-list-item-action
+                        ><v-icon
+                          v-if="project.isStarred == false"
+                          @click="pinProject(project)"
+                          size="17"
+                          >mdi-hexagram-outline</v-icon
+                        >
+                        <v-icon
+                          color="orange"
+                          v-else
+                          @click="unpinProject(project)"
+                          size="17"
+                          >mdi-hexagram</v-icon
+                        >
+                      </v-list-item-action>
                     </v-list-item>
                   </div>
                 </v-expansion-panel-content>
@@ -202,6 +286,21 @@
                           {{ project.projectName }}
                         </v-list-item-title>
                       </v-list-item-content>
+                      <v-list-item-action
+                        ><v-icon
+                          v-if="project.isStarred == false"
+                          @click="pinProject(project)"
+                          size="17"
+                          >mdi-hexagram-outline</v-icon
+                        >
+                        <v-icon
+                          color="orange"
+                          v-else
+                          @click="unpinProject(project)"
+                          size="17"
+                          >mdi-hexagram</v-icon
+                        >
+                      </v-list-item-action>
                     </v-list-item>
                   </div>
                 </v-expansion-panel-content>
@@ -239,6 +338,21 @@
                           {{ project.projectName }}
                         </v-list-item-title>
                       </v-list-item-content>
+                      <v-list-item-action
+                        ><v-icon
+                          v-if="project.isStarred == false"
+                          @click="pinProject(project)"
+                          size="17"
+                          >mdi-hexagram-outline</v-icon
+                        >
+                        <v-icon
+                          color="orange"
+                          v-else
+                          @click="unpinProject(project)"
+                          size="17"
+                          >mdi-hexagram</v-icon
+                        >
+                      </v-list-item-action>
                     </v-list-item>
                   </div>
                 </v-expansion-panel-content>
@@ -367,8 +481,8 @@
           <div
             v-if="
               organizationalRoles.indexOf('ADMIN') > -1 ||
-                organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
-                organizationalRoles.indexOf('WORKLOAD') > -1
+              organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
+              organizationalRoles.indexOf('WORKLOAD') > -1
             "
           >
             <v-icon size="60" color="#BEC4CE">icon-project</v-icon>
@@ -401,7 +515,7 @@
         <component
           v-if="
             this.$route.params.projects != 'projects' &&
-              this.$route.params.projects != undefined
+            this.$route.params.projects != undefined
           "
           v-bind:is="component"
           :project="project"
@@ -421,28 +535,28 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import NavigationDrawer from '~/components/navigationDrawer';
-import Logo from '~/components/Logo.vue';
-import VuetifyLogo from '~/components/VuetifyLogo.vue';
-import TabViews from '~/components/projects/tabViews';
-import SearchBar from '~/components/tools/searchBar';
-import AddProject from '~/components/projects/addProject';
-import Progress from '~/components/popups/progress';
+import { mapState } from "vuex";
+import NavigationDrawer from "~/components/navigationDrawer";
+import Logo from "~/components/Logo.vue";
+import VuetifyLogo from "~/components/VuetifyLogo.vue";
+import TabViews from "~/components/projects/tabViews";
+import SearchBar from "~/components/tools/searchBar";
+import AddProject from "~/components/projects/addProject";
+import Progress from "~/components/popups/progress";
 
 export default {
   components: {
     NavigationDrawer,
-    'tab-views': TabViews,
-    'search-bar': SearchBar,
-    'add-project': AddProject,
-    'progress-loading': Progress,
+    "tab-views": TabViews,
+    "search-bar": SearchBar,
+    "add-project": AddProject,
+    "progress-loading": Progress,
   },
   data() {
     return {
       overlay: false,
       pagination: 1,
-      component: 'tab-views',
+      component: "tab-views",
       project: {},
       taskLog: [],
       Alltasks: [],
@@ -456,54 +570,55 @@ export default {
       supportArray: [],
       finishedArray: [],
       preSalesArray: [],
+      pinnedArray: [],
       looped: false,
       projectSprint: {},
       newProject: false,
-      projectDisplayName: '',
+      projectDisplayName: "",
     };
   },
 
   created() {
     this.overlay = true;
     Promise.all([
-      this.$store.dispatch('project/fetchAllProjects'),
-      this.$store.dispatch('user/setAllUsers'),
-      this.$store.dispatch('project/clearProject'),
+      this.$store.dispatch("project/fetchAllProjects"),
+      this.$store.dispatch("user/setAllUsers"),
+      this.$store.dispatch("project/clearProject"),
     ]).finally(() => {
       this.overlay = false;
     });
-    if (this.$route.params.projects != 'projects') {
-      this.$store.dispatch('project/fetchProject', this.$route.params.projects);
+    if (this.$route.params.projects != "projects") {
+      this.$store.dispatch("project/fetchProject", this.$route.params.projects);
     }
     switch (this.selectedTab) {
-      case 'task':
-        if (this.$route.params.projects != 'projects') {
+      case "task":
+        if (this.$route.params.projects != "projects") {
           this.overlay = true;
           Promise.all([
-            this.$store.dispatch('task/emptyStore'),
-            this.$store.dispatch('task/setIndex', {
+            this.$store.dispatch("task/emptyStore"),
+            this.$store.dispatch("task/setIndex", {
               startIndex: 0,
               endIndex: 10,
               isAllTasks: false,
             }),
             this.$store.dispatch(
-              'task/fetchTasksAllTasks',
+              "task/fetchTasksAllTasks",
               this.$route.params.projects
             ),
             this.$store.dispatch(
-              'task/fetchTotalTaskCount',
+              "task/fetchTotalTaskCount",
               this.$route.params.projects
             ),
             this.$store.dispatch(
-              'task/fetchTasksMyTasks',
+              "task/fetchTasksMyTasks",
               this.$route.params.projects
             ),
             this.$store.dispatch(
-              'task/fetchProjectUserCompletionTasks',
+              "task/fetchProjectUserCompletionTasks",
               this.$route.params.projects
             ),
             this.$store.dispatch(
-              'sprints/sprint/fetchAllProjectSprints',
+              "sprints/sprint/fetchAllProjectSprints",
               this.$route.params.projects
             ),
           ]).finally(() => {
@@ -511,62 +626,130 @@ export default {
           });
         }
         break;
-      case 'people':
+      case "people":
         this.overlay = true;
         Promise.all([
           this.$store.dispatch(
-            'task/fetchProjectUserCompletionTasks',
+            "task/fetchProjectUserCompletionTasks",
             this.$route.params.projects
           ),
         ]).finally(() => {
           this.overlay = false;
         });
         break;
-      case 'project':
+      case "project":
         this.$store.dispatch(
-          'task/fetchProjectTaskCompletion',
+          "task/fetchProjectTaskCompletion",
           this.$route.params.projects
         );
         break;
-      case 'board':
-        console.log('board -------->');
+      case "board":
+        console.log("board -------->");
         this.overlay = true;
         Promise.all([
           this.$store.dispatch(
-            'sprints/sprint/fetchAllProjectSprints',
+            "sprints/sprint/fetchAllProjectSprints",
             this.$route.params.projects
           ),
-          this.$store.dispatch('task/setIndex', {
+          this.$store.dispatch("task/setIndex", {
             startIndex: 0,
             endIndex: 10,
             isAllTasks: true,
           }),
           this.$store.dispatch(
-            'task/fetchTasksAllTasks',
+            "task/fetchTasksAllTasks",
             this.$route.params.projects
           ),
           this.$store.dispatch(
-            'task/fetchTotalTaskCount',
+            "task/fetchTotalTaskCount",
             this.$route.params.projects
           ),
         ]).finally(() => {
           this.overlay = false;
         });
         break;
-      case 'files':
+      case "files":
         this.$store.dispatch(
-          'project/fetchAllProjectFiles',
+          "project/fetchAllProjectFiles",
           this.$route.params.projects
         );
         break;
       default:
-        console.log('Home Page');
+        console.log("Home Page");
     }
   },
 
   methods: {
+    updateProjectStatus(status) {
+      switch (status) {
+        case "presales":
+          return "Presales";
+          break;
+        case "presalesPD":
+          return "Presales - Project Discovery";
+          break;
+        case "preSalesQS":
+          return "Presales - Quotation Submission";
+          break;
+        case "preSalesN":
+          return "Presales - Negotiation";
+          break;
+        case "preSalesC":
+          return "Presales Confirmed";
+          break;
+        case "preSalesL":
+          return "Presales - Lost";
+          break;
+        case "ongoing":
+          return "Ongoing";
+          break;
+        case "support":
+          return "Support";
+          break;
+        case "finished":
+          return "Finished";
+          break;
+
+        default:
+      }
+    },
+    async unpinProject(project) {
+      console.log("PINNED");
+      this.overlay = true;
+      let response;
+      try {
+        response = await this.$axios.$post("/projects/pin", {
+          user: this.userId,
+          project: project.projectId,
+          isPin: false,
+        });
+        location.reload();
+        this.overlay = false;
+      } catch (e) {
+        this.overlay = false;
+
+        console.log("Error pin project", e);
+      }
+    },
+    async pinProject(project) {
+      this.overlay = true;
+      let response;
+      try {
+        response = await this.$axios.$post("/projects/pin", {
+          user: this.userId,
+          project: project.projectId,
+          isPin: true,
+        });
+        location.reload();
+        this.overlay = false;
+      } catch (e) {
+        this.overlay = false;
+
+        console.log("Error pin project", e);
+      }
+    },
     getProjectName(name) {
-      return name.replace(/\s+/g, '-').toLowerCase();
+      return name.replace(/\s+/g, "-").toLowerCase();
     },
 
     getProjects(type) {
@@ -575,14 +758,20 @@ export default {
         // console.log("run loop inside");
         for (let i = 0; i < projectsAll.length; i++) {
           let projectType = projectsAll[i].projectStatus;
+          let pinnedProjects = projectsAll[i].isStarred;
+          switch (pinnedProjects) {
+            case true:
+              this.pinnedArray.push(projectsAll[i]);
+              break;
+          }
           switch (projectType) {
-            case 'ongoing':
+            case "ongoing":
               this.ongoingArray.push(projectsAll[i]);
               break;
-            case 'support':
+            case "support":
               this.supportArray.push(projectsAll[i]);
               break;
-            case 'finished':
+            case "finished":
               this.finishedArray.push(projectsAll[i]);
               break;
             default:
@@ -593,16 +782,18 @@ export default {
         }
       }
       switch (type) {
-        case 'ongoing':
+        case "ongoing":
           return this.ongoingArray;
           break;
-        case 'support':
+        case "support":
           return this.supportArray;
           break;
-        case 'finished':
+        case "finished":
           return this.finishedArray;
-        case 'presales':
+        case "presales":
           return this.preSalesArray;
+        case "pinned":
+          return this.pinnedArray;
       }
     },
     createNewProject(type) {
@@ -610,12 +801,12 @@ export default {
     },
     refreshSelectedTab(tab) {
       switch (tab) {
-        case 'people':
+        case "people":
           this.overlay = true;
           Promise.all([
             // console.log("people"),
             this.$store.dispatch(
-              'task/fetchProjectUserCompletionTasks',
+              "task/fetchProjectUserCompletionTasks",
               this.$route.params.projects
             ),
           ]).finally(() => {
@@ -624,20 +815,21 @@ export default {
             // }, 100);
           });
           break;
-        case 'task':
+        case "task":
           this.overlay = true;
           Promise.all([
-            this.$store.dispatch('task/setIndex', {
+            this.$store.dispatch("task/emptyStore"),
+            this.$store.dispatch("task/setIndex", {
               startIndex: 0,
               endIndex: 10,
               isAllTasks: false,
             }),
             this.$store.dispatch(
-              'task/fetchTasksAllTasks',
+              "task/fetchTasksAllTasks",
               this.$route.params.projects
             ),
             this.$store.dispatch(
-              'task/fetchTotalTaskCount',
+              "task/fetchTotalTaskCount",
               this.$route.params.projects
             ),
             // this.$store.dispatch(
@@ -645,22 +837,22 @@ export default {
             //   this.$route.params.projects
             // ),
             this.$store.dispatch(
-              'task/fetchProjectUserCompletionTasks',
+              "task/fetchProjectUserCompletionTasks",
               this.$route.params.projects
             ),
             this.$store.dispatch(
-              'sprints/sprint/fetchAllProjectSprints',
+              "sprints/sprint/fetchAllProjectSprints",
               this.$route.params.projects
             ),
           ]).finally(() => {
             this.overlay = false;
           });
           break;
-        case 'project':
+        case "project":
           this.overlay = true;
           Promise.all([
             this.$store.dispatch(
-              'task/fetchProjectTaskCompletion',
+              "task/fetchProjectTaskCompletion",
               this.$route.params.projects
             ),
           ]).finally(() => {
@@ -669,42 +861,42 @@ export default {
             }, 100);
           });
           break;
-        case 'board':
+        case "board":
           this.overlay = true;
           Promise.all([
             this.$store.dispatch(
-              'sprints/sprint/fetchAllProjectSprints',
+              "sprints/sprint/fetchAllProjectSprints",
               this.$route.params.projects
             ),
 
             this.$store.dispatch(
-              'task/fetchSprintTasks',
+              "task/fetchSprintTasks",
               this.$route.params.projects
             ),
             this.$store.dispatch(
-              'task/fetchTotalTaskCount',
-              this.$route.params.projects
-            ),
-          ]).finally(() => {
-            this.overlay = false;
-          });
-          break;
-        case 'files':
-          this.overlay = true;
-          Promise.all([
-            this.$store.dispatch(
-              'project/fetchAllProjectFiles',
+              "task/fetchTotalTaskCount",
               this.$route.params.projects
             ),
           ]).finally(() => {
             this.overlay = false;
           });
           break;
-        case 'folders':
+        case "files":
           this.overlay = true;
           Promise.all([
             this.$store.dispatch(
-              'project/fetchAllProjectFolders',
+              "project/fetchAllProjectFiles",
+              this.$route.params.projects
+            ),
+          ]).finally(() => {
+            this.overlay = false;
+          });
+          break;
+        case "folders":
+          this.overlay = true;
+          Promise.all([
+            this.$store.dispatch(
+              "project/fetchAllProjectFolders",
               this.$route.params.projects
             ),
           ]).finally(() => {
@@ -714,12 +906,30 @@ export default {
       }
     },
     async selectProject(project) {
-      this.$store.dispatch('task/setIndex', {
+      if (this.$route.params.projects == project.projectId) {
+        this.$store.dispatch("task/setIndex", {
+          startIndex: 0,
+          endIndex: 10,
+          isAllTasks: false,
+        });
+        this.$store.dispatch("task/emptyStore"),
+          this.$store.dispatch("task/setIndex", {
+            startIndex: 0,
+            endIndex: 10,
+            isAllTasks: false,
+          }),
+          this.$store.dispatch(
+            "task/fetchTasksAllTasks",
+            this.$route.params.projects
+          );
+      }
+
+      this.$store.dispatch("task/setIndex", {
         startIndex: 0,
         endIndex: 10,
         isAllTasks: false,
       });
-      this.$store.dispatch('task/emptyStore');
+      this.$store.dispatch("task/emptyStore");
       // this.$store.dispatch('task/emptyStore'),
       //   this.$store.dispatch('task/setIndex', {
       //     startIndex: 0,
@@ -734,9 +944,9 @@ export default {
       this.project = project;
       this.projectDisplayName = this.project.projectId;
       // console.log("selected project ---------->", project, this.selectedTab);
-      this.$store.dispatch('project/fetchProject', this.$route.params.projects);
+      this.$store.dispatch("project/fetchProject", this.$route.params.projects);
       switch (this.selectedTab) {
-        case 'task':
+        case "task":
           // this.$store.dispatch("task/setIndex", {
           //   startIndex: 0,
           //   endIndex: 10,
@@ -747,56 +957,56 @@ export default {
           //   this.$route.params.projects
           // );
           this.$store.dispatch(
-            'task/fetchTotalTaskCount',
+            "task/fetchTotalTaskCount",
             this.$route.params.projects
           );
           this.$store.dispatch(
-            'task/fetchTasksMyTasks',
+            "task/fetchTasksMyTasks",
             this.$route.params.projects
           );
           this.$store.dispatch(
-            'task/fetchProjectUserCompletionTasks',
+            "task/fetchProjectUserCompletionTasks",
             this.$route.params.projects
           );
           this.$store.dispatch(
-            'sprints/sprint/fetchAllProjectSprints',
+            "sprints/sprint/fetchAllProjectSprints",
             this.$route.params.projects
           );
           break;
-        case 'people':
+        case "people":
           this.$store.dispatch(
-            'task/fetchProjectUserCompletionTasks',
+            "task/fetchProjectUserCompletionTasks",
             this.$route.params.projects
           );
           break;
-        case 'project':
+        case "project":
           this.$store.dispatch(
-            'task/fetchProjectTaskCompletion',
+            "task/fetchProjectTaskCompletion",
             this.$route.params.projects
           );
           break;
-        case 'board':
+        case "board":
           this.$store.dispatch(
-            'sprints/sprint/fetchAllProjectSprints',
+            "sprints/sprint/fetchAllProjectSprints",
             this.$route.params.projects
           );
-          this.$store.dispatch('task/setIndex', {
+          this.$store.dispatch("task/setIndex", {
             startIndex: 0,
             endIndex: 10,
             isAllTasks: true,
           });
           this.$store.dispatch(
-            'task/fetchTasksAllTasks',
+            "task/fetchTasksAllTasks",
             this.$route.params.projects
           );
           this.$store.dispatch(
-            'task/fetchTotalTaskCount',
+            "task/fetchTotalTaskCount",
             this.$route.params.projects
           );
           break;
-        case 'files':
+        case "files":
           this.$store.dispatch(
-            'project/fetchAllProjectFiles',
+            "project/fetchAllProjectFiles",
             this.$route.params.projects
           );
           break;
