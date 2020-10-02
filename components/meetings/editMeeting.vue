@@ -493,6 +493,11 @@
 
         <span>Discussion Points</span>
 
+        <span v-if="selectedMeeting.discussionPoints == ''">
+          <br /><br />
+          No discussion points to show</span
+        >
+
         <v-card
           v-for="(discussion, index) in selectedMeeting.discussionPoints"
           :key="index"
@@ -500,9 +505,9 @@
           class="discussionPointCardStyle"
         >
           <v-row class="disPointIcons" align="center" justify="end">
-            <v-btn icon
+            <!-- <v-btn icon
               ><v-icon color="#0083E2">mdi-pencil-outline</v-icon></v-btn
-            >
+            > -->
             <v-btn icon
               ><v-icon
                 @click="
@@ -588,7 +593,6 @@
           </v-row>
         </v-card>
       </v-card-text>
-      {{ selectedMeeting.discussionPoints }}
     </div>
 
     <v-divider></v-divider>
