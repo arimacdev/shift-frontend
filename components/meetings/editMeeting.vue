@@ -215,7 +215,6 @@
                   <!--attendedBy -->
                   <v-autocomplete
                     v-model="meetingAttendedBy"
-                    return-object
                     :items="userArray"
                     dense
                     item-text="name"
@@ -234,7 +233,6 @@
                   <v-text-field
                     v-model="meetingAttendedByNonOrg"
                     outlined
-                    clearable
                     dense
                     label="Meeting Attended by - Non Org (Ex: Member 1, Member 2)"
                   ></v-text-field>
@@ -246,7 +244,6 @@
                   <!--absent -->
                   <v-autocomplete
                     v-model="membersAbsent"
-                    return-object
                     :items="userArray"
                     dense
                     item-text="name"
@@ -265,7 +262,6 @@
                   <v-text-field
                     v-model="membersAbsentNonOrg"
                     outlined
-                    clearable
                     dense
                     label="Members Absent - Non Org (Ex: Member 1, Member 2)"
                   ></v-text-field>
@@ -278,7 +274,6 @@
                   <v-autocomplete
                     v-model="additionalCopiesTo"
                     :items="userArray"
-                    return-object
                     dense
                     item-text="name"
                     item-value="id"
@@ -296,7 +291,6 @@
                   <v-text-field
                     v-model="additionalCopiesToNonOrg"
                     outlined
-                    clearable
                     dense
                     label="Additional Copies to - Non Org (Ex: Member 1, Member 2)"
                   ></v-text-field>
@@ -308,7 +302,6 @@
                   <v-autocomplete
                     v-model="minutesOfMeetingPreparedBy"
                     :items="userArray"
-                    return-object
                     dense
                     item-text="name"
                     item-value="id"
@@ -326,7 +319,6 @@
                   <v-text-field
                     v-model="minutesOfMeetingPreparedByNonOrg"
                     outlined
-                    clearable
                     dense
                     label="Prepared by - Non Org (Ex: Member 1, Member 2)"
                   ></v-text-field>
@@ -360,23 +352,23 @@
   </v-card>
 </template>
 <script>
-import { mapState } from 'vuex';
-import SuccessPopup from '~/components/popups/successPopup';
-import ErrorPopup from '~/components/popups/errorPopup';
-import Progress from '~/components/popups/progress';
+import { mapState } from "vuex";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
+import Progress from "~/components/popups/progress";
 
 export default {
-  props: ['meetingObject'],
+  props: ["meetingObject"],
   components: {
-    'success-popup': SuccessPopup,
-    'error-popup': ErrorPopup,
-    'progress-loading': Progress,
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup,
+    "progress-loading": Progress,
   },
   data() {
     return {
-      errorMessage: '',
-      successMessage: '',
-      component: '',
+      errorMessage: "",
+      successMessage: "",
+      component: "",
       overlay: false,
 
       modal: false,
@@ -407,16 +399,14 @@ export default {
         additionalCopiesToNonOrg: null,
         minutesOfMeetingPreparedByNonOrg: null,
       },
-      defaultRules: [(value) => !!value || 'Required.'],
+      defaultRules: [(value) => !!value || "Required."],
     };
   },
   methods: {
     close() {
-      this.component = '';
+      this.component = "";
     },
     // ---------- update meeting ---------
-
-    //  ---------- update chaired by -------
 
     async updatePeople() {
       let meetingChairedObject = {};
@@ -442,7 +432,7 @@ export default {
       // ---- chaired by ----
 
       let chairedBy = [];
-      let chairedByNonOrg = '';
+      let chairedByNonOrg = "";
       if (this.selectedMeeting.meeting.meetingChaired.length != 0) {
         for (
           let index = 0;
@@ -482,7 +472,7 @@ export default {
           });
         }
 
-        if (chairedByNonOrg != '') {
+        if (chairedByNonOrg != "") {
           meetingChaired.push(chairedByNonOrg);
         }
         meetingChairedObject = {
@@ -499,7 +489,7 @@ export default {
           meetingChaired = chairedBy;
         }
 
-        if (this.mainFormData.chairedByNonOrg != '') {
+        if (this.mainFormData.chairedByNonOrg != "") {
           meetingChaired.push({
             attendeeId: this.mainFormData.chairedByNonOrg,
             isGuest: true,
@@ -527,7 +517,7 @@ export default {
           });
         }
 
-        if (this.mainFormData.chairedByNonOrg != '') {
+        if (this.mainFormData.chairedByNonOrg != "") {
           meetingChaired.push({
             attendeeId: this.mainFormData.chairedByNonOrg,
             isGuest: true,
@@ -542,6 +532,112 @@ export default {
         meetingChairedObject = {
           isUpdated: false,
           attendees: meetingChaired,
+        };
+      }
+
+      // ---- attended by ----
+
+      let attendedBy = [];
+      let attendedByNonOrg = "";
+      if (this.selectedMeeting.meeting.meetingAttended.length != 0) {
+        for (
+          let index = 0;
+          index < this.selectedMeeting.meeting.meetingAttended.length;
+          ++index
+        ) {
+          let user = this.selectedMeeting.meeting.meetingAttended[index];
+          if (user.guest !== true) {
+            attendedBy.push({
+              attendeeId: user.attendeeId,
+              isGuest: false,
+            });
+          } else {
+            attendedByNonOrg = {
+              attendeeId: user.attendeeId,
+              isGuest: true,
+            };
+          }
+        }
+      }
+
+      if (
+        this.mainFormData.meetingAttendedBy != null &&
+        this.mainFormData.meetingAttendedByNonOrg == null
+      ) {
+        isAttendedUpdate = true;
+
+        for (
+          let index = 0;
+          index < this.mainFormData.meetingAttendedBy.length;
+          ++index
+        ) {
+          let user = this.mainFormData.meetingAttendedBy[index];
+          meetingAttended.push({
+            attendeeId: user,
+            isGuest: false,
+          });
+        }
+
+        if (attendedByNonOrg != "") {
+          meetingAttended.push(attendedByNonOrg);
+        }
+        meetingAttendedObject = {
+          isUpdated: isAttendedUpdate,
+          attendees: meetingAttended,
+        };
+      } else if (
+        this.mainFormData.meetingAttendedBy == null &&
+        this.mainFormData.meetingAttendedByNonOrg != null
+      ) {
+        isAttendedUpdate = true;
+
+        if (attendedBy != []) {
+          meetingAttended = attendedBy;
+        }
+
+        if (this.mainFormData.meetingAttendedByNonOrg != "") {
+          meetingAttended.push({
+            attendeeId: this.mainFormData.meetingAttendedByNonOrg,
+            isGuest: true,
+          });
+        }
+        meetingAttendedObject = {
+          isUpdated: isAttendedUpdate,
+          attendees: meetingAttended,
+        };
+      } else if (
+        this.mainFormData.meetingAttendedBy != null &&
+        this.mainFormData.meetingAttendedByNonOrg != null
+      ) {
+        isAttendedUpdate = true;
+
+        for (
+          let index = 0;
+          index < this.mainFormData.meetingAttendedBy.length;
+          ++index
+        ) {
+          let user = this.mainFormData.meetingAttendedBy[index];
+          meetingAttended.push({
+            attendeeId: user,
+            isGuest: false,
+          });
+        }
+
+        if (this.mainFormData.meetingAttendedByNonOrg != "") {
+          meetingAttended.push({
+            attendeeId: this.mainFormData.meetingAttendedByNonOrg,
+            isGuest: true,
+          });
+        }
+
+        meetingAttendedObject = {
+          isUpdated: isAttendedUpdate,
+          attendees: meetingAttended,
+        };
+      } else {
+        meetingAttendedObject = {
+          isUpdated: false,
+          attendees: meetingAttended,
         };
       }
 
@@ -565,12 +661,12 @@ export default {
             },
           }
         );
-        this.component = 'success-popup';
-        this.successMessage = 'People Successfully updated';
+        this.component = "success-popup";
+        this.successMessage = "People Successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
+        this.$store.dispatch("meetings/meeting/fetchSelectedMeeting", {
           meetingId: this.meetingObject.meetingId,
           projectId: this.projectId,
         });
@@ -580,16 +676,16 @@ export default {
         isChairUpdate = false;
         this.mainFormData.attendedByNonOrg = null;
         this.mainFormData.attendedBy = null;
-        isChairUpdate = false;
+        isAttendedUpdate = false;
         this.overlay = false;
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error update people', e);
+        console.log("Error update people", e);
       }
     },
 
@@ -616,12 +712,12 @@ export default {
             },
           }
         );
-        this.component = 'success-popup';
-        this.successMessage = 'Duration Successfully updated';
+        this.component = "success-popup";
+        this.successMessage = "Duration Successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
+        this.$store.dispatch("meetings/meeting/fetchSelectedMeeting", {
           meetingId: this.meetingObject.meetingId,
           projectId: this.projectId,
         });
@@ -629,11 +725,11 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error update actual duration', e);
+        console.log("Error update actual duration", e);
       }
     },
 
@@ -659,12 +755,12 @@ export default {
             },
           }
         );
-        this.component = 'success-popup';
-        this.successMessage = 'Duration Successfully updated';
+        this.component = "success-popup";
+        this.successMessage = "Duration Successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
+        this.$store.dispatch("meetings/meeting/fetchSelectedMeeting", {
           meetingId: this.meetingObject.meetingId,
           projectId: this.projectId,
         });
@@ -672,11 +768,11 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error update planned duration', e);
+        console.log("Error update planned duration", e);
       }
     },
 
@@ -702,12 +798,12 @@ export default {
             },
           }
         );
-        this.component = 'success-popup';
-        this.successMessage = 'Topic Successfully updated';
+        this.component = "success-popup";
+        this.successMessage = "Topic Successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
+        this.$store.dispatch("meetings/meeting/fetchSelectedMeeting", {
           meetingId: this.meetingObject.meetingId,
           projectId: this.projectId,
         });
@@ -715,11 +811,11 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error update topic', e);
+        console.log("Error update topic", e);
       }
     },
 
@@ -745,12 +841,12 @@ export default {
             },
           }
         );
-        this.component = 'success-popup';
-        this.successMessage = 'Venu Successfully updated';
+        this.component = "success-popup";
+        this.successMessage = "Venu Successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
+        this.$store.dispatch("meetings/meeting/fetchSelectedMeeting", {
           meetingId: this.meetingObject.meetingId,
           projectId: this.projectId,
         });
@@ -758,11 +854,11 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error update venu', e);
+        console.log("Error update venu", e);
       }
     },
 
@@ -771,13 +867,13 @@ export default {
       let response;
       this.overlay = true;
       let scheduledTime = new Date(
-        this.mainFormData.meetingDate + ' ' + this.mainFormData.scheduleTime
+        this.mainFormData.meetingDate + " " + this.mainFormData.scheduleTime
       );
       const isoScheduledTime = new Date(
         scheduledTime.getTime() - scheduledTime.getTimezoneOffset() * 60000
       ).toISOString();
       let actualTime = new Date(
-        this.mainFormData.meetingDate + ' ' + this.mainFormData.actualTime
+        this.mainFormData.meetingDate + " " + this.mainFormData.actualTime
       );
       const isoActualTime = new Date(
         actualTime.getTime() - actualTime.getTimezoneOffset() * 60000
@@ -801,12 +897,12 @@ export default {
             },
           }
         );
-        this.component = 'success-popup';
-        this.successMessage = 'Date Successfully updated';
+        this.component = "success-popup";
+        this.successMessage = "Date Successfully updated";
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
+        this.$store.dispatch("meetings/meeting/fetchSelectedMeeting", {
           meetingId: this.meetingObject.meetingId,
           projectId: this.projectId,
         });
@@ -814,11 +910,11 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error update date', e);
+        console.log("Error update date", e);
       }
     },
   },
@@ -834,7 +930,7 @@ export default {
       for (let index = 0; index < AssigneeSearchList.length; ++index) {
         let user = AssigneeSearchList[index];
         assigneeList.push({
-          name: user.firstName + ' ' + user.lastName,
+          name: user.firstName + " " + user.lastName,
           id: user.userId,
           img: user.profileImage,
         });
@@ -864,7 +960,7 @@ export default {
     },
     chairedByNonOrg: {
       get() {
-        let chairedByNonOrg = '';
+        let chairedByNonOrg = "";
         if (this.selectedMeeting.meeting.meetingChaired.length != 0) {
           for (
             let index = 0;
@@ -906,7 +1002,7 @@ export default {
     },
     meetingAttendedByNonOrg: {
       get() {
-        let meetingAttendedByNonOrg = '';
+        let meetingAttendedByNonOrg = "";
         if (this.selectedMeeting.meeting.meetingAttended.length != 0) {
           for (
             let index = 0;
@@ -948,7 +1044,7 @@ export default {
     },
     membersAbsentNonOrg: {
       get() {
-        let membersAbsentNonOrg = '';
+        let membersAbsentNonOrg = "";
         if (this.selectedMeeting.meeting.meetingAbsent.length != 0) {
           for (
             let index = 0;
@@ -990,7 +1086,7 @@ export default {
     },
     additionalCopiesToNonOrg: {
       get() {
-        let additionalCopiesToNonOrg = '';
+        let additionalCopiesToNonOrg = "";
         if (this.selectedMeeting.meeting.meetingCopiesTo.length != 0) {
           for (
             let index = 0;
@@ -1032,7 +1128,7 @@ export default {
     },
     minutesOfMeetingPreparedByNonOrg: {
       get() {
-        let minutesOfMeetingPreparedByNonOrg = '';
+        let minutesOfMeetingPreparedByNonOrg = "";
         if (this.selectedMeeting.meeting.meetingPrepared.length != 0) {
           for (
             let index = 0;
