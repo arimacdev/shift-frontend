@@ -660,7 +660,7 @@
                 <v-col md="3">
                   <div style="float: right; margin-top: -10px">
                     <v-switch
-                      v-model="switch1"
+                      v-model="switchEdit1"
                       label="Action by guest"
                     ></v-switch>
                   </div>
@@ -669,7 +669,7 @@
                   <!--actionBy -->
                   <v-autocomplete
                     :rules="defaultRules"
-                    v-if="!switch1"
+                    v-if="!switchEdit1"
                     v-model="actionBy"
                     :items="userArray"
                     dense
@@ -748,7 +748,7 @@
                   ></vue-editor>
                 </v-col>
               </v-row>
-              <v-row v-if="!switch1">
+              <v-row v-if="!switchEdit1">
                 <v-col md="3">
                   <div style="margin-left: 10px">
                     <v-switch
@@ -757,7 +757,7 @@
                     ></v-switch>
                   </div>
                 </v-col>
-                <v-col md="6" v-if="switch2">
+                <v-col md="6" v-if="switchEdit2">
                   <div style="margin-left: 10px">
                     <!--remarks -->
                     <v-text-field
@@ -898,6 +898,9 @@ export default {
       isValidDiscussion: true,
       isValidEditDiscussion: true,
       defaultRules: [(value) => !!value || 'Required.'],
+
+      switchEdit2: false,
+      switch2: false,
 
       discussionPointData: {
         discussionPointCount: 1,
@@ -1942,15 +1945,37 @@ export default {
       }
       return assigneeList;
     },
-
+    // discussionPointEditedData
     //  discussionPointUpdatedCount: 1,
     //       actionBy: null,
     //       dueDate: null,
     //       remarks: null,
     //       description: '',
-    //       switch1: false,
-    //       switch2: false,
+    //       switchEdit1: false,
+    //       switchEdit2: false,
     //       taskName: null,
+
+    remarks: {
+      get() {
+        return this.selectedDiscussionPoint.remarks;
+      },
+      set(value) {
+        this.discussionPointEditedData.remarks = value;
+      },
+    },
+    taskName: {
+      set(value) {
+        this.discussionPointEditedData.taskName = value;
+      },
+    },
+    description: {
+      get() {
+        return this.selectedDiscussionPoint.description;
+      },
+      set(value) {
+        this.discussionPointEditedData.description = value;
+      },
+    },
 
     discussionPointUpdatedCount: {
       get() {
@@ -1958,9 +1983,34 @@ export default {
       },
     },
 
-    actionBy: {
+    switchEdit1: {
       get() {
         return this.selectedDiscussionPoint.actionByGuest;
+      },
+      set(value) {
+        this.discussionPointEditedData.switchEdit1 = value;
+      },
+    },
+    actionBy: {
+      get() {
+        return this.selectedDiscussionPoint.actionBy;
+      },
+      set(value) {
+        this.discussionPointEditedData.actionBy = value;
+      },
+    },
+    dueDate: {
+      get() {
+        if (this.selectedDiscussionPoint.dueDate == null) {
+          return null;
+        } else {
+          return new Date(this.selectedDiscussionPoint.dueDate)
+            .toISOString()
+            .substr(0, 10);
+        }
+      },
+      set(value) {
+        this.discussionPointEditedData.actionBy = value;
       },
     },
 
