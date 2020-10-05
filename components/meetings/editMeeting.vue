@@ -660,7 +660,7 @@
                 <v-col md="3">
                   <div style="float: right; margin-top: -10px">
                     <v-switch
-                      v-model="switchEdit1"
+                      v-model="discussionPointEditedData.switch1"
                       label="Action by guest"
                     ></v-switch>
                   </div>
@@ -669,7 +669,7 @@
                   <!--actionBy -->
                   <v-autocomplete
                     :rules="defaultRules"
-                    v-if="!switchEdit1"
+                    v-if="!discussionPointEditedData.switch1"
                     v-model="actionBy"
                     :items="userArray"
                     dense
@@ -696,8 +696,8 @@
                 <v-col>
                   <v-dialog
                     ref="dialog"
-                    v-model="modalDiscussion"
-                    :return-value.sync="dueDate"
+                    v-model="modalUpdateDiscussion"
+                    :return-value.sync="discussionPointEditedData.dueDate"
                     persistent
                     width="290px"
                   >
@@ -705,7 +705,7 @@
                       <v-text-field
                         outlined
                         dense
-                        v-model="dueDate"
+                        v-model="discussionPointEditedData.dueDate"
                         label="Date"
                         prepend-inner-icon="mdi-calendar-outline"
                         readonly
@@ -714,15 +714,23 @@
                         style="width: 100%"
                       ></v-text-field>
                     </template>
-                    <v-date-picker v-model="dueDate" scrollable>
+                    <v-date-picker
+                      v-model="discussionPointEditedData.dueDate"
+                      scrollable
+                    >
                       <v-spacer></v-spacer>
-                      <v-btn text color="primary" @click="modal2 = false"
+                      <v-btn
+                        text
+                        color="primary"
+                        @click="modalUpdateDiscussion = false"
                         >Cancel</v-btn
                       >
                       <v-btn
                         text
                         color="primary"
-                        @click="$refs.dialog.save(dueDate)"
+                        @click="
+                          $refs.dialog.save(discussionPointEditedData.dueDate)
+                        "
                         >OK</v-btn
                       >
                     </v-date-picker>
@@ -748,7 +756,7 @@
                   ></vue-editor>
                 </v-col>
               </v-row>
-              <v-row v-if="!switchEdit1">
+              <v-row v-if="!discussionPointEditedData.switch1">
                 <v-col md="3">
                   <div style="margin-left: 10px">
                     <v-switch
@@ -778,7 +786,10 @@
           <v-btn
             :disabled="!isValidEditDiscussion"
             style="color: #ffffff"
-            @click="editDiscussionDialog = false"
+            @click="
+              editDiscussionDialog = false;
+              updateDiscussionPoint();
+            "
             depressed
             color="green"
             >Edit Discussion Point</v-btn
@@ -869,6 +880,8 @@ export default {
       modal: false,
       modalDiscussion: false,
 
+      modalUpdateDiscussion: false,
+
       userId: this.$store.state.user.userId,
 
       editDiscussionDialog: false,
@@ -917,7 +930,7 @@ export default {
         actionBy: null,
         dueDate: null,
         remarks: null,
-        description: '',
+        description: null,
         switch1: false,
         switch2: false,
         taskName: null,
@@ -950,6 +963,93 @@ export default {
     };
   },
   methods: {
+    async updateDiscussionPoint() {
+      let response;
+      this.overlay = true;
+
+      let actionBy = null;
+      let dueDate = null;
+      let remarks = null;
+      let description = null;
+      let actionByGuest = false;
+
+      // actionBy: null,
+      // dueDate: null,
+      // remarks: null,
+      // description: null,
+      // switch1: false,
+
+      if (this.discussionPointEditedData.actionBy != null) {
+        actionBy = this.discussionPointEditedData.actionBy;
+      } else {
+        actionBy = this.selectedDiscussionPoint.actionBy;
+      }
+
+      if (this.discussionPointEditedData.dueDate != null) {
+        dueDate = this.discussionPointEditedData.dueDate;
+      } else {
+        dueDate = this.selectedDiscussionPoint.dueDate;
+      }
+
+      if (this.discussionPointEditedData.remarks != null) {
+        remarks = this.discussionPointEditedData.remarks;
+      } else {
+        remarks = this.selectedDiscussionPoint.remarks;
+      }
+
+      if (this.discussionPointEditedData.description != null) {
+        description = this.discussionPointEditedData.description;
+      } else {
+        description = this.selectedDiscussionPoint.description;
+      }
+
+      if (
+        this.discussionPointEditedData.switch1 !=
+        this.selectedDiscussionPoint.actionByGuest
+      ) {
+        actionByGuest = this.discussionPointEditedData.switch1;
+      } else {
+        actionByGuest = this.selectedDiscussionPoint.actionByGuest;
+      }
+
+      try {
+        response = await this.$axios.$put(
+          `/meeting/${this.meetingObject.meetingId}/discussion/${this.selectedDiscussionPoint.minuteId}`,
+          {
+            projectId: this.projectId,
+            description: description,
+            remarks: remarks,
+            actionBy: actionBy,
+            actionByGuest: actionByGuest,
+            dueDate: dueDate,
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.component = 'success-popup';
+        this.successMessage = 'Discussion Point Successfully Updated';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
+          meetingId: this.meetingObject.meetingId,
+          projectId: this.projectId,
+        });
+
+        this.overlay = false;
+      } catch (e) {
+        this.overlay = false;
+        this.errorMessage = e.response.data;
+        this.component = 'error-popup';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log('Error update discussion point', e);
+      }
+    },
     async addDiscussionPoint() {
       let response;
       try {
@@ -1945,15 +2045,6 @@ export default {
       }
       return assigneeList;
     },
-    // discussionPointEditedData
-    //  discussionPointUpdatedCount: 1,
-    //       actionBy: null,
-    //       dueDate: null,
-    //       remarks: null,
-    //       description: '',
-    //       switchEdit1: false,
-    //       switchEdit2: false,
-    //       taskName: null,
 
     remarks: {
       get() {
@@ -1988,11 +2079,22 @@ export default {
         return this.selectedDiscussionPoint.actionByGuest;
       },
       set(value) {
-        this.discussionPointEditedData.switchEdit1 = value;
+        this.discussionPointEditedData.switch1 = value;
       },
     },
     actionBy: {
       get() {
+        this.discussionPointEditedData.switch1 = this.selectedDiscussionPoint.actionByGuest;
+
+        if (this.selectedDiscussionPoint.dueDate == null) {
+          this.discussionPointEditedData.dueDate = null;
+        } else {
+          this.discussionPointEditedData.dueDate = this.selectedDiscussionPoint.dueDate.substr(
+            0,
+            10
+          );
+        }
+
         return this.selectedDiscussionPoint.actionBy;
       },
       set(value) {
@@ -2001,6 +2103,11 @@ export default {
     },
     dueDate: {
       get() {
+        this.discussionPointEditedData.dueDate = new Date(
+          this.selectedDiscussionPoint.dueDate
+        )
+          .toISOString()
+          .substr(0, 10);
         if (this.selectedDiscussionPoint.dueDate == null) {
           return null;
         } else {
