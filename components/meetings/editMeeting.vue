@@ -505,9 +505,16 @@
           class="discussionPointCardStyle"
         >
           <v-row class="disPointIcons" align="center" justify="end">
-            <!-- <v-btn icon
-              ><v-icon color="#0083E2">mdi-pencil-outline</v-icon></v-btn
-            > -->
+            <v-btn icon
+              ><v-icon
+                color="#0083E2"
+                @click="
+                  selectDiscussionPoint(discussion);
+                  editDiscussionDialog = true;
+                "
+                >mdi-pencil-outline</v-icon
+              ></v-btn
+            >
             <v-btn icon
               ><v-icon
                 @click="
@@ -545,11 +552,20 @@
             <v-col md="6">
               <!--actionBy -->
               <v-text-field
+                v-if="!discussion.actionByGuest"
                 :value="
                   discussion.meetingUser.firstName +
-                  ' ' +
-                  discussion.meetingUser.lastName
+                    ' ' +
+                    discussion.meetingUser.lastName
                 "
+                outlined
+                dense
+                readonly
+                label="Action By"
+              ></v-text-field>
+              <v-text-field
+                v-else
+                :value="discussion.actionBy"
                 outlined
                 dense
                 readonly
@@ -560,6 +576,20 @@
           <v-row class="sideByRow">
             <v-col>
               <v-text-field
+                v-if="
+                  new Date(discussion.dueDate).toISOString().substr(0, 10) ==
+                    '1970-01-01'
+                "
+                outlined
+                dense
+                value="No due date"
+                label="Date"
+                prepend-inner-icon="mdi-calendar-outline"
+                readonly
+                style="width: 100%"
+              ></v-text-field>
+              <v-text-field
+                v-else
                 outlined
                 dense
                 :value="
@@ -600,6 +630,167 @@
       <v-btn color="blue darken-1" text> Close </v-btn>
       <v-btn color="blue darken-1" text @click="dialog = false"> Save </v-btn>
     </v-card-actions>
+
+    <!-- -------- edit discussion dialog ------- -->
+
+    <v-dialog v-model="editDiscussionDialog">
+      <v-card style="padding: 35px">
+        <v-row>
+          <v-col>
+            <v-form
+              v-model="isValidEditDiscussion"
+              ref="discussionPointEditForm"
+            >
+              <v-row class="sideByRow">
+                <v-col md="3">
+                  <!--discussionPoints -->
+                  <v-text-field
+                    v-model="discussionPointUpdatedCount"
+                    type="number"
+                    outlined
+                    dense
+                    clearable
+                    disabled
+                    label="Discussion Point"
+                  ></v-text-field>
+                </v-col>
+                <!-- <v-col md="1">
+                    <span style="font-size: 8px">Action by guest</span>
+                  </v-col>-->
+                <v-col md="3">
+                  <div style="float: right; margin-top: -10px">
+                    <v-switch
+                      v-model="switch1"
+                      label="Action by guest"
+                    ></v-switch>
+                  </div>
+                </v-col>
+                <v-col md="6">
+                  <!--actionBy -->
+                  <v-autocomplete
+                    :rules="defaultRules"
+                    v-if="!switch1"
+                    v-model="actionBy"
+                    :items="userArray"
+                    dense
+                    item-text="name"
+                    item-value="id"
+                    flat
+                    chips
+                    small-chips
+                    outlined
+                    label="Action By"
+                    clearable
+                  ></v-autocomplete>
+                  <v-text-field
+                    v-else
+                    v-model="actionBy"
+                    outlined
+                    dense
+                    clearable
+                    label="Action By Guest (Ex: Guest1)"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row class="sideByRow">
+                <v-col>
+                  <v-dialog
+                    ref="dialog"
+                    v-model="modalDiscussion"
+                    :return-value.sync="dueDate"
+                    persistent
+                    width="290px"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        outlined
+                        dense
+                        v-model="dueDate"
+                        label="Date"
+                        prepend-inner-icon="mdi-calendar-outline"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                        style="width: 100%"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker v-model="dueDate" scrollable>
+                      <v-spacer></v-spacer>
+                      <v-btn text color="primary" @click="modal2 = false"
+                        >Cancel</v-btn
+                      >
+                      <v-btn
+                        text
+                        color="primary"
+                        @click="$refs.dialog.save(dueDate)"
+                        >OK</v-btn
+                      >
+                    </v-date-picker>
+                  </v-dialog>
+                </v-col>
+                <v-col>
+                  <!--remarks -->
+                  <v-text-field
+                    v-model="remarks"
+                    outlined
+                    dense
+                    clearable
+                    label="Remarks"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <vue-editor
+                    :editorToolbar="customToolbar"
+                    placeholder="Add a description"
+                    v-model="description"
+                  ></vue-editor>
+                </v-col>
+              </v-row>
+              <v-row v-if="!switch1">
+                <v-col md="3">
+                  <div style="margin-left: 10px">
+                    <v-switch
+                      v-model="switch2"
+                      label="Convert to a task"
+                    ></v-switch>
+                  </div>
+                </v-col>
+                <v-col md="6" v-if="switch2">
+                  <div style="margin-left: 10px">
+                    <!--remarks -->
+                    <v-text-field
+                      :rules="defaultRules"
+                      v-model="taskName"
+                      outlined
+                      dense
+                      clearable
+                      label="Task Name"
+                    ></v-text-field>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-form>
+          </v-col>
+        </v-row>
+        <div>
+          <v-btn
+            :disabled="!isValidEditDiscussion"
+            style="color: #ffffff"
+            @click="editDiscussionDialog = false"
+            depressed
+            color="green"
+            >Edit Discussion Point</v-btn
+          >
+
+          <v-btn text color="red" @click="editDiscussionDialog = false"
+            >Cancel</v-btn
+          >
+        </div>
+        {{ this.selectedDiscussionPoint }}
+      </v-card>
+    </v-dialog>
 
     <v-dialog v-model="deleteDiscussionDialog" max-width="350">
       <v-card style="text-align: center; padding-bottom: 25px">
@@ -656,23 +847,23 @@
   </v-card>
 </template>
 <script>
-import { mapState } from "vuex";
-import SuccessPopup from "~/components/popups/successPopup";
-import ErrorPopup from "~/components/popups/errorPopup";
-import Progress from "~/components/popups/progress";
+import { mapState } from 'vuex';
+import SuccessPopup from '~/components/popups/successPopup';
+import ErrorPopup from '~/components/popups/errorPopup';
+import Progress from '~/components/popups/progress';
 
 export default {
-  props: ["meetingObject"],
+  props: ['meetingObject'],
   components: {
-    "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup,
-    "progress-loading": Progress,
+    'success-popup': SuccessPopup,
+    'error-popup': ErrorPopup,
+    'progress-loading': Progress,
   },
   data() {
     return {
-      errorMessage: "",
-      successMessage: "",
-      component: "",
+      errorMessage: '',
+      successMessage: '',
+      component: '',
       overlay: false,
 
       modal: false,
@@ -680,17 +871,50 @@ export default {
 
       userId: this.$store.state.user.userId,
 
+      editDiscussionDialog: false,
+      customToolbar: [
+        [{ font: [] }],
+        [{ header: [false, 1, 2, 3, 4, 5, 6] }],
+        [{ size: ['small', false, 'large', 'huge'] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [
+          { align: '' },
+          { align: 'center' },
+          { align: 'right' },
+          { align: 'justify' },
+        ],
+        ['blockquote', 'code-block'],
+        [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
+        [{ script: 'sub' }, { script: 'super' }],
+        [{ indent: '-1' }, { indent: '+1' }],
+        [{ color: [] }, { background: [] }],
+        // ['link', 'image', 'video', 'formula'],
+        [{ direction: 'rtl' }],
+        ['clean'],
+      ],
+
       selectedDiscussionPoint: {},
       deleteDiscussionDialog: false,
       isValidDiscussion: true,
-      defaultRules: [(value) => !!value || "Required."],
+      isValidEditDiscussion: true,
+      defaultRules: [(value) => !!value || 'Required.'],
 
       discussionPointData: {
         discussionPointCount: 1,
         actionBy: null,
         dueDate: null,
         remarks: null,
-        description: "",
+        description: '',
+        switch1: false,
+        switch2: false,
+        taskName: null,
+      },
+      discussionPointEditedData: {
+        discussionPointUpdatedCount: 1,
+        actionBy: null,
+        dueDate: null,
+        remarks: null,
+        description: '',
         switch1: false,
         switch2: false,
         taskName: null,
@@ -719,7 +943,7 @@ export default {
         additionalCopiesToNonOrg: null,
         minutesOfMeetingPreparedByNonOrg: null,
       },
-      defaultRules: [(value) => !!value || "Required."],
+      defaultRules: [(value) => !!value || 'Required.'],
     };
   },
   methods: {
@@ -745,9 +969,9 @@ export default {
             },
           }
         );
-        this.component = "success-popup";
-        this.successMessage = "Discussion point added";
-        this.$store.dispatch("meetings/meeting/fetchSelectedMeeting", {
+        this.component = 'success-popup';
+        this.successMessage = 'Discussion point added';
+        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
           meetingId: this.meetingObject.meetingId,
           projectId: this.projectId,
         });
@@ -756,7 +980,7 @@ export default {
           this.taskTransition(response.data.minuteId);
         } else {
           this.$refs.discussionPointForm.reset();
-          this.discussionPointData.description = "";
+          this.discussionPointData.description = '';
         }
 
         setTimeout(() => {
@@ -765,11 +989,11 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error creating meeting", e);
+        console.log('Error creating meeting', e);
       }
     },
     async taskTransition(minuteId) {
@@ -783,7 +1007,7 @@ export default {
             taskInitiator: this.userId,
             taskAssignee: this.discussionPointData.actionBy,
             taskDueDate: this.discussionPointData.dueDate,
-            issueType: "general",
+            issueType: 'general',
           },
           {
             headers: {
@@ -791,15 +1015,15 @@ export default {
             },
           }
         );
-        this.component = "success-popup";
-        this.successMessage = "Discussion point added";
-        this.$store.dispatch("meetings/meeting/fetchDiscussionPoints", {
+        this.component = 'success-popup';
+        this.successMessage = 'Discussion point added';
+        this.$store.dispatch('meetings/meeting/fetchDiscussionPoints', {
           meetingId: this.meetingObject.meetingId,
           // meetingId: '19a4edb0-0610-4fad-88f3-a3a01c141155',
           projectId: this.projectId,
         });
         this.$refs.discussionPointForm.reset();
-        this.discussionPointData.description = "";
+        this.discussionPointData.description = '';
 
         setTimeout(() => {
           this.close();
@@ -807,16 +1031,16 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error creating task", e);
+        console.log('Error creating task', e);
       }
     },
     resetDiscussionForm() {
       this.$refs.discussionPointForm.reset();
-      this.discussionPointData.description = "";
+      this.discussionPointData.description = '';
     },
     async deleteDiscussionPoint() {
       let response;
@@ -830,30 +1054,30 @@ export default {
           }
         );
 
-        this.$store.dispatch("meetings/meeting/fetchSelectedMeeting", {
+        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
           meetingId: this.meetingObject.meetingId,
           projectId: this.projectId,
         });
 
-        this.successMessage = "Discussion deleted successfully";
-        this.component = "success-popup";
+        this.successMessage = 'Discussion deleted successfully';
+        this.component = 'success-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error delete discuusion point", e);
+        console.log('Error delete discuusion point', e);
       }
     },
     selectDiscussionPoint(discussion) {
       this.selectedDiscussionPoint = discussion;
     },
     close() {
-      this.component = "";
+      this.component = '';
     },
     // ---------- update meeting ---------
 
@@ -881,7 +1105,7 @@ export default {
       // ---- chaired by ----
 
       let chairedBy = [];
-      let chairedByNonOrg = "";
+      let chairedByNonOrg = '';
       if (this.selectedMeeting.meeting.meetingChaired.length != 0) {
         for (
           let index = 0;
@@ -921,7 +1145,7 @@ export default {
           });
         }
 
-        if (chairedByNonOrg != "") {
+        if (chairedByNonOrg != '') {
           meetingChaired.push(chairedByNonOrg);
         }
         meetingChairedObject = {
@@ -938,7 +1162,7 @@ export default {
           meetingChaired = chairedBy;
         }
 
-        if (this.mainFormData.chairedByNonOrg != "") {
+        if (this.mainFormData.chairedByNonOrg != '') {
           meetingChaired.push({
             attendeeId: this.mainFormData.chairedByNonOrg,
             isGuest: true,
@@ -966,7 +1190,7 @@ export default {
           });
         }
 
-        if (this.mainFormData.chairedByNonOrg != "") {
+        if (this.mainFormData.chairedByNonOrg != '') {
           meetingChaired.push({
             attendeeId: this.mainFormData.chairedByNonOrg,
             isGuest: true,
@@ -987,7 +1211,7 @@ export default {
       // ---- attended by ----
 
       let attendedBy = [];
-      let attendedByNonOrg = "";
+      let attendedByNonOrg = '';
       if (this.selectedMeeting.meeting.meetingAttended.length != 0) {
         for (
           let index = 0;
@@ -1027,7 +1251,7 @@ export default {
           });
         }
 
-        if (attendedByNonOrg != "") {
+        if (attendedByNonOrg != '') {
           meetingAttended.push(attendedByNonOrg);
         }
         meetingAttendedObject = {
@@ -1044,7 +1268,7 @@ export default {
           meetingAttended = attendedBy;
         }
 
-        if (this.mainFormData.meetingAttendedByNonOrg != "") {
+        if (this.mainFormData.meetingAttendedByNonOrg != '') {
           meetingAttended.push({
             attendeeId: this.mainFormData.meetingAttendedByNonOrg,
             isGuest: true,
@@ -1072,7 +1296,7 @@ export default {
           });
         }
 
-        if (this.mainFormData.meetingAttendedByNonOrg != "") {
+        if (this.mainFormData.meetingAttendedByNonOrg != '') {
           meetingAttended.push({
             attendeeId: this.mainFormData.meetingAttendedByNonOrg,
             isGuest: true,
@@ -1093,7 +1317,7 @@ export default {
       // ---- meeting absent ----
 
       let absentBy = [];
-      let absentByNonOrg = "";
+      let absentByNonOrg = '';
       if (this.selectedMeeting.meeting.meetingAbsent.length != 0) {
         for (
           let index = 0;
@@ -1133,7 +1357,7 @@ export default {
           });
         }
 
-        if (absentByNonOrg != "") {
+        if (absentByNonOrg != '') {
           meetingAbsent.push(absentByNonOrg);
         }
         meetingAbsentObject = {
@@ -1150,7 +1374,7 @@ export default {
           meetingAbsent = absentBy;
         }
 
-        if (this.mainFormData.membersAbsentNonOrg != "") {
+        if (this.mainFormData.membersAbsentNonOrg != '') {
           meetingAbsent.push({
             attendeeId: this.mainFormData.membersAbsentNonOrg,
             isGuest: true,
@@ -1178,7 +1402,7 @@ export default {
           });
         }
 
-        if (this.mainFormData.membersAbsentNonOrg != "") {
+        if (this.mainFormData.membersAbsentNonOrg != '') {
           meetingAbsent.push({
             attendeeId: this.mainFormData.membersAbsentNonOrg,
             isGuest: true,
@@ -1199,7 +1423,7 @@ export default {
       // ---- meeting copies to ----
 
       let copiesTo = [];
-      let copiesToNonOrg = "";
+      let copiesToNonOrg = '';
       if (this.selectedMeeting.meeting.meetingCopiesTo.length != 0) {
         for (
           let index = 0;
@@ -1239,7 +1463,7 @@ export default {
           });
         }
 
-        if (copiesToNonOrg != "") {
+        if (copiesToNonOrg != '') {
           meetingCopiesTo.push(copiesToNonOrg);
         }
         meetingCopiesToObject = {
@@ -1256,7 +1480,7 @@ export default {
           meetingCopiesTo = copiesTo;
         }
 
-        if (this.mainFormData.additionalCopiesToNonOrg != "") {
+        if (this.mainFormData.additionalCopiesToNonOrg != '') {
           meetingCopiesTo.push({
             attendeeId: this.mainFormData.additionalCopiesToNonOrg,
             isGuest: true,
@@ -1284,7 +1508,7 @@ export default {
           });
         }
 
-        if (this.mainFormData.additionalCopiesToNonOrg != "") {
+        if (this.mainFormData.additionalCopiesToNonOrg != '') {
           meetingCopiesTo.push({
             attendeeId: this.mainFormData.additionalCopiesToNonOrg,
             isGuest: true,
@@ -1305,7 +1529,7 @@ export default {
       // ---- meeting prepared by ----
 
       let preparedBy = [];
-      let preparedByNonOrg = "";
+      let preparedByNonOrg = '';
       if (this.selectedMeeting.meeting.meetingPrepared.length != 0) {
         for (
           let index = 0;
@@ -1345,7 +1569,7 @@ export default {
           });
         }
 
-        if (preparedByNonOrg != "") {
+        if (preparedByNonOrg != '') {
           meetingPrepared.push(preparedByNonOrg);
         }
         meetingPreparedObject = {
@@ -1362,7 +1586,7 @@ export default {
           meetingPrepared = preparedBy;
         }
 
-        if (this.mainFormData.minutesOfMeetingPreparedBy != "") {
+        if (this.mainFormData.minutesOfMeetingPreparedBy != '') {
           meetingPrepared.push({
             attendeeId: this.mainFormData.minutesOfMeetingPreparedByNonOrg,
             isGuest: true,
@@ -1390,7 +1614,7 @@ export default {
           });
         }
 
-        if (this.mainFormData.minutesOfMeetingPreparedByNonOrg != "") {
+        if (this.mainFormData.minutesOfMeetingPreparedByNonOrg != '') {
           meetingPrepared.push({
             attendeeId: this.mainFormData.minutesOfMeetingPreparedByNonOrg,
             isGuest: true,
@@ -1428,12 +1652,12 @@ export default {
             },
           }
         );
-        this.component = "success-popup";
-        this.successMessage = "People Successfully updated";
+        this.component = 'success-popup';
+        this.successMessage = 'People Successfully updated';
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.$store.dispatch("meetings/meeting/fetchSelectedMeeting", {
+        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
           meetingId: this.meetingObject.meetingId,
           projectId: this.projectId,
         });
@@ -1462,11 +1686,11 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error update people", e);
+        console.log('Error update people', e);
       }
     },
 
@@ -1493,12 +1717,12 @@ export default {
             },
           }
         );
-        this.component = "success-popup";
-        this.successMessage = "Duration Successfully updated";
+        this.component = 'success-popup';
+        this.successMessage = 'Duration Successfully updated';
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.$store.dispatch("meetings/meeting/fetchSelectedMeeting", {
+        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
           meetingId: this.meetingObject.meetingId,
           projectId: this.projectId,
         });
@@ -1506,11 +1730,11 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error update actual duration", e);
+        console.log('Error update actual duration', e);
       }
     },
 
@@ -1536,12 +1760,12 @@ export default {
             },
           }
         );
-        this.component = "success-popup";
-        this.successMessage = "Duration Successfully updated";
+        this.component = 'success-popup';
+        this.successMessage = 'Duration Successfully updated';
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.$store.dispatch("meetings/meeting/fetchSelectedMeeting", {
+        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
           meetingId: this.meetingObject.meetingId,
           projectId: this.projectId,
         });
@@ -1549,11 +1773,11 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error update planned duration", e);
+        console.log('Error update planned duration', e);
       }
     },
 
@@ -1579,12 +1803,12 @@ export default {
             },
           }
         );
-        this.component = "success-popup";
-        this.successMessage = "Topic Successfully updated";
+        this.component = 'success-popup';
+        this.successMessage = 'Topic Successfully updated';
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.$store.dispatch("meetings/meeting/fetchSelectedMeeting", {
+        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
           meetingId: this.meetingObject.meetingId,
           projectId: this.projectId,
         });
@@ -1592,11 +1816,11 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error update topic", e);
+        console.log('Error update topic', e);
       }
     },
 
@@ -1622,12 +1846,12 @@ export default {
             },
           }
         );
-        this.component = "success-popup";
-        this.successMessage = "Venu Successfully updated";
+        this.component = 'success-popup';
+        this.successMessage = 'Venu Successfully updated';
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.$store.dispatch("meetings/meeting/fetchSelectedMeeting", {
+        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
           meetingId: this.meetingObject.meetingId,
           projectId: this.projectId,
         });
@@ -1635,11 +1859,11 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error update venu", e);
+        console.log('Error update venu', e);
       }
     },
 
@@ -1648,13 +1872,13 @@ export default {
       let response;
       this.overlay = true;
       let scheduledTime = new Date(
-        this.mainFormData.meetingDate + " " + this.mainFormData.scheduleTime
+        this.mainFormData.meetingDate + ' ' + this.mainFormData.scheduleTime
       );
       const isoScheduledTime = new Date(
         scheduledTime.getTime() - scheduledTime.getTimezoneOffset() * 60000
       ).toISOString();
       let actualTime = new Date(
-        this.mainFormData.meetingDate + " " + this.mainFormData.actualTime
+        this.mainFormData.meetingDate + ' ' + this.mainFormData.actualTime
       );
       const isoActualTime = new Date(
         actualTime.getTime() - actualTime.getTimezoneOffset() * 60000
@@ -1678,12 +1902,12 @@ export default {
             },
           }
         );
-        this.component = "success-popup";
-        this.successMessage = "Date Successfully updated";
+        this.component = 'success-popup';
+        this.successMessage = 'Date Successfully updated';
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.$store.dispatch("meetings/meeting/fetchSelectedMeeting", {
+        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
           meetingId: this.meetingObject.meetingId,
           projectId: this.projectId,
         });
@@ -1691,11 +1915,11 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error update date", e);
+        console.log('Error update date', e);
       }
     },
   },
@@ -1711,13 +1935,35 @@ export default {
       for (let index = 0; index < AssigneeSearchList.length; ++index) {
         let user = AssigneeSearchList[index];
         assigneeList.push({
-          name: user.firstName + " " + user.lastName,
+          name: user.firstName + ' ' + user.lastName,
           id: user.userId,
           img: user.profileImage,
         });
       }
       return assigneeList;
     },
+
+    //  discussionPointUpdatedCount: 1,
+    //       actionBy: null,
+    //       dueDate: null,
+    //       remarks: null,
+    //       description: '',
+    //       switch1: false,
+    //       switch2: false,
+    //       taskName: null,
+
+    discussionPointUpdatedCount: {
+      get() {
+        return this.selectedDiscussionPoint.discussionPoint;
+      },
+    },
+
+    actionBy: {
+      get() {
+        return this.selectedDiscussionPoint.actionByGuest;
+      },
+    },
+
     discussionPointCount: {
       get() {
         this.discussionPointData.discussionPointCount =
@@ -1748,7 +1994,7 @@ export default {
     },
     chairedByNonOrg: {
       get() {
-        let chairedByNonOrg = "";
+        let chairedByNonOrg = '';
         if (this.selectedMeeting.meeting.meetingChaired.length != 0) {
           for (
             let index = 0;
@@ -1790,7 +2036,7 @@ export default {
     },
     meetingAttendedByNonOrg: {
       get() {
-        let meetingAttendedByNonOrg = "";
+        let meetingAttendedByNonOrg = '';
         if (this.selectedMeeting.meeting.meetingAttended.length != 0) {
           for (
             let index = 0;
@@ -1832,7 +2078,7 @@ export default {
     },
     membersAbsentNonOrg: {
       get() {
-        let membersAbsentNonOrg = "";
+        let membersAbsentNonOrg = '';
         if (this.selectedMeeting.meeting.meetingAbsent.length != 0) {
           for (
             let index = 0;
@@ -1874,7 +2120,7 @@ export default {
     },
     additionalCopiesToNonOrg: {
       get() {
-        let additionalCopiesToNonOrg = "";
+        let additionalCopiesToNonOrg = '';
         if (this.selectedMeeting.meeting.meetingCopiesTo.length != 0) {
           for (
             let index = 0;
@@ -1916,7 +2162,7 @@ export default {
     },
     minutesOfMeetingPreparedByNonOrg: {
       get() {
-        let minutesOfMeetingPreparedByNonOrg = "";
+        let minutesOfMeetingPreparedByNonOrg = '';
         if (this.selectedMeeting.meeting.meetingPrepared.length != 0) {
           for (
             let index = 0;

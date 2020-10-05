@@ -32,7 +32,9 @@
         </v-col>
         <v-col md="6">
           <!--actionBy -->
+
           <v-text-field
+            v-if="!discussion.actionByGuest"
             :value="
               discussion.meetingUser.firstName +
                 ' ' +
@@ -43,11 +45,33 @@
             readonly
             label="Action By"
           ></v-text-field>
+          <v-text-field
+            v-else
+            :value="discussion.actionBy"
+            outlined
+            dense
+            readonly
+            label="Action By"
+          ></v-text-field>
         </v-col>
       </v-row>
       <v-row class="sideByRow">
         <v-col>
           <v-text-field
+            v-if="
+              new Date(discussion.dueDate).toISOString().substr(0, 10) ==
+                '1970-01-01'
+            "
+            outlined
+            dense
+            value="No due date"
+            label="Date"
+            prepend-inner-icon="mdi-calendar-outline"
+            readonly
+            style="width: 100%"
+          ></v-text-field>
+          <v-text-field
+            v-else
             outlined
             dense
             :value="new Date(discussion.dueDate).toISOString().substr(0, 10)"

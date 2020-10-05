@@ -355,6 +355,7 @@
                     <v-row>
                       <v-col>
                         <vue-editor
+                          :editorToolbar="customToolbar"
                           placeholder="Add a description"
                           v-model="discussionPointData.description"
                         ></vue-editor>
@@ -608,21 +609,41 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import SuccessPopup from "~/components/popups/successPopup";
-import ErrorPopup from "~/components/popups/errorPopup";
-import viewDiscussion from "~/components/meetings/viewDiscussionPoints";
-import viewMeetings from "~/components/meetings/viewMeetings";
+import { mapState } from 'vuex';
+import SuccessPopup from '~/components/popups/successPopup';
+import ErrorPopup from '~/components/popups/errorPopup';
+import viewDiscussion from '~/components/meetings/viewDiscussionPoints';
+import viewMeetings from '~/components/meetings/viewMeetings';
 
 export default {
   components: {
-    "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup,
-    "view-discussion": viewDiscussion,
-    "view-meetings": viewMeetings,
+    'success-popup': SuccessPopup,
+    'error-popup': ErrorPopup,
+    'view-discussion': viewDiscussion,
+    'view-meetings': viewMeetings,
   },
   data() {
     return {
+      customToolbar: [
+        [{ font: [] }],
+        [{ header: [false, 1, 2, 3, 4, 5, 6] }],
+        [{ size: ['small', false, 'large', 'huge'] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [
+          { align: '' },
+          { align: 'center' },
+          { align: 'right' },
+          { align: 'justify' },
+        ],
+        ['blockquote', 'code-block'],
+        [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
+        [{ script: 'sub' }, { script: 'super' }],
+        [{ indent: '-1' }, { indent: '+1' }],
+        [{ color: [] }, { background: [] }],
+        // ['link', 'image', 'video', 'formula'],
+        [{ direction: 'rtl' }],
+        ['clean'],
+      ],
       isMeetingViewer: false,
 
       e1: 1,
@@ -630,10 +651,10 @@ export default {
       isValidSubForm: true,
       isValidDiscussion: true,
 
-      errorMessage: "",
-      successMessage: "",
+      errorMessage: '',
+      successMessage: '',
 
-      component: "",
+      component: '',
       meetingObject: null,
       userId: this.$store.state.user.userId,
 
@@ -652,7 +673,7 @@ export default {
         actionBy: null,
         dueDate: null,
         remarks: null,
-        description: "",
+        description: '',
         switch1: false,
         switch2: false,
         taskName: null,
@@ -678,19 +699,19 @@ export default {
         additionalCopiesToNonOrg: null,
         minutesOfMeetingPreparedByNonOrg: null,
       },
-      defaultRules: [(value) => !!value || "Required."],
+      defaultRules: [(value) => !!value || 'Required.'],
     };
   },
   methods: {
     getMeetings() {
-      this.$store.dispatch("meetings/meeting/emptyMeetingStore"),
-        this.$store.dispatch("meetings/meeting/fetchProjectMeetings", {
+      this.$store.dispatch('meetings/meeting/emptyMeetingStore'),
+        this.$store.dispatch('meetings/meeting/fetchProjectMeetings', {
           projectId: this.projectId,
           startIndex: 0,
           endIndex: 10,
           filter: false,
-          key: "",
-          date: "",
+          key: '',
+          date: '',
         });
     },
     resetForm() {
@@ -701,7 +722,7 @@ export default {
     },
     resetDiscussionForm() {
       this.$refs.discussionPointForm.reset();
-      this.discussionPointData.description = "";
+      this.discussionPointData.description = '';
     },
     async taskTransition(minuteId) {
       let taskResponse;
@@ -714,7 +735,7 @@ export default {
             taskInitiator: this.userId,
             taskAssignee: this.discussionPointData.actionBy,
             taskDueDate: this.discussionPointData.dueDate,
-            issueType: "general",
+            issueType: 'general',
           },
           {
             headers: {
@@ -722,15 +743,15 @@ export default {
             },
           }
         );
-        this.component = "success-popup";
-        this.successMessage = "Discussion point added";
-        this.$store.dispatch("meetings/meeting/fetchDiscussionPoints", {
+        this.component = 'success-popup';
+        this.successMessage = 'Discussion point added';
+        this.$store.dispatch('meetings/meeting/fetchDiscussionPoints', {
           meetingId: this.meetingObject.data.meetingId,
           // meetingId: '19a4edb0-0610-4fad-88f3-a3a01c141155',
           projectId: this.projectId,
         });
         this.$refs.discussionPointForm.reset();
-        this.discussionPointData.description = "";
+        this.discussionPointData.description = '';
 
         setTimeout(() => {
           this.close();
@@ -738,11 +759,11 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error creating task", e);
+        console.log('Error creating task', e);
       }
       this.discussionPointData.discussionPointCount = ++this.disPointCount;
     },
@@ -770,9 +791,9 @@ export default {
             },
           }
         );
-        this.component = "success-popup";
-        this.successMessage = "Discussion point added";
-        this.$store.dispatch("meetings/meeting/fetchDiscussionPoints", {
+        this.component = 'success-popup';
+        this.successMessage = 'Discussion point added';
+        this.$store.dispatch('meetings/meeting/fetchDiscussionPoints', {
           meetingId: this.meetingObject.data.meetingId,
           // meetingId: '19a4edb0-0610-4fad-88f3-a3a01c141155',
           projectId: this.projectId,
@@ -782,7 +803,7 @@ export default {
           this.taskTransition(response.data.minuteId);
         } else {
           this.$refs.discussionPointForm.reset();
-          this.discussionPointData.description = "";
+          this.discussionPointData.description = '';
           this.discussionPointData.discussionPointCount = ++this.disPointCount;
         }
 
@@ -792,19 +813,19 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error creating meeting", e);
+        console.log('Error creating meeting', e);
       }
     },
     async InitiateMeeting() {
       let scheduledTime = new Date(
-        this.mainFormData.meetingDate + " " + this.mainFormData.scheduleTime
+        this.mainFormData.meetingDate + ' ' + this.mainFormData.scheduleTime
       );
       let actualTime = new Date(
-        this.mainFormData.meetingDate + " " + this.mainFormData.actualTime
+        this.mainFormData.meetingDate + ' ' + this.mainFormData.actualTime
       );
 
       let response;
@@ -830,8 +851,8 @@ export default {
             },
           }
         );
-        this.component = "success-popup";
-        this.successMessage = "Meeting Successfully initiated";
+        this.component = 'success-popup';
+        this.successMessage = 'Meeting Successfully initiated';
         this.e1 = 2;
 
         setTimeout(() => {
@@ -846,11 +867,11 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error creating meeting", e);
+        console.log('Error creating meeting', e);
       }
     },
     async closeMeeting() {
@@ -868,7 +889,7 @@ export default {
       // ---- attended by ----
       if (
         this.mainFormData.meetingAttendedBy != null &&
-        this.mainFormData.meetingAttendedBy != ""
+        this.mainFormData.meetingAttendedBy != ''
       ) {
         for (
           let index = 0;
@@ -884,7 +905,7 @@ export default {
       }
       if (
         this.mainFormData.meetingAttendedByNonOrg != null &&
-        this.mainFormData.meetingAttendedByNonOrg != ""
+        this.mainFormData.meetingAttendedByNonOrg != ''
       ) {
         meetingAttended.push({
           attendeeId: this.mainFormData.meetingAttendedByNonOrg,
@@ -900,7 +921,7 @@ export default {
       // ---- chaired by ----
       if (
         this.mainFormData.chairedBy != null &&
-        this.mainFormData.chairedBy != ""
+        this.mainFormData.chairedBy != ''
       ) {
         for (
           let index = 0;
@@ -916,7 +937,7 @@ export default {
       }
       if (
         this.mainFormData.chairedByNonOrg != null &&
-        this.mainFormData.chairedByNonOrg != ""
+        this.mainFormData.chairedByNonOrg != ''
       ) {
         meetingChaired.push({
           attendeeId: this.mainFormData.chairedByNonOrg,
@@ -932,7 +953,7 @@ export default {
       // ---- member absent ----
       if (
         this.mainFormData.membersAbsent != null &&
-        this.mainFormData.membersAbsent != ""
+        this.mainFormData.membersAbsent != ''
       ) {
         for (
           let index = 0;
@@ -948,7 +969,7 @@ export default {
       }
       if (
         this.mainFormData.membersAbsentNonOrg != null &&
-        this.mainFormData.membersAbsentNonOrg != ""
+        this.mainFormData.membersAbsentNonOrg != ''
       ) {
         meetingAbsent.push({
           attendeeId: this.mainFormData.membersAbsentNonOrg,
@@ -964,7 +985,7 @@ export default {
       // ---- additional copies to ----
       if (
         this.mainFormData.additionalCopiesTo != null &&
-        this.mainFormData.additionalCopiesTo != ""
+        this.mainFormData.additionalCopiesTo != ''
       ) {
         for (
           let index = 0;
@@ -980,7 +1001,7 @@ export default {
       }
       if (
         this.mainFormData.additionalCopiesToNonOrg != null &&
-        this.mainFormData.additionalCopiesToNonOrg != ""
+        this.mainFormData.additionalCopiesToNonOrg != ''
       ) {
         meetingCopiesTo.push({
           attendeeId: this.mainFormData.additionalCopiesToNonOrg,
@@ -996,7 +1017,7 @@ export default {
       // ---- prepared by ----
       if (
         this.mainFormData.minutesOfMeetingPreparedBy != null &&
-        this.mainFormData.minutesOfMeetingPreparedBy != ""
+        this.mainFormData.minutesOfMeetingPreparedBy != ''
       ) {
         for (
           let index = 0;
@@ -1012,7 +1033,7 @@ export default {
       }
       if (
         this.mainFormData.minutesOfMeetingPreparedByNonOrg != null &&
-        this.mainFormData.minutesOfMeetingPreparedByNonOrg != ""
+        this.mainFormData.minutesOfMeetingPreparedByNonOrg != ''
       ) {
         meetingPrepared.push({
           attendeeId: this.mainFormData.minutesOfMeetingPreparedByNonOrg,
@@ -1044,8 +1065,8 @@ export default {
             },
           }
         );
-        this.component = "success-popup";
-        this.successMessage = "Meeting Successfully closed";
+        this.component = 'success-popup';
+        this.successMessage = 'Meeting Successfully closed';
         this.e1 = 1;
         setTimeout(() => {
           this.close();
@@ -1056,15 +1077,15 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error creating meeting", e);
+        console.log('Error creating meeting', e);
       }
     },
     close() {
-      this.component = "";
+      this.component = '';
     },
   },
   computed: {
@@ -1087,7 +1108,7 @@ export default {
       for (let index = 0; index < AssigneeSearchList.length; ++index) {
         let user = AssigneeSearchList[index];
         assigneeList.push({
-          name: user.firstName + " " + user.lastName,
+          name: user.firstName + ' ' + user.lastName,
           id: user.userId,
           img: user.profileImage,
         });
