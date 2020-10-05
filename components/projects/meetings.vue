@@ -776,7 +776,6 @@ export default {
           {
             projectId: this.projectId,
             meetingId: this.meetingObject.data.meetingId,
-            // meetingId: '19a4edb0-0610-4fad-88f3-a3a01c141155',
             description: this.discussionPointData.description,
             discussionPoint: this.disPointCount,
             remarks: this.discussionPointData.remarks,
