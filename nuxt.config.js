@@ -42,6 +42,7 @@ export default {
     '~/plugins/vuedatetime.js',
     '~/plugins/textEditor.js',
     { src: '~/plugins/onesignal.js', mode: 'client' },
+    { src: '~/plugins/vue2-editor.js', ssr: false },
   ],
   /*
    ** Nuxt.js dev-modules
