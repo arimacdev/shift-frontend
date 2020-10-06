@@ -142,7 +142,9 @@
                   >
                 </v-list-item-content>
                 <v-list-item-icon>
-                  <v-icon color="#0083E2">mdi-file-pdf-outline</v-icon>
+                  <v-icon @click="generateReport(meeting)" color="#0083E2"
+                    >mdi-file-pdf-outline</v-icon
+                  >
                 </v-list-item-icon>
                 <v-list-item-icon style="margin-left: 20px !important">
                   <v-icon
@@ -169,6 +171,7 @@
           </div>
         </v-col>
       </v-row>
+
       <div class="LoadMeetingButton text-center">
         <div v-if="projectMeetings == ''">No records to show</div>
         <v-btn
@@ -181,6 +184,11 @@
           <v-icon>mdi-chevron-down</v-icon>
         </v-btn>
       </div>
+
+      <!-- --------------- PDF VIEW ----------------- -->
+
+      <pdf-report />
+
       <v-dialog v-model="deleteMeetingDialog" max-width="350">
         <v-card style="text-align: center; padding-bottom: 25px">
           <v-card-title style="text-align: center">
@@ -238,17 +246,44 @@
 
       <edit-meeting :meetingObject="selectedMeeting" />
     </div>
+
+    <!-- ---------- PDF GEnerator ---------- -->
+    <div>
+      <vue-html2pdf
+        :show-layout="false"
+        :float-layout="true"
+        :enable-download="true"
+        :preview-modal="true"
+        :paginate-elements-by-height="1400"
+        :filename="selectedMeeting.meetingTopic"
+        :pdf-quality="2"
+        :manual-pagination="false"
+        pdf-format="a4"
+        pdf-orientation="portrait"
+        pdf-content-width="800px"
+        ref="html2Pdf"
+      >
+        <section slot="pdf-content">
+          <!-- PDF Content Here -->
+          <pdf-report :meeting="selectedMeeting" />
+        </section>
+      </vue-html2pdf>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+// import VueHtml2pdf from 'vue-html2pdf';
 import Progress from '~/components/popups/progress';
 import EditMeeting from '~/components/meetings/editMeeting';
+import PDFReport from '~/components/meetings/pdfReport';
 export default {
   components: {
     'progress-loading': Progress,
     'edit-meeting': EditMeeting,
+    'pdf-report': PDFReport,
+    // VueHtml2pdf,
   },
   data() {
     return {
@@ -271,6 +306,19 @@ export default {
     };
   },
   methods: {
+    generateReport(meeting) {
+      this.overlay = true;
+      this.selectedMeeting = meeting;
+      Promise.all([
+        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
+          meetingId: meeting.meetingId,
+          projectId: this.projectId,
+        }),
+      ]).finally(() => {
+        this.$refs.html2Pdf.generatePdf();
+        this.overlay = false;
+      });
+    },
     filterMeetings(isFilter) {
       this.loadMore = 0;
       this.isFilter = isFilter;

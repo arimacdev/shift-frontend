@@ -3817,3 +3817,11 @@
 .pinnedProjects {
   height: 45px;
 }
+
+/* --------- pdf generator ------- */
+
+.pdfContainer {
+  width: 800px;
+  padding: 20px;
+  padding-left: 30px;
+}
