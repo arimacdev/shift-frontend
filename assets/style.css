@@ -3824,4 +3824,25 @@
   width: 800px;
   padding: 20px;
   padding-left: 30px;
+  border: solid 1px #333369;
+}
+.pdfTopic {
+  color: rgb(201, 8, 8);
+  font-weight: 700;
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+.tableStyles,
+tr,
+td {
+  border: 1px solid rgb(63, 62, 62);
+  border-collapse: collapse;
+}
+.tableStyles tr td {
+  width: 15%;
+  padding: 5px;
+}
+.boldFontHeading {
+  font-weight: 700;
 }
