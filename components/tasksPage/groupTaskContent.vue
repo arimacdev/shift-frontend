@@ -47,19 +47,21 @@
                             v-if="task.parentTask.taskStatus == 'closed'"
                             size="25"
                             color="#66B25F"
-                          >mdi-checkbox-blank</v-icon>
+                            >mdi-checkbox-blank</v-icon
+                          >
                           <v-icon
-                            @click="
-                      closeTask(task.parentTask.taskId)"
+                            @click="closeTask(task.parentTask.taskId)"
                             v-else
                             size="25"
                             color="#939393"
-                          >mdi-checkbox-blank-outline</v-icon>
+                            >mdi-checkbox-blank-outline</v-icon
+                          >
                         </v-list-item-action>
                         <v-list-item-content
                           @click="
-                      selectTask(task.parentTask, task);
-                      taskDialog = true;"
+                            selectTask(task.parentTask, task);
+                            taskDialog = true;
+                          "
                           style="cursor: pointer"
                         >
                           <!-- <div class="tasklistTaskNames restructuredMainTaskName"> -->
@@ -85,12 +87,19 @@
                           <v-list-item-title
                             class="fontRestructure12"
                             :class="dueDateCheck(task.parentTask)"
-                          >{{ getTaskDueDate(task.parentTask.taskDueDateAt) }}</v-list-item-title>
+                            >{{
+                              getTaskDueDate(task.parentTask.taskDueDateAt)
+                            }}</v-list-item-title
+                          >
                         </v-list-item-action>
                         <div style="margin-right: -25px; margin-left: 10px">
                           <v-list-item-avatar size="25">
                             <v-img
-                              v-if="task.parentTask.taskAssigneeProfileImage != null && task.parentTask.taskAssigneeProfileImage != ''"
+                              v-if="
+                                task.parentTask.taskAssigneeProfileImage !=
+                                  null &&
+                                  task.parentTask.taskAssigneeProfileImage != ''
+                              "
                               :src="task.parentTask.taskAssigneeProfileImage"
                             ></v-img>
                             <v-img
@@ -121,12 +130,18 @@
                         prepend-inner-icon="mdi-plus-circle"
                         label="Add a sub task..."
                         class
-                        @keyup.enter="addGroupSubTask(index, task.parentTask.taskId)"
+                        @keyup.enter="
+                          addGroupSubTask(index, task.parentTask.taskId)
+                        "
                         clearable
                       ></v-text-field>
                     </v-expand-transition>
                   </div>
-                  <div class="restructuredSubTaskCreate" v-else style="margin-bottom: -5px;"></div>
+                  <div
+                    class="restructuredSubTaskCreate"
+                    v-else
+                    style="margin-bottom: -5px;"
+                  ></div>
                 </div>
               </v-hover>
               <div v-if="task.childTasks.length !== 0">
@@ -143,15 +158,16 @@
                           v-if="childTask.taskStatus == 'closed'"
                           size="25"
                           color="#66B25F"
-                        >mdi-checkbox-blank</v-icon>
+                          >mdi-checkbox-blank</v-icon
+                        >
                         <v-icon
-                          @click="
-                      closeTask(childTask.taskId)"
+                          @click="closeTask(childTask.taskId)"
                           style="cursor: pointer"
                           v-else
                           size="25"
                           color="#939393"
-                        >mdi-checkbox-blank-outline</v-icon>
+                          >mdi-checkbox-blank-outline</v-icon
+                        >
                       </v-list-item-action>
                       <!-- <div class="tasklistTaskNames restructuredSubTaskName">
                         <div
@@ -168,8 +184,9 @@
 
                       <v-list-item-content
                         @click="
-                      selectTask(task.parentTask, task);
-                      taskDialog = true;"
+                          selectTask(task.parentTask, task);
+                          taskDialog = true;
+                        "
                         style="cursor: pointer"
                       >
                         <!-- <div class="tasklistTaskNames restructuredMainTaskName"> -->
@@ -183,12 +200,18 @@
                         <v-list-item-title
                           class="fontRestructure12"
                           :class="dueDateCheck(childTask)"
-                        >{{ getTaskDueDate(childTask.taskDueDateAt) }}</v-list-item-title>
+                          >{{
+                            getTaskDueDate(childTask.taskDueDateAt)
+                          }}</v-list-item-title
+                        >
                       </v-list-item-action>
                       <div style="margin-right: -25px; margin-left: 10px">
                         <v-list-item-avatar size="25">
                           <v-img
-                            v-if="childTask.taskAssigneeProfileImage != null && childTask.taskAssigneeProfileImage != ''"
+                            v-if="
+                              childTask.taskAssigneeProfileImage != null &&
+                                childTask.taskAssigneeProfileImage != ''
+                            "
                             :src="childTask.taskAssigneeProfileImage"
                           ></v-img>
                           <v-img
@@ -228,22 +251,24 @@
                       v-if="task.parentTask.taskStatus == 'closed'"
                       size="25"
                       color="#66B25F"
-                    >mdi-checkbox-blank</v-icon>
+                      >mdi-checkbox-blank</v-icon
+                    >
                     <v-icon
-                      @click="
-                      closeTask(task.parentTask.taskId)"
+                      @click="closeTask(task.parentTask.taskId)"
                       v-else
                       size="25"
                       color="#939393"
-                    >mdi-checkbox-blank-outline</v-icon>
+                      >mdi-checkbox-blank-outline</v-icon
+                    >
                   </v-list-item-action>
                   <div class="tasklistTaskNames restructuredMainTaskName">
                     <div
-                      @click="
-              selectGroupTask(task.parentTask, task);"
+                      @click="selectGroupTask(task.parentTask, task)"
                       style="cursor: pointer"
                     >
-                      <span class="restructuredMainTaskCode">{{task.parentTask.secondaryTaskId}}</span>
+                      <span class="restructuredMainTaskCode">{{
+                        task.parentTask.secondaryTaskId
+                      }}</span>
                       {{ task.parentTask.taskName }}
                     </div>
                   </div>
@@ -251,12 +276,18 @@
                     <v-list-item-title
                       :class="dueDateCheck(task.parentTask)"
                       class="fontRestructure12"
-                    >{{ getTaskDueDate(task.parentTask.taskDueDateAt) }}</v-list-item-title>
+                      >{{
+                        getTaskDueDate(task.parentTask.taskDueDateAt)
+                      }}</v-list-item-title
+                    >
                   </v-list-item-content>
                   <div style="margin-left: 10px">
                     <v-list-item-avatar size="25">
                       <v-img
-                        v-if="task.parentTask.taskAssigneeProfileImage != null && task.parentTask.taskAssigneeProfileImage != ''"
+                        v-if="
+                          task.parentTask.taskAssigneeProfileImage != null &&
+                            task.parentTask.taskAssigneeProfileImage != ''
+                        "
                         :src="task.parentTask.taskAssigneeProfileImage"
                       ></v-img>
                       <v-img
@@ -293,24 +324,27 @@
                         v-if="childTask.taskStatus == 'closed'"
                         size="25"
                         color="#66B25F"
-                      >mdi-checkbox-blank</v-icon>
+                        >mdi-checkbox-blank</v-icon
+                      >
                       <v-icon
-                        @click="
-                      closeTask(childTask.taskId)"
+                        @click="closeTask(childTask.taskId)"
                         v-else
                         size="25"
                         color="#939393"
-                      >mdi-checkbox-blank-outline</v-icon>
+                        >mdi-checkbox-blank-outline</v-icon
+                      >
                     </v-list-item-action>
                     <div class="tasklistTaskNames restructuredSubTaskName">
                       <div
                         @click="
-                selectGroupTask(childTask, task);
-                taskDialog = true; 
-              "
+                          selectGroupTask(childTask, task);
+                          taskDialog = true;
+                        "
                         style="cursor: pointer"
                       >
-                        <span class="restructuredMainTaskCode">{{childTask.secondaryTaskId}}</span>
+                        <span class="restructuredMainTaskCode">{{
+                          childTask.secondaryTaskId
+                        }}</span>
                         {{ childTask.taskName }}
                       </div>
                     </div>
@@ -319,12 +353,18 @@
                       <v-list-item-title
                         :class="dueDateCheck(childTask)"
                         class="fontRestructure12"
-                      >{{ getTaskDueDate(childTask.taskDueDateAt) }}</v-list-item-title>
+                        >{{
+                          getTaskDueDate(childTask.taskDueDateAt)
+                        }}</v-list-item-title
+                      >
                     </v-list-item-content>
                     <div style="margin-left: 10px">
                       <v-list-item-avatar size="25">
                         <v-img
-                          v-if="childTask.taskAssigneeProfileImage != null && childTask.taskAssigneeProfileImage != ''"
+                          v-if="
+                            childTask.taskAssigneeProfileImage != null &&
+                              childTask.taskAssigneeProfileImage != ''
+                          "
                           :src="childTask.taskAssigneeProfileImage"
                         ></v-img>
                         <v-img
@@ -377,7 +417,12 @@
     <!-- --------------- end side bar --------------------- -->
     <!-- ------------ task dialog --------- -->
 
-    <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition" persistent>
+    <v-dialog
+      v-model="taskDialog"
+      width="90vw"
+      transition="dialog-bottom-transition"
+      persistent
+    >
       <task-dialog
         ref="taskDialog"
         :task="task"
@@ -399,22 +444,22 @@
 </template>
 
 <script>
-import GroupSideDrawer from "~/components/tasksPage/groupSideDrawer";
-import SuccessPopup from "~/components/popups/successPopup";
-import ErrorPopup from "~/components/popups/errorPopup";
-import TaskDialog from "~/components/tasksPage/groupTaskDialog";
-import Progress from "~/components/popups/progress";
-import axios from "axios";
-import { mapState } from "vuex";
+import GroupSideDrawer from '~/components/tasksPage/groupSideDrawer';
+import SuccessPopup from '~/components/popups/successPopup';
+import ErrorPopup from '~/components/popups/errorPopup';
+import TaskDialog from '~/components/tasksPage/groupTaskDialog';
+import Progress from '~/components/popups/progress';
+import axios from 'axios';
+import { mapState } from 'vuex';
 
 export default {
-  props: ["group"],
+  props: ['group'],
   components: {
-    "group-side-drawer": GroupSideDrawer,
-    "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup,
-    "task-dialog": TaskDialog,
-    "progress-loading": Progress,
+    'group-side-drawer': GroupSideDrawer,
+    'success-popup': SuccessPopup,
+    'error-popup': ErrorPopup,
+    'task-dialog': TaskDialog,
+    'progress-loading': Progress,
   },
   data() {
     return {
@@ -423,23 +468,23 @@ export default {
       taskObject: {},
       taskDialog: false,
       taskDeleteDialog: false,
-      taskSelect: "all",
-      errorMessage: "",
-      successMessage: "",
-      component: "",
+      taskSelect: 'all',
+      errorMessage: '',
+      successMessage: '',
+      component: '',
       drawer: null,
       userId: this.$store.state.user.userId,
-      personalTask: "",
-      groupTask: "",
-      updatedTaskName: "",
+      personalTask: '',
+      groupTask: '',
+      updatedTaskName: '',
       task: {},
       assignee: {},
       subTasks: [],
       taskFiles: [],
       items: [
-        { id: "all", name: "All" },
-        { id: "open", name: "Open" },
-        { id: "closed", name: "Closed" },
+        { id: 'all', name: 'All' },
+        { id: 'open', name: 'Open' },
+        { id: 'closed', name: 'Closed' },
       ],
     };
   },
@@ -456,7 +501,7 @@ export default {
         response = await this.$axios.$put(
           `/taskgroup/${this.group.taskGroupId}/tasks/${taskId}`,
           {
-            taskStatus: "closed",
+            taskStatus: 'closed',
           },
           {
             headers: {
@@ -464,15 +509,15 @@ export default {
             },
           }
         );
-        this.component = "success-popup";
-        this.successMessage = "Status successfully updated";
-        this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
+        this.component = 'success-popup';
+        this.successMessage = 'Status successfully updated';
+        this.$store.dispatch('groups/groupTask/fetchGroupTasks', {
           taskGroupId: this.group.taskGroupId,
           userId: this.userId,
         });
-        this.$store.dispatch("groups/groupPeople/fetchGroupPeople", {
+        this.$store.dispatch('groups/groupPeople/fetchGroupPeople', {
           taskGroupId: this.group.taskGroupId,
-          userId: "user",
+          userId: 'user',
         });
         setTimeout(() => {
           this.close();
@@ -481,7 +526,7 @@ export default {
       } catch (e) {
         // console.log("Error updating a status", e);
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -489,9 +534,9 @@ export default {
     },
     backPannelDisplay(child) {
       if (child != 0) {
-        return "backPannelAllTask";
+        return 'backPannelAllTask';
       } else {
-        return "";
+        return '';
       }
     },
     taskDialogClosing() {
@@ -499,30 +544,30 @@ export default {
     },
 
     close() {
-      this.component = "";
+      this.component = '';
     },
     dueDateCheck(task) {
       // console.log("check due date color", task);
-      if (task.taskStatus === "closed") {
-        return "workLoadTaskDone";
+      if (task.taskStatus === 'closed') {
+        return 'workLoadTaskDone';
       } else if (
         task.taskDueDateAt == null ||
-        task.taskDueDateAt === "1970-01-01T05:30:00.000+0000"
+        task.taskDueDateAt === '1970-01-01T05:30:00.000+0000'
       ) {
-        return "workLoadTaskDefault";
+        return 'workLoadTaskDefault';
       } else {
         const dueDate = new Date(task.taskDueDateAt);
         const dueToUtc = new Date(
-          dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+          dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
         );
         const dueToUtcDate = new Date(dueToUtc);
         const now = new Date();
         // console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
         if (now.getTime() > dueToUtcDate.getTime()) {
           // console.log("overdue");
-          return "workLoadTaskOverDue";
+          return 'workLoadTaskOverDue';
         } else {
-          return "workLoadTaskHealthy";
+          return 'workLoadTaskHealthy';
         }
       }
     },
@@ -558,34 +603,34 @@ export default {
               // console.log("files--->", taskFilesResponse.data);
               this.taskFiles = taskFilesResponse.data;
               this.$store.dispatch(
-                "groups/groupTask/setGroupTaskFiles",
+                'groups/groupTask/setGroupTaskFiles',
                 taskFilesResponse.data
               );
               this.$store.dispatch(
-                "user/setSelectedTaskUser",
+                'user/setSelectedTaskUser',
                 this.task.taskAssignee
               );
               this.$store.dispatch(
-                "groups/groupTask/addSelectedGroupTask",
+                'groups/groupTask/addSelectedGroupTask',
                 groupTask
               );
               if (this.task.isParent) {
                 // console.log("isparent");
-                this.$store.dispatch("groups/groupTask/fetchChildren", {
+                this.$store.dispatch('groups/groupTask/fetchChildren', {
                   taskGroupId: this.task.taskGroupId,
                   taskId: this.task.taskId,
                 });
               } else {
                 this.$store.dispatch(
-                  "groups/groupTask/addParentTask",
+                  'groups/groupTask/addParentTask',
                   this.task.parentId
                 );
               }
             } catch (error) {
-              console.log("Error fetching data", error);
+              console.log('Error fetching data', error);
             }
           } catch (error) {
-            console.log("Error fetching data", error);
+            console.log('Error fetching data', error);
           }
         })
         .catch((e) => {
@@ -595,23 +640,23 @@ export default {
     async addGroupTask(selectedParentTask) {
       this.overlay = true;
       // console.log("add group task");
-      await this.$store.dispatch("groups/groupTask/addTaskToGroup", {
+      await this.$store.dispatch('groups/groupTask/addTaskToGroup', {
         taskName: this.updatedTaskName,
         taskGroupId: this.group.taskGroupId,
         parentTaskId: selectedParentTask,
       });
-      this.updatedTaskName = "";
+      this.updatedTaskName = '';
       this.$refs.form.reset();
       this.overlay = false;
-      this.$store.dispatch("groups/groupPeople/fetchGroupPeople", {
+      this.$store.dispatch('groups/groupPeople/fetchGroupPeople', {
         taskGroupId: this.group.taskGroupId,
-        userId: "user",
+        userId: 'user',
       });
     },
     async addGroupSubTask(index, selectedParentTask) {
       this.overlay = true;
       // console.log("add group task");
-      this.$store.dispatch("groups/groupTask/addTaskToGroup", {
+      this.$store.dispatch('groups/groupTask/addTaskToGroup', {
         taskName: this.subTaskName[index],
         taskGroupId: this.group.taskGroupId,
         parentTaskId: selectedParentTask,
@@ -622,34 +667,34 @@ export default {
     getTaskDueDate(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+        dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
       );
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
-      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "No Due Date";
+      if (date === null || date === '1970-01-01T05:30:00.000+0000') {
+        return 'No Due Date';
       } else if (
         now.getDate() === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
         now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
-        return "Today";
+        return 'Today';
       } else if (
         now.getDate() - 1 === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
         now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
-        return "Yesterday";
+        return 'Yesterday';
       } else if (
         now.getDate() + 1 === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
         now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
-        return "Tomorrow";
+        return 'Tomorrow';
       } else {
-        let stringDate = date + "";
+        let stringDate = date + '';
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 10);
         return stringDate;

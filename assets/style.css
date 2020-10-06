@@ -881,6 +881,12 @@
   right: 50px;
   bottom: 10px;
 }
+.popupBoxMeetig {
+  z-index: 100;
+  position: fixed;
+  right: 50px;
+  bottom: 10px;
+}
 
 /* -------------- add people to project ------------- */
 
@@ -1145,11 +1151,10 @@
 /* ------------------- logs --------------- */
 
 .projectTabContent {
-  width: 101%;
+  width: 100%;
   height: 85vh;
-  margin-left: -10px;
   padding: 20px;
-  padding-bottom: 100px;
+  padding-bottom: 300px;
 }
 .projectTabContent::-webkit-scrollbar {
   display: none;
@@ -3763,4 +3768,52 @@
 }
 .copyIcon {
   margin-top: -10px;
+}
+
+/* ---------- meeting minute ------------- */
+
+.viewMinuteBtnDiv {
+  width: 200px;
+  padding-top: 30px;
+  float: right !important;
+}
+.minuteViewSection {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.pointFormHeader {
+  font-size: 16px;
+  color: red;
+  font-weight: 700;
+}
+.sideByRow {
+  margin-bottom: -20px;
+}
+.discussionPointCardStyle {
+  padding: 10px;
+  margin-top: 20px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.htmlViewDiv {
+  border: 1px #5f6163 solid;
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+}
+.LoadMeetingButton {
+  margin-top: 50px;
+}
+.disPointIcons {
+  padding-right: 20px;
+  padding-bottom: 10px;
+  margin-top: -10px;
+}
+.pinnedContent {
+  padding-left: 20px;
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+.pinnedProjects {
+  height: 45px;
 }

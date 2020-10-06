@@ -7,14 +7,16 @@
         <div class="name-div">
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title class="font-weight-bold">Projects</v-list-item-title>
+              <v-list-item-title class="font-weight-bold"
+                >Projects</v-list-item-title
+              >
             </v-list-item-content>
 
             <v-list-item-icon
               v-if="
                 organizationalRoles.indexOf('ADMIN') > -1 ||
-                  organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
-                  organizationalRoles.indexOf('WORKLOAD') > -1
+                organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
+                organizationalRoles.indexOf('WORKLOAD') > -1
               "
             >
               <button v-on:click="component = 'add-project'">
@@ -31,16 +33,16 @@
           <v-list-item-title
             v-if="this.newProject == true"
             class="font-weight-bold"
-          >Create a project</v-list-item-title>
+            >Create a project</v-list-item-title
+          >
 
           <v-list-item-title
             v-else-if="this.$route.params.projects == 'projects'"
             class="font-weight-bold"
-          >Select a project</v-list-item-title>
+            >Select a project</v-list-item-title
+          >
           <v-list-item-title v-else class="font-weight-bold">
-            {{
-            this.fetchProject.projectName
-            }}
+            {{ this.fetchProject.projectName }}
           </v-list-item-title>
         </div>
       </div>
@@ -56,6 +58,60 @@
           >
             <!-- --------------- Pre sales loop ----------- -->
             <!-- <v-divider class="mx-4"></v-divider> -->
+            <div class="pinnedContent">
+              <div
+                style="margin-bottom: 15px; margin-left: -15px"
+                class="grey--text text--darken-2 font-weight-bold titles"
+              >
+                Starred Projects
+              </div>
+              <div
+                class="grey--text text--darken-2"
+                style="margin-left: 10px; font-size: 10px; margin-top: -10px"
+                v-if="this.pinnedArray == ''"
+              >
+                Pin your important projects here
+              </div>
+              <div
+                style="pinnedProjects"
+                v-for="(project, index) in getProjects('pinned')"
+                :key="index"
+                v-on:click="component = 'tab-views'"
+                @click="selectProject(project)"
+              >
+                <v-list-item
+                  class="selectedProjectPanel"
+                  :to="project.projectId"
+                >
+                  <v-list-item-action>
+                    <v-icon size="17" color="blue">icon-project</v-icon>
+                  </v-list-item-action>
+                  <v-list-item-content>
+                    <v-list-item-title class="fontRestructure12">
+                      {{ project.projectName }}
+                    </v-list-item-title>
+                    <v-list-item-subtitle class="projectSubtitle">{{
+                      updateProjectStatus(project.projectStatus)
+                    }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                  <v-list-item-action
+                    ><v-icon
+                      v-if="project.isStarred == false"
+                      @click="pinProject(project)"
+                      size="17"
+                      >mdi-hexagram-outline</v-icon
+                    >
+                    <v-icon
+                      color="orange"
+                      v-else
+                      @click="unpinProject(project)"
+                      size="17"
+                      >mdi-hexagram</v-icon
+                    >
+                  </v-list-item-action>
+                </v-list-item>
+              </div>
+            </div>
 
             <v-expansion-panels accordion flat multiple focusable hover>
               <v-expansion-panel class="projectDetailsPannels">
@@ -68,7 +124,10 @@
                   </div>-->
                   <div class="fontRestructure14">Presales</div>
                 </v-expansion-panel-header>
-                <v-expansion-panel-content class="projectPanelContent" color="#EDF0F5">
+                <v-expansion-panel-content
+                  class="projectPanelContent"
+                  color="#EDF0F5"
+                >
                   <div
                     style="height: 45px !important"
                     v-for="(project, index) in getProjects('presales')"
@@ -79,45 +138,65 @@
                       class="selectedProjectPanel"
                       v-if="
                         project.projectStatus == 'presalesPD' ||
-                          project.projectStatus == 'preSalesQS' ||
-                          project.projectStatus == 'preSalesN' ||
-                          project.projectStatus == 'preSalesC' ||
-                          project.projectStatus == 'preSalesL' ||
-                          project.projectStatus == 'presales'
+                        project.projectStatus == 'preSalesQS' ||
+                        project.projectStatus == 'preSalesN' ||
+                        project.projectStatus == 'preSalesC' ||
+                        project.projectStatus == 'preSalesL' ||
+                        project.projectStatus == 'presales'
                       "
                       v-on:click="component = 'tab-views'"
                       :to="project.projectId"
                     >
                       <v-list-item-action>
-                        <v-icon size="17" color="deep-orange lighten-1">icon-project</v-icon>
+                        <v-icon size="17" color="deep-orange lighten-1"
+                          >icon-project</v-icon
+                        >
                       </v-list-item-action>
                       <v-list-item-content>
                         <v-list-item-title class="fontRestructure12">
-                          {{
-                          project.projectName
-                          }}
+                          {{ project.projectName }}
                         </v-list-item-title>
                         <v-list-item-subtitle
                           v-if="project.projectStatus == 'presalesPD'"
                           class="projectSubtitle"
-                        >(Project discovery)</v-list-item-subtitle>
+                          >(Project discovery)</v-list-item-subtitle
+                        >
                         <v-list-item-subtitle
                           v-if="project.projectStatus == 'preSalesQS'"
                           class="projectSubtitle"
-                        >(Quotation submission)</v-list-item-subtitle>
+                          >(Quotation submission)</v-list-item-subtitle
+                        >
                         <v-list-item-subtitle
                           v-if="project.projectStatus == 'preSalesN'"
                           class="projectSubtitle"
-                        >(Negotiation)</v-list-item-subtitle>
+                          >(Negotiation)</v-list-item-subtitle
+                        >
                         <v-list-item-subtitle
                           v-if="project.projectStatus == 'preSalesC'"
                           class="projectSubtitle"
-                        >(Confirm)</v-list-item-subtitle>
+                          >(Confirm)</v-list-item-subtitle
+                        >
                         <v-list-item-subtitle
                           v-if="project.projectStatus == 'preSalesL'"
                           class="projectSubtitle"
-                        >(Lost)</v-list-item-subtitle>
+                          >(Lost)</v-list-item-subtitle
+                        >
                       </v-list-item-content>
+                      <v-list-item-action
+                        ><v-icon
+                          v-if="project.isStarred == false"
+                          @click="pinProject(project)"
+                          size="17"
+                          >mdi-hexagram-outline</v-icon
+                        >
+                        <v-icon
+                          color="orange"
+                          v-else
+                          @click="unpinProject(project)"
+                          size="17"
+                          >mdi-hexagram</v-icon
+                        >
+                      </v-list-item-action>
                     </v-list-item>
                   </div>
                 </v-expansion-panel-content>
@@ -132,7 +211,10 @@
                   </div>-->
                   <div class="fontRestructure14">Ongoing</div>
                 </v-expansion-panel-header>
-                <v-expansion-panel-content class="projectPanelContent" color="#EDF0F5">
+                <v-expansion-panel-content
+                  class="projectPanelContent"
+                  color="#EDF0F5"
+                >
                   <div
                     style="height: 45px !important"
                     v-for="(project, index) in getProjects('ongoing')"
@@ -140,17 +222,33 @@
                     v-on:click="component = 'tab-views'"
                     @click="selectProject(project)"
                   >
-                    <v-list-item class="selectedProjectPanel" :to="project.projectId">
+                    <v-list-item
+                      class="selectedProjectPanel"
+                      :to="project.projectId"
+                    >
                       <v-list-item-action>
                         <v-icon size="17" color="#FFC212">icon-project</v-icon>
                       </v-list-item-action>
                       <v-list-item-content>
                         <v-list-item-title class="fontRestructure12">
-                          {{
-                          project.projectName
-                          }}
+                          {{ project.projectName }}
                         </v-list-item-title>
                       </v-list-item-content>
+                      <v-list-item-action
+                        ><v-icon
+                          v-if="project.isStarred == false"
+                          @click="pinProject(project)"
+                          size="17"
+                          >mdi-hexagram-outline</v-icon
+                        >
+                        <v-icon
+                          color="orange"
+                          v-else
+                          @click="unpinProject(project)"
+                          size="17"
+                          >mdi-hexagram</v-icon
+                        >
+                      </v-list-item-action>
                     </v-list-item>
                   </div>
                 </v-expansion-panel-content>
@@ -165,7 +263,10 @@
                   </div>-->
                   <div class="fontRestructure14">Support</div>
                 </v-expansion-panel-header>
-                <v-expansion-panel-content class="projectPanelContent" color="#EDF0F5">
+                <v-expansion-panel-content
+                  class="projectPanelContent"
+                  color="#EDF0F5"
+                >
                   <div
                     style="height: 45px !important"
                     v-for="(project, index) in getProjects('support')"
@@ -173,17 +274,33 @@
                     v-on:click="component = 'tab-views'"
                     @click="selectProject(project)"
                   >
-                    <v-list-item class="selectedProjectPanel" :to="project.projectId">
+                    <v-list-item
+                      class="selectedProjectPanel"
+                      :to="project.projectId"
+                    >
                       <v-list-item-action>
                         <v-icon size="17" color="#ED5ED1">icon-project</v-icon>
                       </v-list-item-action>
                       <v-list-item-content>
                         <v-list-item-title class="fontRestructure12">
-                          {{
-                          project.projectName
-                          }}
+                          {{ project.projectName }}
                         </v-list-item-title>
                       </v-list-item-content>
+                      <v-list-item-action
+                        ><v-icon
+                          v-if="project.isStarred == false"
+                          @click="pinProject(project)"
+                          size="17"
+                          >mdi-hexagram-outline</v-icon
+                        >
+                        <v-icon
+                          color="orange"
+                          v-else
+                          @click="unpinProject(project)"
+                          size="17"
+                          >mdi-hexagram</v-icon
+                        >
+                      </v-list-item-action>
                     </v-list-item>
                   </div>
                 </v-expansion-panel-content>
@@ -198,7 +315,10 @@
                   </div>-->
                   <div class="fontRestructure14">Finished</div>
                 </v-expansion-panel-header>
-                <v-expansion-panel-content class="projectPanelContent" color="#EDF0F5">
+                <v-expansion-panel-content
+                  class="projectPanelContent"
+                  color="#EDF0F5"
+                >
                   <div
                     style="height: 45px !important"
                     v-for="(project, index) in getProjects('finished')"
@@ -206,17 +326,33 @@
                     v-on:click="component = 'tab-views'"
                     @click="selectProject(project)"
                   >
-                    <v-list-item class="selectedProjectPanel" :to="project.projectId">
+                    <v-list-item
+                      class="selectedProjectPanel"
+                      :to="project.projectId"
+                    >
                       <v-list-item-action>
                         <v-icon size="17" color="#0BAFFF">icon-project</v-icon>
                       </v-list-item-action>
                       <v-list-item-content>
                         <v-list-item-title class="fontRestructure12">
-                          {{
-                          project.projectName
-                          }}
+                          {{ project.projectName }}
                         </v-list-item-title>
                       </v-list-item-content>
+                      <v-list-item-action
+                        ><v-icon
+                          v-if="project.isStarred == false"
+                          @click="pinProject(project)"
+                          size="17"
+                          >mdi-hexagram-outline</v-icon
+                        >
+                        <v-icon
+                          color="orange"
+                          v-else
+                          @click="unpinProject(project)"
+                          size="17"
+                          >mdi-hexagram</v-icon
+                        >
+                      </v-list-item-action>
                     </v-list-item>
                   </div>
                 </v-expansion-panel-content>
@@ -338,12 +474,15 @@
         </v-list-item-group>
       </div>
       <keep-alive>
-        <div v-if="this.$route.params.projects == 'projects'" class="defaultFilterBackground">
+        <div
+          v-if="this.$route.params.projects == 'projects'"
+          class="defaultFilterBackground"
+        >
           <div
             v-if="
               organizationalRoles.indexOf('ADMIN') > -1 ||
-                organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
-                organizationalRoles.indexOf('WORKLOAD') > -1
+              organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
+              organizationalRoles.indexOf('WORKLOAD') > -1
             "
           >
             <v-icon size="60" color="#BEC4CE">icon-project</v-icon>
@@ -376,14 +515,17 @@
         <component
           v-if="
             this.$route.params.projects != 'projects' &&
-              this.$route.params.projects != undefined
+            this.$route.params.projects != undefined
           "
           v-bind:is="component"
           :project="project"
           :pagination="pagination"
           @refreshSelectedTab="refreshSelectedTab"
         ></component>
-        <component v-else-if="this.component == 'add-project'" v-bind:is="component"></component>
+        <component
+          v-else-if="this.component == 'add-project'"
+          v-bind:is="component"
+        ></component>
       </keep-alive>
     </div>
     <v-overlay :value="overlay" color="white" opacity="1">
@@ -428,6 +570,7 @@ export default {
       supportArray: [],
       finishedArray: [],
       preSalesArray: [],
+      pinnedArray: [],
       looped: false,
       projectSprint: {},
       newProject: false,
@@ -452,15 +595,20 @@ export default {
         if (this.$route.params.projects != "projects") {
           this.overlay = true;
           Promise.all([
-            this.$store.dispatch("task/setIndex", {
-              startIndex: 0,
-              endIndex: 10,
-              isAllTasks: false,
-            }),
-            this.$store.dispatch(
-              "task/fetchTasksAllTasks",
-              this.$route.params.projects
+            Promise.all([this.$store.dispatch("task/emptyStore")]).finally(
+              () => {
+                this.$store.dispatch("task/setIndex", {
+                  startIndex: 0,
+                  endIndex: 10,
+                  isAllTasks: false,
+                }),
+                  this.$store.dispatch(
+                    "task/fetchTasksAllTasks",
+                    this.$route.params.projects
+                  );
+              }
             ),
+
             this.$store.dispatch(
               "task/fetchTotalTaskCount",
               this.$route.params.projects
@@ -536,6 +684,74 @@ export default {
   },
 
   methods: {
+    updateProjectStatus(status) {
+      switch (status) {
+        case "presales":
+          return "Presales";
+          break;
+        case "presalesPD":
+          return "Presales - Project Discovery";
+          break;
+        case "preSalesQS":
+          return "Presales - Quotation Submission";
+          break;
+        case "preSalesN":
+          return "Presales - Negotiation";
+          break;
+        case "preSalesC":
+          return "Presales Confirmed";
+          break;
+        case "preSalesL":
+          return "Presales - Lost";
+          break;
+        case "ongoing":
+          return "Ongoing";
+          break;
+        case "support":
+          return "Support";
+          break;
+        case "finished":
+          return "Finished";
+          break;
+
+        default:
+      }
+    },
+    async unpinProject(project) {
+      console.log("PINNED");
+      this.overlay = true;
+      let response;
+      try {
+        response = await this.$axios.$post("/projects/pin", {
+          user: this.userId,
+          project: project.projectId,
+          isPin: false,
+        });
+        location.reload();
+        this.overlay = false;
+      } catch (e) {
+        this.overlay = false;
+
+        console.log("Error pin project", e);
+      }
+    },
+    async pinProject(project) {
+      this.overlay = true;
+      let response;
+      try {
+        response = await this.$axios.$post("/projects/pin", {
+          user: this.userId,
+          project: project.projectId,
+          isPin: true,
+        });
+        location.reload();
+        this.overlay = false;
+      } catch (e) {
+        this.overlay = false;
+
+        console.log("Error pin project", e);
+      }
+    },
     getProjectName(name) {
       return name.replace(/\s+/g, "-").toLowerCase();
     },
@@ -546,6 +762,12 @@ export default {
         // console.log("run loop inside");
         for (let i = 0; i < projectsAll.length; i++) {
           let projectType = projectsAll[i].projectStatus;
+          let pinnedProjects = projectsAll[i].isStarred;
+          switch (pinnedProjects) {
+            case true:
+              this.pinnedArray.push(projectsAll[i]);
+              break;
+          }
           switch (projectType) {
             case "ongoing":
               this.ongoingArray.push(projectsAll[i]);
@@ -574,6 +796,8 @@ export default {
           return this.finishedArray;
         case "presales":
           return this.preSalesArray;
+        case "pinned":
+          return this.pinnedArray;
       }
     },
     createNewProject(type) {
@@ -598,15 +822,16 @@ export default {
         case "task":
           this.overlay = true;
           Promise.all([
-            // this.$store.dispatch("task/setIndex", {
-            //   startIndex: 0,
-            //   endIndex: 10,
-            //   isAllTasks: false,
-            // }),
-            // this.$store.dispatch(
-            //   "task/fetchTasksAllTasks",
-            //   this.$route.params.projects
-            // ),
+            this.$store.dispatch("task/emptyStore"),
+            this.$store.dispatch("task/setIndex", {
+              startIndex: 0,
+              endIndex: 10,
+              isAllTasks: false,
+            }),
+            this.$store.dispatch(
+              "task/fetchTasksAllTasks",
+              this.$route.params.projects
+            ),
             this.$store.dispatch(
               "task/fetchTotalTaskCount",
               this.$route.params.projects
@@ -685,17 +910,36 @@ export default {
       }
     },
     async selectProject(project) {
+      // if (this.$route.params.projects == project.projectId) {
+      //   Promise.all([this.$store.dispatch("task/emptyStore")]).finally(() => {
+      //     this.$store.dispatch("task/setIndex", {
+      //       startIndex: 0,
+      //       endIndex: 10,
+      //       isAllTasks: false,
+      //     }),
+      //       this.$store.dispatch(
+      //         "task/fetchTasksAllTasks",
+      //         this.$route.params.projects
+      //       );
+      //   });
+      // }
+
       this.$store.dispatch("task/setIndex", {
         startIndex: 0,
         endIndex: 10,
         isAllTasks: false,
       });
       this.$store.dispatch("task/emptyStore");
-      this.$store.dispatch("activityLog/emptyStore");
-      // this.$store.dispatch(
-      //   "task/fetchTasksAllTasks",
-      //   this.$route.params.projects
-      // );
+      // this.$store.dispatch('task/emptyStore'),
+      //   this.$store.dispatch('task/setIndex', {
+      //     startIndex: 0,
+      //     endIndex: 10,
+      //     isAllTasks: false,
+      //   }),
+      //   this.$store.dispatch(
+      //     'task/fetchTasksAllTasks',
+      //     this.$route.params.projects
+      //   ),
       this.newProject = false;
       this.project = project;
       this.projectDisplayName = this.project.projectId;
