@@ -23,9 +23,12 @@
             </td>
             <td>
               <span class="boldFontHeading">Date: </span>
-              <!-- <span>{{
-                selectedMeeting.meeting.meetingActualTime.substr(0, 10)
-              }}</span> -->
+              <span
+                v-if="selectedMeeting.meeting.meetingActualTime != undefined"
+                >{{
+                  selectedMeeting.meeting.meetingActualTime.substr(0, 10)
+                }}</span
+              >
             </td>
             <td colspan="3">
               <span class="boldFontHeading">Topic for the meeting: </span
@@ -36,16 +39,22 @@
             <td>
               <span class="boldFontHeading">Scheduled Time: </span>
               <br />
-              <!-- <span>{{
-                selectedMeeting.meeting.meetingExpectedTime.slice(11, 16)
-              }}</span> -->
+              <span
+                v-if="selectedMeeting.meeting.meetingExpectedTime != undefined"
+                >{{
+                  selectedMeeting.meeting.meetingExpectedTime.slice(11, 16)
+                }}</span
+              >
             </td>
             <td>
               <span class="boldFontHeading">Started Time: </span>
               <br />
-              <!-- <span>{{
-                selectedMeeting.meeting.meetingActualTime.slice(11, 16)
-              }}</span> -->
+              <span
+                v-if="selectedMeeting.meeting.meetingActualTime != undefined"
+                >{{
+                  selectedMeeting.meeting.meetingActualTime.slice(11, 16)
+                }}</span
+              >
             </td>
             <td>
               <span class="boldFontHeading">Planned Duration: </span>
@@ -76,10 +85,10 @@
                   .meetingChaired"
                 :key="index"
               >
-                <span v-if="!chaired.guest"
-                  >{{ chaired.firstName }} {{ chaired.lastName }}</span
+                <span v-if="!chaired.guest">
+                  {{ chaired.firstName }} {{ chaired.lastName }}</span
                 >
-                <span v-else>{{ chaired.attendeeId }}</span>
+                <span v-else> {{ chaired.attendeeId }} </span>
                 <span
                   v-if="
                     index != selectedMeeting.meeting.meetingChaired.length - 1
@@ -100,7 +109,7 @@
                 <span v-if="!attended.guest">
                   {{ attended.firstName }} {{ attended.lastName }}</span
                 >
-                <span v-else> {{ attended.attendeeId }}</span>
+                <span v-else> {{ attended.attendeeId }} </span>
                 <span
                   v-if="
                     index != selectedMeeting.meeting.meetingAttended.length - 1
@@ -112,7 +121,7 @@
           </tr>
           <tr>
             <td colspan="6">
-              <span class="boldFontHeading">Absent: </span>
+              <span class="boldFontHeading">Members Absent: </span>
               <span
                 v-for="(absent, index) in selectedMeeting.meeting.meetingAbsent"
                 :key="index"
@@ -120,7 +129,7 @@
                 <span v-if="!absent.guest">
                   {{ absent.firstName }} {{ absent.lastName }}</span
                 >
-                <span v-else> {{ absent.attendeeId }}</span>
+                <span v-else> {{ absent.attendeeId }} </span>
                 <span
                   v-if="
                     index != selectedMeeting.meeting.meetingAbsent.length - 1
@@ -141,7 +150,7 @@
                 <span v-if="!copiesTo.guest">
                   {{ copiesTo.firstName }} {{ copiesTo.lastName }}</span
                 >
-                <span v-else> {{ copiesTo.attendeeId }}</span>
+                <span v-else> {{ copiesTo.attendeeId }} </span>
                 <span
                   v-if="
                     index != selectedMeeting.meeting.meetingCopiesTo.length - 1
@@ -162,7 +171,7 @@
                 <span v-if="!prepared.guest">
                   {{ prepared.firstName }} {{ prepared.lastName }}</span
                 >
-                <span v-else> {{ prepared.attendeeId }}</span>
+                <span v-else> {{ prepared.attendeeId }} </span>
                 <span
                   v-if="
                     index != selectedMeeting.meeting.meetingPrepared.length - 1
@@ -171,6 +180,53 @@
                 >
               </span>
             </td>
+          </tr>
+        </table>
+      </section>
+      <section class="pdf-item">
+        <div class="DisPointTitlePDF">Discussion Points</div>
+      </section>
+      <section class="pdf-item">
+        <table class="tableStyles" style="width: 100%">
+          <tr>
+            <td style="width: 5%">
+              <span class="boldFontHeading">## </span>
+            </td>
+            <td style="width: 50%">
+              <span class="boldFontHeading">Discription </span>
+            </td>
+            <td style="width: 10%">
+              <span class="boldFontHeading">Action By </span>
+            </td>
+            <td style="width: 15%">
+              <span class="boldFontHeading">Target Date </span>
+            </td>
+            <td style="width: 20%">
+              <span class="boldFontHeading">Remarks </span>
+            </td>
+          </tr>
+          <tr
+            v-for="(disPoint, index) in selectedMeeting.discussionPoints"
+            :key="index"
+          >
+            <td style="width: 5%">{{ disPoint.discussionPoint }}</td>
+            <td style="width: 50%; padding-left: 20px">
+              <span v-html="disPoint.description"></span>
+            </td>
+            <td style="width: 10%">
+              <span v-if="disPoint.actionByGuest">{{ disPoint.actionBy }}</span>
+              <span v-else
+                >{{ disPoint.meetingUser.firstName }}
+                {{ disPoint.meetingUser.lastName }}</span
+              >
+            </td>
+            <td style="width: 15%">
+              <span v-if="disPoint.dueDate == null">No Due Date</span>
+              <span v-else>{{
+                new Date(disPoint.dueDate).toISOString().substr(0, 10)
+              }}</span>
+            </td>
+            <td style="width: 20%">{{ disPoint.remarks }}</td>
           </tr>
         </table>
       </section>

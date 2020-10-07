@@ -191,7 +191,7 @@
 
       <!-- --------------- PDF VIEW ----------------- -->
 
-      <pdf-report />
+      <!-- <pdf-report /> -->
 
       <v-dialog v-model="deleteMeetingDialog" max-width="350">
         <v-card style="text-align: center; padding-bottom: 25px">

@@ -417,7 +417,10 @@
                       scrollable
                     >
                       <v-spacer></v-spacer>
-                      <v-btn text color="primary" @click="modal2 = false"
+                      <v-btn
+                        text
+                        color="primary"
+                        @click="modalDiscussion = false"
                         >Cancel</v-btn
                       >
                       <v-btn
