@@ -120,7 +120,8 @@
                       :key="index"
                       class="tableText"
                     >
-                      {{ chair.firstName }}
+                      <span v-if="!chair.guest"> {{ chair.firstName }} </span>
+                      <span v-else> {{ chair.attendeeId }}</span>
                       <span v-if="index != meeting.meetingChaired.length - 1"
                         >/</span
                       >
@@ -134,7 +135,10 @@
                       :key="index"
                       class="tableText"
                     >
-                      {{ prepared.firstName }}
+                      <span v-if="!prepared.guest">
+                        {{ prepared.firstName }}
+                      </span>
+                      <span v-else> {{ prepared.attendeeId }}</span>
                       <span v-if="index != meeting.meetingPrepared.length - 1"
                         >/</span
                       >
@@ -273,16 +277,16 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 // import VueHtml2pdf from 'vue-html2pdf';
-import Progress from '~/components/popups/progress';
-import EditMeeting from '~/components/meetings/editMeeting';
-import PDFReport from '~/components/meetings/pdfReport';
+import Progress from "~/components/popups/progress";
+import EditMeeting from "~/components/meetings/editMeeting";
+import PDFReport from "~/components/meetings/pdfReport";
 export default {
   components: {
-    'progress-loading': Progress,
-    'edit-meeting': EditMeeting,
-    'pdf-report': PDFReport,
+    "progress-loading": Progress,
+    "edit-meeting": EditMeeting,
+    "pdf-report": PDFReport,
     // VueHtml2pdf,
   },
   data() {
@@ -292,13 +296,13 @@ export default {
       loadMore: 1,
 
       isFilter: false,
-      filterKey: '',
-      filterDate: '',
+      filterKey: "",
+      filterDate: "",
 
       selectedMeeting: {},
       modal: false,
-      dateFilter: '',
-      keyFilter: '',
+      dateFilter: "",
+      keyFilter: "",
       deleteMeetingDialog: false,
       editMeetingDialog: false,
 
@@ -310,7 +314,7 @@ export default {
       this.overlay = true;
       this.selectedMeeting = meeting;
       Promise.all([
-        this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
+        this.$store.dispatch("meetings/meeting/fetchSelectedMeeting", {
           meetingId: meeting.meetingId,
           projectId: this.projectId,
         }),
@@ -325,17 +329,17 @@ export default {
       this.overlay = true;
 
       if (this.dateFilter == null) {
-        this.dateFilter = '';
+        this.dateFilter = "";
       }
-      if (this.dateFilter == '' && this.keyFilter == '') {
+      if (this.dateFilter == "" && this.keyFilter == "") {
         this.isFilter = false;
         this.loadMore = 0;
       }
 
       Promise.all([
-        this.$store.dispatch('meetings/meeting/emptyMeetingStore'),
+        this.$store.dispatch("meetings/meeting/emptyMeetingStore"),
 
-        this.$store.dispatch('meetings/meeting/fetchProjectMeetings', {
+        this.$store.dispatch("meetings/meeting/fetchProjectMeetings", {
           projectId: this.projectId,
           startIndex: this.loadMore * 10,
           endIndex: this.loadMore * 10 + 10,
@@ -350,7 +354,7 @@ export default {
     loadMoreMeetings() {
       this.overlay = true;
       Promise.all([
-        this.$store.dispatch('meetings/meeting/fetchProjectMeetings', {
+        this.$store.dispatch("meetings/meeting/fetchProjectMeetings", {
           projectId: this.projectId,
           startIndex: this.loadMore * 10,
           endIndex: this.loadMore * 10 + 10,
@@ -365,13 +369,13 @@ export default {
     },
     selectMeeting(meeting) {
       this.selectedMeeting = meeting;
-      this.$store.dispatch('meetings/meeting/fetchSelectedMeeting', {
+      this.$store.dispatch("meetings/meeting/fetchSelectedMeeting", {
         meetingId: meeting.meetingId,
         projectId: this.projectId,
       });
     },
     async deleteMeeting() {
-      this.$store.dispatch('meetings/meeting/emptyMeetingStore'),
+      this.$store.dispatch("meetings/meeting/emptyMeetingStore"),
         (this.loadMore = 1);
       let response;
       try {
@@ -384,7 +388,7 @@ export default {
           }
         );
 
-        this.$store.dispatch('meetings/meeting/fetchProjectMeetings', {
+        this.$store.dispatch("meetings/meeting/fetchProjectMeetings", {
           projectId: this.projectId,
           startIndex: 0,
           endIndex: 10,
@@ -393,18 +397,18 @@ export default {
           date: this.dateFilter,
         });
 
-        this.successMessage = 'Meeting deleted successfully';
-        this.component = 'success-popup';
+        this.successMessage = "Meeting deleted successfully";
+        this.component = "success-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('Error creating project', e);
+        console.log("Error creating project", e);
       }
     },
   },

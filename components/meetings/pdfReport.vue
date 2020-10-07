@@ -15,7 +15,7 @@
         <div class="pdfTopic">Minutes of the Meeting</div>
       </section>
       <section class="pdf-item">
-        <table class="tableStyles" style="width:100%">
+        <table class="tableStyles" style="width: 100%">
           <tr>
             <td colspan="2">
               <span class="boldFontHeading">Project Name: </span
@@ -68,13 +68,117 @@
               <span>{{ selectedMeeting.meeting.meetingVenue }} </span>
             </td>
           </tr>
+          <tr>
+            <td colspan="6">
+              <span class="boldFontHeading">Chaired By: </span>
+              <span
+                v-for="(chaired, index) in selectedMeeting.meeting
+                  .meetingChaired"
+                :key="index"
+              >
+                <span v-if="!chaired.guest"
+                  >{{ chaired.firstName }} {{ chaired.lastName }}</span
+                >
+                <span v-else>{{ chaired.attendeeId }}</span>
+                <span
+                  v-if="
+                    index != selectedMeeting.meeting.meetingChaired.length - 1
+                  "
+                  >/</span
+                >
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="6">
+              <span class="boldFontHeading">Attended By: </span>
+              <span
+                v-for="(attended, index) in selectedMeeting.meeting
+                  .meetingAttended"
+                :key="index"
+              >
+                <span v-if="!attended.guest">
+                  {{ attended.firstName }} {{ attended.lastName }}</span
+                >
+                <span v-else> {{ attended.attendeeId }}</span>
+                <span
+                  v-if="
+                    index != selectedMeeting.meeting.meetingAttended.length - 1
+                  "
+                  >/</span
+                >
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="6">
+              <span class="boldFontHeading">Absent: </span>
+              <span
+                v-for="(absent, index) in selectedMeeting.meeting.meetingAbsent"
+                :key="index"
+              >
+                <span v-if="!absent.guest">
+                  {{ absent.firstName }} {{ absent.lastName }}</span
+                >
+                <span v-else> {{ absent.attendeeId }}</span>
+                <span
+                  v-if="
+                    index != selectedMeeting.meeting.meetingAbsent.length - 1
+                  "
+                  >/</span
+                >
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="6">
+              <span class="boldFontHeading">Additional Copies to: </span>
+              <span
+                v-for="(copiesTo, index) in selectedMeeting.meeting
+                  .meetingCopiesTo"
+                :key="index"
+              >
+                <span v-if="!copiesTo.guest">
+                  {{ copiesTo.firstName }} {{ copiesTo.lastName }}</span
+                >
+                <span v-else> {{ copiesTo.attendeeId }}</span>
+                <span
+                  v-if="
+                    index != selectedMeeting.meeting.meetingCopiesTo.length - 1
+                  "
+                  >/</span
+                >
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="6">
+              <span class="boldFontHeading">Meeting Minute Prepared by: </span>
+              <span
+                v-for="(prepared, index) in selectedMeeting.meeting
+                  .meetingPrepared"
+                :key="index"
+              >
+                <span v-if="!prepared.guest">
+                  {{ prepared.firstName }} {{ prepared.lastName }}</span
+                >
+                <span v-else> {{ prepared.attendeeId }}</span>
+                <span
+                  v-if="
+                    index != selectedMeeting.meeting.meetingPrepared.length - 1
+                  "
+                  >/</span
+                >
+              </span>
+            </td>
+          </tr>
         </table>
       </section>
     </section>
   </div>
 </template>
 <script>
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 export default {
   methods: {
     getAttendance() {
@@ -85,7 +189,11 @@ export default {
             this.selectedMeeting.meeting.meetingAbsent.length)) *
         100;
 
-      return parseInt(attendance);
+      if (this.selectedMeeting.meeting.meetingAttended.length == 0) {
+        return 0;
+      } else {
+        return parseInt(attendance);
+      }
     },
   },
   computed: {
