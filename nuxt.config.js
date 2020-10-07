@@ -43,6 +43,7 @@ export default {
     '~/plugins/textEditor.js',
     { src: '~/plugins/onesignal.js', mode: 'client' },
     { src: '~/plugins/vue2-editor.js', ssr: false },
+    { src: '~/plugins/pdfGenerator', mode: 'client' },
   ],
   /*
    ** Nuxt.js dev-modules
