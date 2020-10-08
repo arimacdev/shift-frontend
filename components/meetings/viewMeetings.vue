@@ -191,8 +191,6 @@
 
       <!-- --------------- PDF VIEW ----------------- -->
 
-      <!-- <pdf-report /> -->
-
       <v-dialog v-model="deleteMeetingDialog" max-width="350">
         <v-card style="text-align: center; padding-bottom: 25px">
           <v-card-title style="text-align: center">
@@ -273,6 +271,9 @@
         </section>
       </vue-html2pdf>
     </div>
+    <div id="capture">
+      <js-pdf-report />
+    </div>
   </div>
 </template>
 
@@ -282,11 +283,14 @@ import { mapState } from "vuex";
 import Progress from "~/components/popups/progress";
 import EditMeeting from "~/components/meetings/editMeeting";
 import PDFReport from "~/components/meetings/pdfReport";
+
+import JsPDFReport from "~/components/meetings/jsPdfReport";
 export default {
   components: {
     "progress-loading": Progress,
     "edit-meeting": EditMeeting,
     "pdf-report": PDFReport,
+    "js-pdf-report": JsPDFReport,
     // VueHtml2pdf,
   },
   data() {
@@ -319,9 +323,19 @@ export default {
           projectId: this.projectId,
         }),
       ]).finally(() => {
-        this.$refs.html2Pdf.generatePdf();
-        this.overlay = false;
+        // this.$refs.html2Pdf.generatePdf();
+        var pdf = new jsPDF("p", "pt", "a4");
+        let pdfConf = {
+          pagesplit: true, //Adding page breaks manually using pdf.addPage();
+          background: "#fff", //White Background.
+        };
+        pdf.fromHTML($("#capture").get(0), 60, 40, {
+          width: 500,
+        });
+
+        pdf.save(meeting.meetingTopic);
       });
+      this.overlay = false;
     },
     filterMeetings(isFilter) {
       this.loadMore = 0;
