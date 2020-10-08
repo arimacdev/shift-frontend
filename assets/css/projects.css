@@ -54,7 +54,7 @@
   box-shadow: none !important;
 }
 .tool-bar {
-  position: fixed;
+  position: fixed !important;
   width: 100%;
   z-index: 100;
   height: 50px !important;
