@@ -27,7 +27,8 @@ export default {
         type: 'text/javascript',
       },
       {
-        src: 'https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js',
+        src:
+          'https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js',
         type: 'text/javascript',
       },
     ],
@@ -50,7 +51,7 @@ export default {
     '~/plugins/textEditor.js',
     { src: '~/plugins/onesignal.js', mode: 'client' },
     { src: '~/plugins/vue2-editor.js', ssr: false },
-    { src: '~/plugins/pdfGenerator', mode: 'client' },
+    // { src: '~/plugins/pdfGenerator', mode: 'client' },
   ],
   /*
    ** Nuxt.js dev-modules
