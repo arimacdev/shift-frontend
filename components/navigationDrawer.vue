@@ -36,8 +36,8 @@
     <v-list
       v-if="
         organizationalRoles.indexOf('ADMIN') > -1 ||
-          organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
-          organizationalRoles.indexOf('ORGANIZATION_ADMIN') > -1
+        organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
+        organizationalRoles.indexOf('ORGANIZATION_ADMIN') > -1
       "
     >
       <v-list-item
@@ -109,7 +109,12 @@
       </v-list>
       <v-list-item>
         <img
-          style="margin-bottom: 10px; margin-left: -8px; border-radius:5px; border: 1px solid black"
+          style="
+            margin-bottom: 10px;
+            margin-left: -8px;
+            border-radius: 5px;
+            border: 1px solid black;
+          "
           width="40px"
           src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1595564844985_image.png"
         />
@@ -125,7 +130,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -134,24 +139,24 @@ export default {
       adminItems: [
         // { title: 'Summary', icon: 'icon-summary', route: '../summary'},
         {
-          title: 'Projects',
-          icon: 'icon-project',
-          route: '../../projects/projects',
+          title: "Projects",
+          icon: "icon-project",
+          route: "../../projects/projects",
         },
         {
-          title: 'Tasks',
-          icon: 'icon-task',
-          route: '../../tasks/tasks',
+          title: "Tasks",
+          icon: "icon-task",
+          route: "../../tasks/tasks",
         },
+        // {
+        //   title: 'Inventory',
+        //   icon: 'icon-inventory',
+        //   route: '../../inventory/inventory',
+        // },
         {
-          title: 'Inventory',
-          icon: 'icon-inventory',
-          route: '../../inventory/inventory',
-        },
-        {
-          title: 'Workload',
-          icon: 'icon-workload',
-          route: '../../workload/workload',
+          title: "Workload",
+          icon: "icon-workload",
+          route: "../../workload/workload",
         },
         // {
         //   title: "Users",
@@ -159,35 +164,35 @@ export default {
         //   route: "../../users/users"
         // },
         {
-          title: 'Skill Matrix',
-          icon: 'icon-skills',
-          route: '../../skills/skills',
+          title: "Skill Matrix",
+          icon: "icon-skills",
+          route: "../../skills/skills",
         },
-        { title: 'Admin', icon: 'icon-admin', route: '../../admin/admin' },
+        { title: "Admin", icon: "icon-admin", route: "../../admin/admin" },
         {
-          title: 'Analytics',
-          icon: 'icon-summary',
-          route: '../../analytics/analytics',
+          title: "Analytics",
+          icon: "icon-summary",
+          route: "../../analytics/analytics",
         },
       ],
       mini: true,
       userItems: [
         // { title: 'Summary', icon: 'icon-summary', route: '../summary'},
         {
-          title: 'Projects',
-          icon: 'icon-project',
-          route: '../../projects/projects',
+          title: "Projects",
+          icon: "icon-project",
+          route: "../../projects/projects",
         },
         {
-          title: 'Tasks',
-          icon: 'icon-task',
-          route: '../../tasks/tasks',
+          title: "Tasks",
+          icon: "icon-task",
+          route: "../../tasks/tasks",
         },
         // { title: 'Inventory', icon: 'icon-inventory', route: '../inventory'},
         {
-          title: 'Workload',
-          icon: 'icon-workload',
-          route: '../../workload/workload',
+          title: "Workload",
+          icon: "icon-workload",
+          route: "../../workload/workload",
         },
       ],
       homePage: process.env.SYSTEM_URL,
@@ -207,7 +212,7 @@ export default {
     userLogOut() {
       const LOGOUT_URL =
         this.homePage +
-        '/auth/realms/pm-tool/protocol/openid-connect/logout?redirect_uri=' +
+        "/auth/realms/pm-tool/protocol/openid-connect/logout?redirect_uri=" +
         this.homePage;
       window.location.replace(LOGOUT_URL);
     },

@@ -23,6 +23,10 @@ export default {
         src: 'https://code.jquery.com/jquery-3.3.1.slim.min.js',
         type: 'text/javascript',
       },
+      {
+        src: 'https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js',
+        type: 'text/javascript',
+      },
     ],
   },
   /*
