@@ -18,9 +18,13 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     script: [
-      { src: 'https://cdn.onesignal.com/sdks/OneSignalSDK.js', async: '' },
       {
         src: 'https://code.jquery.com/jquery-3.3.1.slim.min.js',
+        type: 'text/javascript',
+      },
+      {
+        src:
+          'https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js',
         type: 'text/javascript',
       },
     ],
@@ -60,10 +64,13 @@ export default {
    ** 138bbb3d-02ed-4d72-9a03-7e8cdfe89eff
    */
   axios: {
-    baseURL: `${process.env.BASE_URL}/api/pm-service`,
+    baseURL: 'http://localhost:8080/api/pm-service',
   },
   env: {
     SYSTEM_URL: process.env.BASE_URL || 'https://project.arimaclanka.com',
+    LOGOUT_URL:
+      process.env.LOGOUT_URL ||
+      'https://project.arimaclanka.com/auth/realms/pm-tool/protocol/openid-connect/logout',
   },
   /*
    ** vuetify module configuration
@@ -74,14 +81,17 @@ export default {
       local: false,
       keycloak: {
         _scheme: 'oauth2',
-        authorization_endpoint: `${process.env.BASE_URL}/auth/realms/pm-tool/protocol/openid-connect/auth`,
-        userinfo_endpoint: `${process.env.BASE_URL}/auth/realms/pm-tool/protocol/openid-connect/userinfo`,
-        access_token_endpoint: `${process.env.BASE_URL}/auth/realms/pm-tool/protocol/openid-connect/token`,
+        authorization_endpoint:
+          'https://pmtool.devops.arimac.xyz/auth/realms/pm-tool/protocol/openid-connect/auth',
+        userinfo_endpoint:
+          'https://pmtool.devops.arimac.xyz/auth/realms/pm-tool/protocol/openid-connect/userinfo',
+        access_token_endpoint:
+          'https://pmtool.devops.arimac.xyz/auth/realms/pm-tool/protocol/openid-connect/token',
         scope: ['openid', 'roles', 'profile'],
         grant_type: 'authorization_code',
         response_type: 'code',
         token_type: 'Bearer',
-        client_id: `${process.env.KEYCLOAK_CLIENT_ID}`,
+        client_id: 'pmtool-frontend',
         token_key: 'access_token',
       },
     },
@@ -96,9 +106,9 @@ export default {
     middleware: ['auth', 'token'],
   },
   constants: {
-    hostUrl: `${process.env.BASE_URL}`,
-    appUrl: `${process.env.BASE_URL}`,
-    realm: `${process.env.KEYCLOAK_REALM}`,
+    hostUrl: 'https://pmtool.devops.arimac.xyz',
+    appUrl: 'https://pmtool.devops.arimac.xyz',
+    realm: 'pm-tool',
   },
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
