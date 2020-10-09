@@ -15,7 +15,9 @@
         src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
       ></v-img>
     </div>
-    <div class="userNameAdmin">{{ this.selectedUser.firstName + ' ' + this.selectedUser.lastName }}</div>
+    <div class="userNameAdmin">
+      {{ this.selectedUser.firstName + " " + this.selectedUser.lastName }}
+    </div>
     <div class="buttonSectionAdmin">
       <!-- <v-btn color="#FFC212" dark small @click.stop="resetDialog = true">Reset Password</v-btn> -->
       <v-btn
@@ -26,7 +28,8 @@
         dark
         small
         @click.stop="deactivateDialog = true"
-      >Deactivate User</v-btn>
+        >Deactivate User</v-btn
+      >
       <v-btn
         depressed
         class="text-capitalize"
@@ -35,7 +38,8 @@
         dark
         small
         @click.stop="activateDialog = true"
-      >Activate User</v-btn>
+        >Activate User</v-btn
+      >
     </div>
 
     <div class="formContentAdmin userUpdateSection overflow-y-auto">
@@ -143,11 +147,17 @@
           <v-col>
             <v-row>
               <v-col md="3">
-                <div style="color: #576377; font-weight: 450">Organization Roles</div>
+                <div style="color: #576377; font-weight: 450">
+                  Organization Roles
+                </div>
               </v-col>
               <v-col md="9">
                 <v-row>
-                  <v-col md="3" v-for="(role, index) in realmRoles" :key="index">
+                  <v-col
+                    md="3"
+                    v-for="(role, index) in realmRoles"
+                    :key="index"
+                  >
                     <v-btn
                       depressed
                       class="text-capitalize"
@@ -157,7 +167,8 @@
                       @click="selectUserRole(role)"
                       :color="checkUserRole(role.name)"
                       :disabled="checkUser(role.name)"
-                    >{{ displayRoleName(role.name) }}</v-btn>
+                      >{{ displayRoleName(role.name) }}</v-btn
+                    >
                   </v-col>
                 </v-row>
               </v-col>
@@ -185,7 +196,9 @@
                   <div
                     class="skillHeader"
                     :style="'background-color:' + category.categoryColorCode"
-                  >{{ category.categoryName }}</div>
+                  >
+                    {{ category.categoryName }}
+                  </div>
 
                   <div class="skillBody">
                     <div
@@ -205,7 +218,8 @@
                             v-if="skill.isAssigned == true"
                             size="20"
                             color="#66B25F"
-                          >mdi-checkbox-blank</v-icon>
+                            >mdi-checkbox-blank</v-icon
+                          >
                           <v-icon
                             @click="
                               addSkillToUser(category.categoryId, skill.skillId)
@@ -213,12 +227,11 @@
                             v-else
                             size="20"
                             color="#939393"
-                          >mdi-checkbox-blank-outline</v-icon>
+                            >mdi-checkbox-blank-outline</v-icon
+                          >
                         </v-list-item-action>
                         <v-list-item-content>
-                          {{
-                          skill.skillName
-                          }}
+                          {{ skill.skillName }}
                         </v-list-item-content>
                       </v-list-item>
                     </div>
@@ -232,7 +245,7 @@
     </div>
     <!-- -------- reset dialog -------- -->
     <v-dialog v-model="resetDialog" max-width="350">
-      <v-card style="text-align: center ; padding-bottom: 25px">
+      <v-card style="text-align: center; padding-bottom: 25px">
         <v-card-title class="headline" style="text-align: center">
           <v-spacer></v-spacer>Reset Password
           <v-spacer></v-spacer>
@@ -253,7 +266,8 @@
             color="red darken-1"
             dark
             @click="resetDialog = false"
-          >Cancel</v-btn>
+            >Cancel</v-btn
+          >
 
           <v-btn
             small
@@ -262,7 +276,8 @@
             color="green darken-1"
             dark
             @click="resetDialog = false"
-          >Confirm</v-btn>
+            >Confirm</v-btn
+          >
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -292,7 +307,8 @@
             color="red darken-1"
             dark
             @click="deactivateDialog = false"
-          >Cancel</v-btn>
+            >Cancel</v-btn
+          >
 
           <v-btn
             depressed
@@ -304,7 +320,8 @@
               deactivateDialog = false;
               deactivateUser();
             "
-          >Confirm</v-btn>
+            >Confirm</v-btn
+          >
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -333,7 +350,8 @@
             color="red darken-1"
             dark
             @click="activateDialog = false"
-          >Cancel</v-btn>
+            >Cancel</v-btn
+          >
 
           <v-btn
             depressed
@@ -345,7 +363,8 @@
               activateDialog = false;
               activateUser();
             "
-          >Confirm</v-btn>
+            >Confirm</v-btn
+          >
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -354,7 +373,11 @@
     <!-- -------- role change dialog -------- -->
     <v-dialog v-model="roleChangeDialog" max-width="350">
       <v-card style="text-align: center; padding-bottom: 25px">
-        <v-card-title class="headline" style="text-align: center" v-if="this.existingRole">
+        <v-card-title
+          class="headline"
+          style="text-align: center"
+          v-if="this.existingRole"
+        >
           <v-spacer></v-spacer>Remove User Role
           <v-spacer></v-spacer>
         </v-card-title>
@@ -382,7 +405,8 @@
             color="red darken-1"
             dark
             @click="roleChangeDialog = false"
-          >Cancel</v-btn>
+            >Cancel</v-btn
+          >
 
           <v-btn
             small
@@ -391,7 +415,8 @@
             color="green darken-1"
             dark
             @click="userRoleUpdate"
-          >Confirm</v-btn>
+            >Confirm</v-btn
+          >
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -563,7 +588,7 @@ export default {
       }
     },
     getSkills() {
-      console.log("TRIGERRED " + this.filterCategory);
+      // console.log("TRIGERRED " + this.filterCategory);
       if (this.filterCategory != undefined) {
         this.$store.dispatch(
           "skillMatrix/fetchCategorySkills",
@@ -577,7 +602,7 @@ export default {
       // this.filterSkill = [];
     },
     clearCategory() {
-      console.log("CLEARED " + this.filterCategory);
+      // console.log("CLEARED " + this.filterCategory);
       this.filterCategory = "";
     },
     // categorizedSkillMap() {
