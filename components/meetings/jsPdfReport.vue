@@ -1,7 +1,4 @@
-
-
-
-    <template>
+<template>
   <div>
     <div
       style="
@@ -46,6 +43,7 @@
           </td>
         </tr>
       </table>
+
       <table style="font-size: 8px; font-weight: 200; width: 100%">
         <tr>
           <td>
@@ -98,6 +96,7 @@
           </td>
         </tr>
       </table>
+
       <div>
         <span class="boldFontHeading">Chaired By: </span>
         <span
@@ -201,10 +200,7 @@
           </td>
           <td style="width: 100px">
             <span v-if="disPoint.actionByGuest">{{ disPoint.actionBy }}</span>
-            <span v-else
-              >{{ disPoint.meetingUser.firstName }}
-              {{ disPoint.meetingUser.lastName }}</span
-            >
+            <span v-else>{{ disPoint.meetingUser.firstName }} </span>
           </td>
           <td style="width: 100px">
             <span v-if="disPoint.dueDate == null">No Due Date</span>
@@ -219,16 +215,16 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 export default {
   methods: {
     getHtml(htmlContentText, index) {
       //   console.log("HTML" + htmlContent + index);
       //   document.getElementById("htmlContent").innerHTML +=
       //     "<p>Add required parts</p>";
-      let id = "htmlContent" + index;
+      let id = 'htmlContent' + index;
       if (document.getElementById(id) != null) {
-        console.log("HTML" + htmlContentText + index);
+        console.log('HTML' + htmlContentText + index);
         document.getElementById(id).innerHTML = htmlContentText;
       }
     },
