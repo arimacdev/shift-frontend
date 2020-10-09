@@ -76,14 +76,14 @@
           class="fileDisplaySection"
           width="23%"
         >
-          <div style="height: 150px;">
+          <div style="height: 150px">
             <a
-              style="text-decoration: none;"
+              style="text-decoration: none"
               :href="projectFile.projectFileUrl"
               target="_blank"
             >
               <v-btn
-                style="position: absolute; z-index: 101; right:5px; top: 5px"
+                style="position: absolute; z-index: 101; right: 5px; top: 5px"
                 icon
               >
                 <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
@@ -102,7 +102,7 @@
             <!-- <iframe v-else width="100%" :src="projectFile.projectFileUrl"></iframe> -->
           </div>
 
-          <v-list-item z- style="height: 30px !important; ">
+          <v-list-item z- style="height: 30px !important">
             <v-list-item-action style="margin-left: -10px">
               <v-icon
                 v-if="checkFileType(projectFile.projectFileName)"
@@ -135,7 +135,7 @@
             <v-btn icon>
               <div class="iconBackCircleFiles">
                 <a
-                  style="text-decoration: none;"
+                  style="text-decoration: none"
                   :href="projectFile.projectFileUrl"
                   target="_blank"
                   download
@@ -213,14 +213,14 @@
           class="fileDisplaySection"
           width="23%"
         >
-          <div style="height: 150px;">
+          <div style="height: 150px">
             <a
-              style="text-decoration: none;"
+              style="text-decoration: none"
               :href="taskFile.taskFileUrl"
               target="_blank"
             >
               <v-btn
-                style="position: absolute; z-index: 101; right:5px; top: 5px"
+                style="position: absolute; z-index: 101; right: 5px; top: 5px"
                 icon
               >
                 <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
@@ -239,7 +239,7 @@
             <!-- <iframe class="iframeSection" v-else width="100%" :src="taskFile.taskFileUrl"></iframe> -->
           </div>
 
-          <v-list-item z- style="height: 30px !important; ">
+          <v-list-item z- style="height: 30px !important">
             <v-list-item-action style="margin-left: -10px">
               <v-icon
                 v-if="checkFileType(taskFile.taskFileName)"
@@ -272,7 +272,7 @@
             <v-btn icon>
               <div class="iconBackCircleFiles">
                 <a
-                  style="text-decoration: none;"
+                  style="text-decoration: none"
                   :href="taskFile.taskFileUrl"
                   target="_blank"
                   download
@@ -329,7 +329,7 @@
                   <v-list-item
                     v-if="
                       projectFolder.folderType == 'PROJECT' &&
-                        projectFolder.folderId != selectedFolder.folderId
+                      projectFolder.folderId != selectedFolder.folderId
                     "
                     @click="moveFolder(projectFolder.folderId)"
                   >
@@ -555,33 +555,33 @@
   </div>
 </template>
 <script>
-import SuccessPopup from '~/components/popups/successPopup';
-import ErrorPopup from '~/components/popups/errorPopup';
-import Progress from '~/components/popups/progress';
-import { mapState } from 'vuex';
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
+import Progress from "~/components/popups/progress";
+import { mapState } from "vuex";
 export default {
-  props: ['selectedFolder'],
+  props: ["selectedFolder"],
   components: {
-    'success-popup': SuccessPopup,
-    'error-popup': ErrorPopup,
-    'progress-loading': Progress,
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup,
+    "progress-loading": Progress,
   },
   data() {
     return {
       snackbar: false,
-      errorMessage: '',
-      successMessage: '',
+      errorMessage: "",
+      successMessage: "",
       userId: this.$store.state.user.userId,
-      component: '',
+      component: "",
       files: [],
-      fileId: '',
+      fileId: "",
       taskDialog: false,
       folderDeleteDialog: false,
       editFolderDialog: false,
-      folderNameRules: [(value) => !!value || 'Folder name is required!'],
+      folderNameRules: [(value) => !!value || "Folder name is required!"],
       folderName: this.selectedFolder.folderName,
       fileMoveDialog: false,
-      folderMove: '',
+      folderMove: "",
     };
   },
   methods: {
@@ -604,26 +604,26 @@ export default {
             },
           }
         );
-        this.$store.dispatch('project/fetchAllSelectedFolderFiles', {
+        this.$store.dispatch("project/fetchAllSelectedFolderFiles", {
           projectId: this.$route.params.projects,
           folderId: this.selectedFolder.folderId,
         });
         this.$store.dispatch(
-          'project/fetchAllProjectFolders',
+          "project/fetchAllProjectFolders",
           this.$route.params.projects
         );
-        this.component = 'success-popup';
-        this.successMessage = 'File successfully moved';
+        this.component = "success-popup";
+        this.successMessage = "File successfully moved";
         setTimeout(() => {
           this.close();
         }, 3000);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        (this.folderName = ''), console.log('Error updating a status', e);
+        (this.folderName = ""), console.log("Error updating a status", e);
       }
       this.$refs.form.reset();
     },
@@ -642,22 +642,22 @@ export default {
           }
         );
         this.$store.dispatch(
-          'project/fetchAllProjectFolders',
+          "project/fetchAllProjectFolders",
           this.$route.params.projects
         );
-        this.component = 'success-popup';
-        this.successMessage = 'Folder successfully updated';
-        (this.folderName = ''),
+        this.component = "success-popup";
+        this.successMessage = "Folder successfully updated";
+        (this.folderName = ""),
           setTimeout(() => {
             this.close();
           }, 3000);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
-        (this.folderName = ''), console.log('Error updating a status', e);
+        (this.folderName = ""), console.log("Error updating a status", e);
       }
       this.$refs.form.reset();
     },
@@ -667,12 +667,12 @@ export default {
 
         if (Math.floor(fileSize) > 5) {
           const errorMessage = {
-            message: 'File Size too Large',
+            message: "File Size too Large",
             status: 422,
           };
           this.errorMessage = errorMessage;
           //this.errorMessage = "File Size too Large"
-          this.component = 'error-popup';
+          this.component = "error-popup";
           setTimeout(() => {
             this.close();
           }, 3000);
@@ -680,9 +680,9 @@ export default {
         } else {
           this.snackbar = true;
           let formData = new FormData();
-          formData.append('files', this.files[index]);
-          formData.append('type', 'projectFile');
-          formData.append('folderId', this.selectedFolder.folderId);
+          formData.append("files", this.files[index]);
+          formData.append("type", "projectFile");
+          formData.append("folderId", this.selectedFolder.folderId);
 
           this.$axios
             .$post(`/projects/${this.projectId}/files/upload`, formData, {
@@ -693,8 +693,8 @@ export default {
             .then((res) => {
               this.snackbar = false;
               // console.log("resp", res.data);
-              this.component = 'success-popup';
-              this.successMessage = 'File(s) successfully uploaded';
+              this.component = "success-popup";
+              this.successMessage = "File(s) successfully uploaded";
               setTimeout(() => {
                 this.close();
               }, 3000);
@@ -704,44 +704,44 @@ export default {
               // uploadedFile.lastName = this.userProfile.lastName;
               // console.log("File upload successful", res.data);
               // this.$store.dispatch("project/addProjectFile", res.data);
-              this.$store.dispatch('project/fetchAllSelectedFolderFiles', {
+              this.$store.dispatch("project/fetchAllSelectedFolderFiles", {
                 projectId: this.$route.params.projects,
                 folderId: this.selectedFolder.folderId,
               });
               // console.log("File upload successful", res);
             })
             .catch((err) => {
-              console.log('File Upload Failed', err);
+              console.log("File Upload Failed", err);
               this.errorMessage = err.response.data;
-              this.component = 'error-popup';
+              this.component = "error-popup";
               setTimeout(() => {
                 this.close();
               }, 3000);
               this.snackbar = false;
-              console.log('File Upload Failed', err);
+              console.log("File Upload Failed", err);
             });
         }
       }
       this.files = null;
     },
     checkFileType(type) {
-      console.log('checkF', type);
+      // console.log('checkF', type);
       if (type) {
-        const fileType = type.split('.').pop();
+        const fileType = type.split(".").pop();
         switch (fileType) {
-          case 'png':
+          case "png":
             return true;
             break;
-          case 'jpeg':
+          case "jpeg":
             return true;
             break;
-          case 'gif':
+          case "gif":
             return true;
             break;
-          case 'svg':
+          case "svg":
             return true;
             break;
-          case 'jpg':
+          case "jpg":
             return true;
             break;
           default:
@@ -763,23 +763,23 @@ export default {
             },
           }
         );
-        this.$store.dispatch('project/fetchAllSelectedFolderFiles', {
+        this.$store.dispatch("project/fetchAllSelectedFolderFiles", {
           projectId: this.$route.params.projects,
           folderId: this.selectedFolder.folderId,
         });
-        this.component = 'success-popup';
-        this.successMessage = 'File successfully deleted';
+        this.component = "success-popup";
+        this.successMessage = "File successfully deleted";
         setTimeout(() => {
           this.close();
         }, 3000);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
         this.snackbar = false;
-        console.log('Error deleting task', e);
+        console.log("Error deleting task", e);
         this.taskDialog = false;
       }
     },
@@ -797,29 +797,29 @@ export default {
           }
         );
         this.$store.dispatch(
-          'project/fetchAllProjectFolders',
+          "project/fetchAllProjectFolders",
           this.$route.params.projects
         );
-        this.$emit('removeComponent');
-        this.component = 'success-popup';
-        this.successMessage = 'Folder successfully deleted';
+        this.$emit("removeComponent");
+        this.component = "success-popup";
+        this.successMessage = "Folder successfully deleted";
         setTimeout(() => {
           this.close();
         }, 3000);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = 'error-popup';
+        this.component = "error-popup";
         setTimeout(() => {
           this.close();
         }, 3000);
         this.snackbar = false;
-        console.log('Error deleting task', e);
+        console.log("Error deleting task", e);
         this.taskDialog = false;
       }
     },
     getUploadDate(date) {
-      if (date == '1970-01-01T05:30' || date == null) return 'No Due Date';
-      let stringDate = date + ' ';
+      if (date == "1970-01-01T05:30" || date == null) return "No Due Date";
+      let stringDate = date + " ";
       stringDate = stringDate.toString();
       stringDate = stringDate.slice(0, 10);
       return stringDate;
@@ -833,7 +833,7 @@ export default {
       // console.log("file Id " + this.fileId);
     },
     close() {
-      this.component = '';
+      this.component = "";
     },
   },
   computed: {

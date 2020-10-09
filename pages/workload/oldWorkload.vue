@@ -8,7 +8,9 @@
           <div class="name-div">
             <v-list-item>
               <v-list-item-content>
-                <v-list-item-title class="font-weight-medium">Workload</v-list-item-title>
+                <v-list-item-title class="font-weight-medium"
+                  >Workload</v-list-item-title
+                >
               </v-list-item-content>
 
               <v-divider class="mx-4" inset vertical></v-divider>
@@ -47,7 +49,9 @@
                 <v-list-item @click="selectUser(user)" class="workloadListItem">
                   <v-list-item-avatar>
                     <v-img
-                      v-if="user.profileImage != null && user.profileImage != ''"
+                      v-if="
+                        user.profileImage != null && user.profileImage != ''
+                      "
                       :src="user.profileImage"
                     ></v-img>
                     <v-img
@@ -58,19 +62,24 @@
                   <v-list-item-content>
                     <v-list-item-title
                       @click="selectUser(user)"
-                      v-on:click="component='view-user'"
+                      v-on:click="component = 'view-user'"
                       class="body-2"
-                    >{{ user.firstName }} {{ user.lastName}}</v-list-item-title>
+                      >{{ user.firstName }}
+                      {{ user.lastName }}</v-list-item-title
+                    >
                   </v-list-item-content>
                   <v-divider vertical inset class="workloadDivider"></v-divider>
                   <v-list-item-content>
-                    <v-task-title
-                      class="workloadCompletedStatus"
-                    >{{ user.tasksCompleted + "/" + user.totalTasks + " Tasks completed"}}</v-task-title>
+                    <v-task-title class="workloadCompletedStatus">{{
+                      user.tasksCompleted +
+                      "/" +
+                      user.totalTasks +
+                      " Tasks completed"
+                    }}</v-task-title>
 
                     <v-list-item-subtitle class="workloadProgressLine">
                       <v-progress-linear
-                        :value="(user.tasksCompleted/user.totalTasks)*100"
+                        :value="(user.tasksCompleted / user.totalTasks) * 100"
                         color="#2EC973"
                         background-color="red"
                         height="8"
@@ -85,18 +94,26 @@
                     </v-list-item-subtitle>
                   </v-list-item-content>
                   <div
-                    v-if="(user.tasksCompleted/user.totalTasks)*100 < 25"
+                    v-if="(user.tasksCompleted / user.totalTasks) * 100 < 25"
                     class="progressColorCode progressBad"
                   ></div>
                   <div
-                    v-else-if="(user.tasksCompleted/user.totalTasks)*100 >= 25 && (user.tasksCompleted/user.totalTasks)*100 < 75 "
+                    v-else-if="
+                      (user.tasksCompleted / user.totalTasks) * 100 >= 25 &&
+                      (user.tasksCompleted / user.totalTasks) * 100 < 75
+                    "
                     class="progressColorCode progressFair"
                   ></div>
                   <div
-                    v-else-if="(user.tasksCompleted/user.totalTasks)*100 >= 75"
+                    v-else-if="
+                      (user.tasksCompleted / user.totalTasks) * 100 >= 75
+                    "
                     class="progressColorCode progressGood"
                   ></div>
-                  <div v-else-if="user.totalTasks == 0" class="progressColorCode progressNoWorks"></div>
+                  <div
+                    v-else-if="user.totalTasks == 0"
+                    class="progressColorCode progressNoWorks"
+                  ></div>
                 </v-list-item>
                 <v-divider class="mx-4"></v-divider>
               </div>
@@ -107,8 +124,12 @@
 
       <div class="workLoadTitleDiv workloadBody">
         <!-- <v-list-item-title class="hi" v-if="this.userData.firstName == null"> -->
-        <v-list-item-title class="hi" v-if="!this.firstName">Select a person</v-list-item-title>
-        <v-list-item-title v-else>{{ this.firstName}} {{ this.lastName }}</v-list-item-title>
+        <v-list-item-title class="hi" v-if="!this.firstName"
+          >Select a person</v-list-item-title
+        >
+        <v-list-item-title v-else
+          >{{ this.firstName }} {{ this.lastName }}</v-list-item-title
+        >
       </div>
       <v-divider></v-divider>
 
@@ -129,7 +150,7 @@ import { mapState, mapGetters } from "vuex";
 export default {
   components: {
     NavigationDrawer,
-    "workload-content": WorkloadContent
+    "workload-content": WorkloadContent,
   },
   data() {
     return {
@@ -144,7 +165,7 @@ export default {
       search: null,
       select: {},
       states: [],
-      drawer: null
+      drawer: null,
     };
   },
 
@@ -155,13 +176,13 @@ export default {
 
   watch: {
     search(val) {
-      console.log("value is ", val);
+      // console.log("value is ", val);
       val && val !== this.select && this.querySelections(val);
-    }
+    },
   },
   methods: {
     onSelectUser() {
-      console.log("details", this.select);
+      // console.log("details", this.select);
       if (this.select !== undefined) {
         // this.userData.firstName = this.select.firstName;
         // this.userData.lastName = this.select.lastName;
@@ -172,7 +193,7 @@ export default {
         this.$store.dispatch("workload/fetchAllWorkloadTasks", {
           userId: this.select.userId,
           from: "all",
-          to: "all"
+          to: "all",
         });
         //  } else {
         //    this.$store.dispatch('workload/clearWorkLoadTasks');
@@ -184,13 +205,13 @@ export default {
       // this.userData = userData;
       this.firstName = userData.firstName;
       this.lastName = userData.lastName;
-      console.log("check", userData);
+      // console.log("check", userData);
       this.selectedUser = userData.userId;
       // if(userData.totalTasks != 0){
       this.$store.dispatch("workload/fetchAllWorkloadTasks", {
         userId: userData.userId,
         from: "all",
-        to: "all"
+        to: "all",
       });
       // } else {
       //   this.$store.dispatch('workload/clearWorkLoadTasks');
@@ -203,24 +224,24 @@ export default {
         let user = projectSearchList[index];
         this.states.push({
           name: user.firstName + " " + user.lastName,
-          id: user
+          id: user,
         });
       }
       // console.log("usersList for search bar", this.taskWorkLoadUsers, "nameList", this.states)
       this.loading = true;
       setTimeout(() => {
-        this.items = this.states.filter(e => {
+        this.items = this.states.filter((e) => {
           return (e || "").toLowerCase().indexOf((v || "").toLowerCase()) > -1;
         });
         this.loading = false;
       });
       this.loading = false;
-    }
+    },
   },
   computed: {
     ...mapState({
-      taskWorkLoadUsers: state => state.workload.taskWorkLoadUsers
-    })
-  }
+      taskWorkLoadUsers: (state) => state.workload.taskWorkLoadUsers,
+    }),
+  },
 };
 </script>

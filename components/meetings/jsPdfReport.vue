@@ -228,7 +228,7 @@ export default {
       //     "<p>Add required parts</p>";
       let id = "htmlContent" + index;
       if (document.getElementById(id) != null) {
-        console.log("HTML" + htmlContentText + index);
+        // console.log("HTML" + htmlContentText + index);
         document.getElementById(id).innerHTML = htmlContentText;
       }
     },

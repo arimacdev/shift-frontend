@@ -6,7 +6,9 @@
         <div class="task-name-div">
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title class="font-weight-medium">Tasks</v-list-item-title>
+              <v-list-item-title class="font-weight-medium"
+                >Tasks</v-list-item-title
+              >
             </v-list-item-content>
 
             <v-divider class="mx-4" inset vertical></v-divider>
@@ -18,8 +20,11 @@
           <v-list-item-title
             v-if="this.component == 'personal-tasks'"
             class="font-weight-bold"
-          >My personal Tasks</v-list-item-title>
-          <v-list-item-title v-else class="font-weight-bold">{{ this.group.taskGroupName }}</v-list-item-title>
+            >My personal Tasks</v-list-item-title
+          >
+          <v-list-item-title v-else class="font-weight-bold">{{
+            this.group.taskGroupName
+          }}</v-list-item-title>
           <!-- <v-list-item-title v-else class="font-weight-bold">{{ groupname }}</v-list-item-title> -->
         </div>
       </div>
@@ -27,18 +32,23 @@
 
     <div class="pageBody">
       <div class="groupTasksList">
-        <task-search-bar :groups="groups" @searchGroupSelected="viewSearchGroupComponent" />
+        <task-search-bar
+          :groups="groups"
+          @searchGroupSelected="viewSearchGroupComponent"
+        />
 
         <div class="listView overflow-y-auto">
           <v-list-item-group active-class>
             <div>
-              <div v-on:click="component='personal-tasks'">
+              <div v-on:click="component = 'personal-tasks'">
                 <v-list-item class="tasksListItem">
                   <v-list-item-action>
                     <v-icon size="20" color="#FFFFFF">icon-task</v-icon>
                   </v-list-item-action>
                   <v-list-item-content>
-                    <v-list-item-title class="taskListName">My personal tasks</v-list-item-title>
+                    <v-list-item-title class="taskListName"
+                      >My personal tasks</v-list-item-title
+                    >
                   </v-list-item-content>
                 </v-list-item>
               </div>
@@ -66,13 +76,19 @@
                   @click="selectGroup(group)"
                 >
                   <v-list-item-action class="active">
-                    <v-icon size="20" class="groupListElement">icon-task</v-icon>
+                    <v-icon size="20" class="groupListElement"
+                      >icon-task</v-icon
+                    >
                   </v-list-item-action>
                   <v-list-item-content class="active">
-                    <v-list-item-title class="groupListName">{{ group.taskGroupName }}</v-list-item-title>
+                    <v-list-item-title class="groupListName">{{
+                      group.taskGroupName
+                    }}</v-list-item-title>
                   </v-list-item-content>
                   <v-list-item-action class="active">
-                    <v-icon size="15" class="groupListElement">icon-users</v-icon>
+                    <v-icon size="15" class="groupListElement"
+                      >icon-users</v-icon
+                    >
                   </v-list-item-action>
                 </v-list-item>
               </div>
@@ -108,7 +124,7 @@ export default {
     const { data: users } = await $axios.$get("/users");
     // console.log("users list", users);
     return {
-      users: users
+      users: users,
     };
   },
 
@@ -117,7 +133,7 @@ export default {
     "task-search-bar": TaskSearchBar,
     "personal-tasks": PersonalTasks,
     "group-tasks": GroupTasks,
-    "progress-loading": Progress
+    "progress-loading": Progress,
   },
 
   data() {
@@ -130,14 +146,14 @@ export default {
       group: {},
       users: [],
       groupTasks: [],
-      completionTasks: []
+      completionTasks: [],
     };
   },
   async created() {
     this.overlay = true;
     Promise.all([
       this.$store.dispatch("groups/group/fetchMyGroups"),
-      this.$store.dispatch("project/clearProject")
+      this.$store.dispatch("project/clearProject"),
     ]).finally(() => {
       this.overlay = false;
     });
@@ -145,8 +161,8 @@ export default {
 
   computed: {
     ...mapState({
-      groups: state => state.groups.group.myGroups
-    })
+      groups: (state) => state.groups.group.myGroups,
+    }),
   },
   methods: {
     viewSearchGroupComponent(group) {
@@ -155,12 +171,12 @@ export default {
 
       this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
         taskGroupId: this.group.taskGroupId,
-        userId: this.userId
+        userId: this.userId,
       });
 
       this.$store.dispatch("groups/groupPeople/fetchGroupPeople", {
         taskGroupId: this.group.taskGroupId,
-        userId: this.userId
+        userId: this.userId,
       });
     },
     async selectGroup(group) {
@@ -169,23 +185,23 @@ export default {
 
       this.$store.dispatch("groups/groupTask/fetchGroupTasks", {
         taskGroupId: this.group.taskGroupId,
-        userId: this.userId
+        userId: this.userId,
       });
 
       this.$store.dispatch("groups/groupPeople/fetchGroupPeople", {
         taskGroupId: this.group.taskGroupId,
-        userId: this.userId
+        userId: this.userId,
       });
     },
 
     async addGroup() {
       this.overlay = true;
-      console.log("add group");
+      // console.log("add group");
       this.$store.dispatch("groups/group/addGroup", this.groupName);
 
       this.groupName = "";
       this.overlay = false;
-    }
-  }
+    },
+  },
 };
 </script>

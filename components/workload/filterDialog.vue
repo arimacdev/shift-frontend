@@ -1,13 +1,15 @@
 <template>
   <v-card width="100vw">
-    <v-toolbar dark color="#010101" style="background-color: #010101 !important">
+    <v-toolbar
+      dark
+      color="#010101"
+      style="background-color: #010101 !important"
+    >
       <v-btn icon dark @click="taskDialogClosing()">
         <v-icon>mdi-close</v-icon>
       </v-btn>
       <v-toolbar-title class="font-weight-bold">
-        {{
-        this.selectedTask.taskName
-        }}
+        {{ this.selectedTask.taskName }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items></v-toolbar-items>
@@ -19,20 +21,27 @@
             <v-col sm="2" md="2">
               <div class="taskViewTitle">
                 Task -
-                <span class="secondaryId">#{{this.selectedTask.secondaryTaskId}}</span>
+                <span class="secondaryId"
+                  >#{{ this.selectedTask.secondaryTaskId }}</span
+                >
               </div>
             </v-col>
             <v-col sm="2" md="2">
-              <div
-                class="taskStatusDropdown"
-              >{{this.selectedTask.taskStatus.charAt(0).toUpperCase()+ this.selectedTask.taskStatus.slice(1)}}</div>
+              <div class="taskStatusDropdown">
+                {{
+                  this.selectedTask.taskStatus.charAt(0).toUpperCase() +
+                  this.selectedTask.taskStatus.slice(1)
+                }}
+              </div>
             </v-col>
           </v-row>
           <v-row class="mb-12" no-gutters>
             <v-col sm="12" md="12" class="formRowNameRange">
               <v-row class="mb-12" no-gutters>
                 <v-col>
-                  <div class="viewTaskTitle">{{this.selectedTask.taskName}}</div>
+                  <div class="viewTaskTitle">
+                    {{ this.selectedTask.taskName }}
+                  </div>
                 </v-col>
               </v-row>
               <v-divider class="nameRangeDevider"></v-divider>
@@ -49,21 +58,33 @@
                       <v-list-item-icon>
                         <v-icon size="25" color="#0BAFFF">icon-task</v-icon>
                       </v-list-item-icon>
-                      <v-list-item-title class="viewTaskFontColors">Task Type</v-list-item-title>
+                      <v-list-item-title class="viewTaskFontColors"
+                        >Task Type</v-list-item-title
+                      >
                     </v-list-item>
                     <v-list-item-content class="parentChildTaskList">
                       <!-- ---------- task list --------- -->
                       <div class="taskViewTaskListPadding">
                         <v-row class="mb-12" no-gutters>
                           <v-col sm="6" md="6">
-                            <div
-                              class="statusSpan"
-                            >{{this.selectedTask.taskStatus.charAt(0).toUpperCase()+ this.selectedTask.taskStatus.slice(1)}}</div>
+                            <div class="statusSpan">
+                              {{
+                                this.selectedTask.taskStatus
+                                  .charAt(0)
+                                  .toUpperCase() +
+                                this.selectedTask.taskStatus.slice(1)
+                              }}
+                            </div>
                           </v-col>
                           <v-col sm="6" md="6">
-                            <div
-                              class="statusSpan"
-                            >{{this.selectedTask.issueType.charAt(0).toUpperCase()+ this.selectedTask.issueType.slice(1)}}</div>
+                            <div class="statusSpan">
+                              {{
+                                this.selectedTask.issueType
+                                  .charAt(0)
+                                  .toUpperCase() +
+                                this.selectedTask.issueType.slice(1)
+                              }}
+                            </div>
                           </v-col>
                         </v-row>
                       </div>
@@ -78,14 +99,16 @@
                       <v-list-item-icon>
                         <v-icon size="25" color="#6FCD17">icon-board</v-icon>
                       </v-list-item-icon>
-                      <v-list-item-title class="viewTaskFontColors">Board</v-list-item-title>
+                      <v-list-item-title class="viewTaskFontColors"
+                        >Board</v-list-item-title
+                      >
                     </v-list-item>
                     <v-list-item-content class="parentChildTaskList">
                       <!-- ---------- task list --------- -->
                       <div class="taskViewTaskListPadding">
                         <v-row class="mb-12" no-gutters>
                           <v-col sm="6" md="6">
-                            <div class="statusSpan">{{this.taskSprint}}</div>
+                            <div class="statusSpan">{{ this.taskSprint }}</div>
                           </v-col>
                         </v-row>
                       </div>
@@ -98,9 +121,13 @@
                   <div class="expansionViewHeader">
                     <v-list-item class="taskViewTitleSection">
                       <v-list-item-icon>
-                        <v-icon size="30" color="#FF6767">mdi-square-edit-outline</v-icon>
+                        <v-icon size="30" color="#FF6767"
+                          >mdi-square-edit-outline</v-icon
+                        >
                       </v-list-item-icon>
-                      <v-list-item-title class="viewTaskFontColors">Notes</v-list-item-title>
+                      <v-list-item-title class="viewTaskFontColors"
+                        >Notes</v-list-item-title
+                      >
                     </v-list-item>
                     <v-list-item>
                       <v-list-item-content>
@@ -125,30 +152,47 @@
                 <div class="rightSideColumn">
                   <v-list-item>
                     <v-list-item-icon
-                      style="background-color: #02C1D4; padding: 10px; border-radius: 50%"
+                      style="
+                        background-color: #02c1d4;
+                        padding: 10px;
+                        border-radius: 50%;
+                      "
                     >
                       <v-icon size="25" color="#FFFFFF">icon-assignee</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Assignee</v-list-item-subtitle>
-                      <v-list-item-title>{{this.taskUser.firstName}} {{this.taskUser.lastName}}</v-list-item-title>
+                      <v-list-item-subtitle class="rightColumnItemsSubTitle"
+                        >Task Assignee</v-list-item-subtitle
+                      >
+                      <v-list-item-title
+                        >{{ this.taskUser.firstName }}
+                        {{ this.taskUser.lastName }}</v-list-item-title
+                      >
                     </v-list-item-content>
                   </v-list-item>
                   <!-- ----------- Due date section --------- -->
 
                   <v-list-item>
                     <v-list-item-icon
-                      style="background-color: #7CDD00; padding: 10px; border-radius: 50%"
+                      style="
+                        background-color: #7cdd00;
+                        padding: 10px;
+                        border-radius: 50%;
+                      "
                     >
-                      <v-icon size="25" color="#FFFFFF">mdi-calendar-blank-outline</v-icon>
+                      <v-icon size="25" color="#FFFFFF"
+                        >mdi-calendar-blank-outline</v-icon
+                      >
                     </v-list-item-icon>
                     <v-list-item-content>
-                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Due Date</v-list-item-subtitle>
+                      <v-list-item-subtitle class="rightColumnItemsSubTitle"
+                        >Task Due Date</v-list-item-subtitle
+                      >
                       <v-list-item-title>
                         {{
-                        getProjectDisplayDates(
-                        this.selectedTask.taskDueDateAt
-                        )
+                          getProjectDisplayDates(
+                            this.selectedTask.taskDueDateAt
+                          )
                         }}
                       </v-list-item-title>
                     </v-list-item-content>
@@ -157,18 +201,26 @@
                   <!-- ----------- Reminder date section --------- -->
                   <v-list-item>
                     <v-list-item-icon
-                      style="background-color: #7CDD00; padding: 10px; border-radius: 50%"
+                      style="
+                        background-color: #7cdd00;
+                        padding: 10px;
+                        border-radius: 50%;
+                      "
                     >
-                      <v-icon size="25" color="#FFFFFF">mdi-clock-outline</v-icon>
+                      <v-icon size="25" color="#FFFFFF"
+                        >mdi-clock-outline</v-icon
+                      >
                     </v-list-item-icon>
                     <v-list-item-content>
-                      <v-list-item-subtitle class="rightColumnItemsSubTitle">Task Remind Date</v-list-item-subtitle>
+                      <v-list-item-subtitle class="rightColumnItemsSubTitle"
+                        >Task Remind Date</v-list-item-subtitle
+                      >
 
                       <v-list-item-title>
                         {{
-                        getProjectDisplayDates(
-                        this.selectedTask.taskReminderAt
-                        )
+                          getProjectDisplayDates(
+                            this.selectedTask.taskReminderAt
+                          )
                         }}
                       </v-list-item-title>
                     </v-list-item-content>
@@ -178,17 +230,27 @@
                   <!-- ----------- Files section --------- -->
                   <v-list-item>
                     <v-list-item-icon
-                      style="background-color: #FFAE4F; padding: 10px; border-radius: 50%"
+                      style="
+                        background-color: #ffae4f;
+                        padding: 10px;
+                        border-radius: 50%;
+                      "
                     >
                       <v-icon size="25" color="#FFFFFF">mdi-paperclip</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                      <v-list-item-title class="rightColumnItemsTitle">Files</v-list-item-title>
+                      <v-list-item-title class="rightColumnItemsTitle"
+                        >Files</v-list-item-title
+                      >
                     </v-list-item-content>
                   </v-list-item>
 
                   <!-- ------------- file viewer ------------ -->
-                  <div class="filesViewDiv" v-for="(file, index) in this.taskFiles" :key="index">
+                  <div
+                    class="filesViewDiv"
+                    v-for="(file, index) in this.taskFiles"
+                    :key="index"
+                  >
                     <v-list-item>
                       <div>
                         <v-icon size="30">mdi-file-document-outline</v-icon>
@@ -196,39 +258,35 @@
                       <v-list-item-content>
                         <v-list-item-title class="fileTitles">
                           <a
-                            style="text-decoration: none;"
+                            style="text-decoration: none"
                             :href="file.taskFileUrl"
                             target="_blank"
                           >
-                            {{
-                            file.taskFileName
-                            }}
+                            {{ file.taskFileName }}
                           </a>
                         </v-list-item-title>
                         <v-list-item-subtitle class="fileSubTitles">
-                          {{
-                          file.taskFileSize/1000
-                          }}KB
+                          {{ file.taskFileSize / 1000 }}KB
                         </v-list-item-subtitle>
                       </v-list-item-content>
                       <v-list-item-content>
                         <v-list-item-title class="fileTitles">
-                          {{
-                          file.firstName
-                          }}
-                          {{
-                          file.lastName
-                          }}
+                          {{ file.firstName }}
+                          {{ file.lastName }}
                         </v-list-item-title>
                         <v-list-item-subtitle class="fileSubTitles">
-                          {{
-                          getProjectDates(file.taskFileDate)
-                          }}
+                          {{ getProjectDates(file.taskFileDate) }}
                         </v-list-item-subtitle>
                       </v-list-item-content>
                       <div>
-                        <a style="text-decoration: none;" :href="file.taskFileUrl" target="_blank">
-                          <v-icon size="25" color="#0BAFFF">mdi-cloud-download</v-icon>
+                        <a
+                          style="text-decoration: none"
+                          :href="file.taskFileUrl"
+                          target="_blank"
+                        >
+                          <v-icon size="25" color="#0BAFFF"
+                            >mdi-cloud-download</v-icon
+                          >
                         </a>
                       </div>
                       <!-- <div>
@@ -252,14 +310,19 @@
     <v-dialog v-model="taskDeleteDialog" max-width="380">
       <v-card>
         <div class="popupConfirmHeadline">
-          <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
+          <v-icon
+            class="deletePopupIcon"
+            size="60"
+            color="deep-orange lighten-1"
+            >mdi-alert-outline</v-icon
+          >
           <br />
           <span class="alertPopupTitle">Delete Task</span>
           <br />
           <span class="alertPopupText">
             You're about to permanantly delete this task, its comments and
-            attachments, and all of its data. If you're not sure, you can
-            cancel this action.
+            attachments, and all of its data. If you're not sure, you can cancel
+            this action.
           </span>
         </div>
 
@@ -273,7 +336,8 @@
               depressed
               width="100px"
               @click="taskDeleteDialog = false"
-            >Cancel</v-btn>
+              >Cancel</v-btn
+            >
             <v-spacer></v-spacer>
             <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
             <v-btn
@@ -282,11 +346,12 @@
               color="error"
               width="100px"
               @click="
-                      taskDeleteDialog = false;
-                      taskDialog = false;
-                      deleteTask();
-                    "
-            >Delete</v-btn>
+                taskDeleteDialog = false;
+                taskDialog = false;
+                deleteTask();
+              "
+              >Delete</v-btn
+            >
             <v-spacer></v-spacer>
           </v-card-actions>
         </div>
@@ -446,7 +511,7 @@ export default {
       }
     },
     async updateTaskName() {
-      console.log("updatedTaskName ->", this.updatedTask.taskName);
+      // console.log("updatedTaskName ->", this.updatedTask.taskName);
       let response;
       try {
         response = await this.$axios.$put(

@@ -890,7 +890,7 @@ export default {
         const count = this.AllprojectFolders.folders.filter(
           (folder) => folder.folderType === 'PROJECT'
         ).length;
-        console.log('length--->', count);
+        // console.log('length--->', count);
         return count;
       }
     },

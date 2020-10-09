@@ -4,12 +4,14 @@
       <v-dialog v-model="dialog" persistent max-width="350">
         <template v-slot:activator="{ on }">
           <div v-on="on" class="addSprintButton">
-            <v-list-item v-on:click="component='add-task'" dark>
+            <v-list-item v-on:click="component = 'add-task'" dark>
               <v-list-item-action>
                 <v-icon size="20" color>icon-board</v-icon>
               </v-list-item-action>
               <v-list-item-content class="buttonText">
-                <v-list-item-title class="bodyWiew">Add new sprint</v-list-item-title>
+                <v-list-item-title class="bodyWiew"
+                  >Add new sprint</v-list-item-title
+                >
               </v-list-item-content>
               <v-icon>mdi-plus-circle</v-icon>
             </v-list-item>
@@ -18,7 +20,9 @@
         <v-card class="addUserPopup">
           <v-form v-model="isValid" ref="form">
             <div class="popupFormContent">
-              <v-icon class size="60" color="deep-orange lighten-1">icon-board</v-icon>
+              <v-icon class size="60" color="deep-orange lighten-1"
+                >icon-board</v-icon
+              >
               <v-card-text class="deletePopupTitle">Add new sprint</v-card-text>
               <v-card-actions>
                 <v-text-field
@@ -57,7 +61,8 @@
                   width="100px"
                   @click="dialog = false"
                   :retain-focus="false"
-                >Cancel</v-btn>
+                  >Cancel</v-btn
+                >
                 <v-spacer></v-spacer>
                 <v-btn
                   depressed
@@ -67,7 +72,8 @@
                   @click="addSprint"
                   :retain-focus="false"
                   :disabled="!isValid"
-                >Save</v-btn>
+                  >Save</v-btn
+                >
                 <v-spacer></v-spacer>
               </v-card-actions>
             </div>
@@ -77,7 +83,11 @@
     </v-row>
     <div class="addSprintPopup">
       <div @click="close">
-        <component v-bind:is="component" :success="success" :errorMessage="errorMessage"></component>
+        <component
+          v-bind:is="component"
+          :success="success"
+          :errorMessage="errorMessage"
+        ></component>
       </div>
       <!-- <success-popup /> -->
     </div>
@@ -147,7 +157,7 @@ export default {
           this.close();
         }, 2000);
         this.$store.dispatch("sprints/sprint/addProjectSprint", response.data);
-        console.log("Sprint Added", response.data);
+        // console.log("Sprint Added", response.data);
       } catch (e) {
         console.log("Error adding a group", e);
         this.errorMessage = e.response.data;

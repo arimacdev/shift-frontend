@@ -10,20 +10,28 @@
             class="deleteMemberPopupIcon"
             size="60"
             color="deep-orange lighten-1"
-          >mdi-alert-outline</v-icon>
+            >mdi-alert-outline</v-icon
+          >
           <v-card-text class="deletePopupTitle">Remove Member</v-card-text>
           <v-card-text>
             You are about to remove member from group.
             <span>If you are not sure, you can close this popup</span>
           </v-card-text>
 
-          <v-btn class="editButton text-capitalize" depressed text @click="dialog = false">Cancel</v-btn>
+          <v-btn
+            class="editButton text-capitalize"
+            depressed
+            text
+            @click="dialog = false"
+            >Cancel</v-btn
+          >
           <v-btn
             class="deleteButtonSpec text-capitalize"
             depressed
             text
             @click="changeHandler"
-          >Remove</v-btn>
+            >Remove</v-btn
+          >
         </div>
       </v-card>
     </v-dialog>
@@ -55,7 +63,7 @@ export default {
       } catch (e) {
         console.log("Error blocking user", e);
       }
-      console.log(response);
+      // console.log(response);
     },
   },
 };

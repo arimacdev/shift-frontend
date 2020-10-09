@@ -1,9 +1,11 @@
 <template>
   <div>
     <div
-      v-if="organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
-                  organizationalRoles.indexOf('WORKLOAD') > -1 ||
-                  organizationalRoles.indexOf('ADMIN') > -1"
+      v-if="
+        organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
+        organizationalRoles.indexOf('WORKLOAD') > -1 ||
+        organizationalRoles.indexOf('ADMIN') > -1
+      "
       class="top-nav"
     >
       <navigation-drawer :user="user" />
@@ -12,7 +14,9 @@
           <div class="name-div">
             <v-list-item>
               <v-list-item-content>
-                <v-list-item-title class="font-weight-medium">Skill Matrix</v-list-item-title>
+                <v-list-item-title class="font-weight-medium"
+                  >Skill Matrix</v-list-item-title
+                >
               </v-list-item-content>
 
               <v-divider class="mx-4" inset vertical></v-divider>
@@ -23,8 +27,8 @@
 
       <div class="body-div">
         <div>
-          <v-row style=" ">
-            <v-col md="3" style="z-index:100">
+          <v-row style="">
+            <v-col md="3" style="z-index: 100">
               <v-autocomplete
                 return-object
                 background-color="#EDF0F5"
@@ -46,7 +50,9 @@
                 @change="searchByUser()"
               ></v-autocomplete>
             </v-col>
-            <v-col md="1" style="color: #7A8B9F; font-weight: 500; ">Filter by Skills</v-col>
+            <v-col md="1" style="color: #7a8b9f; font-weight: 500"
+              >Filter by Skills</v-col
+            >
 
             <v-col style="margin-left: -20px" md="7">
               <v-autocomplete
@@ -98,8 +104,12 @@
                     <v-icon size="25" color="red">mdi-alert-outline</v-icon>
                   </v-list-item-action>
                   <v-list-item-content class="buttonText">
-                    <v-list-item-title class="popupTitle">No items to show</v-list-item-title>
-                    <div class="popupSubtitle errorSubtitle">No allocated users for selected skills</div>
+                    <v-list-item-title class="popupTitle"
+                      >No items to show</v-list-item-title
+                    >
+                    <div class="popupSubtitle errorSubtitle">
+                      No allocated users for selected skills
+                    </div>
                   </v-list-item-content>
 
                   <div>
@@ -108,7 +118,8 @@
                       @click="cancelSearch()"
                       class="closeButton"
                       color="red"
-                    >mdi-close-circle-outline</v-icon>
+                      >mdi-close-circle-outline</v-icon
+                    >
                   </div>
                 </v-list-item>
               </v-card>
@@ -126,28 +137,43 @@
                 <v-col md="3" sm="3">
                   <div class="userListTitle">Users</div>
                 </v-col>
-                <v-col md="9" sm="9" style="background-color:#ffffff; z-index: -100">
-                  <div v-if="this.skillSearch && skillFilter != ''" class="skillDisplayDiv">
+                <v-col
+                  md="9"
+                  sm="9"
+                  style="background-color: #ffffff; z-index: -100"
+                >
+                  <div
+                    v-if="this.skillSearch && skillFilter != ''"
+                    class="skillDisplayDiv"
+                  >
                     <div class="skillScrollingWrapper" id="div1">
                       <div>
                         <div>
                           <div
                             class="skillDisplayCard"
                             v-for="(categoryMap, index) in skillFilter[0]
-                            .category"
+                              .category"
                             :key="index"
                           >
                             <div class="skillScrollingWrapper1">
-                              <v-tooltip :color="categoryMap.categoryColorCode" bottom>
+                              <v-tooltip
+                                :color="categoryMap.categoryColorCode"
+                                bottom
+                              >
                                 <template v-slot:activator="{ on }">
                                   <div
                                     v-on="on"
                                     class="categoryHeader"
                                     :style="
-                              'background-color:' +
-                                  categoryMap.categoryColorCode + '; width:' + categoryMap.skillSet.length * 95 + 'px; !important'
-                            "
-                                  >{{ categoryMap.categoryName }}</div>
+                                      'background-color:' +
+                                      categoryMap.categoryColorCode +
+                                      '; width:' +
+                                      categoryMap.skillSet.length * 95 +
+                                      'px; !important'
+                                    "
+                                  >
+                                    {{ categoryMap.categoryName }}
+                                  </div>
                                 </template>
                                 <span>{{ categoryMap.categoryName }}</span>
                               </v-tooltip>
@@ -157,12 +183,16 @@
                                 v-for="(skill, index) in categoryMap.skillSet"
                                 :key="index"
                               >
-                                <v-tooltip :color="categoryMap.categoryColorCode" bottom>
+                                <v-tooltip
+                                  :color="categoryMap.categoryColorCode"
+                                  bottom
+                                >
                                   <template v-slot:activator="{ on }">
                                     <v-list-item-title
                                       v-on="on"
                                       style="font-size: 12px"
-                                    >{{ skill.skillName }}</v-list-item-title>
+                                      >{{ skill.skillName }}</v-list-item-title
+                                    >
                                   </template>
                                   <span>{{ skill.skillName }}</span>
                                 </v-tooltip>
@@ -183,16 +213,24 @@
                           :key="index"
                         >
                           <div class="skillScrollingWrapper1">
-                            <v-tooltip :color="categoryMap.categoryColorCode" bottom>
+                            <v-tooltip
+                              :color="categoryMap.categoryColorCode"
+                              bottom
+                            >
                               <template v-slot:activator="{ on }">
                                 <div
                                   v-on="on"
                                   class="categoryHeader"
                                   :style="
-                              'background-color:' +
-                                  categoryMap.categoryColorCode + '; width:' + categoryMap.skillSet.length * 95 + 'px; !important'
-                            "
-                                >{{ categoryMap.categoryName }}</div>
+                                    'background-color:' +
+                                    categoryMap.categoryColorCode +
+                                    '; width:' +
+                                    categoryMap.skillSet.length * 95 +
+                                    'px; !important'
+                                  "
+                                >
+                                  {{ categoryMap.categoryName }}
+                                </div>
                               </template>
                               <span>{{ categoryMap.categoryName }}</span>
                             </v-tooltip>
@@ -202,12 +240,16 @@
                               v-for="(skill, index) in categoryMap.skillSet"
                               :key="index"
                             >
-                              <v-tooltip :color="categoryMap.categoryColorCode" bottom>
+                              <v-tooltip
+                                :color="categoryMap.categoryColorCode"
+                                bottom
+                              >
                                 <template v-slot:activator="{ on }">
                                   <v-list-item-title
                                     v-on="on"
                                     style="font-size: 12px"
-                                  >{{ skill.skillName }}</v-list-item-title>
+                                    >{{ skill.skillName }}</v-list-item-title
+                                  >
                                 </template>
                                 <span>{{ skill.skillName }}</span>
                               </v-tooltip>
@@ -223,20 +265,28 @@
                         <div
                           class="skillDisplayCard"
                           v-for="(categoryMap, index) in organizationSkills[0]
-                          .category"
+                            .category"
                           :key="index"
                         >
                           <div class="skillScrollingWrapper1">
-                            <v-tooltip :color="categoryMap.categoryColorCode" bottom>
+                            <v-tooltip
+                              :color="categoryMap.categoryColorCode"
+                              bottom
+                            >
                               <template v-slot:activator="{ on }">
                                 <div
                                   v-on="on"
                                   class="categoryHeader"
                                   :style="
-                              'background-color:' +
-                                  categoryMap.categoryColorCode + '; width:' + categoryMap.skillSet.length * 95 + 'px; !important'
-                            "
-                                >{{ categoryMap.categoryName }}</div>
+                                    'background-color:' +
+                                    categoryMap.categoryColorCode +
+                                    '; width:' +
+                                    categoryMap.skillSet.length * 95 +
+                                    'px; !important'
+                                  "
+                                >
+                                  {{ categoryMap.categoryName }}
+                                </div>
                               </template>
                               <span>{{ categoryMap.categoryName }}</span>
                             </v-tooltip>
@@ -250,12 +300,16 @@
                               skill.skillName
                               }}</v-list-item-title>-->
 
-                              <v-tooltip :color="categoryMap.categoryColorCode" bottom>
+                              <v-tooltip
+                                :color="categoryMap.categoryColorCode"
+                                bottom
+                              >
                                 <template v-slot:activator="{ on }">
                                   <v-list-item-title
                                     v-on="on"
                                     style="font-size: 12px"
-                                  >{{ skill.skillName }}</v-list-item-title>
+                                    >{{ skill.skillName }}</v-list-item-title
+                                  >
                                 </template>
                                 <span>{{ skill.skillName }}</span>
                               </v-tooltip>
@@ -267,7 +321,7 @@
                   </div>
                 </v-col>
               </v-row>
-              <v-row style="margin-bottom: -60px; " class="overflow-y-hidden">
+              <v-row style="margin-bottom: -60px" class="overflow-y-hidden">
                 <v-col md="3" sm="3" style="z-index: 100">
                   <v-list-item-group
                     v-if="this.skillSearch && skillFilter != ''"
@@ -283,9 +337,9 @@
                         <v-list-item-avatar>
                           <v-img
                             v-if="
-                            user.userProfileImage != null &&
+                              user.userProfileImage != null &&
                               user.userProfileImage != ''
-                          "
+                            "
                             :src="user.userProfileImage"
                           ></v-img>
                           <v-img
@@ -300,7 +354,10 @@
                           </v-list-item-title>
                         </v-list-item-content>
                       </v-list-item>
-                      <v-divider style="margin-top: 10px" class="mx-4"></v-divider>
+                      <v-divider
+                        style="margin-top: 10px"
+                        class="mx-4"
+                      ></v-divider>
                     </div>
                   </v-list-item-group>
                   <v-list-item-group
@@ -313,9 +370,9 @@
                         <v-list-item-avatar>
                           <v-img
                             v-if="
-                            this.searchUser.profileImage != null &&
+                              this.searchUser.profileImage != null &&
                               this.searchUser.profileImage != ''
-                          "
+                            "
                             :src="this.searchUser.profileImage"
                           ></v-img>
                           <v-img
@@ -325,13 +382,14 @@
                         </v-list-item-avatar>
                         <v-list-item-content>
                           <v-list-item-title>
-                            {{
-                            this.searchUser.name
-                            }}
+                            {{ this.searchUser.name }}
                           </v-list-item-title>
                         </v-list-item-content>
                       </v-list-item>
-                      <v-divider style="margin-top: 10px" class="mx-4"></v-divider>
+                      <v-divider
+                        style="margin-top: 10px"
+                        class="mx-4"
+                      ></v-divider>
                     </div>
                   </v-list-item-group>
                   <v-list-item-group
@@ -348,9 +406,9 @@
                         <v-list-item-avatar>
                           <v-img
                             v-if="
-                            user.userProfileImage != null &&
+                              user.userProfileImage != null &&
                               user.userProfileImage != ''
-                          "
+                            "
                             :src="user.userProfileImage"
                           ></v-img>
                           <v-img
@@ -365,7 +423,10 @@
                           </v-list-item-title>
                         </v-list-item-content>
                       </v-list-item>
-                      <v-divider style="margin-top: 10px" class="mx-4"></v-divider>
+                      <v-divider
+                        style="margin-top: 10px"
+                        class="mx-4"
+                      ></v-divider>
                     </div>
                   </v-list-item-group>
                 </v-col>
@@ -394,8 +455,11 @@
                                   v-if="skill.isAssigned == true"
                                   size="30"
                                   color="#66B25F"
-                                >mdi-checkbox-blank</v-icon>
-                                <v-icon v-else size="30" color="#939393">mdi-checkbox-blank-outline</v-icon>
+                                  >mdi-checkbox-blank</v-icon
+                                >
+                                <v-icon v-else size="30" color="#939393"
+                                  >mdi-checkbox-blank-outline</v-icon
+                                >
                               </div>
                             </div>
                           </div>
@@ -426,8 +490,11 @@
                                   v-if="skill.isAssigned == true"
                                   size="30"
                                   color="#66B25F"
-                                >mdi-checkbox-blank</v-icon>
-                                <v-icon v-else size="30" color="#939393">mdi-checkbox-blank-outline</v-icon>
+                                  >mdi-checkbox-blank</v-icon
+                                >
+                                <v-icon v-else size="30" color="#939393"
+                                  >mdi-checkbox-blank-outline</v-icon
+                                >
                               </div>
                             </div>
                           </div>
@@ -441,7 +508,10 @@
                       id="div2"
                     >
                       <br />
-                      <div v-for="(user, index) in organizationSkills" :key="index">
+                      <div
+                        v-for="(user, index) in organizationSkills"
+                        :key="index"
+                      >
                         <div
                           class="skillDisplayCard"
                           v-for="(category, index) in user.category"
@@ -458,8 +528,11 @@
                                   v-if="skill.isAssigned == true"
                                   size="30"
                                   color="#66B25F"
-                                >mdi-checkbox-blank</v-icon>
-                                <v-icon v-else size="30" color="#939393">mdi-checkbox-blank-outline</v-icon>
+                                  >mdi-checkbox-blank</v-icon
+                                >
+                                <v-icon v-else size="30" color="#939393"
+                                  >mdi-checkbox-blank-outline</v-icon
+                                >
                               </div>
                             </div>
                           </div>
@@ -468,11 +541,14 @@
                       </div>
                     </div>
                     <br />
-                    <div style="position: fixed; bottom: 10px; right: 10px;" v-if="this.matrixView">
+                    <div
+                      style="position: fixed; bottom: 10px; right: 10px"
+                      v-if="this.matrixView"
+                    >
                       <v-btn
                         depressed
                         color="blue"
-                        style=" color: #FFFFFF"
+                        style="color: #ffffff"
                         @click="loadMatrix()"
                         :disabled="this.loadLimit > users.length"
                         class="text-capitalize"
@@ -483,7 +559,7 @@
                       <v-btn
                         depressed
                         color="#78CC71"
-                        style="color: #FFFFFF"
+                        style="color: #ffffff"
                         @click="loadAllMatrix()"
                         :disabled="this.loadLimit > users.length"
                         class="text-capitalize"
@@ -501,29 +577,44 @@
       </div>
       <!-- --------- search skill dialog ------ -->
       <v-dialog v-model="searchSkillDialog" max-width="500">
-        <v-card style=" padding-bottom: 25px">
+        <v-card style="padding-bottom: 25px">
           <v-card-title style="text-align: center">
             <v-spacer></v-spacer>Search Skills
             <v-spacer></v-spacer>
           </v-card-title>
           <v-card-text>
-            <div style="height: 70vh;" class="overflow-y-auto">
-              <div class v-for="(categoryMap, index) in categorySkillMapping" :key="index">
+            <div style="height: 70vh" class="overflow-y-auto">
+              <div
+                class
+                v-for="(categoryMap, index) in categorySkillMapping"
+                :key="index"
+              >
                 <div class>
                   <div
                     class="categoryHeaderSearch"
                     :style="'background-color:' + categoryMap.categoryColorCode"
-                  >{{ categoryMap.categoryName }}</div>
+                  >
+                    {{ categoryMap.categoryName }}
+                  </div>
 
-                  <div class v-for="(skill, index) in categoryMap.skillSet" :key="index">
+                  <div
+                    class
+                    v-for="(skill, index) in categoryMap.skillSet"
+                    :key="index"
+                  >
                     <v-list-item>
                       <v-list-item-action>
-                        <v-checkbox multiple v-model="selectedSkills" :value="skill.skillId"></v-checkbox>
+                        <v-checkbox
+                          multiple
+                          v-model="selectedSkills"
+                          :value="skill.skillId"
+                        ></v-checkbox>
                       </v-list-item-action>
                       <v-list-item-title
                         style="font-size: 12px"
                         class="skillNameSearch"
-                      >{{ skill.skillName }}</v-list-item-title>
+                        >{{ skill.skillName }}</v-list-item-title
+                      >
                     </v-list-item>
                   </div>
                 </div>
@@ -540,7 +631,8 @@
               color="#FF6161"
               dark
               @click="searchSkillDialog = false"
-            >Cancel</v-btn>
+              >Cancel</v-btn
+            >
 
             <v-btn
               class="text-capitalize"
@@ -548,16 +640,17 @@
               width="100px"
               color="#2EC973"
               @click="
-              searchSkillDialog = false;
-              filterSkills();
-            "
+                searchSkillDialog = false;
+                filterSkills();
+              "
               dark
-            >Ok</v-btn>
+              >Ok</v-btn
+            >
             <v-spacer></v-spacer>
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <v-overlay :value="overlay" color="black" style="z-index:1008">
+      <v-overlay :value="overlay" color="black" style="z-index: 1008">
         <progress-loading />
       </v-overlay>
     </div>
@@ -631,8 +724,8 @@ export default {
 
       return 0;
     });
-    console.log(projects);
-    console.log(users);
+    // console.log(projects);
+    // console.log(users);
     return {
       projects: projects,
       users: users,
@@ -689,7 +782,7 @@ export default {
     searchByUser() {
       this.searchSkills = "";
       this.selectedSkills = " ";
-      console.log("TRIGGERRED: " + this.searchUser);
+      // console.log("TRIGGERRED: " + this.searchUser);
       if (this.searchUser !== undefined) {
         this.userSearch = true;
         this.skillSearch = false;
@@ -737,7 +830,7 @@ export default {
             },
           }
         );
-        console.log("RETRIVED", categorySkillResponse.data);
+        // console.log("RETRIVED", categorySkillResponse.data);
         return categorySkillResponse.data;
       } catch (error) {
         console.log("Error fetching selected category skills", error);

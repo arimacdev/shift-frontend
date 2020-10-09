@@ -10,12 +10,10 @@ export const actions = {
       response = await this.$axios.$post(
         `/notification/register`,
         {
-          
-            subscriptionId: subscriptionId,
-            subscriberId: user,
-            provider: 'OneSignal',
-            platform: 'Web',
-       
+          subscriptionId: subscriptionId,
+          subscriberId: user,
+          provider: 'OneSignal',
+          platform: 'Web',
         },
         {
           headers: {
@@ -23,7 +21,7 @@ export const actions = {
           },
         }
       );
-      console.log('RESPONSE', response);
+      // console.log('RESPONSE', response);
     } catch (e) {
       console.log('error', e);
     }

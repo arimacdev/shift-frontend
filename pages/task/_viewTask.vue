@@ -1986,26 +1986,26 @@ export default {
       }
     },
     websocketConnectInit(taskId) {
-      console.log("initalize websocket connection for task", taskId);
+      // console.log("initalize websocket connection for task", taskId);
       const url = this.baseUrl + "/api/pm-service";
       // const url =  "http://localhost:8080" + "/api/pm-service"
 
       try {
-        console.log("connecting to ws...");
+        // console.log("connecting to ws...");
         let socket = new SockJS(url + "/chat");
         //this.stompClient = Stomp.over(socket);
         this.stomp = Stomp.over(socket);
         //this.$store.dispatch("stompClient/setStompClient", "this.stomp");
         //let client = this.stompClient;
         this.stomp.connect({}, (frame) => {
-          console.log("connected to: " + frame);
-          console.log("subscribing to topic: " + "/topic/messages/" + taskId);
+          // console.log("connected to: " + frame);
+          // console.log("subscribing to topic: " + "/topic/messages/" + taskId);
           this.stomp.subscribe("/topic/messages/" + taskId, (response) => {
-            console.log("Response", response);
+            // console.log("Response", response);
             let data = JSON.parse(response.body);
-            console.log("outside----->");
+            // console.log("outside----->");
             if (data.actionType === "comment") {
-              console.log("inside----->");
+              // console.log("inside----->");
               this.$store.dispatch("comments/fetchTaskActivityComment", {
                 taskId: this.selectedTask.taskId,
                 startIndex: 0,
@@ -2518,16 +2518,16 @@ export default {
       // return [];
     },
     async updateTaskDates(type) {
-      console.log("triggered");
+      // console.log("triggered");
       let dueDate;
       let remindDate;
       let changedDate = {};
-      console.log(
-        "dates ========> " +
-          this.updatedTaskDueDate +
-          "/" +
-          this.updatedRemindOnDate
-      );
+      // console.log(
+      //   "dates ========> " +
+      //     this.updatedTaskDueDate +
+      //     "/" +
+      //     this.updatedRemindOnDate
+      // );
       if (
         type === "dueDate" &&
         this.updatedTaskDueDate != "" &&

@@ -21,11 +21,15 @@
           <div
             v-if="$v.projectName.$error && !$v.projectName.required"
             class="errorTextCreateProject"
-          >Project name is required</div>
+          >
+            Project name is required
+          </div>
           <div
             v-if="$v.projectName.$error && !$v.projectName.maxLength"
             class="errorTextCreateProject"
-          >Cannot use more than 50 characters</div>
+          >
+            Cannot use more than 50 characters
+          </div>
         </v-col>
         <v-col sm="6" md="6">
           <!-- <input maxlength="49" v-model="client" placeholder="Client" class="formElements"> -->
@@ -40,7 +44,9 @@
           <div
             v-if="$v.client.$error && !$v.client.required"
             class="errorTextCreateProject"
-          >Client is required</div>
+          >
+            Client is required
+          </div>
         </v-col>
       </v-row>
 
@@ -60,7 +66,9 @@
             <div
               v-if="$v.startDate.$error && !$v.startDate.dateCheck"
               class="errorTextCreateProject errorDiv"
-            >Start date cannot be past date</div>
+            >
+              Start date cannot be past date
+            </div>
           </div>
         </v-col>
         <v-col sm="6" md="6" class>
@@ -79,7 +87,9 @@
             <div
               v-if="$v.endDate.$error && !$v.endDate.dateCheck"
               class="errorText errorDiv"
-            >End date should be after start date</div>
+            >
+              End date should be after start date
+            </div>
           </div>
         </v-col>
       </v-row>
@@ -107,11 +117,15 @@
           <div
             v-if="$v.alias.$error && !$v.alias.required"
             class="errorTextCreateProject"
-          >Project alias is required</div>
+          >
+            Project alias is required
+          </div>
           <div
             v-if="$v.alias.$error && !$v.alias.maxLength"
             class="errorTextCreateProject"
-          >Cannot use more than 6 characters</div>
+          >
+            Cannot use more than 6 characters
+          </div>
         </v-col>
       </v-row>
       <v-row class="mb-12 formRow" no-gutters>
@@ -129,19 +143,27 @@
           <div
             v-if="$v.weightType.$error && !$v.weightType.required"
             class="errorTextCreateProject"
-          >Weight type is required</div>
+          >
+            Weight type is required
+          </div>
         </v-col>
       </v-row>
       <v-row class="mb-12 formRow" no-gutters>
         <v-col sm="12" md="6" class></v-col>
         <v-col sm="12" md="6" class="buttonGrid">
-          <button :class="addProjectStyling" :disabled="checkValidation" @click="postData()">
+          <button
+            :class="addProjectStyling"
+            :disabled="checkValidation"
+            @click="postData()"
+          >
             <v-list-item dark>
               <v-list-item-action>
                 <v-icon size="20" color>mdi-folder-outline</v-icon>
               </v-list-item-action>
               <v-list-item-content class="buttonText">
-                <v-list-item-title class="bodyWiew">Add new project</v-list-item-title>
+                <v-list-item-title class="bodyWiew"
+                  >Add new project</v-list-item-title
+                >
               </v-list-item-content>
               <v-icon>mdi-plus-circle</v-icon>
             </v-list-item>
@@ -166,7 +188,7 @@ import {
   required,
   between,
   minLength,
-  maxLength
+  maxLength,
 } from "vuelidate/lib/validators";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
@@ -178,7 +200,7 @@ export default {
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
-    "progress-loading": Progress
+    "progress-loading": Progress,
   },
 
   methods: {
@@ -209,7 +231,7 @@ export default {
           projectStartDate: this.getStartDate(),
           projectEndDate: this.getEndDate(),
           projectAlias: this.alias.toUpperCase(),
-          weightType: this.weightType
+          weightType: this.weightType,
         });
 
         (this.projectName = ""),
@@ -218,7 +240,7 @@ export default {
           (this.alias = ""),
           this.$v.$reset();
 
-        console.log("project added successfully", response);
+        // console.log("project added successfully", response);
         this.component = "success-popup";
         this.overlay = false;
         window.location.href = "/projects/" + response.data.projectId;
@@ -241,14 +263,14 @@ export default {
       if (this.$v.$invalid) {
         return;
       }
-    }
+    },
   },
   data() {
     return {
       weightType: "story",
       weight: [
         { name: "Story point", id: "story" },
-        { name: "Time", id: "time" }
+        { name: "Time", id: "time" },
       ],
       overlay: false,
       errorMessage: "",
@@ -261,23 +283,23 @@ export default {
       endDate: new Date(),
       // endDate: new Date(new Date().getTime() + (24 * 60 * 60 * 1000)).toISOString().split('T')[0],
       projectOwner: "",
-      component: ""
+      component: "",
     };
   },
   validations: {
     projectName: {
       required,
-      maxLength: maxLength(49)
+      maxLength: maxLength(49),
     },
     alias: {
       required,
-      maxLength: maxLength(6)
+      maxLength: maxLength(6),
     },
     client: {
-      required
+      required,
     },
     weightType: {
-      required
+      required,
     },
     startDate: {
       required,
@@ -304,7 +326,7 @@ export default {
             return true;
           }
         }
-      }
+      },
     },
     endDate: {
       required,
@@ -331,8 +353,8 @@ export default {
             return true;
           }
         }
-      }
-    }
+      },
+    },
   },
   computed: {
     checkValidation: {
@@ -345,7 +367,7 @@ export default {
       },
       set(value) {
         this.projectName = value;
-      }
+      },
     },
     addProjectStyling: {
       get() {
@@ -354,7 +376,7 @@ export default {
         } else {
           return "addProjectButtonSuccess";
         }
-      }
+      },
     },
     setDates: {
       get() {
@@ -363,7 +385,7 @@ export default {
       },
       set(value) {
         this.startDate = new Date(this.startDate);
-      }
+      },
     },
     projectTimeLine: {
       get() {
@@ -387,8 +409,8 @@ export default {
           return days + " day(s)";
         }
       },
-      set() {}
-    }
-  }
+      set() {},
+    },
+  },
 };
 </script>

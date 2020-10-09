@@ -54,7 +54,7 @@
                 flat
                 outlined
                 chips
-                style=" margin-bottom: -10px"
+                style="margin-bottom: -10px"
                 class="searchOptionValue"
                 background-color="#292929"
                 dark
@@ -77,7 +77,7 @@
                 flat
                 outlined
                 chips
-                style=" margin-bottom: -10px"
+                style="margin-bottom: -10px"
                 class="searchOptionValue"
                 background-color="#292929"
                 dark
@@ -100,7 +100,7 @@
                 flat
                 outlined
                 chips
-                style=" margin-bottom: -10px"
+                style="margin-bottom: -10px"
                 class="searchOptionValue"
                 background-color="#292929"
                 dark
@@ -138,7 +138,7 @@
                 flat
                 outlined
                 chips
-                style=" margin-bottom: -10px"
+                style="margin-bottom: -10px"
                 background-color="#292929"
                 dark
                 solo
@@ -150,10 +150,18 @@
               <v-radio-group v-model="filterOrderSequence">
                 <v-row>
                   <v-col md="6">
-                    <v-radio @change="jqlSearch()" label="Ascending" value="ASC"></v-radio>
+                    <v-radio
+                      @change="jqlSearch()"
+                      label="Ascending"
+                      value="ASC"
+                    ></v-radio>
                   </v-col>
                   <v-col md="6">
-                    <v-radio @change="jqlSearch()" label="Decending" value="DESC"></v-radio>
+                    <v-radio
+                      @change="jqlSearch()"
+                      label="Decending"
+                      value="DESC"
+                    ></v-radio>
                   </v-col>
                 </v-row>
               </v-radio-group>
@@ -167,7 +175,8 @@
                     dark
                     depressed
                     width="100%"
-                  >Search</v-btn>
+                    >Search</v-btn
+                  >
                 </v-col>
                 <v-col md="2">
                   <v-btn
@@ -224,7 +233,8 @@
                         color="#66B25F"
                         dark
                         @click="loadTemplate"
-                      >Go</v-btn>
+                        >Go</v-btn
+                      >
                     </v-col>
                   </v-row>
                   <v-row>
@@ -254,32 +264,43 @@
           </div>-->
           <div>
             <!-- {{this.filterResult}} -->
-            <div v-for="(entityTasks, entity, index) in this.orderedTaskList()" :key="index">
+            <div
+              v-for="(entityTasks, entity, index) in this.orderedTaskList()"
+              :key="index"
+            >
               <!-- <span> {{entityTasks}} || {{entity}} || {{index}}</span> -->
               <div
                 class="orderByEntity"
                 v-if="
                   filterOrderBy === 'taskDueDateAt' &&
-                    entity === null &&
-                    entity != undefined
+                  entity === null &&
+                  entity != undefined
                 "
-              >No Due</div>
+              >
+                No Due
+              </div>
               <div
                 class="orderByEntity"
                 v-if="entity != undefined && filterOrderBy === 'taskDueDateAt'"
-              >{{ entity.slice(0, 11) }}</div>
+              >
+                {{ entity.slice(0, 11) }}
+              </div>
               <div
                 class="orderByEntity"
                 v-if="filterOrderBy === 'taskAssignee' && entity != undefined"
-              >{{ entityTasks[0].firstName }} {{ entityTasks[0].lastName }}</div>
+              >
+                {{ entityTasks[0].firstName }} {{ entityTasks[0].lastName }}
+              </div>
               <div
                 class="orderByEntity"
                 v-if="
                   entity != undefined &&
-                    filterOrderBy !== 'taskAssignee' &&
-                    filterOrderBy !== 'taskDueDateAt'
+                  filterOrderBy !== 'taskAssignee' &&
+                  filterOrderBy !== 'taskDueDateAt'
                 "
-              >{{ entity.charAt(0).toUpperCase() + entity.slice(1) }}</div>
+              >
+                {{ entity.charAt(0).toUpperCase() + entity.slice(1) }}
+              </div>
 
               <div v-for="(task, index) in entityTasks" :key="index">
                 <v-tooltip top color="blue">
@@ -298,16 +319,17 @@
                             v-if="task.taskStatus == 'closed'"
                             size="25"
                             color="#66B25F"
-                          >mdi-checkbox-blank</v-icon>
-                          <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
+                            >mdi-checkbox-blank</v-icon
+                          >
+                          <v-icon v-else size="25" color="#939393"
+                            >mdi-checkbox-blank-outline</v-icon
+                          >
                         </v-list-item-action>
                         <v-list-item-content>
                           <!-- class="tasklistTaskNames restructuredMainTaskName" -->
                           <div>
                             <span class="restructuredMainTaskCode">
-                              {{
-                              task.secondaryTaskId
-                              }}
+                              {{ task.secondaryTaskId }}
                             </span>
                             {{ task.taskName }}
                           </div>
@@ -318,21 +340,31 @@
                             :class="statusCheck(task.taskStatus)"
                             x-small
                           >
-                            <span
-                              class="fontRestructure12"
-                            >{{ taskStatusFormatting(task.taskStatus) }}</span>
+                            <span class="fontRestructure12">{{
+                              taskStatusFormatting(task.taskStatus)
+                            }}</span>
                           </v-chip>
                         </v-list-item-action>
                         <v-list-item-action>
-                          <v-chip class="chipsContent" :class="typeCheck(task.issueType)" x-small>
-                            <span class="fontRestructure12">{{ taskTypeFormatting(task.issueType) }}</span>
+                          <v-chip
+                            class="chipsContent"
+                            :class="typeCheck(task.issueType)"
+                            x-small
+                          >
+                            <span class="fontRestructure12">{{
+                              taskTypeFormatting(task.issueType)
+                            }}</span>
                           </v-chip>
                         </v-list-item-action>
-                        <v-list-item-action class="updatedDate" style="margin-right: 10px">
-                          <v-list-item-title class="fontRestructure12" :class="dueDateCheck(task)">
-                            {{
-                            getProjectDates(task.taskDueDateAt)
-                            }}
+                        <v-list-item-action
+                          class="updatedDate"
+                          style="margin-right: 10px"
+                        >
+                          <v-list-item-title
+                            class="fontRestructure12"
+                            :class="dueDateCheck(task)"
+                          >
+                            {{ getProjectDates(task.taskDueDateAt) }}
                           </v-list-item-title>
                         </v-list-item-action>
                         <div>
@@ -340,7 +372,7 @@
                             <v-img
                               v-if="
                                 task.profileImage != null &&
-                                  task.profileImage != ''
+                                task.profileImage != ''
                               "
                               :src="task.profileImage"
                             ></v-img>
@@ -350,7 +382,10 @@
                             ></v-img>
                           </v-list-item-avatar>
                         </div>
-                        <div v-if="task.isParent == true" class="bluePart"></div>
+                        <div
+                          v-if="task.isParent == true"
+                          class="bluePart"
+                        ></div>
                       </v-list-item>
                     </div>
                   </template>
@@ -364,7 +399,11 @@
     </v-row>
     <!-- ------------ task dialog --------- -->
 
-    <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
+    <v-dialog
+      v-model="taskDialog"
+      width="90vw"
+      transition="dialog-bottom-transition"
+    >
       <task-dialog
         :selectedTask="task"
         :taskFiles="taskFiles"
@@ -710,8 +749,8 @@ export default {
           const twoDates = paramRemove.split("AND");
           // console.log("betweenPara", twoDates);
           if (twoDates[0] && twoDates[1]) {
-            console.log("from", twoDates[0].slice(0, 12));
-            console.log("to", twoDates[1].slice(0, 12));
+            // console.log("from", twoDates[0].slice(0, 12));
+            // console.log("to", twoDates[1].slice(0, 12));
             this.dateRange = new Date();
             this.dateRange.start = new Date(twoDates[0].slice(0, 12));
             this.dateRange.end = new Date(twoDates[1].slice(0, 12));

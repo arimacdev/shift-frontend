@@ -55,7 +55,7 @@ export const actions = {
           },
         }
       );
-      console.log('comments length', taskCommentLength.data);
+      // console.log('comments length', taskCommentLength.data);
       commit('SET_TASK_COMMENTS_LENGTH', taskCommentLength.data);
     } catch (error) {
       console.log('Error fetching count length', error);

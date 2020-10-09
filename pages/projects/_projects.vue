@@ -648,7 +648,7 @@ export default {
         );
         break;
       case "board":
-        console.log("board -------->");
+        // console.log("board -------->");
         this.overlay = true;
         Promise.all([
           this.$store.dispatch(
@@ -679,7 +679,7 @@ export default {
         );
         break;
       default:
-        console.log("Home Page");
+      // console.log("Home Page");
     }
   },
 
@@ -718,7 +718,7 @@ export default {
       }
     },
     async unpinProject(project) {
-      console.log("PINNED");
+      // console.log("PINNED");
       this.overlay = true;
       let response;
       try {

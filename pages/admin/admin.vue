@@ -1,19 +1,30 @@
 <template>
   <div>
     <div
-      v-if="organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
-                  organizationalRoles.indexOf('WORKLOAD') > -1 ||
-                  organizationalRoles.indexOf('ADMIN') > -1"
+      v-if="
+        organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
+        organizationalRoles.indexOf('WORKLOAD') > -1 ||
+        organizationalRoles.indexOf('ADMIN') > -1
+      "
       class="top-nav"
     >
       <navigation-drawer :user="user" />
 
-      <v-toolbar app color dark fixed :clipped-left="clipped" class="toolBarFilter tool-bar">
+      <v-toolbar
+        app
+        color
+        dark
+        fixed
+        :clipped-left="clipped"
+        class="toolBarFilter tool-bar"
+      >
         <div class="title-div">
           <div class="name-div">
             <v-list-item>
               <v-list-item-content>
-                <v-list-item-title class="font-weight-bold">Admin</v-list-item-title>
+                <v-list-item-title class="font-weight-bold"
+                  >Admin</v-list-item-title
+                >
               </v-list-item-content>
 
               <v-divider class="mx-4" inset vertical></v-divider>
@@ -29,17 +40,20 @@
               class="tabInactiveStyle text-capitalize"
               active-class="adminTabTitleStyle text-capitalize"
               v-on:click="component = 'users-tab'"
-            >Users</v-tab>
+              >Users</v-tab
+            >
             <v-tab
               class="tabInactiveStyle text-capitalize"
               active-class="adminTabTitleStyle text-capitalize text-capitalize"
               v-on:click="component = 'skills-tab'"
-            >Skills</v-tab>
+              >Skills</v-tab
+            >
             <v-tab
               class="tabInactiveStyle text-capitalize"
               active-class="adminTabTitleStyle text-capitalize"
               v-on:click="component = 'organization-tab'"
-            >Organization</v-tab>
+              >Organization</v-tab
+            >
           </v-tabs>
         </div>
       </div>
@@ -47,7 +61,7 @@
       <div class="workloadV2Body">
         <component v-bind:is="component"></component>
       </div>
-      <v-overlay :value="overlay" color="black" style="z-index:1008">
+      <v-overlay :value="overlay" color="black" style="z-index: 1008">
         <progress-loading />
       </v-overlay>
     </div>
@@ -100,7 +114,7 @@ export default {
   },
   methods: {
     aaaaa() {
-      console.log("ERROR");
+      // console.log("ERROR");
       // window.location.href = "/";
       location.reload();
     },

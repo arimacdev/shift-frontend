@@ -14,7 +14,10 @@
       <!-- Cancel -->
     </v-btn>
     <div class="filterSectionAllTasks">
-      <div class="filterTriggersDrop" style="width: 10%; float: left; padding-right: 10px">
+      <div
+        class="filterTriggersDrop"
+        style="width: 10%; float: left; padding-right: 10px"
+      >
         <v-btn
           depressed
           dark
@@ -27,11 +30,17 @@
             size="13"
             color="#FFFFFF"
             style="margin-right: 3px; margin-top: 3px !important"
-          >icon-task</v-icon>
-          <span class="text-capitalize" style="font-size: 10px !important">All Tasks</span>
+            >icon-task</v-icon
+          >
+          <span class="text-capitalize" style="font-size: 10px !important"
+            >All Tasks</span
+          >
         </v-btn>
       </div>
-      <div class="filterTriggersDrop" style="width: 10%; float: left; padding-right: 10px">
+      <div
+        class="filterTriggersDrop"
+        style="width: 10%; float: left; padding-right: 10px"
+      >
         <v-btn
           depressed
           dark
@@ -44,11 +53,17 @@
             size="13"
             color="#FFFFFF"
             style="margin-right: 3px; margin-top: 3px !important"
-          >icon-task</v-icon>
-          <span class="text-capitalize" style="font-size: 10px !important">Add Tasks</span>
+            >icon-task</v-icon
+          >
+          <span class="text-capitalize" style="font-size: 10px !important"
+            >Add Tasks</span
+          >
         </v-btn>
       </div>
-      <div class="filterTriggers" style="width: 17%; float: left; margin-right: 10px">
+      <div
+        class="filterTriggers"
+        style="width: 17%; float: left; margin-right: 10px"
+      >
         <v-text-field
           dense
           clearable
@@ -61,7 +76,10 @@
           @input="jqlSearch()"
         ></v-text-field>
       </div>
-      <div class="filterTriggersDrop" style="width: 13%; float: left; padding-right: 10px">
+      <div
+        class="filterTriggersDrop"
+        style="width: 13%; float: left; padding-right: 10px"
+      >
         <v-autocomplete
           v-model="filterType"
           return-object
@@ -87,7 +105,10 @@
           </template>
         </v-autocomplete>
       </div>
-      <div class="filterTriggersDrop" style="width: 13%; float: left; padding-right: 10px; ">
+      <div
+        class="filterTriggersDrop"
+        style="width: 13%; float: left; padding-right: 10px"
+      >
         <v-autocomplete
           v-model="filterStatus"
           return-object
@@ -113,7 +134,10 @@
           </template>
         </v-autocomplete>
       </div>
-      <div class="filterTriggersDrop" style="width: 22%; float: left; padding-right: 10px">
+      <div
+        class="filterTriggersDrop"
+        style="width: 22%; float: left; padding-right: 10px"
+      >
         <VueCtkDateTimePicker
           :no-value-to-custom-elem="false"
           color="#3f51b5"
@@ -127,14 +151,38 @@
           @input="jqlSearch()"
         ></VueCtkDateTimePicker>
       </div>
-      <div class="filterTriggersDrop" style="width: 5%; float: left; margin-right: 20px">
-        <v-btn depressed @click="jqlSearch()" dark width="100%" height="30px" color="#333369">
-          <span class="text-capitalize" style="font-size: 10px !important">Search</span>
+      <div
+        class="filterTriggersDrop"
+        style="width: 5%; float: left; margin-right: 20px"
+      >
+        <v-btn
+          depressed
+          @click="jqlSearch()"
+          dark
+          width="100%"
+          height="30px"
+          color="#333369"
+        >
+          <span class="text-capitalize" style="font-size: 10px !important"
+            >Search</span
+          >
         </v-btn>
       </div>
-      <div class="filterTriggersDrop" style="width: 5%; float: left; padding-right: 10px">
-        <v-btn depressed @click="filterChange()" dark width="100%" height="30px" color="#FF6161">
-          <span class="text-capitalize" style="font-size: 10px !important; ">Clear</span>
+      <div
+        class="filterTriggersDrop"
+        style="width: 5%; float: left; padding-right: 10px"
+      >
+        <v-btn
+          depressed
+          @click="filterChange()"
+          dark
+          width="100%"
+          height="30px"
+          color="#FF6161"
+        >
+          <span class="text-capitalize" style="font-size: 10px !important"
+            >Clear</span
+          >
         </v-btn>
       </div>
     </div>
@@ -161,7 +209,13 @@
           @input="autoFilling()"
         ></v-text-field>
       </div>
-      <v-col v-if="datePickerDialog" class="datePopupBoxTaskCreate" cols="12" sm="6" md="4">
+      <v-col
+        v-if="datePickerDialog"
+        class="datePopupBoxTaskCreate"
+        cols="12"
+        sm="6"
+        md="4"
+      >
         <v-date-picker
           @input="
             datePickerDialog = false;
@@ -183,14 +237,16 @@
                     v-if="task.taskStatus == 'closed'"
                     size="25"
                     color="#66B25F"
-                  >mdi-checkbox-blank</v-icon>
+                    >mdi-checkbox-blank</v-icon
+                  >
                   <v-icon
                     @click="closeTask(task.taskId, false)"
                     style="cursor: pointer"
                     v-else
                     size="25"
                     color="#939393"
-                  >mdi-checkbox-blank-outline</v-icon>
+                    >mdi-checkbox-blank-outline</v-icon
+                  >
                 </v-list-item-action>
                 <v-list-item-content
                   @click="
@@ -201,9 +257,9 @@
                 >
                   <!-- <div class="tasklistTaskNames restructuredMainTaskName"> -->
                   <div style="color: #576377">
-                    <span
-                      class="restructuredMainTaskCode fontRestructure12"
-                    >{{ task.secondaryTaskId }}</span>
+                    <span class="restructuredMainTaskCode fontRestructure12">{{
+                      task.secondaryTaskId
+                    }}</span>
                     {{ task.taskName }}
                   </div>
                   <!-- </div> -->
@@ -213,27 +269,42 @@
                   :class="statusCheck(task.issueType)"
                 >{{ taskTypeFormatting(task.issueType) }}</div>-->
                 <v-list-item-action>
-                  <v-chip class="chipsContent" :class="statusCheck(task.taskStatus)" x-small>
-                    <span class="fontRestructure12">{{ taskStatusFormatting(task.taskStatus) }}</span>
+                  <v-chip
+                    class="chipsContent"
+                    :class="statusCheck(task.taskStatus)"
+                    x-small
+                  >
+                    <span class="fontRestructure12">{{
+                      taskStatusFormatting(task.taskStatus)
+                    }}</span>
                   </v-chip>
                 </v-list-item-action>
                 <v-list-item-action>
-                  <v-chip class="chipsContent" :class="typeCheck(task.issueType)" x-small>
-                    <span class="fontRestructure12">{{ taskTypeFormatting(task.issueType) }}</span>
+                  <v-chip
+                    class="chipsContent"
+                    :class="typeCheck(task.issueType)"
+                    x-small
+                  >
+                    <span class="fontRestructure12">{{
+                      taskTypeFormatting(task.issueType)
+                    }}</span>
                   </v-chip>
                 </v-list-item-action>
                 <v-list-item-action class="updatedDate">
                   <v-list-item-title
                     class="fontRestructure12"
                     :class="dueDateCheck(task)"
-                  >{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
+                    >{{
+                      getProjectDates(task.taskDueDateAt)
+                    }}</v-list-item-title
+                  >
                 </v-list-item-action>
                 <!-- <div style="margin-right: -25px"> -->
                 <v-list-item-avatar size="25">
                   <v-img
                     v-if="
                       task.taskAssigneeProfileImage != null &&
-                        task.taskAssigneeProfileImage != ''
+                      task.taskAssigneeProfileImage != ''
                     "
                     :src="task.taskAssigneeProfileImage"
                   ></v-img>
@@ -248,7 +319,7 @@
               <div class="boardTabLinkIcon">
                 <nuxt-link
                   :to="'/task/' + task.taskId + '/?project=' + projectId"
-                  style="text-decoration: none;"
+                  style="text-decoration: none"
                   target="_blank"
                 >
                   <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
@@ -267,21 +338,28 @@
           :total-visible="8"
         ></v-pagination>
       </div>-->
-      <div v-if="this.scrollCount <= this.myTaskCount / 10" class="loadMoreTasks text-center">
+      <div
+        v-if="this.scrollCount <= this.myTaskCount / 10"
+        class="loadMoreTasks text-center"
+      >
         <v-btn
           v-if="projectsSummary != ''"
           @click="loadMoreButtonAction()"
           color="#ffffff"
           depressed
         >
-          <span style="color: #576377" class="text-capitalize">Load More Tasks</span>
+          <span style="color: #576377" class="text-capitalize"
+            >Load More Tasks</span
+          >
           <v-icon>mdi-chevron-down</v-icon>
         </v-btn>
       </div>
     </div>
 
     <div v-else class="taskListViewContent filterListTop overflow-y-auto">
-      <div v-if="this.filterList == ''" class="filterTitleDiv headline">No items to show</div>
+      <div v-if="this.filterList == ''" class="filterTitleDiv headline">
+        No items to show
+      </div>
       <div v-for="(task, index) in filterList" :key="index">
         <div
           class="restructuredFilterTaskList"
@@ -295,28 +373,28 @@
                 v-if="task.taskStatus == 'closed'"
                 size="25"
                 color="#66B25F"
-              >mdi-checkbox-blank</v-icon>
+                >mdi-checkbox-blank</v-icon
+              >
               <v-icon
                 @click="closeTask(task.taskId, true)"
                 v-else
                 size="25"
                 color="#939393"
-              >mdi-checkbox-blank-outline</v-icon>
+                >mdi-checkbox-blank-outline</v-icon
+              >
             </v-list-item-action>
             <v-list-item-content
               @click="
-                    selectTask(task);
-                    taskDialog = true;
-                  "
+                selectTask(task);
+                taskDialog = true;
+              "
               style="cursor: pointer"
             >
               <!-- <div class="tasklistFilterTaskNames restructuredMainTaskName"> -->
 
               <div style="color: #576377">
                 <span class="restructuredMainTaskCode fontRestructure12">
-                  {{
-                  task.secondaryTaskId
-                  }}
+                  {{ task.secondaryTaskId }}
                 </span>
                 {{ task.taskName }}
               </div>
@@ -331,20 +409,33 @@
                 :class="statusCheck(task.issueType)"
             >{{ taskTypeFormatting(task.issueType) }}</div>-->
             <v-list-item-action>
-              <v-chip class="chipsContent" :class="statusCheck(task.taskStatus)" x-small>
-                <span class="fontRestructure12">{{ taskStatusFormatting(task.taskStatus) }}</span>
+              <v-chip
+                class="chipsContent"
+                :class="statusCheck(task.taskStatus)"
+                x-small
+              >
+                <span class="fontRestructure12">{{
+                  taskStatusFormatting(task.taskStatus)
+                }}</span>
               </v-chip>
             </v-list-item-action>
             <v-list-item-action>
-              <v-chip class="chipsContent" :class="typeCheck(task.issueType)" x-small>
-                <span class="fontRestructure12">{{ taskTypeFormatting(task.issueType) }}</span>
+              <v-chip
+                class="chipsContent"
+                :class="typeCheck(task.issueType)"
+                x-small
+              >
+                <span class="fontRestructure12">{{
+                  taskTypeFormatting(task.issueType)
+                }}</span>
               </v-chip>
             </v-list-item-action>
             <v-list-item-action class="updatedDateFilter">
               <v-list-item-title
                 class="fontRestructure12"
                 :class="dueDateCheck(task)"
-              >{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title>
+                >{{ getProjectDates(task.taskDueDateAt) }}</v-list-item-title
+              >
             </v-list-item-action>
             <!-- <div> -->
             <v-list-item-avatar size="25">
@@ -360,7 +451,7 @@
             <v-list-item-action style="cursor: pointer">
               <nuxt-link
                 :to="'/task/' + task.taskId + '/?project=' + projectId"
-                style="text-decoration: none;"
+                style="text-decoration: none"
                 target="_blank"
               >
                 <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
@@ -375,7 +466,12 @@
 
     <!-- ------------ task dialog --------- -->
 
-    <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition" persistent>
+    <v-dialog
+      v-model="taskDialog"
+      width="90vw"
+      transition="dialog-bottom-transition"
+      persistent
+    >
       <task-dialog
         :task="task"
         :projectId="projectId"
@@ -599,7 +695,7 @@ export default {
       });
     },
     getMyTasks() {
-      console.log("SCROLL COUNT ");
+      // console.log("SCROLL COUNT ");
       this.$store.dispatch("task/setIndex", {
         startIndex: this.myTaskPagination * 10 - 10,
         endIndex: this.myTaskPagination * 10,
@@ -799,24 +895,24 @@ export default {
       document.body.removeChild(link);
     },
     websocketConnectInit(taskId) {
-      console.log("initalize websocket connection for task", taskId);
+      // console.log("initalize websocket connection for task", taskId);
       const url = this.baseUrl + "/api/pm-service";
       try {
-        console.log("connecting to ws...");
+        // console.log("connecting to ws...");
         let socket = new SockJS(url + "/chat");
         //this.stompClient = Stomp.over(socket);
         this.stomp = Stomp.over(socket);
         //this.$store.dispatch("stompClient/setStompClient", "this.stomp");
         //let client = this.stompClient;
         this.stomp.connect({}, (frame) => {
-          console.log("connected to: " + frame);
-          console.log("subscribing to topic: " + "/topic/messages/" + taskId);
+          // console.log("connected to: " + frame);
+          // console.log("subscribing to topic: " + "/topic/messages/" + taskId);
           this.stomp.subscribe("/topic/messages/" + taskId, (response) => {
             // console.log("Response", response);
             let data = JSON.parse(response.body);
-            console.log("outside----->");
+            // console.log("outside----->");
             if (data.actionType === "comment") {
-              console.log("inside----->");
+              // console.log("inside----->");
               this.$store.dispatch("comments/fetchTaskActivityComment", {
                 taskId: this.selectedTask.taskId,
                 startIndex: 0,
@@ -965,7 +1061,7 @@ export default {
       // this.scrollCount = 1;
       this.taskDialog = false;
       if (this.filterList != "" && this.taskFilter != "none") {
-        console.log("TRIGGERED");
+        // console.log("TRIGGERED");
         this.jqlSearch();
       }
     },
@@ -1159,7 +1255,7 @@ export default {
       this.$store.dispatch("user/setSelectedTaskUser", task.taskAssignee);
       if (this.filterList != "" && this.taskFilter != "none") {
         if (this.task.parent) {
-          console.log("parent task 1");
+          // console.log("parent task 1");
           this.$store.dispatch("task/fetchChildren", {
             projectId: this.projectId,
             taskId: this.task.taskId,

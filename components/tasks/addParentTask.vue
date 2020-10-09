@@ -4,7 +4,11 @@
       <v-dialog v-model="dialog" persistent max-width="350">
         <template v-slot:activator="{ on }">
           <div v-on="on" class="addParentButton" @click="loadDetails()">
-            <v-list-item class="addParentButtonBody" v-on:click="component = 'add-task'" dark>
+            <v-list-item
+              class="addParentButtonBody"
+              v-on:click="component = 'add-task'"
+              dark
+            >
               <v-list-item-action>
                 <v-icon size="15" color>mdi-account-outline</v-icon>
               </v-list-item-action>
@@ -17,8 +21,12 @@
         <v-card class="addUserPopup">
           <v-form v-model="isValid" ref="form">
             <div class="popupFormContent">
-              <v-icon class size="60" color="deep-orange lighten-1">mdi-account-outline</v-icon>
-              <v-card-text class="deletePopupTitle">Add parent task</v-card-text>
+              <v-icon class size="60" color="deep-orange lighten-1"
+                >mdi-account-outline</v-icon
+              >
+              <v-card-text class="deletePopupTitle"
+                >Add parent task</v-card-text
+              >
               <v-card-actions>
                 <v-select
                   class="popupFormGroupElement"
@@ -35,19 +43,27 @@
                   <template v-slot:selection="data">
                     <template>
                       <v-list-item-action>
-                        <v-list-item-subtitle v-html="data.item.secondaryId"></v-list-item-subtitle>
+                        <v-list-item-subtitle
+                          v-html="data.item.secondaryId"
+                        ></v-list-item-subtitle>
                       </v-list-item-action>
                       <v-list-item-content>
-                        <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                        <v-list-item-title
+                          v-html="data.item.name"
+                        ></v-list-item-title>
                       </v-list-item-content>
                     </template>
                   </template>
                   <template v-slot:item="data">
                     <template>
                       <v-list-item-content>
-                        <v-list-item-subtitle v-html="data.item.secondaryId"></v-list-item-subtitle>
+                        <v-list-item-subtitle
+                          v-html="data.item.secondaryId"
+                        ></v-list-item-subtitle>
 
-                        <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                        <v-list-item-title
+                          v-html="data.item.name"
+                        ></v-list-item-title>
                       </v-list-item-content>
                     </template>
                   </template>
@@ -72,7 +88,8 @@
                     clearStore();
                   "
                   :retain-focus="false"
-                >Cancel</v-btn>
+                  >Cancel</v-btn
+                >
                 <v-spacer></v-spacer>
                 <v-btn
                   class="text-capitalize"
@@ -85,7 +102,8 @@
                   "
                   :retain-focus="false"
                   :disabled="!isValid"
-                >Save</v-btn>
+                  >Save</v-btn
+                >
                 <v-spacer></v-spacer>
               </v-card-actions>
             </div>
@@ -224,7 +242,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("update parent task", response);
+        // console.log("update parent task", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";

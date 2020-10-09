@@ -49,7 +49,7 @@ export const actions = {
         },
       });
       commit('SET_REALM_ROLES', realmRolesList.data);
-      console.log('roles', realmRolesList.data);
+      // console.log('roles', realmRolesList.data);
     } catch (e) {
       console.log('Error fetching realm roles', e);
     }
@@ -64,7 +64,7 @@ export const actions = {
         },
       });
       commit('SET_USER_ROLE_MAPPING', roleMapping.data);
-      console.log('roles', roleMapping.data);
+      // console.log('roles', roleMapping.data);
     } catch (e) {
       console.log('Error fetching role mappings', e);
     }
@@ -84,7 +84,7 @@ export const actions = {
         { headers: { user: userId } }
       );
       commit('APPEND_USER_ROLE', userRole);
-      console.log('Add Role', response);
+      // console.log('Add Role', response);
     } catch (e) {
       console.log('Error adding a group', e);
     }
@@ -105,7 +105,7 @@ export const actions = {
         },
       });
       commit('REMOVE_USER_ROLE', userRole);
-      console.log('Remove Role', response);
+      // console.log('Remove Role', response);
     } catch (e) {
       console.log('Error adding a group', e);
     }

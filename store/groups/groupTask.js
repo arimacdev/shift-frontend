@@ -180,7 +180,7 @@ export const actions = {
   },
 
   updateGroupTask({ commit }, { taskId, type, value }) {
-    console.log('taskId', taskId, ' task name', value);
+    // console.log('taskId', taskId, ' task name', value);
     commit('UPDATE_GROUP_TASK', {
       taskId: taskId,
       type: type,

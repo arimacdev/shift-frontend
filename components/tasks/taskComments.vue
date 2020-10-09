@@ -8,7 +8,12 @@
           <v-overlay dark="false" z-index="1008" v-if="commentEditor == true">
             <div
               class="overflow-y-auto"
-              style="width: 88vw; max-height: 80vh; background-color: #FFFFFF; border-radius: 5px"
+              style="
+                width: 88vw;
+                max-height: 80vh;
+                background-color: #ffffff;
+                border-radius: 5px;
+              "
             >
               <v-row>
                 <v-col sm="1" md="1"></v-col>
@@ -21,9 +26,9 @@
                       :toolbarSettings="toolbarSettings"
                       v-model="updatedComment"
                       @focus="
-                      typingText();
-                      selectTextEditor('updateCommentEditor');
-                    "
+                        typingText();
+                        selectTextEditor('updateCommentEditor');
+                      "
                       @blur="notTyping()"
                     ></ejs-richtexteditor>
                   </div>
@@ -33,10 +38,16 @@
                   >
                     <div>
                       <v-list-item-group>
-                        <div v-for="(user, index) in assigneeArray()" :key="index">
+                        <div
+                          v-for="(user, index) in assigneeArray()"
+                          :key="index"
+                        >
                           <v-list-item @click="tagPeopleUpdate(user)" dense>
                             <v-list-item-avatar size="20">
-                              <v-img v-if="user.img != null && user.img != ''" :src="user.img"></v-img>
+                              <v-img
+                                v-if="user.img != null && user.img != ''"
+                                :src="user.img"
+                              ></v-img>
                               <v-img
                                 v-else
                                 src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
@@ -44,9 +55,7 @@
                             </v-list-item-avatar>
                             <v-list-item-content>
                               <v-list-item-subtitle>
-                                {{
-                                user.name
-                                }}
+                                {{ user.name }}
                               </v-list-item-subtitle>
                             </v-list-item-content>
                           </v-list-item>
@@ -61,18 +70,20 @@
                       class="text-capitalize"
                       style="margin-top: 10px"
                       color="primary"
-                    >Update</v-btn>
+                      >Update</v-btn
+                    >
                     <v-btn
                       depressed
                       @click="
-                      commentEditor = false;
-                      editorType = '';
-                      tagging = false;
-                    "
+                        commentEditor = false;
+                        editorType = '';
+                        tagging = false;
+                      "
                       class="text-capitalize"
                       style="margin-top: 10px"
                       color="error"
-                    >Cancel</v-btn>
+                      >Cancel</v-btn
+                    >
                   </div>
                   <v-tooltip right>
                     <template v-slot:activator="{ on }">
@@ -88,7 +99,10 @@
                             </v-btn>
                           </template>
                           <v-list>
-                            <VEmojiPicker style="background-color: #FFFFFF" @select="updateEmoji" />
+                            <VEmojiPicker
+                              style="background-color: #ffffff"
+                              @select="updateEmoji"
+                            />
                           </v-list>
                         </v-menu>
                       </div>
@@ -104,8 +118,15 @@
                           transition="scale-transition"
                         >
                           <template v-slot:activator="{ on, attrs }">
-                            <v-btn style="margin-right: 12px" text v-bind="attrs" v-on="on">
-                              <v-text style="font-size: 20px; margin-top:0px">@</v-text>
+                            <v-btn
+                              style="margin-right: 12px"
+                              text
+                              v-bind="attrs"
+                              v-on="on"
+                            >
+                              <v-text style="font-size: 20px; margin-top: 0px"
+                                >@</v-text
+                              >
                             </v-btn>
                           </template>
                           <v-list style="height: 65px; width: 250px">
@@ -128,9 +149,9 @@
                                   <v-list-item-avatar size="22">
                                     <v-img
                                       v-if="
-                                      data.item.img != null &&
+                                        data.item.img != null &&
                                         data.item.img != ''
-                                    "
+                                      "
                                       :src="data.item.img"
                                     ></v-img>
                                     <v-img
@@ -139,7 +160,9 @@
                                     ></v-img>
                                   </v-list-item-avatar>
                                   <v-list-item-content>
-                                    <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                                    <v-list-item-title
+                                      v-html="data.item.name"
+                                    ></v-list-item-title>
                                   </v-list-item-content>
                                 </template>
                               </template>
@@ -167,21 +190,29 @@
                   </v-tooltip>
                   <!--  -->
                   <div style="margin-top: 15px; padding-left: 30px">
-                    <v-progress-circular v-if="uploadLoading == true" indeterminate color="primary"></v-progress-circular>
+                    <v-progress-circular
+                      v-if="uploadLoading == true"
+                      indeterminate
+                      color="primary"
+                    ></v-progress-circular>
                   </div>
                 </v-col>
               </v-row>
             </div>
           </v-overlay>
           <!-- ------------- end updated comment section ---------- -->
-          <div class="commentBody" v-for="(comment, index) in this.taskComments" :key="index">
+          <div
+            class="commentBody"
+            v-for="(comment, index) in this.taskComments"
+            :key="index"
+          >
             <v-row>
               <v-col sm="1" md="1" style="padding-left: 40px">
                 <v-avatar>
                   <v-img
                     v-if="
                       comment.commenterProfileImage != null &&
-                        comment.commenterProfileImage != ''
+                      comment.commenterProfileImage != ''
                     "
                     :src="comment.commenterProfileImage"
                   ></v-img>
@@ -199,11 +230,15 @@
                   </div>
                   <v-tooltip right>
                     <template v-slot:activator="{ on }">
-                      <div v-on="on" class="commentTime">{{ getCommentTime(comment.commentedAt) }}</div>
+                      <div v-on="on" class="commentTime">
+                        {{ getCommentTime(comment.commentedAt) }}
+                      </div>
                     </template>
                     <span>{{ getTooltipDate(comment.commentedAt) }}</span>
                   </v-tooltip>
-                  <span class="commentTime" v-if="comment.isEdited == true">(edited)</span>
+                  <span class="commentTime" v-if="comment.isEdited == true"
+                    >(edited)</span
+                  >
                   <br />
                   <div class="commentContent" v-html="comment.content"></div>
                   <v-row></v-row>
@@ -227,12 +262,20 @@
                                 style="font-size: 14px"
                                 v-html="'❤️'"
                               ></span>
-                              <span v-else style="font-size: 14px" v-html="react.reactionId"></span>
+                              <span
+                                v-else
+                                style="font-size: 14px"
+                                v-html="react.reactionId"
+                              ></span>
                               <span>{{ react.respondants.length }}</span>
                             </div>
                           </template>
                           <v-list-item
-                            style="margin-top: -10px; margin-bottom: -10px; margin-left: -20px"
+                            style="
+                              margin-top: -10px;
+                              margin-bottom: -10px;
+                              margin-left: -20px;
+                            "
                             v-for="(responder, index) in react.respondants"
                             :key="index"
                           >
@@ -241,7 +284,7 @@
                                 <v-img
                                   v-if="
                                     responder.responderProfileImage != null &&
-                                      responder.responderProfileImage != ''
+                                    responder.responderProfileImage != ''
                                   "
                                   :src="responder.responderProfileImage"
                                 ></v-img>
@@ -252,7 +295,7 @@
                               </v-avatar>
                             </div>
                             <div style="float: left; padding-left: 20px">
-                              <div style="color:#FFFFFF">
+                              <div style="color: #ffffff">
                                 {{ responder.responderFirstName }}
                                 {{ responder.responderLastName }}
                               </div>
@@ -267,20 +310,50 @@
                     </div>-->
                     <v-menu class="emojiMenu" open-on-hover top offset-y>
                       <template v-slot:activator="{ on, attrs }">
-                        <div class="text-capitalize addEmojiButton" v-bind="attrs" v-on="on">
+                        <div
+                          class="text-capitalize addEmojiButton"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
                           <span style="font-size: 14px">
                             <v-icon
                               size="16"
                               style="margin-top: -6px; z-index: 0"
-                            >mdi-emoticon-outline</v-icon>
+                              >mdi-emoticon-outline</v-icon
+                            >
                           </span>
                         </div>
                       </template>
-                      <div @click="addReact(comment.commentId, '&#128077;')" class="emoji">&#128077;</div>
-                      <div @click="addReact(comment.commentId, '&#128154;')" class="emoji">❤️</div>
-                      <div @click="addReact(comment.commentId, '&#128514;')" class="emoji">&#128514;</div>
-                      <div @click="addReact(comment.commentId, '&#128545;')" class="emoji">&#128545;</div>
-                      <div @click="addReact(comment.commentId, '&#128546;')" class="emoji">&#128546;</div>
+                      <div
+                        @click="addReact(comment.commentId, '&#128077;')"
+                        class="emoji"
+                      >
+                        &#128077;
+                      </div>
+                      <div
+                        @click="addReact(comment.commentId, '&#128154;')"
+                        class="emoji"
+                      >
+                        ❤️
+                      </div>
+                      <div
+                        @click="addReact(comment.commentId, '&#128514;')"
+                        class="emoji"
+                      >
+                        &#128514;
+                      </div>
+                      <div
+                        @click="addReact(comment.commentId, '&#128545;')"
+                        class="emoji"
+                      >
+                        &#128545;
+                      </div>
+                      <div
+                        @click="addReact(comment.commentId, '&#128546;')"
+                        class="emoji"
+                      >
+                        &#128546;
+                      </div>
                     </v-menu>
                     <div
                       v-if="userId == comment.commenter"
@@ -291,7 +364,9 @@
                       class="text-capitalize addEmojiButton"
                     >
                       <span>
-                        <v-icon size="16" style="margin-top: -5px">mdi-pencil-outline</v-icon>
+                        <v-icon size="16" style="margin-top: -5px"
+                          >mdi-pencil-outline</v-icon
+                        >
                       </span>
                     </div>
                     <div
@@ -303,7 +378,9 @@
                       class="text-capitalize addEmojiButton"
                     >
                       <span>
-                        <v-icon size="16" style="margin-top: -5px">mdi-trash-can-outline</v-icon>
+                        <v-icon size="16" style="margin-top: -5px"
+                          >mdi-trash-can-outline</v-icon
+                        >
                       </span>
                     </div>
 
@@ -327,7 +404,9 @@
         />
         <!-- <v-progress-linear color="red lighten-2" buffer-value="0" stream></v-progress-linear> -->
       </div>
-      <div class="typingProgress">{{ this.typingUser }} is typing a comment ...</div>
+      <div class="typingProgress">
+        {{ this.typingUser }} is typing a comment ...
+      </div>
     </div>
     <br />
     <h4></h4>
@@ -351,7 +430,7 @@
                 <v-img
                   v-if="
                     this.ownUser.profileImage != null &&
-                      this.ownUser.profileImage != ''
+                    this.ownUser.profileImage != ''
                   "
                   :src="this.ownUser.profileImage"
                 ></v-img>
@@ -385,7 +464,10 @@
                     <div v-for="(user, index) in assigneeArray()" :key="index">
                       <v-list-item @click="tagPeople(user)" dense>
                         <v-list-item-avatar size="20">
-                          <v-img v-if="user.img != null && user.img != ''" :src="user.img"></v-img>
+                          <v-img
+                            v-if="user.img != null && user.img != ''"
+                            :src="user.img"
+                          ></v-img>
                           <v-img
                             v-else
                             src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
@@ -393,9 +475,7 @@
                         </v-list-item-avatar>
                         <v-list-item-content>
                           <v-list-item-subtitle>
-                            {{
-                            user.name
-                            }}
+                            {{ user.name }}
                           </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
@@ -410,7 +490,8 @@
                   class="text-capitalize"
                   style="margin-top: 10px"
                   color="primary"
-                >Comment</v-btn>
+                  >Comment</v-btn
+                >
               </div>
 
               <v-tooltip right>
@@ -427,7 +508,10 @@
                         </v-btn>
                       </template>
                       <v-list>
-                        <VEmojiPicker style="background-color: #FFFFFF" @select="addEmoji" />
+                        <VEmojiPicker
+                          style="background-color: #ffffff"
+                          @select="addEmoji"
+                        />
                       </v-list>
                     </v-menu>
                   </div>
@@ -443,8 +527,15 @@
                       transition="scale-transition"
                     >
                       <template v-slot:activator="{ on, attrs }">
-                        <v-btn style="margin-right: 12px" text v-bind="attrs" v-on="on">
-                          <v-text style="font-size: 20px; margin-top:0px">@</v-text>
+                        <v-btn
+                          style="margin-right: 12px"
+                          text
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-text style="font-size: 20px; margin-top: 0px"
+                            >@</v-text
+                          >
                         </v-btn>
                       </template>
                       <v-list style="height: 65px; width: 250px">
@@ -477,7 +568,9 @@
                                 ></v-img>
                               </v-list-item-avatar>
                               <v-list-item-content>
-                                <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                                <v-list-item-title
+                                  v-html="data.item.name"
+                                ></v-list-item-title>
                               </v-list-item-content>
                             </template>
                           </template>
@@ -525,7 +618,7 @@
     ></v-pagination>-->
     <!-- --------- delete comment dialog ------ -->
     <v-dialog v-model="deleteCommentDialog" max-width="350">
-      <v-card style="text-align: center ; padding-bottom: 25px">
+      <v-card style="text-align: center; padding-bottom: 25px">
         <v-card-title style="text-align: center">
           <v-spacer></v-spacer>Delete Comment
           <v-spacer></v-spacer>
@@ -546,7 +639,8 @@
             color="#FF6161"
             dark
             @click="deleteCommentDialog = false"
-          >Cancel</v-btn>
+            >Cancel</v-btn
+          >
 
           <v-btn
             class="text-capitalize"
@@ -558,7 +652,8 @@
               deleteCommentDialog = false;
               deleteComment();
             "
-          >Ok</v-btn>
+            >Ok</v-btn
+          >
 
           <v-spacer></v-spacer>
         </v-card-actions>
@@ -727,7 +822,7 @@ export default {
 
       const currentKey = this.$refs.rteObj.ej2Instances.getText().slice(-1);
       if (currentKey === "@") {
-        console.log("@ Pressed", this.traversing, e.keyCode);
+        // console.log("@ Pressed", this.traversing, e.keyCode);
         this.traversing = true;
         this.tagging = true;
       } else if (e.keyCode === 8 && this.traversing) {
@@ -743,12 +838,12 @@ export default {
         this.traversing = false;
         this.tagging = false;
       } else if (e.keyCode >= 60 && e.keyCode <= 90) {
-        console.log("NOT @", this.traversing, e.keyCode);
+        // console.log("NOT @", this.traversing, e.keyCode);
         if (this.traversing) {
           this.traverseText = this.traverseText.concat(e.key);
           this.assigneeArray();
         }
-        console.log("traversing string", this.traverseText);
+        // console.log("traversing string", this.traverseText);
         //this.tagging = false;
       }
     },
@@ -760,7 +855,7 @@ export default {
         if (items[i].type.indexOf("image") === 0) {
           file = items[i].getAsFile();
         }
-        console.log("file", file);
+        // console.log("file", file);
         this.files = file;
         this.submit("addComment");
       }

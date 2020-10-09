@@ -47,8 +47,12 @@
               <v-btn
                 text
                 color="primary"
-                @click="$refs.menu2.save(dateRangeFilter); loadTaskRate(); "
-              >OK</v-btn>
+                @click="
+                  $refs.menu2.save(dateRangeFilter);
+                  loadTaskRate();
+                "
+                >OK</v-btn
+              >
             </v-date-picker>
           </v-menu>
         </div>
@@ -64,7 +68,7 @@
       ></line-chart>
       <!-- <button @click="fillData()">Randomize</button> -->
     </div>
-    <v-overlay :value="overlay" color="black" style="z-index:1008">
+    <v-overlay :value="overlay" color="black" style="z-index: 1008">
       <progress-loading />
     </v-overlay>
   </div>
@@ -149,9 +153,9 @@ export default {
         this.taskCreation[index] = record.taskCreationCount;
         this.taskCompletion[index] = record.taskCompletionCount;
         this.labels[index] = record.date;
-        console.log("TRIGGERRED");
+        // console.log("TRIGGERRED");
       }
-      console.log("TRIGGERRED2");
+      // console.log("TRIGGERRED2");
       this.datacollection = {
         labels: this.labels,
         datasets: [

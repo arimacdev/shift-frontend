@@ -3,12 +3,21 @@
     <div class="top-nav">
       <navigation-drawer :user="user" />
 
-      <v-toolbar app color dark fixed :clipped-left="clipped" class="toolBarFilter tool-bar">
+      <v-toolbar
+        app
+        color
+        dark
+        fixed
+        :clipped-left="clipped"
+        class="toolBarFilter tool-bar"
+      >
         <div class="title-div">
           <div class="name-div">
             <v-list-item>
               <v-list-item-content>
-                <v-list-item-title class="font-weight-bold">Workload - ADMIN</v-list-item-title>
+                <v-list-item-title class="font-weight-bold"
+                  >Workload - ADMIN</v-list-item-title
+                >
               </v-list-item-content>
 
               <v-divider class="mx-4" inset vertical></v-divider>
@@ -30,17 +39,19 @@
               class="tabInactiveStyle text-capitalize"
               active-class="adminTabTitleStyle"
               v-on:click="component = 'my-workload'"
-            >My Workload</v-tab>
+              >My Workload</v-tab
+            >
             <v-tab
               class="tabInactiveStyle text-capitalize"
               active-class="adminTabTitleStyle"
               v-if="
                 organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
-                  organizationalRoles.indexOf('WORKLOAD') > -1 ||
-                  organizationalRoles.indexOf('ADMIN') > -1
+                organizationalRoles.indexOf('WORKLOAD') > -1 ||
+                organizationalRoles.indexOf('ADMIN') > -1
               "
               v-on:click="component = 'org-workload'"
-            >Organizational Workload</v-tab>
+              >Organizational Workload</v-tab
+            >
           </v-tabs>
         </div>
       </div>
@@ -73,7 +84,7 @@ export default {
     "progress-loading": Progress,
   },
   created() {
-    console.log("cretad");
+    // console.log("cretad");
     this.overlay = true;
     Promise.all([
       this.$store.dispatch("user/setAllUsers"),
@@ -110,13 +121,13 @@ export default {
 
   watch: {
     search(val) {
-      console.log("value is ", val);
+      // console.log("value is ", val);
       val && val !== this.select && this.querySelections(val);
     },
   },
   methods: {
     onSelectUser() {
-      console.log("details", this.select);
+      // console.log("details", this.select);
       if (this.select !== undefined) {
         // this.userData.firstName = this.select.firstName;
         // this.userData.lastName = this.select.lastName;
@@ -139,7 +150,7 @@ export default {
       // this.userData = userData;
       this.firstName = userData.firstName;
       this.lastName = userData.lastName;
-      console.log("check", userData);
+      // console.log("check", userData);
       this.selectedUser = userData.userId;
       // if(userData.totalTasks != 0){
       this.$store.dispatch("workload/fetchAllWorkloadTasks", {

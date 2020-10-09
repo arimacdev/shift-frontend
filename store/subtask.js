@@ -16,7 +16,7 @@ export const mutations = {
 
 export const actions = {
   async fetchSubTasks({ commit, rootState }, { projectId, taskId }) {
-    console.log('store fetch subtasks', projectId, taskId);
+    // console.log('store fetch subtasks', projectId, taskId);
     const userId = rootState.user.userId;
     let subTaskResponse;
     try {
@@ -28,7 +28,7 @@ export const actions = {
           },
         }
       );
-      console.log('fetch subtasks from store--->', subTaskResponse.data);
+      // console.log('fetch subtasks from store--->', subTaskResponse.data);
       commit('SET_SUBTAKS', subTaskResponse.data);
       //get files related to task
       let taskFilesResponse;
@@ -42,7 +42,7 @@ export const actions = {
             },
           }
         );
-        console.log('fetch files from store --->', taskFilesResponse.data);
+        // console.log('fetch files from store --->', taskFilesResponse.data);
         commit('SET_SUBTAK__FILES', taskFilesResponse.data);
       } catch (error) {
         console.log('Error fetching data', error);

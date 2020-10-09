@@ -53,14 +53,28 @@
             ></VueCtkDateTimePicker>
           </v-col>
           <v-col md="2">
-            <v-btn depressed @click="applyFilter()" dark width="100%" height="40px" color="#080848">
+            <v-btn
+              depressed
+              @click="applyFilter()"
+              dark
+              width="100%"
+              height="40px"
+              color="#080848"
+            >
               <!-- <v-icon color="#FFFFFF">mdi-filter-outline</v-icon> -->
               <span class="text-capitalize">Search</span>
               <!-- Filter -->
             </v-btn>
           </v-col>
           <v-col md="2">
-            <v-btn depressed dark width="100%" @click="clearFilter()" height="40px" color="#FF6161">
+            <v-btn
+              depressed
+              dark
+              width="100%"
+              @click="clearFilter()"
+              height="40px"
+              color="#FF6161"
+            >
               <!-- <v-icon color="#FFFFFF">mdi-cancel</v-icon> -->
               <span class="text-capitalize">Cancel</span>
               <!-- Cancel -->
@@ -70,7 +84,9 @@
       </div>
     </div>
     <div class="workloadContentDiv">
-      <div v-if="this.workloadTasks == ''" class="filterTitleDiv headline">No items to show</div>
+      <div v-if="this.workloadTasks == ''" class="filterTitleDiv headline">
+        No items to show
+      </div>
 
       <v-expansion-panels v-model="panel" :disabled="disabled" multiple dark>
         <!-- -------------- loop this pannel for every project ---------- -->
@@ -85,11 +101,9 @@
             color="#292929"
           >
             {{ project.projectName }} - {{ project.completed }}/{{
-            project.total
+              project.total
             }}
-            <template
-              v-slot:actions
-            >
+            <template v-slot:actions>
               <v-icon color="#2EC973">mdi-arrow-down-circle-outline</v-icon>
             </template>
           </v-expansion-panel-header>
@@ -99,15 +113,16 @@
             color="#EDF0F5"
           >
             {{ project.projectName }} - {{ project.completed }}/{{
-            project.total
+              project.total
             }}
-            <template
-              v-slot:actions
-            >
+            <template v-slot:actions>
               <v-icon color="#ACACAC">mdi-arrow-down-circle-outline</v-icon>
             </template>
           </v-expansion-panel-header>
-          <v-expansion-panel-content class="projectDetailsPannelContent" color="#EDF0F5">
+          <v-expansion-panel-content
+            class="projectDetailsPannelContent"
+            color="#EDF0F5"
+          >
             <!-- ----------- loop content for tasks of projects --------------- -->
             <div class="taskDetailsBar">
               <v-list-item
@@ -115,33 +130,53 @@
                 @click.stop="drawer = !drawer"
                 v-for="(task, index) in project.taskList"
                 :key="index"
-                @click="selectTask(task); taskDialog = true;"
+                @click="
+                  selectTask(task);
+                  taskDialog = true;
+                "
               >
                 <v-list-item-action>
                   <v-icon
                     v-if="task.taskStatus == 'closed'"
                     size="25"
                     color="#66B25F"
-                  >mdi-checkbox-blank</v-icon>
-                  <v-icon v-else size="25" color="#939393">mdi-checkbox-blank-outline</v-icon>
+                    >mdi-checkbox-blank</v-icon
+                  >
+                  <v-icon v-else size="25" color="#939393"
+                    >mdi-checkbox-blank-outline</v-icon
+                  >
                 </v-list-item-action>
                 <v-list-item-action>
                   <div
                     style="font-weight: bold; margin-right: 30px"
                     class="workloadTaskName"
-                  >{{ task.secondaryTaskId }}</div>
+                  >
+                    {{ task.secondaryTaskId }}
+                  </div>
                 </v-list-item-action>
                 <v-list-item-content>
                   <div class="workloadTaskName">{{ task.taskName }}</div>
                 </v-list-item-content>
                 <v-list-item-action>
-                  <v-chip class="chipsContent" :class="statusCheck(task.taskStatus)" x-small>
-                    <span class="fontRestructure12">{{ taskStatusFormatting(task.taskStatus) }}</span>
+                  <v-chip
+                    class="chipsContent"
+                    :class="statusCheck(task.taskStatus)"
+                    x-small
+                  >
+                    <span class="fontRestructure12">{{
+                      taskStatusFormatting(task.taskStatus)
+                    }}</span>
                   </v-chip>
                 </v-list-item-action>
                 <v-list-item-action>
-                  <v-chip class="chipsContent" :class="typeCheck(task.issueType)" x-small>
-                    <span class="fontRestructure12">{{ taskTypeFormatting(task.issueType) }}</span>
+                  <v-chip
+                    class="chipsContent"
+                    :class="typeCheck(task.issueType)"
+                    x-small
+                  >
+                    <span class="fontRestructure12">{{
+                      taskTypeFormatting(task.issueType)
+                    }}</span>
                   </v-chip>
                 </v-list-item-action>
 
@@ -149,14 +184,13 @@
                   <v-list-item-title
                     class="fontRestructure12"
                     :class="dueDateCheck(task)"
-                  >{{ getDueDate(task.taskDueDateAt) }}</v-list-item-title>
+                    >{{ getDueDate(task.taskDueDateAt) }}</v-list-item-title
+                  >
                 </v-list-item-action>
                 <v-list-item-action>
                   <nuxt-link
-                    :to="
-                          '/task/' + task.taskId + '/?project=' + task.projectId
-                        "
-                    style="text-decoration: none;"
+                    :to="'/task/' + task.taskId + '/?project=' + task.projectId"
+                    style="text-decoration: none"
                     target="_blank"
                   >
                     <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
@@ -172,7 +206,11 @@
 
       <!-- ------------ task dialog --------- -->
 
-      <v-dialog v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
+      <v-dialog
+        v-model="taskDialog"
+        width="90vw"
+        transition="dialog-bottom-transition"
+      >
         <task-dialog
           :selectedTask="task"
           :taskFiles="taskFiles"
@@ -516,7 +554,7 @@ export default {
               },
             }
           );
-          console.log("sprint--->", sprintResponse.data.sprintName);
+          // console.log("sprint--->", sprintResponse.data.sprintName);
           this.taskSprint = sprintResponse.data.sprintName;
         } catch (error) {
           // console.log("Error fetching data", error);
@@ -525,7 +563,7 @@ export default {
       let userResponse;
       try {
         userResponse = await this.$axios.$get(`/users/${task.taskAssignee}`);
-        console.log("user--->", userResponse.data);
+        // console.log("user--->", userResponse.data);
         this.taskUser = userResponse.data;
       } catch (error) {
         // console.log("Error fetching data", error);
