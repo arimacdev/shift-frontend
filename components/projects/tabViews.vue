@@ -8,22 +8,26 @@
             @click="changeTabView('task')"
             class="tabInactiveStyle text-capitalize"
             active-class="tabTitleStyle"
-          >Tasks</v-tab>
+            >Tasks</v-tab
+          >
           <v-tab
             @click="changeTabView('board')"
             class="tabInactiveStyle text-capitalize"
             active-class="tabTitleStyle"
-          >Board</v-tab>
+            >Board</v-tab
+          >
           <v-tab
             @click="changeTabView('people')"
             class="tabInactiveStyle text-capitalize"
             active-class="tabTitleStyle"
-          >People</v-tab>
+            >People</v-tab
+          >
           <v-tab
             @click="changeTabView('project')"
             class="tabInactiveStyle text-capitalize"
             active-class="tabTitleStyle"
-          >Project</v-tab>
+            >Project</v-tab
+          >
           <!-- <v-tab
             @click="changeTabView('files')"
             class="tabInactiveStyle text-capitalize"
@@ -33,17 +37,23 @@
             @click="changeTabView('folders')"
             class="tabInactiveStyle text-capitalize"
             active-class="tabTitleStyle"
-          >Files</v-tab>
+            >Files</v-tab
+          >
           <v-tab
             @click="changeTabView('logs')"
             class="tabInactiveStyle text-capitalize"
             active-class="tabTitleStyle"
-          >Logs</v-tab>
+            >Logs</v-tab
+          >
           <v-tab
             @click="changeTabView('logs')"
             class="tabInactiveStyle text-capitalize"
             active-class="tabTitleStyle"
-          >Meetings</v-tab>
+            >Meetings
+            <!-- <div class="newChip">
+              <v-icon size="10" color="red">mdi-circle</v-icon>
+            </div> -->
+          </v-tab>
 
           <v-tab-item>
             <v-divider class="mx-4"></v-divider>

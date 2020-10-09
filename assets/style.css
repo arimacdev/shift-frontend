@@ -303,6 +303,7 @@
   padding-top: 40px;
   margin-top: -20px;
 }
+
 .userContentWrapper {
   width: 65vw;
   margin-left: 30vw;
@@ -3862,4 +3863,35 @@
   font-weight: 700;
   margin-top: 30px;
   margin-bottom: 30px;
+}
+
+/* ----------- support ------------ */
+
+.supportRequestList {
+  width: 15vw;
+  float: left;
+  /* padding-left: -12px; */
+  padding-top: 40px;
+  margin-top: -20px;
+}
+.requestContentWrapper {
+  width: 80vw;
+  margin-left: 15vw;
+}
+.supportListItemTitle {
+  color: #576377;
+  font-size: 12px !important;
+}
+.supportRequestListItem {
+  height: 30px !important;
+}
+.requestViewContent {
+  height: 100vh;
+  padding-top: 40px;
+  padding-left: 40px;
+}
+.statDisplay {
+  width: 30%;
+  float: left;
+  padding: 5px;
 }
