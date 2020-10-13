@@ -823,9 +823,19 @@ export default {
       let scheduledTime = new Date(
         this.mainFormData.meetingDate + ' ' + this.mainFormData.scheduleTime
       );
+
+      const isoScheduledDate = new Date(
+          scheduledTime.getTime() - scheduledTime.getTimezoneOffset() * 60000
+        ).toISOString();
+
+
       let actualTime = new Date(
         this.mainFormData.meetingDate + ' ' + this.mainFormData.actualTime
       );
+
+       const isoActualDate = new Date(
+          actualTime.getTime() - actualTime.getTimezoneOffset() * 60000
+        ).toISOString();
 
       let response;
       try {
@@ -835,8 +845,8 @@ export default {
             projectId: this.projectId,
             meetingTopic: this.mainFormData.topicForTheMeeting,
             meetingVenue: this.mainFormData.venue,
-            meetingExpectedTime: scheduledTime,
-            meetingActualTime: actualTime,
+            meetingExpectedTime: isoScheduledDate,
+            meetingActualTime: isoActualDate,
             expectedDuration: this.mainFormData.plannedDurationOfTheMeeting,
             meetingAttended: [],
             meetingChaired: [],
