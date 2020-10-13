@@ -29,6 +29,8 @@ export const mutations = {
   },
   SET_DISCUSSION_POINTS(state, data) {
     state.discussionPoints = data;
+
+    
   },
   SET_PROJECT_MEETINGS(state, meetings) {
     if (meetings.length == 0) {

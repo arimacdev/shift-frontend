@@ -54,7 +54,7 @@
           <v-divider></v-divider>
           <!-- :editable="this.meetingObject != null" -->
           <v-stepper-step :editable="this.meetingObject != null" step="3"
-            >Close Meeting</v-stepper-step
+            >Member details</v-stepper-step
           >
         </v-stepper-header>
 
@@ -402,6 +402,18 @@
               <v-btn text color="red" @click="resetDiscussionForm()"
                 >Reset</v-btn
               >
+
+            </div>
+
+            <div  style="margin-top: 50px !important; margin-bottom: 50px; ">
+               <v-btn
+              
+              style="color: #ffffff"
+              @click="startNewMeeting()"
+              depressed
+              color="green"
+              >Start New Meeting</v-btn
+            >
             </div>
 
             <v-divider></v-divider>
@@ -596,7 +608,7 @@
     <!-- ----------------- end Stepper ------------ -->
 
     <v-container>
-      <div @click="close()" class="popupBox">
+      <div @click="close()" class="popupBoxMeetig">
         <component
           v-bind:is="component"
           :successMessage="successMessage"
@@ -721,8 +733,12 @@ export default {
       this.$refs.subForm.reset();
     },
     resetDiscussionForm() {
-      this.$refs.discussionPointForm.reset();
+      // this.$refs.discussionPointForm.reset();
       this.discussionPointData.description = '';
+            this.discussionPointData.remarks = '';
+           this.discussionPointData.actionBy = '';
+           this.discussionPointData.switch1 = false;
+          this.discussionPointData.dueDate = null;
     },
     async taskTransition(minuteId) {
       let taskResponse;
@@ -863,6 +879,7 @@ export default {
         this.component = 'success-popup';
         this.successMessage = 'Meeting Successfully initiated';
         this.e1 = 2;
+        this.resetDiscussionForm()
 
         setTimeout(() => {
           this.close();
@@ -882,6 +899,22 @@ export default {
         }, 3000);
         console.log('Error creating meeting', e);
       }
+    },
+    startNewMeeting(){
+let meetingAttendedObject = {};
+      let meetingAttended = [];
+      let meetingAbsentObject = {};
+      let meetingAbsent = [];
+      let meetingCopiesToObject = {};
+      let meetingCopiesTo = [];
+      let meetingPreparedObject = {};
+      let meetingPrepared = [];
+      let meetingChairedObject = {};
+      let meetingChaired = [];
+
+      this.e1 = 1;
+        this.resetSubForm();
+        this.resetForm();
     },
     async closeMeeting() {
       let meetingAttendedObject = {};
