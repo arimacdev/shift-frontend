@@ -12,7 +12,7 @@
             v-model="keyFilter"
             outlined
             dense
-            label="Filter By Key"
+            label="Filter By Topic"
             @input="filterMeetings(true)"
           ></v-text-field>
         </v-col>

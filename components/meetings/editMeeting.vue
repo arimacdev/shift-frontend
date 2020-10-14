@@ -446,6 +446,7 @@
               <v-row>
                 <v-col>
                   <vue-editor
+                  :editorToolbar="customToolbar"
                     placeholder="Add a description"
                     v-model="discussionPointData.description"
                   ></vue-editor>
@@ -1144,8 +1145,12 @@ export default {
       }
     },
     resetDiscussionForm() {
-      this.$refs.discussionPointForm.reset();
+      // this.$refs.discussionPointForm.reset();
       this.discussionPointData.description = "";
+      this.discussionPointData.actionBy = "";
+      this.discussionPointData.dueDate = null;
+      this.discussionPointData.taskName = "";
+      this.discussionPointData.remarks = "";
     },
     async deleteDiscussionPoint() {
       let response;
@@ -1822,6 +1827,11 @@ export default {
             },
           }
         );
+
+        this.$store.dispatch("meetings/meeting/fetchSelectedMeeting", {
+          meetingId: this.meetingObject.meetingId,
+          projectId: this.projectId,
+        });
         this.component = "success-popup";
         this.successMessage = "Duration Successfully updated";
         setTimeout(() => {
