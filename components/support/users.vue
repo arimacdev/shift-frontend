@@ -16,7 +16,7 @@
           <div v-for="(project, index) in allProjects"
                     :key=index>
                     <div v-if="project.projectStatus == 'support'">
-          <v-list-item @click="component = 'user-content'" class="selectedProjectPanel">
+          <v-list-item @click="component = 'user-content'; selectProject(project)" class="selectedProjectPanel">
                   <v-list-item-action>
                     <v-icon size="17" color="blue">icon-project</v-icon>
                   </v-list-item-action>
@@ -54,6 +54,11 @@ export default {
     return {
       component:"",
       overlay: false,
+    }
+  },
+  methods: {
+    selectProject(project){
+      this.$store.dispatch("project/addSelectedProject", project);
     }
   },
   created() {

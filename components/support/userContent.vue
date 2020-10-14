@@ -1,8 +1,8 @@
 <template>
     <div class="requestViewContent overflow-y-auto">
         <v-row>
-            <v-list-item-title class="summaryNameTitle">Dialog Mega Run</v-list-item-title>
-            <v-list-item-subtitle class="summaryNameSubTitle">Dialog Axiata PVT LTD</v-list-item-subtitle>
+            <v-list-item-title class="summaryNameTitle">{{selectedProject.projectName}}</v-list-item-title>
+            <v-list-item-subtitle class="summaryNameSubTitle">{{selectedProject.clientId}}</v-list-item-subtitle>
         </v-row>
         <v-row style="margin-top: 40px">
             <v-list-item>
@@ -13,11 +13,18 @@
     </div>
 </template>
 <script>
+import { mapState } from "vuex";
 export default {
     data(){
         return{
-            
+
         }
-    }
+    },
+    computed: {
+    ...mapState({
+      allProjects: (state) => state.project.allOrgProjects,
+      selectedProject: (state) => state.project.seletedProject
+    }),
+  },
 }
 </script>
