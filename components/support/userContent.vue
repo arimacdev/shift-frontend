@@ -7,7 +7,7 @@
         <v-row style="margin-top: 40px">
             <v-list-item>
                 <v-list-item-content class="userTitleSectionSupport">External Users</v-list-item-content>
-                <v-list-item-action><v-btn depressed color="#66B25F" dark>Add new User</v-btn></v-list-item-action>
+                <v-list-item-action><v-btn depressed color="#66B25F" dark>Add External Support User</v-btn></v-list-item-action>
             </v-list-item>
         </v-row>
     </div>
