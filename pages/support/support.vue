@@ -57,7 +57,7 @@
         </div>
       </div>
 
-      <div class="workloadV2Body">
+      <div>
         <component v-bind:is="component"></component>
       </div>
       <v-overlay :value="overlay" color="black" style="z-index: 1008">

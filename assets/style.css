@@ -3887,11 +3887,37 @@
 }
 .requestViewContent {
   height: 100vh;
-  padding-top: 40px;
-  padding-left: 40px;
+  padding: 40px;
 }
 .statDisplay {
   width: 30%;
   float: left;
   padding: 5px;
+}
+.projectListUserSupport {
+  width: 20%;
+  float: left;
+  /* padding-left: 12px; */
+  margin-top: -20px;
+}
+.componentContent {
+  padding-top: 30px;
+  padding-left: 10px;
+  float: right;
+  width: 80%;
+}
+
+.summaryNameTitle {
+  font-size: 25px !important;
+  font-weight: 600;
+  color: #040428;
+}
+.summaryNameSubTitle {
+  font-weight: 500;
+  color: #576377 !important;
+}
+.userTitleSectionSupport {
+  font-size: 16px;
+  color: #576377;
+  font-weight: 500;
 }
