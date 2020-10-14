@@ -3,6 +3,14 @@
     <v-row v-if="!isMeetingViewer">
       <div class="minuteViewSection">
         <div class="viewMinuteBtnDiv">
+               <v-btn
+              v-if="e1 >= 2"
+              style="color: #ffffff"
+              @click="startNewMeeting()"
+              depressed
+              color="green"
+              >Start New Meeting</v-btn
+            >
           <v-btn
             @click="
               isMeetingViewer = true;
@@ -11,7 +19,7 @@
             depressed
             color="red"
             dark
-            >View Minute</v-btn
+            >View Meetings</v-btn
           >
         </div>
       </div>
@@ -21,7 +29,7 @@
       <div class="minuteViewSection">
         <div class="viewMinuteBtnDiv">
           <v-btn @click="isMeetingViewer = false" depressed color="red" dark
-            >Add Minute</v-btn
+            >Add Meeting</v-btn
           >
         </div>
       </div>
@@ -405,16 +413,7 @@
 
             </div>
 
-            <div  style="margin-top: 50px !important; margin-bottom: 50px; ">
-               <v-btn
-              
-              style="color: #ffffff"
-              @click="startNewMeeting()"
-              depressed
-              color="green"
-              >Start New Meeting</v-btn
-            >
-            </div>
+           
 
             <v-divider></v-divider>
 
@@ -915,6 +914,7 @@ let meetingAttendedObject = {};
       this.e1 = 1;
         this.resetSubForm();
         this.resetForm();
+      this.discussionPointData.discussionPointCount = 1;
     },
     async closeMeeting() {
       let meetingAttendedObject = {};
@@ -927,6 +927,8 @@ let meetingAttendedObject = {};
       let meetingPrepared = [];
       let meetingChairedObject = {};
       let meetingChaired = [];
+
+      this.discussionPointData.discussionPointCount = 1;
 
       // ---- attended by ----
       if (
