@@ -914,6 +914,7 @@ let meetingAttendedObject = {};
         this.resetSubForm();
         this.resetForm();
       this.discussionPointData.discussionPointCount = 1;
+      this.disPointCount =  1
     },
     async closeMeeting() {
       let meetingAttendedObject = {};
@@ -928,6 +929,7 @@ let meetingAttendedObject = {};
       let meetingChaired = [];
 
       this.discussionPointData.discussionPointCount = 1;
+      this.disPointCount =  1
 
       // ---- attended by ----
       if (
