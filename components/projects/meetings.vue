@@ -212,7 +212,7 @@
                       </v-dialog>
                       <!--plannedDurationOfTheMeeting -->
                       <v-text-field
-                        :rules="defaultRules"
+                        :rules="numberRules"
                         v-model="mainFormData.plannedDurationOfTheMeeting"
                         outlined
                         dense
@@ -425,7 +425,7 @@
               <v-form v-model="isValidSubForm" ref="subForm">
                 <!--actualDurationOfTheMeeting -->
                 <v-text-field
-                  :rules="defaultRules"
+                  :rules="numberRules"
                   v-model="mainFormData.actualDurationOfTheMeeting"
                   outlined
                   dense
@@ -711,6 +711,7 @@ export default {
         minutesOfMeetingPreparedByNonOrg: null,
       },
       defaultRules: [(value) => !!value || 'Required.'],
+      numberRules: [(value) => !!value || 'Required.', (value) => value > 0 || 'Invalid.'],
     };
   },
   methods: {
