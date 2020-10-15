@@ -884,11 +884,10 @@ export default {
           this.close();
         }, 3000);
         this.meetingObject = response;
-        // this.$store.dispatch("meetings/meeting/fetchDiscussionPoints", {
-        //   meetingId: this.meetingObject.data.meetingId,
-        //   // meetingId: '19a4edb0-0610-4fad-88f3-a3a01c141155',
-        //   projectId: this.projectId,
-        // });
+        this.$store.dispatch("meetings/meeting/fetchDiscussionPoints", {
+          meetingId: this.meetingObject.data.meetingId,
+          projectId: this.projectId,
+        });
       } catch (e) {
         this.overlay = false;
         this.errorMessage = e.response.data;
