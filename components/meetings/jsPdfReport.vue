@@ -62,7 +62,7 @@
             <span>Attendance: </span>
           </td>
           <td>
-            <span>Venu: </span>
+            <span>Venue: </span>
           </td>
         </tr>
         <tr>
