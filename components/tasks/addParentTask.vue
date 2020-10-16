@@ -96,10 +96,7 @@
                   depressed
                   color="success"
                   width="100px"
-                  @click="
-                    changeHandler;
-                    clearStore();
-                  "
+                  @click="changeHandler()"
                   :retain-focus="false"
                   :disabled="!isValid"
                   >Save</v-btn
@@ -110,6 +107,9 @@
           </v-form>
         </v-card>
       </v-dialog>
+      <v-overlay z-index="inherit" :value="waiting" color="black">
+        <waiting />
+      </v-overlay>
     </v-row>
     <div @click="close" class="parentChildPopup">
       <component
@@ -125,12 +125,14 @@
 <script>
 import SuccessPopup from '~/components/popups/successPopup';
 import ErrorPopup from '~/components/popups/errorPopup';
+import Waiting from '~/components/popups/waiting';
 import { mapState } from 'vuex';
 export default {
   props: ['taskId', 'projectId'],
   components: {
     'success-popup': SuccessPopup,
     'error-popup': ErrorPopup,
+    waiting: Waiting,
   },
   created() {
     // console.log("alltasks", this.projectAllTasks);
@@ -145,6 +147,7 @@ export default {
   },
   data() {
     return {
+      waiting: false,
       parentTasks: [],
       errorMessage: '',
       isValid: true,
@@ -170,16 +173,22 @@ export default {
   },
   methods: {
     clearStore() {
+      console.log('CONDSOJDKDS');
       this.$emit('clearStore');
     },
     loadDetails() {
-      this.$store.dispatch('task/emptyStore');
-      this.$store.dispatch('task/setIndex', {
-        startIndex: 0,
-        endIndex: 10,
-        isAllTasks: true,
+      this.waiting = true;
+      Promise.all([
+        this.$store.dispatch('task/emptyStore'),
+        this.$store.dispatch('task/setIndex', {
+          startIndex: 0,
+          endIndex: 10,
+          isAllTasks: true,
+        }),
+        this.$store.dispatch('task/fetchTasksAllTasks', this.projectId),
+      ]).finally(() => {
+        this.waiting = false;
       });
-      this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
     },
     close() {
       this.$refs.form.reset();
@@ -230,7 +239,8 @@ export default {
         this.dialog = false;
         this.component = 'success-popup';
         this.successMessage = 'Parent Task Added Successfully';
-        this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
+        this.clearStore();
+        // this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
         this.$store.dispatch('task/setCurrentTask', {
           projectId: this.projectId,
           taskId: this.taskId,
@@ -242,7 +252,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('update parent task', response);
+        // console.log('update parent task', response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = 'error-popup';

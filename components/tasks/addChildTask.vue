@@ -94,10 +94,7 @@
                   class="text-capitalize"
                   color="success"
                   width="100px"
-                  @click="
-                    changeHandler;
-                    clearStore();
-                  "
+                  @click="changeHandler()"
                   :retain-focus="false"
                   :disabled="!isValid"
                   >Save</v-btn
@@ -222,7 +219,7 @@ export default {
         this.dialog = false;
         this.component = 'success-popup';
         this.successMessage = 'Child Task Added successfully';
-        this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
+        // this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
         this.$store.dispatch('task/setCurrentTask', {
           projectId: this.projectId,
           taskId: this.taskId,
@@ -234,7 +231,9 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log('update parent task', response);
+        // console.log('update parent task', response);
+
+        this.clearStore();
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = 'error-popup';
