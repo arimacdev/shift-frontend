@@ -785,7 +785,7 @@ export default {
       users: (state) => state.user.users,
       // projectId: state => state.project.project.projectId,
       people: (state) => state.task.userCompletionTasks,
-      projectAllTasks: (state) => state.task.allTasks,
+      projectAllTasks: (state) => state.task.fullTaskList,
       projectSprints: (state) => state.sprints.sprint.sprints,
       fetchProject: (state) => state.project.project,
     }),
