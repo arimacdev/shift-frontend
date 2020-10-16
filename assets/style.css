@@ -1729,7 +1729,7 @@
 
 .boardBodyDiv {
   width: 100%;
-  height: 100vh;
+  height: 97vh;
   padding-top: 20px;
   position: absolute;
   left: 25vw;
@@ -2475,7 +2475,7 @@
   width: 100%;
   padding-left: 20px;
   padding-right: 20px !important;
-  min-height: 100vh;
+  /* min-height: 90vh; */
   /* padding-top: 10px; */
   /* max-height: 100vh; */
 }
@@ -2484,7 +2484,7 @@
   color: #ffffff !important;
 }
 .dialogSurround {
-  min-height: 100vh;
+  min-height: 90vh;
   padding-bottom: 100px;
   background-color: #ffffff;
 }
@@ -2621,7 +2621,7 @@
 .parentChildPopup {
   z-index: 1000;
   position: fixed;
-  bottom: 0;
+  bottom: 40px;
   right: 40px;
 }
 
