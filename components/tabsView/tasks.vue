@@ -35,7 +35,7 @@
               <v-list-item-title class="bodyWiew">My tasks</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item v-on:click="setTaskTab('add-task')">
+          <v-list-item v-on:click="setTaskTab('add-task'); fetchFullList()">
             <v-list-item-action>
               <v-icon size="17" color="#0BAFFF">mdi-plus-circle</v-icon>
             </v-list-item-action>
@@ -146,6 +146,8 @@ export default {
       this.component = option;
       if (option === "my-tasks") {
         this.fetchMyTasks();
+      } else if(option === "add-task"){
+        this.fetchFullList();
       } else {
         this.fetchAllTasks();
       }
@@ -162,6 +164,12 @@ export default {
       );
       this.$store.dispatch(
         "task/fetchTotalTaskCount",
+        this.$route.params.projects
+      );
+    },
+    fetchFullList(){
+ this.$store.dispatch(
+        "task/fetchFullTaskList",
         this.$route.params.projects
       );
     },

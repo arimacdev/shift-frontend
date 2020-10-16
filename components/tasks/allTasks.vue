@@ -1040,7 +1040,7 @@ export default {
     },
   },
   mounted() {
-    this.scrollEvent();
+    // this.scrollEvent();
   },
   methods: {
     clearTaskName() {
@@ -1049,20 +1049,17 @@ export default {
       this.datePickerSubDialog = false;
     },
     clearStore() {
-      Promise.all([
-        this.$store.dispatch('task/emptyStore'),
-        (this.scrollCount = 1),
-        this.$store.dispatch('task/setIndex', {
-          startIndex: 0,
-          endIndex: 10,
-          isAllTasks: false,
-        }),
-      ]).finally(() => {
-        this.$store.dispatch(
-          'task/fetchTasksAllTasks',
-          this.$route.params.projects
-        );
+      this.$store.dispatch('task/emptyStore');
+      this.scrollCount = 1;
+      this.$store.dispatch('task/setIndex', {
+        startIndex: 0,
+        endIndex: 10,
+        isAllTasks: false,
       });
+      this.$store.dispatch(
+        'task/fetchTasksAllTasks',
+        this.$route.params.projects
+      );
     },
     scrollEvent() {
       var myDiv = document.getElementById('mainDiv');
@@ -1299,7 +1296,9 @@ export default {
       }
     },
     async closeTask(taskId, filter) {
+      this.clearStore();
       this.waiting = true;
+      this.scrollCount = 1;
 
       // console.log("onchange updated status ->");
       let response;
@@ -1324,6 +1323,12 @@ export default {
         if (filter) {
           this.jqlSearch();
         }
+
+        this.$store.dispatch('task/setIndex', {
+          startIndex: 0,
+          endIndex: 10,
+          isAllTasks: false,
+        });
 
         this.component = 'success-popup';
         this.successMessage = 'Status successfully updated';
@@ -1791,7 +1796,7 @@ export default {
       }
     },
     async addSubTask(index, selectedParentTask, issueType, sprintId, dueDate) {
-      this.scrollCount = 1;
+      // this.scrollCount = 1;
       this.overlay = true;
       let response;
       let taskName;

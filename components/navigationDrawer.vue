@@ -36,8 +36,8 @@
     <v-list
       v-if="
         organizationalRoles.indexOf('ADMIN') > -1 ||
-          organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
-          organizationalRoles.indexOf('ORGANIZATION_ADMIN') > -1
+        organizationalRoles.indexOf('SUPER_ADMIN') > -1 ||
+        organizationalRoles.indexOf('ORGANIZATION_ADMIN') > -1
       "
     >
       <v-list-item
@@ -57,10 +57,14 @@
 
         <v-list-item-content>
           <v-list-item-title class="navText">
-            {{
-            item.title
-            }}
-            <v-chip class="newChip" x-small color="red" dark v-if="item.title == 'Analytics'">
+            {{ item.title }}
+            <v-chip
+              class="newChip"
+              x-small
+              color="red"
+              dark
+              v-if="item.title == 'Analytics'"
+            >
               <span style="font-size: 10px !important">New</span>
             </v-chip>
           </v-list-item-title>
@@ -85,9 +89,7 @@
 
         <v-list-item-content>
           <v-list-item-title class="navText">
-            {{
-            item.title
-            }}
+            {{ item.title }}
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
@@ -107,13 +109,20 @@
       </v-list>
       <v-list-item>
         <img
-          style="margin-bottom: 10px; margin-left: -8px; border-radius:5px; border: 1px solid black"
+          style="
+            margin-bottom: 10px;
+            margin-left: -8px;
+            border-radius: 5px;
+            border: 1px solid black;
+          "
           width="40px"
           src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1595564844985_image.png"
         />
         <v-list-item-content style="margin-left: 12px; margin-top: -10px">
           <v-list-item-title class="navText">Arimac Digital</v-list-item-title>
-          <v-list-item-subtitle style="font-size: 10px">Arimac Lanka PVT LTD</v-list-item-subtitle>
+          <v-list-item-subtitle style="font-size: 10px"
+            >Arimac Lanka PVT LTD</v-list-item-subtitle
+          >
         </v-list-item-content>
       </v-list-item>
     </div>
@@ -142,7 +151,7 @@ export default {
         // {
         //   title: 'Inventory',
         //   icon: 'icon-inventory',
-        //   route: '../../inventory',
+        //   route: '../../inventory/inventory',
         // },
         {
           title: "Workload",

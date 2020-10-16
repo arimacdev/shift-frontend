@@ -1,5 +1,6 @@
 export const state = () => ({
   allTasks: [],
+  fullTaskList: [],
   myTasks: [],
   sprintTasks: [],
   userCompletionTasks: [],
@@ -54,6 +55,9 @@ export const mutations = {
     // });
     // state.allTasks = event;
     state.allTasks = state.allTasks.concat(event);
+  },
+  SET_FULL_TASKS_LIST(state, event) {
+    state.fullTaskList = event;
   },
   SET_CHILD_TASKS(state, children) {
     state.childTasks = children;
@@ -263,6 +267,24 @@ export const actions = {
         //   response.data.data
         // );
         commit('SET_ALL_TASKS', response.data.data);
+      })
+      .catch((e) => {
+        console.log('error', e);
+      });
+  },
+  fetchFullTaskList({ commit, rootState }, projectId) {
+    const userId = rootState.user.userId;
+    this.$axios
+      .get(
+        `projects/${projectId}/tasks?userId=${userId}&startIndex=${rootState.task.startIndex}&endIndex=${rootState.task.endIndex}&allTasks=true`,
+        {
+          headers: {
+            type: 'project',
+          },
+        }
+      )
+      .then((response) => {
+        commit('SET_FULL_TASKS_LIST', response.data.data);
       })
       .catch((e) => {
         console.log('error', e);
