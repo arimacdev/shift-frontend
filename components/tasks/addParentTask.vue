@@ -107,7 +107,7 @@
           </v-form>
         </v-card>
       </v-dialog>
-      <v-overlay :value="waiting" color="red">
+      <v-overlay z-index="inherit" :value="waiting" color="black">
         <waiting />
       </v-overlay>
     </v-row>
