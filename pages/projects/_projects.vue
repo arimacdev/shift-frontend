@@ -113,8 +113,8 @@
               </div>
             </div>
 
-            <v-expansion-panels accordion flat multiple focusable hover>
-              <v-expansion-panel class="projectDetailsPannels">
+            <v-expansion-panels v-model="panel"  accordion flat multiple focusable hover>
+              <v-expansion-panel  class="projectDetailsPannels">
                 <v-expansion-panel-header
                   color="#EDF0F5"
                   class="grey--text text--darken-2 font-weight-bold titles"
@@ -554,6 +554,7 @@ export default {
   },
   data() {
     return {
+      panel: [0, 1, 2, 3],
       overlay: false,
       pagination: 1,
       component: "tab-views",
