@@ -54,6 +54,12 @@
               v-on:click="component = 'organization-tab'"
               >Organization</v-tab
             >
+             <v-tab
+              class="tabInactiveStyle text-capitalize"
+              active-class="adminTabTitleStyle text-capitalize"
+              v-on:click="component = 'clients-tab'"
+              >Clients</v-tab
+            >
           </v-tabs>
         </div>
       </div>
@@ -92,6 +98,7 @@
 <script>
 import NavigationDrawer from "~/components/navigationDrawer";
 import Users from "~/components/admin/users";
+import Clients from "~/components/admin/clients";
 import Organization from "~/components/admin/organization";
 import Progress from "~/components/popups/progress";
 import Skills from "~/components/admin/skills";
@@ -102,6 +109,7 @@ export default {
   components: {
     NavigationDrawer,
     "users-tab": Users,
+    "clients-tab": Clients,
     "organization-tab": Organization,
     "skills-tab": Skills,
     "progress-loading": Progress,

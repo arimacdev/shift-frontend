@@ -590,8 +590,6 @@ export default {
       return orderedSkillMap;
     },
     setVisible() {
-      // console.log("DISABLED!");
-
       this.disableButton = false;
     },
     async changeNotificationStatus(status) {
