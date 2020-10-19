@@ -226,8 +226,6 @@ export default {
         this.overlay = false;
       }
     },
-
-      
     async postData() {
       let response;
       try {
