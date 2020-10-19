@@ -3921,3 +3921,10 @@
   color: #576377;
   font-weight: 500;
 }
+.allTaskCreateTab .v-messages__message {
+  margin-bottom: 20px;
+}
+
+.allTaskCreateTab .v-messages__message {
+  margin-bottom: 20px !important;
+}

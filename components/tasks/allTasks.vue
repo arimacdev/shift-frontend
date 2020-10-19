@@ -228,7 +228,10 @@
       >
         <v-form onsubmit="return false" ref="form">
           <v-text-field
+
+        :rules="taskNameRules"
             ref="txtMainTask"
+            class="tasknameAllTAsks"
             v-model="taskName"
             background-color="#FFFFFF"
             outlined
@@ -237,7 +240,6 @@
             dense
             prepend-inner-icon="mdi-plus"
             label="Add a main task. Format: <TaskName> @<Assignee> #<DueDate>"
-            class
             style="border-radius: 0px"
             @keyup.enter="addTask(null, 'general')"
             @input="autoFilling()"
@@ -425,10 +427,12 @@
                   class="restructuredSubTaskCreate"
                   v-if="task.parentTask.taskStatus != 'closed'"
                 >
-                  <v-expand-transition>
+                  <v-expand-transition class="TransitionDiv">
                     <v-text-field
+                     :rules="subTaskNameRules"
+                     v-if="hover"
+                     class="tasknameAllTAsks"
                       ref="txtSubTask"
-                      v-if="hover"
                       v-model="subTaskName"
                       background-color="#FFFFFF"
                       outlined
@@ -914,6 +918,8 @@ export default {
   props: ["pagination"],
   data() {
     return {
+      taskNameRules: [(value) => value.length < 100 || "Length Exceeded"],
+      subTaskNameRules: [(value) => value.length < 100 || ""],
       traverseText: "",
       hover: false,
       scrollCount: 1,
