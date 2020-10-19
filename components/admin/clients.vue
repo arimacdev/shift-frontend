@@ -26,16 +26,16 @@
           <v-col>
             <div class="listView overflow-y-auto">
               <v-list-item-group>
-                <div v-for="(user, index) in users" :key="index">
+                <div v-for="(client, index) in clients" :key="index">
                   <v-list-item
                     class="singleUserList"
-                    @click="selectUser(user)"
+                    @click="selectUser(client)"
                     v-on:click="component='edit-user'"
                   >
                     <v-list-item-avatar>
                       <v-img
-                        v-if="user.profileImage != null && user.profileImage != ''"
-                        :src="user.profileImage"
+                        v-if="client.organizationLogo != null && client.organizationLogo != ''"
+                        :src="client.organizationLogo"
                       ></v-img>
                       <v-img
                         v-else
@@ -43,7 +43,7 @@
                       ></v-img>
                     </v-list-item-avatar>
                     <v-list-item-content>
-                      <v-list-item-title class="body-2">{{ user.firstName }} {{ user.lastName}}</v-list-item-title>
+                      <v-list-item-title class="body-2">{{ client.organizationName }} </v-list-item-title>
                       <!-- <v-list-item-subtitle>Developer</v-list-item-subtitle> -->
                     </v-list-item-content>
                   </v-list-item>
@@ -131,11 +131,13 @@ export default {
   computed: {
     ...mapState({
       users: (state) => state.user.users,
+      clients: (state) => state.clients.clients.clients,
     }),
   },
 
   created() {
     this.$store.dispatch("project/clearProject");
+    this.$store.dispatch("clients/clients/fetchClients")
   },
 };
 </script>

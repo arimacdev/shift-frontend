@@ -41,6 +41,7 @@
       <v-row class="mb-12 formRow" no-gutters>
         <v-col sm="6" md="6">
           <v-text-field
+          type="number"
             flat
             outlined
             v-model.trim="mobile"
@@ -56,7 +57,7 @@
             outlined
             type="email"
             v-model.trim="$v.email.$model"
-            label="Email*"
+            label="Email"
             autocomplete="off"
             class="profileUpdateTextFields"
           />
@@ -75,26 +76,26 @@
       </v-row>
 
       <v-row style="margin-left: 20px">
-          <v-col sm="4" md="4">
+          <v-col sm="6" md="6">
           <form>
           <template>
             <!-- <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Select profile picture" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload profPicUploader"/> -->
             <!-- <v-file-input id="files" ref="files" v-on:change="handleFileUploads()"  prepend-icon="mdi-camera" chips label="Upload profile picture"></v-file-input> -->
             <v-file-input
+            v-if="profileImage == ''"
               label="Update profile picture"
               v-model="files"
               prepend-inner-icon="mdi-camera"
               prepend-icon
               class=""
               chips
-              @change="setVisible()"
+              @change="submit()"
             ></v-file-input>
           </template>
           <div class="">
-            <v-btn
+            <!-- <v-btn
               depressed
               :disabled="disableButton"
-              :loading="loading"
               color="#0BAFFF"
               class="ma-2 white--text text-capitalize"
               @click="submit()"
@@ -102,9 +103,9 @@
             >
               Upload
               <v-icon size="17" right dark>mdi-upload</v-icon>
-            </v-btn>
-            <v-btn color="#0BAFFF"  x-small depressed
-              class="ma-2 white--text text-capitalize" v-if="profileImage != ''" @click="profileImage = ''">Remove</v-btn>
+            </v-btn> -->
+            <v-btn color="#0BAFFF" v-if="profileImage != ''"  x-small depressed
+              class="ma-2 white--text text-capitalize"  @click="clearImage()">Remove</v-btn>
 
          
           </div>
@@ -191,11 +192,15 @@ export default {
     }
   },
   methods: {
+      clearImage(){
+          this.profileImage = ''; this.files = []
+      },
       setVisible() {
       this.disableButton = false;
       },
       async submit() {
-      this.overlay = true;
+          if(this.files != '' || this.files != []){
+this.overlay = true;
       let formData = new FormData();
       formData.append("files", this.files);
       formData.append("type", "profileImage");
@@ -220,11 +225,13 @@ export default {
         // console.log("group people response", this.taskFiles);
       } catch (e) {
         console.log("Error uploading prof pic: ", e);
-        this.component = "error-popup";
+        // this.component = "error-popup";
         // console.log("File Upload Failed: " + e);
-        this.errorMessage = e.response.data;
+        // this.errorMessage = e.response.data;
         this.overlay = false;
       }
+          }
+      
     },
     async postData() {
       let response;
@@ -235,7 +242,11 @@ export default {
           mobile: this.mobile,
           email: this.email,
           organizationLogo: this.profileImage
-        });
+        }, {
+            headers: {
+              user: this.userId,
+            },
+          });
           (this.organizationName = ""),
           (this.lastName = ""),
           (this.email = ""),
@@ -244,6 +255,7 @@ export default {
           this.$v.$reset();
         this.component = "success-popup";
         this.successMessage = "Organization successfully created";
+        this.$store.dispatch("clients/clients/fetchClients")
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -278,7 +290,7 @@ export default {
       errorMessage: "",
       userName: "",
       organizationName: "",
-      lastName: "",
+      mobile: "",
       profileImage: '',
       files: [],
       // designation: "",
@@ -287,6 +299,7 @@ export default {
       confirmPassword: "",
       component: "",
       disableButton: true,
+      countryName: '',
       countryList: [
 	"Afghanistan",
 	"Albania",
