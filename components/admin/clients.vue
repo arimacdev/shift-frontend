@@ -56,7 +56,7 @@
       </div>
       <div class="userContentWrapper">
         <keep-alive>
-          <component v-bind:is="component" :name="name" :userData="userData"></component>
+          <component  @removeComponent="removeComponent" v-bind:is="component" :name="name" :userData="userData"></component>
         </keep-alive>
       </div>
     </div>
@@ -69,7 +69,7 @@
 <script>
 import usersSearchBar from "~/components/tools/usersSearchBar";
 import AddUser from "~/components/admin/addClient";
-import EditUser from "~/components/admin/updateUserAdmin";
+import EditUser from "~/components/admin/updateClient";
 import Progress from "~/components/popups/progress";
 import { mapState } from "vuex";
 export default {
@@ -89,6 +89,9 @@ export default {
     };
   },
   methods: {
+      removeComponent() {
+      this.component = "";
+    },
     viewSearchComponent(data) {
       this.name = data;
       this.userData = data;
@@ -106,25 +109,8 @@ export default {
       this.$store.dispatch("user/setSelectedUser", data);
     },
     selectUser(userData) {
-      this.name = userData;
-      this.userData = userData;
-      try {
-        if (this.roleListCount === 0) {
-          this.$store.dispatch("admin/fetchRealmRoles");
-        }
-        this.roleListCount += 1;
-      } catch (e) {
-        this.roleListCount = 0;
-      }
-      this.overlay = true;
-      Promise.all([
-        this.$store.dispatch("admin/fetchUserRoleMapping", userData.userId),
-        this.$store.dispatch("skillMatrix/fetchUserSkills", userData.userId),
-        this.$store.dispatch("user/setSelectedUser", userData),
-        this.$store.dispatch("skillMap/fetchUserSkillMap", userData.userId),
-      ]).finally(() => {
-        this.overlay = false;
-      });
+      
+        this.$store.dispatch("clients/clients/fetchSelectedClient", userData)
     },
   },
 

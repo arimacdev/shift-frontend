@@ -1,12 +1,16 @@
 export const state = () => ({
     clients: [],
+    selectedClient: {}
   });
 
   export const mutations = {
     SET_CLIENTS(state, clients) {
       state.clients = clients;
     },
-}
+    SET_SELECTED_CLIENTS(state, selectedClient) {
+      state.selectedClient = selectedClient;
+    },
+  }
 
 export const actions = {
     async fetchClients({ commit, rootState }) {
@@ -26,5 +30,10 @@ export const actions = {
       } catch (error) {
         console.log('Error fetching clients', error);
       }
+    },
+    async fetchSelectedClient({ commit, rootState }, client) {
+      
+        commit('SET_SELECTED_CLIENTS', client);
+     
     },
 }

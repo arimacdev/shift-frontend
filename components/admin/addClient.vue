@@ -239,8 +239,8 @@ this.overlay = true;
         response = await this.$axios.$post("/organization", {
           organizationName: this.organizationName,
           country: this.countryName,
-          mobile: this.mobile,
-          email: this.email,
+          organizationContact: this.mobile,
+          organizationEmail: this.email,
           organizationLogo: this.profileImage
         }, {
             headers: {
