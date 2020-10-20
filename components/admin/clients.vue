@@ -110,7 +110,7 @@ export default {
     },
     selectUser(userData) {
       
-        this.$store.dispatch("clients/clients/fetchSelectedClient", userData)
+        this.$store.dispatch("clients/clients/fetchSelectedClient", userData.organizationId)
     },
   },
 

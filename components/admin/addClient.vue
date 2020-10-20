@@ -93,17 +93,7 @@
             ></v-file-input>
           </template>
           <div class="">
-            <!-- <v-btn
-              depressed
-              :disabled="disableButton"
-              color="#0BAFFF"
-              class="ma-2 white--text text-capitalize"
-              @click="submit()"
-              x-small
-            >
-              Upload
-              <v-icon size="17" right dark>mdi-upload</v-icon>
-            </v-btn> -->
+           
             <v-btn color="#0BAFFF" v-if="profileImage != ''"  x-small depressed
               class="ma-2 white--text text-capitalize"  @click="clearImage()">Remove</v-btn>
 

@@ -18,7 +18,7 @@ export const actions = {
       let response;
       try {
         response = await this.$axios.$get(
-          `/organization?startIndex=0&endIndex=10`,
+          `/organization?startIndex=0&endIndex=10&allRecords=true`,
           {
             headers: {
               user: user,
@@ -32,8 +32,25 @@ export const actions = {
       }
     },
     async fetchSelectedClient({ commit, rootState }, client) {
+
+        const user = rootState.user.userId;
+        let response;
+        try {
+          response = await this.$axios.$get(
+            `/organization/${client}`,
+            {
+              headers: {
+                user: user,
+              },
+            }
+          );
+          commit('SET_SELECTED_CLIENTS', response.data);
+        } catch (error) {
+          console.log('Error fetching client', error);
+        }
+    
       
-        commit('SET_SELECTED_CLIENTS', client);
+        
      
     },
 }

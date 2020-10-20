@@ -118,16 +118,40 @@
               </v-list-item>
             </v-btn>
           </v-col>
-        </v-row>
-        
-
-
-       
-
-        
+        </v-row> 
       </v-form>
+
+      <v-row style="margin-left: 20px">
+          <v-col sm="6" md="6">
+          <form>
+          <template>
+            <!-- <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Select profile picture" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload profPicUploader"/> -->
+            <!-- <v-file-input id="files" ref="files" v-on:change="handleFileUploads()"  prepend-icon="mdi-camera" chips label="Upload profile picture"></v-file-input> -->
+            <v-file-input
+            v-if="updatedLogo == ''"
+              label="Update profile picture"
+              v-model="files"
+              prepend-inner-icon="mdi-camera"
+              prepend-icon
+              class=""
+              chips
+              @change="submit()"
+            ></v-file-input>
+          </template>
+          <div class="">
+           
+            <v-btn color="#0BAFFF" v-if="profileImage != ''"  x-small depressed
+              class="ma-2 white--text text-capitalize"  @click="clearImage()">Remove</v-btn>
+
+         
+          </div>
+          
+        </form>
+          </v-col>
+      </v-row>
+
     </div>
-    <!-- -------- reset dialog -------- -->
+    <!-- -------- delete dialog -------- -->
     <v-dialog v-model="resetDialog" max-width="350">
       <v-card style="text-align: center; padding-bottom: 25px">
            <v-icon class="deletePopup" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
@@ -167,145 +191,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-
-    <!-- -------- deactivate dialog -------- -->
-    <v-dialog v-model="deactivateDialog" max-width="350">
-      <v-card style="text-align: center; padding-bottom: 25px">
-        <v-card-title class="headline" style="text-align: center">
-          <v-spacer></v-spacer>Deactivate User
-          <v-spacer></v-spacer>
-        </v-card-title>
-
-        <v-card-text>
-          Are you sure you need to deactivate the user permanently? Deactivated
-          users would not be able to interact with the tool and not allowed to
-          login to the system
-        </v-card-text>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-
-          <v-btn
-            small
-            class="text-capitalize"
-            depressed
-            color="red darken-1"
-            dark
-            @click="deactivateDialog = false"
-            >Cancel</v-btn
-          >
-
-          <v-btn
-            depressed
-            class="text-capitalize"
-            small
-            color="green darken-1"
-            dark
-            @click="
-              deactivateDialog = false;
-              deactivateUser();
-            "
-            >Confirm</v-btn
-          >
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <!-- -------- activate dialog -------- -->
-    <v-dialog v-model="activateDialog" max-width="350">
-      <v-card style="text-align: center; padding-bottom: 25px">
-        <v-card-title class="headline" style="text-align: center">
-          <v-spacer></v-spacer>Activate User
-          <v-spacer></v-spacer>
-        </v-card-title>
-
-        <v-card-text>
-          Are you sure you need to activate the user? Activated user will allow
-          to login to the system and able to interact with the tool
-        </v-card-text>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-
-          <v-btn
-            class="text-capitalize"
-            depressed
-            small
-            color="red darken-1"
-            dark
-            @click="activateDialog = false"
-            >Cancel</v-btn
-          >
-
-          <v-btn
-            depressed
-            small
-            class="text-capitalize"
-            color="green darken-1"
-            dark
-            @click="
-              activateDialog = false;
-              activateUser();
-            "
-            >Confirm</v-btn
-          >
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <!-- -------- role change dialog -------- -->
-    <v-dialog v-model="roleChangeDialog" max-width="350">
-      <v-card style="text-align: center; padding-bottom: 25px">
-        <v-card-title
-          class="headline"
-          style="text-align: center"
-          v-if="this.existingRole"
-        >
-          <v-spacer></v-spacer>Remove User Role
-          <v-spacer></v-spacer>
-        </v-card-title>
-        <v-card-title class="headline" style="text-align: center" v-else>
-          <v-spacer></v-spacer>Add User Role
-          <v-spacer></v-spacer>
-        </v-card-title>
-
-        <v-card-text v-if="this.existingRole">
-          <!-- Remove User Role -->
-          <br />The privileges of this role no longer exists for the user
-        </v-card-text>
-        <v-card-text v-else>
-          <!-- Add User Role -->
-          <br />The user will receive privileges according to the selected role
-        </v-card-text>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-
-          <v-btn
-            small
-            class="text-capitalize"
-            depressed
-            color="red darken-1"
-            dark
-            @click="roleChangeDialog = false"
-            >Cancel</v-btn
-          >
-
-          <v-btn
-            small
-            class="text-capitalize"
-            depressed
-            color="green darken-1"
-            dark
-            @click="userRoleUpdate"
-            >Confirm</v-btn
-          >
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
     <div @click="close" class="updateProfilePopupDiv">
       <component
         v-bind:is="component"
@@ -314,6 +199,9 @@
       ></component>
       <!-- <success-popup /> -->
     </div>
+     <v-overlay :value="overlay" color="black" style="z-index: 1008">
+        <progress-loading />
+      </v-overlay>
   </div>
 </template>
 
@@ -322,6 +210,7 @@ import axios from "axios";
 import { mapState } from "vuex";
 import SuccessPopup from "~/components/popups/successPopup";
 import ErrorPopup from "~/components/popups/errorPopup";
+import Progress from "~/components/popups/progress";
 
 import {
   numeric,
@@ -339,12 +228,15 @@ export default {
   components: {
     "success-popup": SuccessPopup,
     "error-popup": ErrorPopup,
+    "progress-loading": Progress,
   },
 
   data() {
     return {
       filterCategory: "",
       selectedSkills: [],
+      files: [],
+      overlay: false,
       // skillList: [],
       isValid: true,
       firstNameRules: [(value) => !!value || "Org name is required!"],
@@ -370,6 +262,7 @@ export default {
       updatedCountryName: "",
       updatedEmail: "",
       updatedMobile: "",
+      updatedLogo: "",
       designation: "",
       countryList: [
 	"Afghanistan",
@@ -626,7 +519,89 @@ export default {
   },
 
   methods: {
+     clearImage(){
+          this.updatedLogo = ''; this.files = []
+      },
+     async submit() {
+          if(this.files != '' || this.files != []){
+this.overlay = true;
+      let formData = new FormData();
+      formData.append("files", this.files);
+      formData.append("type", "profileImage");
+      this.files = null;
+
+      let fileResponse;
+      try {
+        fileResponse = await this.$axios.$post(
+          `/user/profile/upload`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              user: this.userId,
+            },
+          }
+        );
+        this.overlay = false;
+        this.updatedLogo = fileResponse.data;
+        this.component = "success-popup";
+        this.successMessage = "Profile successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.postData()
+      } catch (e) {
+        console.log("Error uploading prof pic: ", e);
+        this.component = "error-popup";
+        console.log("File Upload Failed: " + e);
+        this.errorMessage = e.response.data;
+        this.overlay = false;
+      }
+          }
+      
+    },
+    async postData() {
+      this.overlay = true;
+      const userObj = {
+        organizationName: this.getClientName(),
+        country: this.getCountryName(),
+        organizationEmail: this.getClientEmail(),
+        organizationContact: this.getClientMobile(),
+        organizationLogo: this.getClientLogo(),
+      };
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `organization/${this.selectedClient.organizationId}`,
+          userObj, {
+            headers: {
+              user: this.adminId,
+            },
+          }
+        );
+
+        this.$store.dispatch("clients/clients/fetchClients");
+         this.$store.dispatch("clients/clients/fetchSelectedClient", this.selectedClient.organizationId);
+        this.component = "success-popup";
+        this.successMessage = "Client successfully updated";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.updatedLogo = '';
+        this.overlay = false;
+      } catch (e) {
+        console.log("Error update client", e);
+        this.errorMessage = e.response.data;
+        this.component = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
+        //   alert("Error updating user!")
+      }
+    },
       async deleteOrganization(){
+        this.overlay = true;
           let response;
       try {
         response = await this.$axios.$delete(
@@ -644,7 +619,9 @@ export default {
         this.$emit("removeComponent");
         }, 3000);
 
-        this.$store.dispatch("clients/clients/fetchClients")
+        this.$store.dispatch("clients/clients/fetchClients");
+        this.$store.dispatch("clients/clients/fetchSelectedClient", this.selectedClient.organizationId);
+        this.overlay = false;
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = "error-popup";
@@ -652,6 +629,7 @@ export default {
           this.close();
         }, 3000);
         console.log("Error creating project", e);
+        this.overlay = false;
       }
       },
     displayRoleName(roleName) {
@@ -898,40 +876,7 @@ export default {
         //   alert("Error updating user!")
       }
     },
-    async postData() {
-      const userObj = {
-        organizationName: this.getClientName(),
-        country: this.getCountryName(),
-        organizationEmail: this.getClientEmail(),
-        organizationContact: this.getClientMobile(),
-      };
-      let response;
-      try {
-        response = await this.$axios.$put(
-          `organization/${this.selectedClient.organizationId}`,
-          userObj, {
-            headers: {
-              user: this.adminId,
-            },
-          }
-        );
-
-        this.$store.dispatch("clients/clients/fetchClients")
-        this.component = "success-popup";
-        this.successMessage = "Client successfully updated";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-      } catch (e) {
-        console.log("Error update client", e);
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        //   alert("Error updating user!")
-      }
-    },
+    
     getClientName() {
       if (this.updatedClientName.length === 0) {
         return this.selectedClient.organizationName;
@@ -951,6 +896,11 @@ export default {
       if (this.updatedMobile.length === 0) {
         return this.selectedClient.organizationContact;
       } else return this.updatedMobile;
+    },
+    getClientLogo(){
+      if (this.updatedLogo.length === 0) {
+        return this.selectedClient.organizationLogo;
+      } else return this.updatedLogo;
     },
     handleSubmit(e) {
       this.submitted = true;
