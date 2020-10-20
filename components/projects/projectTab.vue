@@ -6,7 +6,8 @@
           <v-list-item>
             <div class="tab-projectName">{{ fetchProject.projectName }}</div>
             <v-divider class="mx-3" inset vertical></v-divider>
-            <div class="tab-clientName">{{ fetchProject.clientId }}</div>
+            <div class="tab-clientName">{{ selectedClient.organizationName }}</div>
+       
 
             <!-- <div class="tab-status">{{ fetchProject.projectStatus }}</div> -->
             <div
@@ -116,11 +117,65 @@
                   <v-row class="mb-12 formRow projectDrawer" no-gutters>
                     <v-col sm="12" md="12">
                       <div class="editProjectLabels">Client*</div>
-                      <input
+                      <!-- <input
                         v-model="clientId"
                         placeholder="client"
                         class="formElements"
-                      />
+                      /> -->
+
+                      <v-autocomplete
+                      style="margin-top: -15px"
+              outlined
+            class="createFormElements"
+            v-model="clientId"  
+            :items="clientsArray"
+          item-text="name"
+          item-value="id">
+           <template v-slot:selection="data">
+             <template>
+                   <v-list-item-avatar size="25">
+                     <v-img
+                        v-if="data.item.img == '' || data.item.img == null"
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1603081854073_client.png"
+                      ></v-img>
+                      <v-img
+                        v-else
+                        :src="data.item.img"
+                      ></v-img>
+                      
+                    </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      v-html="data.item.name"
+                    ></v-list-item-title>
+                  </v-list-item-content>
+               
+                </template>
+           </template>
+          <template v-slot:item="data">
+                <template>
+               
+                   <v-list-item-avatar>
+                     <v-img
+                        v-if="data.item.img == '' || data.item.img == null"
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1603081854073_client.png"
+                      ></v-img>
+                      <v-img
+                        v-else
+                        :src="data.item.img"
+                      ></v-img>
+                      
+                    </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      v-html="data.item.name"
+                    ></v-list-item-title>
+                  </v-list-item-content>
+              
+                </template>
+              </template>
+          
+          </v-autocomplete>
                     </v-col>
                   </v-row>
                   <v-row class="mb-12 formRow projectDrawer" no-gutters>
@@ -611,11 +666,30 @@ export default {
       component: "",
     };
   },
+  created() {
+
+ this.$store.dispatch("clients/clients/fetchSelectedClient", this.fetchProject.clientId)
+  },
   computed: {
     ...mapState({
       projectTaskCompletion: (state) => state.task.projectTaskCompletion,
       fetchProject: (state) => state.project.project,
+        clients: (state) => state.clients.clients.clients,
+        selectedClient: (state) => state.clients.clients.selectedClient
     }),
+    clientsArray() {
+      let clientSearchList = this.clients;
+      let clientsList = [];
+      for (let index = 0; index < clientSearchList.length; ++index) {
+        let client = clientSearchList[index];
+        clientsList.push({
+          name: client.organizationName ,
+          id: client.organizationId,
+          img: client.organizationLogo,
+        });
+      }
+      return clientsList;
+    },
     projectName: {
       get() {
         return this.fetchProject.projectName;
@@ -695,6 +769,13 @@ export default {
     // }),
   },
   methods: {
+    fetchClient(clientId){
+       Promise.all([
+ this.$store.dispatch("clients/clients/fetchSelectedClient", clientId)
+  ]).finally(() => {
+      return this.selectedClient.organizationName
+    });
+    },
     checkConfirmation() {
       if (this.projectNameConfirmation === this.projectName) {
         return false;

@@ -584,6 +584,7 @@ export default {
       this.$store.dispatch("project/fetchAllProjects"),
       this.$store.dispatch("user/setAllUsers"),
       this.$store.dispatch("project/clearProject"),
+    this.$store.dispatch("clients/clients/fetchClients")
     ]).finally(() => {
       this.overlay = false;
     });

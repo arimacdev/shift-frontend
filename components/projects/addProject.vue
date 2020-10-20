@@ -35,12 +35,63 @@
           <!-- <input maxlength="49" v-model="client" placeholder="Client" class="formElements"> -->
           <!-- <div v-if="$v.client.$error && !$v.client.required" class="errorText"> Client is required</div> -->
 
-          <v-text-field
+          <!-- <v-text-field
             label="Client*"
             outlined
             class="createFormElements"
             v-model.trim="$v.client.$model"
-          ></v-text-field>
+          ></v-text-field> -->
+          <v-autocomplete label="Client*"
+            outlined
+            class="createFormElements"
+            v-model.trim="$v.client.$model"  :items="clientsArray"
+          item-text="name"
+          item-value="id">
+           <template v-slot:selection="data">
+             <template>
+                   <v-list-item-avatar size="25">
+                     <v-img
+                        v-if="data.item.img == '' || data.item.img == null"
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1603081854073_client.png"
+                      ></v-img>
+                      <v-img
+                        v-else
+                        :src="data.item.img"
+                      ></v-img>
+                      
+                    </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      v-html="data.item.name"
+                    ></v-list-item-title>
+                  </v-list-item-content>
+               
+                </template>
+           </template>
+          <template v-slot:item="data">
+                <template>
+               
+                   <v-list-item-avatar>
+                     <v-img
+                        v-if="data.item.img == '' || data.item.img == null"
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1603081854073_client.png"
+                      ></v-img>
+                      <v-img
+                        v-else
+                        :src="data.item.img"
+                      ></v-img>
+                      
+                    </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      v-html="data.item.name"
+                    ></v-list-item-title>
+                  </v-list-item-content>
+              
+                </template>
+              </template>
+          
+          </v-autocomplete>
           <div
             v-if="$v.client.$error && !$v.client.required"
             class="errorTextCreateProject"
@@ -183,6 +234,7 @@
 
 <script>
 import axios from "axios";
+import { mapState } from "vuex";
 import {
   numeric,
   required,
@@ -357,6 +409,22 @@ export default {
     },
   },
   computed: {
+     ...mapState({
+      clients: (state) => state.clients.clients.clients,
+    }),
+    clientsArray() {
+      let clientSearchList = this.clients;
+      let clientsList = [];
+      for (let index = 0; index < clientSearchList.length; ++index) {
+        let client = clientSearchList[index];
+        clientsList.push({
+          name: client.organizationName ,
+          id: client.organizationId,
+          img: client.organizationLogo,
+        });
+      }
+      return clientsList;
+    },
     checkValidation: {
       get() {
         if (this.$v.$invalid == true) {

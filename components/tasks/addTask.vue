@@ -790,7 +790,9 @@ export default {
           // console.log("assignee is me", this.taskAssignee, this.userId);
           this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
           this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+          this.overlay = false;
         } else {
+          this.overlay = false;
           // console.log("assignee is NOT me", this.taskAssignee);
           this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
         }
@@ -811,6 +813,7 @@ export default {
         }, 3000);
         console.log("Error updating a status", e);
       }
+      this.overlay = false;
     },
   },
   async created() {

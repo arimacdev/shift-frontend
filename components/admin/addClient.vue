@@ -113,7 +113,7 @@
                 <v-icon size="20" color>icon-user</v-icon>
               </v-list-item-action>
               <v-list-item-content class="buttonText">
-                <v-list-item-title class="bodyWiew">Register user</v-list-item-title>
+                <v-list-item-title class="bodyWiew">Register Client</v-list-item-title>
               </v-list-item-content>
               <v-icon>mdi-plus-circle</v-icon>
             </v-list-item>
