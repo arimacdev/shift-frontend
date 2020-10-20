@@ -6,7 +6,7 @@
           <v-list-item>
             <div class="tab-projectName">{{ fetchProject.projectName }}</div>
             <v-divider class="mx-3" inset vertical></v-divider>
-            <div class="tab-clientName">{{ selectedClient.organizationName }}</div>
+            <div v-if="selectedClient" class="tab-clientName">{{ selectedClient.organizationName }}</div>
        
 
             <!-- <div class="tab-status">{{ fetchProject.projectStatus }}</div> -->
