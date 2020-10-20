@@ -12,7 +12,7 @@
       <v-img
         v-else
         class="userAdminProfileImage"
-        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1603081854073_client.png"
       ></v-img>
     </div>
     <div class="userNameAdmin">
@@ -612,15 +612,15 @@ this.overlay = true;
             },
           }
         );  
+
+        this.$emit("removeComponent");
         this.successMessage = "Client removed successfully";
         this.component = "success-popup";
         setTimeout(() => {
           this.close();
-        this.$emit("removeComponent");
         }, 3000);
 
         this.$store.dispatch("clients/clients/fetchClients");
-        this.$store.dispatch("clients/clients/fetchSelectedClient", this.selectedClient.organizationId);
         this.overlay = false;
       } catch (e) {
         this.errorMessage = e.response.data;
