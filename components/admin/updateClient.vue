@@ -40,14 +40,7 @@
               :rules="firstNameRules"
             />
 
-            <!-- <div
-              v-if="$v.firstName.$error && !$v.firstName.required"
-              class="errorText"
-            >First name is required</div>
-            <div
-              v-if="$v.firstName.$error && !$v.firstName.maxLength"
-              class="errorText"
-            >Cannot use more than 50 characters</div>-->
+           
           </v-col>
           <v-col sm="6" md="6">
              <v-autocomplete
@@ -58,14 +51,7 @@
             label="Country Name"
             class="profileUpdateTextFields"
           />
-            <!-- <div
-              v-if="$v.lastName.$error && !$v.lastName.required"
-              class="errorText"
-            >Last name is required</div>
-            <div
-              v-if="$v.lastName.$error && !$v.lastName.maxLength"
-              class="errorText"
-            >Cannot use more than 50 characters</div>-->
+           
           </v-col>
         </v-row>
 
@@ -96,7 +82,30 @@
         </v-row>
 
         <v-row class="mb-12 formRow" no-gutters>
-          <v-col sm="12" md="6" class></v-col>
+          <v-col sm="12" md="6" style="padding-left: 10px" class>
+            <form>
+          <template>
+           <v-file-input
+            v-if="updatedLogo == ''"
+              label="Update profile picture"
+              v-model="files"
+              prepend-inner-icon="mdi-camera"
+              prepend-icon
+              class=""
+              chips
+              @change="submit()"
+            ></v-file-input>
+          </template>
+          <div class="">
+           
+            <!-- <v-btn color="#0BAFFF" v-if="profileImage != ''"  x-small depressed
+              class="ma-2 white--text text-capitalize"  @click="clearImage()">Remove</v-btn> -->
+
+         
+          </div>
+          
+        </form>
+          </v-col>
           <v-col sm="12" md="6" class="buttonGrid">
             <v-btn
               depressed
@@ -121,34 +130,7 @@
         </v-row> 
       </v-form>
 
-      <v-row style="margin-left: 20px">
-          <v-col sm="6" md="6">
-          <form>
-          <template>
-            <!-- <input type="text" onfocusin="(this.type='file')" onfocusout="(this.type='file')" placeholder="Select profile picture" id="files" ref="files" v-on:change="handleFileUploads()" class="formElements fileUpload profPicUploader"/> -->
-            <!-- <v-file-input id="files" ref="files" v-on:change="handleFileUploads()"  prepend-icon="mdi-camera" chips label="Upload profile picture"></v-file-input> -->
-            <v-file-input
-            v-if="updatedLogo == ''"
-              label="Update profile picture"
-              v-model="files"
-              prepend-inner-icon="mdi-camera"
-              prepend-icon
-              class=""
-              chips
-              @change="submit()"
-            ></v-file-input>
-          </template>
-          <div class="">
-           
-            <v-btn color="#0BAFFF" v-if="profileImage != ''"  x-small depressed
-              class="ma-2 white--text text-capitalize"  @click="clearImage()">Remove</v-btn>
-
-         
-          </div>
-          
-        </form>
-          </v-col>
-      </v-row>
+    
 
     </div>
     <!-- -------- delete dialog -------- -->
@@ -223,7 +205,6 @@ import {
 } from "vuelidate/lib/validators";
 
 export default {
-  props: ["userData"],
   name: "editUser",
   components: {
     "success-popup": SuccessPopup,
@@ -632,250 +613,6 @@ this.overlay = true;
         this.overlay = false;
       }
       },
-    displayRoleName(roleName) {
-      switch (roleName) {
-        case "SUPER_ADMIN":
-          return "Super Admin";
-          break;
-        case "USER":
-          return "User";
-          break;
-        case "ADMIN":
-          return "admin";
-          break;
-        case "WORKLOAD":
-          return "workload";
-          break;
-
-        default:
-      }
-    },
-    async addSkillToUser(categoryId, skillId) {
-      let response;
-      try {
-        response = await this.$axios.$post(
-          `/category/${categoryId}/user/skill`,
-          {
-            assigneeId: this.userData.userId,
-            skills: [skillId],
-          },
-          {
-            headers: {
-              userId: this.adminId,
-            },
-          }
-        );
-
-        this.$store.dispatch(
-          "skillMatrix/fetchUserSkills",
-          this.userData.userId
-        );
-
-        this.$store.dispatch(
-          "skillMap/fetchUserSkillMap",
-          this.userData.userId
-        );
-        this.successMessage = "Skill added to user successfully";
-        this.component = "success-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-      } catch (e) {
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        console.log("Error adding a skill", e);
-      }
-    },
-    async removeSkillFromUser(categoryId, skillId) {
-      let response;
-      try {
-        response = await this.$axios.$delete(
-          `/category/${categoryId}/user/skill`,
-          {
-            data: {
-              assigneeId: this.userData.userId,
-              skills: [skillId],
-            },
-            headers: {
-              userId: this.adminId,
-            },
-          }
-        );
-
-        this.$store.dispatch(
-          "skillMatrix/fetchUserSkills",
-          this.userData.userId
-        );
-
-        this.$store.dispatch(
-          "skillMap/fetchUserSkillMap",
-          this.userData.userId
-        );
-        this.successMessage = "Skill removed from user successfully";
-        this.component = "success-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-      } catch (e) {
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        console.log("Error removing a skill", e);
-      }
-    },
-    getSkills() {
-      // console.log("TRIGERRED " + this.filterCategory);
-      if (this.filterCategory != undefined) {
-        this.$store.dispatch(
-          "skillMatrix/fetchCategorySkills",
-          this.filterCategory
-        );
-      } else {
-        this.selectedSkills = [];
-      }
-    },
-    clearSkill() {
-      // this.filterSkill = [];
-    },
-    clearCategory() {
-      // console.log("CLEARED " + this.filterCategory);
-      this.filterCategory = "";
-    },
-    // categorizedSkillMap() {
-    //   let skillmap = this.userSkillMap;
-    //   // console.log("skillmap", this.userSkillMap);
-    //   const orderedSkillMap = skillmap.reduce((accumilate, current) => {
-    //     accumilate[current.categoryId] = (
-    //       accumilate[current.categoryId] || []
-    //     ).concat(current);
-    //     return accumilate;
-    //   }, {});
-    //   return orderedSkillMap;
-    // },
-    checkUser(roleName) {
-      if (roleName === "USER") {
-        return true;
-      } else return false;
-    },
-    userRoleUpdate() {
-      this.roleChangeDialog = false;
-      if (!this.existingRole) {
-        this.$store.dispatch("admin/addUserRole", {
-          userId: this.userData.userId,
-          id: this.selectedRole.id,
-          name: this.selectedRole.name,
-        });
-      } else {
-        if (this.existingRole) {
-          // console.log("calling delete");
-          this.$store.dispatch("admin/removeUserRole", {
-            userId: this.userData.userId,
-            id: this.selectedRole.id,
-            name: this.selectedRole.name,
-          });
-        }
-      }
-    },
-    checkUserRole(name) {
-      if (this.userRoles.some((role) => role.name === name)) return "primary";
-    },
-    selectUserRole(userRole) {
-      // console.log("userRole", userRole);
-      this.roleChangeDialog = true;
-      this.selectedRole = userRole;
-      if (
-        this.userRoles.filter((role) => role.name === userRole.name).length > 0
-      ) {
-        this.existingRole = true;
-        // console.log("role exists");
-      } else {
-        // console.log("role not exists");
-
-        this.existingRole = false;
-      }
-    },
-    async deactivateUser() {
-      let response;
-      try {
-        response = await this.$axios.$post(
-          `/users/deactivate`,
-          {
-            headers: {
-              user: this.adminId,
-            },
-          },
-          {
-            data: {
-              adminId: this.adminId,
-              userId: this.userData.userId,
-            },
-          }
-        );
-        this.component = "success-popup";
-        this.successMessage = "User successfully deactivated";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        this.$v.$reset();
-        let updatedUser = this.selectedUser;
-        this.$store.dispatch("user/updateActivationStatus", {
-          user: updatedUser,
-          status: false,
-        });
-      } catch (e) {
-        console.log("Error creating user", e);
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        //   alert("Error updating user!")
-      }
-    },
-
-    async activateUser() {
-      let response;
-      try {
-        response = await this.$axios.$post(
-          `/users/activate`,
-          {
-            headers: {
-              user: this.adminId,
-            },
-          },
-          {
-            data: {
-              adminId: this.adminId,
-              userId: this.userData.userId,
-            },
-          }
-        );
-        this.component = "success-popup";
-        this.successMessage = "User successfully activated";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        this.$v.$reset();
-        let updatedUser = this.selectedUser;
-        this.$store.dispatch("user/updateActivationStatus", {
-          user: updatedUser,
-          status: true,
-        });
-      } catch (e) {
-        console.log("Error creating user", e);
-        this.errorMessage = e.response.data;
-        this.component = "error-popup";
-        setTimeout(() => {
-          this.close();
-        }, 3000);
-        //   alert("Error updating user!")
-      }
-    },
     
     getClientName() {
       if (this.updatedClientName.length === 0) {
@@ -917,14 +654,7 @@ this.overlay = true;
   },
   computed: {
     ...mapState({
-      realmRoles: (state) => state.admin.realmRoles,
-      userRoles: (state) => state.admin.userRoles,
-      selectedUser: (state) => state.user.selectedUser,
-      organizationalRoles: (state) => state.user.organizationalRoles,
-      userSkillMap: (state) => state.skillMap.userSkillMap,
-      skillCategory: (state) => state.skillMatrix.skillCategory,
-      categorySkills: (state) => state.skillMatrix.skills,
-      userSkills: (state) => state.skillMatrix.userSkills,
+      
       selectedClient: (state) => state.clients.clients.selectedClient
     }),
     
@@ -947,12 +677,6 @@ this.overlay = true;
         } else {
           return "addProjectButtonSuccess";
         }
-      },
-    },
-    filterSkill: {
-      get() {},
-      set(value) {
-        this.selectedSkills = value;
       },
     },
     clientName: {
