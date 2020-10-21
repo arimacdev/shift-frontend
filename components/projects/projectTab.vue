@@ -85,7 +85,7 @@
               absolute
               temporary
               right
-              height="84vh"
+              height="90vh"
               width="350px"
               class="overflow-y-auto"
             >
@@ -366,6 +366,88 @@
           </div>
 
           <!-- --------------- end side bar --------------------- -->
+          <!-- ----------------- Support enable Dialog ------------- -->
+
+          <v-dialog v-model="supportDialog" max-width="380">
+            <v-card>
+              <div class="popupConfirmHeadline">
+                <v-icon
+                  class="deletePopupIcon"
+                  size="60"
+                  color="deep-orange lighten-1"
+                  >mdi-progress-wrench</v-icon
+                >
+                <br />
+                <span class="alertPopupTitle">Enable Support</span>
+                <br />
+                <br />
+                <span class="alertPopupText"
+                  >You are going to enable support for this project. </span
+                >
+                <br />
+                <br />
+                <strong>Client details</strong>
+                <br />
+                <br />
+                
+              <div style="" v-if="selectedClient" >
+                
+                <v-list-item>
+                   <v-spacer></v-spacer>
+                  <v-list-item-avatar >
+                     <v-img
+                        v-if="selectedClient.organizationLogo == '' || selectedClient.organizationLogo == null"
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1603081854073_client.png"
+                      ></v-img>
+                      <v-img
+                        v-else
+                        :src="selectedClient.organizationLogo"
+                      ></v-img>
+                      
+                    </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title class="alertPopupText"
+                      v-html="selectedClient.organizationName"
+                    ></v-list-item-title>
+                  </v-list-item-content>
+                   <v-spacer></v-spacer>
+                </v-list-item>
+              </div>
+              
+              <div class="alertPopupText" v-else>No client added, <br> Client is required to proceed.</div>
+              </div>
+
+              <div class="popupBottom">
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+
+                  <v-btn
+                    color="error"
+                    class="text-capitalize"
+                    depressed
+                    width="100px"
+                    @click="supportDialog = false"
+                    >Cancel</v-btn
+                  >
+                  <v-spacer></v-spacer>
+                  <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
+                  <v-btn
+                    class="text-capitalize"
+                    depressed
+                    color="success"
+                    :disabled="!selectedClient"
+                    width="100px"
+                    @click="
+                      supportDialog = false;
+                      editProject(); enableSupport()
+                    "
+                    >Update</v-btn
+                  >
+                  <v-spacer></v-spacer>
+                </v-card-actions>
+              </div>
+            </v-card>
+          </v-dialog>
           <!-- --------------------- update weight popup --------------- -->
 
           <v-dialog v-model="weightUpdateDialog" max-width="380">
@@ -572,49 +654,6 @@
       </v-row>
     </v-container>
 
-    <!-- ----------------------- start logs ------------------ -->
-
-    <!-- <v-container class="logsContainer">
-      <div> Task Log  </div>
-    </v-container>-->
-
-    <!-- -------------- put logs below this line ---------- -->
-
-    <v-container class="logsContainerContent">
-      <!-- -------- logs date ------- -->
-      <!-- <v-container class="dateContent"> 
-       <div class=""> 2020 Jan 4 </div>
-      </v-container>-->
-
-      <!-- --------- one log --------- -->
-
-      <!-- <v-container class="logContent"> 
-
-      <v-list-item v-for="(log, index) in taskLog" :key="index" >
-              <div class="logTitleContainer">
-                 <v-list-item-title class="logTitle">
-                  {{log.timestamp}}
-                </v-list-item-title>
-              </div>
-              <v-list-item-content>
-                    <v-list-item-title class="logText1">
-                      @Naveen has created {{log.taskLogEntity}}
-                    </v-list-item-title>
-                      <v-list-item-title class="logText2">
-                      > {{log.taskLogEntityId}}
-                    </v-list-item-title>
-            </v-list-item-content>
-              <div class="updatedDate">
-               <v-list-item-title class="logText3">
-                      Task created
-                    </v-list-item-title>
-              </div>
-            </v-list-item>
-      </v-container>-->
-
-      <!-- --------- end log --------- -->
-    </v-container>
-
     <div @click="close" class="popupBox">
       <component
         v-bind:is="component"
@@ -644,6 +683,8 @@ export default {
   },
   data() {
     return {
+      supportDialog: false,
+
       projectNameConfirmation: "",
       overlay: false,
       successMessage: "",
@@ -756,25 +797,59 @@ export default {
     },
     projectStatus: {
       get() {
-        // console.log("get status", this.fetchProject.projectStatus);
         return this.fetchProject.projectStatus;
       },
       set(value) {
-        // console.log("set status", this.fetchProject.projectStatus);
-
+         if(value == 'support'){
+          this.supportDialog = true
+          this.drawer = false
+        }
         this.updateProject.projectStatus = value;
+       
       },
     },
-    // ...mapState({
-    // }),
   },
   methods: {
+    async enableSupport(){
+        let response;
+      try {
+        response = await this.$axios.$post(
+          `/projects/support`,
+          {
+            projectId: this.fetchProject.projectId
+          },
+          {
+            headers: {
+              userId: this.userId,
+            },
+          }
+        );
+
+      
+        this.successMessage = "Support added successfully";
+        this.popup = "success-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
+        // console.log("update task status response", response);
+      } catch (e) {
+        this.categoryName = "";
+        this.errorMessage = e.response.data;
+        this.popup = "error-popup";
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
+        console.log("Error support adding", e);
+      }
+    },
     fetchClient(clientId){
        Promise.all([
- this.$store.dispatch("clients/clients/fetchSelectedClient", clientId)
-  ]).finally(() => {
-      return this.selectedClient.organizationName
-    });
+        this.$store.dispatch("clients/clients/fetchSelectedClient", clientId)
+          ]).finally(() => {
+              return this.selectedClient.organizationName
+            });
     },
     checkConfirmation() {
       if (this.projectNameConfirmation === this.projectName) {
@@ -833,13 +908,6 @@ export default {
     },
     async editProject() {
       this.overlay = true;
-      // console.log(
-      //   'update Project ',
-      //   this.fetchProject.projectStartDate +
-      //     ' ' +
-      //     this.updateProject.projectStartDate.slice(0, -1) +
-      //     '+0000'
-      // );
       let response;
       let startDate;
       let endDate;
