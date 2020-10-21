@@ -32,34 +32,46 @@
         </div>
       </v-toolbar>
 
-      <div class="body-div">
-        <div class="workloadTypeSection">
-          <v-tabs background-color="#151515" slider-size="3" dark>
-            <v-tab
-              class="tabInactiveStyle text-capitalize"
-              active-class="adminTabTitleStyle text-capitalize"
-              v-on:click="component = 'summary-tab'"
-              >Summary</v-tab
-            >
-            <v-tab
-              class="tabInactiveStyle text-capitalize"
-              active-class="adminTabTitleStyle text-capitalize text-capitalize"
-              v-on:click="component = 'request-tab'"
-              >Requests</v-tab
-            >
-            <v-tab
-              class="tabInactiveStyle text-capitalize"
-              active-class="adminTabTitleStyle text-capitalize"
-              v-on:click="component = 'users-tab'"
-              >Users</v-tab
-            >
-          </v-tabs>
-        </div>
+      <div class="projectListUserSupport">
+         <v-list-item-group>
+          <div
+            class="projectListView overflow-y-auto"
+            style="padding-left: 20px; padding-right: 5px; padding-top: 20px"
+          >
+
+           <div
+                style="margin-bottom: 15px; margin-left: 15px"
+                class="grey--text text--darken-2 font-weight-bold titles"
+              >
+                Support Projects
+              </div>
+          <div v-for="(project, index) in allProjects"
+                    :key=index>
+                    <div v-if="project.projectStatus == 'support'">
+          <v-list-item @click="component = 'tab-section'; selectProject(project)" class="selectedProjectPanel">
+                  <v-list-item-action>
+                    <v-icon size="17" color="blue">icon-project</v-icon>
+                  </v-list-item-action>
+                  <v-list-item-content>
+                    <v-list-item-title class="fontRestructure12">
+                      {{project.projectName}}
+                    </v-list-item-title>
+                  </v-list-item-content>
+                  
+                </v-list-item>
+                <v-divider></v-divider>
+                    </div>
+          </div>
+          </div>
+         </v-list-item-group>
+      </div>
+      <div>
+         <component
+          v-bind:is="component"
+        ></component>
       </div>
 
-      <div>
-        <component v-bind:is="component"></component>
-      </div>
+      
       <v-overlay :value="overlay" color="black" style="z-index: 1008">
         <progress-loading />
       </v-overlay>
@@ -96,6 +108,8 @@ import Summary from "~/components/support/summary";
 import Progress from "~/components/popups/progress";
 import Request from "~/components/support/request";
 
+import Tabs from "~/components/support/tabSection";
+
 import { mapState, mapGetters } from "vuex";
 
 export default {
@@ -105,24 +119,24 @@ export default {
     "summary-tab": Summary,
     "request-tab": Request,
     "progress-loading": Progress,
+    "tab-section": Tabs
   },
   data() {
     return {
       overlay: false,
-      component: "summary-tab",
+      component: "",
     };
   },
   methods: {
-    aaaaa() {
-      // console.log("ERROR");
-      // window.location.href = "/";
-      location.reload();
-    },
+    selectProject(project){
+      this.$store.dispatch("project/addSelectedProject", project);
+    }
   },
   computed: {
     ...mapState({
       taskWorkLoadUsers: (state) => state.workload.taskWorkLoadUsers,
       organizationalRoles: (state) => state.user.organizationalRoles,
+      allProjects: (state) => state.project.allOrgProjects,
     }),
   },
   async asyncData({ $axios, store }) {
@@ -149,9 +163,8 @@ export default {
   created() {
     this.overlay = true;
     Promise.all([
-      this.$store.dispatch("user/setAllUsers"),
-      this.$store.dispatch("project/clearProject"),
-      this.$store.dispatch("skillMatrix/fetchSkillCategory"),
+      
+      this.$store.dispatch("project/fetchAllOragnizationProjects"),
     ]).finally(() => {
       this.overlay = false;
     });

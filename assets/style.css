@@ -3897,8 +3897,9 @@
 .projectListUserSupport {
   width: 20%;
   float: left;
+  padding-top: 30px;
   /* padding-left: 12px; */
-  margin-top: -20px;
+  /* margin-top: -20px; */
 }
 .componentContent {
   padding-top: 30px;
@@ -3927,4 +3928,7 @@
 
 .allTaskCreateTab .v-messages__message {
   margin-bottom: 20px !important;
+}
+.tabSectionSupport {
+  margin-top: -30px;
 }
