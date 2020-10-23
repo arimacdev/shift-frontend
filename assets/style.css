@@ -3889,6 +3889,11 @@
   height: 100vh;
   padding: 40px;
 }
+.requestViewContentSupport {
+  height: 100vh;
+  padding-left: 40px;
+  padding-right: 40px;
+}
 .statDisplay {
   width: 30%;
   float: left;
@@ -3931,4 +3936,8 @@
 }
 .tabSectionSupport {
   margin-top: -30px;
+}
+.requestRow {
+  margin-top: 30px;
+  padding-left: 10px;
 }
