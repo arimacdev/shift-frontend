@@ -132,7 +132,8 @@ export default {
       this.overlay = true
       Promise.all([
       this.$store.dispatch("support/support/addSelectedProject", project),
-      this.$store.dispatch("clients/clients/fetchSelectedClient", project.clientId)
+      this.$store.dispatch("clients/clients/fetchSelectedClient", project.clientId),
+      this.$store.dispatch("support/support/fetchClientSupportUsers", project.clientId)
        ]).finally(() => {
              this.overlay = false
             });

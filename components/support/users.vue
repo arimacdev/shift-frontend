@@ -35,11 +35,15 @@
               <div style="padding-left: 40px; padding-right:40px">
                   <div v-if="!userOptionSwitch">
                 <v-form v-model="isValidUserAssign">
-               <v-autocomplete v-model="assigneeId" :rules="nameRules" label="Select existing user" outlined></v-autocomplete>
+               <v-autocomplete 
+                    :items="assigneeArray"
+                    item-text="name"
+                    item-value="id"
+                    v-model="assigneeId" :rules="nameRules" label="Select existing user" outlined></v-autocomplete>
                 </v-form>
                   </div>
                   <div v-else>
-                      <v-form v-model="isValidUserAdd">
+                      <v-form v-model="isValidUserAdd" ref="addUserForm">
 
                   <v-row>
                       <v-col><v-text-field v-model="assigneeEmail" :rules="emailRules" outlined label="Email"></v-text-field></v-col>
@@ -60,7 +64,7 @@
                    label="Create new user" ></v-switch>
               
               </div>
-    {{userStatus}}
+              <span style="color: red" v-if="userStatus">User already exists!</span>
               
 
               <div v-if="!userOptionSwitch" class="popupBottom">
@@ -112,7 +116,7 @@
                     :disabled="!isValidUserAdd"
                     width="100px"
                     @click="
-                      supportUserDialog = false; assignUser()
+                       assignUser()
                     "
                     >Create</v-btn
                   >
@@ -150,6 +154,8 @@ export default {
         return{
             overlay: false,
             component: '',
+            errorMessage: "",
+            successMessage: "",
 
             userId: this.$store.state.user.userId,
             supportUserDialog: false,
@@ -178,33 +184,36 @@ export default {
              Promise.all([
             this.$store.dispatch("support/support/fetchSupportUser", this.assigneeEmail),
              ]).finally(async() => {
+                 console.log("USER STATUS " + this.userStatus)
               if(this.userStatus == false){
                   let response;
                 try {
                     response = await this.$axios.$post(
                     `/support/user/admin`,
                     {
-                        clientId: this.fetchProject.projectId
+                        clientId: this.selectedProject.clientId,
+                        firstName: this.assigneeFirstName,
+                        lastName: this.assigneeLastName,
+                        email: this.assigneeEmail
                     },
                     {
                         headers: {
-                        userId: this.userId,
+                        user: this.userId,
+                        project: this.selectedProject.project
                         },
                     }
                     );
-
-      
-                    this.successMessage = "Support added successfully";
-                    this.popup = "success-popup";
+                    this.successMessage = "User added successfully";
+                    this.component = "success-popup";
                     setTimeout(() => {
                     this.close();
                     }, 3000);
                     this.overlay = false;
-                    // console.log("update task status response", response);
+                    this.$refs.addUserForm.reset();
                 } catch (e) {
                     this.categoryName = "";
                     this.errorMessage = e.response.data;
-                    this.popup = "error-popup";
+                    this.component = "error-popup";
                     setTimeout(() => {
                     this.close();
                     }, 3000);
@@ -221,8 +230,21 @@ export default {
       allProjects: (state) => state.project.allOrgProjects,
       selectedProject: (state) => state.support.support.seletedSupportProject,
       selectedClient: (state) => state.clients.clients.selectedClient,
-      userStatus: (state) => state.support.support.isUserEnabled,
+      userStatus: (state) => state.support.support.isUserExists,
+      clientSupportUsers: (state) => state.support.support.clientSupportUsers,
     }),
+    assigneeArray() {
+      let AssigneeSearchList = this.clientSupportUsers;
+      let assigneeList = [];
+      for (let index = 0; index < AssigneeSearchList.length; ++index) {
+        let user = AssigneeSearchList[index];
+        assigneeList.push({
+          name: user.firstName + " " + user.lastName,
+          id: user.userId,
+        });
+      }
+      return assigneeList;
+    },
   },
 }
 </script>
