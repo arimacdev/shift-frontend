@@ -35,22 +35,22 @@
               <div style="padding-left: 40px; padding-right:40px">
                   <div v-if="!userOptionSwitch">
                 <v-form v-model="isValidUserAssign">
-               <v-autocomplete :rules="nameRules" label="Select existing user" outlined></v-autocomplete>
+               <v-autocomplete v-model="assigneeId" :rules="nameRules" label="Select existing user" outlined></v-autocomplete>
                 </v-form>
                   </div>
                   <div v-else>
                       <v-form v-model="isValidUserAdd">
 
                   <v-row>
-                      <v-col><v-text-field :rules="emailRules" outlined label="Email"></v-text-field></v-col>
+                      <v-col><v-text-field v-model="assigneeEmail" :rules="emailRules" outlined label="Email"></v-text-field></v-col>
                       
                   </v-row>
                   <v-row style="margin-top: -30px">
                       <v-col>
-                          <v-text-field :rules="nameRules" outlined label="First Name"></v-text-field>
+                          <v-text-field v-model="assigneeFirstName" :rules="nameRules" outlined label="First Name"></v-text-field>
                       </v-col>
                       <v-col>
-                          <v-text-field :rules="nameRules" outlined label="Last Name"></v-text-field>
+                          <v-text-field v-model="assigneeLastName" :rules="nameRules" outlined label="Last Name"></v-text-field>
                       </v-col>
                   </v-row>
                       </v-form>
@@ -60,7 +60,7 @@
                    label="Create new user" ></v-switch>
               
               </div>
-
+    {{userStatus}}
               
 
               <div v-if="!userOptionSwitch" class="popupBottom">
@@ -112,7 +112,7 @@
                     :disabled="!isValidUserAdd"
                     width="100px"
                     @click="
-                      supportUserDialog = false;
+                      supportUserDialog = false; assignUser()
                     "
                     >Create</v-btn
                   >
@@ -122,13 +122,35 @@
               </div>
             </v-card>
           </v-dialog>
+            <div @click="close" class="updateProfilePopupDiv">
+      <component
+        v-bind:is="component"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
+      <!-- <success-popup /> -->
+    </div>
+           <v-overlay :value="overlay" color="black" style="z-index: 1008">
+        <progress-loading />
+      </v-overlay>
     </div>
 </template>
 <script>
 import { mapState } from "vuex";
+import Progress from "~/components/popups/progress";
+import SuccessPopup from "~/components/popups/successPopup";
+import ErrorPopup from "~/components/popups/errorPopup";
 export default {
+    components: {
+    "progress-loading": Progress,
+    "success-popup": SuccessPopup,
+    "error-popup": ErrorPopup,
+  },
     data(){
         return{
+            overlay: false,
+            component: '',
+
             userId: this.$store.state.user.userId,
             supportUserDialog: false,
             userOptionSwitch: false,
@@ -138,17 +160,68 @@ export default {
             emailRules: [
                 (value) => /.+@.+\..+/.test(value) || "E-mail must be valid",
             ],
+
+            assigneeId: '',
+            assigneeEmail: '',
+            assigneeFirstName: '',
+            assigneeLastName: '',
         }
     },
     created() {
   },
     methods: {
+        close() {
+            this.component = "";
+            },
+        assignUser(){
+            this.overlay = true
+             Promise.all([
+            this.$store.dispatch("support/support/fetchSupportUser", this.assigneeEmail),
+             ]).finally(async() => {
+              if(this.userStatus == false){
+                  let response;
+                try {
+                    response = await this.$axios.$post(
+                    `/support/user/admin`,
+                    {
+                        clientId: this.fetchProject.projectId
+                    },
+                    {
+                        headers: {
+                        userId: this.userId,
+                        },
+                    }
+                    );
+
+      
+                    this.successMessage = "Support added successfully";
+                    this.popup = "success-popup";
+                    setTimeout(() => {
+                    this.close();
+                    }, 3000);
+                    this.overlay = false;
+                    // console.log("update task status response", response);
+                } catch (e) {
+                    this.categoryName = "";
+                    this.errorMessage = e.response.data;
+                    this.popup = "error-popup";
+                    setTimeout(() => {
+                    this.close();
+                    }, 3000);
+                    this.overlay = false;
+                    console.log("Error support adding", e);
+                }
+              }
+              this.overlay = false
+            });
+        }
     },
     computed: {
     ...mapState({
       allProjects: (state) => state.project.allOrgProjects,
-      selectedProject: (state) => state.project.seletedProject,
-      selectedClient: (state) => state.clients.clients.selectedClient
+      selectedProject: (state) => state.support.support.seletedSupportProject,
+      selectedClient: (state) => state.clients.clients.selectedClient,
+      userStatus: (state) => state.support.support.isUserEnabled,
     }),
   },
 }

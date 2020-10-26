@@ -47,7 +47,7 @@
               </div>
           <div v-for="(project, index) in allProjects"
                     :key=index>
-                    <div v-if="project.projectStatus == 'support'">
+                    <div >
           <v-list-item @click="component = 'tab-section'; selectProject(project)" class="selectedProjectPanel">
                   <v-list-item-action>
                     <v-icon size="17" color="blue">icon-project</v-icon>
@@ -129,14 +129,20 @@ export default {
   },
   methods: {
     selectProject(project){
-      this.$store.dispatch("project/addSelectedProject", project);
+      this.overlay = true
+      Promise.all([
+      this.$store.dispatch("support/support/addSelectedProject", project),
+      this.$store.dispatch("clients/clients/fetchSelectedClient", project.clientId)
+       ]).finally(() => {
+             this.overlay = false
+            });
     }
   },
   computed: {
     ...mapState({
       taskWorkLoadUsers: (state) => state.workload.taskWorkLoadUsers,
       organizationalRoles: (state) => state.user.organizationalRoles,
-      allProjects: (state) => state.project.allOrgProjects,
+      allProjects: (state) => state.support.support.supportProjects,
     }),
   },
   async asyncData({ $axios, store }) {
@@ -164,7 +170,7 @@ export default {
     this.overlay = true;
     Promise.all([
       
-      this.$store.dispatch("project/fetchAllOragnizationProjects"),
+      this.$store.dispatch("support/support/fetchSupportProjects"),
     ]).finally(() => {
       this.overlay = false;
     });
