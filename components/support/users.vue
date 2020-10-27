@@ -25,6 +25,7 @@
                 :src="user.profileImage"
               ></v-img>
               <v-img
+              v-else
                 src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1603081854073_client.png"
               ></v-img>
                  </v-list-item-avatar>
@@ -45,6 +46,45 @@
                <v-list-item-title v-else class="supportUser">
                User
               </v-list-item-title>
+                 </v-list-item-action>
+             </v-list-item>
+         </v-row>
+
+          <v-row style="margin-top: 40px">
+            <v-list-item>
+                <v-list-item-content class="userTitleSectionSupport">Internal Users</v-list-item-content>
+            </v-list-item>
+          </v-row>
+
+          <v-row style="margin-top: 40px">
+             <v-list-item style="background-color: #FAFAFA" v-for="(user, index) in externalSupportUsers"
+          :key="index" class="peopleContainer">
+                 <v-list-item-avatar size="30">
+                     <!-- <v-img
+                v-if="
+                  user.profileImage != null &&
+                    user.profileImage != ''
+                "
+                :src="user.profileImage"
+              ></v-img> -->
+              <v-img
+
+                src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1603081854073_client.png"
+              ></v-img>
+                 </v-list-item-avatar>
+                 <v-list-item-content>
+                     <v-list-item-title class="supportUser">
+                name
+              </v-list-item-title>
+                 </v-list-item-content>
+                 <v-list-item-content>
+                     <v-list-item-title class="supportUser">
+               email
+              </v-list-item-title>
+                 </v-list-item-content>
+                 <v-list-item-action class="supportUser">
+                   
+              <v-btn depressed color="#66B25F" small  dark>Enable</v-btn>
                  </v-list-item-action>
              </v-list-item>
          </v-row>
