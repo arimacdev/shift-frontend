@@ -13,7 +13,7 @@
             </v-list-item>
         </v-row>
 
-         <v-row style="margin-top: 40px">
+         <v-row style="">
              <v-list-item style="background-color: #FAFAFA" v-for="(user, index) in externalSupportUsers"
           :key="index" class="peopleContainer">
                  <v-list-item-avatar size="30">
@@ -56,7 +56,7 @@
             </v-list-item>
           </v-row>
 
-          <v-row style="margin-top: 40px">
+          <v-row >
              <v-list-item style="background-color: #FAFAFA" v-for="(user, index) in externalSupportUsers"
           :key="index" class="peopleContainer">
                  <v-list-item-avatar size="30">
