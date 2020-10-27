@@ -2,7 +2,7 @@
 <template>
     <div>
         <div class="requestViewContent overflow-y-auto">
-        <v-row>
+        <v-row style="margin-top: -30px">
             <v-list-item-title class="summaryNameTitle">{{selectedProject.projectName}}</v-list-item-title>
             <v-list-item-subtitle v-if="selectedClient" class="summaryNameSubTitle">{{selectedClient.organizationName}}</v-list-item-subtitle>
         </v-row>

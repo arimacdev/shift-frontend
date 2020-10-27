@@ -3886,11 +3886,11 @@
   height: 30px !important;
 }
 .requestViewContent {
-  height: 100vh;
+  height: 80vh;
   padding: 40px;
 }
 .requestViewContentSupport {
-  height: 100vh;
+  height: 80vh;
   padding-left: 40px;
   padding-right: 40px;
 }
@@ -3936,6 +3936,9 @@
 }
 .tabSectionSupport {
   margin-top: -30px;
+  position: absolute;
+  width: 100%;
+  left: 20%;
 }
 .requestRow {
   margin-top: 30px;
