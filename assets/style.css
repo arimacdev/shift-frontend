@@ -2959,6 +2959,7 @@
   position: fixed;
   right: 10px;
   bottom: 10px;
+  z-index: 1000;
 }
 .userBlockedWarning {
   color: red;

@@ -9,7 +9,7 @@
         <v-row style="margin-top: 40px">
             <v-list-item>
                 <v-list-item-content class="userTitleSectionSupport">External Users</v-list-item-content>
-                <v-list-item-action><v-btn @click="supportUserDialog = true" depressed color="#66B25F" dark>Add External Support Admin</v-btn></v-list-item-action>
+                <v-list-item-action><v-btn :disabled="externalSupportUsers.length != 0"  style="color: #FFFFFF" @click="supportUserDialog = true" depressed color="#66B25F" >Add External Support Admin</v-btn></v-list-item-action>
             </v-list-item>
         </v-row>
 
@@ -74,6 +74,7 @@
                   <div v-if="!userOptionSwitch">
                 <v-form v-model="isValidUserAssign" ref="assignUserForm">
                <v-autocomplete 
+               return-object
                     :items="assigneeArray"
                     item-text="name"
                     item-value="id"
@@ -126,7 +127,7 @@
                     :disabled="!isValidUserAssign"
                     width="100px"
                     @click="
-                      supportUserDialog = false;
+                       assignExistingUser()
                     "
                     >Add</v-btn
                   >
@@ -223,6 +224,45 @@ export default {
         close() {
             this.component = "";
             },
+       async assignExistingUser(){
+            let response;
+                try {
+                    response = await this.$axios.$post(
+                    `/support/user/admin`,
+                    {
+                        clientId: this.selectedProject.clientId,
+                        firstName: this.assigneeId.firstName,
+                        lastName: this.assigneeId.lastName,
+                        email: this.assigneeId.email,
+                        supportUserId: this.assigneeId.id
+                    },
+                    {
+                        headers: {
+                        user: this.userId,
+                        project: this.selectedProject.project
+                        },
+                    }
+                    );
+                    this.successMessage = "User added successfully";
+                    this.component = "success-popup";
+                    setTimeout(() => {
+                    this.close();
+                    }, 3000);
+                    
+                    this.$refs.assignUserForm.reset();
+                    this.supportUserDialog = false; 
+                    this.$store.dispatch("support/support/fetchExternalSupportUsers", this.selectedProject.project)
+               this.overlay = false;
+                } catch (e) {
+                    this.errorMessage = e.response.data;
+                    this.component = "error-popup";
+                    setTimeout(() => {
+                    this.close();
+                    }, 3000);
+                    this.overlay = false;
+                    console.log("Error support adding", e);
+                }
+        },
         assignUser(){
             this.overlay = true
              Promise.all([
@@ -237,7 +277,8 @@ export default {
                         clientId: this.selectedProject.clientId,
                         firstName: this.assigneeFirstName,
                         lastName: this.assigneeLastName,
-                        email: this.assigneeEmail
+                        email: this.assigneeEmail,
+                        supportUserId: ''
                     },
                     {
                         headers: {
@@ -253,8 +294,10 @@ export default {
                     }, 3000);
                     this.overlay = false;
                     this.$refs.addUserForm.reset();
+                    this.supportUserDialog = false
+
+                this.$store.dispatch("support/support/fetchExternalSupportUsers", this.selectedProject.project)
                 } catch (e) {
-                    this.categoryName = "";
                     this.errorMessage = e.response.data;
                     this.component = "error-popup";
                     setTimeout(() => {
@@ -284,6 +327,9 @@ export default {
         let user = AssigneeSearchList[index];
         assigneeList.push({
           name: user.firstName + " " + user.lastName,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
           id: user.userId,
         });
       }
