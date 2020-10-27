@@ -500,10 +500,12 @@ export default {
           return "User";
           break;
         case "ADMIN":
-          return "admin";
+          return "Admin";
           break;
         case "WORKLOAD":
-          return "workload";
+          return "Workload";
+        case "SUPPORT_MEMBER":
+          return "Support";
           break;
 
         default:
