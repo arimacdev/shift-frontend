@@ -34,7 +34,7 @@
                 
               <div style="padding-left: 40px; padding-right:40px">
                   <div v-if="!userOptionSwitch">
-                <v-form v-model="isValidUserAssign">
+                <v-form v-model="isValidUserAssign" ref="assignUserForm">
                <v-autocomplete 
                     :items="assigneeArray"
                     item-text="name"
@@ -76,7 +76,7 @@
                     class="text-capitalize"
                     depressed
                     width="100px"
-                    @click="supportUserDialog = false"
+                    @click="supportUserDialog = false; cancelAction()"
                     >Cancel</v-btn
                   >
                   <v-spacer></v-spacer>
@@ -104,7 +104,7 @@
                     class="text-capitalize"
                     depressed
                     width="100px"
-                    @click="supportUserDialog = false"
+                    @click="supportUserDialog = false; cancelFormAction()"
                     >Cancel</v-btn
                   >
                   <v-spacer></v-spacer>
@@ -176,6 +176,12 @@ export default {
     created() {
   },
     methods: {
+        cancelAction(){
+                this.$refs.assignUserForm.reset();
+        },
+        cancelFormAction(){
+                this.$refs.addUserForm.reset();
+        },
         close() {
             this.component = "";
             },
@@ -184,7 +190,6 @@ export default {
              Promise.all([
             this.$store.dispatch("support/support/fetchSupportUser", this.assigneeEmail),
              ]).finally(async() => {
-                 console.log("USER STATUS " + this.userStatus)
               if(this.userStatus == false){
                   let response;
                 try {
