@@ -3,13 +3,17 @@ export const state = () => ({
     isUserExists: false,
     supportProjects: [],
     seletedSupportProject: {},
-    clientSupportUsers: []
+    clientSupportUsers: [],
+    externalSupportUsers: []
   });
 
   export const mutations = {
     SET_USER(state, supportUserByEmail) {
       state.supportUserByEmail = supportUserByEmail;
     },
+    SET_EXTERNAL_SUPPORT_USERS(state, externalSupportUsers) {
+        state.externalSupportUsers = externalSupportUsers;
+      },
     SET_USER_STATUS(state, isUserEnabled) {
         state.isUserExists = isUserEnabled;
       },
@@ -82,6 +86,23 @@ export const actions = {
           commit('SET_SUPPORT_PROJECTS', response.data);
         } catch (error) {
           console.log('Error fetching projects', error);
+        }
+      },
+      async fetchExternalSupportUsers({ commit, rootState }, projectId) {
+        const user = rootState.user.userId;
+        let response;
+        try {
+          response = await this.$axios.$get(
+            `/support/user/project/${projectId}`,
+            {
+              headers: {
+                user: user,
+              },
+            }
+          );
+          commit('SET_EXTERNAL_SUPPORT_USERS', response.data);
+        } catch (error) {
+          console.log('Error fetching support users', error);
         }
       },
       addSelectedProject({ commit }, project) {

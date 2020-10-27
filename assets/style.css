@@ -3944,3 +3944,9 @@
   margin-top: 30px;
   padding-left: 10px;
 }
+
+.supportUser {
+  color: #080848;
+  font-weight: 600;
+  font-size: 12px;
+}

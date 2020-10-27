@@ -9,9 +9,47 @@
         <v-row style="margin-top: 40px">
             <v-list-item>
                 <v-list-item-content class="userTitleSectionSupport">External Users</v-list-item-content>
-                <v-list-item-action><v-btn @click="supportUserDialog = true" depressed color="#66B25F" dark>Add External Support User</v-btn></v-list-item-action>
+                <v-list-item-action><v-btn @click="supportUserDialog = true" depressed color="#66B25F" dark>Add External Support Admin</v-btn></v-list-item-action>
             </v-list-item>
         </v-row>
+
+         <v-row style="margin-top: 40px">
+             <v-list-item style="background-color: #FAFAFA" v-for="(user, index) in externalSupportUsers"
+          :key="index" class="peopleContainer">
+                 <v-list-item-avatar size="30">
+                     <v-img
+                v-if="
+                  user.profileImage != null &&
+                    user.profileImage != ''
+                "
+                :src="user.profileImage"
+              ></v-img>
+              <v-img
+                src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1603081854073_client.png"
+              ></v-img>
+                 </v-list-item-avatar>
+                 <v-list-item-content>
+                     <v-list-item-title class="supportUser">
+                {{user.firstName}} {{user.lastName}}
+              </v-list-item-title>
+                 </v-list-item-content>
+                 <v-list-item-content>
+                     <v-list-item-title class="supportUser">
+               {{user.email}}
+              </v-list-item-title>
+                 </v-list-item-content>
+                 <v-list-item-action class="supportUser">
+                    <v-list-item-title v-if="user.admin" class="supportUser">
+               Admin
+              </v-list-item-title>
+               <v-list-item-title v-else class="supportUser">
+               User
+              </v-list-item-title>
+                 </v-list-item-action>
+             </v-list-item>
+         </v-row>
+
+
     </div>
     <v-dialog v-model="supportUserDialog" max-width="480">
             <v-card>
@@ -23,7 +61,7 @@
                   >mdi-account-plus</v-icon
                 >
                 <br />
-                <span class="alertPopupTitle">Add External Support User</span>
+                <span class="alertPopupTitle">Add External Support Admin</span>
                 <br />
                 <br>
                 <span class="alertPopupText"
@@ -237,6 +275,7 @@ export default {
       selectedClient: (state) => state.clients.clients.selectedClient,
       userStatus: (state) => state.support.support.isUserExists,
       clientSupportUsers: (state) => state.support.support.clientSupportUsers,
+      externalSupportUsers: (state) => state.support.support.externalSupportUsers,
     }),
     assigneeArray() {
       let AssigneeSearchList = this.clientSupportUsers;
