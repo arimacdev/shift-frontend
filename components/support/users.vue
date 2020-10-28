@@ -8,7 +8,7 @@
         </v-row>
         <v-row style="margin-top: 40px">
             <v-list-item>
-                <v-list-item-content class="userTitleSectionSupport">External Users</v-list-item-content>
+                <v-list-item-content class="userTitleSectionSupport">External Support Users</v-list-item-content>
                 <v-list-item-action><v-btn :disabled="externalSupportUsers.length != 0"  style="color: #FFFFFF" @click="supportUserDialog = true" depressed color="#66B25F" >Add External Support Admin</v-btn></v-list-item-action>
             </v-list-item>
         </v-row>
@@ -52,45 +52,76 @@
 
           <v-row style="margin-top: 40px">
             <v-list-item>
-                <v-list-item-content class="userTitleSectionSupport">Internal Users</v-list-item-content>
+                <v-list-item-content class="userTitleSectionSupport">Internal Support Users</v-list-item-content>
             </v-list-item>
           </v-row>
 
           <v-row >
-             <v-list-item style="background-color: #FAFAFA" v-for="(user, index) in externalSupportUsers"
+             <v-list-item style="background-color: #FAFAFA" v-for="(user, index) in projectSupportUsers"
           :key="index" class="peopleContainer">
                  <v-list-item-avatar size="30">
-                     <!-- <v-img
+                     <v-img
                 v-if="
                   user.profileImage != null &&
                     user.profileImage != ''
                 "
                 :src="user.profileImage"
-              ></v-img> -->
+              ></v-img>
               <v-img
-
+                    v-else
                 src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
               ></v-img>
                  </v-list-item-avatar>
                  <v-list-item-content>
                      <v-list-item-title class="supportUser">
-                name
+                         {{user.firstName}} {{user.lastName}}
+                
               </v-list-item-title>
                  </v-list-item-content>
-                 <v-list-item-content>
-                     <v-list-item-title class="supportUser">
-               email
-              </v-list-item-title>
-                 </v-list-item-content>
+                
                  <v-list-item-action class="supportUser">
                    
-              <v-btn depressed color="#66B25F" small  dark>Enable</v-btn>
+              <v-btn depressed color="#66B25F" small  dark @click="addInternalSupportUser(user.userId)">Disable</v-btn>
                  </v-list-item-action>
              </v-list-item>
          </v-row>
 
+         <v-divider style="margin-top: 50px; margin-bottom: 30px"></v-divider>
+
+          <v-row >
+             <v-list-item style="background-color: #FAFAFA" v-for="(user, index) in internalSupportUsers"
+          :key="index" class="peopleContainer">
+                 <v-list-item-avatar size="30">
+                     <v-img
+                v-if="
+                  user.profileImage != null &&
+                    user.profileImage != ''
+                "
+                :src="user.profileImage"
+              ></v-img>
+              <v-img
+                    v-else
+                src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
+              ></v-img>
+                 </v-list-item-avatar>
+                 <v-list-item-content>
+                     <v-list-item-title class="supportUser">
+                         {{user.firstName}} {{user.lastName}}
+                
+              </v-list-item-title>
+                 </v-list-item-content>
+                
+                 <v-list-item-action class="supportUser">
+                   
+              <v-btn depressed color="#66B25F" small  dark @click="addInternalSupportUser(user.userId)">Enable</v-btn>
+                 </v-list-item-action>
+             </v-list-item>
+         </v-row>
 
     </div>
+
+
+    <!-- ------------- support user dialog -------------- -->
     <v-dialog v-model="supportUserDialog" max-width="480">
             <v-card>
               <div class="popupConfirmHeadline">
@@ -255,6 +286,38 @@ export default {
     created() {
   },
     methods: {
+       async addInternalSupportUser(userId){
+                let response;
+                try {
+                    response = await this.$axios.$post(
+                    `/member`,
+                    {
+                        projectId: this.selectedProject.project,
+                        memberId: userId,
+                    },
+                    {
+                        headers: {
+                        user: this.userId,
+                        },
+                    }
+                    );
+                    this.successMessage = "User added successfully";
+                    this.component = "success-popup";
+                    setTimeout(() => {
+                    this.close();
+                    }, 3000);
+                    this.overlay = false;
+                } catch (e) {
+                    this.errorMessage = e.response.data;
+                    this.component = "error-popup";
+                    setTimeout(() => {
+                    this.close();
+                    }, 3000);
+                    this.overlay = false;
+                    console.log("Error support user adding", e);
+                }
+              },
+        
         cancelAction(){
                 this.$refs.assignUserForm.reset();
         },
@@ -359,6 +422,9 @@ export default {
       userStatus: (state) => state.support.support.isUserExists,
       clientSupportUsers: (state) => state.support.support.clientSupportUsers,
       externalSupportUsers: (state) => state.support.support.externalSupportUsers,
+      internalSupportUsers: (state) => state.support.support.internalSupportUsers,
+      projectSupportUsers: (state) => state.support.support.internalProjectSupportUsers,
+      projectMemberAssigneeArray: (state) => state.support.support.projectMemberAssigneeArray
     }),
     assigneeArray() {
       let AssigneeSearchList = this.clientSupportUsers;

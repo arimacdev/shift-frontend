@@ -4,7 +4,10 @@ export const state = () => ({
     supportProjects: [],
     seletedSupportProject: {},
     clientSupportUsers: [],
-    externalSupportUsers: []
+    externalSupportUsers: [],
+    internalSupportUsers: [],
+    internalProjectSupportUsers: [],
+    projectMemberAssigneeArray: [],
   });
 
   export const mutations = {
@@ -13,6 +16,19 @@ export const state = () => ({
     },
     SET_EXTERNAL_SUPPORT_USERS(state, externalSupportUsers) {
         state.externalSupportUsers = externalSupportUsers;
+      },
+      SET_INTERNAL_PROJECT_SUPPORT_USERS(state, internalProjectSupportUsers) {
+        state.internalProjectSupportUsers = internalProjectSupportUsers;
+        let assigneeList = [];
+        for (let index = 0; index < internalProjectSupportUsers.length; ++index) {
+            let user = internalProjectSupportUsers[index];
+            assigneeList[index] = user.assigneeId
+          }
+
+          state.projectMemberAssigneeArray = assigneeList;
+      },
+      SET_SUPPORT_MEMBERS(state, internalSupportUsers) {
+        state.internalSupportUsers = internalSupportUsers;
       },
     SET_USER_STATUS(state, isUserEnabled) {
         state.isUserExists = isUserEnabled;
@@ -70,7 +86,25 @@ export const actions = {
           }
       }
     },
-    async fetchSupportProjects({ commit, rootState }) {
+    async fetchProjectSupportMembers({ commit, rootState }, projectId) {
+        const user = rootState.user.userId;
+        let response;
+        try {
+          response = await this.$axios.$get(
+            `/member/project/${projectId}`,
+            {
+              headers: {
+                user: user,
+              },
+            }
+          );
+          // console.log('discussion points', response.data);
+          commit('SET_INTERNAL_PROJECT_SUPPORT_USERS', response.data);
+        } catch (error) {
+          console.log('Error fetching projects users', error);
+        }
+      },
+      async fetchSupportProjects({ commit, rootState }) {
         const user = rootState.user.userId;
         let response;
         try {
@@ -86,6 +120,24 @@ export const actions = {
           commit('SET_SUPPORT_PROJECTS', response.data);
         } catch (error) {
           console.log('Error fetching projects', error);
+        }
+      },
+      async fetchSupportMembers({ commit, rootState }) {
+        const user = rootState.user.userId;
+        let response;
+        try {
+          response = await this.$axios.$get(
+            `/users/role/SUPPORT_MEMBER`,
+            {
+              headers: {
+                user: user,
+              },
+            }
+          );
+          // console.log('discussion points', response.data);
+          commit('SET_SUPPORT_MEMBERS', response.data);
+        } catch (error) {
+          console.log('Error fetching support members', error);
         }
       },
       async fetchExternalSupportUsers({ commit, rootState }, projectId) {
