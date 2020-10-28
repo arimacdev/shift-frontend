@@ -69,7 +69,7 @@
               ></v-img> -->
               <v-img
 
-                src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1603081854073_client.png"
+                src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1591189597971_user.png"
               ></v-img>
                  </v-list-item-avatar>
                  <v-list-item-content>
