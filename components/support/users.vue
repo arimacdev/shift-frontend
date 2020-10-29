@@ -81,14 +81,14 @@
                 
                  <v-list-item-action class="supportUser">
                    
-              <v-btn depressed color="#66B25F" small  dark @click="addInternalSupportUser(user.userId)">Disable</v-btn>
+              <v-btn depressed color="#66B25F" small  dark @click="removeInternalSupportUser(user.assigneeId)">Disable</v-btn>
                  </v-list-item-action>
              </v-list-item>
          </v-row>
 
          <v-divider style="margin-top: 50px; margin-bottom: 30px"></v-divider>
 
-          <v-row >
+          <v-row  >
              <v-list-item style="background-color: #FAFAFA" v-for="(user, index) in internalSupportUsers"
           :key="index" class="peopleContainer">
                  <v-list-item-avatar size="30">
@@ -286,6 +286,43 @@ export default {
     created() {
   },
     methods: {
+        async removeInternalSupportUser(userId){
+                let response;
+                const headers = {
+                   
+                          user: this.userId,
+                    }
+                 const params = {
+                   projectId: this.selectedProject.project,
+                        memberId: userId,
+                    }
+                try {
+                    response = await this.$axios.$delete(
+                    `/member`,{headers, params});
+                    this.successMessage = "User removed successfully";
+                    this.component = "success-popup";
+                    setTimeout(() => {
+                    this.close();
+                    }, 3000);
+
+                    Promise.all([
+                        this.$store.dispatch("support/support/fetchProjectSupportMembers", this.selectedProject.project),
+                        ]).finally(() => {
+                        this.$store.dispatch("support/support/fetchSupportMembers")
+
+                         this.overlay = false;
+                                });
+
+                } catch (e) {
+                    this.errorMessage = e.response.data;
+                    this.component = "error-popup";
+                    setTimeout(() => {
+                    this.close();
+                    }, 3000);
+                    this.overlay = false;
+                    console.log("Error support user removing", e);
+                }
+              },
        async addInternalSupportUser(userId){
                 let response;
                 try {
@@ -306,7 +343,15 @@ export default {
                     setTimeout(() => {
                     this.close();
                     }, 3000);
-                    this.overlay = false;
+
+                    Promise.all([
+                        this.$store.dispatch("support/support/fetchProjectSupportMembers", this.selectedProject.project),
+                        ]).finally(() => {
+                        this.$store.dispatch("support/support/fetchSupportMembers")
+
+                         this.overlay = false;
+                                });
+
                 } catch (e) {
                     this.errorMessage = e.response.data;
                     this.component = "error-popup";

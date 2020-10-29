@@ -15,6 +15,7 @@ export const state = () => ({
       state.supportUserByEmail = supportUserByEmail;
     },
     SET_EXTERNAL_SUPPORT_USERS(state, externalSupportUsers) {
+       
         state.externalSupportUsers = externalSupportUsers;
       },
       SET_INTERNAL_PROJECT_SUPPORT_USERS(state, internalProjectSupportUsers) {
@@ -26,8 +27,20 @@ export const state = () => ({
           }
 
           state.projectMemberAssigneeArray = assigneeList;
+
+        
       },
       SET_SUPPORT_MEMBERS(state, internalSupportUsers) {
+        if(state.projectMemberAssigneeArray != []){
+            for (let index1 = 0; index1 < state.projectMemberAssigneeArray.length; ++index1) {
+                for (let index2 = 0; index2 < internalSupportUsers.length; ++index2) {
+                    if(state.projectMemberAssigneeArray[index1] == internalSupportUsers[index2].userId){
+                        internalSupportUsers.splice(index2, 1);
+                    }
+                }
+            }
+
+        }
         state.internalSupportUsers = internalSupportUsers;
       },
     SET_USER_STATUS(state, isUserEnabled) {

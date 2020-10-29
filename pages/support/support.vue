@@ -134,10 +134,12 @@ export default {
       this.$store.dispatch("support/support/addSelectedProject", project),
       this.$store.dispatch("clients/clients/fetchSelectedClient", project.clientId),
       this.$store.dispatch("support/support/fetchClientSupportUsers", project.clientId),
-      this.$store.dispatch("support/support/fetchExternalSupportUsers", project.project),
-      this.$store.dispatch("support/support/fetchProjectSupportMembers", project.project)
+      this.$store.dispatch("support/support/fetchProjectSupportMembers", project.project),
+      this.$store.dispatch("support/support/fetchExternalSupportUsers", project.project)
        ]).finally(() => {
-             this.overlay = false
+             this.overlay = false;
+      this.$store.dispatch("support/support/fetchSupportMembers")
+
             });
     }
   },
@@ -173,7 +175,6 @@ export default {
     this.overlay = true;
     Promise.all([
       
-      this.$store.dispatch("support/support/fetchSupportMembers"),
       this.$store.dispatch("support/support/fetchSupportProjects"),
     ]).finally(() => {
       this.overlay = false;
