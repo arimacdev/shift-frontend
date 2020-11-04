@@ -368,7 +368,7 @@
                     <template v-slot:activator="{ on }">
                       <v-icon
                         v-on="on"
-                        size="25"
+                        size="35"
                         color="#424F64"
                         class="editIcon"
                         @click="EditTaskName"
