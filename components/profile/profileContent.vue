@@ -435,54 +435,54 @@ export default {
   },
 
   created() {
-    console.log("CREATED");
+    // console.log("CREATED");
     this.checkActivationStatus();
-    // const authCode = this.$route.query.code;
-    // // console.log("SLACK CODE", authCode);
-    // if (authCode !== undefined) {
-    //   // console.log("Slack Auth code present");
-    //   axios({
-    //     method: 'post',
-    //     url: 'https://slack.com/api/oauth.v2.access',
-    //     data: qs.stringify({
-    //       client_id: '345426929140.1020110511447',
-    //       client_secret: 'fd851b7af77e525c1700879de9b328ab',
-    //       code: authCode,
-    //     }),
-    //     headers: {
-    //       'content-type': 'application/x-www-form-urlencoded',
-    //     },
-    //   })
-    //     .then(async (resp) => {
-    //       // console.log("Slack Token Response", resp.data);
-    //       const slackId = resp.data.authed_user.id;
-    //       // console.log("User Slack Id", slackId);
-    //       let response;
-    //       try {
-    //         response = await this.$axios.$put(
-    //           `/users/${this.userId}/slack`,
-    //           {
-    //             slackAssignerId: this.userId,
-    //             slackAssigneeId: this.user.userId,
-    //             assigneeSlackId: slackId,
-    //           },
-    //           {
-    //             headers: {
-    //               userId: this.userId,
-    //             },
-    //           }
-    //         );
-    //         console.log('Slack Id saved successfuly', response);
-    //       } catch (e) {
-    //         console.log('Error saving slack Id in database', e);
-    //       }
-    //     })
-    //     .catch((e) => {
-    //       console.log('error from slack', e);
-    //     });
-    // } else {
-    //   console.log('No Slack Auth Code Present');
-    // }
+    const authCode = this.$route.query.code;
+    // console.log("SLACK CODE", authCode);
+    if (authCode !== undefined) {
+      // console.log("Slack Auth code present");
+      axios({
+        method: 'post',
+        url: 'https://slack.com/api/oauth.v2.access',
+        data: qs.stringify({
+          client_id: '345426929140.1020110511447',
+          client_secret: 'fd851b7af77e525c1700879de9b328ab',
+          code: authCode,
+        }),
+        headers: {
+          'content-type': 'application/x-www-form-urlencoded',
+        },
+      })
+        .then(async (resp) => {
+          // console.log("Slack Token Response", resp.data);
+          const slackId = resp.data.authed_user.id;
+          // console.log("User Slack Id", slackId);
+          let response;
+          try {
+            response = await this.$axios.$put(
+              `/users/${this.userId}/slack`,
+              {
+                slackAssignerId: this.userId,
+                slackAssigneeId: this.user.userId,
+                assigneeSlackId: slackId,
+              },
+              {
+                headers: {
+                  userId: this.userId,
+                },
+              }
+            );
+            console.log('Slack Id saved successfuly', response);
+          } catch (e) {
+            console.log('Error saving slack Id in database', e);
+          }
+        })
+        .catch((e) => {
+          console.log('error from slack', e);
+        });
+    } else {
+      console.log('No Slack Auth Code Present');
+    }
   },
 
   methods: {
