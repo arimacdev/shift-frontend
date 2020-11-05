@@ -2592,6 +2592,11 @@
   background-color: #ececec;
   /* height: 30px !important; */
 }
+.innerListItemAllTasks {
+  margin-right: 30px;
+  background-color: #fafafa;
+  border-right: 1px #cdcfd2 solid;
+}
 .innerListItem {
   margin-right: 10px;
   background-color: #fafafa;
