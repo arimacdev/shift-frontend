@@ -520,7 +520,7 @@
                 class="restructuredSubTaskListRestructure"
               >
                 <v-list-item class="upperListItem">
-                  <v-list-item class="innerListItem">
+                  <v-list-item class="innerListItemAllTasks">
                     <!-- @click.stop="drawer = !drawer" -->
                     <v-list-item-action>
                       <v-icon
