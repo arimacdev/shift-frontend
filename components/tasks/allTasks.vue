@@ -1210,7 +1210,9 @@ export default {
       } else {
         this.updatedTask.taskName = this.updatedTask.taskName + user.display;
       }
+        setTimeout(() => {
       this.$refs.txtMainTask.focus();
+        }, 3000);
       // console.log("SELECTED TAGGING: " + this.assigneeId);
     },
     tagPeopleSubTask(user, index) {
@@ -1443,6 +1445,11 @@ export default {
           this.jqlSearch();
         }
 
+  this.$store.dispatch('activityLog/fetchTaskActivityLog', {
+          taskId: this.selectedTaskId,
+          startIndex: 0,
+          endIndex: 10,
+        });
         this.$store.dispatch('task/setIndex', {
           startIndex: 0,
           endIndex: 10,
