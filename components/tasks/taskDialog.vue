@@ -2132,15 +2132,13 @@ export default {
       }
     },
     taskDialogClosing() {
-      this.$emit('taskDialogClosing');
-      Object.assign(this.$data, this.$options.data.apply(this));
-      // this.selectedTab = '';
       if (this.$refs.textarearef != undefined && this.taskView) {
         this.$refs.textarearef.reset();
-        console.log(
-          'onchange updated status ->---------' + this.$refs.textarearef
-        );
       }
+      setTimeout(() => {
+        this.$emit('taskDialogClosing');
+        Object.assign(this.$data, this.$options.data.apply(this));
+      }, 100);
     },
     async updateIssueType() {
       this.waiting = true;
