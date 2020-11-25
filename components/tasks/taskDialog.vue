@@ -816,8 +816,9 @@
                       <div class="updatedSectionActions">
                         <v-row class="mb-12" no-gutters>
                           <v-col sm="12" md="12">
-                            <v-select
-                              style="margin-left: -10px"
+                            <v-autocomplete
+                              chips
+                              style="margin-left: -10px; margin-top: 5px"
                               dense
                               v-model="taskAssignee"
                               :items="assignees"
@@ -827,7 +828,7 @@
                               flat
                               class="createFormElements"
                               @change="changeAssignee"
-                            ></v-select>
+                            ></v-autocomplete>
                           </v-col>
                         </v-row>
                       </div>
