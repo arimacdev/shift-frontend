@@ -26,7 +26,9 @@
                 <v-list-item-subtitle class="leadsSubTitle"
                   >Total Requests</v-list-item-subtitle
                 >
-                <v-list-item-title class="leadsTitle">125</v-list-item-title>
+                <v-list-item-title class="leadsTitle">{{
+                  supportProjectStats.allRequests
+                }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </div>
@@ -45,9 +47,11 @@
               </v-list-item-icon>
               <v-list-item-content>
                 <v-list-item-subtitle class="leadsSubTitle"
-                  >Requests by Me</v-list-item-subtitle
+                  >Requests Resolved</v-list-item-subtitle
                 >
-                <v-list-item-title class="leadsTitle">14</v-list-item-title>
+                <v-list-item-title class="leadsTitle">{{
+                  supportProjectStats.resolvedRequests
+                }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </div>
@@ -66,9 +70,11 @@
               </v-list-item-icon>
               <v-list-item-content>
                 <v-list-item-subtitle class="leadsSubTitle"
-                  >Request Resolved</v-list-item-subtitle
+                  >Request Pending</v-list-item-subtitle
                 >
-                <v-list-item-title class="leadsTitle">120</v-list-item-title>
+                <v-list-item-title class="leadsTitle">{{
+                  supportProjectStats.pendingRequests
+                }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </div>
@@ -101,6 +107,7 @@ export default {
     ...mapState({
       selectedSupportProject: (state) =>
         state.support.support.seletedSupportProject,
+      supportProjectStats: (state) => state.support.support.supportProjectStats,
     }),
   },
 };

@@ -151,7 +151,12 @@ export default {
         this.$store.dispatch(
           'support/support/fetchExternalSupportUsers',
           this.projectId
-        )),
+        ),
+        this.$store.dispatch(
+          'support/support/fetchProjectStats',
+          this.projectId
+        ),
+        this.$store.dispatch('support/support/fetchSupportMembers')),
 
         // this.$store.dispatch(
         //   'clients/clients/fetchSelectedClient',
