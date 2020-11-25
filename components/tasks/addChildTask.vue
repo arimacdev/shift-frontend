@@ -81,10 +81,7 @@
                   class="text-capitalize"
                   color="error"
                   width="100px"
-                  @click="
-                    dialog = false;
-                    clearStore();
-                  "
+                  @click="dialog = false"
                   :retain-focus="false"
                   >Cancel</v-btn
                 >
@@ -121,24 +118,24 @@
 </template>
 
 <script>
-import SuccessPopup from "~/components/popups/successPopup";
-import ErrorPopup from "~/components/popups/errorPopup";
-import { mapState } from "vuex";
+import SuccessPopup from '~/components/popups/successPopup';
+import ErrorPopup from '~/components/popups/errorPopup';
+import { mapState } from 'vuex';
 export default {
-  props: ["taskId", "projectId"],
+  props: ['taskId', 'projectId'],
   components: {
-    "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup,
+    'success-popup': SuccessPopup,
+    'error-popup': ErrorPopup,
   },
   data() {
     return {
-      parentTask: "",
+      parentTask: '',
       parentTasks: [],
-      errorMessage: "",
-      successMessage: "",
+      errorMessage: '',
+      successMessage: '',
       isValid: true,
       userId: this.$store.state.user.userId,
-      assigneeRules: [(value) => !!value || "Child task is required!"],
+      assigneeRules: [(value) => !!value || 'Child task is required!'],
       isShow: false,
       selected: false,
       dialog: false,
@@ -147,8 +144,8 @@ export default {
       search: null,
       select: null,
       states: [],
-      component: "",
-      success: "",
+      component: '',
+      success: '',
       newTask: this.task,
       newTaskId: this.taskId,
     };
@@ -160,20 +157,14 @@ export default {
   },
   methods: {
     clearStore() {
-      this.$emit("clearStore");
+      this.$emit('clearStore');
     },
     loadDetails() {
-      this.$store.dispatch("task/emptyStore");
-      this.$store.dispatch("task/setIndex", {
-        startIndex: 0,
-        endIndex: 10,
-        isAllTasks: true,
-      });
-      this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
+      this.$store.dispatch('task/fetchSprintTasks', this.projectId);
     },
     close() {
       this.$refs.form.reset();
-      this.component = "";
+      this.component = '';
     },
     getParentTasks(v) {
       // console.log("parent task list", this.projectAllTasks);
@@ -220,14 +211,14 @@ export default {
           }
         );
         this.dialog = false;
-        this.component = "success-popup";
-        this.successMessage = "Child Task Added successfully";
-        this.$store.dispatch("task/fetchTasksAllTasks", this.projectId);
-        this.$store.dispatch("task/setCurrentTask", {
+        this.component = 'success-popup';
+        this.successMessage = 'Child Task Added successfully';
+        this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
+        this.$store.dispatch('task/setCurrentTask', {
           projectId: this.projectId,
           taskId: this.taskId,
         });
-        this.$store.dispatch("task/fetchChildren", {
+        this.$store.dispatch('task/fetchChildren', {
           projectId: this.projectId,
           taskId: this.taskId,
         });
@@ -237,11 +228,11 @@ export default {
         // console.log("update parent task", response);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
-        console.log("Error Adding Child Tasks", e);
+        console.log('Error Adding Child Tasks', e);
       }
     },
   },
@@ -255,7 +246,7 @@ export default {
       },
     },
     ...mapState({
-      projectAllTasks: (state) => state.task.allTasks,
+      projectAllTasks: (state) => state.task.sprintTasks,
     }),
   },
 };

@@ -281,10 +281,6 @@ export const actions = {
         }
       )
       .then((response) => {
-        // console.log(
-        //   'ALL TASKS ARE RETRIEVED SUCCESSFULLY-->',
-        //   response.data.data
-        // );
         commit('SET_SPRINT_TASKS', response.data.data);
       })
       .catch((e) => {
