@@ -179,7 +179,18 @@ export const actions = {
       console.log('Error fetching support users', error);
     }
   },
-  addSelectedProject({ commit }, project) {
-    commit('SET_SELECTED_PROJECT', project);
+  async addSelectedProject({ commit, rootState }, project) {
+    const user = rootState.user.userId;
+    let projectResponse;
+    try {
+      projectResponse = await this.$axios.$get(`/projects/${project}`, {
+        headers: {
+          user: user,
+        },
+      });
+      commit('SET_SELECTED_PROJECT', projectResponse.data);
+    } catch (error) {
+      console.log('Error fetching project', error);
+    }
   },
 };

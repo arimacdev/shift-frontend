@@ -2,10 +2,13 @@
   <div class="requestViewContentSupport overflow-y-auto">
     <v-row>
       <v-list-item-title class="summaryNameTitle">{{
-        selectedSupportProject
+        selectedSupportProject.projectName
       }}</v-list-item-title>
-      <v-list-item-subtitle class="summaryNameSubTitle"
-        >Dialog Axiata PVT LTD</v-list-item-subtitle
+      <v-list-item-subtitle
+        v-if="selectedClient != null && selectedClient != ''"
+        :value="loadClient"
+        class="summaryNameSubTitle"
+        >{{ selectedClient.organizationName }}</v-list-item-subtitle
       >
     </v-row>
     <v-row class="statRow">
@@ -103,12 +106,27 @@
 import { mapState, mapGetters } from 'vuex';
 
 export default {
+  data() {
+    return {
+      userId: this.$store.state.user.userId,
+    };
+  },
+  methods: {},
+  created() {},
   computed: {
     ...mapState({
       selectedSupportProject: (state) =>
         state.support.support.seletedSupportProject,
       supportProjectStats: (state) => state.support.support.supportProjectStats,
+
+      selectedClient: (state) => state.clients.clients.selectedClient,
     }),
+    loadClient() {
+      this.$store.dispatch(
+        'clients/clients/fetchSelectedClient',
+        this.selectedSupportProject.clientId
+      );
+    },
   },
 };
 </script>

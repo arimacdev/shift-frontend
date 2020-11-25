@@ -157,15 +157,14 @@ export default {
           this.projectId
         ),
         this.$store.dispatch('support/support/fetchSupportMembers')),
-
-        // this.$store.dispatch(
+        //     this.$store.dispatch(
         //   'clients/clients/fetchSelectedClient',
-        //   project.clientId
+        //   this.selectedSupportProject.clientId
         // ),
         // this.$store.dispatch(
         //   'support/support/fetchClientSupportUsers',
-        //   project.clientId
-        // )
+        //   this.selectedSupportProject.clientId
+        // ),
       ]).finally(() => {
         this.overlay = false;
       });
