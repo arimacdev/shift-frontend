@@ -1,10 +1,13 @@
 <template>
-    
-    <div class="requestViewContentSupport overflow-y-auto">
-        <v-row>
-            <v-list-item-title class="summaryNameTitle">Dialog Mega Run</v-list-item-title>
-            <v-list-item-subtitle class="summaryNameSubTitle">Dialog Axiata PVT LTD</v-list-item-subtitle>
-        </v-row>
+  <div class="requestViewContentSupport overflow-y-auto">
+    <v-row>
+      <v-list-item-title class="summaryNameTitle">{{
+        selectedSupportProject
+      }}</v-list-item-title>
+      <v-list-item-subtitle class="summaryNameSubTitle"
+        >Dialog Axiata PVT LTD</v-list-item-subtitle
+      >
+    </v-row>
     <v-row class="statRow">
       <div class="projectTopSection">
         <div class="statDisplay">
@@ -70,22 +73,35 @@
             </v-list-item>
           </div>
         </div>
-       
       </div>
     </v-row>
     <v-row class="requestRow">
-        <div class="requestMessageText">
-          <v-btn width="150px" color="#E07857"  dark depressed>Open</v-btn>
+      <div class="requestMessageText">
+        <v-btn width="150px" color="#E07857" dark depressed>Open</v-btn>
 
-          <v-btn width="150px" color="#E07857"  dark depressed>All</v-btn>
+        <v-btn width="150px" color="#E07857" dark depressed>All</v-btn>
 
-          <v-btn width="150px" color="#E07857"  dark depressed>Closed</v-btn>
-        </div>
-        
+        <v-btn width="150px" color="#E07857" dark depressed>Closed</v-btn>
+      </div>
     </v-row>
     <v-row>
-        <v-col md="9"><v-text-field outlined flat dense></v-text-field></v-col>
-        <v-col md="3"><v-btn dark depressed color="#66B25F">Add New Request</v-btn></v-col>
+      <v-col md="9"><v-text-field outlined flat dense></v-text-field></v-col>
+      <v-col md="3"
+        ><v-btn dark depressed color="#66B25F">Add New Request</v-btn></v-col
+      >
     </v-row>
-    </div>
+  </div>
 </template>
+
+<script>
+import { mapState, mapGetters } from 'vuex';
+
+export default {
+  computed: {
+    ...mapState({
+      selectedSupportProject: (state) =>
+        state.support.support.seletedSupportProject,
+    }),
+  },
+};
+</script>
