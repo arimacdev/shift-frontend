@@ -105,12 +105,13 @@
               </v-card-actions>
             </div>
           </v-form>
+          <v-overlay :value="overlay" color="black">
+            <progress-loading />
+          </v-overlay>
         </v-card>
       </v-dialog>
     </v-row>
-    <!-- <v-overlay color="black" >
-      <progress-loading />
-    </v-overlay> -->
+
     <div @click="close" class="parentChildPopup">
       <component
         v-bind:is="component"
@@ -147,6 +148,7 @@ export default {
   },
   data() {
     return {
+      overlay: false,
       parentTasks: [],
       errorMessage: '',
       isValid: true,
@@ -175,7 +177,14 @@ export default {
       this.$emit('clearStore');
     },
     loadDetails() {
-      this.$store.dispatch('task/fetchSprintTasks', this.projectId);
+      this.overlay = true;
+      Promise.all([
+        this.$store.dispatch('task/fetchSprintTasks', this.projectId),
+      ]).finally(() => {
+        setTimeout(() => {
+          this.overlay = false;
+        }, 3000);
+      });
     },
     close() {
       this.$refs.form.reset();
@@ -249,6 +258,7 @@ export default {
       }
     },
   },
+  created() {},
   computed: {
     adminStatus: {
       get() {

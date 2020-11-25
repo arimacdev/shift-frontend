@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row justify class>
+    <v-row class>
       <v-dialog v-model="dialog" persistent max-width="350">
         <template v-slot:activator="{ on }">
           <div v-on="on" class="addChildButton" @click="loadDetails()">
@@ -104,6 +104,9 @@
             </div>
           </v-form>
         </v-card>
+        <v-overlay :value="overlay" color="black">
+          <progress-loading />
+        </v-overlay>
       </v-dialog>
       <div @click="close" class="parentChildPopup">
         <component
@@ -120,15 +123,18 @@
 <script>
 import SuccessPopup from '~/components/popups/successPopup';
 import ErrorPopup from '~/components/popups/errorPopup';
+import Progress from '~/components/popups/progress';
 import { mapState } from 'vuex';
 export default {
   props: ['taskId', 'projectId'],
   components: {
     'success-popup': SuccessPopup,
     'error-popup': ErrorPopup,
+    'progress-loading': Progress,
   },
   data() {
     return {
+      overlay: false,
       parentTask: '',
       parentTasks: [],
       errorMessage: '',
@@ -160,7 +166,14 @@ export default {
       this.$emit('clearStore');
     },
     loadDetails() {
-      this.$store.dispatch('task/fetchSprintTasks', this.projectId);
+      this.overlay = true;
+      Promise.all([
+        this.$store.dispatch('task/fetchSprintTasks', this.projectId),
+      ]).finally(() => {
+        setTimeout(() => {
+          this.overlay = false;
+        }, 3000);
+      });
     },
     close() {
       this.$refs.form.reset();
