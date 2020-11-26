@@ -157,6 +157,11 @@ export default {
           this.projectId
         ),
         this.$store.dispatch('support/support/fetchSupportMembers')),
+        this.$store.dispatch('support/support/fetchProjectTickets', {
+          projectId: this.projectId,
+          startIndex: 0,
+          endIndex: 10,
+        }),
         //     this.$store.dispatch(
         //   'clients/clients/fetchSelectedClient',
         //   this.selectedSupportProject.clientId

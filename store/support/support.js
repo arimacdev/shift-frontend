@@ -9,9 +9,14 @@ export const state = () => ({
   internalSupportUsers: [],
   internalProjectSupportUsers: [],
   projectMemberAssigneeArray: [],
+
+  projectTickets: [],
 });
 
 export const mutations = {
+  SET_PROJECT_TICKETS(state, tickets) {
+    state.projectTickets = tickets;
+  },
   SET_PROJECT_STATS(state, stats) {
     state.supportProjectStats = stats;
   },
@@ -65,6 +70,26 @@ export const mutations = {
 };
 
 export const actions = {
+  async fetchProjectTickets(
+    { commit, rootState },
+    { projectId, startIndex, endIndex }
+  ) {
+    const user = rootState.user.userId;
+    let response;
+    try {
+      response = await this.$axios.$get(
+        `/support/ticket/project/${projectId}?startIndex=${startIndex}&endIndex=${endIndex}`,
+        {
+          headers: {
+            user: user,
+          },
+        }
+      );
+      commit('SET_PROJECT_TICKETS', response.data);
+    } catch (error) {
+      console.log('Error fetching project tickets', error);
+    }
+  },
   async fetchProjectStats({ commit, rootState }, projectId) {
     const user = rootState.user.userId;
     let response;

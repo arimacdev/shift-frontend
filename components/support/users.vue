@@ -197,7 +197,7 @@
                     ></v-text-field
                   ></v-col>
                 </v-row>
-                <v-row style="margin-top: -30px">
+                <!-- <v-row style="margin-top: -30px">
                   <v-col>
                     <v-text-field
                       v-model="assigneeFirstName"
@@ -214,7 +214,7 @@
                       label="Last Name"
                     ></v-text-field>
                   </v-col>
-                </v-row>
+                </v-row> -->
               </v-form>
             </div>
 
@@ -480,8 +480,8 @@ export default {
               `/support/user/admin`,
               {
                 organizationId: this.selectedProject.clientId,
-                firstName: this.assigneeFirstName,
-                lastName: this.assigneeLastName,
+                // firstName: this.assigneeFirstName,
+                // lastName: this.assigneeLastName,
                 email: this.assigneeEmail,
                 supportUserId: '',
               },
