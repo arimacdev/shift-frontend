@@ -12,9 +12,13 @@ export const state = () => ({
 
   projectTickets: [],
   isDetailsLoaded: false,
+  selectedTicketFiles: [],
 });
 
 export const mutations = {
+  SET_TICKET_FILES(state, files) {
+    state.selectedTicketFiles = files;
+  },
   EMPTY_STORE(state, elements) {
     state.projectTickets = elements;
     state.isDetailsLoaded = false;
@@ -80,6 +84,26 @@ export const mutations = {
 };
 
 export const actions = {
+  async getTicketFiles({ commit, rootState }, { projectId, ticketId }) {
+    const user = rootState.user.userId;
+    let filesResponse;
+    try {
+      filesResponse = await this.$axios.$get(
+        `/support/ticket/${ticketId}/files`,
+        {
+          headers: {
+            user: user,
+            createTicket: false,
+            projectId: projectId,
+          },
+        }
+      );
+
+      commit('SET_TICKET_FILES', filesResponse.data);
+    } catch (e) {
+      console.log('Error fetching ticket files', e);
+    }
+  },
   emptyStore({ commit, rootState }) {
     commit('EMPTY_STORE', []);
   },

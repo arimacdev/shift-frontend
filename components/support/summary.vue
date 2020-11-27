@@ -198,6 +198,193 @@
         <v-icon>mdi-chevron-down</v-icon>
       </v-btn>
     </div>
+
+    <!-- ---------- view ticket dialog ------------ -->
+
+    <v-dialog
+      v-model="viewTicketDialog"
+      width="90vw"
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <v-toolbar dark color="#333369" flat>
+          <v-toolbar-title
+            >Support Request By {{ selectedTicket.reporter.firstName }}
+            {{ selectedTicket.reporter.lastName }}</v-toolbar-title
+          >
+          <v-spacer></v-spacer>
+
+          <v-btn icon dark @click="viewTicketDialog = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-row>
+          <v-col md="6">
+            <v-form v-model="isValidUpdate" ref="form">
+              <v-list three-line subheader>
+                <v-subheader>Request Title</v-subheader>
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-text-field
+                      readonly
+                      :rules="defaultRule"
+                      v-model="selectedIssueTopic"
+                      solo
+                      outlined
+                      flat
+                    ></v-text-field>
+                  </v-list-item-content>
+                </v-list-item>
+
+                <v-subheader style="margin-top: -30px">Description</v-subheader>
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-textarea
+                      readonly
+                      :rules="defaultRule"
+                      auto-grow
+                      v-model="selectedIssueDescription"
+                      solo
+                      outlined
+                      flat
+                    ></v-textarea>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-form>
+          </v-col>
+          <v-col md="6">
+            <v-row style="">
+              <v-col md="4">
+                <v-subheader>Severity </v-subheader>
+                <v-list-item>
+                  <v-select
+                    solo
+                    readonly
+                    v-model="selectedSeverity"
+                    :items="severityArray"
+                    item-text="name"
+                    item-value="id"
+                    outlined
+                    flat
+                    dense
+                  ></v-select>
+                </v-list-item>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+        <v-divider></v-divider>
+        <v-row style="padding-left: 5%">
+          <v-list three-line subheader>
+            <v-list-item>
+              <v-row style="margin-top: 10px; width: 80vw">
+                <v-col>
+                  <v-card
+                    v-for="(ticketFile, index) in selectedTicketFiles"
+                    :key="index"
+                    flat
+                    outlined
+                    class="fileDisplaySection"
+                    width="15%"
+                  >
+                    <div style="height: 100px;">
+                      <a
+                        style="text-decoration: none;"
+                        :href="ticketFile.ticketFileUrl"
+                        target="_blank"
+                      >
+                        <v-btn
+                          style="position: absolute; z-index: 100; right:5px; top: 5px"
+                          icon
+                        >
+                          <v-icon size="17" color="#9F9F9F"
+                            >mdi-open-in-new</v-icon
+                          >
+                        </v-btn>
+                      </a>
+                      <v-img
+                        v-if="
+                          checkFileType(
+                            ticketFile.ticketFileName.split('.').pop()
+                          )
+                        "
+                        :src="ticketFile.ticketFileUrl"
+                        height="100%"
+                      ></v-img>
+
+                      <v-img
+                        v-else
+                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1596703345080_pngtree-file-icon-image_1128287.jpg"
+                        height="100%"
+                      ></v-img>
+                    </div>
+
+                    <v-list-item z- style="height: 30px !important; ">
+                      <v-list-item-action style="margin-left: -10px">
+                        <v-icon
+                          v-if="
+                            checkFileType(
+                              ticketFile.ticketFileName.split('.').pop()
+                            )
+                          "
+                          size="20"
+                          color="red"
+                          >mdi-image</v-icon
+                        >
+                        <v-icon v-else size="20" color="red"
+                          >mdi-file-document</v-icon
+                        >
+                      </v-list-item-action>
+                      <v-list-item-content style="margin-left: -25px">
+                        <v-list-item-subtitle class="fontRestructure12">{{
+                          ticketFile.ticketFileName
+                        }}</v-list-item-subtitle>
+                        <v-list-item-subtitle class="fontRestructure10">
+                        </v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+
+                    <v-card-actions
+                      style="height: 35px !important; margin-top: -40px"
+                    >
+                      <v-list-item-subtitle class="fontRestructure10">
+                        {{ getFileSize(ticketFile.ticketFileSize) }}
+                        kB
+                      </v-list-item-subtitle>
+                      <v-spacer></v-spacer>
+                      <v-list-item-subtitle class="fontRestructure10">{{
+                        getUploadDate(ticketFile.ticketFileDate)
+                      }}</v-list-item-subtitle>
+                      <v-btn icon>
+                        <div class="iconBackCircleFiles">
+                          <a
+                            style="text-decoration: none;"
+                            :href="ticketFile.ticketFileUrl"
+                            target="_blank"
+                            download
+                          >
+                            <v-icon size="20" color="#0BAFFF"
+                              >mdi-download-outline</v-icon
+                            >
+                          </a>
+                        </div>
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-col>
+              </v-row>
+            </v-list-item>
+          </v-list>
+        </v-row>
+      </v-card>
+    </v-dialog>
+    <!-- ------------- End ticket view dialog --------------  -->
+
+    <v-overlay :value="overlay" color="black" style="z-index: 1008">
+      <progress-loading />
+    </v-overlay>
   </div>
 </template>
 
@@ -216,9 +403,82 @@ export default {
       overlay: false,
 
       loadDetailsCount: 0,
+      selectedTicket: {
+        reporter: {
+          userId: '',
+          firstName: '',
+          lastName: '',
+          profileImage: '',
+        },
+        serviceAssignee: {
+          userId: '',
+          firstName: '',
+          lastName: '',
+          profileImage: '',
+        },
+      },
+      selectedIssueTopic: '',
+      selectedIssueDescription: '',
+      selectedSeverity: '',
+
+      viewTicketDialog: false,
+
+      severityArray: [
+        { name: 'Low', id: 'LOW' },
+        { name: 'Medium', id: 'MEDIUM' },
+        { name: 'High', id: 'HIGH' },
+        { name: 'Higher', id: 'HIGHER' },
+      ],
     };
   },
   methods: {
+    getFileSize(fileSize) {
+      let stringSize = parseInt(fileSize / 1000);
+      return stringSize;
+    },
+    getUploadDate(date) {
+      if (date == '1970-01-01T05:30' || date == null) return 'No Due Date';
+      let stringDate = date + ' ';
+      stringDate = stringDate.toString();
+      stringDate = stringDate.slice(0, 10);
+      return stringDate;
+    },
+    checkFileType(type) {
+      switch (type) {
+        case 'png':
+          return true;
+          break;
+        case 'jpeg':
+          return true;
+          break;
+        case 'gif':
+          return true;
+          break;
+        case 'svg':
+          return true;
+          break;
+        case 'jpg':
+          return true;
+          break;
+        default:
+          return false;
+      }
+    },
+    selectTicket(ticket) {
+      this.overlay = true;
+      Promise.all([
+        (this.selectedTicket = ticket),
+        (this.selectedIssueTopic = ticket.issueTopic),
+        (this.selectedIssueDescription = ticket.description),
+        (this.selectedSeverity = ticket.severity),
+        this.$store.dispatch('support/support/getTicketFiles', {
+          projectId: this.projectId,
+          ticketId: ticket.ticketId,
+        }),
+      ]).finally(() => {
+        this.overlay = false;
+      });
+    },
     loadMoreDetails() {
       this.loadDetailsCount++;
       this.overlay = true;
@@ -267,6 +527,8 @@ export default {
       projectTickets: (state) => state.support.support.projectTickets,
 
       isDetailsLoaded: (state) => state.support.support.isDetailsLoaded,
+
+      selectedTicketFiles: (state) => state.support.support.selectedTicketFiles,
     }),
     loadClient() {
       this.$store.dispatch(
