@@ -11,11 +11,21 @@ export const state = () => ({
   projectMemberAssigneeArray: [],
 
   projectTickets: [],
+  isDetailsLoaded: false,
 });
 
 export const mutations = {
+  EMPTY_STORE(state, elements) {
+    state.projectTickets = elements;
+    state.isDetailsLoaded = false;
+  },
   SET_PROJECT_TICKETS(state, tickets) {
-    state.projectTickets = tickets;
+    // state.projectTickets = tickets;
+
+    if (tickets.length == 0) {
+      state.isDetailsLoaded = true;
+    }
+    state.projectTickets = state.projectTickets.concat(tickets);
   },
   SET_PROJECT_STATS(state, stats) {
     state.supportProjectStats = stats;
@@ -70,6 +80,9 @@ export const mutations = {
 };
 
 export const actions = {
+  emptyStore({ commit, rootState }) {
+    commit('EMPTY_STORE', []);
+  },
   async fetchProjectTickets(
     { commit, rootState },
     { projectId, startIndex, endIndex }

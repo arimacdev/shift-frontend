@@ -3891,9 +3891,10 @@
   padding: 40px;
 }
 .requestViewContentSupport {
-  height: 80vh;
+  height: 90vh;
   padding-left: 40px;
   padding-right: 40px;
+  padding-bottom: 200px;
 }
 .statDisplay {
   width: 30%;

@@ -121,7 +121,7 @@ export default {
   },
   methods: {
     selectProject(project) {
-      this.$router.push(project.project);
+      // this.$router.push(project.project);
     },
   },
   computed: {
@@ -140,7 +140,7 @@ export default {
       this.overlay = true;
       this.component = 'tab-section';
       Promise.all([
-        (this.$store.dispatch(
+        this.$store.dispatch(
           'support/support/addSelectedProject',
           this.projectId
         ),
@@ -156,7 +156,8 @@ export default {
           'support/support/fetchProjectStats',
           this.projectId
         ),
-        this.$store.dispatch('support/support/fetchSupportMembers')),
+        this.$store.dispatch('support/support/fetchSupportMembers'),
+        this.$store.dispatch('support/support/emptyStore'),
         this.$store.dispatch('support/support/fetchProjectTickets', {
           projectId: this.projectId,
           startIndex: 0,

@@ -84,7 +84,7 @@
         </div>
       </div>
     </v-row>
-    <v-row class="requestRow">
+    <!-- <v-row class="requestRow">
       <div class="requestMessageText">
         <v-btn width="150px" color="#E07857" dark depressed>Open</v-btn>
 
@@ -98,7 +98,7 @@
       <v-col md="3"
         ><v-btn dark depressed color="#66B25F">Add New Request</v-btn></v-col
       >
-    </v-row>
+    </v-row> -->
     <v-row>
       <v-simple-table style="width:100%">
         <template v-slot:default>
@@ -189,19 +189,49 @@
         </template>
       </v-simple-table>
     </v-row>
+    <div
+      v-if="projectTickets != '' && isDetailsLoaded == false"
+      class="tableLoadButton text-center"
+    >
+      <v-btn @click="loadMoreDetails()" color="#ffffff" depressed>
+        <span style="color: #576377" class="text-capitalize">Load More</span>
+        <v-icon>mdi-chevron-down</v-icon>
+      </v-btn>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import Progress from '~/components/popups/progress';
 
 export default {
+  components: {
+    'progress-loading': Progress,
+  },
   data() {
     return {
       userId: this.$store.state.user.userId,
+      projectId: '',
+      overlay: false,
+
+      loadDetailsCount: 0,
     };
   },
   methods: {
+    loadMoreDetails() {
+      this.loadDetailsCount++;
+      this.overlay = true;
+      Promise.all([
+        this.$store.dispatch('support/support/fetchProjectTickets', {
+          projectId: this.projectId,
+          startIndex: this.loadDetailsCount * 10,
+          endIndex: this.loadDetailsCount * 10 + 10,
+        }),
+      ]).finally(() => {
+        this.overlay = false;
+      });
+    },
     getDisplayDate(date) {
       let stringDate = date + '';
       stringDate = stringDate.toString();
@@ -224,7 +254,9 @@ export default {
       }
     },
   },
-  created() {},
+  created() {
+    this.projectId = this.$route.params.support;
+  },
   computed: {
     ...mapState({
       selectedSupportProject: (state) =>
@@ -233,10 +265,16 @@ export default {
 
       selectedClient: (state) => state.clients.clients.selectedClient,
       projectTickets: (state) => state.support.support.projectTickets,
+
+      isDetailsLoaded: (state) => state.support.support.isDetailsLoaded,
     }),
     loadClient() {
       this.$store.dispatch(
         'clients/clients/fetchSelectedClient',
+        this.selectedSupportProject.clientId
+      );
+      this.$store.dispatch(
+        'support/support/fetchClientSupportUsers',
         this.selectedSupportProject.clientId
       );
     },
