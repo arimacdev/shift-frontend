@@ -2211,6 +2211,10 @@
   background-color: #0084e2be !important;
   color: #ffffff !important;
 }
+.supportStatus {
+  background-color: #191a16be !important;
+  color: #ffffff !important;
+}
 .otherStatus {
   background-color: #0084e2c0;
   color: #ffffff;

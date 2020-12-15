@@ -1447,6 +1447,9 @@ export default {
         case 'development':
           return 'Development';
           break;
+        case 'support':
+          return 'Support';
+          break;
         case 'qa':
           return 'QA';
           break;
@@ -2075,6 +2078,8 @@ export default {
         return 'preSalesStatus';
       } else if (task === 'general') {
         return 'generalStatus';
+      } else if (task === 'support') {
+        return 'supportStatus';
       } else {
         return 'otherStatus';
       }

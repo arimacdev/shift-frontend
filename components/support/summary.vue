@@ -228,7 +228,6 @@
                   <v-list-item-content>
                     <v-text-field
                       readonly
-                      :rules="defaultRule"
                       v-model="selectedIssueTopic"
                       solo
                       outlined
@@ -242,7 +241,6 @@
                   <v-list-item-content>
                     <v-textarea
                       readonly
-                      :rules="defaultRule"
                       auto-grow
                       v-model="selectedIssueDescription"
                       solo
@@ -256,23 +254,82 @@
           </v-col>
           <v-col md="6">
             <v-row style="">
-              <v-col md="4">
-                <v-subheader>Severity </v-subheader>
+              <v-col md="8">
                 <v-list-item>
-                  <v-select
-                    solo
-                    readonly
-                    v-model="selectedSeverity"
-                    :items="severityArray"
-                    item-text="name"
-                    item-value="id"
-                    outlined
-                    flat
-                    dense
-                  ></v-select>
+                  <v-list-item-action>
+                    <v-subheader style="padding-bottom: 20px"
+                      >Severity
+                    </v-subheader>
+                  </v-list-item-action>
+                  <v-list-item-content>
+                    <v-select
+                      solo
+                      readonly
+                      v-model="selectedSeverity"
+                      :items="severityArray"
+                      item-text="name"
+                      item-value="id"
+                      outlined
+                      flat
+                      dense
+                    ></v-select>
+                  </v-list-item-content>
                 </v-list-item>
               </v-col>
             </v-row>
+            <v-divider></v-divider>
+            <v-row style="">
+              <v-col>
+                <v-list-item>
+                  <v-list-item-action style="width: 20% !important">
+                    <v-subheader style="padding-bottom: 20px"
+                      >Parent Task
+                    </v-subheader>
+                  </v-list-item-action>
+                  <v-list-item-content>
+                    <v-select
+                      solo
+                      readonly
+                      v-model="selectedSeverity"
+                      :items="severityArray"
+                      item-text="name"
+                      item-value="id"
+                      outlined
+                      flat
+                      dense
+                    ></v-select>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item style="margin-top: -30px !important">
+                  <v-list-item-action style="width: 20% !important; ">
+                    <v-subheader style="padding-bottom: 20px"
+                      >Assignee
+                    </v-subheader>
+                  </v-list-item-action>
+                  <v-list-item-content>
+                    <v-select
+                      solo
+                      readonly
+                      v-model="selectedSeverity"
+                      :items="severityArray"
+                      item-text="name"
+                      item-value="id"
+                      outlined
+                      flat
+                      dense
+                    ></v-select>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+            </v-row>
+            <v-card-actions
+              style="padding-right: 20px; margin-top: -30px !important"
+            >
+              <v-spacer></v-spacer>
+              <v-btn color="#66B25F" dark @click="createTask()" solo depressed
+                >Create a Task</v-btn
+              >
+            </v-card-actions>
           </v-col>
         </v-row>
         <v-divider></v-divider>
@@ -391,16 +448,25 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 import Progress from '~/components/popups/progress';
+import SuccessPopup from '~/components/popups/successPopup';
+import ErrorPopup from '~/components/popups/errorPopup';
 
 export default {
   components: {
     'progress-loading': Progress,
+    'success-popup': SuccessPopup,
+    'error-popup': ErrorPopup,
   },
   data() {
     return {
       userId: this.$store.state.user.userId,
       projectId: '',
       overlay: false,
+      component: '',
+      errorMessage: '',
+      successMessage: '',
+
+      isValidUpdate: true,
 
       loadDetailsCount: 0,
       selectedTicket: {
@@ -432,6 +498,43 @@ export default {
     };
   },
   methods: {
+    async createTask() {
+      let response;
+      try {
+        response = await this.$axios.$post(
+          `support/ticket/${this.selectedTicket.ticketId}/task`,
+          {
+            projectId: this.projectId,
+            parentTask: null,
+            assignee: 'ea6ab1ec-349e-4f0d-a24c-215def1e3bee',
+            issueTopic: this.selectedIssueTopic,
+            issueDescription: this.selectedIssueDescription,
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+        this.successMessage = 'Task added successfully';
+        this.component = 'success-popup';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+
+        Promise.all([]).finally(() => {
+          this.overlay = false;
+        });
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = 'error-popup';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
+        console.log('Error support user adding', e);
+      }
+    },
     getFileSize(fileSize) {
       let stringSize = parseInt(fileSize / 1000);
       return stringSize;

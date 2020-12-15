@@ -304,7 +304,7 @@
                   <v-img
                     v-if="
                       task.taskAssigneeProfileImage != null &&
-                      task.taskAssigneeProfileImage != ''
+                        task.taskAssigneeProfileImage != ''
                     "
                     :src="task.taskAssigneeProfileImage"
                   ></v-img>
@@ -501,46 +501,46 @@
 </template>
 
 <script>
-import TaskDialog from "~/components/tasks/taskDialog";
-import SuccessPopup from "~/components/popups/successPopup";
-import ErrorPopup from "~/components/popups/errorPopup";
-import Progress from "~/components/popups/progress";
-import { mapState } from "vuex";
-import Stomp from "stompjs";
-import SockJS from "sockjs-client";
-import Papa from "papaparse";
+import TaskDialog from '~/components/tasks/taskDialog';
+import SuccessPopup from '~/components/popups/successPopup';
+import ErrorPopup from '~/components/popups/errorPopup';
+import Progress from '~/components/popups/progress';
+import { mapState } from 'vuex';
+import Stomp from 'stompjs';
+import SockJS from 'sockjs-client';
+import Papa from 'papaparse';
 
 export default {
-  props: ["myTaskPagination"],
+  props: ['myTaskPagination'],
   data() {
     return {
       scrollCount: 1,
       datePickerDialog: false,
       datePicker: new Date().toISOString().substr(0, 10),
-      selectedDueDate: "",
+      selectedDueDate: '',
       myTaskPagination: this.myTaskPagination,
       overlay: false,
-      projectId: "",
-      jqlQuery: "",
-      assigneeQuery: "",
-      projectQuery: "",
-      typeQuery: "",
-      statusQuery: "",
-      orderByQuery: "",
-      dateQuery: "",
-      taskNameQuery: "",
+      projectId: '',
+      jqlQuery: '',
+      assigneeQuery: '',
+      projectQuery: '',
+      typeQuery: '',
+      statusQuery: '',
+      orderByQuery: '',
+      dateQuery: '',
+      taskNameQuery: '',
       assigneeArray: [],
       templateArray: [],
       filterAssignee: [],
       filterProject: [],
-      filterTemplate: "",
+      filterTemplate: '',
       filterType: [],
       filterStatus: [],
       filterResult: [],
 
-      errorMessage: "",
-      successMessage: "",
-      component: "",
+      errorMessage: '',
+      successMessage: '',
+      component: '',
       taskDialog: false,
       taskDeleteDialog: false,
       dateRange: null,
@@ -550,60 +550,60 @@ export default {
       widgets: false,
       states: [],
       filterList: {},
-      taskAssigneeFilter: "",
-      taskName: "",
+      taskAssigneeFilter: '',
+      taskName: '',
       updatedTask: {
-        taskName: "",
+        taskName: '',
       },
-      nameOfTask: "",
+      nameOfTask: '',
       taskTypeArray: [
-        { name: "Development", id: "development" },
-        { name: "QA", id: "qa" },
-        { name: "Design", id: "design" },
-        { name: "Bug", id: "bug" },
-        { name: "Operational", id: "operational" },
-        { name: "Pre-sales", id: "preSales" },
-        { name: "General", id: "general" },
+        { name: 'Development', id: 'development' },
+        { name: 'QA', id: 'qa' },
+        { name: 'Design', id: 'design' },
+        { name: 'Bug', id: 'bug' },
+        { name: 'Operational', id: 'operational' },
+        { name: 'Pre-sales', id: 'preSales' },
+        { name: 'General', id: 'general' },
       ],
       taskStatusArray: [
-        { name: "Pending", id: "pending" },
-        { name: "On hold", id: "onHold" },
-        { name: "Open", id: "open" },
-        { name: "Cancel", id: "cancel" },
-        { name: "ReOpened", id: "reOpened" },
-        { name: "Fixing", id: "fixing" },
-        { name: "Testing", id: "testing" },
-        { name: "Resolved", id: "resolved" },
-        { name: "In progress", id: "inprogress" },
-        { name: "Completed", id: "completed" },
-        { name: "Implementing", id: "implementing" },
-        { name: "Under review", id: "underReview" },
-        { name: "Weiting for approval", id: "waitingForApproval" },
-        { name: "Review", id: "review" },
-        { name: "Discussion", id: "discussion" },
-        { name: "Waiting response", id: "waitingResponse" },
-        { name: "Ready", id: "ready" },
-        { name: "Deployed", id: "deployed" },
-        { name: "Fixed", id: "fixed" },
-        { name: "Rejected", id: "rejected" },
-        { name: "Closed", id: "closed" },
+        { name: 'Pending', id: 'pending' },
+        { name: 'On hold', id: 'onHold' },
+        { name: 'Open', id: 'open' },
+        { name: 'Cancel', id: 'cancel' },
+        { name: 'ReOpened', id: 'reOpened' },
+        { name: 'Fixing', id: 'fixing' },
+        { name: 'Testing', id: 'testing' },
+        { name: 'Resolved', id: 'resolved' },
+        { name: 'In progress', id: 'inprogress' },
+        { name: 'Completed', id: 'completed' },
+        { name: 'Implementing', id: 'implementing' },
+        { name: 'Under review', id: 'underReview' },
+        { name: 'Weiting for approval', id: 'waitingForApproval' },
+        { name: 'Review', id: 'review' },
+        { name: 'Discussion', id: 'discussion' },
+        { name: 'Waiting response', id: 'waitingResponse' },
+        { name: 'Ready', id: 'ready' },
+        { name: 'Deployed', id: 'deployed' },
+        { name: 'Fixed', id: 'fixed' },
+        { name: 'Rejected', id: 'rejected' },
+        { name: 'Closed', id: 'closed' },
       ],
 
       items: [
-        { name: "Development", id: "development" },
-        { name: "QA", id: "qa" },
-        { name: "Design", id: "design" },
-        { name: "Bug", id: "bug" },
-        { name: "Operational", id: "operational" },
-        { name: "Pre-sales", id: "preSales" },
-        { name: "General", id: "general" },
+        { name: 'Development', id: 'development' },
+        { name: 'QA', id: 'qa' },
+        { name: 'Design', id: 'design' },
+        { name: 'Bug', id: 'bug' },
+        { name: 'Operational', id: 'operational' },
+        { name: 'Pre-sales', id: 'preSales' },
+        { name: 'General', id: 'general' },
       ],
       filterOptions: [
-        { id: "none", name: "None" },
-        { id: "issueType", name: "Task type" },
-        { id: "dueDate", name: "Date Range" },
+        { id: 'none', name: 'None' },
+        { id: 'issueType', name: 'Task type' },
+        { id: 'dueDate', name: 'Date Range' },
       ],
-      projects: ["pr1"],
+      projects: ['pr1'],
       drawer: null,
       task: {},
       taskObject: {},
@@ -611,8 +611,8 @@ export default {
       taskFiles: [],
       assignee: {},
       userId: this.$store.state.user.userId,
-      taskSelect: "all",
-      taskFilter: "none",
+      taskSelect: 'all',
+      taskFilter: 'none',
       componentClose: null,
       baseUrl: process.env.SYSTEM_URL,
     };
@@ -636,27 +636,27 @@ export default {
   },
   components: {
     // "task-side-bar": TaskSideBar,
-    "task-dialog": TaskDialog,
-    "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup,
-    "progress-loading": Progress,
+    'task-dialog': TaskDialog,
+    'success-popup': SuccessPopup,
+    'error-popup': ErrorPopup,
+    'progress-loading': Progress,
   },
   methods: {
     clearStore() {
-      this.$store.dispatch("task/emptyStore");
+      this.$store.dispatch('task/emptyStore');
       this.scrollCount = 1;
-      this.$store.dispatch("task/setIndex", {
+      this.$store.dispatch('task/setIndex', {
         startIndex: 0,
         endIndex: 10,
         isAllTasks: false,
       });
       this.$store.dispatch(
-        "task/fetchTasksMyTasks",
+        'task/fetchTasksMyTasks',
         this.$route.params.projects
       );
     },
     scrollEvent() {
-      var myDiv = document.getElementById("mainDiv");
+      var myDiv = document.getElementById('mainDiv');
       myDiv.onscroll = () => {
         let bottomOfWindow =
           myDiv.scrollTop + myDiv.clientHeight === myDiv.scrollHeight;
@@ -677,17 +677,17 @@ export default {
     getMyTasksLazyLoading(scrollCount) {
       this.overlay = true;
       Promise.all([
-        this.$store.dispatch("task/setIndex", {
+        this.$store.dispatch('task/setIndex', {
           startIndex: scrollCount * 10 - 10,
           endIndex: scrollCount * 10,
           isAllTasks: false,
         }),
         this.$store.dispatch(
-          "task/fetchTasksMyTasks",
+          'task/fetchTasksMyTasks',
           this.$route.params.projects
         ),
         this.$store.dispatch(
-          "task/fetchMyTaskCount",
+          'task/fetchMyTaskCount',
           this.$route.params.projects
         ),
       ]).finally(() => {
@@ -696,17 +696,17 @@ export default {
     },
     getMyTasks() {
       // console.log("SCROLL COUNT ");
-      this.$store.dispatch("task/setIndex", {
+      this.$store.dispatch('task/setIndex', {
         startIndex: this.myTaskPagination * 10 - 10,
         endIndex: this.myTaskPagination * 10,
         isAllTasks: false,
       });
       this.$store.dispatch(
-        "task/fetchTasksMyTasks",
+        'task/fetchTasksMyTasks',
         this.$route.params.projects
       );
       this.$store.dispatch(
-        "task/fetchMyTaskCount",
+        'task/fetchMyTaskCount',
         this.$route.params.projects
       );
     },
@@ -717,8 +717,8 @@ export default {
     },
     autoFilling() {
       if (
-        !this.taskName.slice(0, this.taskName.length - 1).includes("#") &&
-        this.taskName.charAt(this.taskName.length - 1) == "#"
+        !this.taskName.slice(0, this.taskName.length - 1).includes('#') &&
+        this.taskName.charAt(this.taskName.length - 1) == '#'
       ) {
         this.datePickerDialog = true;
         // console.log("TAGGING: " + this.tagging);
@@ -734,7 +734,7 @@ export default {
         response = await this.$axios.$put(
           `/projects/${this.projectId}/tasks/${taskId}`,
           {
-            taskStatus: "closed",
+            taskStatus: 'closed',
           },
           {
             headers: {
@@ -742,14 +742,14 @@ export default {
             },
           }
         );
-        this.$store.dispatch("task/emptyStore");
+        this.$store.dispatch('task/emptyStore');
         this.scrollCount = 1;
-        this.$store.dispatch("task/setIndex", {
+        this.$store.dispatch('task/setIndex', {
           startIndex: 0,
           endIndex: 10,
           isAllTasks: false,
         });
-        this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+        this.$store.dispatch('activityLog/fetchTaskActivityLog', {
           taskId: this.selectedTask.taskId,
           startIndex: 0,
           endIndex: 10,
@@ -757,18 +757,18 @@ export default {
         if (filter) {
           this.jqlSearch();
         }
-        this.component = "success-popup";
-        this.successMessage = "Status successfully updated";
+        this.component = 'success-popup';
+        this.successMessage = 'Status successfully updated';
         setTimeout(() => {
           this.close();
         }, 3000);
         this.waiting = false;
 
-        this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
+        this.$store.dispatch('task/fetchTasksMyTasks', this.projectId);
         // console.log("update task status response", response);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -777,129 +777,132 @@ export default {
       }
     },
     changeTaskOption(option) {
-      this.$store.dispatch("task/emptyStore");
-      this.$store.dispatch("task/setIndex", {
+      this.$store.dispatch('task/emptyStore');
+      this.$store.dispatch('task/setIndex', {
         startIndex: 0,
         endIndex: 10,
         isAllTasks: false,
       });
-      this.$emit("changeTaskOption", option);
+      this.$emit('changeTaskOption', option);
     },
     taskStatusFormatting(status) {
       switch (status) {
-        case "pending":
-          return "Pending";
+        case 'pending':
+          return 'Pending';
           break;
-        case "onHold":
-          return "On Hold";
+        case 'onHold':
+          return 'On Hold';
           break;
-        case "open":
-          return "Open";
+        case 'open':
+          return 'Open';
           break;
-        case "cancel":
-          return "Cancel";
+        case 'cancel':
+          return 'Cancel';
           break;
-        case "reOpened":
-          return "Re Opened";
+        case 'reOpened':
+          return 'Re Opened';
           break;
-        case "fixing":
-          return "Fixing";
+        case 'fixing':
+          return 'Fixing';
           break;
-        case "testing":
-          return "Testing";
+        case 'testing':
+          return 'Testing';
           break;
-        case "resolved":
-          return "Resolved";
+        case 'resolved':
+          return 'Resolved';
           break;
-        case "inprogress":
-          return "Inprogress";
+        case 'inprogress':
+          return 'Inprogress';
           break;
-        case "completed":
-          return "Completed";
+        case 'completed':
+          return 'Completed';
           break;
-        case "implementing":
-          return "Implementing";
+        case 'implementing':
+          return 'Implementing';
           break;
-        case "underReview":
-          return "UnderReview";
+        case 'underReview':
+          return 'UnderReview';
           break;
-        case "waitingForApproval":
-          return "Waiting for Approval";
+        case 'waitingForApproval':
+          return 'Waiting for Approval';
           break;
-        case "review":
-          return "Review";
+        case 'review':
+          return 'Review';
           break;
-        case "discussion":
-          return "Discussion";
+        case 'discussion':
+          return 'Discussion';
           break;
-        case "waitingResponse":
-          return "Waiting Response";
+        case 'waitingResponse':
+          return 'Waiting Response';
           break;
-        case "ready":
-          return "Ready";
+        case 'ready':
+          return 'Ready';
           break;
-        case "deployed":
-          return "Deployed";
+        case 'deployed':
+          return 'Deployed';
           break;
-        case "fixed":
-          return "Fixed";
+        case 'fixed':
+          return 'Fixed';
           break;
-        case "rejected":
-          return "Rejected";
+        case 'rejected':
+          return 'Rejected';
           break;
-        case "closed":
-          return "Closed";
+        case 'closed':
+          return 'Closed';
           break;
         default:
       }
     },
     taskTypeFormatting(type) {
       switch (type) {
-        case "development":
-          return "Development";
+        case 'development':
+          return 'Development';
           break;
-        case "qa":
-          return "QA";
+        case 'support':
+          return 'Support';
           break;
-        case "design":
-          return "Design";
+        case 'qa':
+          return 'QA';
           break;
-        case "bug":
-          return "Bug";
+        case 'design':
+          return 'Design';
           break;
-        case "operational":
-          return "Operational";
+        case 'bug':
+          return 'Bug';
           break;
-        case "preSales":
-          return "Pre-sales";
+        case 'operational':
+          return 'Operational';
           break;
-        case "general":
-          return "General";
+        case 'preSales':
+          return 'Pre-sales';
+          break;
+        case 'general':
+          return 'General';
           break;
         default:
       }
     },
     exportAsCSV() {
       var blob = new Blob([Papa.unparse(this.filterList)], {
-        type: "text/csv;charset=utf-8;",
+        type: 'text/csv;charset=utf-8;',
       });
 
-      var link = document.createElement("a");
+      var link = document.createElement('a');
 
       var url = URL.createObjectURL(blob);
-      link.setAttribute("href", url);
-      link.setAttribute("download", "taskList.csv");
-      link.style.visibility = "hidden";
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'taskList.csv');
+      link.style.visibility = 'hidden';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     },
     websocketConnectInit(taskId) {
       // console.log("initalize websocket connection for task", taskId);
-      const url = this.baseUrl + "/api/pm-service";
+      const url = this.baseUrl + '/api/pm-service';
       try {
         // console.log("connecting to ws...");
-        let socket = new SockJS(url + "/chat");
+        let socket = new SockJS(url + '/chat');
         //this.stompClient = Stomp.over(socket);
         this.stomp = Stomp.over(socket);
         //this.$store.dispatch("stompClient/setStompClient", "this.stomp");
@@ -907,71 +910,71 @@ export default {
         this.stomp.connect({}, (frame) => {
           // console.log("connected to: " + frame);
           // console.log("subscribing to topic: " + "/topic/messages/" + taskId);
-          this.stomp.subscribe("/topic/messages/" + taskId, (response) => {
+          this.stomp.subscribe('/topic/messages/' + taskId, (response) => {
             // console.log("Response", response);
             let data = JSON.parse(response.body);
             // console.log("outside----->");
-            if (data.actionType === "comment") {
+            if (data.actionType === 'comment') {
               // console.log("inside----->");
-              this.$store.dispatch("comments/fetchTaskActivityComment", {
+              this.$store.dispatch('comments/fetchTaskActivityComment', {
                 taskId: this.selectedTask.taskId,
                 startIndex: 0,
                 endIndex: 9,
               });
             } else if (
-              data.actionType === "typing" &&
+              data.actionType === 'typing' &&
               data.sender !== this.userId
             ) {
-              this.$store.dispatch("stompClient/setTypingStatus", true);
-              this.$store.dispatch("stompClient/setTypingUser", data.message);
+              this.$store.dispatch('stompClient/setTypingStatus', true);
+              this.$store.dispatch('stompClient/setTypingUser', data.message);
             } else if (
-              data.actionType === "notTyping" &&
+              data.actionType === 'notTyping' &&
               data.sender !== this.userId
             ) {
-              this.$store.dispatch("stompClient/setTypingStatus", false);
+              this.$store.dispatch('stompClient/setTypingStatus', false);
             }
           });
         });
       } catch (error) {
-        console.log("Error fetching data", error);
+        console.log('Error fetching data', error);
       }
     },
 
     filterChange() {
-      this.nameOfTask = "";
+      this.nameOfTask = '';
       this.taskType = [];
       this.taskStatus = [];
       this.dateRange = null;
-      this.taskFilter = "none";
+      this.taskFilter = 'none';
 
-      this.taskNameQuery = "";
-      this.typeQuery = "";
-      this.statusQuery = "";
+      this.taskNameQuery = '';
+      this.typeQuery = '';
+      this.statusQuery = '';
       this.dateRange = null;
-      this.jqlQuery = "";
+      this.jqlQuery = '';
     },
     jqlSearch() {
       this.overlay = true;
       if (this.filterType.length != 0) {
-        let typeList = "";
+        let typeList = '';
         for (let i = 0; i < this.filterType.length; i++) {
           typeList = typeList + '"' + this.filterType[i].id + '"';
           if (i < this.filterType.length - 1) {
-            typeList = typeList + ",";
+            typeList = typeList + ',';
           }
         }
-        this.typeQuery = "issueType IN " + "(" + typeList + ")  AND ";
+        this.typeQuery = 'issueType IN ' + '(' + typeList + ')  AND ';
       }
       this.projectQuery = 'projectId IN ("' + this.projectId + '")  AND ';
       if (this.filterStatus.length != 0) {
-        let statusList = "";
+        let statusList = '';
         for (let i = 0; i < this.filterStatus.length; i++) {
           statusList = statusList + '"' + this.filterStatus[i].id + '"';
           if (i < this.filterStatus.length - 1) {
-            statusList = statusList + ",";
+            statusList = statusList + ',';
           }
         }
-        this.statusQuery = "taskStatus IN " + "(" + statusList + ")  AND ";
+        this.statusQuery = 'taskStatus IN ' + '(' + statusList + ')  AND ';
       }
       if (this.dateRange != null) {
         if (
@@ -1001,7 +1004,7 @@ export default {
       this.orderByQuery =
         "ORDER BY FIELD(taskStatus, 'closed') ASC,  taskCreatedAt DESC";
 
-      if (this.nameOfTask != "" && this.nameOfTask != null) {
+      if (this.nameOfTask != '' && this.nameOfTask != null) {
         this.taskNameQuery =
           'taskName LIKE "%25' + this.nameOfTask + '%25"  AND ';
       }
@@ -1037,46 +1040,46 @@ export default {
         this.filterList = taskFilterResponse.data;
       } catch (error) {
         this.overlay = false;
-        console.log("Error fetching data", error);
+        console.log('Error fetching data', error);
       }
     },
     clearType() {
-      this.typeQuery = "";
-      this.jqlQuery = "";
+      this.typeQuery = '';
+      this.jqlQuery = '';
     },
     clearStatus() {
-      this.statusQuery = "";
-      this.jqlQuery = "";
+      this.statusQuery = '';
+      this.jqlQuery = '';
     },
     clearDate() {
-      this.dateQuery = "";
-      this.jqlQuery = "";
+      this.dateQuery = '';
+      this.jqlQuery = '';
     },
     clearName() {
-      this.taskNameQuery = "";
-      this.jqlQuery = "";
+      this.taskNameQuery = '';
+      this.jqlQuery = '';
     },
     taskDialogClosing() {
       // console.log("Task Dialog Closing");
       // this.scrollCount = 1;
       this.taskDialog = false;
-      if (this.filterList != "" && this.taskFilter != "none") {
+      if (this.filterList != '' && this.taskFilter != 'none') {
         // console.log("TRIGGERED");
         this.jqlSearch();
       }
     },
     filterStyles(isParent) {
       if (isParent == true) {
-        return "restructuredMainTaskFilterList";
+        return 'restructuredMainTaskFilterList';
       } else {
-        return "restructuredChildTaskFilterList";
+        return 'restructuredChildTaskFilterList';
       }
     },
     checkBoxColor(isParent) {
       if (isParent == true) {
-        return "#EDF0F5";
+        return '#EDF0F5';
       } else {
-        return "#FFFFFF";
+        return '#FFFFFF';
       }
     },
     async filterTasks(filterType, assignee, from, to, issueType) {
@@ -1118,18 +1121,18 @@ export default {
             data: {},
             headers: {
               user: this.userId,
-              type: "project",
+              type: 'project',
             },
           }
         );
         // this.component = 'success-popup'
-        this.$emit("listenChange");
-        this.$emit("shrinkSideBar");
+        this.$emit('listenChange');
+        this.$emit('shrinkSideBar');
 
         // console.log(response.data);
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -1138,12 +1141,12 @@ export default {
     },
     // ------- popup close ----------
     close() {
-      this.component = "";
+      this.component = '';
     },
     async addTask(selectedParentTask) {
       this.scrollCount = 1;
-      this.$store.dispatch("task/emptyStore");
-      this.$store.dispatch("task/setIndex", {
+      this.$store.dispatch('task/emptyStore');
+      this.$store.dispatch('task/setIndex', {
         startIndex: 0,
         endIndex: 10,
         isAllTasks: false,
@@ -1152,12 +1155,12 @@ export default {
       let response;
       let taskName;
 
-      if (!this.updatedTask.taskName.includes("#")) {
-        this.selectedDueDate = "";
+      if (!this.updatedTask.taskName.includes('#')) {
+        this.selectedDueDate = '';
       }
 
-      if (this.selectedDueDate != "") {
-        taskName = this.taskName.split("#")[0];
+      if (this.selectedDueDate != '') {
+        taskName = this.taskName.split('#')[0];
       } else {
         taskName = this.taskName;
       }
@@ -1171,16 +1174,16 @@ export default {
             taskInitiator: this.userId,
             taskAssignee: this.userId,
             taskDueDate: new Date(this.selectedDueDate),
-            taskRemindOnDate: "",
+            taskRemindOnDate: '',
             taskStatus: null,
-            taskNotes: "",
-            issueType: "development",
+            taskNotes: '',
+            issueType: 'development',
             parentTaskId: selectedParentTask,
           }
         );
-        this.taskName = "";
-        this.component = "success-popup";
-        this.successMessage = "Task added successfully";
+        this.taskName = '';
+        this.component = 'success-popup';
+        this.successMessage = 'Task added successfully';
         this.overlay = false;
         setTimeout(() => {
           this.close();
@@ -1188,23 +1191,23 @@ export default {
         // console.log("Task adding successful", response);
         if (this.taskAssignee === this.userId) {
           // console.log("assignee is me", this.taskAssignee, this.userId);
-          this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
+          this.$store.dispatch('task/fetchTasksMyTasks', this.projectId);
         } else {
           // console.log("assignee is NOT me", this.taskAssignee);
-          this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
+          this.$store.dispatch('task/fetchTasksMyTasks', this.projectId);
         }
-        (this.taskName = ""),
-          (this.taskAssignee = ""),
-          (this.taskStatus = ""),
+        (this.taskName = ''),
+          (this.taskAssignee = ''),
+          (this.taskStatus = ''),
           (this.taskDueDate = new Date()),
           (this.taskRemindOnDate = new Date()),
-          (this.taskNotes = ""),
+          (this.taskNotes = ''),
           (this.files = null);
       } catch (e) {
-        this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
+        this.$store.dispatch('task/fetchTasksMyTasks', this.projectId);
         this.overlay = false;
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -1222,7 +1225,7 @@ export default {
       for (let index = 0; index < projectSearchList.length; ++index) {
         let user = projectSearchList[index];
         this.states.push({
-          name: user.assigneeFirstName + " " + user.assigneeLastName,
+          name: user.assigneeFirstName + ' ' + user.assigneeLastName,
           id: user,
           img: user.assigneeProfileImage,
         });
@@ -1232,8 +1235,8 @@ export default {
     },
     listenToChange() {
       // console.log("listened to changes ------->");
-      this.$store.dispatch("task/fetchTasksMyTasks", this.projectId);
-      this.$store.dispatch("task/fetchProjectTaskCompletion", this.projectId);
+      this.$store.dispatch('task/fetchTasksMyTasks', this.projectId);
+      this.$store.dispatch('task/fetchProjectTaskCompletion', this.projectId);
     },
     shrinkSideBar() {
       this.drawer = false;
@@ -1244,24 +1247,24 @@ export default {
     async selectTask(task) {
       this.websocketConnectInit(task.taskId);
       this.task = task;
-      this.$store.dispatch("task/setSelectedTask", task);
+      this.$store.dispatch('task/setSelectedTask', task);
       // this.taskObject = taskObject;
-      this.componentClose = "";
+      this.componentClose = '';
       // console.log("selectedTask", task);
       this.$axios.get(`/users/${task.taskAssignee}`).then(async (response) => {
         // console.log("fetched task -->", response.data.data);
         this.assignee = response.data.data;
       });
-      this.$store.dispatch("user/setSelectedTaskUser", task.taskAssignee);
-      if (this.filterList != "" && this.taskFilter != "none") {
+      this.$store.dispatch('user/setSelectedTaskUser', task.taskAssignee);
+      if (this.filterList != '' && this.taskFilter != 'none') {
         if (this.task.parent) {
           // console.log("parent task 1");
-          this.$store.dispatch("task/fetchChildren", {
+          this.$store.dispatch('task/fetchChildren', {
             projectId: this.projectId,
             taskId: this.task.taskId,
           });
         } else {
-          this.$store.dispatch("task/fetchParentTask", {
+          this.$store.dispatch('task/fetchParentTask', {
             projectId: this.projectId,
             taskId: this.task.parentId,
           });
@@ -1269,12 +1272,12 @@ export default {
       } else {
         if (this.task.isParent) {
           // console.log("parent task");
-          this.$store.dispatch("task/fetchChildren", {
+          this.$store.dispatch('task/fetchChildren', {
             projectId: this.projectId,
             taskId: this.task.taskId,
           });
         } else {
-          this.$store.dispatch("task/fetchParentTask", {
+          this.$store.dispatch('task/fetchParentTask', {
             projectId: this.projectId,
             taskId: this.task.parentId,
           });
@@ -1287,171 +1290,173 @@ export default {
           {
             headers: {
               user: this.userId,
-              type: "project",
+              type: 'project',
             },
           }
         );
         // console.log("files--->", taskFilesResponse.data);
         this.taskFiles = taskFilesResponse.data;
-        this.$store.dispatch("task/setTaskFiles", taskFilesResponse.data);
+        this.$store.dispatch('task/setTaskFiles', taskFilesResponse.data);
       } catch (error) {
         // console.log("Error fetching data", error);
       }
-      this.$store.dispatch("user/fetchOwnUser", this.userId);
-      this.$store.dispatch("activityLog/fetchTaskActivityLog", {
+      this.$store.dispatch('user/fetchOwnUser', this.userId);
+      this.$store.dispatch('activityLog/fetchTaskActivityLog', {
         taskId: task.taskId,
         startIndex: 0,
         endIndex: 10,
       });
-      this.$store.dispatch("comments/fetchTaskActivityComment", {
+      this.$store.dispatch('comments/fetchTaskActivityComment', {
         taskId: task.taskId,
         startIndex: 0,
         endIndex: 10,
       });
 
-      this.$store.dispatch("comments/fetchTaskCommentLength", task.taskId);
+      this.$store.dispatch('comments/fetchTaskCommentLength', task.taskId);
     },
     typeCheck(task) {
-      if (task === "development") {
-        return "developmentStatus";
-      } else if (task === "qa") {
-        return "qaStatus";
-      } else if (task === "design") {
-        return "designStatus";
-      } else if (task === "bug") {
-        return "bugStatus";
-      } else if (task === "operational") {
-        return "operationalStatus";
-      } else if (task === "preSales") {
-        return "preSalesStatus";
-      } else if (task === "general") {
-        return "generalStatus";
+      if (task === 'development') {
+        return 'developmentStatus';
+      } else if (task === 'qa') {
+        return 'qaStatus';
+      } else if (task === 'support') {
+        return 'supportStatus';
+      } else if (task === 'design') {
+        return 'designStatus';
+      } else if (task === 'bug') {
+        return 'bugStatus';
+      } else if (task === 'operational') {
+        return 'operationalStatus';
+      } else if (task === 'preSales') {
+        return 'preSalesStatus';
+      } else if (task === 'general') {
+        return 'generalStatus';
       } else {
-        return "otherStatus";
+        return 'otherStatus';
       }
     },
     statusCheck(task) {
       switch (task) {
-        case "pending":
-          return "pendingStatus";
+        case 'pending':
+          return 'pendingStatus';
           break;
-        case "onHold":
-          return "onHoldStatus";
+        case 'onHold':
+          return 'onHoldStatus';
           break;
-        case "open":
-          return "openStatus";
+        case 'open':
+          return 'openStatus';
           break;
-        case "cancel":
-          return "cancelStatus";
+        case 'cancel':
+          return 'cancelStatus';
           break;
-        case "reOpened":
-          return "reOpenedStatus";
+        case 'reOpened':
+          return 'reOpenedStatus';
           break;
-        case "fixing":
-          return "fixingStatus";
+        case 'fixing':
+          return 'fixingStatus';
           break;
-        case "testing":
-          return "testingStatus";
+        case 'testing':
+          return 'testingStatus';
           break;
-        case "resolved":
-          return "resolvedStatus";
+        case 'resolved':
+          return 'resolvedStatus';
           break;
-        case "inprogress":
-          return "inprogressStatus";
+        case 'inprogress':
+          return 'inprogressStatus';
           break;
-        case "completed":
-          return "completedStatus";
+        case 'completed':
+          return 'completedStatus';
           break;
-        case "implementing":
-          return "implementingStatus";
+        case 'implementing':
+          return 'implementingStatus';
           break;
-        case "underReview":
-          return "underReviewStatus";
+        case 'underReview':
+          return 'underReviewStatus';
           break;
-        case "waitingForApproval":
-          return "waitingForApprovalStatus";
+        case 'waitingForApproval':
+          return 'waitingForApprovalStatus';
           break;
-        case "review":
-          return "reviewStatus";
+        case 'review':
+          return 'reviewStatus';
           break;
-        case "discussion":
-          return "discussionStatus";
+        case 'discussion':
+          return 'discussionStatus';
           break;
-        case "waitingResponse":
-          return "waitingResponseStatus";
+        case 'waitingResponse':
+          return 'waitingResponseStatus';
           break;
-        case "ready":
-          return "readyStatus";
+        case 'ready':
+          return 'readyStatus';
           break;
-        case "deployed":
-          return "deployedStatus";
+        case 'deployed':
+          return 'deployedStatus';
           break;
-        case "fixed":
-          return "fixedStatus";
+        case 'fixed':
+          return 'fixedStatus';
           break;
-        case "rejected":
-          return "rejectedStatus";
+        case 'rejected':
+          return 'rejectedStatus';
           break;
-        case "closed":
-          return "closedStatus";
+        case 'closed':
+          return 'closedStatus';
           break;
         default:
-          return "defaultStatus";
+          return 'defaultStatus';
       }
     },
     dueDateCheck(task) {
       // console.log("check due date color", task);
-      if (task.taskStatus === "closed") {
-        return "workLoadTaskDone";
+      if (task.taskStatus === 'closed') {
+        return 'workLoadTaskDone';
       } else if (task.taskDueDateAt == null) {
-        return "workLoadTaskDefault";
+        return 'workLoadTaskDefault';
       } else {
         const dueDate = new Date(task.taskDueDateAt);
         const dueToUtc = new Date(
-          dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+          dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
         );
         const dueToUtcDate = new Date(dueToUtc);
         const now = new Date();
         // console.log("now", now.getTime(), "DueTime", dueToUtcDate.getTime());
         if (now.getTime() > dueToUtcDate.getTime()) {
           // console.log("overdue");
-          return "workLoadTaskOverDue";
+          return 'workLoadTaskOverDue';
         } else {
-          return "workLoadTaskHealthy";
+          return 'workLoadTaskHealthy';
         }
       }
     },
     getProjectDates(date) {
       const dueDate = new Date(date);
       const dueToUtc = new Date(
-        dueDate.toLocaleString("en-US", { timeZone: "UTC" })
+        dueDate.toLocaleString('en-US', { timeZone: 'UTC' })
       );
       const dueToUtcDate = new Date(dueToUtc);
       const now = new Date();
       // console.log("Today", now.getDate(), "DueDate", dueToUtcDate.getDate());
 
-      if (date === null || date === "1970-01-01T05:30:00.000+0000") {
-        return "No Due Date";
+      if (date === null || date === '1970-01-01T05:30:00.000+0000') {
+        return 'No Due Date';
       } else if (
         now.getDate() === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
         now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
-        return "Today";
+        return 'Today';
       } else if (
         now.getDate() - 1 === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
         now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
-        return "Yesterday";
+        return 'Yesterday';
       } else if (
         now.getDate() + 1 === dueToUtcDate.getDate() &&
         now.getMonth() === dueToUtcDate.getMonth() &&
         now.getFullYear() === dueToUtcDate.getFullYear()
       ) {
-        return "Tomorrow";
+        return 'Tomorrow';
       } else {
-        let stringDate = date + "";
+        let stringDate = date + '';
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 10);
         return stringDate;
