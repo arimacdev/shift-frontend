@@ -289,7 +289,6 @@
                   <v-list-item-content>
                     <v-select
                       solo
-                      readonly
                       v-model="selectedSeverity"
                       :items="severityArray"
                       item-text="name"
@@ -309,7 +308,6 @@
                   <v-list-item-content>
                     <v-select
                       solo
-                      readonly
                       v-model="selectedSeverity"
                       :items="severityArray"
                       item-text="name"
@@ -322,6 +320,7 @@
                 </v-list-item>
               </v-col>
             </v-row>
+
             <v-card-actions
               style="padding-right: 20px; margin-top: -30px !important"
             >
@@ -330,6 +329,49 @@
                 >Create a Task</v-btn
               >
             </v-card-actions>
+            <v-divider></v-divider>
+            <v-row style="">
+              <v-col>
+                <v-list-item>
+                  <v-list-item-action style="width: 20% !important;">
+                    <v-subheader style="padding-bottom: 20px"
+                      >Priority
+                    </v-subheader>
+                  </v-list-item-action>
+                  <v-list-item-content>
+                    <v-select
+                      solo
+                      v-model="selectedStatus"
+                      :items="priorityArray"
+                      item-text="name"
+                      item-value="id"
+                      outlined
+                      flat
+                      dense
+                    ></v-select>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item style="margin-top: -30px !important">
+                  <v-list-item-action style="width: 20% !important;">
+                    <v-subheader style="padding-bottom: 20px"
+                      >Status
+                    </v-subheader>
+                  </v-list-item-action>
+                  <v-list-item-content>
+                    <v-select
+                      solo
+                      v-model="selectedStatus"
+                      :items="statusArray"
+                      item-text="name"
+                      item-value="id"
+                      outlined
+                      flat
+                      dense
+                    ></v-select>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
         <v-divider></v-divider>
@@ -486,6 +528,7 @@ export default {
       selectedIssueTopic: '',
       selectedIssueDescription: '',
       selectedSeverity: '',
+      selectedStatus: '',
 
       viewTicketDialog: false,
 
@@ -494,6 +537,20 @@ export default {
         { name: 'Medium', id: 'MEDIUM' },
         { name: 'High', id: 'HIGH' },
         { name: 'Higher', id: 'HIGHER' },
+      ],
+      priorityArray: [
+        { name: 'Low', id: 'LOW' },
+        { name: 'Medium', id: 'MEDIUM' },
+        { name: 'High', id: 'HIGH' },
+        { name: 'Higher', id: 'HIGHER' },
+      ],
+      statusArray: [
+        { name: 'Closed', id: 'CLOSED' },
+        { name: 'Pending', id: 'PENDING' },
+        { name: 'Acknowledged', id: 'ACKNOWLEDGED' },
+        { name: 'Fixed', id: 'FIXED' },
+        { name: 'Solved', id: 'SOLVED' },
+        { name: 'Reopened', id: 'REOPEN' },
       ],
     };
   },
@@ -574,6 +631,7 @@ export default {
         (this.selectedIssueTopic = ticket.issueTopic),
         (this.selectedIssueDescription = ticket.description),
         (this.selectedSeverity = ticket.severity),
+        (this.selectedStatus = ticket.ticketStatus),
         this.$store.dispatch('support/support/getTicketFiles', {
           projectId: this.projectId,
           ticketId: ticket.ticketId,
