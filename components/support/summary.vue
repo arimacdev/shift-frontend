@@ -139,14 +139,12 @@
               <td class="text-center">
                 {{ ticket.reporter.firstName }} {{ ticket.reporter.lastName }}
               </td>
-              <td v-if="ticket.serviceAssignee == null" class="text-center">
+              <td v-if="ticket.ticketStatus == 'PENDING'" class="text-center">
                 <v-icon size="12">mdi-circle-outline</v-icon>
                 Pending
               </td>
               <td
-                v-else-if="
-                  getDisplayStatus(ticket.ticketStatus) == 'ACKNOWLEDGED'
-                "
+                v-else-if="ticket.ticketStatus == 'ACKNOWLEDGED'"
                 class="text-center"
               >
                 <v-icon size="12" color="#FFBD00">mdi-circle</v-icon>
@@ -155,7 +153,7 @@
                 {{ ticket.serviceAssignee.lastName }}
               </td>
               <td
-                v-else-if="getDisplayStatus(ticket.ticketStatus) == 'CLOSED'"
+                v-else-if="ticket.ticketStatus == 'CLOSED'"
                 class="text-center"
               >
                 <v-icon size="12" color="#66B25F">mdi-circle</v-icon>
@@ -164,7 +162,7 @@
                 {{ ticket.serviceAssignee.lastName }}
               </td>
               <td
-                v-else-if="getDisplayStatus(ticket.ticketStatus) == 'FIXED'"
+                v-else-if="ticket.ticketStatus == 'FIXED'"
                 class="text-center"
               >
                 <v-icon size="12" color="#66B25F">mdi-circle</v-icon>
@@ -173,7 +171,7 @@
                 {{ ticket.serviceAssignee.lastName }}
               </td>
               <td
-                v-else-if="getDisplayStatus(ticket.ticketStatus) == 'SOLVED'"
+                v-else-if="ticket.ticketStatus == 'SOLVED'"
                 class="text-center"
               >
                 <v-icon size="12" color="#66B25F">mdi-circle</v-icon>
@@ -591,6 +589,13 @@ export default {
             projectId: this.projectId,
             ticketId: this.selectedTicket.ticketId,
           }),
+          (this.loadDetailsCount = 0),
+          this.$store.dispatch('support/support/emptyStore'),
+          this.$store.dispatch('support/support/fetchProjectTickets', {
+            projectId: this.projectId,
+            startIndex: 0,
+            endIndex: 10,
+          }),
         ]).finally(() => {
           this.overlay = false;
         });
@@ -631,6 +636,13 @@ export default {
           this.$store.dispatch('support/support/getTicketById', {
             projectId: this.projectId,
             ticketId: this.selectedTicket.ticketId,
+          }),
+          (this.loadDetailsCount = 0),
+          this.$store.dispatch('support/support/emptyStore'),
+          this.$store.dispatch('support/support/fetchProjectTickets', {
+            projectId: this.projectId,
+            startIndex: 0,
+            endIndex: 10,
           }),
         ]).finally(() => {
           this.overlay = false;
