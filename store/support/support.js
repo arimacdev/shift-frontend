@@ -13,9 +13,13 @@ export const state = () => ({
   projectTickets: [],
   isDetailsLoaded: false,
   selectedTicketFiles: [],
+  selectedTicketById: {},
 });
 
 export const mutations = {
+  SET_SELECTED_TICKET(state, ticket) {
+    state.selectedTicketById = ticket;
+  },
   SET_TICKET_FILES(state, files) {
     state.selectedTicketFiles = files;
   },
@@ -84,6 +88,24 @@ export const mutations = {
 };
 
 export const actions = {
+  async getTicketById({ commit, rootState }, { projectId, ticketId }) {
+    const user = rootState.user.userId;
+    let ticketResponse;
+    try {
+      ticketResponse = await this.$axios.$get(
+        `/support/project/${projectId}/ticket/${ticketId}`,
+        {
+          headers: {
+            user: user,
+          },
+        }
+      );
+
+      commit('SET_SELECTED_TICKET', ticketResponse.data);
+    } catch (e) {
+      console.log('Error fetching ticket by id', e);
+    }
+  },
   async getTicketFiles({ commit, rootState }, { projectId, ticketId }) {
     const user = rootState.user.userId;
     let filesResponse;

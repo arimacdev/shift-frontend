@@ -341,13 +341,14 @@
                   <v-list-item-content>
                     <v-select
                       solo
-                      v-model="selectedStatus"
+                      v-model="selectedPriority"
                       :items="priorityArray"
                       item-text="name"
                       item-value="id"
                       outlined
                       flat
                       dense
+                      @change="updatePriority()"
                     ></v-select>
                   </v-list-item-content>
                 </v-list-item>
@@ -367,6 +368,7 @@
                       outlined
                       flat
                       dense
+                      @change="updateStatus()"
                     ></v-select>
                   </v-list-item-content>
                 </v-list-item>
@@ -480,6 +482,14 @@
       </v-card>
     </v-dialog>
     <!-- ------------- End ticket view dialog --------------  -->
+    <div @click="close" class="updateProfilePopupDiv">
+      <component
+        v-bind:is="component"
+        :successMessage="successMessage"
+        :errorMessage="errorMessage"
+      ></component>
+      <!-- <success-popup /> -->
+    </div>
 
     <v-overlay :value="overlay" color="black" style="z-index: 1008">
       <progress-loading />
@@ -529,6 +539,7 @@ export default {
       selectedIssueDescription: '',
       selectedSeverity: '',
       selectedStatus: '',
+      selectedPriority: '',
 
       viewTicketDialog: false,
 
@@ -555,6 +566,91 @@ export default {
     };
   },
   methods: {
+    async updateStatus() {
+      this.overlay = true;
+
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/support/ticket/${this.selectedTicket.ticketId}`,
+          {
+            projectId: this.projectId,
+            ticketStatus: this.selectedStatus,
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+
+        Promise.all([
+          this.$store.dispatch('support/support/getTicketById', {
+            projectId: this.projectId,
+            ticketId: this.selectedTicket.ticketId,
+          }),
+        ]).finally(() => {
+          this.overlay = false;
+        });
+        this.component = 'success-popup';
+        this.successMessage = 'Status successfully updated';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        // this.overlay = false;
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = 'error-popup';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
+      }
+    },
+    async updatePriority() {
+      this.overlay = true;
+
+      let response;
+      try {
+        response = await this.$axios.$put(
+          `/support/ticket/${this.selectedTicket.ticketId}`,
+          {
+            projectId: this.projectId,
+            serviceLevel: this.selectedPriority,
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+
+        Promise.all([
+          this.$store.dispatch('support/support/getTicketById', {
+            projectId: this.projectId,
+            ticketId: this.selectedTicket.ticketId,
+          }),
+        ]).finally(() => {
+          this.overlay = false;
+        });
+        this.component = 'success-popup';
+        this.successMessage = 'Priority successfully updated';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        // this.overlay = false;
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = 'error-popup';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
+      }
+    },
+    close() {
+      this.component = '';
+    },
     async createTask() {
       let response;
       try {
@@ -627,16 +723,22 @@ export default {
     selectTicket(ticket) {
       this.overlay = true;
       Promise.all([
-        (this.selectedTicket = ticket),
-        (this.selectedIssueTopic = ticket.issueTopic),
-        (this.selectedIssueDescription = ticket.description),
-        (this.selectedSeverity = ticket.severity),
-        (this.selectedStatus = ticket.ticketStatus),
+        this.$store.dispatch('support/support/getTicketById', {
+          projectId: this.projectId,
+          ticketId: ticket.ticketId,
+        }),
+
         this.$store.dispatch('support/support/getTicketFiles', {
           projectId: this.projectId,
           ticketId: ticket.ticketId,
         }),
       ]).finally(() => {
+        this.selectedTicket = this.selectedTicketById;
+        this.selectedIssueTopic = this.selectedTicketById.issueTopic;
+        this.selectedIssueDescription = this.selectedTicketById.description;
+        this.selectedSeverity = this.selectedTicketById.severity;
+        this.selectedStatus = this.selectedTicketById.ticketStatus;
+        this.selectedPriority = this.selectedTicketById.serviceLevel;
         this.overlay = false;
       });
     },
@@ -690,6 +792,7 @@ export default {
       isDetailsLoaded: (state) => state.support.support.isDetailsLoaded,
 
       selectedTicketFiles: (state) => state.support.support.selectedTicketFiles,
+      selectedTicketById: (state) => state.support.support.selectedTicketById,
     }),
     loadClient() {
       this.$store.dispatch(
