@@ -299,6 +299,36 @@
                         </template>
                       </template>
                     </v-select>
+                    <v-select
+                      :menu-props="{ maxHeight: '500' }"
+                      dense
+                      v-if="this.issueTypes == 'support'"
+                      v-model="taskStatus"
+                      :items="support"
+                      :background-color="statusCheck(taskStatus)"
+                      item-text="name"
+                      item-value="id"
+                      solo
+                      flat
+                      class="createFormElements"
+                      @change="updateStatus"
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title
+                              v-html="data.item.name"
+                            ></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
                   </v-col>
                 </v-row>
               </div>
@@ -418,6 +448,20 @@
                             ></v-select>
                           </v-col>
                           <v-col sm="6" md="6">
+                            <v-select
+                              :menu-props="{ maxHeight: '500' }"
+                              dense
+                              v-if="this.issueTypes == 'support'"
+                              v-model="taskStatus"
+                              :items="support"
+                              background-color="#EDF0F5"
+                              item-text="name"
+                              item-value="id"
+                              label="Task status"
+                              outlined
+                              class="createFormElements"
+                              @change="updateStatus"
+                            ></v-select>
                             <v-select
                               :menu-props="{ maxHeight: '500' }"
                               dense
@@ -1567,6 +1611,7 @@ export default {
         { name: 'Operational', id: 'operational' },
         { name: 'Pre-sales', id: 'preSales' },
         { name: 'General', id: 'general' },
+        { name: 'Support', id: 'support' },
       ],
       development: [
         { name: 'Pending', id: 'pending' },
@@ -1581,6 +1626,12 @@ export default {
         { name: 'Pending', id: 'pending' },
         { name: 'Testing', id: 'testing' },
         { name: 'Review', id: 'review' },
+        { name: 'Closed', id: 'closed' },
+      ],
+      support: [
+        { name: 'Open', id: 'open' },
+        { name: 'Pending', id: 'pending' },
+        { name: 'Testing', id: 'testing' },
         { name: 'Closed', id: 'closed' },
       ],
       design: [
