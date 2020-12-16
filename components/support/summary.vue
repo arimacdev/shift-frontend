@@ -278,58 +278,60 @@
               </v-col>
             </v-row>
             <v-divider></v-divider>
-            <v-row style="">
-              <v-col>
-                <v-list-item>
-                  <v-list-item-action style="width: 20% !important">
-                    <v-subheader style="padding-bottom: 20px"
-                      >Parent Task
-                    </v-subheader>
-                  </v-list-item-action>
-                  <v-list-item-content>
-                    <v-select
-                      solo
-                      v-model="selectedSeverity"
-                      :items="severityArray"
-                      item-text="name"
-                      item-value="id"
-                      outlined
-                      flat
-                      dense
-                    ></v-select>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item style="margin-top: -30px !important">
-                  <v-list-item-action style="width: 20% !important; ">
-                    <v-subheader style="padding-bottom: 20px"
-                      >Assignee
-                    </v-subheader>
-                  </v-list-item-action>
-                  <v-list-item-content>
-                    <v-select
-                      solo
-                      v-model="selectedSeverity"
-                      :items="severityArray"
-                      item-text="name"
-                      item-value="id"
-                      outlined
-                      flat
-                      dense
-                    ></v-select>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-col>
-            </v-row>
+            <div v-if="this.selectedTicketById.ticketStatus != 'PENDING'">
+              <v-row style="">
+                <v-col>
+                  <v-list-item>
+                    <v-list-item-action style="width: 20% !important">
+                      <v-subheader style="padding-bottom: 20px"
+                        >Parent Task
+                      </v-subheader>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                      <v-select
+                        solo
+                        v-model="selectedSeverity"
+                        :items="severityArray"
+                        item-text="name"
+                        item-value="id"
+                        outlined
+                        flat
+                        dense
+                      ></v-select>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item style="margin-top: -30px !important">
+                    <v-list-item-action style="width: 20% !important; ">
+                      <v-subheader style="padding-bottom: 20px"
+                        >Assignee
+                      </v-subheader>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                      <v-select
+                        solo
+                        v-model="selectedSeverity"
+                        :items="severityArray"
+                        item-text="name"
+                        item-value="id"
+                        outlined
+                        flat
+                        dense
+                      ></v-select>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-col>
+              </v-row>
 
-            <v-card-actions
-              style="padding-right: 20px; margin-top: -30px !important"
-            >
-              <v-spacer></v-spacer>
-              <v-btn color="#66B25F" dark @click="createTask()" solo depressed
-                >Create a Task</v-btn
+              <v-card-actions
+                style="padding-right: 20px; margin-top: -30px !important"
               >
-            </v-card-actions>
-            <v-divider></v-divider>
+                <v-spacer></v-spacer>
+                <v-btn color="#66B25F" dark @click="createTask()" solo depressed
+                  >Create a Task</v-btn
+                >
+              </v-card-actions>
+              <v-divider></v-divider>
+            </div>
             <v-row style="">
               <v-col>
                 <v-list-item>
