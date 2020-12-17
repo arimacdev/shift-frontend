@@ -179,6 +179,15 @@
                 {{ ticket.serviceAssignee.firstName }}
                 {{ ticket.serviceAssignee.lastName }}
               </td>
+              <td
+                v-else-if="ticket.ticketStatus == 'REOPEN'"
+                class="text-center"
+              >
+                <v-icon size="12" color="#0083E2">mdi-circle</v-icon>
+                Reopened by
+                {{ ticket.serviceAssignee.firstName }}
+                {{ ticket.serviceAssignee.lastName }}
+              </td>
               <td class="text-center">
                 {{ getDisplayDate(ticket.ticketCreation) }}
               </td>
@@ -249,6 +258,45 @@
                 </v-list-item>
               </v-list>
             </v-form>
+
+            <v-divider></v-divider>
+            <v-list three-line subheader>
+              <v-subheader style="margin-top: -30px"
+                >Related Dev Tasks</v-subheader
+              >
+            </v-list>
+
+            <v-list-item
+              class="devTaskList"
+              v-for="(task, index) in getDevTickets"
+              :key="index"
+            >
+              <v-list-item-action>
+                <v-icon
+                  v-if="task.taskStatus == 'closed'"
+                  size="25"
+                  color="#66B25F"
+                  >mdi-checkbox-blank</v-icon
+                >
+                <v-icon
+                  @click="closeTask(task.taskId)"
+                  v-else
+                  size="25"
+                  color="#939393"
+                  >mdi-checkbox-blank-outline</v-icon
+                >
+              </v-list-item-action>
+              <v-list-item-action>
+                <v-list-item-title style="font-weight: 700; font-size: 12px">{{
+                  task.secondaryTaskId
+                }}</v-list-item-title>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title style="font-size: 12px; margin-left: 20px">
+                  {{ task.taskName }}</v-list-item-title
+                ></v-list-item-content
+              >
+            </v-list-item>
           </v-col>
           <v-col md="6">
             <v-row style="">
@@ -282,14 +330,30 @@
                   <v-list-item>
                     <v-list-item-action style="width: 20% !important">
                       <v-subheader style="padding-bottom: 20px"
-                        >Parent Task
+                        >Task Name
+                      </v-subheader>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                      <v-text-field
+                        solo
+                        outlined
+                        dense
+                        flat
+                        v-model="apendedName"
+                      ></v-text-field>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item style="margin-top: -30px !important">
+                    <v-list-item-action style="width: 20% !important; ">
+                      <v-subheader style="padding-bottom: 20px"
+                        >Link To
                       </v-subheader>
                     </v-list-item-action>
                     <v-list-item-content>
                       <v-select
                         solo
-                        v-model="selectedSeverity"
-                        :items="severityArray"
+                        v-model="selectedLinkedTo"
+                        :items="linkTaskArray"
                         item-text="name"
                         item-value="id"
                         outlined
@@ -541,6 +605,8 @@ export default {
       selectedSeverity: '',
       selectedStatus: '',
       selectedPriority: '',
+      selectedLinkedTo: '',
+      apendedName: '',
 
       viewTicketDialog: false,
 
@@ -666,7 +732,37 @@ export default {
     close() {
       this.component = '';
     },
+    async linkTicket(newTaskId) {
+      let response;
+      try {
+        response = await this.$axios.$post(
+          `/support/ticket/${this.selectedTicket.ticketId}/link`,
+          {
+            projectId: this.projectId,
+            fromLink: newTaskId,
+            toLink: this.selectedLinkedTo,
+          },
+          {
+            headers: {
+              user: this.userId,
+            },
+          }
+        );
+
+        this.apendedName = '';
+        this.selectedLinkedTo = '';
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = 'error-popup';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
+        console.log('Error support user adding', e);
+      }
+    },
     async createTask() {
+      this.overlay = true;
       let response;
       try {
         response = await this.$axios.$post(
@@ -675,7 +771,7 @@ export default {
             projectId: this.projectId,
             parentTask: null,
             assignee: 'ea6ab1ec-349e-4f0d-a24c-215def1e3bee',
-            issueTopic: this.selectedIssueTopic,
+            issueTopic: this.selectedIssueTopic + ' - ' + this.apendedName,
             issueDescription: this.selectedIssueDescription,
           },
           {
@@ -689,10 +785,14 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-
-        Promise.all([]).finally(() => {
-          this.overlay = false;
-        });
+        this.linkTicket(response.data);
+        this.overlay = false;
+        Promise.all([
+          this.$store.dispatch('support/support/getDevTasks', {
+            projectId: this.projectId,
+            ticketId: this.selectedTicket.ticketId,
+          }),
+        ]).finally(() => {});
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = 'error-popup';
@@ -738,6 +838,10 @@ export default {
     selectTicket(ticket) {
       this.overlay = true;
       Promise.all([
+        this.$store.dispatch('support/support/getDevTasks', {
+          projectId: this.projectId,
+          ticketId: ticket.ticketId,
+        }),
         this.$store.dispatch('support/support/getTicketById', {
           projectId: this.projectId,
           ticketId: ticket.ticketId,
@@ -808,7 +912,22 @@ export default {
 
       selectedTicketFiles: (state) => state.support.support.selectedTicketFiles,
       selectedTicketById: (state) => state.support.support.selectedTicketById,
+
+      getDevTickets: (state) => state.support.support.getDevTickets,
     }),
+    linkTaskArray() {
+      let taskSearchList = this.getDevTickets;
+      let taskList = [];
+      for (let index = 0; index < taskSearchList.length; ++index) {
+        let task = taskSearchList[index];
+        taskList.push({
+          name: task.taskName,
+          id: task.taskId,
+          secondaryId: task.secondaryTaskId,
+        });
+      }
+      return taskList;
+    },
     loadClient() {
       this.$store.dispatch(
         'clients/clients/fetchSelectedClient',

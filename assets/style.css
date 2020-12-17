@@ -2006,6 +2006,14 @@
   margin-bottom: 5px;
   border: 1px solid #c4c4c4;
 }
+.devTaskList {
+  background-color: #fafafa;
+  margin-bottom: 5px;
+  border: 1px solid #c4c4c4;
+  height: 20px !important;
+  margin-left: 20px;
+  margin-right: 20px;
+}
 .upperMyListItem {
   margin-top: -10px;
   margin-left: -20px;

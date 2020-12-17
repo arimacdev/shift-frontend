@@ -14,9 +14,13 @@ export const state = () => ({
   isDetailsLoaded: false,
   selectedTicketFiles: [],
   selectedTicketById: {},
+  getDevTickets: [],
 });
 
 export const mutations = {
+  SET_DEV_TICKETS(state, tasks) {
+    state.getDevTickets = tasks;
+  },
   SET_SELECTED_TICKET(state, ticket) {
     state.selectedTicketById = ticket;
   },
@@ -88,6 +92,25 @@ export const mutations = {
 };
 
 export const actions = {
+  async getDevTasks({ commit, rootState }, { projectId, ticketId }) {
+    const user = rootState.user.userId;
+    let taskResponse;
+    try {
+      taskResponse = await this.$axios.$get(
+        `/support/ticket/${ticketId}/task`,
+        {
+          headers: {
+            projectId: projectId,
+            user: user,
+          },
+        }
+      );
+
+      commit('SET_DEV_TICKETS', taskResponse.data);
+    } catch (e) {
+      console.log('Error fetching dev tickets', e);
+    }
+  },
   async getTicketById({ commit, rootState }, { projectId, ticketId }) {
     const user = rootState.user.userId;
     let ticketResponse;
