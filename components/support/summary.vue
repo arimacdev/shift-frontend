@@ -365,6 +365,7 @@
                       :items="statusArray"
                       item-text="name"
                       item-value="id"
+                      item-disabled="disable"
                       outlined
                       flat
                       dense
@@ -556,12 +557,12 @@ export default {
         { name: 'Higher', id: 'HIGHER' },
       ],
       statusArray: [
-        { name: 'Closed', id: 'CLOSED' },
-        { name: 'Pending', id: 'PENDING' },
-        { name: 'Acknowledged', id: 'ACKNOWLEDGED' },
-        { name: 'Fixed', id: 'FIXED' },
-        { name: 'Solved', id: 'SOLVED' },
-        { name: 'Reopened', id: 'REOPEN' },
+        { name: 'Pending', id: 'PENDING', disable: true },
+        { name: 'Acknowledged', id: 'ACKNOWLEDGED', disable: false },
+        { name: 'Fixed', id: 'FIXED', disable: false },
+        { name: 'Solved', id: 'SOLVED', disable: false },
+        { name: 'Closed', id: 'CLOSED', disable: true },
+        { name: 'Reopened', id: 'REOPEN', disable: true },
       ],
     };
   },
