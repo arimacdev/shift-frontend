@@ -259,8 +259,8 @@
               </v-list>
             </v-form>
 
-            <v-divider></v-divider>
-            <v-list three-line subheader>
+            <!-- <v-divider></v-divider> -->
+            <v-list v-if="getDevTickets != ''" three-line subheader>
               <v-subheader style="margin-top: -30px"
                 >Related Dev Tasks</v-subheader
               >
@@ -325,74 +325,86 @@
             </v-row>
             <v-divider></v-divider>
             <div v-if="this.selectedTicketById.ticketStatus != 'PENDING'">
-              <v-row style="">
-                <v-col>
-                  <v-list-item>
-                    <v-list-item-action style="width: 20% !important">
-                      <v-subheader style="padding-bottom: 20px"
-                        >Task Name
-                      </v-subheader>
-                    </v-list-item-action>
-                    <v-list-item-content>
-                      <v-text-field
-                        solo
-                        outlined
-                        dense
-                        flat
-                        v-model="apendedName"
-                      ></v-text-field>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item style="margin-top: -30px !important">
-                    <v-list-item-action style="width: 20% !important; ">
-                      <v-subheader style="padding-bottom: 20px"
-                        >Link To
-                      </v-subheader>
-                    </v-list-item-action>
-                    <v-list-item-content>
-                      <v-select
-                        solo
-                        v-model="selectedLinkedTo"
-                        :items="linkTaskArray"
-                        item-text="name"
-                        item-value="id"
-                        outlined
-                        flat
-                        dense
-                      ></v-select>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item style="margin-top: -30px !important">
-                    <v-list-item-action style="width: 20% !important; ">
-                      <v-subheader style="padding-bottom: 20px"
-                        >Assignee
-                      </v-subheader>
-                    </v-list-item-action>
-                    <v-list-item-content>
-                      <v-select
-                        solo
-                        v-model="selectedSeverity"
-                        :items="severityArray"
-                        item-text="name"
-                        item-value="id"
-                        outlined
-                        flat
-                        dense
-                      ></v-select>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-col>
-              </v-row>
+              <v-form v-model="isValidCreate" ref="form">
+                <v-row style="">
+                  <v-col>
+                    <v-list-item>
+                      <v-list-item-action style="width: 20% !important">
+                        <v-subheader style="padding-bottom: 20px"
+                          >Task Name
+                        </v-subheader>
+                      </v-list-item-action>
+                      <v-list-item-content>
+                        <v-text-field
+                          :rules="taskNameRules"
+                          solo
+                          outlined
+                          dense
+                          flat
+                          v-model="apendedName"
+                        ></v-text-field>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item
+                      v-if="getDevTickets != ''"
+                      style="margin-top: -30px !important"
+                    >
+                      <v-list-item-action style="width: 20% !important; ">
+                        <v-subheader style="padding-bottom: 20px"
+                          >Link To
+                        </v-subheader>
+                      </v-list-item-action>
+                      <v-list-item-content>
+                        <v-select
+                          solo
+                          v-model="selectedLinkedTo"
+                          :items="linkTaskArray"
+                          item-text="name"
+                          item-value="id"
+                          outlined
+                          flat
+                          dense
+                        ></v-select>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item style="margin-top: -30px !important">
+                      <v-list-item-action style="width: 20% !important; ">
+                        <v-subheader style="padding-bottom: 20px"
+                          >Assignee
+                        </v-subheader>
+                      </v-list-item-action>
+                      <v-list-item-content>
+                        <v-select
+                          solo
+                          v-model="selectedSeverity"
+                          :items="severityArray"
+                          item-text="name"
+                          item-value="id"
+                          outlined
+                          flat
+                          dense
+                        ></v-select>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-col>
+                </v-row>
 
-              <v-card-actions
-                style="padding-right: 20px; margin-top: -30px !important"
-              >
-                <v-spacer></v-spacer>
-                <v-btn color="#66B25F" dark @click="createTask()" solo depressed
-                  >Create a Task</v-btn
+                <v-card-actions
+                  style="padding-right: 20px; margin-top: -30px !important"
                 >
-              </v-card-actions>
-              <v-divider></v-divider>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    :disabled="!isValidCreate"
+                    color="#66B25F"
+                    style="color: #FFFFFF"
+                    @click="createTask()"
+                    solo
+                    depressed
+                    >Create a Task</v-btn
+                  >
+                </v-card-actions>
+                <v-divider></v-divider>
+              </v-form>
             </div>
             <v-row style="">
               <v-col>
@@ -576,6 +588,9 @@ export default {
   },
   data() {
     return {
+      isValidCreate: true,
+      taskNameRules: [(value) => !!value || 'Task name is required!'],
+
       userId: this.$store.state.user.userId,
       projectId: '',
       overlay: false,
@@ -928,16 +943,7 @@ export default {
       }
       return taskList;
     },
-    loadClient() {
-      this.$store.dispatch(
-        'clients/clients/fetchSelectedClient',
-        this.selectedSupportProject.clientId
-      );
-      this.$store.dispatch(
-        'support/support/fetchClientSupportUsers',
-        this.selectedSupportProject.clientId
-      );
-    },
+    loadClient() {},
   },
 };
 </script>
