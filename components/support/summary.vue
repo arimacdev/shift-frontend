@@ -325,7 +325,7 @@
             </v-row>
             <v-divider></v-divider>
             <div v-if="this.selectedTicketById.ticketStatus != 'PENDING'">
-              <v-form v-model="isValidCreate" ref="form">
+              <v-form v-model="isValidCreate" ref="formTask">
                 <v-row style="">
                   <v-col>
                     <v-list-item>
@@ -358,6 +358,7 @@
                         <v-select
                           solo
                           v-model="selectedLinkedTo"
+                          clearable
                           :items="linkTaskArray"
                           item-text="name"
                           item-value="id"
@@ -763,9 +764,6 @@ export default {
             },
           }
         );
-
-        this.apendedName = '';
-        this.selectedLinkedTo = '';
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = 'error-popup';
@@ -800,7 +798,10 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.linkTicket(response.data);
+        if (this.selectedLinkedTo != '' && this.selectedLinkedTo != null) {
+          this.linkTicket(response.data);
+        }
+        this.$refs.formTask.reset();
         this.overlay = false;
         Promise.all([
           this.$store.dispatch('support/support/getDevTasks', {
