@@ -6,8 +6,9 @@
           <v-list-item>
             <div class="tab-projectName">{{ fetchProject.projectName }}</div>
             <v-divider class="mx-3" inset vertical></v-divider>
-            <div v-if="selectedClient" class="tab-clientName">{{ selectedClient.organizationName }}</div>
-       
+            <div v-if="selectedClient" class="tab-clientName">
+              {{ selectedClient.organizationName }}
+            </div>
 
             <!-- <div class="tab-status">{{ fetchProject.projectStatus }}</div> -->
             <div
@@ -124,58 +125,51 @@
                       /> -->
 
                       <v-autocomplete
-                      style="margin-top: -15px"
-              outlined
-            class="createFormElements"
-            v-model="clientId"  
-            :items="clientsArray"
-          item-text="name"
-          item-value="id">
-           <template v-slot:selection="data">
-             <template>
-                   <v-list-item-avatar size="25">
-                     <v-img
-                        v-if="data.item.img == '' || data.item.img == null"
-                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1603081854073_client.png"
-                      ></v-img>
-                      <v-img
-                        v-else
-                        :src="data.item.img"
-                      ></v-img>
-                      
-                    </v-list-item-avatar>
-                  <v-list-item-content>
-                    <v-list-item-title
-                      v-html="data.item.name"
-                    ></v-list-item-title>
-                  </v-list-item-content>
-               
-                </template>
-           </template>
-          <template v-slot:item="data">
-                <template>
-               
-                   <v-list-item-avatar>
-                     <v-img
-                        v-if="data.item.img == '' || data.item.img == null"
-                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1603081854073_client.png"
-                      ></v-img>
-                      <v-img
-                        v-else
-                        :src="data.item.img"
-                      ></v-img>
-                      
-                    </v-list-item-avatar>
-                  <v-list-item-content>
-                    <v-list-item-title
-                      v-html="data.item.name"
-                    ></v-list-item-title>
-                  </v-list-item-content>
-              
-                </template>
-              </template>
-          
-          </v-autocomplete>
+                        style="margin-top: -15px"
+                        outlined
+                        class="createFormElements"
+                        v-model="clientId"
+                        :items="clientsArray"
+                        item-text="name"
+                        item-value="id"
+                      >
+                        <template v-slot:selection="data">
+                          <template>
+                            <v-list-item-avatar size="25">
+                              <v-img
+                                v-if="
+                                  data.item.img == '' || data.item.img == null
+                                "
+                                src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1603081854073_client.png"
+                              ></v-img>
+                              <v-img v-else :src="data.item.img"></v-img>
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                              <v-list-item-title
+                                v-html="data.item.name"
+                              ></v-list-item-title>
+                            </v-list-item-content>
+                          </template>
+                        </template>
+                        <template v-slot:item="data">
+                          <template>
+                            <v-list-item-avatar>
+                              <v-img
+                                v-if="
+                                  data.item.img == '' || data.item.img == null
+                                "
+                                src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1603081854073_client.png"
+                              ></v-img>
+                              <v-img v-else :src="data.item.img"></v-img>
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                              <v-list-item-title
+                                v-html="data.item.name"
+                              ></v-list-item-title>
+                            </v-list-item-content>
+                          </template>
+                        </template>
+                      </v-autocomplete>
                     </v-col>
                   </v-row>
                   <v-row class="mb-12 formRow projectDrawer" no-gutters>
@@ -370,82 +364,114 @@
 
           <v-dialog v-model="supportDialog" max-width="380">
             <v-card>
-              <div class="popupConfirmHeadline">
-                <v-icon
-                  class="deletePopupIcon"
-                  size="60"
-                  color="deep-orange lighten-1"
-                  >mdi-progress-wrench</v-icon
-                >
-                <br />
-                <span class="alertPopupTitle">Enable Support</span>
-                <br />
-                <br />
-                <span class="alertPopupText"
-                  >You are going to enable support for this project. </span
-                >
-                <br />
-                <br />
-                <strong>Client details</strong>
-                <br />
-                <br />
-                
-              <div style="" v-if="selectedClient" >
-                
-                <v-list-item>
-                   <v-spacer></v-spacer>
-                  <v-list-item-avatar >
-                     <v-img
-                        v-if="selectedClient.organizationLogo == '' || selectedClient.organizationLogo == null"
-                        src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1603081854073_client.png"
-                      ></v-img>
-                      <v-img
-                        v-else
-                        :src="selectedClient.organizationLogo"
-                      ></v-img>
-                      
-                    </v-list-item-avatar>
-                  <v-list-item-content>
-                    <v-list-item-title class="alertPopupText"
-                      v-html="selectedClient.organizationName"
-                    ></v-list-item-title>
-                  </v-list-item-content>
-                   <v-spacer></v-spacer>
-                </v-list-item>
-              </div>
-              
-              <div class="alertPopupText" v-else>No client added, <br> Client is required to proceed.</div>
-              </div>
-
-              <div class="popupBottom">
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-
-                  <v-btn
-                    color="error"
-                    class="text-capitalize"
-                    depressed
-                    width="100px"
-                    @click="supportDialog = false"
-                    >Cancel</v-btn
+              <v-form v-model="isValidSupport" ref="formTask">
+                <div class="popupConfirmHeadline">
+                  <v-icon
+                    class="deletePopupIcon"
+                    size="60"
+                    color="deep-orange lighten-1"
+                    >mdi-progress-wrench</v-icon
                   >
-                  <v-spacer></v-spacer>
-                  <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
-                  <v-btn
-                    class="text-capitalize"
-                    depressed
-                    color="success"
-                    :disabled="!selectedClient"
-                    width="100px"
-                    @click="
-                      supportDialog = false;
-                      editProject(); enableSupport()
-                    "
-                    >Update</v-btn
-                  >
-                  <v-spacer></v-spacer>
-                </v-card-actions>
-              </div>
+                  <br />
+                  <span class="alertPopupTitle">Enable Support</span>
+                  <br />
+                  <br />
+                  <span class="alertPopupText"
+                    >You are going to enable support for this project.
+                  </span>
+                  <br />
+                  <br />
+                  <strong>Client details</strong>
+                  <br />
+                  <br />
+
+                  <div style="" v-if="selectedClient">
+                    <v-list-item>
+                      <v-spacer></v-spacer>
+                      <v-list-item-avatar>
+                        <v-img
+                          v-if="
+                            selectedClient.organizationLogo == '' ||
+                              selectedClient.organizationLogo == null
+                          "
+                          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1603081854073_client.png"
+                        ></v-img>
+                        <v-img
+                          v-else
+                          :src="selectedClient.organizationLogo"
+                        ></v-img>
+                      </v-list-item-avatar>
+                      <v-list-item-content>
+                        <v-list-item-title
+                          class="alertPopupText"
+                          v-html="selectedClient.organizationName"
+                        ></v-list-item-title>
+                      </v-list-item-content>
+                      <v-spacer></v-spacer>
+                    </v-list-item>
+                  </div>
+
+                  <div class="alertPopupText" v-else>
+                    No client added, <br />
+                    Client is required to proceed.
+                  </div>
+
+                  <br />
+                  <br />
+                  <strong>Default User</strong>
+                  <br />
+                  <br />
+                  <v-list-item
+                    ><v-spacer></v-spacer>
+                    <v-autocomplete
+                      v-model="defaultAssignee"
+                      :rules="assigneeRules"
+                      :items="assigneeArray"
+                      item-text="name"
+                      item-value="id"
+                      flat
+                      outlined
+                      dense
+                      background-color="#FFFFFF"
+                      label="Default Assignee"
+                      hint="Person who responsible for the project"
+                    >
+                    </v-autocomplete
+                    ><v-spacer></v-spacer
+                  ></v-list-item>
+                </div>
+
+                <div class="popupBottom">
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn
+                      color="error"
+                      class="text-capitalize"
+                      depressed
+                      width="100px"
+                      @click="supportDialog = false"
+                      >Cancel</v-btn
+                    >
+                    <v-spacer></v-spacer>
+                    <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
+                    <v-btn
+                      class="text-capitalize"
+                      depressed
+                      color="success"
+                      :disabled="!selectedClient || !isValidSupport"
+                      width="100px"
+                      @click="
+                        supportDialog = false;
+                        editProject();
+                        enableSupport();
+                      "
+                      >Update</v-btn
+                    >
+                    <v-spacer></v-spacer>
+                  </v-card-actions>
+                </div>
+              </v-form>
             </v-card>
           </v-dialog>
           <!-- --------------------- update weight popup --------------- -->
@@ -575,7 +601,7 @@
                   {{
                     this.getProjectDates(
                       fetchProject.projectStartDate,
-                      "startDate"
+                      'startDate'
                     )
                   }}
                 </div>
@@ -587,7 +613,7 @@
                 <div class="detailTitle">Project end date :</div>
                 <div class="detailContent">
                   {{
-                    this.getProjectDates(fetchProject.projectEndDate, "endDate")
+                    this.getProjectDates(fetchProject.projectEndDate, 'endDate')
                   }}
                 </div>
               </v-list-item>
@@ -670,61 +696,82 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
-import SuccessPopup from "~/components/popups/successPopup";
-import ErrorPopup from "~/components/popups/errorPopup";
-import Progress from "~/components/popups/progress";
+import { mapState } from 'vuex';
+import SuccessPopup from '~/components/popups/successPopup';
+import ErrorPopup from '~/components/popups/errorPopup';
+import Progress from '~/components/popups/progress';
 
 export default {
   components: {
-    "success-popup": SuccessPopup,
-    "error-popup": ErrorPopup,
-    "progress-loading": Progress,
+    'success-popup': SuccessPopup,
+    'error-popup': ErrorPopup,
+    'progress-loading': Progress,
   },
   data() {
     return {
       supportDialog: false,
+      isValidSupport: true,
+      defaultAssignee: '',
 
-      projectNameConfirmation: "",
+      assigneeRules: [(value) => !!value || 'Default assignee is required!'],
+
+      projectNameConfirmation: '',
       overlay: false,
-      successMessage: "",
-      errorMessage: "",
+      successMessage: '',
+      errorMessage: '',
       userId: this.$store.state.user.userId,
       weightUpdateDialog: false,
       projectDialog: false,
       updateProject: {
-        projectName: "",
-        clientId: "",
-        projectStartDate: "",
-        projectEndDate: "",
-        projectStatus: "",
-        projectAlias: "",
-        weightMeasure: "",
+        projectName: '',
+        clientId: '',
+        projectStartDate: '',
+        projectEndDate: '',
+        projectStatus: '',
+        projectAlias: '',
+        weightMeasure: '',
       },
       drawer: null,
-      prName: "project",
+      prName: 'project',
       items: [],
-      component: "",
+      component: '',
     };
   },
   created() {
-
- this.$store.dispatch("clients/clients/fetchSelectedClient", this.fetchProject.clientId)
+    this.$store.dispatch(
+      'clients/clients/fetchSelectedClient',
+      this.fetchProject.clientId
+    );
   },
   computed: {
     ...mapState({
       projectTaskCompletion: (state) => state.task.projectTaskCompletion,
       fetchProject: (state) => state.project.project,
-        clients: (state) => state.clients.clients.clients,
-        selectedClient: (state) => state.clients.clients.selectedClient
+      clients: (state) => state.clients.clients.clients,
+      selectedClient: (state) => state.clients.clients.selectedClient,
+      people: (state) => state.task.userCompletionTasks,
     }),
+    assigneeArray() {
+      let AssigneeSearchList = this.people;
+      let assigneeList = [];
+      for (let index = 0; index < AssigneeSearchList.length; ++index) {
+        let user = AssigneeSearchList[index];
+        assigneeList.push({
+          name: user.assigneeFirstName + ' ' + user.assigneeLastName,
+          id: user.assigneeId,
+          img: user.assigneeProfileImage,
+          display: user.assigneeFirstName + user.assigneeLastName,
+        });
+      }
+      return assigneeList;
+    },
     clientsArray() {
       let clientSearchList = this.clients;
       let clientsList = [];
       for (let index = 0; index < clientSearchList.length; ++index) {
         let client = clientSearchList[index];
         clientsList.push({
-          name: client.organizationName ,
+          name: client.organizationName,
           id: client.organizationId,
           img: client.organizationLogo,
         });
@@ -765,7 +812,7 @@ export default {
     },
     projectStartDate: {
       get() {
-        let stringDate = this.fetchProject.projectStartDate + "";
+        let stringDate = this.fetchProject.projectStartDate + '';
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 16);
         return stringDate;
@@ -781,7 +828,7 @@ export default {
     },
     projectEndDate: {
       get() {
-        let stringDate = this.fetchProject.projectEndDate + "";
+        let stringDate = this.fetchProject.projectEndDate + '';
         stringDate = stringDate.toString();
         stringDate = stringDate.slice(0, 16);
         return stringDate;
@@ -800,23 +847,23 @@ export default {
         return this.fetchProject.projectStatus;
       },
       set(value) {
-         if(value == 'support'){
-          this.supportDialog = true
-          this.drawer = false
+        if (value == 'support') {
+          this.supportDialog = true;
+          this.drawer = false;
         }
         this.updateProject.projectStatus = value;
-       
       },
     },
   },
   methods: {
-    async enableSupport(){
-        let response;
+    async enableSupport() {
+      let response;
       try {
         response = await this.$axios.$post(
           `/projects/support`,
           {
-            projectId: this.fetchProject.projectId
+            projectId: this.fetchProject.projectId,
+            defaultAssignee: this.defaultAssignee,
           },
           {
             headers: {
@@ -825,31 +872,31 @@ export default {
           }
         );
 
-      
-        this.successMessage = "Support added successfully";
-        this.popup = "success-popup";
+        this.successMessage = 'Support added successfully';
+        this.popup = 'success-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
+        this.$refs.formTask.reset();
         this.overlay = false;
         // console.log("update task status response", response);
       } catch (e) {
-        this.categoryName = "";
+        this.categoryName = '';
         this.errorMessage = e.response.data;
-        this.popup = "error-popup";
+        this.popup = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
         this.overlay = false;
-        console.log("Error support adding", e);
+        console.log('Error support adding', e);
       }
     },
-    fetchClient(clientId){
-       Promise.all([
-        this.$store.dispatch("clients/clients/fetchSelectedClient", clientId)
-          ]).finally(() => {
-              return this.selectedClient.organizationName
-            });
+    fetchClient(clientId) {
+      Promise.all([
+        this.$store.dispatch('clients/clients/fetchSelectedClient', clientId),
+      ]).finally(() => {
+        return this.selectedClient.organizationName;
+      });
     },
     checkConfirmation() {
       if (this.projectNameConfirmation === this.projectName) {
@@ -875,36 +922,36 @@ export default {
             }
           );
           this.$store.dispatch(
-            "project/fetchProject",
+            'project/fetchProject',
             this.fetchProject.projectId
           );
 
-          this.component = "success-popup";
-          this.successMessage = "Weight type successfully updated";
+          this.component = 'success-popup';
+          this.successMessage = 'Weight type successfully updated';
           location.reload();
           setTimeout(() => {
             this.close();
           }, 3000);
           this.overlay = false;
         } catch (e) {
-          console.log("Error confirmation", e);
+          console.log('Error confirmation', e);
           this.errorMessage = e.response.data;
-          this.component = "error-popup";
+          this.component = 'error-popup';
           setTimeout(() => {
             this.close();
           }, 3000);
           this.overlay = false;
         }
       } else {
-        console.log("Error confirmation");
+        console.log('Error confirmation');
         this.overlay = false;
       }
-      this.projectNameConfirmation = "";
+      this.projectNameConfirmation = '';
     },
     updateField() {
       let projectName = this.fetchProject.projectName;
       this.updateProject.projectName = projectName;
-      return "123";
+      return '123';
     },
     async editProject() {
       this.overlay = true;
@@ -913,19 +960,19 @@ export default {
       let endDate;
 
       if (
-        this.updateProject.projectStartDate.slice(0, -1) + "+0000" ==
+        this.updateProject.projectStartDate.slice(0, -1) + '+0000' ==
         this.fetchProject.projectStartDate
       ) {
-        startDate = "";
+        startDate = '';
       } else {
         startDate = this.updateProject.projectStartDate;
       }
 
       if (
-        this.updateProject.projectEndDate.slice(0, -1) + "+0000" ==
+        this.updateProject.projectEndDate.slice(0, -1) + '+0000' ==
         this.fetchProject.projectEndDate
       ) {
-        endDate = "";
+        endDate = '';
       } else {
         endDate = this.updateProject.projectEndDate;
       }
@@ -945,20 +992,20 @@ export default {
         );
         // console.log("project edit response ----------> ", response);
         this.$store.dispatch(
-          "project/fetchProject",
+          'project/fetchProject',
           this.fetchProject.projectId
         );
         if (
-          this.updateProject.projectStatus === "" ||
+          this.updateProject.projectStatus === '' ||
           this.updateProject.projectStatus === this.fetchProject.projectStatus
         ) {
           // console.log("i won't fetch");
         } else {
           // console.log("i will fetch");
-          this.$store.dispatch("project/fetchAllProjects");
+          this.$store.dispatch('project/fetchAllProjects');
         }
-        this.component = "success-popup";
-        this.successMessage = "Project successfully updated";
+        this.component = 'success-popup';
+        this.successMessage = 'Project successfully updated';
         setTimeout(() => {
           this.close();
         }, 3000);
@@ -966,16 +1013,16 @@ export default {
         location.reload();
       } catch (e) {
         this.errorMessage = e.response.data;
-        this.component = "error-popup";
+        this.component = 'error-popup';
         setTimeout(() => {
           this.close();
         }, 3000);
         this.overlay = false;
-        console.log("Error updating a project", e);
+        console.log('Error updating a project', e);
       }
     },
     close() {
-      this.component = "";
+      this.component = '';
     },
     async deleteData() {
       this.overlay = true;
@@ -992,22 +1039,22 @@ export default {
           }
         );
         // location.reload();
-        window.location.href = "/projects/projects";
-        this.component = "success-popup";
-        this.successMessage = "Project successfully deleted";
+        window.location.href = '/projects/projects';
+        this.component = 'success-popup';
+        this.successMessage = 'Project successfully deleted';
         setTimeout(() => {
           this.close();
         }, 3000);
         this.overlay = false;
         // console.log(response.data);
       } catch (e) {
-        this.component = "error-popup";
+        this.component = 'error-popup';
         this.errorMessage = e.response.data;
         setTimeout(() => {
           this.close();
         }, 3000);
         this.overlay = false;
-        console.log("Error deleting project", e);
+        console.log('Error deleting project', e);
       }
     },
     getProjectDates(date, type) {
@@ -1016,17 +1063,17 @@ export default {
       // console.log(stringDate);
       let formateedDate =
         stringDate.getFullYear() +
-        "-" +
+        '-' +
         stringDate.getMonth() +
-        "-" +
+        '-' +
         stringDate.getDate();
       // console.log("formateedDate for date", formateedDate);
-      if (type === "startDate") {
+      if (type === 'startDate') {
         this.startDate = formateedDate;
       } else {
         this.endDate = formateedDate;
       }
-      stringDate = date + " ";
+      stringDate = date + ' ';
       stringDate = stringDate.toString();
       stringDate = stringDate.slice(0, 10);
       return stringDate;
@@ -1042,37 +1089,37 @@ export default {
       if (days > 30) {
         months = Math.floor(days / 30);
         days = days % 30;
-        return months + " month(s) " + days + " days";
+        return months + ' month(s) ' + days + ' days';
       } else if (days > 7 && days < 30) {
         weeks = Math.floor(days / 7);
         days = days % 7;
-        return weeks + " week(s) " + days + " days";
+        return weeks + ' week(s) ' + days + ' days';
       } else {
-        return days + " day(s)";
+        return days + ' day(s)';
       }
     },
     getProjectTimeForNow(date) {
       let now = new Date();
       let stringDate = new Date(date);
-      stringDate = date + " ";
+      stringDate = date + ' ';
       stringDate = stringDate.toString();
       stringDate = stringDate.slice(0, 10);
       let startDate = new Date(stringDate);
       let days = parseInt((now - startDate) / (1000 * 60 * 60 * 24), 10);
       // console.log("days", days);
-      if (days < 0) return "0 Days";
+      if (days < 0) return '0 Days';
       let months;
       let weeks;
       if (days > 30) {
         months = Math.floor(days / 30);
         days = days % 30;
-        return months + " month(s) " + days + " days";
+        return months + ' month(s) ' + days + ' days';
       } else if (days > 7 && days < 30) {
         weeks = Math.floor(days / 7);
         days = days % 7;
-        return weeks + " week(s) " + days + " days";
+        return weeks + ' week(s) ' + days + ' days';
       } else {
-        return days + " day(s)";
+        return days + ' day(s)';
       }
     },
   },
