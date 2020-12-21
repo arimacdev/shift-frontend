@@ -12,8 +12,11 @@
               v-if="this.task.taskStatus == 'closed'"
               size="30"
               color="#2EC973"
-            >mdi-checkbox-marked-circle</v-icon>
-            <v-icon v-else size="30" color="#FFFFFF">mdi-checkbox-blank-circle</v-icon>
+              >mdi-checkbox-marked-circle</v-icon
+            >
+            <v-icon v-else size="30" color="#FFFFFF"
+              >mdi-checkbox-blank-circle</v-icon
+            >
           </v-list-item-icon>
           <div class="textAreaSideBar">
             <input
@@ -43,7 +46,8 @@
               color="#FFFFFF"
               class="editIcon"
               @click="EditTaskName"
-            >mdi-pencil-circle</v-icon>
+              >mdi-pencil-circle</v-icon
+            >
           </div>
           <div>
             <v-icon
@@ -51,7 +55,8 @@
               color="#FF6161"
               class="editIcon"
               @click="taskDialog = true"
-            >mdi-trash-can-outline</v-icon>
+              >mdi-trash-can-outline</v-icon
+            >
           </div>
 
           <!-- --------------------- delete task popup --------------- -->
@@ -63,7 +68,8 @@
                   class="deletePopupIcon"
                   size="60"
                   color="deep-orange lighten-1"
-                >mdi-alert-outline</v-icon>
+                  >mdi-alert-outline</v-icon
+                >
                 <br />
                 <span class="alertPopupTitle">Delete Task</span>
                 <br />
@@ -84,7 +90,8 @@
                     depressed
                     width="100px"
                     @click="taskDialog = false"
-                  >Cancel</v-btn>
+                    >Cancel</v-btn
+                  >
                   <v-spacer></v-spacer>
                   <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
                   <v-btn
@@ -96,7 +103,8 @@
                       taskDialog = false;
                       deleteTask();
                     "
-                  >Delete</v-btn>
+                    >Delete</v-btn
+                  >
                   <v-spacer></v-spacer>
                 </v-card-actions>
               </div>
@@ -115,11 +123,19 @@
         <v-list-item-group class>
           <v-list-item>
             <div class="taskStatusDropdown">
-              <select v-model="taskStatus" class="selectUserDropDown" @change="updateStatus">
+              <select
+                v-model="taskStatus"
+                class="selectUserDropDown"
+                @change="updateStatus"
+              >
                 <option key="pending" value="pending">Pending</option>
-                <option key="implementing" value="implementing">Implementing</option>
+                <option key="implementing" value="implementing">
+                  Implementing
+                </option>
                 <option key="qa" value="qa">QA</option>
-                <option key="readyToDeploy" value="readyToDeploy">Ready to Deploy</option>
+                <option key="readyToDeploy" value="readyToDeploy">
+                  Ready to Deploy
+                </option>
                 <option key="reOpened" value="reOpened">Re-Opened</option>
                 <option key="deployed" value="deployed">Deployed</option>
                 <option key="closed" value="closed">Closed</option>
@@ -151,11 +167,19 @@
         <v-list-item-group class="tabListItems">
           <v-list-item>
             <v-list-item-icon>
-              <v-icon size="30" color="#0BAFFF">mdi-account-arrow-left-outline</v-icon>
+              <v-icon size="30" color="#0BAFFF"
+                >mdi-account-arrow-left-outline</v-icon
+              >
             </v-list-item-icon>
             <v-list-item-content>
-              <select v-model="taskAssignee" class="tabListItemsText" @change="changeAssignee">
-                <option value disabled>{{ assignee.firstName }} {{ assignee.lastName }}</option>
+              <select
+                v-model="taskAssignee"
+                class="tabListItemsText"
+                @change="changeAssignee"
+              >
+                <option value disabled>
+                  {{ assignee.firstName }} {{ assignee.lastName }}
+                </option>
                 <option
                   class="tabListItemsText"
                   v-for="(projectUser, index) in people"
@@ -177,10 +201,14 @@
         <v-list-group>
           <template v-slot:activator>
             <v-list-item-icon>
-              <v-icon size="30" color="#2EC973">mdi-package-variant-closed</v-icon>
+              <v-icon size="30" color="#2EC973"
+                >mdi-package-variant-closed</v-icon
+              >
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title class="tabListItemsText">Sub Tasks</v-list-item-title>
+              <v-list-item-title class="tabListItemsText"
+                >Sub Tasks</v-list-item-title
+              >
             </v-list-item-content>
           </template>
 
@@ -222,7 +250,8 @@
                         selectSubTask(subtask, index);
                         subTaskDialog = true;
                       "
-                    >mdi-trash-can-outline</v-icon>
+                      >mdi-trash-can-outline</v-icon
+                    >
                     <!-- <v-icon color="#FF6161" @click="subTaskDialog = true">mdi-trash-can-outline</v-icon> -->
                   </v-list-item>
                   <v-list-item v-if="showNewSubTask" class="subTaskListItems">
@@ -251,7 +280,9 @@
                       <v-icon color="#0BAFFF">mdi-plus-circle</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                      <v-list-item-title class="subTaskListName subTaskAdd">Add sub task</v-list-item-title>
+                      <v-list-item-title class="subTaskListName subTaskAdd"
+                        >Add sub task</v-list-item-title
+                      >
                     </v-list-item-content>
                   </v-list-item>
                 </div>
@@ -269,13 +300,14 @@
                 class="deletePopupIcon"
                 size="60"
                 color="deep-orange lighten-1"
-              >mdi-alert-outline</v-icon>
+                >mdi-alert-outline</v-icon
+              >
               <br />
               <span class="alertPopupTitle">Delete Sub Task</span>
               <br />
               <span class="alertPopupText">
-                You're about to permanantly delete this sub task and all of
-                it's data. If you're not sure, you can cancel this action.
+                You're about to permanantly delete this sub task and all of it's
+                data. If you're not sure, you can cancel this action.
               </span>
             </div>
 
@@ -289,7 +321,8 @@
                   depressed
                   width="100px"
                   @click="subTaskDialog = false"
-                >Cancel</v-btn>
+                  >Cancel</v-btn
+                >
                 <v-spacer></v-spacer>
                 <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
                 <v-btn
@@ -301,7 +334,8 @@
                     subTaskDialog = false;
                     deleteSubTask();
                   "
-                >Delete</v-btn>
+                  >Delete</v-btn
+                >
                 <v-spacer></v-spacer>
               </v-card-actions>
             </div>
@@ -315,17 +349,30 @@
         <v-list-item-group class="tabListItems">
           <v-list-item>
             <v-list-item-icon>
-              <v-icon size="30" color="#0BAFFF">mdi-calendar-blank-outline</v-icon>
+              <v-icon size="30" color="#0BAFFF"
+                >mdi-calendar-blank-outline</v-icon
+              >
             </v-list-item-icon>
             <!-- <v-list-item-content class="dueTitle"> -->
             <!-- <p class="tabListItemsText datesTitle">Due date</p> -->
             <!-- </v-list-item-content> -->
             <v-list-item-content>
               <!-- <input class="sideBarDate" placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" v-model="taskDue" @change="updateTaskDates('dueDate')"> -->
-              <div class="pickerContainer pickerDiv sideBarPickers datePickerNew">
+              <div
+                class="pickerContainer pickerDiv sideBarPickers datePickerNew"
+              >
                 <div class="datetimePickerRange"></div>
-                <datetime type="datetime" v-model="taskDue" zone="local" input-id="startDate">
-                  <label for="startDate" slot="before" class="tabListItemsTextDue">
+                <datetime
+                  type="datetime"
+                  v-model="taskDue"
+                  zone="local"
+                  input-id="startDate"
+                >
+                  <label
+                    for="startDate"
+                    slot="before"
+                    class="tabListItemsTextDue"
+                  >
                     <span class="pickerNewText">Due date</span>
                   </label>
                   <!-- <label for="startDate" slot="after" class="tabListItemsText "><v-icon>mdi-pencil-outline</v-icon></label> -->
@@ -357,10 +404,17 @@
             <!-- </v-list-item-content> -->
             <v-list-item-content>
               <!-- <input class="sideBarDate " placeholder="Due date" onfocusin="(this.type='datetime-local')" onfocusout="(this.type='datetime-local')" type="text" v-model="taskRemindOn" @change="updateTaskDates('remindOn')"> -->
-              <div class="pickerContainer pickerDiv sideBarPickers datePickerNew">
+              <div
+                class="pickerContainer pickerDiv sideBarPickers datePickerNew"
+              >
                 <div class="datetimePickerRange"></div>
 
-                <datetime type="datetime" v-model="taskRemindOn" zone="local" input-id="endDate">
+                <datetime
+                  type="datetime"
+                  v-model="taskRemindOn"
+                  zone="local"
+                  input-id="endDate"
+                >
                   <label for="endDate" slot="before" class="tabListItemsText">
                     <span class="pickerNewText">Remind on</span>
                   </label>
@@ -403,10 +457,14 @@
         <v-list-group>
           <template v-slot:activator>
             <v-list-item-icon>
-              <v-icon size="30" color="#FF6767">mdi-file-document-edit-outline</v-icon>
+              <v-icon size="30" color="#FF6767"
+                >mdi-file-document-edit-outline</v-icon
+              >
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title class="tabListItemsText">Notes</v-list-item-title>
+              <v-list-item-title class="tabListItemsText"
+                >Notes</v-list-item-title
+              >
             </v-list-item-content>
           </template>
 
@@ -414,7 +472,13 @@
             <v-list-item-content>
               <v-list-item-title class="subItem noteSubItem">
                 <!-- <textarea v-model="taskNotes" @keyup.enter="updateTaskNote" placeholder="Note" class="noteTextArea"></textarea> -->
-                <v-textarea name="input-7-4" auto-grow clearable outlined v-model="taskNotes"></v-textarea>
+                <v-textarea
+                  name="input-7-4"
+                  auto-grow
+                  clearable
+                  outlined
+                  v-model="taskNotes"
+                ></v-textarea>
               </v-list-item-title>
               <div class="noteUpdateButton">
                 <v-btn
@@ -442,7 +506,9 @@
               <v-icon size="30" color="#FF6767">mdi-paperclip</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title class="tabListItemsText">Files</v-list-item-title>
+              <v-list-item-title class="tabListItemsText"
+                >Files</v-list-item-title
+              >
             </v-list-item-content>
           </template>
           <div class="attchmentContainer fileAttachSideBar">
@@ -471,7 +537,11 @@
               >
                 <v-icon left>mdi-upload</v-icon>Upload
               </v-btn>
-              <v-progress-circular v-if="uploadLoading == true" indeterminate color="primary"></v-progress-circular>
+              <v-progress-circular
+                v-if="uploadLoading == true"
+                indeterminate
+                color="primary"
+              ></v-progress-circular>
             </div>
           </div>
           <div class="attchmentContainer">
@@ -481,7 +551,11 @@
               :key="index"
             >
               <div class="listAttachment">
-                <a style="text-decoration: none;" :href="taskFile.taskFileUrl" target="_blank">
+                <a
+                  style="text-decoration: none"
+                  :href="taskFile.taskFileUrl"
+                  target="_blank"
+                >
                   <v-icon size="30" color="#0BAFFF">mdi-paperclip</v-icon>
                   <div class="attachmentName">
                     <span>{{ taskFile.taskFileName }}</span>
@@ -494,7 +568,8 @@
                   size="15"
                   class="closeButton"
                   color="red"
-                >mdi-close-circle-outline</v-icon>
+                  >mdi-close-circle-outline</v-icon
+                >
               </div>
             </v-list-item>
           </div>
@@ -576,7 +651,7 @@ export default {
     selectSubTask(subtask, index) {
       this.selectedSubTask = subtask;
       this.selectedSubTaskIndex = index;
-      console.log("selected subtask: " + subtask + " " + index);
+      // console.log("selected subtask: " + subtask + " " + index);
     },
     async removeFiles(taskFile) {
       let response;

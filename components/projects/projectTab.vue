@@ -6,7 +6,9 @@
           <v-list-item>
             <div class="tab-projectName">{{ fetchProject.projectName }}</div>
             <v-divider class="mx-3" inset vertical></v-divider>
-            <div class="tab-clientName">{{ fetchProject.clientId }}</div>
+            <div v-if="selectedClient" class="tab-clientName">
+              {{ selectedClient.organizationName }}
+            </div>
 
             <!-- <div class="tab-status">{{ fetchProject.projectStatus }}</div> -->
             <div
@@ -84,7 +86,7 @@
               absolute
               temporary
               right
-              height="84vh"
+              height="90vh"
               width="350px"
               class="overflow-y-auto"
             >
@@ -116,11 +118,58 @@
                   <v-row class="mb-12 formRow projectDrawer" no-gutters>
                     <v-col sm="12" md="12">
                       <div class="editProjectLabels">Client*</div>
-                      <input
+                      <!-- <input
                         v-model="clientId"
                         placeholder="client"
                         class="formElements"
-                      />
+                      /> -->
+
+                      <v-autocomplete
+                        style="margin-top: -15px"
+                        outlined
+                        class="createFormElements"
+                        v-model="clientId"
+                        :items="clientsArray"
+                        item-text="name"
+                        item-value="id"
+                      >
+                        <template v-slot:selection="data">
+                          <template>
+                            <v-list-item-avatar size="25">
+                              <v-img
+                                v-if="
+                                  data.item.img == '' || data.item.img == null
+                                "
+                                src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1603081854073_client.png"
+                              ></v-img>
+                              <v-img v-else :src="data.item.img"></v-img>
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                              <v-list-item-title
+                                v-html="data.item.name"
+                              ></v-list-item-title>
+                            </v-list-item-content>
+                          </template>
+                        </template>
+                        <template v-slot:item="data">
+                          <template>
+                            <v-list-item-avatar>
+                              <v-img
+                                v-if="
+                                  data.item.img == '' || data.item.img == null
+                                "
+                                src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1603081854073_client.png"
+                              ></v-img>
+                              <v-img v-else :src="data.item.img"></v-img>
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                              <v-list-item-title
+                                v-html="data.item.name"
+                              ></v-list-item-title>
+                            </v-list-item-content>
+                          </template>
+                        </template>
+                      </v-autocomplete>
                     </v-col>
                   </v-row>
                   <v-row class="mb-12 formRow projectDrawer" no-gutters>
@@ -129,29 +178,29 @@
                       <div class="editProjectLabels">Project status*</div>
                       <select v-model="projectStatus" class="formElements">
                         <!-- <option value="" disabled>{{ this.projectStatus }}</option> -->
-                        <option key="presales" value="presales"
-                          >Presales</option
-                        >
-                        <option key="presalesPD" value="presalesPD"
-                          >Presales : Project Discovery</option
-                        >
-                        <option key="preSalesQS" value="preSalesQS"
-                          >Presales : Quotation Submission</option
-                        >
-                        <option key="preSalesN" value="preSalesN"
-                          >Presales : Negotiation</option
-                        >
-                        <option key="preSalesC" value="preSalesC"
-                          >Presales : Confirmed</option
-                        >
-                        <option key="preSalesL" value="preSalesL"
-                          >Presales : Lost</option
-                        >
+                        <option key="presales" value="presales">
+                          Presales
+                        </option>
+                        <option key="presalesPD" value="presalesPD">
+                          Presales : Project Discovery
+                        </option>
+                        <option key="preSalesQS" value="preSalesQS">
+                          Presales : Quotation Submission
+                        </option>
+                        <option key="preSalesN" value="preSalesN">
+                          Presales : Negotiation
+                        </option>
+                        <option key="preSalesC" value="preSalesC">
+                          Presales : Confirmed
+                        </option>
+                        <option key="preSalesL" value="preSalesL">
+                          Presales : Lost
+                        </option>
                         <option key="ongoing" value="ongoing">Ongoing</option>
                         <option key="support" value="support">Support</option>
-                        <option key="finished" value="finished"
-                          >Finished</option
-                        >
+                        <option key="finished" value="finished">
+                          Finished
+                        </option>
                       </select>
                     </v-col>
                   </v-row>
@@ -276,9 +325,9 @@
                         <div class="editProjectLabels">Weight type*</div>
                         <select v-model="weightType" class="formElements">
                           <!-- <option value="" disabled>{{ this.projectStatus }}</option> -->
-                          <option key="story" value="story"
-                            >Story Points</option
-                          >
+                          <option key="story" value="story">
+                            Story Points
+                          </option>
                           <option key="time" value="time">Time</option>
                         </select>
                       </div>
@@ -311,6 +360,120 @@
           </div>
 
           <!-- --------------- end side bar --------------------- -->
+          <!-- ----------------- Support enable Dialog ------------- -->
+
+          <v-dialog v-model="supportDialog" max-width="380">
+            <v-card>
+              <v-form v-model="isValidSupport" ref="formTask">
+                <div class="popupConfirmHeadline">
+                  <v-icon
+                    class="deletePopupIcon"
+                    size="60"
+                    color="deep-orange lighten-1"
+                    >mdi-progress-wrench</v-icon
+                  >
+                  <br />
+                  <span class="alertPopupTitle">Enable Support</span>
+                  <br />
+                  <br />
+                  <span class="alertPopupText"
+                    >You are going to enable support for this project.
+                  </span>
+                  <br />
+                  <br />
+                  <strong>Client details</strong>
+                  <br />
+                  <br />
+
+                  <div style="" v-if="selectedClient">
+                    <v-list-item>
+                      <v-spacer></v-spacer>
+                      <v-list-item-avatar>
+                        <v-img
+                          v-if="
+                            selectedClient.organizationLogo == '' ||
+                              selectedClient.organizationLogo == null
+                          "
+                          src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/profileImage_1603081854073_client.png"
+                        ></v-img>
+                        <v-img
+                          v-else
+                          :src="selectedClient.organizationLogo"
+                        ></v-img>
+                      </v-list-item-avatar>
+                      <v-list-item-content>
+                        <v-list-item-title
+                          class="alertPopupText"
+                          v-html="selectedClient.organizationName"
+                        ></v-list-item-title>
+                      </v-list-item-content>
+                      <v-spacer></v-spacer>
+                    </v-list-item>
+                  </div>
+
+                  <div class="alertPopupText" v-else>
+                    No client added, <br />
+                    Client is required to proceed.
+                  </div>
+
+                  <br />
+                  <br />
+                  <strong>Default User</strong>
+                  <br />
+                  <br />
+                  <v-list-item
+                    ><v-spacer></v-spacer>
+                    <v-autocomplete
+                      v-model="defaultAssignee"
+                      :rules="assigneeRules"
+                      :items="assigneeArray"
+                      item-text="name"
+                      item-value="id"
+                      flat
+                      outlined
+                      dense
+                      background-color="#FFFFFF"
+                      label="Default Assignee"
+                      hint="Person who responsible for the project"
+                    >
+                    </v-autocomplete
+                    ><v-spacer></v-spacer
+                  ></v-list-item>
+                </div>
+
+                <div class="popupBottom">
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn
+                      color="error"
+                      class="text-capitalize"
+                      depressed
+                      width="100px"
+                      @click="supportDialog = false"
+                      >Cancel</v-btn
+                    >
+                    <v-spacer></v-spacer>
+                    <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
+                    <v-btn
+                      class="text-capitalize"
+                      depressed
+                      color="success"
+                      :disabled="!selectedClient || !isValidSupport"
+                      width="100px"
+                      @click="
+                        supportDialog = false;
+                        editProject();
+                        enableSupport();
+                      "
+                      >Update</v-btn
+                    >
+                    <v-spacer></v-spacer>
+                  </v-card-actions>
+                </div>
+              </v-form>
+            </v-card>
+          </v-dialog>
           <!-- --------------------- update weight popup --------------- -->
 
           <v-dialog v-model="weightUpdateDialog" max-width="380">
@@ -517,49 +680,6 @@
       </v-row>
     </v-container>
 
-    <!-- ----------------------- start logs ------------------ -->
-
-    <!-- <v-container class="logsContainer">
-      <div> Task Log  </div>
-    </v-container>-->
-
-    <!-- -------------- put logs below this line ---------- -->
-
-    <v-container class="logsContainerContent">
-      <!-- -------- logs date ------- -->
-      <!-- <v-container class="dateContent"> 
-       <div class=""> 2020 Jan 4 </div>
-      </v-container>-->
-
-      <!-- --------- one log --------- -->
-
-      <!-- <v-container class="logContent"> 
-
-      <v-list-item v-for="(log, index) in taskLog" :key="index" >
-              <div class="logTitleContainer">
-                 <v-list-item-title class="logTitle">
-                  {{log.timestamp}}
-                </v-list-item-title>
-              </div>
-              <v-list-item-content>
-                    <v-list-item-title class="logText1">
-                      @Naveen has created {{log.taskLogEntity}}
-                    </v-list-item-title>
-                      <v-list-item-title class="logText2">
-                      > {{log.taskLogEntityId}}
-                    </v-list-item-title>
-            </v-list-item-content>
-              <div class="updatedDate">
-               <v-list-item-title class="logText3">
-                      Task created
-                    </v-list-item-title>
-              </div>
-            </v-list-item>
-      </v-container>-->
-
-      <!-- --------- end log --------- -->
-    </v-container>
-
     <div @click="close" class="popupBox">
       <component
         v-bind:is="component"
@@ -589,6 +709,12 @@ export default {
   },
   data() {
     return {
+      supportDialog: false,
+      isValidSupport: true,
+      defaultAssignee: '',
+
+      assigneeRules: [(value) => !!value || 'Default assignee is required!'],
+
       projectNameConfirmation: '',
       overlay: false,
       successMessage: '',
@@ -611,11 +737,47 @@ export default {
       component: '',
     };
   },
+  created() {
+    this.$store.dispatch(
+      'clients/clients/fetchSelectedClient',
+      this.fetchProject.clientId
+    );
+  },
   computed: {
     ...mapState({
       projectTaskCompletion: (state) => state.task.projectTaskCompletion,
       fetchProject: (state) => state.project.project,
+      clients: (state) => state.clients.clients.clients,
+      selectedClient: (state) => state.clients.clients.selectedClient,
+      people: (state) => state.task.userCompletionTasks,
     }),
+    assigneeArray() {
+      let AssigneeSearchList = this.people;
+      let assigneeList = [];
+      for (let index = 0; index < AssigneeSearchList.length; ++index) {
+        let user = AssigneeSearchList[index];
+        assigneeList.push({
+          name: user.assigneeFirstName + ' ' + user.assigneeLastName,
+          id: user.assigneeId,
+          img: user.assigneeProfileImage,
+          display: user.assigneeFirstName + user.assigneeLastName,
+        });
+      }
+      return assigneeList;
+    },
+    clientsArray() {
+      let clientSearchList = this.clients;
+      let clientsList = [];
+      for (let index = 0; index < clientSearchList.length; ++index) {
+        let client = clientSearchList[index];
+        clientsList.push({
+          name: client.organizationName,
+          id: client.organizationId,
+          img: client.organizationLogo,
+        });
+      }
+      return clientsList;
+    },
     projectName: {
       get() {
         return this.fetchProject.projectName;
@@ -682,19 +844,60 @@ export default {
     },
     projectStatus: {
       get() {
-        // console.log("get status", this.fetchProject.projectStatus);
         return this.fetchProject.projectStatus;
       },
       set(value) {
-        // console.log("set status", this.fetchProject.projectStatus);
-
+        if (value == 'support') {
+          this.supportDialog = true;
+          this.drawer = false;
+        }
         this.updateProject.projectStatus = value;
       },
     },
-    // ...mapState({
-    // }),
   },
   methods: {
+    async enableSupport() {
+      let response;
+      try {
+        response = await this.$axios.$post(
+          `/projects/support`,
+          {
+            projectId: this.fetchProject.projectId,
+            defaultAssignee: this.defaultAssignee,
+          },
+          {
+            headers: {
+              userId: this.userId,
+            },
+          }
+        );
+
+        this.successMessage = 'Support added successfully';
+        this.popup = 'success-popup';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.$refs.formTask.reset();
+        this.overlay = false;
+        // console.log("update task status response", response);
+      } catch (e) {
+        this.categoryName = '';
+        this.errorMessage = e.response.data;
+        this.popup = 'error-popup';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
+        console.log('Error support adding', e);
+      }
+    },
+    fetchClient(clientId) {
+      Promise.all([
+        this.$store.dispatch('clients/clients/fetchSelectedClient', clientId),
+      ]).finally(() => {
+        return this.selectedClient.organizationName;
+      });
+    },
     checkConfirmation() {
       if (this.projectNameConfirmation === this.projectName) {
         return false;
@@ -752,13 +955,6 @@ export default {
     },
     async editProject() {
       this.overlay = true;
-      console.log(
-        'update Project ',
-        this.fetchProject.projectStartDate +
-          ' ' +
-          this.updateProject.projectStartDate.slice(0, -1) +
-          '+0000'
-      );
       let response;
       let startDate;
       let endDate;

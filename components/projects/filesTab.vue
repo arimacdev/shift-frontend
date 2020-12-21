@@ -13,20 +13,20 @@
           </v-list-item-action>
 
           <v-list-item-content>
-            <a style="text-decoration: none;" :href="projectFile.projectFileUrl" target="_blank">
+            <a
+              style="text-decoration: none"
+              :href="projectFile.projectFileUrl"
+              target="_blank"
+            >
               <v-list-item-title>
-                {{
-                projectFile.projectFileName
-                }}
+                {{ projectFile.projectFileName }}
               </v-list-item-title>
             </a>
           </v-list-item-content>
 
           <v-list-item-action>
             <v-list-item-title class="fileSize">
-              {{
-              getFileSize(projectFile.projectFileSize)
-              }}
+              {{ getFileSize(projectFile.projectFileSize) }}
               kB
             </v-list-item-title>
           </v-list-item-action>
@@ -40,9 +40,7 @@
 
           <v-list-item-action>
             <v-list-item-title class="fileDate">
-              {{
-              getUploadDate(projectFile.projectFileAddedOn)
-              }}
+              {{ getUploadDate(projectFile.projectFileAddedOn) }}
             </v-list-item-title>
           </v-list-item-action>
 
@@ -50,7 +48,7 @@
             <v-btn icon>
               <div class="iconBackCircleFiles">
                 <a
-                  style="text-decoration: none;"
+                  style="text-decoration: none"
                   :href="projectFile.projectFileUrl"
                   target="_blank"
                   download="file"
@@ -69,7 +67,8 @@
                     selectFile(projectFile.projectFileId);
                   "
                   color="#FF6161"
-                >mdi-trash-can-outline</v-icon>
+                  >mdi-trash-can-outline</v-icon
+                >
               </div>
             </v-btn>
           </v-list-item-action>
@@ -81,7 +80,12 @@
     <v-dialog v-model="taskDialog" max-width="380">
       <v-card>
         <div class="popupConfirmHeadline">
-          <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
+          <v-icon
+            class="deletePopupIcon"
+            size="60"
+            color="deep-orange lighten-1"
+            >mdi-alert-outline</v-icon
+          >
           <br />
           <span class="alertPopupTitle">Delete File</span>
           <br />
@@ -101,7 +105,8 @@
               depressed
               width="100px"
               @click="taskDialog = false"
-            >Cancel</v-btn>
+              >Cancel</v-btn
+            >
             <v-spacer></v-spacer>
             <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
             <v-btn
@@ -110,7 +115,8 @@
               depressed
               width="100px"
               @click="removeFiles()"
-            >Delete</v-btn>
+              >Delete</v-btn
+            >
             <v-spacer></v-spacer>
           </v-card-actions>
         </div>
@@ -136,12 +142,21 @@
       ></v-file-input>
 
       <div v-if="this.visible == true" class="projectFileUploadButton">
-        <v-btn color="#0BAFFF" class="white--text" fab @click="projectFileUpload()">
+        <v-btn
+          color="#0BAFFF"
+          class="white--text"
+          fab
+          @click="projectFileUpload()"
+        >
           <v-icon dark>mdi-cloud-upload</v-icon>
         </v-btn>
       </div>
       <div v-if="this.visible == false" class="projectFileUploadButton">
-        <v-progress-circular v-if="this.uploadLoading == true" indeterminate color="primary"></v-progress-circular>
+        <v-progress-circular
+          v-if="this.uploadLoading == true"
+          indeterminate
+          color="primary"
+        ></v-progress-circular>
       </div>
     </div>
     <div class="popupDivContent">
@@ -255,7 +270,7 @@ export default {
             const uploadedFile = res.data[0];
             uploadedFile.firstName = this.userProfile.firstName;
             uploadedFile.lastName = this.userProfile.lastName;
-            console.log("File upload successful", res.data);
+            // console.log("File upload successful", res.data);
             this.$store.dispatch("project/addProjectFile", res.data);
             // console.log("File upload successful", res);
           })
@@ -290,7 +305,7 @@ export default {
           }
         );
         this.$store.dispatch("project/removeProjectFile", this.fileId);
-        console.log(response.data);
+        // console.log(response.data);
       } catch (e) {
         console.log("Error deleting task", e);
         this.taskDialog = false;

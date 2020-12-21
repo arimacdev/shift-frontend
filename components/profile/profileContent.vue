@@ -42,13 +42,22 @@
               <v-icon right dark>mdi-upload</v-icon>
             </v-btn>
 
-            <v-progress-circular v-if="uploadLoading == true" indeterminate color="primary"></v-progress-circular>
+            <v-progress-circular
+              v-if="uploadLoading == true"
+              indeterminate
+              color="primary"
+            ></v-progress-circular>
           </div>
         </form>
 
         <!-- ----------------------- slack --------------------- -->
 
-        <v-card class="mx-auto slackCard" max-width="344" height="220px" outlined>
+        <v-card
+          class="mx-auto slackCard"
+          max-width="344"
+          height="220px"
+          outlined
+        >
           <v-img
             class="white--text align-end slackImage"
             width="100px"
@@ -65,7 +74,10 @@
                 height
                 width="120"
                 src="https://arimac-pmtool.s3-ap-southeast-1.amazonaws.com/projectFile_1592584747849_add_to_slack.png"
-                srcset="https://platform.slack-edge.com/img/add_to_slack.png    1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"
+                srcset="
+                  https://platform.slack-edge.com/img/add_to_slack.png    1x,
+                  https://platform.slack-edge.com/img/add_to_slack@2x.png 2x
+                "
               />
             </a>
           </div>
@@ -76,7 +88,9 @@
             <!-- <v-btn x-small depressed color="primary" v-if="user.userSlackId != null && user.notification == false" v-show="enableNotification"  @click='changeNotificationStatus(user.notification)' >Enable Notifications</v-btn>  
             <v-btn x-small depressed   v-if="user.userSlackId != null && user.notification == true" v-show="disableNotification"  @click='changeNotificationStatus(user.notification)'>Disable Notifications</v-btn>-->
 
-            <div class="notiTitle" v-if="user.userSlackId != null">Enable Notifications</div>
+            <div class="notiTitle" v-if="user.userSlackId != null">
+              Enable Notifications
+            </div>
             <div class="notiButton">
               <v-switch
                 inset
@@ -87,7 +101,8 @@
                 v-if="user.userSlackId != null && user.notification == false"
                 v-show="enableNotification"
                 @click="changeNotificationStatus(user.notification)"
-              >Enable Notifications</v-switch>
+                >Enable Notifications</v-switch
+              >
               <v-switch
                 inset
                 v-model="switch1"
@@ -97,7 +112,8 @@
                 v-if="user.userSlackId != null && user.notification == true"
                 v-show="disableNotification"
                 @click="changeNotificationStatus(user.notification)"
-              >Disable Notifications</v-switch>
+                >Disable Notifications</v-switch
+              >
             </div>
           </div>
         </v-card>
@@ -145,7 +161,9 @@
       </div>
     </div>
     <v-form @submit.prevent="handleSubmit" v-model="isValid" ref="form">
-      <div class="profileUserName">{{ user.firstName }} {{ user.lastName }}</div>
+      <div class="profileUserName">
+        {{ user.firstName }} {{ user.lastName }}
+      </div>
 
       <div class="userDetails">
         <p class="userName"></p>
@@ -215,7 +233,9 @@
             <div
               v-if="$v.password.$error && !$v.password.minLength"
               class="errorText"
-            >Password must be at least 6 characters</div>
+            >
+              Password must be at least 6 characters
+            </div>
           </v-col>
           <v-col sm="6" md="6">
             <v-text-field
@@ -229,7 +249,9 @@
             <div
               v-if="$v.confirmPassword.$error && !$v.confirmPassword.sameAs"
               class="errorText"
-            >Passwords must be identical</div>
+            >
+              Passwords must be identical
+            </div>
           </v-col>
         </v-row>
         <v-row>
@@ -237,8 +259,8 @@
             <v-btn
               v-if="
                 this.password != '' &&
-                  !this.$v.$invalid == true &&
-                  isValid == true
+                !this.$v.$invalid == true &&
+                isValid == true
               "
               height="50px"
               width="300px"
@@ -249,7 +271,9 @@
                   <v-icon size="20" color>icon-user</v-icon>
                 </v-list-item-action>
                 <v-list-item-content class="buttonText">
-                  <v-list-item-title class="bodyWiew">Edit profile details</v-list-item-title>
+                  <v-list-item-title class="bodyWiew"
+                    >Edit profile details</v-list-item-title
+                  >
                 </v-list-item-content>
                 <!-- <div class="iconBackCircle">
                   <v-icon size="17" color="#0BAFFF">mdi-pencil-outline</v-icon>
@@ -261,9 +285,9 @@
               depressed
               v-else-if="
                 this.confirmPassword == '' &&
-                  this.password == '' &&
-                  !this.$v.$invalid == false &&
-                  isValid == true
+                this.password == '' &&
+                !this.$v.$invalid == false &&
+                isValid == true
               "
               height="50px"
               width="300px"
@@ -274,7 +298,9 @@
                   <v-icon size="20" color>icon-user</v-icon>
                 </v-list-item-action>
                 <v-list-item-content class="buttonText">
-                  <v-list-item-title class="bodyWiew">Edit profile details</v-list-item-title>
+                  <v-list-item-title class="bodyWiew"
+                    >Edit profile details</v-list-item-title
+                  >
                 </v-list-item-content>
               </v-list-item>
             </v-btn>
@@ -291,7 +317,9 @@
                   <v-icon size="20" color>icon-user</v-icon>
                 </v-list-item-action>
                 <v-list-item-content class="buttonText">
-                  <v-list-item-title class="bodyWiew">Edit profile details</v-list-item-title>
+                  <v-list-item-title class="bodyWiew"
+                    >Edit profile details</v-list-item-title
+                  >
                 </v-list-item-content>
               </v-list-item>
             </v-btn>
@@ -307,10 +335,9 @@
           <v-col>
             <div class="skillDisplayDivProfile">
               <div class="skillProfileScrollingWrapper">
-                <div
-                  class="emptyMsg"
-                  v-if="userSkillMap.length === 0"
-                >No Skills are added to your profile yet</div>
+                <div class="emptyMsg" v-if="userSkillMap.length === 0">
+                  No Skills are added to your profile yet
+                </div>
                 <div
                   v-else
                   class="skillCard text-center"
@@ -320,14 +347,18 @@
                   <div
                     class="skillHeader"
                     :style="'background-color:' + category.categoryColorCode"
-                  >{{ category.categoryName }}</div>
+                  >
+                    {{ category.categoryName }}
+                  </div>
 
                   <div class="skillBody">
                     <div
                       style="padding-bottom: 10px"
                       v-for="(skill, index) in category.skillSet"
                       :key="index"
-                    >{{ skill.skillName }}</div>
+                    >
+                      {{ skill.skillName }}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -435,7 +466,7 @@ export default {
   },
 
   created() {
-    console.log("CREATED");
+    // console.log("CREATED");
     this.checkActivationStatus();
     // const authCode = this.$route.query.code;
     // // console.log("SLACK CODE", authCode);
@@ -490,21 +521,21 @@ export default {
       if (process.browser) {
         window.OneSignal.isPushNotificationsEnabled((isEnabled) => {
           if (isEnabled) {
-            console.log("Push notifications are enabled!");
+            // console.log("Push notifications are enabled!");
             this.getstatus = false;
           } else {
             this.getstatus = true;
-            console.log("Push notifications are not enabled yet.");
+            // console.log("Push notifications are not enabled yet.");
           }
         });
       }
     },
     activateOneSignal() {
-      console.log("activate");
+      // console.log("activate");
       if (process.browser) {
         window.OneSignal.getUserId().then((userId) => {
           if (userId) {
-            console.log("userId", userId);
+            // console.log("userId", userId);
             this.changeOneSignalActivationStatus(userId, true);
             window.OneSignal.setSubscription(true);
             this.getstatus = false;
@@ -513,11 +544,11 @@ export default {
       }
     },
     deactivateOneSignal() {
-      console.log("deactivate");
+      // console.log("deactivate");
       if (process.browser) {
         window.OneSignal.getUserId().then((userId) => {
           if (userId) {
-            console.log("userId", userId);
+            // console.log("userId", userId);
             this.changeOneSignalActivationStatus(userId, false);
             window.OneSignal.setSubscription(false);
             this.getstatus = true;
@@ -559,8 +590,6 @@ export default {
       return orderedSkillMap;
     },
     setVisible() {
-      console.log("DISABLED!");
-
       this.disableButton = false;
     },
     async changeNotificationStatus(status) {
@@ -591,7 +620,7 @@ export default {
         }
         // this.enableNotification = ;
         // this.disableNotification = ;
-        console.log("Notification Status updated successfuly", response);
+        // console.log("Notification Status updated successfuly", response);
       } catch (e) {
         console.log("Error Updating Notification Status", e);
       }
@@ -666,19 +695,19 @@ export default {
         this.uploadLoading = false;
         this.component = "success-popup";
         this.successMessage = "Profile successfully updated";
-        console.log("group people response", this.taskFiles);
+        // console.log("group people response", this.taskFiles);
         location.reload();
       } catch (e) {
         console.log("Error uploading prof pic: ", e);
         this.component = "error-popup";
-        console.log("File Upload Failed: " + e);
+        // console.log("File Upload Failed: " + e);
         this.errorMessage = e.response.data;
         this.uploadLoading = false;
       }
     },
     handleFileUploads(e) {
       try {
-        console.log(this.$refs.files.files);
+        // console.log(this.$refs.files.files);
         this.file = this.$refs.files.files[0];
       } catch (e) {
         console.log(e);

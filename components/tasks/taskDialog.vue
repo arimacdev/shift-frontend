@@ -299,6 +299,36 @@
                         </template>
                       </template>
                     </v-select>
+                    <v-select
+                      :menu-props="{ maxHeight: '500' }"
+                      dense
+                      v-if="this.issueTypes == 'support'"
+                      v-model="taskStatus"
+                      :items="support"
+                      :background-color="statusCheck(taskStatus)"
+                      item-text="name"
+                      item-value="id"
+                      solo
+                      flat
+                      class="createFormElements"
+                      @change="updateStatus"
+                    >
+                      <template v-slot:item="data">
+                        <template>
+                          <v-list-item-action>
+                            <div
+                              style="height: 15px; width: 15px"
+                              :class="statusCheck(data.item.id)"
+                            ></div>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            <v-list-item-title
+                              v-html="data.item.name"
+                            ></v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-select>
                   </v-col>
                 </v-row>
               </div>
@@ -418,6 +448,20 @@
                             ></v-select>
                           </v-col>
                           <v-col sm="6" md="6">
+                            <v-select
+                              :menu-props="{ maxHeight: '500' }"
+                              dense
+                              v-if="this.issueTypes == 'support'"
+                              v-model="taskStatus"
+                              :items="support"
+                              background-color="#EDF0F5"
+                              item-text="name"
+                              item-value="id"
+                              label="Task status"
+                              outlined
+                              class="createFormElements"
+                              @change="updateStatus"
+                            ></v-select>
                             <v-select
                               :menu-props="{ maxHeight: '500' }"
                               dense
@@ -816,8 +860,9 @@
                       <div class="updatedSectionActions">
                         <v-row class="mb-12" no-gutters>
                           <v-col sm="12" md="12">
-                            <v-select
-                              style="margin-left: -10px"
+                            <v-autocomplete
+                              chips
+                              style="margin-left: -10px; margin-top: 5px"
                               dense
                               v-model="taskAssignee"
                               :items="assignees"
@@ -827,7 +872,7 @@
                               flat
                               class="createFormElements"
                               @change="changeAssignee"
-                            ></v-select>
+                            ></v-autocomplete>
                           </v-col>
                         </v-row>
                       </div>
@@ -1566,6 +1611,7 @@ export default {
         { name: 'Operational', id: 'operational' },
         { name: 'Pre-sales', id: 'preSales' },
         { name: 'General', id: 'general' },
+        { name: 'Support', id: 'support' },
       ],
       development: [
         { name: 'Pending', id: 'pending' },
@@ -1580,6 +1626,12 @@ export default {
         { name: 'Pending', id: 'pending' },
         { name: 'Testing', id: 'testing' },
         { name: 'Review', id: 'review' },
+        { name: 'Closed', id: 'closed' },
+      ],
+      support: [
+        { name: 'Open', id: 'open' },
+        { name: 'Pending', id: 'pending' },
+        { name: 'Testing', id: 'testing' },
         { name: 'Closed', id: 'closed' },
       ],
       design: [
@@ -2131,15 +2183,13 @@ export default {
       }
     },
     taskDialogClosing() {
-      this.$emit('taskDialogClosing');
-      Object.assign(this.$data, this.$options.data.apply(this));
-      // this.selectedTab = '';
       if (this.$refs.textarearef != undefined && this.taskView) {
         this.$refs.textarearef.reset();
-        console.log(
-          'onchange updated status ->---------' + this.$refs.textarearef
-        );
       }
+      setTimeout(() => {
+        this.$emit('taskDialogClosing');
+        Object.assign(this.$data, this.$options.data.apply(this));
+      }, 100);
     },
     async updateIssueType() {
       this.waiting = true;

@@ -8,7 +8,9 @@
           <div class="name-div">
             <v-list-item>
               <v-list-item-content>
-                <v-list-item-title class="font-weight-medium">My Workload</v-list-item-title>
+                <v-list-item-title class="font-weight-medium"
+                  >My Workload</v-list-item-title
+                >
               </v-list-item-content>
 
               <v-divider class="mx-4" inset vertical></v-divider>
@@ -21,7 +23,10 @@
 
       <div class="workLoadTitleDiv myWorkloadBody">
         <!-- <v-list-item-title class="hi" v-if="this.userData.firstName == null"> -->
-        <v-list-item-title class="hi" v-if="!this.firstName"></v-list-item-title>
+        <v-list-item-title
+          class="hi"
+          v-if="!this.firstName"
+        ></v-list-item-title>
       </div>
       <v-divider></v-divider>
 
@@ -41,7 +46,7 @@ import { mapState, mapGetters } from "vuex";
 export default {
   components: {
     NavigationDrawer,
-    "workload-content": WorkloadContent
+    "workload-content": WorkloadContent,
   },
   data() {
     return {
@@ -56,7 +61,7 @@ export default {
       search: null,
       select: {},
       states: [],
-      drawer: null
+      drawer: null,
     };
   },
 
@@ -67,23 +72,23 @@ export default {
 
   watch: {
     search(val) {
-      console.log("value is ", val);
+      // console.log("value is ", val);
       val && val !== this.select && this.querySelections(val);
-    }
+    },
   },
   methods: {},
   computed: {
     ...mapState({
-      taskWorkLoadUsers: state => state.workload.taskWorkLoadUsers
-    })
+      taskWorkLoadUsers: (state) => state.workload.taskWorkLoadUsers,
+    }),
   },
-  created: function() {
+  created: function () {
     this.selectedUser = this.userId;
     this.$store.dispatch("workload/fetchAllWorkloadTasks", {
       userId: this.userId,
       from: "all",
-      to: "all"
+      to: "all",
     });
-  }
+  },
 };
 </script>

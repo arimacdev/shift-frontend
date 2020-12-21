@@ -51,7 +51,13 @@
       >
         <v-list-item-icon>
           <div style="margin-top: -8px !important">
-            <v-icon size="15" class="navButtons">{{ item.icon }}</v-icon>
+            <v-icon
+              v-if="item.icon == 'mdi-face-agent'"
+              size="20"
+              class="navButtons"
+              >{{ item.icon }}</v-icon
+            >
+            <v-icon v-else size="15" class="navButtons">{{ item.icon }}</v-icon>
           </div>
         </v-list-item-icon>
 
@@ -63,7 +69,7 @@
               x-small
               color="red"
               dark
-              v-if="item.title == 'Analytics'"
+              v-if="item.title == 'Service Desk'"
             >
               <span style="font-size: 10px !important">New</span>
             </v-chip>
@@ -173,6 +179,11 @@ export default {
           title: "Analytics",
           icon: "icon-summary",
           route: "../../analytics/analytics",
+        },
+        {
+          title: "Service Desk",
+          icon: "mdi-face-agent",
+          route: "../../support/support",
         },
       ],
       mini: true,

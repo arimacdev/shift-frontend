@@ -210,7 +210,7 @@
           height="30px"
           color="#FF6161"
         >
-          <span class="text-capitalize" style="font-size: 10px !important; "
+          <span class="text-capitalize" style="font-size: 10px !important"
             >Clear</span
           >
         </v-btn>
@@ -228,7 +228,9 @@
       >
         <v-form onsubmit="return false" ref="form">
           <v-text-field
+            :rules="taskNameRules"
             ref="txtMainTask"
+            class="tasknameAllTAsks"
             v-model="taskName"
             background-color="#FFFFFF"
             outlined
@@ -237,7 +239,6 @@
             dense
             prepend-inner-icon="mdi-plus"
             label="Add a main task. Format: <TaskName> @<Assignee> #<DueDate>"
-            class
             style="border-radius: 0px"
             @keyup.enter="addTask(null, 'general')"
             @input="autoFilling()"
@@ -409,7 +410,7 @@
                             '/?project=' +
                             projectId
                         "
-                        style="text-decoration: none;"
+                        style="text-decoration: none"
                         target="_blank"
                       >
                         <v-icon size="17" color="#9F9F9F"
@@ -425,10 +426,12 @@
                   class="restructuredSubTaskCreate"
                   v-if="task.parentTask.taskStatus != 'closed'"
                 >
-                  <v-expand-transition>
+                  <v-expand-transition class="TransitionDiv">
                     <v-text-field
-                      ref="txtSubTask"
+                      :rules="subTaskNameRules"
                       v-if="hover"
+                      class="tasknameAllTAsks"
+                      ref="txtSubTask"
                       v-model="subTaskName"
                       background-color="#FFFFFF"
                       outlined
@@ -506,7 +509,7 @@
                 <div
                   class="restructuredSubTaskCreate"
                   v-else
-                  style="margin-bottom: -5px;"
+                  style="margin-bottom: -5px"
                 ></div>
               </div>
             </v-hover>
@@ -618,7 +621,7 @@
                       :to="
                         '/task/' + childTask.taskId + '/?project=' + projectId
                       "
-                      style="text-decoration: none;"
+                      style="text-decoration: none"
                       target="_blank"
                     >
                       <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
@@ -773,7 +776,7 @@
             <v-list-item-action style="cursor: pointer">
               <nuxt-link
                 :to="'/task/' + task.taskId + '/?project=' + projectId"
-                style="text-decoration: none;"
+                style="text-decoration: none"
                 target="_blank"
               >
                 <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
@@ -914,6 +917,8 @@ export default {
   props: ['pagination'],
   data() {
     return {
+      taskNameRules: [(value) => value.length < 100 || 'Length Exceeded'],
+      subTaskNameRules: [(value) => value.length < 100 || ''],
       traverseText: '',
       hover: false,
       scrollCount: 1,
@@ -1049,17 +1054,20 @@ export default {
       this.datePickerSubDialog = false;
     },
     clearStore() {
-      this.$store.dispatch('task/emptyStore');
-      this.scrollCount = 1;
-      this.$store.dispatch('task/setIndex', {
-        startIndex: 0,
-        endIndex: 10,
-        isAllTasks: false,
+      Promise.all([
+        (this.scrollCount = 1),
+        this.$store.dispatch('task/emptyStore'),
+        this.$store.dispatch('task/setIndex', {
+          startIndex: 0,
+          endIndex: 10,
+          isAllTasks: false,
+        }),
+      ]).finally(() => {
+        this.$store.dispatch(
+          'task/fetchTasksAllTasks',
+          this.$route.params.projects
+        );
       });
-      this.$store.dispatch(
-        'task/fetchTasksAllTasks',
-        this.$route.params.projects
-      );
     },
     scrollEvent() {
       var myDiv = document.getElementById('mainDiv');
@@ -1164,7 +1172,7 @@ export default {
           this.subTaskName.split('@')[1] != ''
         ) {
           this.traverseText = this.subTaskName.split('@')[1];
-          console.log('TAGGING: ' + this.subTaskName.split('@')[1]);
+          // console.log('TAGGING: ' + this.subTaskName.split('@')[1]);
         }
         if (!this.subTaskName.includes('@')) {
           this.subTagging = false;
@@ -1216,7 +1224,7 @@ export default {
           this.updatedTask.taskName.split('@')[1] != ''
         ) {
           this.traverseText = this.updatedTask.taskName.split('@')[1];
-          console.log('TAGGING: ' + this.updatedTask.taskName.split('@')[1]);
+          // console.log("TAGGING: " + this.updatedTask.taskName.split("@")[1]);
         }
         if (!this.updatedTask.taskName.includes('@')) {
           this.tagging = false;
@@ -1296,11 +1304,9 @@ export default {
       }
     },
     async closeTask(taskId, filter) {
-      this.clearStore();
-      this.waiting = true;
+      this.overlay = true;
       this.scrollCount = 1;
 
-      // console.log("onchange updated status ->");
       let response;
       try {
         response = await this.$axios.$put(
@@ -1315,29 +1321,28 @@ export default {
           }
         );
 
-        this.$store.dispatch('activityLog/fetchTaskActivityLog', {
-          taskId: taskId,
-          startIndex: 0,
-          endIndex: 10,
-        });
         if (filter) {
           this.jqlSearch();
         }
 
-        this.$store.dispatch('task/setIndex', {
-          startIndex: 0,
-          endIndex: 10,
-          isAllTasks: false,
-        });
+        this.clearStore();
+        // this.scrollCount = 1;
+        // this.$store.dispatch('task/emptyStore');
+        // this.$store.dispatch('task/setIndex', {
+        //   startIndex: 0,
+        //   endIndex: 10,
+        //   isAllTasks: false,
+        // });
+        // this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
 
         this.component = 'success-popup';
         this.successMessage = 'Status successfully updated';
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.waiting = false;
+        this.overlay = false;
 
-        this.clearStore();
+        // this.clearStore();
 
         // console.log("update task status response", response);
       } catch (e) {
@@ -1347,7 +1352,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        this.waiting = false;
+        this.overlay = false;
         // console.log("Error updating a status", e);
       }
     },
@@ -1441,6 +1446,9 @@ export default {
       switch (type) {
         case 'development':
           return 'Development';
+          break;
+        case 'support':
+          return 'Support';
           break;
         case 'qa':
           return 'QA';
@@ -1645,14 +1653,14 @@ export default {
     },
     taskDialogClosing() {
       if (this.filterList != '' && this.taskFilter != 'none') {
-        console.log('TRIGGERED');
+        // console.log("TRIGGERED");
         this.jqlSearch();
       }
       this.taskDialog = false;
-      console.log('Task Dialog Closing');
+      // console.log("Task Dialog Closing");
       if (this.stomp !== null) {
         this.stomp.disconnect(() => {
-          console.log('client disconnected');
+          // console.log("client disconnected");
         });
       }
     },
@@ -1913,24 +1921,24 @@ export default {
       // console.log("-----------> changed" + this.taskSelect);
     },
     websocketConnectInit(taskId) {
-      console.log('initalize websocket connection for task', taskId);
+      // console.log("initalize websocket connection for task", taskId);
       const url = this.baseUrl + '/api/pm-service';
       try {
-        console.log('connecting to ws...');
+        // console.log("connecting to ws...");
         let socket = new SockJS(url + '/chat');
         //this.stompClient = Stomp.over(socket);
         this.stomp = Stomp.over(socket);
         //this.$store.dispatch("stompClient/setStompClient", "this.stomp");
         //let client = this.stompClient;
         this.stomp.connect({}, (frame) => {
-          console.log('connected to: ' + frame);
-          console.log('subscribing to topic: ' + '/topic/messages/' + taskId);
+          // console.log("connected to: " + frame);
+          // console.log("subscribing to topic: " + "/topic/messages/" + taskId);
           this.stomp.subscribe('/topic/messages/' + taskId, (response) => {
             // console.log("Response", response);
             let data = JSON.parse(response.body);
-            console.log('outside----->');
+            // console.log("outside----->");
             if (data.actionType === 'comment') {
-              console.log('inside----->');
+              // console.log("inside----->");
               this.$store.dispatch('comments/fetchTaskActivityComment', {
                 taskId: this.selectedTask.taskId,
                 startIndex: 0,
@@ -1955,7 +1963,7 @@ export default {
       }
     },
     async selectTask(task, taskObject) {
-      console.log('select________>');
+      // console.log("select________>");
       this.websocketConnectInit(task.taskId);
       this.task = task;
       this.$store.dispatch('task/setSelectedTask', task);
@@ -1968,7 +1976,7 @@ export default {
       this.$store.dispatch('user/setSelectedTaskUser', task.taskAssignee);
       if (this.filterList != '' && this.taskFilter != 'none') {
         if (this.task.parent) {
-          console.log('parent task 1');
+          // console.log("parent task 1");
           this.$store.dispatch('task/fetchChildren', {
             projectId: this.projectId,
             taskId: this.task.taskId,
@@ -1981,7 +1989,7 @@ export default {
         }
       } else {
         if (this.task.isParent) {
-          console.log('parent task 2');
+          // console.log("parent task 2");
           this.$store.dispatch('task/fetchChildren', {
             projectId: this.projectId,
             taskId: this.task.taskId,
@@ -2070,6 +2078,8 @@ export default {
         return 'preSalesStatus';
       } else if (task === 'general') {
         return 'generalStatus';
+      } else if (task === 'support') {
+        return 'supportStatus';
       } else {
         return 'otherStatus';
       }

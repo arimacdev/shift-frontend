@@ -25,32 +25,37 @@
                     v-if="task.parentTask.taskStatus == 'closed'"
                     size="20"
                     color="#2EC973"
-                  >mdi-checkbox-marked-circle</v-icon>
-                  <v-icon v-else size="20" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                    >mdi-checkbox-marked-circle</v-icon
+                  >
+                  <v-icon v-else size="20" color="#EDF0F5"
+                    >mdi-checkbox-blank-circle</v-icon
+                  >
                   <br />
-                  <div
-                    style="font-size: 10px; font-weight: bold"
-                  >{{ task.parentTask.secondaryTaskId }}</div>
+                  <div style="font-size: 10px; font-weight: bold">
+                    {{ task.parentTask.secondaryTaskId }}
+                  </div>
                 </div>
               </v-list-item-action>
               <v-list-item-content>
                 <v-list-item-title class="fontRestructure12">
-                  {{
-                  task.parentTask.taskName
-                  }}
+                  {{ task.parentTask.taskName }}
                 </v-list-item-title>
-                <div
-                  :class="dueDateCheck(task.parentTask)"
-                >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</div>
+                <div :class="dueDateCheck(task.parentTask)">
+                  {{ getProjectDates(task.parentTask.taskDueDateAt) }}
+                </div>
               </v-list-item-content>
               <v-tooltip left>
                 <template v-slot:activator="{ on }">
-                  <v-list-item-avatar style="margin-right: 5px" size="25" v-on="on">
+                  <v-list-item-avatar
+                    style="margin-right: 5px"
+                    size="25"
+                    v-on="on"
+                  >
                     <v-img
                       v-if="
-                    task.parentTask.taskAssigneeProfileImage != null &&
-                      task.parentTask.taskAssigneeProfileImage != ''
-                  "
+                        task.parentTask.taskAssigneeProfileImage != null &&
+                        task.parentTask.taskAssigneeProfileImage != ''
+                      "
                       :src="task.parentTask.taskAssigneeProfileImage"
                     ></v-img>
                     <v-img
@@ -59,7 +64,10 @@
                     ></v-img>
                   </v-list-item-avatar>
                 </template>
-                <span>{{task.parentTask.firstName}} {{task.parentTask.lastName}}</span>
+                <span
+                  >{{ task.parentTask.firstName }}
+                  {{ task.parentTask.lastName }}</span
+                >
               </v-tooltip>
               <!-- <div class="boardTabLinkIcon">
                 <nuxt-link
@@ -105,25 +113,38 @@
                     v-if="childTask.taskStatus == 'closed'"
                     size="20"
                     color="#2EC973"
-                  >mdi-checkbox-marked-circle</v-icon>
-                  <v-icon v-else size="20" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                    >mdi-checkbox-marked-circle</v-icon
+                  >
+                  <v-icon v-else size="20" color="#EDF0F5"
+                    >mdi-checkbox-blank-circle</v-icon
+                  >
                   <br />
-                  <div style="font-size: 10px; font-weight: bold">{{ childTask.secondaryTaskId }}</div>
+                  <div style="font-size: 10px; font-weight: bold">
+                    {{ childTask.secondaryTaskId }}
+                  </div>
                 </div>
               </v-list-item-action>
 
               <v-list-item-content>
-                <v-list-item-title class="fontRestructure12">{{ childTask.taskName }}</v-list-item-title>
-                <div :class="dueDateCheck(childTask)">{{ getProjectDates(childTask.taskDueDateAt) }}</div>
+                <v-list-item-title class="fontRestructure12">{{
+                  childTask.taskName
+                }}</v-list-item-title>
+                <div :class="dueDateCheck(childTask)">
+                  {{ getProjectDates(childTask.taskDueDateAt) }}
+                </div>
               </v-list-item-content>
               <v-tooltip left>
                 <template v-slot:activator="{ on }">
-                  <v-list-item-avatar style="margin-right: 5px" size="25" v-on="on">
+                  <v-list-item-avatar
+                    style="margin-right: 5px"
+                    size="25"
+                    v-on="on"
+                  >
                     <v-img
                       v-if="
-                    childTask.taskAssigneeProfileImage != null &&
-                      childTask.taskAssigneeProfileImage != ''
-                  "
+                        childTask.taskAssigneeProfileImage != null &&
+                        childTask.taskAssigneeProfileImage != ''
+                      "
                       :src="childTask.taskAssigneeProfileImage"
                     ></v-img>
                     <v-img
@@ -132,7 +153,7 @@
                     ></v-img>
                   </v-list-item-avatar>
                 </template>
-                <span>{{childTask.firstName}} {{childTask.lastName}}</span>
+                <span>{{ childTask.firstName }} {{ childTask.lastName }}</span>
               </v-tooltip>
               <!-- <div class="boardTabLinkIcon">
                 <nuxt-link
@@ -151,7 +172,11 @@
     <div class>
       <div class="boardBodyDiv">
         <div class="scrolling-wrapper">
-          <div class="card" v-for="(projectSprint, index) in projectSprints" :key="index">
+          <div
+            class="card"
+            v-for="(projectSprint, index) in projectSprints"
+            :key="index"
+          >
             <div class="actualBoard" v-if="projectSprint.sprintId != 'default'">
               <div class="sprintTitle">
                 <div class="sprintUpdateButton">
@@ -172,9 +197,7 @@
                 <div class="sprintTitleName">
                   <div>{{ projectSprint.sprintName }}</div>
                   <div>
-                    {{
-                    projectSprint.sprintDescription
-                    }}
+                    {{ projectSprint.sprintDescription }}
                   </div>
                 </div>
               </div>
@@ -211,33 +234,39 @@
                             v-if="task.parentTask.taskStatus == 'closed'"
                             size="20"
                             color="#2EC973"
-                          >mdi-checkbox-marked-circle</v-icon>
-                          <v-icon v-else size="20" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                            >mdi-checkbox-marked-circle</v-icon
+                          >
+                          <v-icon v-else size="20" color="#EDF0F5"
+                            >mdi-checkbox-blank-circle</v-icon
+                          >
                           <br />
-                          <div
-                            style="font-size: 10px; font-weight: bold"
-                          >{{ task.parentTask.secondaryTaskId }}</div>
+                          <div style="font-size: 10px; font-weight: bold">
+                            {{ task.parentTask.secondaryTaskId }}
+                          </div>
                         </div>
                       </v-list-item-action>
 
                       <v-list-item-content>
                         <v-list-item-title class="fontRestructure12">
-                          {{
-                          task.parentTask.taskName
-                          }}
+                          {{ task.parentTask.taskName }}
                         </v-list-item-title>
-                        <div
-                          :class="dueDateCheck(task.parentTask)"
-                        >{{ getProjectDates(task.parentTask.taskDueDateAt) }}</div>
+                        <div :class="dueDateCheck(task.parentTask)">
+                          {{ getProjectDates(task.parentTask.taskDueDateAt) }}
+                        </div>
                       </v-list-item-content>
                       <v-tooltip left>
                         <template v-slot:activator="{ on }">
-                          <v-list-item-avatar style="margin-right: 5px" size="25" v-on="on">
+                          <v-list-item-avatar
+                            style="margin-right: 5px"
+                            size="25"
+                            v-on="on"
+                          >
                             <v-img
                               v-if="
-                            task.parentTask.taskAssigneeProfileImage != null &&
-                              task.parentTask.taskAssigneeProfileImage != ''
-                          "
+                                task.parentTask.taskAssigneeProfileImage !=
+                                  null &&
+                                task.parentTask.taskAssigneeProfileImage != ''
+                              "
                               :src="task.parentTask.taskAssigneeProfileImage"
                             ></v-img>
                             <v-img
@@ -246,7 +275,10 @@
                             ></v-img>
                           </v-list-item-avatar>
                         </template>
-                        <span>{{task.parentTask.firstName}} {{task.parentTask.lastName}}</span>
+                        <span
+                          >{{ task.parentTask.firstName }}
+                          {{ task.parentTask.lastName }}</span
+                        >
                       </v-tooltip>
                       <!-- <div class="boardTabLinkIcon">
                         <nuxt-link
@@ -266,7 +298,10 @@
                     </v-list-item>
                   </div>
                   <!-- -------- load child tasks (project boards) ------------ -->
-                  <div v-for="(childTask, index) in task.childTasks" :key="index">
+                  <div
+                    v-for="(childTask, index) in task.childTasks"
+                    :key="index"
+                  >
                     <v-list-item
                       v-if="childTask.sprintId == projectSprint.sprintId"
                       class="boardTaskListItem"
@@ -294,33 +329,38 @@
                             v-if="childTask.taskStatus == 'closed'"
                             size="20"
                             color="#2EC973"
-                          >mdi-checkbox-marked-circle</v-icon>
-                          <v-icon v-else size="20" color="#EDF0F5">mdi-checkbox-blank-circle</v-icon>
+                            >mdi-checkbox-marked-circle</v-icon
+                          >
+                          <v-icon v-else size="20" color="#EDF0F5"
+                            >mdi-checkbox-blank-circle</v-icon
+                          >
                           <br />
-                          <div
-                            style="font-size: 10px; font-weight: bold"
-                          >{{ childTask.secondaryTaskId }}</div>
+                          <div style="font-size: 10px; font-weight: bold">
+                            {{ childTask.secondaryTaskId }}
+                          </div>
                         </div>
                       </v-list-item-action>
 
                       <v-list-item-content>
                         <v-list-item-title class="fontRestructure12">
-                          {{
-                          childTask.taskName
-                          }}
+                          {{ childTask.taskName }}
                         </v-list-item-title>
-                        <div
-                          :class="dueDateCheck(childTask)"
-                        >{{ getProjectDates(childTask.taskDueDateAt) }}</div>
+                        <div :class="dueDateCheck(childTask)">
+                          {{ getProjectDates(childTask.taskDueDateAt) }}
+                        </div>
                       </v-list-item-content>
                       <v-tooltip left>
                         <template v-slot:activator="{ on }">
-                          <v-list-item-avatar style="margin-right: 5px" size="25" v-on="on">
+                          <v-list-item-avatar
+                            style="margin-right: 5px"
+                            size="25"
+                            v-on="on"
+                          >
                             <v-img
                               v-if="
-                            childTask.taskAssigneeProfileImage != null &&
-                              childTask.taskAssigneeProfileImage != ''
-                          "
+                                childTask.taskAssigneeProfileImage != null &&
+                                childTask.taskAssigneeProfileImage != ''
+                              "
                               :src="childTask.taskAssigneeProfileImage"
                             ></v-img>
                             <v-img
@@ -329,7 +369,10 @@
                             ></v-img>
                           </v-list-item-avatar>
                         </template>
-                        <span>{{childTask.firstName}} {{childTask.lastName}}</span>
+                        <span
+                          >{{ childTask.firstName }}
+                          {{ childTask.lastName }}</span
+                        >
                       </v-tooltip>
                       <!-- <div class="boardTabLinkIcon">
                         <nuxt-link
@@ -382,7 +425,12 @@
     </v-navigation-drawer>-->
     <!-- ------------ task dialog --------- -->
 
-    <v-dialog persistent v-model="taskDialog" width="90vw" transition="dialog-bottom-transition">
+    <v-dialog
+      persistent
+      v-model="taskDialog"
+      width="90vw"
+      transition="dialog-bottom-transition"
+    >
       <task-dialog
         :task="task"
         :stomp="stomp"
@@ -399,7 +447,12 @@
     <v-dialog v-model="taskDeleteDialog" max-width="380">
       <v-card>
         <div class="popupConfirmHeadline">
-          <v-icon class="deletePopupIcon" size="60" color="deep-orange lighten-1">mdi-alert-outline</v-icon>
+          <v-icon
+            class="deletePopupIcon"
+            size="60"
+            color="deep-orange lighten-1"
+            >mdi-alert-outline</v-icon
+          >
           <br />
           <span class="alertPopupTitle">Delete Task</span>
           <br />
@@ -420,7 +473,8 @@
               depressed
               width="100px"
               @click="taskDeleteDialog = false"
-            >Cancel</v-btn>
+              >Cancel</v-btn
+            >
             <v-spacer></v-spacer>
             <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
             <v-btn
@@ -433,7 +487,8 @@
                 taskDialog = false;
                 deleteTask();
               "
-            >Delete</v-btn>
+              >Delete</v-btn
+            >
             <v-spacer></v-spacer>
           </v-card-actions>
         </div>
@@ -516,7 +571,7 @@ export default {
       // console.log("Task Dialog Closing");
       if (this.stomp !== null) {
         this.stomp.disconnect(() => {
-          console.log("client disconnected");
+          // console.log("client disconnected");
         });
       }
       this.taskDialog = false;
@@ -559,25 +614,25 @@ export default {
       this.drawer = false;
     },
     websocketConnectInit(taskId) {
-      console.log("initalize websocket connection for task", taskId);
+      // console.log("initalize websocket connection for task", taskId);
       const url = this.baseUrl + "/api/pm-service";
       //const url = "https://pmtool.devops.arimac.xyz/api/pm-service"
       try {
-        console.log("connecting to ws...");
+        // console.log("connecting to ws...");
         let socket = new SockJS(url + "/chat");
         //this.stompClient = Stomp.over(socket);
         this.stomp = Stomp.over(socket);
         //this.$store.dispatch("stompClient/setStompClient", taskId);
         //let client = this.stompClient;
         this.stomp.connect({}, (frame) => {
-          console.log("connected to: " + frame);
-          console.log("subscribing to topic: " + "/topic/messages/" + taskId);
+          // console.log("connected to: " + frame);
+          // console.log("subscribing to topic: " + "/topic/messages/" + taskId);
           this.stomp.subscribe("/topic/messages/" + taskId, (response) => {
-            console.log("Response", response);
+            // console.log("Response", response);
             let data = JSON.parse(response.body);
-            console.log("outside----->");
+            // console.log("outside----->");
             if (data.actionType === "comment") {
-              console.log("inside----->");
+              // console.log("inside----->");
               this.$store.dispatch("comments/fetchTaskActivityComment", {
                 taskId: this.selectedTask.taskId,
                 startIndex: 0,

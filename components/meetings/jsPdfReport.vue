@@ -200,7 +200,10 @@
           </td>
           <td style="width: 100px">
             <span v-if="disPoint.actionByGuest">{{ disPoint.actionBy }}</span>
-            <span v-else>{{ disPoint.meetingUser.firstName }} {{ disPoint.meetingUser.lastName }} </span>
+            <span v-else
+              >{{ disPoint.meetingUser.firstName }}
+              {{ disPoint.meetingUser.lastName }}
+            </span>
           </td>
           <td style="width: 100px">
             <span v-if="disPoint.dueDate == null">No Due Date</span>

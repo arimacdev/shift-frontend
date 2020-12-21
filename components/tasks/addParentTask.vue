@@ -83,10 +83,7 @@
                   depressed
                   color="error"
                   width="100px"
-                  @click="
-                    dialog = false;
-                    clearStore();
-                  "
+                  @click="dialog = false"
                   :retain-focus="false"
                   >Cancel</v-btn
                 >
@@ -105,12 +102,16 @@
               </v-card-actions>
             </div>
           </v-form>
+          <v-overlay :value="overlay" color="black">
+            <progress-loading />
+          </v-overlay>
         </v-card>
       </v-dialog>
       <v-overlay z-index="inherit" :value="waiting" color="black">
         <waiting />
       </v-overlay>
     </v-row>
+
     <div @click="close" class="parentChildPopup">
       <component
         v-bind:is="component"
@@ -125,14 +126,14 @@
 <script>
 import SuccessPopup from '~/components/popups/successPopup';
 import ErrorPopup from '~/components/popups/errorPopup';
-import Waiting from '~/components/popups/waiting';
+import Progress from '~/components/popups/progress';
 import { mapState } from 'vuex';
 export default {
   props: ['taskId', 'projectId'],
   components: {
     'success-popup': SuccessPopup,
     'error-popup': ErrorPopup,
-    waiting: Waiting,
+    'progress-loading': Progress,
   },
   created() {
     // console.log("alltasks", this.projectAllTasks);
@@ -147,7 +148,7 @@ export default {
   },
   data() {
     return {
-      waiting: false,
+      overlay: false,
       parentTasks: [],
       errorMessage: '',
       isValid: true,
@@ -173,21 +174,16 @@ export default {
   },
   methods: {
     clearStore() {
-      console.log('CONDSOJDKDS');
       this.$emit('clearStore');
     },
     loadDetails() {
-      this.waiting = true;
+      this.overlay = true;
       Promise.all([
-        this.$store.dispatch('task/emptyStore'),
-        this.$store.dispatch('task/setIndex', {
-          startIndex: 0,
-          endIndex: 10,
-          isAllTasks: true,
-        }),
-        this.$store.dispatch('task/fetchTasksAllTasks', this.projectId),
+        this.$store.dispatch('task/fetchSprintTasks', this.projectId),
       ]).finally(() => {
-        this.waiting = false;
+        setTimeout(() => {
+          this.overlay = false;
+        }, 3000);
       });
     },
     close() {
@@ -239,8 +235,7 @@ export default {
         this.dialog = false;
         this.component = 'success-popup';
         this.successMessage = 'Parent Task Added Successfully';
-        this.clearStore();
-        // this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
+        this.$store.dispatch('task/fetchTasksAllTasks', this.projectId);
         this.$store.dispatch('task/setCurrentTask', {
           projectId: this.projectId,
           taskId: this.taskId,
@@ -252,7 +247,7 @@ export default {
         setTimeout(() => {
           this.close();
         }, 3000);
-        // console.log('update parent task', response);
+        // console.log("update parent task", response);
       } catch (e) {
         this.errorMessage = e.response.data;
         this.component = 'error-popup';
@@ -263,6 +258,7 @@ export default {
       }
     },
   },
+  created() {},
   computed: {
     adminStatus: {
       get() {
@@ -273,7 +269,7 @@ export default {
       },
     },
     ...mapState({
-      projectAllTasks: (state) => state.task.allTasks,
+      projectAllTasks: (state) => state.task.sprintTasks,
     }),
   },
 };

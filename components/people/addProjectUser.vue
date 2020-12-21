@@ -23,7 +23,6 @@
               <v-card-actions>
                 <v-autocomplete
                   ref="userName"
-                  filled
                   label="Select user*"
                   v-model="addUser.assigneeId"
                   :items="states"
@@ -34,12 +33,8 @@
                   flat
                   outlined
                   background-color="white"
-                  append-icon
-                  hide-no-data
                   @change="onSelectedUser()"
                   :rules="assigneeRoleRules"
-                  hide-details="auto"
-                  clearable
                 ></v-autocomplete>
               </v-card-actions>
               <v-card-actions class>

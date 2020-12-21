@@ -101,7 +101,7 @@ export const mutations = {
     state.taskFiles.splice(index, 1);
   },
   UPDATE_TASK(state, { taskId, taskName }) {
-    console.log('update task', taskId, taskName);
+    // console.log('update task', taskId, taskName);
     const index = state.allTasks.findIndex(
       (i) => i.parentTask.taskId == taskId
     );
@@ -146,7 +146,7 @@ export const actions = {
           },
         }
       );
-      console.log('task length', taskLength.data);
+      // console.log('task length', taskLength.data);
       commit('SET_TOTAL_COUNT', taskLength.data);
     } catch (error) {
       console.log('Error fetching task count length', error);
@@ -159,7 +159,7 @@ export const actions = {
       taskLength = await this.$axios.$get(
         `/projects/${projectId}/tasks/user/count?userId=${user}`
       );
-      console.log('task length', taskLength.data);
+      // console.log('task length', taskLength.data);
       commit('SET_MY_TASK_COUNT', taskLength.data);
     } catch (error) {
       console.log('Error fetching task count length', error);
@@ -303,10 +303,6 @@ export const actions = {
         }
       )
       .then((response) => {
-        // console.log(
-        //   'ALL TASKS ARE RETRIEVED SUCCESSFULLY-->',
-        //   response.data.data
-        // );
         commit('SET_SPRINT_TASKS', response.data.data);
       })
       .catch((e) => {

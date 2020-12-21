@@ -303,6 +303,7 @@
   padding-top: 40px;
   margin-top: -20px;
 }
+
 .userContentWrapper {
   width: 65vw;
   margin-left: 30vw;
@@ -2005,6 +2006,14 @@
   margin-bottom: 5px;
   border: 1px solid #c4c4c4;
 }
+.devTaskList {
+  background-color: #fafafa;
+  margin-bottom: 5px;
+  border: 1px solid #c4c4c4;
+  height: 20px !important;
+  margin-left: 20px;
+  margin-right: 20px;
+}
 .upperMyListItem {
   margin-top: -10px;
   margin-left: -20px;
@@ -2208,6 +2217,10 @@
 }
 .generalStatus {
   background-color: #0084e2be !important;
+  color: #ffffff !important;
+}
+.supportStatus {
+  background-color: #191a16be !important;
   color: #ffffff !important;
 }
 .otherStatus {
@@ -2958,6 +2971,7 @@
   position: fixed;
   right: 10px;
   bottom: 10px;
+  z-index: 1000;
 }
 .userBlockedWarning {
   color: red;
@@ -3863,4 +3877,91 @@
   font-weight: 700;
   margin-top: 30px;
   margin-bottom: 30px;
+}
+
+/* ----------- support ------------ */
+
+.supportRequestList {
+  width: 15vw;
+  float: left;
+  /* padding-left: -12px; */
+  padding-top: 40px;
+  margin-top: -20px;
+}
+.requestContentWrapper {
+  width: 80vw;
+  margin-left: 15vw;
+}
+.supportListItemTitle {
+  color: #576377;
+  font-size: 12px !important;
+}
+.supportRequestListItem {
+  height: 30px !important;
+}
+.requestViewContent {
+  height: 80vh;
+  padding: 40px;
+}
+.requestViewContentSupport {
+  height: 90vh;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-bottom: 200px;
+}
+.statDisplay {
+  width: 30%;
+  float: left;
+  padding: 5px;
+}
+.projectListUserSupport {
+  width: 20%;
+  float: left;
+  padding-top: 30px;
+  /* padding-left: 12px; */
+  /* margin-top: -20px; */
+}
+.componentContent {
+  padding-top: 30px;
+  padding-left: 10px;
+  float: right;
+  width: 80%;
+}
+
+.summaryNameTitle {
+  font-size: 25px !important;
+  font-weight: 600;
+  color: #040428;
+}
+.summaryNameSubTitle {
+  font-weight: 500;
+  color: #576377 !important;
+}
+.userTitleSectionSupport {
+  font-size: 16px;
+  color: #576377;
+  font-weight: 500;
+}
+.allTaskCreateTab .v-messages__message {
+  margin-bottom: 20px;
+}
+
+.allTaskCreateTab .v-messages__message {
+  margin-bottom: 20px !important;
+}
+.tabSectionSupport {
+  margin-top: -30px;
+  position: absolute;
+  width: 100%;
+  left: 20%;
+}
+.requestRow {
+  margin-top: 30px;
+  padding-left: 10px;
+}
+
+.supportUser {
+  color: #080848;
+  font-weight: 600;
+  font-size: 12px;
 }
