@@ -67,19 +67,19 @@
               </div>
               <div
                 class="grey--text text--darken-2"
-                style="margin-left: 10px; font-size: 10px; margin-top: -10px"
-                v-if="this.pinnedArray == ''"
+                style="margin-left: 5px; font-size: 10px; margin-top: -10px"
               >
-                Pin your important projects here
+                (Pin your important projects here)
               </div>
               <div
                 style="pinnedProjects"
-                v-for="(project, index) in getProjects('pinned')"
+                v-for="(project, index) in allProjects"
                 :key="index"
                 v-on:click="component = 'tab-views'"
                 @click="selectProject(project)"
               >
                 <v-list-item
+                v-if="project.isStarred == true"
                   class="selectedProjectPanel"
                   :to="project.projectId"
                 >
@@ -129,21 +129,23 @@
                   color="#EDF0F5"
                 >
                   <div
-                    style="height: 45px !important"
-                    v-for="(project, index) in getProjects('presales')"
+                    v-for="(project, index) in allProjects"
                     :key="'preSales' + index"
                     @click="selectProject(project)"
                   >
-                    <v-list-item
-                      class="selectedProjectPanel"
-                      v-if="
+                  <div  v-if="
                         project.projectStatus == 'presalesPD' ||
                         project.projectStatus == 'preSalesQS' ||
                         project.projectStatus == 'preSalesN' ||
                         project.projectStatus == 'preSalesC' ||
                         project.projectStatus == 'preSalesL' ||
                         project.projectStatus == 'presales'
-                      "
+                      " 
+                      
+                    style="height: 45px !important">
+                    <v-list-item
+                      class="selectedProjectPanel"
+                     
                       v-on:click="component = 'tab-views'"
                       :to="project.projectId"
                     >
@@ -199,6 +201,7 @@
                       </v-list-item-action>
                     </v-list-item>
                   </div>
+                  </div>
                 </v-expansion-panel-content>
               </v-expansion-panel>
               <v-expansion-panel class="projectDetailsPannels">
@@ -216,12 +219,13 @@
                   color="#EDF0F5"
                 >
                   <div
-                    style="height: 45px !important"
-                    v-for="(project, index) in getProjects('ongoing')"
+                    v-for="(project, index) in allProjects"
                     :key="'ongoing' + index"
                     v-on:click="component = 'tab-views'"
                     @click="selectProject(project)"
                   >
+                  <div v-if="project.projectStatus == 'ongoing'" 
+                    style="height: 45px !important">
                     <v-list-item
                       class="selectedProjectPanel"
                       :to="project.projectId"
@@ -251,6 +255,7 @@
                       </v-list-item-action>
                     </v-list-item>
                   </div>
+                  </div>
                 </v-expansion-panel-content>
               </v-expansion-panel>
               <v-expansion-panel class="projectDetailsPannels">
@@ -268,12 +273,13 @@
                   color="#EDF0F5"
                 >
                   <div
-                    style="height: 45px !important"
-                    v-for="(project, index) in getProjects('support')"
+                    v-for="(project, index) in allProjects"
                     :key="'support' + index"
                     v-on:click="component = 'tab-views'"
                     @click="selectProject(project)"
                   >
+                  <div 
+                    style="height: 45px !important" v-if="project.projectStatus == 'support'">
                     <v-list-item
                       class="selectedProjectPanel"
                       :to="project.projectId"
@@ -303,6 +309,7 @@
                       </v-list-item-action>
                     </v-list-item>
                   </div>
+                  </div>
                 </v-expansion-panel-content>
               </v-expansion-panel>
               <v-expansion-panel class="projectDetailsPannels">
@@ -320,12 +327,13 @@
                   color="#EDF0F5"
                 >
                   <div
-                    style="height: 45px !important"
-                    v-for="(project, index) in getProjects('finished')"
+                    
+                    v-for="(project, index) in allProjects"
                     :key="'finished' + index"
                     v-on:click="component = 'tab-views'"
                     @click="selectProject(project)"
                   >
+                  <div v-if="project.projectStatus == 'finished'"  style="height: 45px !important">
                     <v-list-item
                       class="selectedProjectPanel"
                       :to="project.projectId"
@@ -354,6 +362,7 @@
                         >
                       </v-list-item-action>
                     </v-list-item>
+                  </div>
                   </div>
                 </v-expansion-panel-content>
               </v-expansion-panel>
@@ -729,7 +738,9 @@ export default {
           project: project.projectId,
           isPin: false,
         });
-        location.reload();
+        // location.reload();
+
+      this.$store.dispatch("project/fetchAllProjects");
         this.overlay = false;
       } catch (e) {
         this.overlay = false;
@@ -746,8 +757,10 @@ export default {
           project: project.projectId,
           isPin: true,
         });
-        location.reload();
+        // location.reload();
         this.overlay = false;
+      this.$store.dispatch("project/fetchAllProjects");
+      this.getProjects('pinned')
       } catch (e) {
         this.overlay = false;
 

@@ -299,7 +299,7 @@
               <div>
                 <div class="restructuredMainTaskList">
                   <v-list-item class="upperListItem">
-                    <v-list-item class="innerListItem">
+                    <v-list-item class="innerListItemAllTasks">
                       <!-- @click.stop="drawer = !drawer" -->
                       <v-list-item-action>
                         <v-icon
@@ -417,6 +417,20 @@
                           >mdi-open-in-new</v-icon
                         >
                       </nuxt-link>
+                      <v-divider
+                        vertical
+                        inset
+                        style="height: 15px; margin-right: -2px"
+                      ></v-divider>
+                      <v-icon
+                        size="17"
+                        color="red"
+                        @click="
+                          taskDeleteListDialog = true;
+                          selectedTaskId = task.parentTask.taskId;
+                        "
+                        >mdi-delete</v-icon
+                      >
                     </div>
                   </v-list-item>
                 </div>
@@ -520,7 +534,7 @@
                 class="restructuredSubTaskListRestructure"
               >
                 <v-list-item class="upperListItem">
-                  <v-list-item class="innerListItem">
+                  <v-list-item class="innerListItemAllTasks">
                     <!-- @click.stop="drawer = !drawer" -->
                     <v-list-item-action>
                       <v-icon
@@ -626,6 +640,20 @@
                     >
                       <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
                     </nuxt-link>
+                    <v-divider
+                      vertical
+                      inset
+                      style="height: 15px; margin-right: -2px"
+                    ></v-divider>
+                    <v-icon
+                      size="17"
+                      color="red"
+                      @click="
+                        taskDeleteListDialog = true;
+                        selectedTaskId = childTask.taskId;
+                      "
+                      >mdi-delete</v-icon
+                    >
                   </div>
                 </v-list-item>
               </div>
@@ -774,14 +802,35 @@
             </v-tooltip>
             <!-- </div> -->
             <v-list-item-action style="cursor: pointer">
-              <nuxt-link
-                :to="'/task/' + task.taskId + '/?project=' + projectId"
-                style="text-decoration: none"
-                target="_blank"
-              >
-                <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
-              </nuxt-link>
+              <div>
+                <nuxt-link
+                  :to="'/task/' + task.taskId + '/?project=' + projectId"
+                  style="text-decoration: none"
+                  target="_blank"
+                >
+                  <v-icon size="17" color="#9F9F9F">mdi-open-in-new</v-icon>
+                </nuxt-link>
+
+                <v-divider
+                  vertical
+                  inset
+                  style="height: 15px; margin-right: -2px; margin-bottom: 2px"
+                ></v-divider>
+                <v-icon
+                  size="17"
+                  color="red"
+                  @click="
+                    taskDeleteListDialog = true;
+                    selectedTaskId = task.taskId;
+                    isFilterEnabled = true;
+                  "
+                  >mdi-delete</v-icon
+                >
+              </div>
             </v-list-item-action>
+            <!-- <v-list-item-action>
+                     
+            </v-list-item-action> -->
           </v-list-item>
         </div>
       </div>
@@ -887,6 +936,58 @@
 
     <!-- ---------------------- end popup ------------------ -->
 
+    <!-- --------- delete list item dialog ------------ -->
+
+    <v-dialog v-model="taskDeleteListDialog" max-width="380">
+      <v-card>
+        <div class="popupConfirmHeadline">
+          <v-icon
+            class="deletePopupIcon"
+            size="60"
+            color="deep-orange lighten-1"
+            >mdi-alert-outline</v-icon
+          >
+          <br />
+          <span class="alertPopupTitle">Delete Task</span>
+          <br />
+          <span class="alertPopupText">
+            You're about to permanantly delete this task, its comments and
+            attachments, and all of its data. If you're not sure, you can cancel
+            this action.
+          </span>
+        </div>
+
+        <div class="popupBottom">
+          <v-card-actions>
+            <v-spacer></v-spacer>
+
+            <v-btn
+              class="text-capitalize"
+              depressed
+              color="success"
+              width="100px"
+              @click="taskDeleteListDialog = false"
+              >Cancel</v-btn
+            >
+            <v-spacer></v-spacer>
+            <!-- add second function to click event as  @click="dialog = false; secondFunction()" -->
+            <v-btn
+              class="text-capitalize"
+              depressed
+              color="error"
+              width="100px"
+              @click="
+                taskDeleteListDialog = false;
+                deleteTaskListItem();
+              "
+              >Delete</v-btn
+            >
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </div>
+      </v-card>
+    </v-dialog>
+
     <!-- --------------- end side bar --------------------- -->
     <div @click="close" class="allTaskPopupPlacements">
       <component
@@ -917,8 +1018,9 @@ export default {
   props: ['pagination'],
   data() {
     return {
-      taskNameRules: [(value) => value.length < 100 || 'Length Exceeded'],
-      subTaskNameRules: [(value) => value.length < 100 || ''],
+      isFilterEnabled: false,
+      taskDeleteListDialog: false,
+      selectedTaskId: '',
       traverseText: '',
       hover: false,
       scrollCount: 1,
@@ -1149,7 +1251,9 @@ export default {
       } else {
         this.updatedTask.taskName = this.updatedTask.taskName + user.display;
       }
-      this.$refs.txtMainTask.focus();
+      setTimeout(() => {
+        this.$refs.txtMainTask.focus();
+      }, 3000);
       // console.log("SELECTED TAGGING: " + this.assigneeId);
     },
     tagPeopleSubTask(user, index) {
@@ -1304,6 +1408,7 @@ export default {
       }
     },
     async closeTask(taskId, filter) {
+      // this.clearStore();
       this.overlay = true;
       this.scrollCount = 1;
 
@@ -1354,6 +1459,58 @@ export default {
         }, 3000);
         this.overlay = false;
         // console.log("Error updating a status", e);
+      }
+    },
+
+    async deleteTaskListItem() {
+      let response;
+      //  this.clearStore();
+      this.overlay = true;
+      this.scrollCount = 1;
+      try {
+        response = await this.$axios.$delete(
+          `/projects/${this.projectId}/tasks/${this.selectedTaskId}`,
+          {
+            data: {},
+            headers: {
+              user: this.userId,
+              type: 'project',
+            },
+          }
+        );
+
+        if (this.isFilterEnabled) {
+          this.jqlSearch();
+        }
+
+        this.$store.dispatch('activityLog/fetchTaskActivityLog', {
+          taskId: this.selectedTaskId,
+          startIndex: 0,
+          endIndex: 10,
+        });
+        this.$store.dispatch('task/setIndex', {
+          startIndex: 0,
+          endIndex: 10,
+          isAllTasks: false,
+        });
+
+        this.component = 'success-popup';
+        this.successMessage = 'Task successfully deleted';
+
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        this.overlay = false;
+
+        this.clearStore();
+      } catch (e) {
+        this.errorMessage = e.response.data;
+        this.component = 'error-popup';
+        setTimeout(() => {
+          this.close();
+        }, 3000);
+        console.log('Error deleting task', e);
+        this.waiting = false;
       }
     },
     changeTaskOption(type) {
@@ -1694,6 +1851,7 @@ export default {
     //     console.log("Error filter task", e);
     //   }
     // },
+
     async deleteTask() {
       let response;
       try {
