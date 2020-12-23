@@ -783,7 +783,6 @@ export default {
           {
             projectId: this.projectId,
             parentTask: null,
-            assignee: 'ea6ab1ec-349e-4f0d-a24c-215def1e3bee',
             issueTopic: this.selectedIssueTopic + ' - ' + this.apendedName,
             issueDescription: this.selectedIssueDescription,
           },
