@@ -341,7 +341,7 @@ export default {
         user: this.userId,
       };
       const params = {
-        projectId: this.selectedProject.project,
+        projectId: this.selectedProject.projectId,
         memberId: userId,
       };
       try {
@@ -355,7 +355,7 @@ export default {
         Promise.all([
           this.$store.dispatch(
             'support/support/fetchProjectSupportMembers',
-            this.selectedProject.project
+            this.selectedProject.projectId
           ),
         ]).finally(() => {
           this.$store.dispatch('support/support/fetchSupportMembers');
@@ -373,12 +373,13 @@ export default {
       }
     },
     async addInternalSupportUser(userId) {
+      console.log('ID ' + this.selectedProject.projectId);
       let response;
       try {
         response = await this.$axios.$post(
           `/member`,
           {
-            projectId: this.selectedProject.project,
+            projectId: this.selectedProject.projectId,
             memberId: userId,
           },
           {
@@ -396,7 +397,7 @@ export default {
         Promise.all([
           this.$store.dispatch(
             'support/support/fetchProjectSupportMembers',
-            this.selectedProject.project
+            this.selectedProject.projectId
           ),
         ]).finally(() => {
           this.$store.dispatch('support/support/fetchSupportMembers');
@@ -438,7 +439,7 @@ export default {
           {
             headers: {
               user: this.userId,
-              project: this.selectedProject.project,
+              project: this.selectedProject.projectId,
             },
           }
         );
@@ -452,7 +453,7 @@ export default {
         this.supportUserDialog = false;
         this.$store.dispatch(
           'support/support/fetchExternalSupportUsers',
-          this.selectedProject.project
+          this.selectedProject.projectId
         );
         this.overlay = false;
       } catch (e) {
@@ -488,7 +489,7 @@ export default {
               {
                 headers: {
                   user: this.userId,
-                  project: this.selectedProject.project,
+                  project: this.selectedProject.projectId,
                 },
               }
             );
@@ -503,7 +504,7 @@ export default {
 
             this.$store.dispatch(
               'support/support/fetchExternalSupportUsers',
-              this.selectedProject.project
+              this.selectedProject.projectId
             );
           } catch (e) {
             this.errorMessage = e.response.data;
