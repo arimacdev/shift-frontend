@@ -368,7 +368,7 @@
                         ></v-select>
                       </v-list-item-content>
                     </v-list-item>
-                    <v-list-item style="margin-top: -30px !important">
+                    <!-- <v-list-item style="margin-top: -30px !important">
                       <v-list-item-action style="width: 20% !important; ">
                         <v-subheader style="padding-bottom: 20px"
                           >Assignee
@@ -386,7 +386,7 @@
                           dense
                         ></v-select>
                       </v-list-item-content>
-                    </v-list-item>
+                    </v-list-item> -->
                   </v-col>
                 </v-row>
 

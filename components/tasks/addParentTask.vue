@@ -102,14 +102,14 @@
               </v-card-actions>
             </div>
           </v-form>
-          <v-overlay :value="overlay" color="black">
-            <progress-loading />
-          </v-overlay>
         </v-card>
       </v-dialog>
-      <v-overlay z-index="inherit" :value="waiting" color="black">
+      <!-- <v-overlay z-index="inherit" :value="waiting" color="black">
         <waiting />
-      </v-overlay>
+      </v-overlay> -->
+      <!-- <v-overlay z-index="inherit" :value="overlay" color="black">
+        <progress-loading />
+      </v-overlay> -->
     </v-row>
 
     <div @click="close" class="parentChildPopup">
